@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.fromName("West Central US");
+    private Region region = Region.US_WEST_CENTRAL;
     private final String vmssName = "javavmss";
 
     @Override

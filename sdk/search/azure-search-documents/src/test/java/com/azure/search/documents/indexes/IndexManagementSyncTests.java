@@ -23,14 +23,13 @@ import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.Exceptions;
 
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
@@ -118,6 +117,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
             .setFields(new SearchField("HotelId", SearchFieldDataType.STRING).setKey(false));
         String expectedMessage = String.format("Found 0 key fields in index '%s'. "
             + "Each index must have exactly one key field.", indexName);
+
 
         try {
             client.createIndex(index);
@@ -229,10 +229,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
     @Test
     public void canCreateAndListIndexes() {
-        SearchIndex index1 = createTestIndex(null);
-        mutateName(index1, "a" + index1.getName());
-        SearchIndex index2 = createTestIndex(null);
-        mutateName(index2, "b" + index2.getName());
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
 
         client.createIndex(index1);
         indexesToDelete.add(index1.getName());
@@ -249,10 +247,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
 
     @Test
     public void canListIndexesWithSelectedField() {
-        SearchIndex index1 = createTestIndex(null);
-        mutateName(index1, "a" + index1.getName());
-        SearchIndex index2 = createTestIndex(null);
-        mutateName(index2, "b" + index2.getName());
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
 
         client.createIndex(index1);
         indexesToDelete.add(index1.getName());
@@ -414,15 +410,15 @@ public class IndexManagementSyncTests extends SearchTestBase {
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
-        mutateName(expected, "hotel1");
+        expected = createTestIndex("hotel1");
         actual = client.createOrUpdateIndex(expected);
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
-        mutateName(expected, "hotel2");
-        SearchIndex res = client.createOrUpdateIndex(expected);
-        indexesToDelete.add(res.getName());
-        assertEquals(expected.getName(), res.getName());
+        expected = createTestIndex("hotel2");
+        actual = client.createOrUpdateIndex(expected);
+        indexesToDelete.add(actual.getName());
+        assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
@@ -433,16 +429,15 @@ public class IndexManagementSyncTests extends SearchTestBase {
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
-        mutateName(expected, "hotel1");
+        expected = createTestIndex("hotel1");
         actual = client.createOrUpdateIndexWithResponse(expected, false, false, Context.NONE).getValue();
         indexesToDelete.add(actual.getName());
         assertObjectEquals(expected, actual, true, "etag");
 
-        mutateName(expected, "hotel2");
-        Response<SearchIndex> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected, false, false,
-            Context.NONE);
-        indexesToDelete.add(createOrUpdateResponse.getValue().getName());
-        assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
+        expected = createTestIndex("hotel2");
+        actual = client.createOrUpdateIndexWithResponse(expected, false, false, Context.NONE).getValue();
+        indexesToDelete.add(actual.getName());
+        assertObjectEquals(expected, actual, true, "etag");
     }
 
     @Test
@@ -500,12 +495,11 @@ public class IndexManagementSyncTests extends SearchTestBase {
             .getValue();
         String updatedETag = updated.getETag();
 
-        try {
-            client.createOrUpdateIndexWithResponse(original, false, true, Context.NONE);
-            fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (HttpResponseException ex) {
-            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-        }
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () ->
+            client.createOrUpdateIndexWithResponse(original, false, true, Context.NONE),
+            "createOrUpdateDefinition should have failed due to precondition.");
+
+        assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
         assertFalse(CoreUtils.isNullOrEmpty(originalETag));
         assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
@@ -535,32 +529,19 @@ public class IndexManagementSyncTests extends SearchTestBase {
         assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
     }
 
-    void mutateName(SearchIndex updateIndex, String indexName) {
-        try {
-            Field updateField = updateIndex.getClass().getDeclaredField("name");
-            updateField.setAccessible(true);
-            updateField.set(updateIndex, indexName);
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
-        }
-    }
-
     SearchIndex mutateCorsOptionsInIndex(SearchIndex index, List<String> allowedOrigins) {
-        CorsOptions updateCorsOptions = index.getCorsOptions();
-        try {
-            Field updateField = updateCorsOptions.getClass().getDeclaredField("allowedOrigins");
-            updateField.setAccessible(true);
-            updateField.set(updateCorsOptions, allowedOrigins);
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
-        }
-        return index;
+        CorsOptions mutatedCorsOptions = new CorsOptions(allowedOrigins)
+            .setMaxAgeInSeconds(index.getCorsOptions().getMaxAgeInSeconds());
+
+        return index.setCorsOptions(mutatedCorsOptions);
     }
 
     SearchField getFieldByName(SearchIndex index, String name) {
         return index.getFields()
             .stream()
             .filter(f -> f.getName().equals(name))
-            .findFirst().get();
+            .findFirst()
+            .orElseThrow(() -> new NoSuchElementException(
+                "Unable to find a field with name '" + name + "' in index '" + index.getName() + "'."));
     }
 }

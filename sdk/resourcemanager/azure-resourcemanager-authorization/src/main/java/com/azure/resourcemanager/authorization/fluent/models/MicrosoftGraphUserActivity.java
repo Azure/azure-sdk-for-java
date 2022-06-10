@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -18,8 +18,6 @@ import java.util.Map;
 /** userActivity. */
 @Fluent
 public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphUserActivity.class);
-
     /*
      * Required. URL used to launch the activity in the best native experience
      * represented by the appId. Might launch a web-based app if no native app
@@ -29,15 +27,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private String activationUrl;
 
     /*
-     * Required. URL for the domain representing the cross-platform identity
-     * mapping for the app. Mapping is stored either as a JSON file hosted on
-     * the domain or configurable via Windows Dev Center. The JSON file is
-     * named cross-platform-app-identifiers and is hosted at root of your HTTPS
-     * domain, either at the top level domain or include a sub domain. For
-     * example: https://contoso.com or https://myapp.contoso.com but NOT
-     * https://myapp.contoso.com/somepath. You must have a unique file and
-     * domain (or sub domain) per cross-platform app identity. For example, a
-     * separate file and domain is needed for Word vs. PowerPoint.
+     * The activitySourceHost property.
      */
     @JsonProperty(value = "activitySourceHost")
     private String activitySourceHost;
@@ -61,6 +51,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
      * Json
      */
     @JsonProperty(value = "contentInfo")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> contentInfo;
 
     /*
@@ -100,7 +91,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     private OffsetDateTime lastModifiedDateTime;
 
     /*
-     * The status property.
+     * status
      */
     @JsonProperty(value = "status")
     private MicrosoftGraphStatus status;
@@ -154,12 +145,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the activitySourceHost property: Required. URL for the domain representing the cross-platform identity
-     * mapping for the app. Mapping is stored either as a JSON file hosted on the domain or configurable via Windows Dev
-     * Center. The JSON file is named cross-platform-app-identifiers and is hosted at root of your HTTPS domain, either
-     * at the top level domain or include a sub domain. For example: https://contoso.com or https://myapp.contoso.com
-     * but NOT https://myapp.contoso.com/somepath. You must have a unique file and domain (or sub domain) per
-     * cross-platform app identity. For example, a separate file and domain is needed for Word vs. PowerPoint.
+     * Get the activitySourceHost property: The activitySourceHost property.
      *
      * @return the activitySourceHost value.
      */
@@ -168,12 +154,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the activitySourceHost property: Required. URL for the domain representing the cross-platform identity
-     * mapping for the app. Mapping is stored either as a JSON file hosted on the domain or configurable via Windows Dev
-     * Center. The JSON file is named cross-platform-app-identifiers and is hosted at root of your HTTPS domain, either
-     * at the top level domain or include a sub domain. For example: https://contoso.com or https://myapp.contoso.com
-     * but NOT https://myapp.contoso.com/somepath. You must have a unique file and domain (or sub domain) per
-     * cross-platform app identity. For example, a separate file and domain is needed for Word vs. PowerPoint.
+     * Set the activitySourceHost property: The activitySourceHost property.
      *
      * @param activitySourceHost the activitySourceHost value to set.
      * @return the MicrosoftGraphUserActivity object itself.
@@ -352,7 +333,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: status.
      *
      * @return the status value.
      */
@@ -361,7 +342,7 @@ public final class MicrosoftGraphUserActivity extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: status.
      *
      * @param status the status value to set.
      * @return the MicrosoftGraphUserActivity object itself.

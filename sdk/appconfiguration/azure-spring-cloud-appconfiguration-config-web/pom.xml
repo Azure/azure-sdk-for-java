@@ -12,37 +12,43 @@
 
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
-    <version>2.1.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config-web;current} -->
+    <version>2.8.0-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config-web;current} -->
     <name>Azure Spring Cloud App Configuration Config Web</name>
     <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
+
+    <properties>
+        <codesnippet.skip>false</codesnippet.skip>
+        <javadocDoclet></javadocDoclet>
+        <javadocDocletOptions></javadocDocletOptions>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
-            <version>2.1.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
+            <version>2.8.0-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+            <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+            <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-bus</artifactId>
-            <version>3.0.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+            <version>3.1.0</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.7.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+            <version>5.8.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -60,25 +66,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.12.4</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+            <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+            <version>2.6.7</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -93,9 +87,9 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>org.springframework.boot:spring-boot-starter-actuator:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                                <include>org.springframework.boot:spring-boot-starter-web:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                                <include>org.springframework.cloud:spring-cloud-bus:[3.0.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                                <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                                <include>org.springframework.boot:spring-boot-starter-web:[2.6.7]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                                <include>org.springframework.cloud:spring-cloud-bus:[3.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>

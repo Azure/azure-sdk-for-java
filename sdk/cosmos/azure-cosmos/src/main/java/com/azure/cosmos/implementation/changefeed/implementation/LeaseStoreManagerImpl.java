@@ -6,12 +6,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
@@ -20,6 +17,11 @@ import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -232,7 +234,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createItemRequestOptions(lease),
             serverLease -> {
                 if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(oldOwner)) {
-                    logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
+                    logger.info("Partition {} lease was acquired already by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                     throw new LeaseLostException(lease);
                 }
                 serverLease.setOwner(this.settings.getHostName());
@@ -314,7 +316,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease ->
                 {
-                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                    if (serverLease.getOwner() == null) {
+                        logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
+                        throw new LeaseLostException(lease);
+                    }
+                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
@@ -351,7 +357,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
-    public Mono<Lease> checkpoint(Lease lease, String continuationToken) {
+    public Mono<Lease> checkpoint(Lease lease, String continuationToken, CancellationToken cancellationToken) {
         if (lease == null) {
             throw new IllegalArgumentException("lease");
         }
@@ -360,24 +366,33 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             throw new IllegalArgumentException("continuationToken must be a non-empty string");
         }
 
+        if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
+
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
                                                  InternalObjectNode.class)
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
-            .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
-                refreshedLease,
-                lease.getId(), new PartitionKey(lease.getId()),
-                this.requestOptionsFactory.createItemRequestOptions(lease),
-                serverLease -> {
-                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
-                        logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
-                        throw new LeaseLostException(lease);
-                    }
-                    serverLease.setContinuationToken(continuationToken);
+            .flatMap( refreshedLease -> {
+                if (cancellationToken.isCancellationRequested()) return Mono.error(new TaskCancelledException());
 
-                    return serverLease;
-                }))
+                return this.leaseUpdater.updateLease(
+                    refreshedLease,
+                    lease.getId(), new PartitionKey(lease.getId()),
+                    this.requestOptionsFactory.createItemRequestOptions(lease),
+                    serverLease -> {
+                        if (serverLease.getOwner() == null) {
+                            logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
+                            throw new LeaseLostException(lease);
+                        } else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                            logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
+                            throw new LeaseLostException(lease);
+                        }
+                        serverLease.setContinuationToken(continuationToken);
+
+                        return serverLease;
+                    });
+            })
             .doOnError(throwable -> {
                 logger.info("Partition {} lease with token '{}' failed to checkpoint for owner '{}' with continuation token '{}'",
                     lease.getLeaseToken(), lease.getConcurrencyToken(), lease.getOwner(), lease.getContinuationToken());

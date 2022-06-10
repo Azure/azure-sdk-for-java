@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ReservationPropertyUtilization;
 import com.azure.resourcemanager.billing.models.ReservationSkuProperty;
@@ -14,9 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of the reservation. */
-@JsonFlatten
 @Fluent
-public class ReservationInner {
+public final class ReservationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationInner.class);
 
     /*
@@ -50,107 +48,10 @@ public class ReservationInner {
     private ReservationSkuProperty sku;
 
     /*
-     * The array of applied scopes of a reservation. Will be null if the
-     * reservation is in Shared scope
+     * The properties associated to this reservation
      */
-    @JsonProperty(value = "properties.appliedScopes")
-    private List<String> appliedScopes;
-
-    /*
-     * The applied scope type of the reservation.
-     */
-    @JsonProperty(value = "properties.appliedScopeType", access = JsonProperty.Access.WRITE_ONLY)
-    private String appliedScopeType;
-
-    /*
-     * The reserved source type of the reservation, e.g. virtual machine.
-     */
-    @JsonProperty(value = "properties.reservedResourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservedResourceType;
-
-    /*
-     * The number of the reservation.
-     */
-    @JsonProperty(value = "properties.quantity", access = JsonProperty.Access.WRITE_ONLY)
-    private Float quantity;
-
-    /*
-     * The provisioning state of the reservation, e.g. Succeeded
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The expiry date of the reservation
-     */
-    @JsonProperty(value = "properties.expiryDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String expiryDate;
-
-    /*
-     * The provisioning state of the reservation, e.g. Succeeded
-     */
-    @JsonProperty(value = "properties.provisioningSubState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningSubState;
-
-    /*
-     * The display name of the reservation
-     */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * The provisioning state of the reservation for display, e.g. Succeeded
-     */
-    @JsonProperty(value = "properties.displayProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayProvisioningState;
-
-    /*
-     * The renew state of the reservation for display, e.g. On
-     */
-    @JsonProperty(value = "properties.userFriendlyRenewState", access = JsonProperty.Access.WRITE_ONLY)
-    private String userFriendlyRenewState;
-
-    /*
-     * The applied scope type of the reservation for display, e.g. Shared
-     */
-    @JsonProperty(value = "properties.userFriendlyAppliedScopeType", access = JsonProperty.Access.WRITE_ONLY)
-    private String userFriendlyAppliedScopeType;
-
-    /*
-     * The effective date time of the reservation
-     */
-    @JsonProperty(value = "properties.effectiveDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String effectiveDateTime;
-
-    /*
-     * The sku description of the reservation
-     */
-    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuDescription;
-
-    /*
-     * The term of the reservation, e.g. P1Y
-     */
-    @JsonProperty(value = "properties.term", access = JsonProperty.Access.WRITE_ONLY)
-    private String term;
-
-    /*
-     * The renew state of the reservation
-     */
-    @JsonProperty(value = "properties.renew", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean renew;
-
-    /*
-     * The renew source of the reservation
-     */
-    @JsonProperty(value = "properties.renewSource", access = JsonProperty.Access.WRITE_ONLY)
-    private String renewSource;
-
-    /*
-     * Reservation utilization
-     */
-    @JsonProperty(value = "properties.utilization", access = JsonProperty.Access.WRITE_ONLY)
-    private ReservationPropertyUtilization utilization;
+    @JsonProperty(value = "properties")
+    private ReservationProperty innerProperties;
 
     /**
      * Get the id property: The id of the reservation.
@@ -209,13 +110,22 @@ public class ReservationInner {
     }
 
     /**
+     * Get the innerProperties property: The properties associated to this reservation.
+     *
+     * @return the innerProperties value.
+     */
+    private ReservationProperty innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the appliedScopes property: The array of applied scopes of a reservation. Will be null if the reservation is
      * in Shared scope.
      *
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
-        return this.appliedScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().appliedScopes();
     }
 
     /**
@@ -226,7 +136,10 @@ public class ReservationInner {
      * @return the ReservationInner object itself.
      */
     public ReservationInner withAppliedScopes(List<String> appliedScopes) {
-        this.appliedScopes = appliedScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReservationProperty();
+        }
+        this.innerProperties().withAppliedScopes(appliedScopes);
         return this;
     }
 
@@ -236,7 +149,7 @@ public class ReservationInner {
      * @return the appliedScopeType value.
      */
     public String appliedScopeType() {
-        return this.appliedScopeType;
+        return this.innerProperties() == null ? null : this.innerProperties().appliedScopeType();
     }
 
     /**
@@ -245,7 +158,7 @@ public class ReservationInner {
      * @return the reservedResourceType value.
      */
     public String reservedResourceType() {
-        return this.reservedResourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().reservedResourceType();
     }
 
     /**
@@ -254,7 +167,7 @@ public class ReservationInner {
      * @return the quantity value.
      */
     public Float quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -263,7 +176,7 @@ public class ReservationInner {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -272,7 +185,7 @@ public class ReservationInner {
      * @return the expiryDate value.
      */
     public String expiryDate() {
-        return this.expiryDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryDate();
     }
 
     /**
@@ -281,7 +194,7 @@ public class ReservationInner {
      * @return the provisioningSubState value.
      */
     public String provisioningSubState() {
-        return this.provisioningSubState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningSubState();
     }
 
     /**
@@ -290,7 +203,7 @@ public class ReservationInner {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -299,7 +212,7 @@ public class ReservationInner {
      * @return the displayProvisioningState value.
      */
     public String displayProvisioningState() {
-        return this.displayProvisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().displayProvisioningState();
     }
 
     /**
@@ -308,7 +221,7 @@ public class ReservationInner {
      * @return the userFriendlyRenewState value.
      */
     public String userFriendlyRenewState() {
-        return this.userFriendlyRenewState;
+        return this.innerProperties() == null ? null : this.innerProperties().userFriendlyRenewState();
     }
 
     /**
@@ -318,7 +231,7 @@ public class ReservationInner {
      * @return the userFriendlyAppliedScopeType value.
      */
     public String userFriendlyAppliedScopeType() {
-        return this.userFriendlyAppliedScopeType;
+        return this.innerProperties() == null ? null : this.innerProperties().userFriendlyAppliedScopeType();
     }
 
     /**
@@ -327,7 +240,7 @@ public class ReservationInner {
      * @return the effectiveDateTime value.
      */
     public String effectiveDateTime() {
-        return this.effectiveDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveDateTime();
     }
 
     /**
@@ -336,7 +249,7 @@ public class ReservationInner {
      * @return the skuDescription value.
      */
     public String skuDescription() {
-        return this.skuDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().skuDescription();
     }
 
     /**
@@ -345,7 +258,7 @@ public class ReservationInner {
      * @return the term value.
      */
     public String term() {
-        return this.term;
+        return this.innerProperties() == null ? null : this.innerProperties().term();
     }
 
     /**
@@ -354,7 +267,7 @@ public class ReservationInner {
      * @return the renew value.
      */
     public Boolean renew() {
-        return this.renew;
+        return this.innerProperties() == null ? null : this.innerProperties().renew();
     }
 
     /**
@@ -363,7 +276,7 @@ public class ReservationInner {
      * @return the renewSource value.
      */
     public String renewSource() {
-        return this.renewSource;
+        return this.innerProperties() == null ? null : this.innerProperties().renewSource();
     }
 
     /**
@@ -372,7 +285,7 @@ public class ReservationInner {
      * @return the utilization value.
      */
     public ReservationPropertyUtilization utilization() {
-        return this.utilization;
+        return this.innerProperties() == null ? null : this.innerProperties().utilization();
     }
 
     /**
@@ -384,8 +297,8 @@ public class ReservationInner {
         if (sku() != null) {
             sku().validate();
         }
-        if (utilization() != null) {
-            utilization().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

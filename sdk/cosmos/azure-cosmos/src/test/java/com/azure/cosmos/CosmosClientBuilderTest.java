@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
@@ -43,5 +44,28 @@ public class CosmosClientBuilderTest {
             assertThat(e).isInstanceOf(RuntimeException.class);
             assertThat(e.getMessage()).isEqualTo("preferredRegion can't be empty");
         }
+    }
+
+    @Test(groups = "emulator")
+    public void validateApiTypePresent() {
+        ApiType apiType = ApiType.TABLE;
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode(directConnectionConfig)
+            .userAgentSuffix("custom-direct-client")
+            .multipleWriteRegionsEnabled(false)
+            .endpointDiscoveryEnabled(false)
+            .readRequestsFallbackEnabled(true);
+
+         ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+         accessor.setCosmosClientApiType(cosmosClientBuilder, apiType);
+
+        RxDocumentClientImpl documentClient =
+            (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
+        assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
     }
 }

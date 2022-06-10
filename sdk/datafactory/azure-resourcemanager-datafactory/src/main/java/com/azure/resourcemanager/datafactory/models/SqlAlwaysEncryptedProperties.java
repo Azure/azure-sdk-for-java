@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sql always encrypted properties. */
 @Fluent
 public final class SqlAlwaysEncryptedProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlAlwaysEncryptedProperties.class);
-
     /*
      * Sql always encrypted AKV authentication type. Type: string (or
      * Expression with resultType string).
@@ -136,7 +133,7 @@ public final class SqlAlwaysEncryptedProperties {
      */
     public void validate() {
         if (alwaysEncryptedAkvAuthType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alwaysEncryptedAkvAuthType in model SqlAlwaysEncryptedProperties"));
@@ -148,4 +145,6 @@ public final class SqlAlwaysEncryptedProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlAlwaysEncryptedProperties.class);
 }

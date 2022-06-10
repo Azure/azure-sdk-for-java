@@ -47,7 +47,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.11.0</version>
+    <version>1.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,21 +63,40 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create a Netty Http client that uses port 80 and has no proxy.
+Create a Netty HttpClient that uses port 80 and has no proxy.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L23-L23 -->
-```java
+```java readme-sample-createBasicClient
 HttpClient client = new NettyAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy
 
-Create a Netty Http client that is using a proxy.
+Create a Netty HttpClient that is using a proxy.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/netty/ReadmeSamples.java#L30-L32 -->
-```java
+```java readme-sample-createProxyClient
 HttpClient client = new NettyAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create a Client with HTTP/2 Support
+
+Create a Netty HttpClient that supports both the HTTP/1.1 and HTTP/2 protocols, with HTTP/2 being the preferred
+protocol.
+
+```java readme-sample-useHttp2WithConfiguredNettyClient 
+// Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
+HttpClient client = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+    .protocol(HttpProtocol.HTTP11, HttpProtocol.H2))
+    .build();
+```
+
+It is also possible to create a Netty HttpClient that only supports HTTP/2.
+
+```java readme-sample-useHttp2OnlyWithConfiguredNettyClient
+// Constructs an HttpClient that only supports HTTP/2.
+HttpClient client = new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
+    .protocol(HttpProtocol.H2))
     .build();
 ```
 

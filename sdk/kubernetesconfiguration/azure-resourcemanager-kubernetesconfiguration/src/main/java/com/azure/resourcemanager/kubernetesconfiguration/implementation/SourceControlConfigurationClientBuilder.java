@@ -19,13 +19,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {SourceControlConfigurationClientImpl.class})
 public final class SourceControlConfigurationClientBuilder {
     /*
-     * The Azure subscription ID. This is a GUID-formatted string (e.g.
-     * 00000000-0000-0000-0000-000000000000)
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the SourceControlConfigurationClientBuilder.

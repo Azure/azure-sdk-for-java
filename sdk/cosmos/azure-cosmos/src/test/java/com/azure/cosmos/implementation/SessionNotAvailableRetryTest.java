@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -17,11 +18,11 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -31,11 +32,14 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -109,7 +113,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetryMultiMaster(List<String> preferredLocations, List<String> regionalSuffix,
-                                                    OperationType operationType) {
+                                                    OperationType operationType) throws Exception {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -129,7 +133,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -168,6 +174,12 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
+                assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(preferredLocations.size());
+                for (String regionName :
+                    getAvailableRegionNames(rxDocumentClient, true)) {
+                    assertThat(regionName).isEqualTo(regionContactedIterator.next());
+                }
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
@@ -205,7 +217,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
     @Test(groups = {"multi-region"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetrySingleMaster(List<String> preferredLocations, List<String> regionalSuffix,
-                                                     OperationType operationType) {
+                                                     OperationType operationType) throws Exception {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -225,7 +237,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -234,6 +248,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             PartitionKey partitionKey = new PartitionKey("Test");
             List<String> uris = new ArrayList<>();
+            String masterOrHubRegionSuffix =
+                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                    TestConfigurations.HOST);
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
                 RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
                     RxDocumentServiceRequest.class);
@@ -265,6 +282,20 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
+                if (operationType.isWriteOperation() || regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
+                    for (String regionName :
+                        getAvailableRegionNames(rxDocumentClient, true)) {
+                        assertThat(regionName.toLowerCase()).isEqualTo(regionContactedIterator.next());
+                    }
+                } else {
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(preferredLocations.size());
+                    for (String regionName :
+                        getAvailableRegionNames(rxDocumentClient, false)) {
+                        assertThat(regionName).isEqualTo(regionContactedIterator.next());
+                    }
+                }
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
@@ -272,9 +303,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 uniqueHost.add(uri);
             }
 
-            String masterOrHubRegionSuffix =
-                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                    TestConfigurations.HOST);
             // First regional retries in originating region, then retrying in master/hub region and 1 retry at the
             // last from
             // RenameCollectionAwareClientRetryPolicy after clearing session token
@@ -322,7 +350,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region", "multi-master"}, dataProvider = "operations", timeOut = TIMEOUT)
-    public void sessionNotAvailableRetryWithoutPreferredList(OperationType operationType) {
+    public void sessionNotAvailableRetryWithoutPreferredList(OperationType operationType) throws Exception {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -341,7 +369,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest(globalEndpointManager);
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
             ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
             ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
@@ -380,6 +410,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
+                String regionName = getAvailableRegionNames(rxDocumentClient, true).iterator().next();
+                assertThat(ex.getDiagnostics().getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
@@ -444,7 +477,40 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         return counter;
     }
 
+    private Set<String> getAvailableRegionNames(RxDocumentClientImpl rxDocumentClient, boolean isWriteRegion) throws Exception {
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+        LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+
+        Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
+        locationInfoField.setAccessible(true);
+        Object locationInfo = locationInfoField.get(locationCache);
+
+        Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
+            ".LocationCache$DatabaseAccountLocationsInfo");
+
+        if (isWriteRegion) {
+            Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
+                "availableWriteEndpointByLocation");
+            availableWriteEndpointByLocation.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
+            return map.keySet();
+        } else {
+            Field availableReadEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
+                "availableReadEndpointByLocation");
+            availableReadEndpointByLocation.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocation.get(locationInfo);
+            return map.keySet();
+        }
+    }
+
     private class RntbdTransportClientTest extends TransportClient {
+
+        GlobalEndpointManager globalEndpointManager;
+        RntbdTransportClientTest(GlobalEndpointManager globalEndpointManager) {
+            this.globalEndpointManager = globalEndpointManager;
+        }
 
         @Override
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
@@ -452,7 +518,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
 
         @Override
+        public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
+            throw new NotImplementedException("tryOpenConnection is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
         public void close() {
+        }
+
+        @Override
+        protected GlobalEndpointManager getGlobalEndpointManager() {
+            return this.globalEndpointManager;
         }
     }
 

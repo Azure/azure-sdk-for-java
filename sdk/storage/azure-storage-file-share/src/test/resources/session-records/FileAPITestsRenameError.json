@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/b15e7268b15e726802415215be11f80724444a7a82?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ea7eeb3-507d-42fa-bd5b-5aaa5a08d038"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9BF71EAB5387C",
+      "Last-Modified" : "Wed, 15 Dec 2021 02:23:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "61b5a92f-e01a-0001-565a-f11b65000000",
+      "x-ms-client-request-id" : "9ea7eeb3-507d-42fa-bd5b-5aaa5a08d038",
+      "Date" : "Wed, 15 Dec 2021 02:23:43 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/b15e7268b15e726802415215be11f80724444a7a82/b15e72681b15e726802401805a25e516139514d82a5e?comp=rename",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f305b67a-db08-4249-8155-c7efb76cc272"
+    },
+    "Response" : {
+      "content-length" : "223",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "61b5a932-e01a-0001-575a-f11b65000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:61b5a932-e01a-0001-575a-f11b65000000\nTime:2021-12-15T02:23:44.3680925Z</Message></Error>",
+      "x-ms-client-request-id" : "f305b67a-db08-4249-8155-c7efb76cc272",
+      "Date" : "Wed, 15 Dec 2021 02:23:43 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b15e7268b15e726802415215be11f80724444a7a82", "b15e7268b15e726802482498274bc51d2b004a9e97", "b15e72680b15e72680246473949985c33c8bc4f7d8a1", "b15e72681b15e726802401805a25e516139514d82a5e" ]
+}

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,133 @@
 
 ### Other Changes
 
+## 1.12.2 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.12.1 (2022-06-03)
+
+### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.12.0 (2022-05-06)
+
+### Features Added
+
+- The `NettyAsyncHttpClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
+  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
+  the shared `HttpClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+- Upgraded Netty from `4.1.73.Final` to `4.1.76.Final`.
+- Upgraded Reactor Netty from `1.0.15` to `1.0.18`.
+
+## 1.11.9 (2022-04-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 1.11.8 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded Netty from `4.1.72.Final` to `4.1.73.Final`.
+- Upgraded Reactor Netty from `1.0.14` to `1.0.15`.
+
+## 1.11.7 (2022-02-04)
+
+### Bugs Fixed
+
+- Fixed a bug where proxying clients wouldn't use the no-op resolver. ([#26611](https://github.com/Azure/azure-sdk-for-java/pull/26611))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+
+## 1.11.6 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Netty from `4.1.70.Final` to `4.1.72.Final`.
+- Upgraded Reactor Netty from `1.0.13` to `1.0.14`.
+
+## 1.11.5 (2022-01-06)
+
+### Bugs Fixed
+- Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
+  `maximumConnectionPoolSize` is not specified. ([#26083](https://github.com/Azure/azure-sdk-for-java/pull/26083))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
+## 1.11.4 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+- Upgraded Netty from `4.1.68.Final` to `4.1.70.Final`.
+- Upgraded Reactor Netty from `1.0.11` to `1.0.13`.
+
+## 1.11.3 (2021-11-23)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `1.23.0`.
+
+## 1.11.2 (2021-11-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.11.1 (2021-10-01)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpResponse.close` wouldn't drain the response stream if it wasn't already consumed. ([#23855](https://github.com/Azure/azure-sdk-for-java/pull/23855)) 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded Netty from `4.1.67.Final` to `4.1.68.Final`.
+- Upgraded Reactor Netty from `1.0.10` to `1.0.11`.
+- 
 ## 1.11.0 (2021-09-07)
 
 ### Features Added

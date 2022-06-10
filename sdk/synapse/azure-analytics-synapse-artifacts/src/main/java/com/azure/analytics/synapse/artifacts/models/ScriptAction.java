@@ -26,7 +26,7 @@ public final class ScriptAction {
      * The node types on which the script action should be executed.
      */
     @JsonProperty(value = "roles", required = true)
-    private HdiNodeTypes roles;
+    private Object roles;
 
     /*
      * The parameters for the script action.
@@ -79,7 +79,7 @@ public final class ScriptAction {
      *
      * @return the roles value.
      */
-    public HdiNodeTypes getRoles() {
+    public Object getRoles() {
         return this.roles;
     }
 
@@ -89,7 +89,7 @@ public final class ScriptAction {
      * @param roles the roles value to set.
      * @return the ScriptAction object itself.
      */
-    public ScriptAction setRoles(HdiNodeTypes roles) {
+    public ScriptAction setRoles(Object roles) {
         this.roles = roles;
         return this;
     }

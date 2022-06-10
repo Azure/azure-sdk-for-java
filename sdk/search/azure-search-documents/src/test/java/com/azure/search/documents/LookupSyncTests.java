@@ -476,7 +476,7 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     String setupIndexWithDataTypes() {
-        SearchIndex index = new SearchIndex("data-types-tests-index")
+        SearchIndex index = new SearchIndex(testResourceNamer.randomName("data-types-tests-index", 64))
             .setFields(Arrays.asList(
                  new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)

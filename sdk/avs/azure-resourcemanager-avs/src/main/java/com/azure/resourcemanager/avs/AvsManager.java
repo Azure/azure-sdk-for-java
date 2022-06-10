@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -31,10 +32,12 @@ import com.azure.resourcemanager.avs.implementation.GlobalReachConnectionsImpl;
 import com.azure.resourcemanager.avs.implementation.HcxEnterpriseSitesImpl;
 import com.azure.resourcemanager.avs.implementation.LocationsImpl;
 import com.azure.resourcemanager.avs.implementation.OperationsImpl;
+import com.azure.resourcemanager.avs.implementation.PlacementPoliciesImpl;
 import com.azure.resourcemanager.avs.implementation.PrivateCloudsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptCmdletsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptExecutionsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptPackagesImpl;
+import com.azure.resourcemanager.avs.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.avs.implementation.WorkloadNetworksImpl;
 import com.azure.resourcemanager.avs.models.Addons;
 import com.azure.resourcemanager.avs.models.Authorizations;
@@ -45,16 +48,19 @@ import com.azure.resourcemanager.avs.models.GlobalReachConnections;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSites;
 import com.azure.resourcemanager.avs.models.Locations;
 import com.azure.resourcemanager.avs.models.Operations;
+import com.azure.resourcemanager.avs.models.PlacementPolicies;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
 import com.azure.resourcemanager.avs.models.ScriptCmdlets;
 import com.azure.resourcemanager.avs.models.ScriptExecutions;
 import com.azure.resourcemanager.avs.models.ScriptPackages;
+import com.azure.resourcemanager.avs.models.VirtualMachines;
 import com.azure.resourcemanager.avs.models.WorkloadNetworks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to AvsManager. Azure VMware Solution API. */
 public final class AvsManager {
@@ -79,6 +85,10 @@ public final class AvsManager {
     private CloudLinks cloudLinks;
 
     private Addons addons;
+
+    private VirtualMachines virtualMachines;
+
+    private PlacementPolicies placementPolicies;
 
     private ScriptPackages scriptPackages;
 
@@ -222,7 +232,7 @@ public final class AvsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -245,11 +255,24 @@ public final class AvsManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -348,6 +371,22 @@ public final class AvsManager {
             this.addons = new AddonsImpl(clientObject.getAddons(), this);
         }
         return addons;
+    }
+
+    /** @return Resource collection API of VirtualMachines. */
+    public VirtualMachines virtualMachines() {
+        if (this.virtualMachines == null) {
+            this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
+        }
+        return virtualMachines;
+    }
+
+    /** @return Resource collection API of PlacementPolicies. */
+    public PlacementPolicies placementPolicies() {
+        if (this.placementPolicies == null) {
+            this.placementPolicies = new PlacementPoliciesImpl(clientObject.getPlacementPolicies(), this);
+        }
+        return placementPolicies;
     }
 
     /** @return Resource collection API of ScriptPackages. */

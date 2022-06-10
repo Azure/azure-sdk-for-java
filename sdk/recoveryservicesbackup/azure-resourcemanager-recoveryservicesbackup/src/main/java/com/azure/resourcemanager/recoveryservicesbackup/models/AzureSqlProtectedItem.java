@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Azure SQL workload-specific backup item. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
 @JsonTypeName("Microsoft.Sql/servers/databases")
 @Fluent
 public final class AzureSqlProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlProtectedItem.class);
-
     /*
      * Internal ID of a backup item. Used by Azure SQL Backup engine to contact
      * Recovery Services.
@@ -188,6 +185,27 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
     @Override
     public AzureSqlProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

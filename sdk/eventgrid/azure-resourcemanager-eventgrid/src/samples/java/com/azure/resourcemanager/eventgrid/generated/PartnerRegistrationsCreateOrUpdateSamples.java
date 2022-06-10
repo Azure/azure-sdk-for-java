@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerRegistrations CreateOrUpdate. */
 public final class PartnerRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerRegistrations_CreateOrUpdate.

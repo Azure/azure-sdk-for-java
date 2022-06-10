@@ -36,7 +36,7 @@ class QueueAysncAPITests extends APISpec {
 
     def "Get queue URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -49,7 +49,7 @@ class QueueAysncAPITests extends APISpec {
     def "IP based endpoint"() {
         when:
         def queueAsyncClient = new QueueClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
             .buildAsyncClient()
 
@@ -71,6 +71,39 @@ class QueueAysncAPITests extends APISpec {
 
     }
 
+    def "Create if not exists queue with shared key"() {
+        expect:
+        StepVerifier.create(queueAsyncClient.createIfNotExistsWithResponse(null)).assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 201) }
+            .verifyComplete()
+    }
+
+    def "Create if not exists queue with same metadata"() {
+        setup:
+        def initialResponse = queueAsyncClient.createIfNotExistsWithResponse(null).block()
+
+        when:
+        def secondResponse = queueAsyncClient.createIfNotExistsWithResponse(null).block()
+
+        then:
+        QueueTestHelper.assertResponseStatusCode(initialResponse, 201)
+        // if metadata is the same response code is 204
+        QueueTestHelper.assertResponseStatusCode(secondResponse, 204)
+    }
+
+    def "Create if not exists queue with conflicting metadata"() {
+        setup:
+        def initialResponse = queueAsyncClient.createIfNotExistsWithResponse(createMetadata).block()
+
+        when:
+        def secondResponse = queueAsyncClient.createIfNotExistsWithResponse(testMetadata).block()
+
+        then:
+        QueueTestHelper.assertResponseStatusCode(initialResponse, 201)
+        // if metadata is the same response code is 204
+        QueueTestHelper.assertResponseStatusCode(secondResponse, 409)
+    }
+
     def "Delete exist queue"() {
         given:
         queueAsyncClient.createWithResponse(null).block()
@@ -89,6 +122,25 @@ class QueueAysncAPITests extends APISpec {
         deleteQueueVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 404, QueueErrorCode.QUEUE_NOT_FOUND)
         }
+    }
+
+    def "Delete if exists queue"() {
+        given:
+        queueAsyncClient.createWithResponse(null).block()
+        when:
+        def deleteQueueVerifier = StepVerifier.create(queueAsyncClient.deleteIfExistsWithResponse())
+        then:
+        deleteQueueVerifier.assertNext {
+            assert QueueTestHelper.assertResponseStatusCode(it, 204) }
+            .verifyComplete()
+    }
+
+    def "Delete if exists queue that does not exist"() {
+        when:
+        def response = queueAsyncClient.deleteIfExistsWithResponse().block()
+        then:
+        response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get properties"() {

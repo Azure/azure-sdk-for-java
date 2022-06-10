@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of an Extended Location. */
 @Fluent
 public final class ExtendedLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedLocation.class);
-
     /*
      * Fully qualified name of the extended location.
      */

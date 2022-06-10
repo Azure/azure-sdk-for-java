@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.HopLinkProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Hop link. */
 @Fluent
 public final class HopLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HopLink.class);
-
     /*
      * The ID of the next hop.
      */

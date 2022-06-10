@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 
 /** An immutable client-side representation of ExtensionTopic. */
@@ -28,6 +29,13 @@ public interface ExtensionTopic {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: The system metadata relating to Extension Topic resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the description property: Description of the extension topic.

@@ -26,7 +26,8 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     private volatile boolean isWriting = false;
     private volatile boolean isCompleted = false;
 
-    private final ClientLogger logger = new ClientLogger(FileWriteSubscriber.class);
+    // FileWriteSubscriber is a commonly used subscriber, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(FileWriteSubscriber.class);
 
     private final AsynchronousFileChannel fileChannel;
     private final AtomicLong position;
@@ -59,10 +60,10 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
             } else {
                 write(bytes);
             }
-        } catch (Throwable throwable) {
+        } catch (Exception ex) {
             // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
             // stream. Catch the exception and propagate it manually so that doesn't happen.
-            onError(throwable);
+            onError(ex);
         }
     }
 
@@ -98,7 +99,7 @@ public final class FileWriteSubscriber implements Subscriber<ByteBuffer> {
     public void onError(Throwable throwable) {
         isWriting = false;
         subscription.cancel();
-        emitter.error(logger.logThrowableAsError(throwable));
+        emitter.error(LOGGER.logThrowableAsError(throwable));
     }
 
     @Override

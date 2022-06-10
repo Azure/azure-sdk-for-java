@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics ListByDomain. */
 public final class DomainTopicsListByDomainSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_ListByDomain.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_ListByDomain.json
      */
     /**
      * Sample code: DomainTopics_ListByDomain.

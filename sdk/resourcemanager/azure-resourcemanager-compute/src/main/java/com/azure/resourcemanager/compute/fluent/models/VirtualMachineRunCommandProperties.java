@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Virtual Machine run command. */
 @Fluent
 public final class VirtualMachineRunCommandProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandProperties.class);
-
     /*
      * The source of the run command script.
      */

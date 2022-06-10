@@ -439,7 +439,7 @@ public final class NotificationHubsImpl implements NotificationHubs {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'notificationHubs'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

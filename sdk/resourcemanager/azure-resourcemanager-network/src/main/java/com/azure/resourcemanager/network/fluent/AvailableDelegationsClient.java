@@ -20,7 +20,8 @@ public interface AvailableDelegationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this subscription in this region.
+     * @return all of the available subnet delegations for this subscription in this region as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AvailableDelegationInner> listAsync(String location);
@@ -32,7 +33,8 @@ public interface AvailableDelegationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this subscription in this region.
+     * @return all of the available subnet delegations for this subscription in this region as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableDelegationInner> list(String location);
@@ -45,7 +47,8 @@ public interface AvailableDelegationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of the available subnet delegations for this subscription in this region.
+     * @return all of the available subnet delegations for this subscription in this region as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableDelegationInner> list(String location, Context context);

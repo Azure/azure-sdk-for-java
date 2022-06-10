@@ -37,7 +37,7 @@ public interface ExposureControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific location.
+     * @return exposure control feature for specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExposureControlResponseInner> getFeatureValueWithResponse(
@@ -68,7 +68,7 @@ public interface ExposureControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exposure control feature for specific factory.
+     * @return exposure control feature for specific factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExposureControlResponseInner> getFeatureValueByFactoryWithResponse(
@@ -99,7 +99,7 @@ public interface ExposureControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of exposure control features for specific factory.
+     * @return list of exposure control features for specific factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryWithResponse(

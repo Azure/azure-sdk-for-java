@@ -4,8 +4,11 @@
 package com.azure.perf.test.core;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.converters.IParameterSplitter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
@@ -19,8 +22,8 @@ public class PerfStressOptions {
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
 
-    @Parameter(names = { "-x", "--test-proxy" }, description = "URI of TestProxy Server")
-    private URI testProxy;
+    @Parameter(names = { "-x", "--test-proxies" }, splitter = SemiColonSplitter.class, description = "URIs of TestProxy Servers (separated by ';')")
+    private List<URI> testProxies;
 
     @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
     private int iterations = 1;
@@ -42,6 +45,9 @@ public class PerfStressOptions {
 
     @Parameter(names = { "-c", "--count" }, description = "Number of items")
     private int count = 10;
+
+    @Parameter(names = { "--http-client" }, description = "The http client to use. Can be netty, okhttp.")
+    private HttpClientType httpClient = HttpClientType.NETTY;
 
     /**
      * Get the configured count for performance test.
@@ -79,8 +85,8 @@ public class PerfStressOptions {
      * Get the configured test proxy for performance test.
      * @return The configured test proxy.
      */
-    public URI getTestProxy() {
-        return testProxy;
+    public List<URI> getTestProxies() {
+        return testProxies;
     }
 
     /**
@@ -121,5 +127,23 @@ public class PerfStressOptions {
      */
     public boolean isSync() {
         return sync;
+    }
+
+    /**
+     * The http client to use. Can be netty, okhttp.
+     * @return The http client to use.
+     */
+    public HttpClientType getHttpClient() {
+        return httpClient;
+    }
+
+    private static class SemiColonSplitter implements IParameterSplitter {
+        public List<String> split(String value) {
+            return Arrays.asList(value.split(";"));
+        }
+    }
+
+    public enum HttpClientType {
+        NETTY, OKHTTP
     }
 }

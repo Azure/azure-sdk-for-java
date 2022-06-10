@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Execution policy for an activity. */
 @Fluent
 public final class ActivityPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityPolicy.class);
-
     /*
      * Specifies the timeout for the activity to run. The default timeout is 7
      * days. Type: string (or Expression with resultType string), pattern:

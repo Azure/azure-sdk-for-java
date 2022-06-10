@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/incidents/2583ff47fef9174e6d6bfe73415ad914-174d2024c00/rootCause",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/incidents/88ecf25a0e6bd330ef9e7b49b7c5b92b-18001521c00/rootCause",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "31cea2ca-081c-42a3-8cd3-7e68a3b46b09"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "86cf79a6-e52c-460d-bc7f-de698623f817"
     },
     "Response" : {
-      "x-request-id" : "45408d3f-f145-48fa-9dec-38414a0d7293",
-      "content-length" : "259",
-      "x-envoy-upstream-service-time" : "405",
+      "x-request-id" : "1ff9ddbc-e7a0-48fc-b9a8-edd3f622a9df",
+      "content-length" : "210",
+      "x-envoy-upstream-service-time" : "292",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "45408d3f-f145-48fa-9dec-38414a0d7293",
+      "apim-request-id" : "1ff9ddbc-e7a0-48fc-b9a8-edd3f622a9df",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"category\":\"Electronics (Consumer)\",\"city\":\"Karachi\"}},\"path\":[\"city\"],\"score\":0.34265262137636504,\"description\":\"Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.\"}]}",
-      "Date" : "Tue, 06 Jul 2021 19:51:19 GMT",
+      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"path\":[\"Dim1\",\"Dim2\"],\"score\":0.25078896770000203,\"description\":\"Increase on Dim1 = JPN | Dim2 = JP contributes the most to current incident.\"}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:17 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.16 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,363 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.15 (2022-05-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.PrivateEndpoint` was added
+
+#### `models.PrivateLinkConnectionApprovalRequest` was modified
+
+* `withPrivateEndpoint(models.PrivateEndpoint)` was added
+* `privateEndpoint()` was added
+
+#### `models.PowerQuerySink` was modified
+
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+
+#### `models.DataFlowSink` was modified
+
+* `rejectedDataLinkedService()` was added
+* `withRejectedDataLinkedService(models.LinkedServiceReference)` was added
+
+## 1.0.0-beta.14 (2022-04-19)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DataFlowDebugSessionsExecuteCommandResponse` was removed
+
+* `models.DataFlowDebugSessionsExecuteCommandHeaders` was removed
+
+* `models.DataFlowDebugSessionsCreateHeaders` was removed
+
+* `models.DataFlowDebugSessionsCreateResponse` was removed
+
+#### `models.DataFlowReference` was modified
+
+* `java.lang.String type()` -> `models.DataFlowReferenceType type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.ManagedVirtualNetworkReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.ManagedVirtualNetworkReferenceType type()`
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `java.util.Map storedProcedureParameters()` -> `java.lang.Object storedProcedureParameters()`
+* `withStoredProcedureParameters(java.util.Map)` was removed
+
+#### `models.TriggerReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.TriggerReferenceType type()`
+
+#### `models.CredentialReference` was modified
+
+* `withType(java.lang.String)` was removed
+* `java.lang.String type()` -> `models.CredentialReferenceType type()`
+
+### Features Added
+
+* `models.TwilioLinkedService` was added
+
+* `models.ExecutePipelineActivityPolicy` was added
+
+* `models.DataFlowReferenceType` was added
+
+* `models.TriggerReferenceType` was added
+
+* `models.AppFiguresLinkedService` was added
+
+* `models.AsanaLinkedService` was added
+
+* `models.ManagedVirtualNetworkReferenceType` was added
+
+* `models.CredentialReferenceType` was added
+
+* `models.DataworldLinkedService` was added
+
+#### `DataFactoryManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.DataFlowReference` was modified
+
+* `withType(models.DataFlowReferenceType)` was added
+
+#### `models.ManagedVirtualNetworkReference` was modified
+
+* `withType(models.ManagedVirtualNetworkReferenceType)` was added
+
+#### `DataFactoryManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.ExecutePipelineActivity` was modified
+
+* `withPolicy(models.ExecutePipelineActivityPolicy)` was added
+* `policy()` was added
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `withStoredProcedureParameters(java.lang.Object)` was added
+
+#### `models.TriggerReference` was modified
+
+* `withType(models.TriggerReferenceType)` was added
+
+#### `models.CredentialReference` was modified
+
+* `withType(models.CredentialReferenceType)` was added
+
+## 1.0.0-beta.13 (2022-03-24)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.WebActivity` was modified
+
+* `withDisableCertValidation(java.lang.Boolean)` was added
+* `disableCertValidation()` was added
+
+## 1.0.0-beta.12 (2022-02-24)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SmartsheetLinkedService` was added
+
+* `models.TeamDeskAuthenticationType` was added
+
+* `models.TeamDeskLinkedService` was added
+
+* `models.ZendeskAuthenticationType` was added
+
+* `models.QuickbaseLinkedService` was added
+
+* `models.ZendeskLinkedService` was added
+
+## 1.0.0-beta.11 (2022-02-14)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ScriptActivityParameter` was added
+
+* `models.ScriptActivityLogDestination` was added
+
+* `models.ScriptActivity` was added
+
+* `models.ScriptActivityParameterType` was added
+
+* `models.ScriptActivityScriptBlock` was added
+
+* `models.ScriptActivityParameterDirection` was added
+
+* `models.ScriptActivityTypePropertiesLogSettings` was added
+
+* `models.ScriptType` was added
+
+## 1.0.0-beta.10 (2022-01-17)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.FailActivity` was added
+
+#### `models.DynamicsLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `servicePrincipalCredential()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `servicePrincipalCredentialType()` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `workspaceResourceId()` was added
+* `credential()` was added
+* `withWorkspaceResourceId(java.lang.Object)` was added
+
+#### `models.LinkedIntegrationRuntimeRbacAuthorization` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+## 1.0.0-beta.9 (2021-12-20)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `withConnectionProperties(java.lang.Object)` was added
+* `connectionProperties()` was added
+
+## 1.0.0-beta.8 (2021-11-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Flowlet` was modified
+
+* `withAdditionalProperties(java.util.Map)` was removed
+* `additionalPropertiesTypePropertiesAdditionalProperties()` was removed
+* `additionalProperties()` was removed
+* `withAdditionalPropertiesTypePropertiesAdditionalProperties(java.lang.Object)` was removed
+
+### Features Added
+
+* `models.ManagedIdentityCredential` was added
+
+* `models.ServicePrincipalCredential` was added
+
+#### `models.FtpReadSettings` was modified
+
+* `withDisableChunking(java.lang.Object)` was added
+* `disableChunking()` was added
+
+#### `models.DataFlowReference` was modified
+
+* `withParameters(java.util.Map)` was added
+* `parameters()` was added
+
+#### `models.SftpReadSettings` was modified
+
+* `withDisableChunking(java.lang.Object)` was added
+* `disableChunking()` was added
+
+## 1.0.0-beta.7 (2021-11-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DatasetTarGZipCompression` was removed
+
+* `models.DatasetTarCompression` was removed
+
+* `models.DatasetGZipCompression` was removed
+
+* `models.DatasetDeflateCompression` was removed
+
+* `models.DatasetBZip2Compression` was removed
+
+* `models.DatasetZipDeflateCompression` was removed
+
+#### `models.DataFlowSink` was modified
+
+* `dataset()` was removed
+* `linkedService()` was removed
+
+#### `models.DataFlowSource` was modified
+
+* `linkedService()` was removed
+* `dataset()` was removed
+
+### Features Added
+
+* `models.PowerQuerySinkMapping` was added
+
+* `models.Flowlet` was added
+
+#### `models.PowerQuerySource` was modified
+
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withDataset(models.DatasetReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `queries()` was added
+* `withQueries(java.util.List)` was added
+
+#### `models.DataFlowDebugPackage` was modified
+
+* `dataFlows()` was added
+* `withDataFlows(java.util.List)` was added
+
+#### `models.DatasetCompression` was modified
+
+* `withType(java.lang.Object)` was added
+* `level()` was added
+* `withLevel(java.lang.Object)` was added
+* `type()` was added
+
+#### `models.PowerQuerySink` was modified
+
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withDataset(models.DatasetReference)` was added
+
+#### `models.WranglingDataFlow` was modified
+
+* `documentLocale()` was added
+* `withDocumentLocale(java.lang.String)` was added
+
+#### `models.Transformation` was modified
+
+* `flowlet()` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `dataset()` was added
+* `withDataset(models.DatasetReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `linkedService()` was added
+
+#### `models.Factory$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.MappingDataFlow` was modified
+
+* `withScriptLines(java.util.List)` was added
+* `scriptLines()` was added
+
+#### `models.FactoryUpdateParameters` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.DataFlowSink` was modified
+
+* `withDataset(models.DatasetReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+
+#### `models.DataFlowSource` was modified
+
+* `withDataset(models.DatasetReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
 
 ## 1.0.0-beta.6 (2021-09-10)
 

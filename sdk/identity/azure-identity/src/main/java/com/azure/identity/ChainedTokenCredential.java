@@ -21,11 +21,27 @@ import java.util.List;
  *
  * <p><strong>Sample: Construct a ChainedTokenCredential with silent username+password login tried first, then
  * interactive browser login as needed (e.g. when 2FA is turned on in the directory).</strong></p>
- * {@codesnippet com.azure.identity.credential.chainedtokencredential.construct}
+ * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
+ * <pre>
+ * UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .username&#40;username&#41;
+ *     .password&#40;password&#41;
+ *     .build&#40;&#41;;
+ * InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .port&#40;8765&#41;
+ *     .build&#40;&#41;;
+ * ChainedTokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
+ *     .addLast&#40;usernamePasswordCredential&#41;
+ *     .addLast&#40;interactiveBrowserCredential&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.chainedtokencredential.construct -->
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(getClass());
+    private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredential.class);
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
@@ -53,7 +69,7 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                .doOnNext(t -> LOGGER.info("Azure Identity => Attempted credential {} returns a token",
                     p.getClass().getSimpleName()))
                 .onErrorResume(Exception.class, t -> {
                     if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
@@ -63,7 +79,7 @@ public class ChainedTokenCredential implements TokenCredential {
                             null, t));
                     }
                     exceptions.add((CredentialUnavailableException) t);
-                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                    LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
                         p.getClass().getSimpleName());
                     return Mono.empty();
                 }), 1)
@@ -73,8 +89,10 @@ public class ChainedTokenCredential implements TokenCredential {
                 CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                 for (int z = exceptions.size() - 2; z >= 0; z--) {
                     CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
-                        last.getCause());
+                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                        + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                            + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
+                            : ""));
                 }
                 return Mono.error(last);
             }));

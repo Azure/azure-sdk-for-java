@@ -21,15 +21,17 @@ import java.io.UncheckedIOException;
  * no JsonSerializerProvider is in the class path.
  */
 public final class DefaultJsonSerializer implements JsonSerializer {
+    // DefaultJsonSerializer is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonSerializer.class);
+
     private final SerializerAdapter jacksonAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-    private final ClientLogger logger = new ClientLogger(DefaultJsonSerializer.class);
 
     @Override
     public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         try {
             return jacksonAdapter.deserialize(data, typeReference.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -38,18 +40,18 @@ public final class DefaultJsonSerializer implements JsonSerializer {
         try {
             return jacksonAdapter.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
     @Override
     public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserializeFromBytes(data, typeReference)));
+        return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
     }
 
     @Override
     public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
-        return Mono.defer(() -> Mono.fromCallable(() -> deserialize(stream, typeReference)));
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
     }
 
     @Override
@@ -57,7 +59,7 @@ public final class DefaultJsonSerializer implements JsonSerializer {
         try {
             return jacksonAdapter.serializeToBytes(value, SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -66,13 +68,13 @@ public final class DefaultJsonSerializer implements JsonSerializer {
         try {
             jacksonAdapter.serialize(value, SerializerEncoding.JSON, stream);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
     @Override
     public Mono<byte[]> serializeToBytesAsync(Object value) {
-        return Mono.defer(() -> Mono.fromCallable(() -> serializeToBytes(value)));
+        return Mono.fromCallable(() -> serializeToBytes(value));
     }
 
     @Override

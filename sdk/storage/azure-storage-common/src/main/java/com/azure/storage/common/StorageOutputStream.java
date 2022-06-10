@@ -16,7 +16,7 @@ import java.io.OutputStream;
  * StorageOutputStream allows for uploading data to an Azure Storage service using stream concepts.
  */
 public abstract class StorageOutputStream extends OutputStream {
-    final ClientLogger logger = new ClientLogger(StorageOutputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageOutputStream.class);
 
     /*
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
@@ -24,13 +24,26 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     private final int writeThreshold;
 
-    /*
+    /**
      * Holds the last exception this stream encountered.
      */
     protected volatile IOException lastError;
 
+    /**
+     * Dispatches a write operation to the Storage service.
+     *
+     * @param data The data to send.
+     * @param writeLength Length of the data.
+     * @param offset The offset to write the data.
+     * @return A reactive response that indicates completion.
+     */
     protected abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
 
+    /**
+     * Creates a new instance of {@link StorageOutputStream}.
+     *
+     * @param writeThreshold How many bytes the output will retain before it initiates a write to the Storage service.
+     */
     protected StorageOutputStream(final int writeThreshold) {
         this.writeThreshold = writeThreshold;
     }
@@ -76,7 +89,7 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     protected void checkStreamState()  {
         if (this.lastError != null) {
-            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
         }
     }
 
@@ -91,7 +104,6 @@ public abstract class StorageOutputStream extends OutputStream {
 
     /**
      * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
-     * <p>
      *
      * @param data A <code>byte</code> array which represents the data to write.
      */
@@ -102,7 +114,6 @@ public abstract class StorageOutputStream extends OutputStream {
 
     /**
      * Writes length bytes from the specified byte array starting at offset to this output stream.
-     * <p>
      *
      * @param data A <code>byte</code> array which represents the data to write.
      * @param offset An <code>int</code> which represents the start offset in the data.
@@ -112,7 +123,7 @@ public abstract class StorageOutputStream extends OutputStream {
     @Override
     public void write(@NonNull final byte[] data, final int offset, final int length) {
         if (offset < 0 || length < 0 || length > data.length - offset) {
-            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException());
         }
 
         this.writeInternal(data, offset, length);

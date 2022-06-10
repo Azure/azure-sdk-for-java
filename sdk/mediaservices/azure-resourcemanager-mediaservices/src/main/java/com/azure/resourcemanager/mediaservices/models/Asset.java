@@ -296,7 +296,7 @@ public interface Asset {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset Storage container SAS URLs.
+     * @return the Asset Storage container SAS URLs along with {@link Response}.
      */
     Response<AssetContainerSas> listContainerSasWithResponse(ListContainerSasInput parameters, Context context);
 
@@ -316,7 +316,8 @@ public interface Asset {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
+     *     along with {@link Response}.
      */
     Response<StorageEncryptedAssetDecryptionData> getEncryptionKeyWithResponse(Context context);
 
@@ -336,7 +337,7 @@ public interface Asset {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Streaming Locators associated with this Asset.
+     * @return the Streaming Locators associated with this Asset along with {@link Response}.
      */
     Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(Context context);
 }

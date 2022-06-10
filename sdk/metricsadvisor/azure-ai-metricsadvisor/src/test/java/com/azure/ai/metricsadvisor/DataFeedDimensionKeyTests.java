@@ -21,23 +21,23 @@ public class DataFeedDimensionKeyTests {
 
         // Set two dimensions in key1.
         dimensionKey1.put("category", "men/shoes");
-        dimensionKey1.put("city", "redmond");
+        dimensionKey1.put("region", "redmond");
         // Set the same dimensions in key2 as well, but different order.
-        dimensionKey2.put("city", "redmond");
+        dimensionKey2.put("region", "redmond");
         dimensionKey2.put("category", "men/shoes");
         // Both keys should be same irrespective of the order in which dimensions were added.
         Assertions.assertEquals(dimensionKey1, dimensionKey2);
 
         // Change value of one dimension in key1
         dimensionKey1.put("category", "men/shoes");
-        dimensionKey1.put("city", "bellevue");
+        dimensionKey1.put("region", "bellevue");
         // Keys are not equal anymore.
         Assertions.assertNotEquals(dimensionKey1, dimensionKey2);
 
         // Ensure HashCode for keys are same, if both has same dimensions.
         Set<DimensionKey> keySet = new HashSet<>();
         dimensionKey1.put("category", "men/shoes");
-        dimensionKey1.put("city", "redmond");
+        dimensionKey1.put("region", "redmond");
         keySet.add(dimensionKey1);
         Assertions.assertTrue(keySet.contains(dimensionKey2));
     }
@@ -46,22 +46,22 @@ public class DataFeedDimensionKeyTests {
     public void getAsMapTests() {
         DimensionKey dimensionKey = new DimensionKey();
         dimensionKey.put("category", "men/shoes");
-        dimensionKey.put("city", "redmond");
+        dimensionKey.put("region", "redmond");
 
         Map<String, String> map1 = dimensionKey.asMap();
         Assertions.assertEquals(2, map1.size());
         Assertions.assertTrue(map1.containsKey("category"));
-        Assertions.assertTrue(map1.containsKey("city"));
+        Assertions.assertTrue(map1.containsKey("region"));
 
         Assertions.assertEquals("men/shoes", map1.get("category"));
-        Assertions.assertEquals("redmond", map1.get("city"));
+        Assertions.assertEquals("redmond", map1.get("region"));
 
         // Adding a new dimension to key
         dimensionKey.put("area", "north");
         // should not mutate the already returned map.
         Assertions.assertEquals(2, map1.size());
         Assertions.assertTrue(map1.containsKey("category"));
-        Assertions.assertTrue(map1.containsKey("city"));
+        Assertions.assertTrue(map1.containsKey("region"));
 
         // getting as map should reflect current state of the key.
         Map<String, String> map2 = dimensionKey.asMap();

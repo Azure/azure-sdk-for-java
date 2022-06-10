@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Properties of the Partner Registration update. */
 @Fluent
 public final class PartnerRegistrationUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegistrationUpdateParameters.class);
-
     /*
      * Tags of the partner registration resource.
      */

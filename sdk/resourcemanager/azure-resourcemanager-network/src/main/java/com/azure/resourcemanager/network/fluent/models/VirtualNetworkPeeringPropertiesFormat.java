@@ -6,20 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
+import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the virtual network peering. */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
-
     /*
      * Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.
@@ -79,6 +76,12 @@ public final class VirtualNetworkPeeringPropertiesFormat {
      */
     @JsonProperty(value = "remoteBgpCommunities")
     private VirtualNetworkBgpCommunities remoteBgpCommunities;
+
+    /*
+     * The reference to the remote virtual network's encryption
+     */
+    @JsonProperty(value = "remoteVirtualNetworkEncryption", access = JsonProperty.Access.WRITE_ONLY)
+    private VirtualNetworkEncryption remoteVirtualNetworkEncryption;
 
     /*
      * The status of the virtual network peering.
@@ -291,6 +294,15 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
+     * Get the remoteVirtualNetworkEncryption property: The reference to the remote virtual network's encryption.
+     *
+     * @return the remoteVirtualNetworkEncryption value.
+     */
+    public VirtualNetworkEncryption remoteVirtualNetworkEncryption() {
+        return this.remoteVirtualNetworkEncryption;
+    }
+
+    /**
      * Get the peeringState property: The status of the virtual network peering.
      *
      * @return the peeringState value.
@@ -382,6 +394,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
         }
         if (remoteBgpCommunities() != null) {
             remoteBgpCommunities().validate();
+        }
+        if (remoteVirtualNetworkEncryption() != null) {
+            remoteVirtualNetworkEncryption().validate();
         }
     }
 }

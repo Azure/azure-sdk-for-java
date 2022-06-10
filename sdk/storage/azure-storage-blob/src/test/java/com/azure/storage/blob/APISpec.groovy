@@ -96,12 +96,12 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
-        premiumBlobServiceClient = getServiceClient(env.premiumAccount)
-        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
-        softDeleteServiceClient = getServiceClient(env.softDeleteAccount)
+        primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
+        alternateBlobServiceClient = getServiceClient(environment.secondaryAccount)
+        premiumBlobServiceClient = getServiceClient(environment.premiumAccount)
+        versionedBlobServiceClient = getServiceClient(environment.versionedAccount)
+        softDeleteServiceClient = getServiceClient(environment.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -110,11 +110,11 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(environment.primaryAccount.credential)
+                .endpoint(environment.primaryAccount.blobEndpoint)
                 .buildClient()
 
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
@@ -136,7 +136,7 @@ class APISpec extends StorageSpec {
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .endpoint(environment.primaryAccount.blobEndpoint)
 
         instrument(builder)
 
@@ -144,12 +144,12 @@ class APISpec extends StorageSpec {
     }
 
     def setOauthCredentials(BlobServiceClientBuilder builder) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build())
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(env.primaryAccount.credential)
+            return builder.credential(environment.primaryAccount.credential)
         }
     }
 
@@ -221,8 +221,8 @@ class APISpec extends StorageSpec {
     BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
-        return getServiceClientBuilder(env.primaryAccount.credential,
-            env.primaryAccount.blobEndpoint)
+        return getServiceClientBuilder(environment.primaryAccount.credential,
+            environment.primaryAccount.blobEndpoint)
         .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
@@ -667,7 +667,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -718,7 +718,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(1) : Duration.ofMillis(liveTestDurationInMillis)
+        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(1) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

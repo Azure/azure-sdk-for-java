@@ -9,6 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.CreateRunResponse;
 import com.azure.analytics.synapse.artifacts.models.PipelineResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,13 +21,14 @@ import java.util.Map;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class PipelineClient {
-    private final PipelinesImpl serviceClient;
+    @Generated private final PipelinesImpl serviceClient;
 
     /**
-     * Initializes an instance of Pipelines client.
+     * Initializes an instance of PipelineClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     PipelineClient(PipelinesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -36,8 +38,9 @@ public final class PipelineClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineResource> getPipelinesByWorkspace() {
         return this.serviceClient.getPipelinesByWorkspace();
@@ -50,8 +53,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PipelineResource> getPipelinesByWorkspace(Context context) {
         return this.serviceClient.getPipelinesByWorkspace(context);
@@ -69,6 +73,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource createOrUpdatePipeline(String pipelineName, PipelineResource pipeline, String ifMatch) {
         return this.serviceClient.createOrUpdatePipeline(pipelineName, pipeline, ifMatch);
@@ -84,6 +89,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource createOrUpdatePipeline(String pipelineName, PipelineResource pipeline) {
         return this.serviceClient.createOrUpdatePipeline(pipelineName, pipeline);
@@ -100,8 +106,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
+     * @return pipeline resource type along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineResource> createOrUpdatePipelineWithResponse(
             String pipelineName, PipelineResource pipeline, String ifMatch, Context context) {
@@ -119,6 +126,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pipeline.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource getPipeline(String pipelineName, String ifNoneMatch) {
         return this.serviceClient.getPipeline(pipelineName, ifNoneMatch);
@@ -133,6 +141,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pipeline.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineResource getPipeline(String pipelineName) {
         return this.serviceClient.getPipeline(pipelineName);
@@ -148,8 +157,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return a pipeline along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineResource> getPipelineWithResponse(
             String pipelineName, String ifNoneMatch, Context context) {
@@ -164,6 +174,7 @@ public final class PipelineClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deletePipeline(String pipelineName) {
         this.serviceClient.deletePipeline(pipelineName);
@@ -177,8 +188,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deletePipelineWithResponse(String pipelineName, Context context) {
         return this.serviceClient.deletePipelineWithResponse(pipelineName, context);
@@ -193,6 +205,7 @@ public final class PipelineClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renamePipeline(String pipelineName, ArtifactRenameRequest request) {
         this.serviceClient.renamePipeline(pipelineName, request);
@@ -207,8 +220,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renamePipelineWithResponse(
             String pipelineName, ArtifactRenameRequest request, Context context) {
@@ -232,6 +246,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body with a run identifier.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateRunResponse createPipelineRun(
             String pipelineName,
@@ -252,6 +267,7 @@ public final class PipelineClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body with a run identifier.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateRunResponse createPipelineRun(String pipelineName) {
         return this.serviceClient.createPipelineRun(pipelineName);
@@ -273,8 +289,9 @@ public final class PipelineClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateRunResponse> createPipelineRunWithResponse(
             String pipelineName,

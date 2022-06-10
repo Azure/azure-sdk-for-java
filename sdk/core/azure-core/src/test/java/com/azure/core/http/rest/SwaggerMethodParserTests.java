@@ -12,6 +12,7 @@ import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Options;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
@@ -42,6 +43,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,12 @@ public class SwaggerMethodParserTests {
         @Get("test")
         void getMethod();
 
+        @Get("test")
+        void getMethodWithContext(Context context);
+
+        @Get("test")
+        void getMethodWithRequestOptions(RequestOptions requestOptions);
+
         @Put("test")
         void putMethod();
 
@@ -73,6 +81,9 @@ public class SwaggerMethodParserTests {
 
         @Patch("test")
         void patchMethod();
+
+        @Options("test")
+        void optionsMethod();
     }
 
     @Test
@@ -94,20 +105,23 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> httpMethodSupplier() throws NoSuchMethodException {
         Class<OperationMethods> clazz = OperationMethods.class;
+        String clazzName = clazz.getName();
 
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.getMethod"),
+                clazzName + ".getMethod"),
             Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.putMethod"),
+                clazzName + ".putMethod"),
             Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.headMethod"),
+                clazzName + ".headMethod"),
             Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.deleteMethod"),
+                clazzName + ".deleteMethod"),
             Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.postMethod"),
+                clazzName + ".postMethod"),
             Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.patchMethod")
+                clazzName + ".patchMethod"),
+            Arguments.of(clazz.getDeclaredMethod("optionsMethod"), HttpMethod.OPTIONS, "test",
+                clazzName + ".optionsMethod")
         );
     }
 
@@ -481,28 +495,27 @@ public class SwaggerMethodParserTests {
         assertEquals(expectedContext, swaggerMethodParser.setContext(arguments));
     }
 
+    private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
+        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithContext", Context.class);
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        Context context = new Context("key", "value");
+
+        return Stream.of(
+            Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
+            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
+        );
+    }
+
     @ParameterizedTest
     @MethodSource("setRequestOptionsSupplier")
     public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments, RequestOptions expectedRequestOptions) {
         assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
     }
 
-    private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethod");
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
-
-        Context context = new Context("key", "value");
-
-        return Stream.of(
-            Arguments.of(swaggerMethodParser, null, Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray(), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray("string"), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
-        );
-    }
-
     private static Stream<Arguments> setRequestOptionsSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethod");
+        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
         RequestOptions bodyOptions = new RequestOptions()
@@ -515,16 +528,13 @@ public class SwaggerMethodParserTests {
         RequestOptions urlOptions = new RequestOptions()
             .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
-        RequestOptions statusOptionOptions = new RequestOptions()
-            .setThrowOnError(false);
+        RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(
-            Arguments.of(swaggerMethodParser, null, null),
-            Arguments.of(swaggerMethodParser, toObjectArray(), null),
-            Arguments.of(swaggerMethodParser, toObjectArray("string"), null),
+            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray("string", headerQueryOptions), headerQueryOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray("string1", "string2", urlOptions), urlOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
+            Arguments.of(swaggerMethodParser, toObjectArray(urlOptions), urlOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AcceptanceMode;
@@ -17,53 +16,24 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An agreement. */
-@JsonFlatten
 @Fluent
-public class AgreementInner extends ProxyResource {
+public final class AgreementInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementInner.class);
 
     /*
-     * The URL to download the agreement.
+     * The properties of an agreement.
      */
-    @JsonProperty(value = "properties.agreementLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String agreementLink;
+    @JsonProperty(value = "properties")
+    private AgreementProperties innerProperties;
 
-    /*
-     * The category of the agreement signed by a customer.
+    /**
+     * Get the innerProperties property: The properties of an agreement.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.category", access = JsonProperty.Access.WRITE_ONLY)
-    private Category category;
-
-    /*
-     * The mode of acceptance for an agreement.
-     */
-    @JsonProperty(value = "properties.acceptanceMode", access = JsonProperty.Access.WRITE_ONLY)
-    private AcceptanceMode acceptanceMode;
-
-    /*
-     * The date from which the agreement is effective.
-     */
-    @JsonProperty(value = "properties.effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime effectiveDate;
-
-    /*
-     * The date when the agreement expires.
-     */
-    @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationDate;
-
-    /*
-     * The list of participants that participates in acceptance of an
-     * agreement.
-     */
-    @JsonProperty(value = "properties.participants")
-    private List<Participants> participants;
-
-    /*
-     * The current status of the agreement.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    private AgreementProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the agreementLink property: The URL to download the agreement.
@@ -71,7 +41,7 @@ public class AgreementInner extends ProxyResource {
      * @return the agreementLink value.
      */
     public String agreementLink() {
-        return this.agreementLink;
+        return this.innerProperties() == null ? null : this.innerProperties().agreementLink();
     }
 
     /**
@@ -80,7 +50,7 @@ public class AgreementInner extends ProxyResource {
      * @return the category value.
      */
     public Category category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -89,7 +59,7 @@ public class AgreementInner extends ProxyResource {
      * @return the acceptanceMode value.
      */
     public AcceptanceMode acceptanceMode() {
-        return this.acceptanceMode;
+        return this.innerProperties() == null ? null : this.innerProperties().acceptanceMode();
     }
 
     /**
@@ -98,7 +68,7 @@ public class AgreementInner extends ProxyResource {
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
-        return this.effectiveDate;
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveDate();
     }
 
     /**
@@ -107,7 +77,7 @@ public class AgreementInner extends ProxyResource {
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
-        return this.expirationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -116,7 +86,7 @@ public class AgreementInner extends ProxyResource {
      * @return the participants value.
      */
     public List<Participants> participants() {
-        return this.participants;
+        return this.innerProperties() == null ? null : this.innerProperties().participants();
     }
 
     /**
@@ -126,7 +96,10 @@ public class AgreementInner extends ProxyResource {
      * @return the AgreementInner object itself.
      */
     public AgreementInner withParticipants(List<Participants> participants) {
-        this.participants = participants;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withParticipants(participants);
         return this;
     }
 
@@ -136,7 +109,7 @@ public class AgreementInner extends ProxyResource {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -145,8 +118,8 @@ public class AgreementInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (participants() != null) {
-            participants().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

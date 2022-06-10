@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MongoDbAtlasSource")
 @Fluent
 public final class MongoDbAtlasSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbAtlasSource.class);
-
     /*
      * Specifies selection filter using query operators. To return all
      * documents in a collection, omit this parameter or pass an empty document

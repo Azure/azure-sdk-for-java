@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** StaticSiteUserProvidedFunctionApp resource specific properties. */
 @Fluent
 public final class StaticSiteUserProvidedFunctionAppProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserProvidedFunctionAppProperties.class);
-
     /*
      * The resource id of the function app registered with the static site
      */

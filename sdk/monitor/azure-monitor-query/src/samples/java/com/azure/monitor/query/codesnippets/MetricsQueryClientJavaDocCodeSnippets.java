@@ -43,7 +43,7 @@ public class MetricsQueryClientJavaDocCodeSnippets {
                 .buildAsyncClient();
         // BEGIN: com.azure.monitor.query.MetricsQueryAsyncClient.query#String-List
         Mono<MetricsQueryResult> response = metricsQueryAsyncClient
-                .query("{resource-id}", Arrays.asList("{metric-1}", "{metric-2}"));
+                .queryResource("{resource-id}", Arrays.asList("{metric-1}", "{metric-2}"));
 
         response.subscribe(result -> {
             for (MetricResult metricResult : result.getMetrics()) {
@@ -64,7 +64,8 @@ public class MetricsQueryClientJavaDocCodeSnippets {
                 .buildClient();
 
         // BEGIN: com.azure.monitor.query.MetricsQueryClient.query#String-List
-        MetricsQueryResult response = metricsQueryClient.query("{resource-id}", Arrays.asList("{metric-1}", "{metric-2}"));
+        MetricsQueryResult response = metricsQueryClient.queryResource("{resource-id}",
+                Arrays.asList("{metric-1}", "{metric-2}"));
         for (MetricResult metricResult : response.getMetrics()) {
             System.out.println("Metric name " + metricResult.getMetricName());
 

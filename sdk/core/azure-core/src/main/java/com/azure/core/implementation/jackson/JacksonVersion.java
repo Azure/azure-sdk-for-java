@@ -22,9 +22,10 @@ final class JacksonVersion {
     private static final String DATABIND_PACKAGE_NAME = "jackson-databind";
     private static final String XML_PACKAGE_NAME = "jackson-dataformat-xml";
     private static final String JSR310_PACKAGE_NAME = "jackson-datatype-jsr310";
+    private static final String TROUBLESHOOTING_DOCS_LINK = "https://aka.ms/azsdk/java/dependency/troubleshoot";
 
     private static final SemanticVersion MIN_SUPPORTED_VERSION = SemanticVersion.parse("2.10.0");
-    private static final SemanticVersion MAX_SUPPORTED_VERSION = SemanticVersion.parse("2.12.4");
+    private static final int MAX_SUPPORTED_MAJOR_VERSION = 2;
 
     private static final String AZURE_CORE_PROPERTIES_NAME = "azure-core.properties";
     private static final String AZURE_CORE_PROPERTIES_VERSION_KEY = "version";
@@ -33,10 +34,11 @@ final class JacksonVersion {
         .getProperties(AZURE_CORE_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_PROPERTIES_VERSION_KEY, SemanticVersion.UNKNOWN_VERSION);
 
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonVersion.class);
+
     private static JacksonVersion instance = null;
 
     private final String helpString;
-    private final ClientLogger logger = new ClientLogger(JacksonVersion.class);
 
     private JacksonVersion() {
         annotationsVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.annotation.JsonProperty");
@@ -50,7 +52,7 @@ final class JacksonVersion {
         checkVersion(xmlVersion, XML_PACKAGE_NAME);
         checkVersion(jsr310Version, JSR310_PACKAGE_NAME);
         helpString = formatHelpString();
-        logger.info(helpString);
+        LOGGER.info(helpString);
     }
 
     /**
@@ -78,18 +80,19 @@ final class JacksonVersion {
      */
     private void checkVersion(SemanticVersion version, String packageName) {
         if (!version.isValid()) {
-            logger.warning("Could not find version of '{}'.", packageName);
+            LOGGER.verbose("Could not find version of '{}'.", packageName);
+            return;
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            logger.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
+            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
         }
 
-        if (version.getMajorVersion() > MAX_SUPPORTED_VERSION.getMajorVersion()) {
-            logger.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
+        if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
+            LOGGER.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
                 version.getVersionString(),
                 packageName,
-                MAX_SUPPORTED_VERSION.getVersionString());
+                MAX_SUPPORTED_MAJOR_VERSION);
         }
     }
 
@@ -122,6 +125,9 @@ final class JacksonVersion {
             .append(", ")
             .append("azure-core=")
             .append(AZURE_CORE_VERSION)
+            .append(", ")
+            .append("Troubleshooting version conflicts: ")
+            .append(TROUBLESHOOTING_DOCS_LINK)
             .toString();
     }
 }

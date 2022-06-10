@@ -62,9 +62,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilit
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * operationId: CheckNameAvailability_Execute
-     * api-version: 2021-06-01
-     * x-ms-examples: NameAvailability
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: NameAvailability.
@@ -89,9 +87,7 @@ import com.azure.core.util.Context;
 /** Samples for Configurations Get. */
 public final class ConfigurationsGetSamples {
     /*
-     * operationId: Configurations_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: ConfigurationGet
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ConfigurationGet.json
      */
     /**
      * Sample code: ConfigurationGet.
@@ -112,9 +108,7 @@ import com.azure.core.util.Context;
 /** Samples for Configurations ListByServer. */
 public final class ConfigurationsListByServerSamples {
     /*
-     * operationId: Configurations_ListByServer
-     * api-version: 2021-06-01
-     * x-ms-examples: ConfigurationList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ConfigurationListByServer.json
      */
     /**
      * Sample code: ConfigurationList.
@@ -133,9 +127,7 @@ public final class ConfigurationsListByServerSamples {
 /** Samples for Configurations Put. */
 public final class ConfigurationsPutSamples {
     /*
-     * operationId: Configurations_Put
-     * api-version: 2021-06-01
-     * x-ms-examples: Update a user configuration
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.
@@ -164,9 +156,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 /** Samples for Configurations Update. */
 public final class ConfigurationsUpdateSamples {
     /*
-     * operationId: Configurations_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: Update a user configuration
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.
@@ -191,9 +181,7 @@ public final class ConfigurationsUpdateSamples {
 /** Samples for Databases Create. */
 public final class DatabasesCreateSamples {
     /*
-     * operationId: Databases_Create
-     * api-version: 2021-06-01
-     * x-ms-examples: Create a database
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabaseCreate.json
      */
     /**
      * Sample code: Create a database.
@@ -220,9 +208,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases Delete. */
 public final class DatabasesDeleteSamples {
     /*
-     * operationId: Databases_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete a database
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabaseDelete.json
      */
     /**
      * Sample code: Delete a database.
@@ -243,9 +229,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases Get. */
 public final class DatabasesGetSamples {
     /*
-     * operationId: Databases_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a database
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabaseGet.json
      */
     /**
      * Sample code: Get a database.
@@ -266,9 +250,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases ListByServer. */
 public final class DatabasesListByServerSamples {
     /*
-     * operationId: Databases_ListByServer
-     * api-version: 2021-06-01
-     * x-ms-examples: List databases in a server
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/DatabasesListByServer.json
      */
     /**
      * Sample code: List databases in a server.
@@ -288,9 +270,7 @@ public final class DatabasesListByServerSamples {
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * operationId: FirewallRules_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: FirewallRuleCreate
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/FirewallRuleCreate.json
      */
     /**
      * Sample code: FirewallRuleCreate.
@@ -318,9 +298,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallRules Delete. */
 public final class FirewallRulesDeleteSamples {
     /*
-     * operationId: FirewallRules_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: FirewallRuleDelete
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/FirewallRuleDelete.json
      */
     /**
      * Sample code: FirewallRuleDelete.
@@ -342,9 +320,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallRules Get. */
 public final class FirewallRulesGetSamples {
     /*
-     * operationId: FirewallRules_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: FirewallRuleList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/FirewallRuleGet.json
      */
     /**
      * Sample code: FirewallRuleList.
@@ -365,9 +341,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallRules ListByServer. */
 public final class FirewallRulesListByServerSamples {
     /*
-     * operationId: FirewallRules_ListByServer
-     * api-version: 2021-06-01
-     * x-ms-examples: FirewallRuleList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/FirewallRuleListByServer.json
      */
     /**
      * Sample code: FirewallRuleList.
@@ -388,9 +362,7 @@ import com.azure.core.util.Context;
 /** Samples for GetPrivateDnsZoneSuffix Execute. */
 public final class GetPrivateDnsZoneSuffixExecuteSamples {
     /*
-     * operationId: GetPrivateDnsZoneSuffix_Execute
-     * api-version: 2021-06-01
-     * x-ms-examples: GetPrivateDnsZoneSuffix
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/GetPrivateDnsZoneSuffix.json
      */
     /**
      * Sample code: GetPrivateDnsZoneSuffix.
@@ -412,9 +384,7 @@ import com.azure.core.util.Context;
 /** Samples for LocationBasedCapabilities Execute. */
 public final class LocationBasedCapabilitiesExecuteSamples {
     /*
-     * operationId: LocationBasedCapabilities_Execute
-     * api-version: 2021-06-01
-     * x-ms-examples: CapabilitiesList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/CapabilitiesByLocation.json
      */
     /**
      * Sample code: CapabilitiesList.
@@ -435,9 +405,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * operationId: Operations_List
-     * api-version: 2021-06-01
-     * x-ms-examples: OperationList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -470,9 +438,7 @@ import java.util.Map;
 /** Samples for Servers Create. */
 public final class ServersCreateSamples {
     /*
-     * operationId: Servers_Create
-     * api-version: 2021-06-01
-     * x-ms-examples: Create a new server
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -505,9 +471,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * operationId: Servers_Create
-     * api-version: 2021-06-01
-     * x-ms-examples: Create a database as a point in time restore
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a database as a point in time restore.
@@ -549,9 +513,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers Delete. */
 public final class ServersDeleteSamples {
     /*
-     * operationId: Servers_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerDelete
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerDelete.json
      */
     /**
      * Sample code: ServerDelete.
@@ -572,9 +534,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * operationId: Servers_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerGet
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerGet.json
      */
     /**
      * Sample code: ServerGet.
@@ -586,9 +546,7 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * operationId: Servers_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerGetWithVnet
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerGetWithVnet.json
      */
     /**
      * Sample code: ServerGetWithVnet.
@@ -609,9 +567,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers List. */
 public final class ServersListSamples {
     /*
-     * operationId: Servers_List
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerList.json
      */
     /**
      * Sample code: ServerList.
@@ -632,9 +588,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers ListByResourceGroup. */
 public final class ServersListByResourceGroupSamples {
     /*
-     * operationId: Servers_ListByResourceGroup
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerListByResourceGroup
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerListByResourceGroup.json
      */
     /**
      * Sample code: ServerListByResourceGroup.
@@ -658,9 +612,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParamete
 /** Samples for Servers Restart. */
 public final class ServersRestartSamples {
     /*
-     * operationId: Servers_Restart
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerRestart
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerRestart.json
      */
     /**
      * Sample code: ServerRestart.
@@ -672,9 +624,7 @@ public final class ServersRestartSamples {
     }
 
     /*
-     * operationId: Servers_Restart
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerRestartWithFailover
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerRestartWithFailover.json
      */
     /**
      * Sample code: ServerRestartWithFailover.
@@ -702,9 +652,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers Start. */
 public final class ServersStartSamples {
     /*
-     * operationId: Servers_Start
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerStart
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerStart.json
      */
     /**
      * Sample code: ServerStart.
@@ -725,9 +673,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers Stop. */
 public final class ServersStopSamples {
     /*
-     * operationId: Servers_Stop
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerStop
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerStop.json
      */
     /**
      * Sample code: ServerStop.
@@ -755,9 +701,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 /** Samples for Servers Update. */
 public final class ServersUpdateSamples {
     /*
-     * operationId: Servers_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerUpdate
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerUpdate.json
      */
     /**
      * Sample code: ServerUpdate.
@@ -778,9 +722,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * operationId: Servers_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: ServerUpdateWithCustomerMaintenanceWindow
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: ServerUpdateWithCustomerMaintenanceWindow.
@@ -814,9 +756,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkS
 /** Samples for VirtualNetworkSubnetUsage Execute. */
 public final class VirtualNetworkSubnetUsageExecuteSamples {
     /*
-     * operationId: VirtualNetworkSubnetUsage_Execute
-     * api-version: 2021-06-01
-     * x-ms-examples: VirtualNetworkSubnetUsageList
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/VirtualNetworkSubnetUsage.json
      */
     /**
      * Sample code: VirtualNetworkSubnetUsageList.

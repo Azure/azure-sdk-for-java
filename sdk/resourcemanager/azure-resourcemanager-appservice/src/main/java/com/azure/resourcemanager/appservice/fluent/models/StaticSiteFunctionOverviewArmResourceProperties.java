@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.TriggerTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** StaticSiteFunctionOverviewARMResource resource specific properties. */
 @Immutable
 public final class StaticSiteFunctionOverviewArmResourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StaticSiteFunctionOverviewArmResourceProperties.class);
-
     /*
      * The name for the function
      */

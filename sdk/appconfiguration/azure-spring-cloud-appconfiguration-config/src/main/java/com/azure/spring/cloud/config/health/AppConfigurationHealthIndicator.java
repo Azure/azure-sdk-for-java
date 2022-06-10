@@ -14,6 +14,10 @@ public final class AppConfigurationHealthIndicator implements HealthIndicator {
 
     private final AppConfigurationRefresh refresh;
 
+    /**
+     * Indicator for the Health endpoint for connections to App Configurations.
+     * @param refresh App Configuration store refresher
+     */
     public AppConfigurationHealthIndicator(AppConfigurationRefresh refresh) {
         this.refresh = refresh;
     }
@@ -21,7 +25,7 @@ public final class AppConfigurationHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
         Health.Builder healthBuilder = new Health.Builder();
-        Boolean healthy = true;
+        boolean healthy = true;
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
             if (AppConfigurationStoreHealth.DOWN.equals(refresh.getAppConfigurationStoresHealth().get(store))) {

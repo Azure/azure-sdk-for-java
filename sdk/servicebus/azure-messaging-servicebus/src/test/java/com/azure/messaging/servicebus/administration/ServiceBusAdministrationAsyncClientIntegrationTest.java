@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Clock;
@@ -99,9 +100,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
 
         final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-            .clientId(System.getenv("AZURE_CLIENT_ID"))
-            .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-            .tenantId(System.getenv("AZURE_TENANT_ID"))
+            .clientId(TestUtils.getAzureClientId())
+            .clientSecret(TestUtils.getAzureClientSecret())
+            .tenantId(TestUtils.getAzureTenantId())
             .build();
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .httpClient(httpClient)
@@ -163,6 +164,32 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createQueue(queueName, options))
             .expectError(ResourceExistsException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createQueueWithForwarding(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final String forwardToEntityName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : getEntityName(TestUtils.getQueueBaseName(), 5);
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setForwardTo(forwardToEntityName)
+            .setForwardDeadLetteredMessagesTo(forwardToEntityName);
+
+        // Act & Assert
+        StepVerifier.create(client.createQueue(queueName, expected))
+            .assertNext(actual -> {
+                assertEquals(queueName, actual.getName());
+                assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+                assertNotNull(runtimeProperties.getCreatedAt());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -287,8 +314,12 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription"
             : getSubscriptionBaseName();
-        final SqlRuleFilter filter = new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL");
-        filter.getParameters().put("bar", "foo");
+        final SqlRuleFilter filter = !interceptorManager.isLiveMode()
+            ? new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL")
+            : new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
+        if (!interceptorManager.isLiveMode()) {
+            filter.getParameters().put("bar", "foo");
+        }
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(new EmptyRuleAction())
             .setFilter(filter);
@@ -361,6 +392,45 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createSubscription(topicName, subscriptionName))
             .expectError(ResourceExistsException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createSubscriptionWithForwarding(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-0"
+            : getEntityName(getTopicBaseName(), 99);
+        final String subscriptionName = testResourceNamer.randomName("sub", 50);
+        final String forwardToTopic = interceptorManager.isPlaybackMode()
+            ? "topic-1"
+            : getEntityName(getTopicBaseName(), 1);
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
+            .setForwardTo(forwardToTopic)
+            .setForwardDeadLetteredMessagesTo(forwardToTopic);
+
+        // Act & Assert
+        if (!interceptorManager.isPlaybackMode()) {
+            client.createTopic(topicName)
+                .onErrorResume(ResourceExistsException.class, error -> Mono.empty())
+                .block(TIMEOUT);
+
+            client.createTopic(forwardToTopic)
+                .onErrorResume(ResourceExistsException.class, error -> Mono.empty())
+                .block(TIMEOUT);
+        }
+
+        StepVerifier.create(client.createSubscription(topicName, subscriptionName, expected))
+            .assertNext(actual -> {
+                assertEquals(topicName, actual.getTopicName());
+                assertEquals(subscriptionName, actual.getSubscriptionName());
+
+                assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @ParameterizedTest

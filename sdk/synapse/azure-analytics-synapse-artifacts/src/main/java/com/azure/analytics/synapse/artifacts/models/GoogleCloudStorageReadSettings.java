@@ -302,4 +302,11 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

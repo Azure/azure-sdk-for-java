@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-messaging-eventhubs.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

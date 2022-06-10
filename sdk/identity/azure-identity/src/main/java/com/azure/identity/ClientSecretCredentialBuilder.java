@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -13,6 +15,8 @@ import java.util.HashMap;
  * @see ClientSecretCredential
  */
 public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<ClientSecretCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
+
     private String clientSecret;
 
     /**
@@ -70,7 +74,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @param regionalAuthority the regional authority
      * @return An updated instance of this builder with the regional authority configured.
      */
-    public ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+    ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
         this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }
@@ -85,7 +89,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
                 put("clientId", clientId);
                 put("tenantId", tenantId);
                 put("clientSecret", clientSecret);
-            }});
+            }}, LOGGER);
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }
 }

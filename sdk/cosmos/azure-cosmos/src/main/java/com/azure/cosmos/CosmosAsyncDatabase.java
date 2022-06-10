@@ -1078,8 +1078,7 @@ public class CosmosAsyncDatabase {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.setCosmosAsyncDatabaseAccessor(
             new ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor() {
 
@@ -1087,6 +1086,13 @@ public class CosmosAsyncDatabase {
                 public CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase) {
                     return cosmosAsyncDatabase.getClient();
                 }
+
+                @Override
+                public String getLink(CosmosAsyncDatabase cosmosAsyncDatabase) {
+                    return cosmosAsyncDatabase.getLink();
+                }
             });
     }
+
+    static { initialize(); }
 }

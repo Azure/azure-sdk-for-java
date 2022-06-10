@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The operation list response that contains all operations for Azure Container Instance service. */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
      * The list of operations.
      */

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.DatasetsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.DatasetResourceInner;
 import com.azure.resourcemanager.datafactory.models.DatasetListResponse;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatasetsClient. */
 public final class DatasetsClientImpl implements DatasetsClient {
-    private final ClientLogger logger = new ClientLogger(DatasetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatasetsService service;
 
@@ -146,7 +143,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatasetResourceInner>> listByFactorySinglePageAsync(
@@ -204,7 +201,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatasetResourceInner>> listByFactorySinglePageAsync(
@@ -258,7 +255,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatasetResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
@@ -276,7 +273,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatasetResourceInner> listByFactoryAsync(
@@ -294,7 +291,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResourceInner> listByFactory(String resourceGroupName, String factoryName) {
@@ -310,7 +307,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResourceInner> listByFactory(
@@ -330,7 +327,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatasetResourceInner>> createOrUpdateWithResponseAsync(
@@ -398,7 +395,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatasetResourceInner>> createOrUpdateWithResponseAsync(
@@ -463,7 +460,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatasetResourceInner> createOrUpdateAsync(
@@ -493,7 +490,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatasetResourceInner> createOrUpdateAsync(
@@ -542,7 +539,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResourceInner> createOrUpdateWithResponse(
@@ -567,7 +564,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatasetResourceInner>> getWithResponseAsync(
@@ -624,7 +621,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DatasetResourceInner>> getWithResponseAsync(
@@ -677,7 +674,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatasetResourceInner> getAsync(
@@ -702,7 +699,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatasetResourceInner> getAsync(String resourceGroupName, String factoryName, String datasetName) {
@@ -747,7 +744,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResourceInner> getWithResponse(
@@ -764,7 +761,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -818,7 +815,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -868,7 +865,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String datasetName) {
@@ -901,7 +898,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -916,7 +913,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatasetResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
@@ -952,7 +949,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatasetResourceInner>> listByFactoryNextSinglePageAsync(

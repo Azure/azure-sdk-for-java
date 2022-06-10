@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.VirtualIpMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** AddressResponse resource specific properties. */
 @Fluent
 public final class AddressResponseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressResponseProperties.class);
-
     /*
      * Main public virtual IP.
      */

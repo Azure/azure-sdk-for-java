@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.PrivateLinkServicesClient;
@@ -56,8 +55,6 @@ public final class PrivateLinkServicesClientImpl
         InnerSupportsListing<PrivateLinkServiceInner>,
         InnerSupportsDelete<Void>,
         PrivateLinkServicesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkServicesService service;
 
@@ -338,7 +335,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName) {
@@ -361,7 +358,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -387,7 +384,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -411,7 +408,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -433,14 +430,15 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -452,9 +450,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
@@ -472,9 +470,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName) {
         return beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
     }
@@ -488,9 +486,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
@@ -504,7 +502,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName) {
@@ -520,7 +518,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, Context context) {
@@ -567,7 +565,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkServiceInner>> getByResourceGroupWithResponseAsync(
@@ -591,7 +590,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -619,7 +618,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkServiceInner>> getByResourceGroupWithResponseAsync(
@@ -643,7 +643,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -667,7 +667,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceInner> getByResourceGroupAsync(
@@ -691,7 +691,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceInner> getByResourceGroupAsync(String resourceGroupName, String serviceName) {
@@ -733,7 +733,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link service by resource group.
+     * @return the specified private link service by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkServiceInner> getByResourceGroupWithResponse(
@@ -750,7 +750,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -779,7 +779,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -807,7 +807,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -836,7 +836,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -860,9 +860,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link PollerFlux} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -874,7 +874,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceInner.class,
                 PrivateLinkServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -887,9 +887,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link PollerFlux} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -914,9 +914,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link SyncPoller} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
@@ -932,9 +932,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return the {@link SyncPoller} for polling of private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
@@ -949,7 +949,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceInner> createOrUpdateAsync(
@@ -969,7 +969,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link service resource.
+     * @return private link service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceInner> createOrUpdateAsync(
@@ -1021,7 +1021,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1041,7 +1042,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1074,7 +1075,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listByResourceGroupSinglePageAsync(
@@ -1095,7 +1097,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1124,7 +1126,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkServiceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1140,7 +1142,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkServiceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1156,7 +1158,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkServiceInner> listByResourceGroup(String resourceGroupName) {
@@ -1171,7 +1173,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link services in a resource group.
+     * @return all private link services in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkServiceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1183,7 +1185,8 @@ public final class PrivateLinkServicesClientImpl
      *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listSinglePageAsync() {
@@ -1199,7 +1202,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1225,7 +1228,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listSinglePageAsync(Context context) {
@@ -1241,7 +1245,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1262,7 +1266,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateLinkServiceInner> listAsync() {
@@ -1277,7 +1281,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkServiceInner> listAsync(Context context) {
@@ -1290,7 +1294,7 @@ public final class PrivateLinkServicesClientImpl
      *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkServiceInner> list() {
@@ -1304,7 +1308,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link service in a subscription.
+     * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateLinkServiceInner> list(Context context) {
@@ -1321,7 +1325,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getPrivateEndpointConnectionWithResponseAsync(
@@ -1349,7 +1354,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1379,7 +1384,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getPrivateEndpointConnectionWithResponseAsync(
@@ -1407,7 +1413,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1433,7 +1439,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
@@ -1458,7 +1465,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
@@ -1504,7 +1512,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private end point connection by specific private link service in the resource group.
+     * @return the specific private end point connection by specific private link service in the resource group along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(
@@ -1524,7 +1533,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> updatePrivateEndpointConnectionWithResponseAsync(
@@ -1560,7 +1569,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1590,7 +1599,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> updatePrivateEndpointConnectionWithResponseAsync(
@@ -1627,7 +1636,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1653,7 +1662,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(
@@ -1706,7 +1715,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return privateEndpointConnection resource.
+     * @return privateEndpointConnection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionWithResponse(
@@ -1729,7 +1738,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
@@ -1757,7 +1766,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1785,7 +1794,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
@@ -1813,7 +1822,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1837,16 +1846,17 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName, serviceName, peConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1859,9 +1869,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1881,9 +1891,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName)
@@ -1900,9 +1910,9 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, context)
@@ -1918,7 +1928,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePrivateEndpointConnectionAsync(
@@ -1938,7 +1948,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deletePrivateEndpointConnectionAsync(
@@ -1988,7 +1998,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
@@ -2012,7 +2023,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2047,7 +2058,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
@@ -2071,7 +2083,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2102,7 +2114,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
@@ -2121,7 +2134,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
@@ -2139,7 +2153,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -2156,7 +2171,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service.
+     * @return all private end point connections for a specific private link service as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -2172,7 +2188,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
@@ -2197,7 +2214,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2223,7 +2240,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
@@ -2248,7 +2266,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2270,9 +2288,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2285,7 +2304,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2297,9 +2316,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
@@ -2324,9 +2344,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
         return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters).getSyncPoller();
@@ -2341,9 +2362,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
@@ -2358,7 +2380,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
@@ -2377,7 +2400,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
@@ -2429,7 +2453,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
@@ -2458,7 +2483,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2486,7 +2511,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
@@ -2518,7 +2544,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2542,9 +2568,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2557,7 +2584,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2570,9 +2597,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location,
@@ -2602,9 +2630,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2622,9 +2651,10 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
+     *     call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location,
@@ -2645,7 +2675,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
@@ -2665,7 +2696,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
@@ -2726,7 +2758,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesSinglePageAsync(
@@ -2746,7 +2779,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2780,7 +2813,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesSinglePageAsync(
@@ -2800,7 +2834,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2825,7 +2859,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesAsync(String location) {
@@ -2843,7 +2878,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesAsync(
@@ -2861,7 +2897,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(String location) {
@@ -2877,7 +2914,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(
@@ -2894,7 +2932,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
@@ -2918,7 +2957,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2954,7 +2993,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
@@ -2979,7 +3019,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3011,7 +3051,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(
@@ -3031,7 +3072,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(
@@ -3051,7 +3093,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(
@@ -3070,7 +3113,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(
@@ -3086,7 +3130,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateLinkService API service call.
+     * @return response for the ListPrivateLinkService API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -3122,7 +3167,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateLinkService API service call.
+     * @return response for the ListPrivateLinkService API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -3157,7 +3203,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateLinkService API service call.
+     * @return response for the ListPrivateLinkService API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -3194,7 +3241,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateLinkService API service call.
+     * @return response for the ListPrivateLinkService API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkServiceInner>> listBySubscriptionNextSinglePageAsync(
@@ -3230,7 +3278,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateEndpointConnection API service call.
+     * @return response for the ListPrivateEndpointConnection API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(
@@ -3269,7 +3318,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the ListPrivateEndpointConnection API service call.
+     * @return response for the ListPrivateEndpointConnection API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(
@@ -3305,7 +3355,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
@@ -3345,7 +3396,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
@@ -3381,7 +3433,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
@@ -3422,7 +3475,8 @@ public final class PrivateLinkServicesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of private link service id that can be linked to a private end point with auto approved.
+     * @return an array of private link service id that can be linked to a private end point with auto approved along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>

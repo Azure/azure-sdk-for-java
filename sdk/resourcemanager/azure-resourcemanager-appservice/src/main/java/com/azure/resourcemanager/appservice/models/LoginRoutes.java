@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The routes that specify the endpoints used for login and logout requests. */
 @Fluent
 public final class LoginRoutes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoginRoutes.class);
-
     /*
      * The endpoint at which a logout request should be made.
      */

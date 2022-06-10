@@ -13,6 +13,8 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -66,6 +69,39 @@ public class PathAsyncClientJavaDocCodeSamples {
             requestConditions)
             .subscribe(response -> System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#createWithResponse(DataLakePathCreateOptions)}
+     */
+    public void createWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        client.createWithResponse(options).subscribe(response ->
+            System.out.printf("Last Modified Time:%s", response.getValue().getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions
     }
 
     /**
@@ -452,5 +488,66 @@ public class PathAsyncClientJavaDocCodeSamples {
 
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#createIfNotExists()} and
+     * {@link DataLakePathAsyncClient#createIfNotExistsWithResponse(DataLakePathCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(response ->
+            System.out.printf("Created at %s%n", response.getLastModified()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        String permissions = "permissions";
+        String umask = "umask";
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata);
+
+        client.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#deleteIfExists()} and
+     * {@link DataLakePathAsyncClient#deleteIfExistsWithResponse(DataLakePathDeleteOptions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(
+            response -> System.out.printf("Delete completed%n"),
+            error -> System.out.printf("Delete failed: %s%n", error));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
+            .setRequestConditions(requestConditions);
+
+        client.deleteIfExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions
     }
 }

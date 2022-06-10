@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -16,41 +17,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.time.LocalDateTime;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Utility methods for storage client libraries.
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String UTF8_CHARSET = "UTF-8";
-    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
 
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
+    /**
+     * Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+     * for more information on Azure resource provider namespaces.
+      */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
-
-    /**
-     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
-     */
-    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     */
-    private static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
-    /**
-     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
-     */
-    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
-            .length();
 
 
     /**
@@ -96,7 +76,7 @@ public final class Utility {
      */
     private static String decode(final String stringToDecode) {
         try {
-            return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
+            return URLDecoder.decode(stringToDecode, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -149,7 +129,7 @@ public final class Utility {
      */
     private static String encode(final String stringToEncode) {
         try {
-            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
+            return URLEncoder.encode(stringToEncode, StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -180,37 +160,14 @@ public final class Utility {
      * @param dateString the {@code String} to be interpreted as a <code>Date</code>
      * @return the corresponding <code>Date</code> object
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
+     * @deprecated Use {@link StorageImplUtils#parseDateAndFormat(String)}
      */
+    @Deprecated
     public static OffsetDateTime parseDate(String dateString) {
-        String pattern = MAX_PRECISION_PATTERN;
-        switch (dateString.length()) {
-            case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
-            case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
-            case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
-            case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
-            case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
-                dateString = dateString.substring(0, MAX_PRECISION_DATESTRING_LENGTH);
-                break;
-            case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
-                // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = dateString.replace("Z", "0");
-                break;
-            case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
-                // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = dateString.replace("Z", "00");
-                break;
-            case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = Utility.ISO8601_PATTERN;
-                break;
-            case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
-        return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
+        // Call into the internal method that replaces this deprecated method and extract the OffsetDateTime value that
+        // would have been returned before. This allows for the same implementation to be shared, reducing a duplication
+        // of effort if an update needs to be made to logic.
+        return StorageImplUtils.parseDateAndFormat(dateString).getDateTime();
     }
 
     /**

@@ -34,7 +34,9 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextNegotiator;
@@ -615,11 +617,11 @@ public final class RntbdTransportClientTest {
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(requestTimeout);
+        connectionPolicy.setTcpNetworkRequestTimeout(requestTimeout);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
@@ -703,7 +705,7 @@ public final class RntbdTransportClientTest {
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(Duration.ofMillis(1000));
+        connectionPolicy.setTcpNetworkRequestTimeout(Duration.ofMillis(1000));
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, connectionPolicy, response)) {
 
@@ -844,7 +846,11 @@ public final class RntbdTransportClientTest {
                 expected.length, true, Arrays.asList(expected)
             );
 
-            RntbdRequestManager requestManager = new RntbdRequestManager(new RntbdClientChannelHealthChecker(config), 30);
+            RntbdRequestManager requestManager = new RntbdRequestManager(
+                    new RntbdClientChannelHealthChecker(config),
+                    30,
+                    null,
+                    Duration.ofMillis(100).toNanos());
             this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
@@ -964,6 +970,11 @@ public final class RntbdTransportClientTest {
             return requestRecord;
         }
 
+        @Override
+        public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
+            throw new NotImplementedException("tryOpenConnection is not supported in FakeEndpoint.");
+        }
+
         // endregion
 
         // region Types
@@ -978,7 +989,7 @@ public final class RntbdTransportClientTest {
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
                 this.timer = new RntbdRequestTimer(
-                    config.requestTimeoutInNanos(),
+                    config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());
                 this.expected = expected;
                 this.addressResolver = addressResolver;

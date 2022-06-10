@@ -12,7 +12,14 @@ import java.net.URL;
  * A class that defines the scope of a role.
  */
 public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleScope> {
+    /**
+     * Global role scope.
+     */
     public static final KeyVaultRoleScope GLOBAL = fromString("/");
+
+    /**
+     * Keys role scope.
+     */
     public static final KeyVaultRoleScope KEYS = fromString("/keys");
 
     /**

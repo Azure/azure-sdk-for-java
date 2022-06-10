@@ -477,7 +477,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
                 this.client.getHttpPipeline(),
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -783,7 +783,8 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
             deleteWithResponseAsync(resourceGroupName, serverName, administratorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1222,7 +1223,7 @@ public final class ServerAzureADAdministratorsClientImpl implements ServerAzureA
                 this.client.getHttpPipeline(),
                 ServerAzureADAdministratorInner.class,
                 ServerAzureADAdministratorInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

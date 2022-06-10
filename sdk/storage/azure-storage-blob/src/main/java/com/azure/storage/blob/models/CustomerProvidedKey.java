@@ -15,7 +15,7 @@ import java.util.Base64;
  */
 @Immutable
 public class CustomerProvidedKey {
-    private final ClientLogger logger = new ClientLogger(CustomerProvidedKey.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomerProvidedKey.class);
 
     /**
      * Base64 encoded string of the encryption key.
@@ -47,7 +47,7 @@ public class CustomerProvidedKey {
         try {
             sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
         byte[] keyhash = sha256.digest(Base64.getDecoder().decode(key));
         this.keySha256 = Base64.getEncoder().encodeToString(keyhash);
@@ -68,7 +68,7 @@ public class CustomerProvidedKey {
         try {
             sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
         byte[] keyhash = sha256.digest(key);
         this.keySha256 = Base64.getEncoder().encodeToString(keyhash);

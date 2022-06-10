@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.P2SVpnGatewaysClient;
@@ -56,8 +55,6 @@ public final class P2SVpnGatewaysClientImpl
         InnerSupportsListing<P2SVpnGatewayInner>,
         InnerSupportsDelete<Void>,
         P2SVpnGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(P2SVpnGatewaysClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final P2SVpnGatewaysService service;
 
@@ -276,7 +273,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<P2SVpnGatewayInner>> getByResourceGroupWithResponseAsync(
@@ -300,7 +297,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -326,7 +323,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<P2SVpnGatewayInner>> getByResourceGroupWithResponseAsync(
@@ -350,7 +347,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -372,7 +369,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> getByResourceGroupAsync(String resourceGroupName, String gatewayName) {
@@ -411,7 +408,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<P2SVpnGatewayInner> getByResourceGroupWithResponse(
@@ -428,7 +425,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -459,7 +456,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -487,7 +484,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -518,7 +515,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -542,9 +539,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -552,7 +549,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -565,9 +566,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -588,9 +589,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).getSyncPoller();
@@ -606,9 +607,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters, context)
@@ -624,7 +625,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> createOrUpdateAsync(
@@ -644,7 +645,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<P2SVpnGatewayInner> createOrUpdateAsync(
@@ -698,7 +699,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
@@ -729,7 +730,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +758,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
@@ -788,7 +789,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -812,9 +813,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -822,7 +823,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -835,9 +840,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -858,9 +863,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters) {
         return beginUpdateTagsAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters).getSyncPoller();
@@ -876,9 +881,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, gatewayName, p2SVpnGatewayParameters, context).getSyncPoller();
@@ -893,7 +898,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> updateTagsAsync(
@@ -913,7 +918,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<P2SVpnGatewayInner> updateTagsAsync(
@@ -966,7 +971,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String gatewayName) {
@@ -989,7 +994,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1015,7 +1020,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1039,7 +1044,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1061,14 +1066,15 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1080,9 +1086,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1100,9 +1106,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName) {
         return beginDeleteAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
@@ -1116,9 +1122,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, gatewayName, context).getSyncPoller();
@@ -1132,7 +1138,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String gatewayName) {
@@ -1148,7 +1154,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String gatewayName, Context context) {
@@ -1193,7 +1199,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1213,7 +1220,7 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1246,7 +1253,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listByResourceGroupSinglePageAsync(
@@ -1267,7 +1275,7 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1296,7 +1304,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<P2SVpnGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1313,7 +1321,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<P2SVpnGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1329,7 +1337,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> listByResourceGroup(String resourceGroupName) {
@@ -1344,7 +1352,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1356,7 +1364,8 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listSinglePageAsync() {
@@ -1372,7 +1381,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1398,7 +1407,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listSinglePageAsync(Context context) {
@@ -1414,7 +1424,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1435,7 +1445,7 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<P2SVpnGatewayInner> listAsync() {
@@ -1449,7 +1459,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<P2SVpnGatewayInner> listAsync(Context context) {
@@ -1462,7 +1472,7 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> list() {
@@ -1476,7 +1486,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<P2SVpnGatewayInner> list(Context context) {
@@ -1491,7 +1501,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName) {
@@ -1514,7 +1524,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1540,7 +1550,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
@@ -1564,7 +1574,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1586,16 +1596,20 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
         String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1607,9 +1621,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link PollerFlux} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
         String resourceGroupName, String gatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1628,9 +1642,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName) {
         return beginResetAsync(resourceGroupName, gatewayName).getSyncPoller();
@@ -1645,9 +1659,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return the {@link SyncPoller} for polling of p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName, Context context) {
         return beginResetAsync(resourceGroupName, gatewayName, context).getSyncPoller();
@@ -1661,7 +1675,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName) {
@@ -1677,7 +1691,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
+     * @return p2SVpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, Context context) {
@@ -1726,7 +1740,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
@@ -1755,7 +1770,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1783,7 +1798,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
@@ -1812,7 +1828,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1836,9 +1852,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link PollerFlux} for polling of vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1850,7 +1866,7 @@ public final class P2SVpnGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 VpnProfileResponseInner.class,
                 VpnProfileResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1863,9 +1879,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link PollerFlux} for polling of vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1890,9 +1906,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters) {
         return beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
@@ -1908,9 +1924,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return the {@link SyncPoller} for polling of vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context) {
         return beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
@@ -1925,7 +1941,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnProfileResponseInner> generateVpnProfileAsync(
@@ -1945,7 +1961,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
+     * @return vpn Profile Response for package generation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VpnProfileResponseInner> generateVpnProfileAsync(
@@ -1998,7 +2014,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthWithResponseAsync(
@@ -2022,7 +2039,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2048,7 +2065,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthWithResponseAsync(
@@ -2072,7 +2090,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2094,9 +2112,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the {@link PollerFlux} for polling of the connection health of P2S clients of the virtual wan
+     *     P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealthAsync(
         String resourceGroupName, String gatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2104,7 +2123,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2116,9 +2139,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the {@link PollerFlux} for polling of the connection health of P2S clients of the virtual wan
+     *     P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealthAsync(
         String resourceGroupName, String gatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -2138,9 +2162,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the {@link SyncPoller} for polling of the connection health of P2S clients of the virtual wan
+     *     P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealth(
         String resourceGroupName, String gatewayName) {
         return beginGetP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName).getSyncPoller();
@@ -2155,9 +2180,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the {@link SyncPoller} for polling of the connection health of P2S clients of the virtual wan
+     *     P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealth(
         String resourceGroupName, String gatewayName, Context context) {
         return beginGetP2SVpnConnectionHealthAsync(resourceGroupName, gatewayName, context).getSyncPoller();
@@ -2171,7 +2197,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> getP2SVpnConnectionHealthAsync(String resourceGroupName, String gatewayName) {
@@ -2189,7 +2216,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
+     * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<P2SVpnGatewayInner> getP2SVpnConnectionHealthAsync(
@@ -2241,7 +2269,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     *     specified resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthDetailedWithResponseAsync(
@@ -2270,7 +2298,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2300,7 +2328,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     *     specified resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthDetailedWithResponseAsync(
@@ -2329,7 +2357,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2354,10 +2382,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     * @return the {@link PollerFlux} for polling of the sas url to get the connection health detail of P2S clients of
+     *     the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailedAsync(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request) {
@@ -2370,7 +2398,7 @@ public final class P2SVpnGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 P2SVpnConnectionHealthInner.class,
                 P2SVpnConnectionHealthInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2384,10 +2412,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     * @return the {@link PollerFlux} for polling of the sas url to get the connection health detail of P2S clients of
+     *     the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailedAsync(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request, Context context) {
@@ -2414,10 +2442,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     * @return the {@link SyncPoller} for polling of the sas url to get the connection health detail of P2S clients of
+     *     the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request) {
@@ -2435,10 +2463,10 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     * @return the {@link SyncPoller} for polling of the sas url to get the connection health detail of P2S clients of
+     *     the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request, Context context) {
@@ -2457,7 +2485,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     *     specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnConnectionHealthInner> getP2SVpnConnectionHealthDetailedAsync(
@@ -2479,7 +2507,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
-     *     specified resource group.
+     *     specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<P2SVpnConnectionHealthInner> getP2SVpnConnectionHealthDetailedAsync(
@@ -2537,7 +2565,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> disconnectP2SVpnConnectionsWithResponseAsync(
@@ -2567,7 +2595,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2595,7 +2623,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> disconnectP2SVpnConnectionsWithResponseAsync(
@@ -2625,7 +2653,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2649,16 +2677,17 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             disconnectP2SVpnConnectionsWithResponseAsync(resourceGroupName, p2SVpnGatewayName, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2671,9 +2700,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request, Context context) {
         context = this.client.mergeContext(context);
@@ -2693,9 +2722,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request) {
         return beginDisconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, request).getSyncPoller();
@@ -2711,9 +2740,9 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request, Context context) {
         return beginDisconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, request, context)
@@ -2729,7 +2758,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disconnectP2SVpnConnectionsAsync(
@@ -2749,7 +2778,7 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disconnectP2SVpnConnectionsAsync(
@@ -2799,7 +2828,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2836,7 +2866,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listByResourceGroupNextSinglePageAsync(
@@ -2872,7 +2903,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listNextSinglePageAsync(String nextLink) {
@@ -2908,7 +2940,8 @@ public final class P2SVpnGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list P2SVpnGateways.
+     * @return result of the request to list P2SVpnGateways along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<P2SVpnGatewayInner>> listNextSinglePageAsync(String nextLink, Context context) {

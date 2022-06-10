@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
@@ -50,8 +49,6 @@ public final class AzureFirewallsClientImpl
         InnerSupportsListing<AzureFirewallInner>,
         InnerSupportsDelete<Void>,
         AzureFirewallsClient {
-    private final ClientLogger logger = new ClientLogger(AzureFirewallsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AzureFirewallsService service;
 
@@ -192,7 +189,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -217,7 +214,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -243,7 +240,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -268,7 +265,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -290,14 +287,15 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -309,9 +307,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String azureFirewallName, Context context) {
         context = this.client.mergeContext(context);
@@ -329,9 +327,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName) {
         return beginDeleteAsync(resourceGroupName, azureFirewallName).getSyncPoller();
     }
@@ -345,9 +343,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String azureFirewallName, Context context) {
         return beginDeleteAsync(resourceGroupName, azureFirewallName, context).getSyncPoller();
@@ -361,7 +359,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String azureFirewallName) {
@@ -379,7 +377,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String azureFirewallName, Context context) {
@@ -425,7 +423,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
+     * @return the specified Azure Firewall along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AzureFirewallInner>> getByResourceGroupWithResponseAsync(
@@ -450,7 +448,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -476,7 +474,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
+     * @return the specified Azure Firewall along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureFirewallInner>> getByResourceGroupWithResponseAsync(
@@ -501,7 +499,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -523,7 +521,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
+     * @return the specified Azure Firewall on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> getByResourceGroupAsync(String resourceGroupName, String azureFirewallName) {
@@ -562,7 +560,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Firewall.
+     * @return the specified Azure Firewall along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureFirewallInner> getByResourceGroupWithResponse(
@@ -579,7 +577,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -609,7 +607,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -637,7 +635,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -667,7 +665,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -691,9 +689,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -701,7 +699,11 @@ public final class AzureFirewallsClientImpl
         return this
             .client
             .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AzureFirewallInner.class,
+                AzureFirewallInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -714,9 +716,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -737,9 +739,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link SyncPoller} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
@@ -755,9 +757,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link SyncPoller} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
@@ -772,7 +774,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> createOrUpdateAsync(
@@ -792,7 +794,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureFirewallInner> createOrUpdateAsync(
@@ -846,7 +848,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
@@ -876,7 +878,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -904,7 +906,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
@@ -934,7 +936,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -958,9 +960,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -968,7 +970,11 @@ public final class AzureFirewallsClientImpl
         return this
             .client
             .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AzureFirewallInner.class,
+                AzureFirewallInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -981,9 +987,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link PollerFlux} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1004,9 +1010,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link SyncPoller} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
@@ -1022,9 +1028,9 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return the {@link SyncPoller} for polling of azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
@@ -1039,7 +1045,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureFirewallInner> updateTagsAsync(
@@ -1059,7 +1065,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
+     * @return azure Firewall resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureFirewallInner> updateTagsAsync(
@@ -1110,7 +1116,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1130,7 +1137,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1163,7 +1170,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listByResourceGroupSinglePageAsync(
@@ -1184,7 +1192,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1213,7 +1221,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1229,7 +1237,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureFirewallInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1245,7 +1253,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName) {
@@ -1260,7 +1268,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureFirewallInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1272,7 +1280,8 @@ public final class AzureFirewallsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listSinglePageAsync() {
@@ -1288,7 +1297,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1314,7 +1323,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listSinglePageAsync(Context context) {
@@ -1330,7 +1340,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1351,7 +1361,7 @@ public final class AzureFirewallsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AzureFirewallInner> listAsync() {
@@ -1365,7 +1375,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureFirewallInner> listAsync(Context context) {
@@ -1378,7 +1388,7 @@ public final class AzureFirewallsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureFirewallInner> list() {
@@ -1392,7 +1402,7 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Firewalls in a subscription.
+     * @return all the Azure Firewalls in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureFirewallInner> list(Context context) {
@@ -1406,7 +1416,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listNextSinglePageAsync(String nextLink) {
@@ -1442,7 +1453,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1477,7 +1489,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -1513,7 +1526,8 @@ public final class AzureFirewallsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListAzureFirewalls API service call.
+     * @return response for ListAzureFirewalls API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureFirewallInner>> listAllNextSinglePageAsync(String nextLink, Context context) {

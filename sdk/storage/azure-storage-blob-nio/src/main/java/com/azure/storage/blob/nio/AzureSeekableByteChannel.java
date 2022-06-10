@@ -23,7 +23,7 @@ import java.nio.file.Path;
  * This type is not threadsafe to prevent having to hold locks across network calls.
  */
 public final class AzureSeekableByteChannel implements SeekableByteChannel {
-    private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSeekableByteChannel.class);
 
     private final NioBlobInputStream reader;
     private final NioBlobOutputStream writer;
@@ -63,42 +63,49 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateReadMode();
 
-        // See comments in position()
-        if (this.position > this.size()) {
-            return -1;
+        // See comments in position(), remember that position is 0-based and size() is exclusive
+        if (this.position >= this.size()) {
+            return -1; // at or past EOF
         }
-
-        int count = 0;
-
-        int len = dst.remaining();
-        byte[] buf;
 
         // If the buffer is backed by an array, we can write directly to that instead of allocating new memory.
+        int pos;
+        final int limit;
+        final byte[] buf;
         if (dst.hasArray()) {
+            // ByteBuffer has a position and limit that define the bounds of the writeable area, and that
+            // area can be both smaller than the backing array and might not begin at array index 0.
+            pos = dst.position();
+            limit = pos + dst.remaining();
             buf = dst.array();
         } else {
-            buf = new byte[len];
+            pos = 0;
+            limit = dst.remaining();
+            buf = new byte[limit];
         }
 
-        while (count < len) {
-            int retCount = this.reader.read(buf, count, len - count);
-            if (retCount == -1) {
+        while (pos < limit) {
+            int byteCount = this.reader.read(buf, pos, limit - pos);
+            if (byteCount == -1) {
                 break;
             }
-            count += retCount;
+            pos += byteCount;
         }
 
         /*
         Either write to the destination if we had to buffer separately or just set the position correctly if we wrote
         underneath the buffer
          */
-        if (!dst.hasArray()) {
-            dst.put(buf, 0, count);
+        int count;
+        if (dst.hasArray()) {
+            count = pos - dst.position();
+            dst.position(pos);
         } else {
-            dst.position(dst.position() + count); //
+            count = pos; // original position was 0
+            dst.put(buf, 0, count);
         }
-        this.position += count;
 
+        this.position += count;
         return count;
     }
 
@@ -108,25 +115,30 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateWriteMode();
 
-        int length = src.remaining();
-
-        this.position += src.remaining();
+        final int length = src.remaining();
+        this.position += length;
 
         /*
         If the buffer is backed by an array, we can read directly from that instead of allocating new memory.
-
         Set the position correctly if we read from underneath the buffer
          */
+        int pos;
         byte[] buf;
         if (src.hasArray()) {
+            // ByteBuffer has a position and limit that define the bounds of the readable area, and that
+            // area can be both smaller than the backing array and might not begin at array index 0.
+            pos = src.position();
             buf = src.array();
-            src.position(src.position() + length);
+            src.position(pos + length);
         } else {
+            pos = 0;
             buf = new byte[length];
-            src.get(buf);
+            src.get(buf); // advances src.position()
         }
-        this.writer.write(buf);
-
+        // Either way, the src.position() and this.position have been updated before we know if this write
+        // will succeed. (Original behavior.) It may be better to update position(s) only *after* success,
+        // but then on IOException would we know if there was a partial write, and if so how much?
+        this.writer.write(buf, pos, length);
         return length;
     }
 
@@ -145,7 +157,7 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         validateReadMode();
 
         if (newPosition < 0) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("Seek position cannot be negative"));
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("Seek position cannot be negative"));
         }
 
         /*
@@ -189,7 +201,7 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public AzureSeekableByteChannel truncate(long size) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException());
     }
 
     @Override
@@ -209,21 +221,25 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         this.closed = true;
     }
 
+    Path getPath() {
+        return this.path;
+    }
+
     private void validateOpen() throws ClosedChannelException {
         if (this.closed) {
-            throw LoggingUtility.logError(logger, new ClosedChannelException());
+            throw LoggingUtility.logError(LOGGER, new ClosedChannelException());
         }
     }
 
     private void validateReadMode() {
         if (this.reader == null) {
-            throw LoggingUtility.logError(logger, new NonReadableChannelException());
+            throw LoggingUtility.logError(LOGGER, new NonReadableChannelException());
         }
     }
 
     private void validateWriteMode() {
         if (this.writer == null) {
-            throw LoggingUtility.logError(logger, new NonWritableChannelException());
+            throw LoggingUtility.logError(LOGGER, new NonWritableChannelException());
         }
     }
 }

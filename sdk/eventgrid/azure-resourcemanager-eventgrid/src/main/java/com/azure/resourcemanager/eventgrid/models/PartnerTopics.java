@@ -31,7 +31,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
+     * @return properties of a partner topic along with {@link Response}.
      */
     Response<PartnerTopic> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerTopicName, Context context);
@@ -60,43 +60,11 @@ public interface PartnerTopics {
     void delete(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
-     * Asynchronously updates a partner topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicUpdateParameters PartnerTopic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    PartnerTopic update(
-        String resourceGroupName, String partnerTopicName, PartnerTopicUpdateParameters partnerTopicUpdateParameters);
-
-    /**
-     * Asynchronously updates a partner topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicUpdateParameters PartnerTopic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<PartnerTopic> updateWithResponse(
-        String resourceGroupName,
-        String partnerTopicName,
-        PartnerTopicUpdateParameters partnerTopicUpdateParameters,
-        Context context);
-
-    /**
      * List all the partner topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerTopic> list();
 
@@ -115,7 +83,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerTopic> list(String filter, Integer top, Context context);
 
@@ -126,7 +94,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerTopic> listByResourceGroup(String resourceGroupName);
 
@@ -146,7 +114,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerTopic> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context);
@@ -159,7 +127,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic.
      */
     PartnerTopic activate(String resourceGroupName, String partnerTopicName);
 
@@ -172,7 +140,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response}.
      */
     Response<PartnerTopic> activateWithResponse(String resourceGroupName, String partnerTopicName, Context context);
 
@@ -184,7 +152,7 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic.
      */
     PartnerTopic deactivate(String resourceGroupName, String partnerTopicName);
 
@@ -197,7 +165,59 @@ public interface PartnerTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response}.
      */
     Response<PartnerTopic> deactivateWithResponse(String resourceGroupName, String partnerTopicName, Context context);
+
+    /**
+     * Get properties of a partner topic.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner topic along with {@link Response}.
+     */
+    PartnerTopic getById(String id);
+
+    /**
+     * Get properties of a partner topic.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner topic along with {@link Response}.
+     */
+    Response<PartnerTopic> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete existing partner topic.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete existing partner topic.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new PartnerTopic resource.
+     *
+     * @param name resource name.
+     * @return the first stage of the new PartnerTopic definition.
+     */
+    PartnerTopic.DefinitionStages.Blank define(String name);
 }

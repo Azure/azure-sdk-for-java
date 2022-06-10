@@ -81,7 +81,11 @@ public final class AttestationOptions {
      * The evidence will typically take the form of either an OpenEnclave report or an Intel SGX quote.
      *
      * <p><strong>Create an AttestationOptions from an SGX quote:</strong></p>
-     * {@codesnippet com.azure.security.attestation.models..fromEvidence#byte}
+     * <!-- src_embed com.azure.security.attestation.models..fromEvidence#byte -->
+     * <pre>
+     * AttestationOptions options = new AttestationOptions&#40;sgxQuote&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models..fromEvidence#byte -->
      * @param evidence to be used in the attest request.
      */
     public AttestationOptions(BinaryData evidence) {
@@ -110,23 +114,32 @@ public final class AttestationOptions {
      * the {@link AttestationDataInterpretation} specified for the RunTime Data was set to "BINARY", or
      *
      * <p><strong>Setting RunTime Data Property</strong></p>
-     * {@codesnippet com.azure.security.attestation.models..setInitTimeData#byte}
+     * <!-- src_embed com.azure.security.attestation.models..setInitTimeData#byte -->
+     * <pre>
+     * AttestationOptions optionsWithInitTimeData = new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setInitTimeData&#40;new AttestationData&#40;inittimeData, AttestationDataInterpretation.BINARY&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models..setInitTimeData#byte -->
      * @param attestationData the runtimeData value to set.
      * @return this {@link AttestationOptions} object itself.
      */
     public AttestationOptions setRunTimeData(AttestationData attestationData) {
-        this.runTimeData = attestationData.clone();
+        this.runTimeData = attestationData;
         return this;
     }
 
     /**
      * Retrieves the RunTimeData property to be sent to the service.
      * <p><strong>Retrieve the RunTimeData value.</strong></p>
-     * {@codesnippet com.azure.security.attestation.models.AttestationOptions.getRunTimeData}
+     * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
+     * <pre>
+     * AttestationData existingRuntimeData = attestationOptions.getRunTimeData&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
      * @return The RunTimeData value set by {@link AttestationOptions#setRunTimeData}
      */
     public AttestationData getRunTimeData() {
-        return runTimeData != null ? runTimeData.clone() : null;
+        return runTimeData != null ? new AttestationData(runTimeData) : null;
     }
 
     /**
@@ -140,23 +153,35 @@ public final class AttestationOptions {
      * for the {@link AttestationData} is set to "JSON".
      *
      * <p><strong>Setting InitTime Data Property</strong></p>
-     * {@codesnippet com.azure.security.attestation.models..setInitTimeData#byte}
+     * <!-- src_embed com.azure.security.attestation.models..setInitTimeData#byte -->
+     * <pre>
+     * AttestationOptions optionsWithInitTimeData = new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setInitTimeData&#40;new AttestationData&#40;inittimeData, AttestationDataInterpretation.BINARY&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models..setInitTimeData#byte -->
      * @param attestationData the InitTimeData value to set.
      * @return this {@link AttestationOptions} object itself.
      */
     public AttestationOptions setInitTimeData(AttestationData attestationData) {
-        this.initTimeData = attestationData.clone();
+        this.initTimeData = attestationData;
         return this;
     }
 
     /**
      * Retrieves the InitTimeData property to be sent to the service.
      * <p><strong>Retrieve the InitTimeData value.</strong></p>
-     * {@codesnippet com.azure.security.attestation.models.AttestationOptions.getInitTimeData}
+     * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.getInitTimeData -->
+     * <pre>
+     * AttestationOptions attestationOptions = new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setInitTimeData&#40;new AttestationData&#40;inittimeData, AttestationDataInterpretation.JSON&#41;&#41;;
+     *
+     * AttestationData existingRuntimeData = attestationOptions.getInitTimeData&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models.AttestationOptions.getInitTimeData -->
      * @return The InitTimeData value set by {@link AttestationOptions#setInitTimeData}
      */
     public AttestationData getInitTimeData() {
-        return initTimeData != null ? initTimeData.clone() : null;
+        return initTimeData != null ? new AttestationData(initTimeData) : null;
     }
 
     /**
@@ -165,7 +190,12 @@ public final class AttestationOptions {
      * determine how a proposed attestation policy would affect an attestation token.</p>
      * <b><i>Note that the resulting token cannot be validated.</i></b>
      * <p><b><i>Example of setting AttestationOptions with a draft policy.</i></b></p>
-     * {@codesnippet com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String}
+     * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String -->
+     * <pre>
+     * AttestationOptions request = new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setDraftPolicyForAttestation&#40;&quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models.AttestationOptions.setDraftPolicyForAttestation#String -->
      * @param draftPolicyForAttestation the draftPolicyForAttestation value to set.
      * @return this {@link AttestationOptions} object itself.
      */
@@ -178,7 +208,14 @@ public final class AttestationOptions {
      * Gets the draftPolicyForAttestation property which is used to attest against the draft policy.
      *
      * <p>Gets the previously set draft policy for attestation.</p>
-     * {@codesnippet com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation}
+     * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation -->
+     * <pre>
+     * AttestationOptions getOptions = new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setDraftPolicyForAttestation&#40;&quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;&#41;;
+     *
+     * String draftPolicy = getOptions.getDraftPolicyForAttestation&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.models.AttestationOptions.getDraftPolicyForAttestation -->
      * @return The draft policy if set.
      */
     public String getDraftPolicyForAttestation() {

@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.BotConnectionsClient;
 import com.azure.resourcemanager.botservice.fluent.models.ConnectionSettingInner;
 import com.azure.resourcemanager.botservice.fluent.models.ServiceProviderResponseListInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BotConnectionsClient. */
 public final class BotConnectionsClientImpl implements BotConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(BotConnectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BotConnectionsService service;
 
@@ -189,7 +186,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
+     * @return the list of bot service providers response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceProviderResponseListInner>> listServiceProvidersWithResponseAsync() {
@@ -226,7 +224,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
+     * @return the list of bot service providers response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceProviderResponseListInner>> listServiceProvidersWithResponseAsync(Context context) {
@@ -258,7 +257,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
+     * @return the list of bot service providers response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceProviderResponseListInner> listServiceProvidersAsync() {
@@ -292,7 +291,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
+     * @return the list of bot service providers response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceProviderResponseListInner> listServiceProvidersWithResponse(Context context) {
@@ -308,7 +307,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(
@@ -362,7 +362,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> listWithSecretsWithResponseAsync(
@@ -412,7 +413,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionSettingInner> listWithSecretsAsync(
@@ -455,7 +456,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSettingInner> listWithSecretsWithResponse(
@@ -473,7 +474,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(
@@ -534,7 +535,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> createWithResponseAsync(
@@ -595,7 +596,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionSettingInner> createAsync(
@@ -640,7 +641,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSettingInner> createWithResponse(
@@ -662,7 +663,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(
@@ -723,7 +724,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> updateWithResponseAsync(
@@ -784,7 +785,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionSettingInner> updateAsync(
@@ -829,7 +830,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
+     * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSettingInner> updateWithResponse(
@@ -850,7 +851,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(
@@ -904,7 +906,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionSettingInner>> getWithResponseAsync(
@@ -954,7 +957,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionSettingInner> getAsync(
@@ -996,7 +999,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSettingInner> getWithResponse(
@@ -1013,7 +1016,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1067,7 +1070,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1117,7 +1120,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String connectionName) {
@@ -1150,7 +1153,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1166,7 +1169,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(
@@ -1224,7 +1228,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceSinglePageAsync(
@@ -1278,7 +1283,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectionSettingInner> listByBotServiceAsync(String resourceGroupName, String resourceName) {
@@ -1296,7 +1301,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectionSettingInner> listByBotServiceAsync(
@@ -1314,7 +1319,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionSettingInner> listByBotService(String resourceGroupName, String resourceName) {
@@ -1330,7 +1335,7 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionSettingInner> listByBotService(
@@ -1345,7 +1350,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceNextSinglePageAsync(String nextLink) {
@@ -1381,7 +1387,8 @@ public final class BotConnectionsClientImpl implements BotConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service connection settings response.
+     * @return the list of bot service connection settings response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectionSettingInner>> listByBotServiceNextSinglePageAsync(

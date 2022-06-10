@@ -51,8 +51,9 @@ import static org.mockito.Mockito.when;
 class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
+    private static final String CONNECTION_ID = "a-connection-id";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
     private final FluxSink<EndpointState> endpointStatesSink = endpointStates.sink();
 
@@ -75,6 +76,7 @@ class ServiceBusReactorReceiverTest {
     private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
+    private AutoCloseable openMocks;
 
     @BeforeAll
     static void beforeAll() {
@@ -88,19 +90,19 @@ class ServiceBusReactorReceiverTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) throws IOException {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any());
 
         doAnswer(invocation -> {
-            logger.info("Running work on dispatcher.");
+            LOGGER.info("Running work on dispatcher.");
             return null;
         }).when(reactorDispatcher).invoke(any(), any());
 
@@ -109,6 +111,7 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
@@ -117,9 +120,10 @@ class ServiceBusReactorReceiverTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+    void teardown(TestInfo testInfo) throws Exception {
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
+        openMocks.close();
         Mockito.framework().clearInlineMock(this);
     }
 

@@ -19,9 +19,6 @@ public final class EventSerializationType extends ExpandableStringEnum<EventSeri
     /** Static value Json for EventSerializationType. */
     public static final EventSerializationType JSON = fromString("Json");
 
-    /** Static value CustomClr for EventSerializationType. */
-    public static final EventSerializationType CUSTOM_CLR = fromString("CustomClr");
-
     /** Static value Parquet for EventSerializationType. */
     public static final EventSerializationType PARQUET = fromString("Parquet");
 

@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.EdgeModulesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleProvisioningTokenInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EdgeModulesClient. */
 public final class EdgeModulesClientImpl implements EdgeModulesClient {
-    private final ClientLogger logger = new ClientLogger(EdgeModulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EdgeModulesService service;
 
@@ -77,9 +74,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -161,22 +156,21 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EdgeModuleEntityInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+        String resourceGroupName, String accountName, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -207,9 +201,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
-                            filter,
                             top,
-                            orderby,
                             accept,
                             context))
             .<PagedResponse<EdgeModuleEntityInner>>map(
@@ -225,23 +217,22 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EdgeModuleEntityInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+        String resourceGroupName, String accountName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -270,9 +261,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
                 resourceGroupName,
                 accountName,
                 this.client.getApiVersion(),
-                filter,
                 top,
-                orderby,
                 accept,
                 context)
             .map(
@@ -287,119 +276,109 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EdgeModuleEntityInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+    private PagedFlux<EdgeModuleEntityInner> listAsync(String resourceGroupName, String accountName, Integer top) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+            () -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EdgeModuleEntityInner> listAsync(String resourceGroupName, String accountName) {
-        final String filter = null;
         final Integer top = null;
-        final String orderby = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+            () -> listSinglePageAsync(resourceGroupName, accountName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EdgeModuleEntityInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+        String resourceGroupName, String accountName, Integer top, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby, context),
+            () -> listSinglePageAsync(resourceGroupName, accountName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeModuleEntityInner> list(String resourceGroupName, String accountName) {
-        final String filter = null;
         final Integer top = null;
-        final String orderby = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, orderby));
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, top));
     }
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EdgeModuleEntityInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, orderby, context));
+        String resourceGroupName, String accountName, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, top, context));
     }
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleEntityInner>> getWithResponseAsync(
@@ -444,16 +423,17 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleEntityInner>> getWithResponseAsync(
@@ -495,35 +475,28 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeModuleEntityInner> getAsync(String resourceGroupName, String accountName, String edgeModuleName) {
         return getWithResponseAsync(resourceGroupName, accountName, edgeModuleName)
-            .flatMap(
-                (Response<EdgeModuleEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -535,16 +508,16 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
     }
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeModuleEntityInner> getWithResponse(
@@ -562,12 +535,13 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to create or update.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleEntityInner>> createOrUpdateWithResponseAsync(
@@ -627,13 +601,14 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to create or update.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleEntityInner>> createOrUpdateWithResponseAsync(
@@ -694,25 +669,18 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to create or update.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeModuleEntityInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String edgeModuleName, EdgeModuleEntityInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, edgeModuleName, parameters)
-            .flatMap(
-                (Response<EdgeModuleEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -725,7 +693,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to create or update.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -748,13 +716,13 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to create or update.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeModuleEntityInner> createOrUpdateWithResponse(
@@ -774,11 +742,11 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -829,12 +797,12 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -882,16 +850,15 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String edgeModuleName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, edgeModuleName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, edgeModuleName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -901,7 +868,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,12 +885,12 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -941,12 +908,12 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleProvisioningTokenInner>> listProvisioningTokenWithResponseAsync(
@@ -1006,13 +973,13 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EdgeModuleProvisioningTokenInner>> listProvisioningTokenWithResponseAsync(
@@ -1073,25 +1040,18 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EdgeModuleProvisioningTokenInner> listProvisioningTokenAsync(
         String resourceGroupName, String accountName, String edgeModuleName, ListProvisioningTokenInput parameters) {
         return listProvisioningTokenWithResponseAsync(resourceGroupName, accountName, edgeModuleName, parameters)
-            .flatMap(
-                (Response<EdgeModuleProvisioningTokenInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1104,7 +1064,7 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,13 +1087,13 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EdgeModuleProvisioningTokenInner> listProvisioningTokenWithResponse(
@@ -1154,7 +1114,8 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EdgeModuleEntityInner>> listNextSinglePageAsync(String nextLink) {
@@ -1190,7 +1151,8 @@ public final class EdgeModulesClientImpl implements EdgeModulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EdgeModuleEntityInner>> listNextSinglePageAsync(String nextLink, Context context) {

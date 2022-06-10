@@ -8,11 +8,8 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporter.jaeger.JaegerGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -25,7 +22,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERATION_TIMEOUT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -53,13 +50,10 @@ public class PublishEventsJaegerExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureJaegerExporter() {
-        // Create a channel towards Jaeger end point
-        ManagedChannel jaegerChannel =
-            ManagedChannelBuilder.forAddress("localhost", 14250).usePlaintext().build();
         // Export traces to Jaeger
         JaegerGrpcSpanExporter jaegerExporter =
             JaegerGrpcSpanExporter.builder()
-                .setChannel(jaegerChannel)
+                .setEndpoint("http://localhost:14250")
                 .setTimeout(Duration.ofMinutes(30000))
                 .build();
 
@@ -82,7 +76,6 @@ public class PublishEventsJaegerExporterSample {
             .buildAsyncProducerClient();
 
         Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = userParentSpan.makeCurrent();
         try {
             String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
@@ -91,8 +84,9 @@ public class PublishEventsJaegerExporterSample {
 
             // We will publish three events based on simple sentences.
             Flux<EventData> data = Flux.just(
-                new EventData(body).addContext(PARENT_SPAN_KEY, Span.current()),
-                new EventData(body2).addContext(PARENT_SPAN_KEY, Span.current()));
+                // only attach trace context if not using auto-instrumentation or if you didn't make userParentSpan current
+                new EventData(body).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)),
+                new EventData(body2).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)));
 
             // Create a batch to send the events.
             final CreateBatchOptions options = new CreateBatchOptions()
@@ -152,7 +146,6 @@ public class PublishEventsJaegerExporterSample {
             }
         } finally {
             userParentSpan.end();
-            scope.close();
         }
     }
 }

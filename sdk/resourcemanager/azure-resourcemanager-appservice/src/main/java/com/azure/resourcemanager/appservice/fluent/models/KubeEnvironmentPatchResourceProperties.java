@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appservice.models.ArcConfiguration;
+import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** KubeEnvironmentPatchResource resource specific properties. */
 @Fluent
 public final class KubeEnvironmentPatchResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeEnvironmentPatchResourceProperties.class);
-
     /*
      * Provisioning state of the Kubernetes Environment.
      */
@@ -62,6 +59,13 @@ public final class KubeEnvironmentPatchResourceProperties {
      */
     @JsonProperty(value = "appLogsConfiguration")
     private AppLogsConfiguration appLogsConfiguration;
+
+    /*
+     * Cluster configuration for Container Apps Environments to configure Dapr
+     * Instrumentation Key and VNET Configuration
+     */
+    @JsonProperty(value = "containerAppsConfiguration")
+    private ContainerAppsConfiguration containerAppsConfiguration;
 
     /*
      * The aksResourceID property.
@@ -181,6 +185,29 @@ public final class KubeEnvironmentPatchResourceProperties {
     }
 
     /**
+     * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @return the containerAppsConfiguration value.
+     */
+    public ContainerAppsConfiguration containerAppsConfiguration() {
+        return this.containerAppsConfiguration;
+    }
+
+    /**
+     * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @param containerAppsConfiguration the containerAppsConfiguration value to set.
+     * @return the KubeEnvironmentPatchResourceProperties object itself.
+     */
+    public KubeEnvironmentPatchResourceProperties withContainerAppsConfiguration(
+        ContainerAppsConfiguration containerAppsConfiguration) {
+        this.containerAppsConfiguration = containerAppsConfiguration;
+        return this;
+    }
+
+    /**
      * Get the aksResourceId property: The aksResourceID property.
      *
      * @return the aksResourceId value.
@@ -211,6 +238,9 @@ public final class KubeEnvironmentPatchResourceProperties {
         }
         if (appLogsConfiguration() != null) {
             appLogsConfiguration().validate();
+        }
+        if (containerAppsConfiguration() != null) {
+            containerAppsConfiguration().validate();
         }
     }
 }

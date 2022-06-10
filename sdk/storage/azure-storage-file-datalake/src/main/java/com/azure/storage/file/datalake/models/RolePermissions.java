@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -12,8 +11,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  * Hierarchical Namespace are enabled.
  */
 public class RolePermissions {
-
-    private final ClientLogger logger = new ClientLogger(RolePermissions.class);
 
     private static final String ROLE_PERMISSIONS_FORMAT_ERROR = "Invalid format for role permissions";
 
@@ -76,7 +73,7 @@ public class RolePermissions {
      * Convert a symbolic representation of permissions for a given role into an {@code RolePermissions} instance.
      *
      * @param str The string representing the permissions for the given role.
-     * @param allowStickyBit Indicates whether or not the parsing should tolerate the sticky bit. The sticky bit is only
+     * @param allowStickyBit Indicates whether the parsing should tolerate the sticky bit. The sticky bit is only
      * valid as the last character of permissions for "other" in a {@code String} representing full permissions for a
      * resource.
      * @return An {@link RolePermissions} instance with appropriate fields set.

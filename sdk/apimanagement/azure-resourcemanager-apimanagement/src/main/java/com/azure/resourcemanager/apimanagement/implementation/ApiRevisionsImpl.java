@@ -11,10 +11,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ApiRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiRevisionContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiRevisionContract;
 import com.azure.resourcemanager.apimanagement.models.ApiRevisions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiRevisionsImpl implements ApiRevisions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiRevisionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApiRevisionsImpl.class);
 
     private final ApiRevisionsClient innerClient;
 

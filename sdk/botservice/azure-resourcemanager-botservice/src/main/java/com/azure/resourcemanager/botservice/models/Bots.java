@@ -30,7 +30,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -55,7 +55,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot resource definition.
+     * @return bot resource definition along with {@link Response}.
      */
     Response<Bot> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -66,7 +66,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Bot> listByResourceGroup(String resourceGroupName);
 
@@ -78,7 +78,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Bot> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -87,7 +87,7 @@ public interface Bots {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Bot> list();
 
@@ -98,7 +98,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service operation response.
+     * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Bot> list(Context context);
 
@@ -121,7 +121,8 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body returned for a request to Bot Service Management to check availability of a bot name.
+     * @return the response body returned for a request to Bot Service Management to check availability of a bot name
+     *     along with {@link Response}.
      */
     Response<CheckNameAvailabilityResponseBody> getCheckNameAvailabilityWithResponse(
         CheckNameAvailabilityRequestBody parameters, Context context);
@@ -133,7 +134,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot resource definition.
+     * @return bot resource definition along with {@link Response}.
      */
     Bot getById(String id);
 
@@ -145,7 +146,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot resource definition.
+     * @return bot resource definition along with {@link Response}.
      */
     Response<Bot> getByIdWithResponse(String id, Context context);
 
@@ -167,7 +168,7 @@ public interface Bots {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

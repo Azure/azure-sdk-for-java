@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -20,12 +20,18 @@ import java.util.Map;
  * The Azure Data Factory nested object which contains the information and credential which can be used to connect with
  * related store or compute resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = Credential.class)
 @JsonTypeName("Credential")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class),
+    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class)
+})
 @Fluent
-public final class Credential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Credential.class);
-
+public class Credential {
     /*
      * Credential description.
      */

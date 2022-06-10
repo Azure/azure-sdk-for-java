@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
-import static com.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
 import static com.azure.spring.cloud.config.TestConstants.KEY_PROP;
 import static com.azure.spring.cloud.config.TestConstants.LABEL_PROP;
@@ -24,8 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 
@@ -97,15 +94,6 @@ public class AppConfigurationPropertiesTest {
     }
 
     @Test
-    public void defaultContextShouldNotBeEmpty() {
-        this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(DEFAULT_CONTEXT_PROP, ""))
-            .run(context -> assertInvalidField(context, "defaultContext"));
-    }
-
-    @Test
     public void asteriskShouldNotBeIncludedInTheLabels() {
         this.contextRunner
             .withPropertyValues(
@@ -149,14 +137,5 @@ public class AppConfigurationPropertiesTest {
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
             .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
-    }
-
-    private void assertInvalidField(AssertableApplicationContext context, String fieldName) {
-        assertThat(context)
-            .getFailure()
-            .hasCauseInstanceOf(ConfigurationPropertiesBindException.class);
-        assertThat(context)
-            .getFailure()
-            .hasStackTraceContaining(String.format("field '%s': rejected value", fieldName));
     }
 }

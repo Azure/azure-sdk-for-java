@@ -24,7 +24,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.AnalyticsItemsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentAnalyticsItemInner;
 import com.azure.resourcemanager.applicationinsights.models.ItemScope;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AnalyticsItemsClient. */
 public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
-    private final ClientLogger logger = new ClientLogger(AnalyticsItemsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AnalyticsItemsService service;
 
@@ -149,7 +146,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
@@ -218,7 +216,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentAnalyticsItemInner>>> listWithResponseAsync(
@@ -284,7 +283,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentAnalyticsItemInner>> listAsync(
@@ -295,14 +295,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ItemTypeParameter type,
         Boolean includeContent) {
         return listWithResponseAsync(resourceGroupName, resourceName, scopePath, scope, type, includeContent)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentAnalyticsItemInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -315,7 +308,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentAnalyticsItemInner>> listAsync(
@@ -324,14 +318,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final ItemTypeParameter type = null;
         final Boolean includeContent = null;
         return listWithResponseAsync(resourceGroupName, resourceName, scopePath, scope, type, includeContent)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentAnalyticsItemInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -371,7 +358,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Analytics Items defined within an Application Insights component.
+     * @return a list of Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentAnalyticsItemInner>> listWithResponse(
@@ -398,7 +385,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
@@ -458,7 +446,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> getWithResponseAsync(
@@ -519,20 +508,14 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(
         String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -545,7 +528,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> getAsync(
@@ -553,14 +537,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         final String id = null;
         final String name = null;
         return getWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -596,7 +573,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Analytics Items defined within an Application Insights component.
+     * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentAnalyticsItemInner> getWithResponse(
@@ -623,7 +600,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
@@ -694,7 +672,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentAnalyticsItemInner>> putWithResponseAsync(
@@ -762,7 +741,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> putAsync(
@@ -772,14 +752,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ApplicationInsightsComponentAnalyticsItemInner itemProperties,
         Boolean overrideItem) {
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -794,7 +767,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentAnalyticsItemInner> putAsync(
@@ -804,14 +778,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
         ApplicationInsightsComponentAnalyticsItemInner itemProperties) {
         final Boolean overrideItem = null;
         return putWithResponseAsync(resourceGroupName, resourceName, scopePath, itemProperties, overrideItem)
-            .flatMap(
-                (Response<ApplicationInsightsComponentAnalyticsItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -853,7 +820,8 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an Analytics item that is associated to an Application Insights component.
+     * @return properties that define an Analytics item that is associated to an Application Insights component along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(
@@ -879,7 +847,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -937,7 +905,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -996,13 +964,13 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String resourceName, ItemScopePath scopePath, String id, String name) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1015,14 +983,14 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, ItemScopePath scopePath) {
         final String id = null;
         final String name = null;
         return deleteWithResponseAsync(resourceGroupName, resourceName, scopePath, id, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1056,7 +1024,7 @@ public final class AnalyticsItemsClientImpl implements AnalyticsItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

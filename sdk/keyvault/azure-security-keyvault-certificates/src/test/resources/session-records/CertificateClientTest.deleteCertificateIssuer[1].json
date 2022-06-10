@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer329612e2cf?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "373",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 07 Jun 2022 09:07:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "691dc3dc-ea08-4ca5-a5b4-eac08c369aba",
+      "x-ms-keyvault-service-version" : "1.9.422.1",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/certificates/issuers/testissuer329612e2cf\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1654592856,\"updated\":1654592856}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/issuers/testissuer329612e2cf?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "373",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 07 Jun 2022 09:07:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "3e00c353-fe37-44d6-aa11-c006e597eabc",
+      "x-ms-keyvault-service-version" : "1.9.422.1",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/certificates/issuers/testissuer329612e2cf\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"issuerAccountId\"},\"org_details\":{\"id\":\"orgId\",\"zip\":0,\"admin_details\":[{\"first_name\":\"first\",\"last_name\":\"last\",\"email\":\"first.last@hotmail.com\",\"phone\":\"12345\"}]},\"attributes\":{\"enabled\":true,\"created\":1654592856,\"updated\":1654592856}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testissuer329612e2cf" ]
+}

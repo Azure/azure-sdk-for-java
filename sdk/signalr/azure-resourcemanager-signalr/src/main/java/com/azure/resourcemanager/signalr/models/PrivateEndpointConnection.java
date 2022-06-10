@@ -6,6 +6,7 @@ package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
+import java.util.List;
 
 /** An immutable client-side representation of PrivateEndpointConnection. */
 public interface PrivateEndpointConnection {
@@ -38,21 +39,28 @@ public interface PrivateEndpointConnection {
     SystemData systemData();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the private endpoint connection.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the privateEndpoint property: Private endpoint associated with the private endpoint connection.
+     * Gets the privateEndpoint property: Private endpoint.
      *
      * @return the privateEndpoint value.
      */
     PrivateEndpoint privateEndpoint();
 
     /**
-     * Gets the privateLinkServiceConnectionState property: Connection state.
+     * Gets the groupIds property: Group IDs.
+     *
+     * @return the groupIds value.
+     */
+    List<String> groupIds();
+
+    /**
+     * Gets the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
      *
      * @return the privateLinkServiceConnectionState value.
      */

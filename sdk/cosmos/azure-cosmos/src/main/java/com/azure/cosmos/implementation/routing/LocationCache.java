@@ -4,16 +4,16 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
-import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -272,6 +272,23 @@ public class LocationCache {
             return false;
         }
     }
+
+    public String getRegionName(URI locationEndpoint, com.azure.cosmos.implementation.OperationType operationType) {
+        Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
+        if (operationType.isWriteOperation()) {
+            if (Utils.tryGetValue(this.locationInfo.regionNameByWriteEndpoint, locationEndpoint, regionName)) {
+                return regionName.v;
+            }
+        } else {
+            if (Utils.tryGetValue(this.locationInfo.regionNameByReadEndpoint, locationEndpoint, regionName)) {
+                return regionName.v;
+            }
+        }
+
+        //If preferred list is not set, locationEndpoint will be default endpoint, so return the hub region
+        return this.locationInfo.availableWriteEndpointByLocation.keySet().iterator().next();
+    }
+
     private boolean areEqual(URI url1, URI url2) {
         return url1.equals(url2);
     }
@@ -389,14 +406,18 @@ public class LocationCache {
 
             if (readLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
-                nextLocationInfo.availableReadEndpointByLocation = this.getEndpointByLocation(readLocations, out);
+                Utils.ValueHolder<UnmodifiableMap<URI, String>> outReadRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
+                nextLocationInfo.availableReadEndpointByLocation = this.getEndpointByLocation(readLocations, out, outReadRegionMap);
                 nextLocationInfo.availableReadLocations =  out.v;
+                nextLocationInfo.regionNameByReadEndpoint = outReadRegionMap.v;
             }
 
             if (writeLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> out = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
-                nextLocationInfo.availableWriteEndpointByLocation = this.getEndpointByLocation(writeLocations, out);
+                Utils.ValueHolder<UnmodifiableMap<URI, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
+                nextLocationInfo.availableWriteEndpointByLocation = this.getEndpointByLocation(writeLocations, out, outWriteRegionMap);
                 nextLocationInfo.availableWriteLocations = out.v;
+                nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
             }
 
             nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
@@ -461,8 +482,10 @@ public class LocationCache {
     }
 
     private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,
-                                                                  Utils.ValueHolder<UnmodifiableList<String>> orderedLocations) {
+                                                               Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
+                                                               Utils.ValueHolder<UnmodifiableMap<URI, String>> regionMap) {
         Map<String, URI> endpointsByLocation = new CaseInsensitiveMap<>();
+        Map<URI, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
 
         for (DatabaseAccountLocation location: locations) {
@@ -470,8 +493,8 @@ public class LocationCache {
                 try {
                     URI endpoint = new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
                     endpointsByLocation.put(location.getName().toLowerCase(Locale.ROOT), endpoint);
+                    regionByEndpoint.put(endpoint, location.getName().toLowerCase(Locale.ROOT));
                     parsedLocations.add(location.getName());
-
                 } catch (Exception e) {
                     logger.warn("GetAvailableEndpointsByLocation() - skipping add for location = [{}] as it is location name is either empty or endpoint is malformed [{}]",
                             location.getName(),
@@ -481,6 +504,7 @@ public class LocationCache {
         }
 
         orderedLocations.v = new UnmodifiableList<String>(parsedLocations);
+        regionMap.v = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(regionByEndpoint);
 
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
@@ -561,7 +585,8 @@ public class LocationCache {
         private UnmodifiableList<String> availableReadLocations;
         private UnmodifiableMap<String, URI> availableWriteEndpointByLocation;
         private UnmodifiableMap<String, URI> availableReadEndpointByLocation;
-
+        private UnmodifiableMap<URI, String> regionNameByWriteEndpoint;
+        private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
         private UnmodifiableList<URI> writeEndpoints;
         private UnmodifiableList<URI> readEndpoints;
 
@@ -572,6 +597,10 @@ public class LocationCache {
                 = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadEndpointByLocation
                 = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.regionNameByWriteEndpoint
+                = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.regionNameByReadEndpoint
+                = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
             this.readEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));
@@ -583,6 +612,8 @@ public class LocationCache {
             this.availableWriteLocations = other.availableWriteLocations;
             this.availableReadLocations = other.availableReadLocations;
             this.availableWriteEndpointByLocation = other.availableWriteEndpointByLocation;
+            this.regionNameByWriteEndpoint = other.regionNameByWriteEndpoint;
+            this.regionNameByReadEndpoint = other.regionNameByReadEndpoint;
             this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;

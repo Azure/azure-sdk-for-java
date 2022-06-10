@@ -8,24 +8,25 @@ import com.azure.analytics.synapse.artifacts.implementation.NotebooksImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class NotebookAsyncClient {
-    private final NotebooksImpl serviceClient;
+    @Generated private final NotebooksImpl serviceClient;
 
     /**
-     * Initializes an instance of Notebooks client.
+     * Initializes an instance of NotebookAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     NotebookAsyncClient(NotebooksImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -35,20 +36,9 @@ public final class NotebookAsyncClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceSinglePage() {
-        return this.serviceClient.getNotebooksByWorkspaceSinglePageAsync();
-    }
-
-    /**
-     * Lists Notebooks.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebooksByWorkspace() {
         return this.serviceClient.getNotebooksByWorkspaceAsync();
@@ -59,20 +49,9 @@ public final class NotebookAsyncClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceSinglePage() {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceSinglePageAsync();
-    }
-
-    /**
-     * Lists a summary of Notebooks.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebookSummaryByWorkSpace() {
         return this.serviceClient.getNotebookSummaryByWorkSpaceAsync();
@@ -88,8 +67,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponse(
             String notebookName, NotebookResource notebook, String ifMatch) {
@@ -106,8 +86,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebook(
             String notebookName, NotebookResource notebook, String ifMatch) {
@@ -122,8 +103,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebook(String notebookName, NotebookResource notebook) {
         return this.serviceClient.createOrUpdateNotebookAsync(notebookName, notebook);
@@ -138,8 +120,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponse(String notebookName, String ifNoneMatch) {
         return this.serviceClient.getNotebookWithResponseAsync(notebookName, ifNoneMatch);
@@ -154,8 +137,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebook(String notebookName, String ifNoneMatch) {
         return this.serviceClient.getNotebookAsync(notebookName, ifNoneMatch);
@@ -168,8 +152,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebook(String notebookName) {
         return this.serviceClient.getNotebookAsync(notebookName);
@@ -182,8 +167,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponse(String notebookName) {
         return this.serviceClient.deleteNotebookWithResponseAsync(notebookName);
@@ -196,8 +182,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNotebook(String notebookName) {
         return this.serviceClient.deleteNotebookAsync(notebookName);
@@ -211,8 +198,9 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponse(String notebookName, ArtifactRenameRequest request) {
         return this.serviceClient.renameNotebookWithResponseAsync(notebookName, request);
@@ -226,38 +214,11 @@ public final class NotebookAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameNotebook(String notebookName, ArtifactRenameRequest request) {
         return this.serviceClient.renameNotebookAsync(notebookName, request);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getNotebooksByWorkspaceNextSinglePageAsync(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getNotebookSummaryByWorkSpaceNextSinglePageAsync(nextLink);
     }
 }

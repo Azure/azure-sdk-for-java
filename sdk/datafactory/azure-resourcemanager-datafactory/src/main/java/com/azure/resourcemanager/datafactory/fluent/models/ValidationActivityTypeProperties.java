@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Validation activity properties. */
 @Fluent
 public final class ValidationActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationActivityTypeProperties.class);
-
     /*
      * Specifies the timeout for the activity to run. If there is no value
      * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as
@@ -171,7 +168,7 @@ public final class ValidationActivityTypeProperties {
      */
     public void validate() {
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataset in model ValidationActivityTypeProperties"));
@@ -179,4 +176,6 @@ public final class ValidationActivityTypeProperties {
             dataset().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidationActivityTypeProperties.class);
 }

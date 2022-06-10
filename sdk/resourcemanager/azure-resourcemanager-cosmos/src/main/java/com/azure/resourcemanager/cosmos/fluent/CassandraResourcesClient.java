@@ -160,7 +160,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspaceAsync(
             String resourceGroupName,
@@ -180,7 +180,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(
             String resourceGroupName,
@@ -201,7 +201,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(
             String resourceGroupName,
@@ -295,7 +295,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteCassandraKeyspaceAsync(
         String resourceGroupName, String accountName, String keyspaceName);
 
@@ -310,7 +310,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
         String resourceGroupName, String accountName, String keyspaceName);
 
@@ -326,7 +326,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
         String resourceGroupName, String accountName, String keyspaceName, Context context);
 
@@ -473,7 +473,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughputAsync(
             String resourceGroupName,
@@ -494,7 +494,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(
             String resourceGroupName,
@@ -516,7 +516,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(
             String resourceGroupName,
@@ -613,7 +613,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToAutoscaleAsync(
             String resourceGroupName, String accountName, String keyspaceName);
@@ -629,7 +629,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName);
 
@@ -645,7 +645,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToAutoscale(
             String resourceGroupName, String accountName, String keyspaceName, Context context);
@@ -722,7 +722,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToManualThroughputAsync(
             String resourceGroupName, String accountName, String keyspaceName);
@@ -738,7 +738,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToManualThroughput(
             String resourceGroupName, String accountName, String keyspaceName);
@@ -755,7 +755,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraKeyspaceToManualThroughput(
             String resourceGroupName, String accountName, String keyspaceName, Context context);
@@ -951,7 +951,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
         beginCreateUpdateCassandraTableAsync(
             String resourceGroupName,
@@ -973,7 +973,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
         beginCreateUpdateCassandraTable(
             String resourceGroupName,
@@ -996,7 +996,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Cassandra table.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
         beginCreateUpdateCassandraTable(
             String resourceGroupName,
@@ -1099,7 +1099,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteCassandraTableAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
@@ -1115,7 +1115,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(
         String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
@@ -1132,7 +1132,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(
         String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
@@ -1291,7 +1291,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughputAsync(
             String resourceGroupName,
@@ -1314,7 +1314,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(
             String resourceGroupName,
@@ -1338,7 +1338,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(
             String resourceGroupName,
@@ -1444,7 +1444,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToAutoscaleAsync(
             String resourceGroupName, String accountName, String keyspaceName, String tableName);
@@ -1461,7 +1461,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToAutoscale(
             String resourceGroupName, String accountName, String keyspaceName, String tableName);
@@ -1479,7 +1479,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToAutoscale(
             String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
@@ -1561,7 +1561,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToManualThroughputAsync(
             String resourceGroupName, String accountName, String keyspaceName, String tableName);
@@ -1578,7 +1578,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToManualThroughput(
             String resourceGroupName, String accountName, String keyspaceName, String tableName);
@@ -1596,7 +1596,7 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToManualThroughput(
             String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +23,6 @@ import java.util.List;
 })
 @Fluent
 public class IaasVMRestoreRequest extends RestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMRestoreRequest.class);
-
     /*
      * ID of the backup copy to be recovered.
      */
@@ -152,6 +148,20 @@ public class IaasVMRestoreRequest extends RestoreRequest {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * Managed Identity information required to access customer storage
+     * account.
+     */
+    @JsonProperty(value = "identityInfo")
+    private IdentityInfo identityInfo;
+
+    /*
+     * IaaS VM workload specific restore details for restores using managed
+     * identity.
+     */
+    @JsonProperty(value = "identityBasedRestoreDetails")
+    private IdentityBasedRestoreDetails identityBasedRestoreDetails;
 
     /**
      * Get the recoveryPointId property: ID of the backup copy to be recovered.
@@ -536,6 +546,49 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
+     * Get the identityInfo property: Managed Identity information required to access customer storage account.
+     *
+     * @return the identityInfo value.
+     */
+    public IdentityInfo identityInfo() {
+        return this.identityInfo;
+    }
+
+    /**
+     * Set the identityInfo property: Managed Identity information required to access customer storage account.
+     *
+     * @param identityInfo the identityInfo value to set.
+     * @return the IaasVMRestoreRequest object itself.
+     */
+    public IaasVMRestoreRequest withIdentityInfo(IdentityInfo identityInfo) {
+        this.identityInfo = identityInfo;
+        return this;
+    }
+
+    /**
+     * Get the identityBasedRestoreDetails property: IaaS VM workload specific restore details for restores using
+     * managed identity.
+     *
+     * @return the identityBasedRestoreDetails value.
+     */
+    public IdentityBasedRestoreDetails identityBasedRestoreDetails() {
+        return this.identityBasedRestoreDetails;
+    }
+
+    /**
+     * Set the identityBasedRestoreDetails property: IaaS VM workload specific restore details for restores using
+     * managed identity.
+     *
+     * @param identityBasedRestoreDetails the identityBasedRestoreDetails value to set.
+     * @return the IaasVMRestoreRequest object itself.
+     */
+    public IaasVMRestoreRequest withIdentityBasedRestoreDetails(
+        IdentityBasedRestoreDetails identityBasedRestoreDetails) {
+        this.identityBasedRestoreDetails = identityBasedRestoreDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -545,6 +598,12 @@ public class IaasVMRestoreRequest extends RestoreRequest {
         super.validate();
         if (encryptionDetails() != null) {
             encryptionDetails().validate();
+        }
+        if (identityInfo() != null) {
+            identityInfo().validate();
+        }
+        if (identityBasedRestoreDetails() != null) {
+            identityBasedRestoreDetails().validate();
         }
     }
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Profile for Windows VMs in the managed cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
-
     /*
      * Specifies the name of the administrator account. <br><br>
      * **Restriction:** Cannot end in "." <br><br> **Disallowed values:**
@@ -54,6 +51,12 @@ public final class ManagedClusterWindowsProfile {
      */
     @JsonProperty(value = "enableCSIProxy")
     private Boolean enableCsiProxy;
+
+    /*
+     * The Windows gMSA Profile in the Managed Cluster.
+     */
+    @JsonProperty(value = "gmsaProfile")
+    private WindowsGmsaProfile gmsaProfile;
 
     /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
@@ -160,16 +163,41 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
+     * Get the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
+     *
+     * @return the gmsaProfile value.
+     */
+    public WindowsGmsaProfile gmsaProfile() {
+        return this.gmsaProfile;
+    }
+
+    /**
+     * Set the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
+     *
+     * @param gmsaProfile the gmsaProfile value to set.
+     * @return the ManagedClusterWindowsProfile object itself.
+     */
+    public ManagedClusterWindowsProfile withGmsaProfile(WindowsGmsaProfile gmsaProfile) {
+        this.gmsaProfile = gmsaProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
         }
+        if (gmsaProfile() != null) {
+            gmsaProfile().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterWindowsProfile.class);
 }

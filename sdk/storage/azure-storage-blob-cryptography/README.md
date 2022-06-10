@@ -18,12 +18,46 @@ This package supports client side encryption for blob storage.
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob-cryptography</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob-cryptography;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.14.0</version>
+  <version>12.16.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -122,8 +156,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create an `EncryptedBlobClient` using a `BlobClient`. `BlobClient` construction is explained in the `azure-storage-blob` README.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L44-L48 -->
-```java
+```java readme-sample-getEncryptedBlobClientBlobClient
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
     .keyResolver(keyResolver)
@@ -135,8 +168,7 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 Create a `BlobServiceClient` using a connection string.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L52-L58 -->
-```java
+```java readme-sample-getEncryptedBlobClient
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
     .keyResolver(keyResolver)
@@ -148,8 +180,7 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 ### Use a local `KeyEncryptionKey`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L62-L73 -->
-```java
+```java readme-sample-getClientLocalKey
 JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
     Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
     .setId("my-id");
@@ -158,7 +189,6 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
-    .keyResolver(keyResolver)
     .connectionString(connectionString)
     .containerName(containerName)
     .blobName(blobName)
@@ -167,8 +197,7 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 ### Use a `KeyVaultKey`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L77-L94 -->
-```java
+```java readme-sample-getClientKeyVaultKey
 KeyClient keyClient = new KeyClientBuilder()
     .vaultUrl(keyVaultUrl)
     .credential(tokenCredential)
@@ -183,7 +212,6 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
-    .keyResolver(keyResolver)
     .connectionString(connectionString)
     .containerName(containerName)
     .blobName(blobName)
@@ -234,3 +262,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob-cryptography/src/samples
+[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

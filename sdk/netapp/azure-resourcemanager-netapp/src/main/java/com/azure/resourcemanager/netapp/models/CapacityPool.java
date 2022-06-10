@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import java.util.Map;
@@ -54,6 +55,13 @@ public interface CapacityPool {
     String etag();
 
     /**
+     * Gets the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the poolId property: poolId UUID v4 used to identify the Pool.
      *
      * @return the poolId value.
@@ -61,7 +69,7 @@ public interface CapacityPool {
     String poolId();
 
     /**
-     * Gets the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value
+     * Gets the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value
      * must be multiply of 4398046511104).
      *
      * @return the size value.
@@ -185,10 +193,10 @@ public interface CapacityPool {
         /** The stage of the CapacityPool definition allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB
+             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
              * chunks (value must be multiply of 4398046511104)..
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must
+             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
              *     be multiply of 4398046511104).
              * @return the next definition stage.
              */
@@ -311,10 +319,10 @@ public interface CapacityPool {
         /** The stage of the CapacityPool update allowing to specify size. */
         interface WithSize {
             /**
-             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 4TiB
+             * Specifies the size property: size Provisioned size of the pool (in bytes). Allowed values are in 1TiB
              * chunks (value must be multiply of 4398046511104)..
              *
-             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must
+             * @param size size Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must
              *     be multiply of 4398046511104).
              * @return the next definition stage.
              */

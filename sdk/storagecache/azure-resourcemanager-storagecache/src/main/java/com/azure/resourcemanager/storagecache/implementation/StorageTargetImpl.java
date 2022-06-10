@@ -12,6 +12,7 @@ import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
+import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
@@ -59,6 +60,10 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
 
     public ProvisioningStateType provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public OperationalStateType state() {
+        return this.innerModel().state();
     }
 
     public Nfs3Target nfs3() {
@@ -195,6 +200,11 @@ public final class StorageTargetImpl implements StorageTarget, StorageTarget.Def
 
     public StorageTargetImpl withTargetType(StorageTargetType targetType) {
         this.innerModel().withTargetType(targetType);
+        return this;
+    }
+
+    public StorageTargetImpl withState(OperationalStateType state) {
+        this.innerModel().withState(state);
         return this;
     }
 

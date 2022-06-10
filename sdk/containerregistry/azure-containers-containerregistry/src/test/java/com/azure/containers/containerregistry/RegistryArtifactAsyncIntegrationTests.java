@@ -5,7 +5,7 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -184,14 +184,14 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
-        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
+        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, true))
             .verifyComplete();
 
-        validateListTags(client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_ASCENDING, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
-        validateListTags(client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_ASCENDING).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
+        validateListTags(client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
+        validateListTags(client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).streamByPage(PAGESIZE_2).collect(Collectors.toList()), true);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -200,13 +200,13 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
-        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrderBy.NONE).byPage(PAGESIZE_2))
+        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
             .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 
-        validateListTags(client.listTagProperties(ArtifactTagOrderBy.NONE, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), false);
+        validateListTags(client.listTagProperties(ArtifactTagOrder.NONE, Context.NONE).streamByPage(PAGESIZE_2).collect(Collectors.toList()), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

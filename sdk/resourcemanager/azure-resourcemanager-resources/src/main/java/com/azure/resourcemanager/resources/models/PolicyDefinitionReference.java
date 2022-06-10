@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +14,6 @@ import java.util.Map;
 /** The policy definition reference. */
 @Fluent
 public final class PolicyDefinitionReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionReference.class);
-
     /*
      * The ID of the policy definition or policy set definition.
      */
@@ -135,7 +132,7 @@ public final class PolicyDefinitionReference {
      */
     public void validate() {
         if (policyDefinitionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property policyDefinitionId in model PolicyDefinitionReference"));
@@ -151,4 +148,6 @@ public final class PolicyDefinitionReference {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyDefinitionReference.class);
 }

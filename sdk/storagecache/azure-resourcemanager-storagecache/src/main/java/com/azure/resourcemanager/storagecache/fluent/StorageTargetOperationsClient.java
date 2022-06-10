@@ -23,9 +23,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName, String storageTargetName);
 
     /**
@@ -40,9 +40,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -87,9 +87,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -104,9 +104,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -149,9 +149,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -166,9 +166,9 @@ public interface StorageTargetOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -200,4 +200,70 @@ public interface StorageTargetOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void resume(String resourceGroupName, String cacheName, String storageTargetName, Context context);
+
+    /**
+     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
+     * next request.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvalidate(
+        String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
+     * next request.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginInvalidate(
+        String resourceGroupName, String cacheName, String storageTargetName, Context context);
+
+    /**
+     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
+     * next request.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invalidate(String resourceGroupName, String cacheName, String storageTargetName);
+
+    /**
+     * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
+     * next request.
+     *
+     * @param resourceGroupName Target resource group.
+     * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+     *     [-0-9a-zA-Z_] char class.
+     * @param storageTargetName Name of Storage Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void invalidate(String resourceGroupName, String cacheName, String storageTargetName, Context context);
 }

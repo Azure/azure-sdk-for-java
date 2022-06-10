@@ -6,8 +6,8 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeManagedVirtualNetworkReference;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Managed")
 @Fluent
 public final class ManagedIntegrationRuntime extends IntegrationRuntime {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntime.class);
-
     /*
      * Integration runtime state, only valid for managed dedicated integration
      * runtime.
@@ -31,6 +29,12 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ManagedIntegrationRuntimeTypeProperties innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
+
+    /*
+     * Managed integration runtime managed virtual network.
+     */
+    @JsonProperty(value = "managedVirtualNetwork")
+    private ManagedIntegrationRuntimeManagedVirtualNetworkReference innerManagedVirtualNetwork;
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
@@ -48,6 +52,15 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     private ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * Get the innerManagedVirtualNetwork property: Managed integration runtime managed virtual network.
+     *
+     * @return the innerManagedVirtualNetwork value.
+     */
+    private ManagedIntegrationRuntimeManagedVirtualNetworkReference innerManagedVirtualNetwork() {
+        return this.innerManagedVirtualNetwork;
     }
 
     /** {@inheritDoc} */
@@ -104,6 +117,75 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
+     * Get the referenceName property: The reference name of the managed virtual network.
+     *
+     * @return the referenceName value.
+     */
+    public String referenceName() {
+        return this.innerManagedVirtualNetwork() == null ? null : this.innerManagedVirtualNetwork().referenceName();
+    }
+
+    /**
+     * Set the referenceName property: The reference name of the managed virtual network.
+     *
+     * @param referenceName the referenceName value to set.
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime withReferenceName(String referenceName) {
+        if (this.innerManagedVirtualNetwork() == null) {
+            this.innerManagedVirtualNetwork = new ManagedIntegrationRuntimeManagedVirtualNetworkReference();
+        }
+        this.innerManagedVirtualNetwork().withReferenceName(referenceName);
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the managed virtual network.
+     *
+     * @return the type value.
+     */
+    public String typeManagedVirtualNetworkType() {
+        return this.innerManagedVirtualNetwork() == null ? null : this.innerManagedVirtualNetwork().type();
+    }
+
+    /**
+     * Set the type property: The type of the managed virtual network.
+     *
+     * @param type the type value to set.
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime withTypeManagedVirtualNetworkType(String type) {
+        if (this.innerManagedVirtualNetwork() == null) {
+            this.innerManagedVirtualNetwork = new ManagedIntegrationRuntimeManagedVirtualNetworkReference();
+        }
+        this.innerManagedVirtualNetwork().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the id property: The id of the managed virtual network.
+     *
+     * @return the id value.
+     */
+    public String id() {
+        return this.innerManagedVirtualNetwork() == null ? null : this.innerManagedVirtualNetwork().id();
+    }
+
+    /**
+     * Set the id property: The id of the managed virtual network.
+     *
+     * @param id the id value to set.
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime withId(String id) {
+        if (this.innerManagedVirtualNetwork() == null) {
+            this.innerManagedVirtualNetwork = new ManagedIntegrationRuntimeManagedVirtualNetworkReference();
+        }
+        this.innerManagedVirtualNetwork().withId(id);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,12 +194,17 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
         } else {
             innerTypeProperties().validate();
         }
+        if (innerManagedVirtualNetwork() != null) {
+            innerManagedVirtualNetwork().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIntegrationRuntime.class);
 }

@@ -28,10 +28,11 @@ import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLR
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockResponse;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
@@ -70,7 +71,7 @@ public final class BlockBlobsImpl {
     public interface BlockBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsUploadResponse> upload(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -109,7 +110,7 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrl(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -148,12 +149,13 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-copy-source") String copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsStageBlockResponse> stageBlock(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -177,7 +179,7 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -207,7 +209,7 @@ public final class BlockBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsCommitBlockListResponse> commitBlockList(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -246,7 +248,7 @@ public final class BlockBlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlockBlobsGetBlockListResponse> getBlockList(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -300,12 +302,12 @@ public final class BlockBlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsUploadResponse> uploadWithResponseAsync(
@@ -330,7 +332,7 @@ public final class BlockBlobsImpl {
             Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
@@ -380,10 +382,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
@@ -411,7 +413,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -433,7 +435,7 @@ public final class BlockBlobsImpl {
      * The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from a given
      * URL. This API is supported beginning with the 2020-04-08 version. Partial updates are not supported with Put Blob
      * from URL; the content of an existing blob is overwritten with the content of the new blob. To perform partial
-     * updates to a block blob’s contents using a source URL, use the Put Block from URL API in conjunction with Put
+     * updates to a block blobâ€™s contents using a source URL, use the Put Block from URL API in conjunction with Put
      * Block List.
      *
      * @param containerName The container name.
@@ -476,14 +478,16 @@ public final class BlockBlobsImpl {
      *     copied.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
+     * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
+     *     tags specified by x-ms-tags.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsPutBlobFromUrlResponse> putBlobFromUrlWithResponseAsync(
@@ -511,9 +515,10 @@ public final class BlockBlobsImpl {
             String blobTagsString,
             Boolean copySourceBlobProperties,
             String copySourceAuthorization,
+            BlobCopySourceTagsMode copySourceTags,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String blobType = "BlockBlob";
         final String accept = "application/xml";
@@ -563,10 +568,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
@@ -597,7 +602,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -616,6 +621,7 @@ public final class BlockBlobsImpl {
                 copySource,
                 copySourceBlobProperties,
                 copySourceAuthorization,
+                copySourceTags,
                 accept,
                 context);
     }
@@ -639,12 +645,12 @@ public final class BlockBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsStageBlockResponse> stageBlockWithResponseAsync(
@@ -659,7 +665,7 @@ public final class BlockBlobsImpl {
             String leaseId,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "block";
         final String accept = "application/xml";
@@ -679,10 +685,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.stageBlock(
@@ -699,7 +705,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 this.client.getVersion(),
                 requestId,
                 body,
@@ -737,12 +743,12 @@ public final class BlockBlobsImpl {
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsStageBlockFromURLResponse> stageBlockFromURLWithResponseAsync(
@@ -763,7 +769,7 @@ public final class BlockBlobsImpl {
             String requestId,
             String copySourceAuthorization,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "block";
         final String accept = "application/xml";
@@ -783,10 +789,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
@@ -808,7 +814,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 leaseId,
                 sourceIfModifiedSinceConverted,
                 sourceIfUnmodifiedSinceConverted,
@@ -860,12 +866,12 @@ public final class BlockBlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsCommitBlockListResponse> commitBlockListWithResponseAsync(
@@ -890,7 +896,7 @@ public final class BlockBlobsImpl {
             Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "blocklist";
         final String accept = "application/xml";
@@ -940,10 +946,10 @@ public final class BlockBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
@@ -972,7 +978,7 @@ public final class BlockBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 tier,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
@@ -1010,9 +1016,9 @@ public final class BlockBlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobsGetBlockListResponse> getBlockListWithResponseAsync(

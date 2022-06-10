@@ -37,6 +37,13 @@ public final class VideoSink extends SinkNodeBase {
     private VideoCreationProperties videoCreationProperties;
 
     /*
+     * Optional video publishing options to be used for changing publishing
+     * behavior of the output video.
+     */
+    @JsonProperty(value = "videoPublishingOptions")
+    private VideoPublishingOptions videoPublishingOptions;
+
+    /*
      * Path to a local file system directory for caching of temporary media
      * files. This will also be used to store content which cannot be
      * immediately uploaded to Azure due to Internet connectivity issues.
@@ -104,6 +111,28 @@ public final class VideoSink extends SinkNodeBase {
      */
     public VideoSink setVideoCreationProperties(VideoCreationProperties videoCreationProperties) {
         this.videoCreationProperties = videoCreationProperties;
+        return this;
+    }
+
+    /**
+     * Get the videoPublishingOptions property: Optional video publishing options to be used for changing publishing
+     * behavior of the output video.
+     *
+     * @return the videoPublishingOptions value.
+     */
+    public VideoPublishingOptions getVideoPublishingOptions() {
+        return this.videoPublishingOptions;
+    }
+
+    /**
+     * Set the videoPublishingOptions property: Optional video publishing options to be used for changing publishing
+     * behavior of the output video.
+     *
+     * @param videoPublishingOptions the videoPublishingOptions value to set.
+     * @return the VideoSink object itself.
+     */
+    public VideoSink setVideoPublishingOptions(VideoPublishingOptions videoPublishingOptions) {
+        this.videoPublishingOptions = videoPublishingOptions;
         return this;
     }
 

@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.OciAnnotations;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,7 +22,7 @@ public final class OCIIndex extends Manifest {
      * Additional information provided through arbitrary metadata.
      */
     @JsonProperty(value = "annotations")
-    private Annotations annotations;
+    private OciAnnotations annotations;
 
     /**
      * Get the manifests property: List of OCI image layer information.
@@ -48,7 +49,7 @@ public final class OCIIndex extends Manifest {
      *
      * @return the annotations value.
      */
-    public Annotations getAnnotations() {
+    public OciAnnotations getAnnotations() {
         return this.annotations;
     }
 
@@ -58,7 +59,7 @@ public final class OCIIndex extends Manifest {
      * @param annotations the annotations value to set.
      * @return the OCIIndex object itself.
      */
-    public OCIIndex setAnnotations(Annotations annotations) {
+    public OCIIndex setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
     }

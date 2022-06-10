@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties can be updated for a configuration. */
 @Fluent
 public final class ConfigurationForBatchUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationForBatchUpdateProperties.class);
-
     /*
      * Value of the configuration.
      */

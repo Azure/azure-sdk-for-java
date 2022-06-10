@@ -1,9 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
-### Features Added
-- Add support for TokenCredential authentication with CallingServerClientBuilder.
-- Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
+- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
+- Added `retryOptions` to `CallingServerClientBuilder`
 
 ### Features Added
 
@@ -12,12 +11,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.4 (2021-10-06)
+### Features Added
+- Add support for TokenCredential authentication with CallingServerClientBuilder.
+- Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
+
+### Bugs Fixed
+- Using released version of azure-communication-common.
+
+### Other Changes
 #### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
-
-## 1.0.0-beta.4 (2021-08-04)
-### Bug Fixes
-- Using released version of azure-communication-common.
 
 ## 1.0.0-beta.3 (2021-07-26)
 ### Features Added
@@ -32,7 +37,7 @@
 ## 1.0.0-beta.1 (2021-06-24)
 This is the first release of Azure Communication Service Calling Server. For more information, please see the [README][read_me].
 
-This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for .NET GitHub repo](https://github.com/Azure/azure-sdk-for-net/issues).
+This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo](https://github.com/Azure/azure-sdk-for-java/issues).
 
 ### Features Added
 - Create outbound call to an Azure Communication Service user or a phone number.

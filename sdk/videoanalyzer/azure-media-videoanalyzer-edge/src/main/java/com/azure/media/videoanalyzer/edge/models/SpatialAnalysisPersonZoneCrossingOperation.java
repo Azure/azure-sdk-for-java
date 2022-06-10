@@ -55,6 +55,13 @@ public final class SpatialAnalysisPersonZoneCrossingOperation extends SpatialAna
 
     /** {@inheritDoc} */
     @Override
+    public SpatialAnalysisPersonZoneCrossingOperation setCalibrationConfiguration(String calibrationConfiguration) {
+        super.setCalibrationConfiguration(calibrationConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SpatialAnalysisPersonZoneCrossingOperation setCameraConfiguration(String cameraConfiguration) {
         super.setCameraConfiguration(cameraConfiguration);
         return this;
@@ -62,8 +69,23 @@ public final class SpatialAnalysisPersonZoneCrossingOperation extends SpatialAna
 
     /** {@inheritDoc} */
     @Override
+    public SpatialAnalysisPersonZoneCrossingOperation setCameraCalibratorNodeConfiguration(
+            String cameraCalibratorNodeConfiguration) {
+        super.setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SpatialAnalysisPersonZoneCrossingOperation setDetectorNodeConfiguration(String detectorNodeConfiguration) {
         super.setDetectorNodeConfiguration(detectorNodeConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SpatialAnalysisPersonZoneCrossingOperation setTrackerNodeConfiguration(String trackerNodeConfiguration) {
+        super.setTrackerNodeConfiguration(trackerNodeConfiguration);
         return this;
     }
 

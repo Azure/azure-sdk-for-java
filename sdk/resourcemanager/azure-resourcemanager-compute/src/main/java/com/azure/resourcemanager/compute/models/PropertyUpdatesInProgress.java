@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the disk for which update is pending. */
 @Fluent
 public final class PropertyUpdatesInProgress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PropertyUpdatesInProgress.class);
-
     /*
      * The target performance tier of the disk if a tier change operation is in
      * progress.

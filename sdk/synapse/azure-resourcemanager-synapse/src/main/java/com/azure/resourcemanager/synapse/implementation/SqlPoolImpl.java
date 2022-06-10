@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
@@ -79,7 +80,7 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         return this.innerModel().restorePointInTime();
     }
 
-    public String createMode() {
+    public CreateMode createMode() {
         return this.innerModel().createMode();
     }
 
@@ -308,16 +309,6 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         }
     }
 
-    public SqlPoolImpl withStatus(String status) {
-        if (isInCreateMode()) {
-            this.innerModel().withStatus(status);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withStatus(status);
-            return this;
-        }
-    }
-
     public SqlPoolImpl withRestorePointInTime(OffsetDateTime restorePointInTime) {
         if (isInCreateMode()) {
             this.innerModel().withRestorePointInTime(restorePointInTime);
@@ -328,22 +319,12 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         }
     }
 
-    public SqlPoolImpl withCreateMode(String createMode) {
+    public SqlPoolImpl withCreateMode(CreateMode createMode) {
         if (isInCreateMode()) {
             this.innerModel().withCreateMode(createMode);
             return this;
         } else {
             this.updateSqlPoolInfo.withCreateMode(createMode);
-            return this;
-        }
-    }
-
-    public SqlPoolImpl withCreationDate(OffsetDateTime creationDate) {
-        if (isInCreateMode()) {
-            this.innerModel().withCreationDate(creationDate);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withCreationDate(creationDate);
             return this;
         }
     }
@@ -359,13 +340,8 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public SqlPoolImpl withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
-        if (isInCreateMode()) {
-            this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
-            return this;
-        }
+        this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -36,40 +36,10 @@ public final class TasksStateTasks {
     private int total;
 
     /*
-     * The entityRecognitionTasks property.
+     * The items property.
      */
-    @JsonProperty(value = "entityRecognitionTasks")
-    private List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks;
-
-    /*
-     * The entityRecognitionPiiTasks property.
-     */
-    @JsonProperty(value = "entityRecognitionPiiTasks")
-    private List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks;
-
-    /*
-     * The keyPhraseExtractionTasks property.
-     */
-    @JsonProperty(value = "keyPhraseExtractionTasks")
-    private List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks;
-
-    /*
-     * The entityLinkingTasks property.
-     */
-    @JsonProperty(value = "entityLinkingTasks")
-    private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
-
-    /*
-     * The sentimentAnalysisTasks property.
-     */
-    @JsonProperty(value = "sentimentAnalysisTasks")
-    private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
-
-    /*
-     * The extractiveSummarizationTasks property.
-     */
-    @JsonProperty(value = "extractiveSummarizationTasks")
-    private List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks;
+    @JsonProperty(value = "items")
+    private List<AnalyzeTextLROResult> items;
 
     /**
      * Get the completed property: The completed property.
@@ -152,127 +122,22 @@ public final class TasksStateTasks {
     }
 
     /**
-     * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
+     * Get the items property: The items property.
      *
-     * @return the entityRecognitionTasks value.
+     * @return the items value.
      */
-    public List<TasksStateTasksEntityRecognitionTasksItem> getEntityRecognitionTasks() {
-        return this.entityRecognitionTasks;
+    public List<AnalyzeTextLROResult> getItems() {
+        return this.items;
     }
 
     /**
-     * Set the entityRecognitionTasks property: The entityRecognitionTasks property.
+     * Set the items property: The items property.
      *
-     * @param entityRecognitionTasks the entityRecognitionTasks value to set.
+     * @param items the items value to set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setEntityRecognitionTasks(
-            List<TasksStateTasksEntityRecognitionTasksItem> entityRecognitionTasks) {
-        this.entityRecognitionTasks = entityRecognitionTasks;
-        return this;
-    }
-
-    /**
-     * Get the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
-     *
-     * @return the entityRecognitionPiiTasks value.
-     */
-    public List<TasksStateTasksEntityRecognitionPiiTasksItem> getEntityRecognitionPiiTasks() {
-        return this.entityRecognitionPiiTasks;
-    }
-
-    /**
-     * Set the entityRecognitionPiiTasks property: The entityRecognitionPiiTasks property.
-     *
-     * @param entityRecognitionPiiTasks the entityRecognitionPiiTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setEntityRecognitionPiiTasks(
-            List<TasksStateTasksEntityRecognitionPiiTasksItem> entityRecognitionPiiTasks) {
-        this.entityRecognitionPiiTasks = entityRecognitionPiiTasks;
-        return this;
-    }
-
-    /**
-     * Get the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
-     *
-     * @return the keyPhraseExtractionTasks value.
-     */
-    public List<TasksStateTasksKeyPhraseExtractionTasksItem> getKeyPhraseExtractionTasks() {
-        return this.keyPhraseExtractionTasks;
-    }
-
-    /**
-     * Set the keyPhraseExtractionTasks property: The keyPhraseExtractionTasks property.
-     *
-     * @param keyPhraseExtractionTasks the keyPhraseExtractionTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setKeyPhraseExtractionTasks(
-            List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
-        this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
-        return this;
-    }
-
-    /**
-     * Get the entityLinkingTasks property: The entityLinkingTasks property.
-     *
-     * @return the entityLinkingTasks value.
-     */
-    public List<TasksStateTasksEntityLinkingTasksItem> getEntityLinkingTasks() {
-        return this.entityLinkingTasks;
-    }
-
-    /**
-     * Set the entityLinkingTasks property: The entityLinkingTasks property.
-     *
-     * @param entityLinkingTasks the entityLinkingTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
-        this.entityLinkingTasks = entityLinkingTasks;
-        return this;
-    }
-
-    /**
-     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
-     *
-     * @return the sentimentAnalysisTasks value.
-     */
-    public List<TasksStateTasksSentimentAnalysisTasksItem> getSentimentAnalysisTasks() {
-        return this.sentimentAnalysisTasks;
-    }
-
-    /**
-     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
-     *
-     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setSentimentAnalysisTasks(
-            List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
-        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
-        return this;
-    }
-
-    /**
-     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
-     *
-     * @return the extractiveSummarizationTasks value.
-     */
-    public List<TasksStateTasksExtractiveSummarizationTasksItem> getExtractiveSummarizationTasks() {
-        return this.extractiveSummarizationTasks;
-    }
-
-    /**
-     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
-     *
-     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
-     * @return the TasksStateTasks object itself.
-     */
-    public TasksStateTasks setExtractiveSummarizationTasks(
-            List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks) {
-        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
+    public TasksStateTasks setItems(List<AnalyzeTextLROResult> items) {
+        this.items = items;
         return this;
     }
 }

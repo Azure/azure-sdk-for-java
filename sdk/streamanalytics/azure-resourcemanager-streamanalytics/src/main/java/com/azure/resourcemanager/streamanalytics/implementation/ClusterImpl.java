@@ -4,12 +4,15 @@
 
 package com.azure.resourcemanager.streamanalytics.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.streamanalytics.models.Cluster;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
+import com.azure.resourcemanager.streamanalytics.models.ClusterJob;
+import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,8 +54,24 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().etag();
     }
 
-    public ClusterProperties properties() {
-        return this.innerModel().properties();
+    public OffsetDateTime createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public String clusterId() {
+        return this.innerModel().clusterId();
+    }
+
+    public ClusterProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public Integer capacityAllocated() {
+        return this.innerModel().capacityAllocated();
+    }
+
+    public Integer capacityAssigned() {
+        return this.innerModel().capacityAssigned();
     }
 
     public Region region() {
@@ -165,6 +184,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
+    public PagedIterable<ClusterJob> listStreamingJobs() {
+        return serviceManager.clusters().listStreamingJobs(resourceGroupName, clusterName);
+    }
+
+    public PagedIterable<ClusterJob> listStreamingJobs(Context context) {
+        return serviceManager.clusters().listStreamingJobs(resourceGroupName, clusterName, context);
+    }
+
     public ClusterImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -185,14 +212,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    public ClusterImpl withProperties(ClusterProperties properties) {
-        this.innerModel().withProperties(properties);
-        return this;
-    }
-
     public ClusterImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public ClusterImpl withIfNoneMatch(String ifNoneMatch) {
@@ -200,8 +227,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    public ClusterImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

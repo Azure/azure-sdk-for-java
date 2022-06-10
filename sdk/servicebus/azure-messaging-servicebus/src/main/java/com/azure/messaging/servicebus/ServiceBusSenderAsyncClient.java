@@ -59,16 +59,98 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
  *
  * <p><strong>Create an instance of sender</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation -->
  *
  * <p><strong>Create an instance of sender using default credential</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
+ * <pre>
+ * &#47;&#47; The required parameter is a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString provides a way to authenticate with Service Bus.
+ * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
+ *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential -->
  *
  * <p><strong>Send messages to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Creating a batch without options set, will allow for automatic routing of events to any partition.
+ * sender.createMessageBatch&#40;&#41;.flatMap&#40;batch -&gt; &#123;
+ *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-1&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
+ *     batch.tryAddMessage&#40;new ServiceBusMessage&#40;BinaryData.fromBytes&#40;&quot;test-2&quot;.getBytes&#40;UTF_8&#41;&#41;&#41;&#41;;
+ *     return sender.sendMessages&#40;batch&#41;;
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;,
+ *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch -->
  *
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize -->
+ * <pre>
+ * Flux&lt;ServiceBusMessage&gt; telemetryMessages = Flux.just&#40;firstMessage, secondMessage&#41;;
+ *
+ * &#47;&#47; Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
+ * &#47;&#47; In this case, all the batches created with these options are limited to 256 bytes.
+ * CreateMessageBatchOptions options = new CreateMessageBatchOptions&#40;&#41;
+ *     .setMaximumSizeInBytes&#40;256&#41;;
+ * AtomicReference&lt;ServiceBusMessageBatch&gt; currentBatch = new AtomicReference&lt;&gt;&#40;
+ *     sender.createMessageBatch&#40;options&#41;.block&#40;&#41;&#41;;
+ *
+ * &#47;&#47; The sample Flux contains two messages, but it could be an infinite stream of telemetry messages.
+ * telemetryMessages.flatMap&#40;message -&gt; &#123;
+ *     ServiceBusMessageBatch batch = currentBatch.get&#40;&#41;;
+ *     if &#40;batch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *         return Mono.empty&#40;&#41;;
+ *     &#125;
+ *
+ *     return Mono.when&#40;
+ *         sender.sendMessages&#40;batch&#41;,
+ *         sender.createMessageBatch&#40;options&#41;.map&#40;newBatch -&gt; &#123;
+ *             currentBatch.set&#40;newBatch&#41;;
+ *
+ *             &#47;&#47; Add the message that did not fit in the previous batch.
+ *             if &#40;!newBatch.tryAddMessage&#40;message&#41;&#41; &#123;
+ *                 throw Exceptions.propagate&#40;new IllegalArgumentException&#40;
+ *                     &quot;Message was too large to fit in an empty batch. Max size: &quot; + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
+ *             &#125;
+ *
+ *             return newBatch;
+ *         &#125;&#41;&#41;;
+ * &#125;&#41;.then&#40;&#41;
+ *     .doFinally&#40;signal -&gt; &#123;
+ *         ServiceBusMessageBatch batch = currentBatch.getAndSet&#40;null&#41;;
+ *         if &#40;batch != null &amp;&amp; batch.getCount&#40;&#41; &gt; 0&#41; &#123;
+ *             sender.sendMessages&#40;batch&#41;.block&#40;&#41;;
+ *         &#125;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize -->
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
@@ -85,7 +167,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private static final CreateMessageBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateMessageBatchOptions();
     private static final String SERVICE_BASE_NAME = "ServiceBus.";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicReference<String> linkName = new AtomicReference<>();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final TracerProvider tracerProvider;
@@ -150,7 +232,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> sendMessage(ServiceBusMessage message) {
         if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         }
         return sendInternal(Flux.just(message), null);
     }
@@ -171,10 +253,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         }
         if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return sendInternal(Flux.just(message), transactionContext);
@@ -199,10 +281,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         }
         if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return sendIterable(messages, transactionContext);
@@ -256,10 +338,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> sendMessages(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         }
         if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return sendInternal(batch, transactionContext);
@@ -290,11 +372,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<ServiceBusMessageBatch> createMessageBatch(CreateMessageBatchOptions options) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "createMessageBatch")));
         }
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
         final int maxSize = options.getMaximumSizeInBytes();
@@ -305,7 +387,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 : MAX_MESSAGE_LENGTH_BYTES;
 
             if (maxSize > maximumLinkSize) {
-                return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+                return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
                     "CreateMessageBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
                         + " (%s bytes).", maxSize, maximumLinkSize)));
             }
@@ -338,10 +420,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         }
         if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
         return scheduleMessageInternal(message, scheduledEnqueueTime, transactionContext);
@@ -398,15 +480,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "scheduleMessages")));
         }
         if (Objects.isNull(messages)) {
-            return fluxError(logger, new NullPointerException("'messages' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'messages' cannot be null."));
         }
 
         if (Objects.isNull(scheduledEnqueueTime)) {
-            return fluxError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+            return fluxError(LOGGER, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
         return createMessageBatch()
@@ -417,7 +499,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         final String error = String.format(Locale.US,
                             "Messages exceed max allowed size for all the messages together. "
                                 + "Failed to add message at index '%s'.", index);
-                        throw logger.logExceptionAsError(new IllegalArgumentException(error));
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(error));
                     }
                     ++index;
                 }
@@ -443,11 +525,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "cancelScheduledMessage")));
         }
         if (sequenceNumber < 0) {
-            return monoError(logger, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
+            return monoError(LOGGER, new IllegalArgumentException("'sequenceNumber' cannot be negative."));
         }
 
         return connectionProcessor
@@ -470,12 +552,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
 
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "cancelScheduledMessages")));
         }
 
         if (Objects.isNull(sequenceNumbers)) {
-            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'messages' cannot be null."));
         }
 
         return connectionProcessor
@@ -496,7 +578,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "createTransaction")));
         }
 
@@ -521,7 +603,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "commitTransaction")));
         }
 
@@ -546,7 +628,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "rollbackTransaction")));
         }
 
@@ -571,11 +653,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<Void> sendIterable(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transaction) {
         if (Objects.isNull(messages)) {
-            return monoError(logger, new NullPointerException("'messages' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'messages' cannot be null."));
         }
 
         return createMessageBatch().flatMap(messageBatch -> {
-            StreamSupport.stream(messages.spliterator(), true)
+            StreamSupport.stream(messages.spliterator(), false)
                 .forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
@@ -584,15 +666,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private Mono<Long> scheduleMessageInternal(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime,
         ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "scheduleMessage")));
         }
         if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         }
 
         if (Objects.isNull(scheduledEnqueueTime)) {
-            return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
         return getSendLink()
@@ -618,11 +700,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      */
     private Mono<Void> sendInternal(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessages")));
         }
         if (Objects.isNull(batch)) {
-            return monoError(logger, new NullPointerException("'batch' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'batch' cannot be null."));
         }
 
         final boolean isTracingEnabled = tracerProvider.isEnabled();
@@ -631,15 +713,17 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             : null;
 
         if (batch.getMessages().isEmpty()) {
-            logger.info("Cannot send an EventBatch that is empty.");
+            LOGGER.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
         }
 
-        logger.info("Sending batch with size[{}].", batch.getCount());
+        LOGGER.atInfo()
+            .addKeyValue("batchSize", batch.getCount())
+            .log("Sending batch.");
 
         AtomicReference<Context> sharedContext = new AtomicReference<>(Context.NONE);
         final List<org.apache.qpid.proton.message.Message> messages = Collections.synchronizedList(new ArrayList<>());
-        batch.getMessages().parallelStream().forEach(serviceBusMessage -> {
+        batch.getMessages().forEach(serviceBusMessage -> {
             if (isTracingEnabled) {
                 parentContext.set(serviceBusMessage.getContext());
                 if (sharedContext.get().equals(Context.NONE)) {
@@ -670,7 +754,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         final Mono<Void> sendMessage = getSendLink().flatMap(link -> {
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 final TransactionalState deliveryState = new TransactionalState();
-                deliveryState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
                 return messages.size() == 1
                     ? link.send(messages.get(0), deliveryState)
                     : link.send(messages, deliveryState);
@@ -693,7 +777,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
         return withRetry(getSendLink(), retryOptions, "Failed to create send link " + linkName)
@@ -715,7 +799,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return eventBatches
             .flatMap(messageBatch -> sendInternal(messageBatch, transactionContext))
             .then()
-            .doOnError(error -> logger.error("Error sending batch.", error));
+            .doOnError(error -> LOGGER.error("Error sending batch.", error));
     }
 
     private Mono<AmqpSendLink> getSendLink() {

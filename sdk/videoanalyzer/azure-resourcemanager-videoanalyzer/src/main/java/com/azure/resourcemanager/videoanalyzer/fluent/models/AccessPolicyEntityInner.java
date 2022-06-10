@@ -5,41 +5,39 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicyRole;
 import com.azure.resourcemanager.videoanalyzer.models.AuthenticationBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Policy that determines how a video can be accessed. */
-@JsonFlatten
+/** Access policies help define the authentication rules, and control access to specific video resources. */
 @Fluent
-public class AccessPolicyEntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyEntityInner.class);
+public final class AccessPolicyEntityInner extends ProxyResource {
+    /*
+     * The resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private AccessPolicyProperties innerProperties;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Defines the access level granted by this policy.
+    /**
+     * Get the innerProperties property: The resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.role")
-    private AccessPolicyRole role;
-
-    /*
-     * Authentication method to be used when validating client API access.
-     */
-    @JsonProperty(value = "properties.authentication")
-    private AuthenticationBase authentication;
+    private AccessPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -53,7 +51,7 @@ public class AccessPolicyEntityInner extends ProxyResource {
      * @return the role value.
      */
     public AccessPolicyRole role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -63,7 +61,10 @@ public class AccessPolicyEntityInner extends ProxyResource {
      * @return the AccessPolicyEntityInner object itself.
      */
     public AccessPolicyEntityInner withRole(AccessPolicyRole role) {
-        this.role = role;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyProperties();
+        }
+        this.innerProperties().withRole(role);
         return this;
     }
 
@@ -73,7 +74,7 @@ public class AccessPolicyEntityInner extends ProxyResource {
      * @return the authentication value.
      */
     public AuthenticationBase authentication() {
-        return this.authentication;
+        return this.innerProperties() == null ? null : this.innerProperties().authentication();
     }
 
     /**
@@ -83,7 +84,10 @@ public class AccessPolicyEntityInner extends ProxyResource {
      * @return the AccessPolicyEntityInner object itself.
      */
     public AccessPolicyEntityInner withAuthentication(AuthenticationBase authentication) {
-        this.authentication = authentication;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyProperties();
+        }
+        this.innerProperties().withAuthentication(authentication);
         return this;
     }
 
@@ -93,8 +97,8 @@ public class AccessPolicyEntityInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authentication() != null) {
-            authentication().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

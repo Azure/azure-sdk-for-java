@@ -26,7 +26,18 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
  *
- * {@codesnippet com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * CallingServerClient callingServerClient = new CallingServerClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation -->
  *
  * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -50,7 +61,20 @@ public final class CallingServerClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      *
-     * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
+     * <!-- src_embed com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
+     * <pre>
+     * List&lt;CommunicationIdentifier&gt; targets = Arrays.asList&#40;firstCallee, secondCallee&#41;;
+     * List&lt;MediaType&gt; requestedMediaTypes = Arrays.asList&#40;MediaType.AUDIO, MediaType.VIDEO&#41;;
+     * List&lt;EventSubscriptionType&gt; requestedCallEvents = Arrays.asList&#40;
+     *     EventSubscriptionType.DTMF_RECEIVED,
+     *     EventSubscriptionType.PARTICIPANTS_UPDATED&#41;;
+     * CreateCallOptions createCallOptions = new CreateCallOptions&#40;
+     *     callbackUri,
+     *     requestedMediaTypes,
+     *     requestedCallEvents&#41;;
+     * CallConnection callConnection = callingServerClient.createCallConnection&#40;source, targets, createCallOptions&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.callingserver.CallingServerClient.create.call.connection -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection createCallConnection(

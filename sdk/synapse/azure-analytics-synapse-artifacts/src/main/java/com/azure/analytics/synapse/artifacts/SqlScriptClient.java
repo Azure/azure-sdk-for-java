@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.SqlScriptsImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SqlScriptResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SqlScriptClient {
-    private final SqlScriptsImpl serviceClient;
+    @Generated private final SqlScriptsImpl serviceClient;
 
     /**
-     * Initializes an instance of SqlScripts client.
+     * Initializes an instance of SqlScriptClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     SqlScriptClient(SqlScriptsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -34,8 +36,9 @@ public final class SqlScriptClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace() {
         return this.serviceClient.getSqlScriptsByWorkspace();
@@ -48,8 +51,9 @@ public final class SqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace(Context context) {
         return this.serviceClient.getSqlScriptsByWorkspace(context);
@@ -67,6 +71,7 @@ public final class SqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Script resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource createOrUpdateSqlScript(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
@@ -83,6 +88,7 @@ public final class SqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Script resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource createOrUpdateSqlScript(String sqlScriptName, SqlScriptResource sqlScript) {
         return this.serviceClient.createOrUpdateSqlScript(sqlScriptName, sqlScript);
@@ -99,8 +105,9 @@ public final class SqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
@@ -118,6 +125,7 @@ public final class SqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a sql script.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource getSqlScript(String sqlScriptName, String ifNoneMatch) {
         return this.serviceClient.getSqlScript(sqlScriptName, ifNoneMatch);
@@ -132,6 +140,7 @@ public final class SqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a sql script.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlScriptResource getSqlScript(String sqlScriptName) {
         return this.serviceClient.getSqlScript(sqlScriptName);
@@ -147,8 +156,9 @@ public final class SqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlScriptResource> getSqlScriptWithResponse(
             String sqlScriptName, String ifNoneMatch, Context context) {
@@ -163,6 +173,7 @@ public final class SqlScriptClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSqlScript(String sqlScriptName) {
         this.serviceClient.deleteSqlScript(sqlScriptName);
@@ -176,8 +187,9 @@ public final class SqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSqlScriptWithResponse(String sqlScriptName, Context context) {
         return this.serviceClient.deleteSqlScriptWithResponse(sqlScriptName, context);
@@ -192,6 +204,7 @@ public final class SqlScriptClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameSqlScript(String sqlScriptName, ArtifactRenameRequest request) {
         this.serviceClient.renameSqlScript(sqlScriptName, request);
@@ -206,8 +219,9 @@ public final class SqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameSqlScriptWithResponse(
             String sqlScriptName, ArtifactRenameRequest request, Context context) {

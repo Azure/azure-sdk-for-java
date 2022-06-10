@@ -4,19 +4,15 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** AzureRestoreValidation request. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ValidateIaasVMRestoreOperationRequest")
-@Immutable
+@Fluent
 public final class ValidateIaasVMRestoreOperationRequest extends ValidateRestoreOperationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateIaasVMRestoreOperationRequest.class);
-
     /** {@inheritDoc} */
     @Override
     public ValidateIaasVMRestoreOperationRequest withRestoreRequest(RestoreRequest restoreRequest) {

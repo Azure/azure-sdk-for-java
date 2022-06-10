@@ -15,8 +15,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ArtifactTagProperties {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;

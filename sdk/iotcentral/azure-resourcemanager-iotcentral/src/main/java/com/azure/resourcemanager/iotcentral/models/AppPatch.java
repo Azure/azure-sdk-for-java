@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.iotcentral.fluent.models.AppProperties;
+import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The description of the IoT Central application. */
-@JsonFlatten
 @Fluent
-public class AppPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppPatch.class);
-
+public final class AppPatch {
     /*
      * Instance tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -30,31 +29,16 @@ public class AppPatch {
     private AppSkuInfo sku;
 
     /*
-     * The ID of the application.
+     * The common properties of an IoT Central application.
      */
-    @JsonProperty(value = "properties.applicationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String applicationId;
+    @JsonProperty(value = "properties")
+    private AppProperties innerProperties;
 
     /*
-     * The display name of the application.
+     * The managed identities for the IoT Central application.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The subdomain of the application.
-     */
-    @JsonProperty(value = "properties.subdomain")
-    private String subdomain;
-
-    /*
-     * The ID of the application template, which is a blueprint that defines
-     * the characteristics and behaviors of an application. Optional; if not
-     * specified, defaults to a blank blueprint and allows the application to
-     * be defined from scratch.
-     */
-    @JsonProperty(value = "properties.template")
-    private String template;
+    @JsonProperty(value = "identity")
+    private SystemAssignedServiceIdentity identity;
 
     /**
      * Get the tags property: Instance tags.
@@ -97,12 +81,50 @@ public class AppPatch {
     }
 
     /**
+     * Get the innerProperties property: The common properties of an IoT Central application.
+     *
+     * @return the innerProperties value.
+     */
+    private AppProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The managed identities for the IoT Central application.
+     *
+     * @return the identity value.
+     */
+    public SystemAssignedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed identities for the IoT Central application.
+     *
+     * @param identity the identity value to set.
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withIdentity(SystemAssignedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the application.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the applicationId property: The ID of the application.
      *
      * @return the applicationId value.
      */
     public String applicationId() {
-        return this.applicationId;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationId();
     }
 
     /**
@@ -111,7 +133,7 @@ public class AppPatch {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -121,7 +143,10 @@ public class AppPatch {
      * @return the AppPatch object itself.
      */
     public AppPatch withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -131,7 +156,7 @@ public class AppPatch {
      * @return the subdomain value.
      */
     public String subdomain() {
-        return this.subdomain;
+        return this.innerProperties() == null ? null : this.innerProperties().subdomain();
     }
 
     /**
@@ -141,7 +166,10 @@ public class AppPatch {
      * @return the AppPatch object itself.
      */
     public AppPatch withSubdomain(String subdomain) {
-        this.subdomain = subdomain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withSubdomain(subdomain);
         return this;
     }
 
@@ -153,7 +181,7 @@ public class AppPatch {
      * @return the template value.
      */
     public String template() {
-        return this.template;
+        return this.innerProperties() == null ? null : this.innerProperties().template();
     }
 
     /**
@@ -165,8 +193,76 @@ public class AppPatch {
      * @return the AppPatch object itself.
      */
     public AppPatch withTemplate(String template) {
-        this.template = template;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withTemplate(template);
         return this;
+    }
+
+    /**
+     * Get the state property: The current state of the application.
+     *
+     * @return the state value.
+     */
+    public AppState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSets networkRuleSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSets();
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withNetworkRuleSets(NetworkRuleSets networkRuleSets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withNetworkRuleSets(networkRuleSets);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
+     * application.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -177,6 +273,12 @@ public class AppPatch {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

@@ -587,7 +587,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an invoice section.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdateAsync(
         String billingAccountName,
         String billingProfileName,
@@ -619,7 +619,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an invoice section.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdateAsync(
         String billingAccountName,
         String billingProfileName,
@@ -649,7 +649,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an invoice section.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
         String billingAccountName,
         String billingProfileName,
@@ -673,7 +673,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an invoice section.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
         String billingAccountName,
         String billingProfileName,

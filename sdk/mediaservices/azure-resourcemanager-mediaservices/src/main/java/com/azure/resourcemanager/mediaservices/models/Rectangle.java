@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a rectangular window applied to the input media before processing it. */
 @Fluent
 public final class Rectangle {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Rectangle.class);
-
     /*
      * The number of pixels from the left-margin. This can be absolute pixel
      * value (e.g 100), or relative to the size of the video (For example,

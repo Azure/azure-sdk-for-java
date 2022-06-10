@@ -33,9 +33,9 @@ import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKey
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentNextResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.implementation.models.ServicesSetPropertiesResponse;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import java.nio.ByteBuffer;
@@ -70,7 +70,7 @@ public final class ServicesImpl {
     public interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -84,7 +84,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -97,7 +97,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -110,7 +110,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegment(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
@@ -126,7 +126,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -140,7 +140,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesGetAccountInfoResponse> getAccountInfo(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -151,7 +151,7 @@ public final class ServicesImpl {
 
         @Post("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> submitBatch(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
@@ -166,7 +166,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesFilterBlobsResponse> filterBlobs(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
@@ -181,7 +181,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesListBlobContainersSegmentNextResponse> listBlobContainersSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
@@ -203,9 +203,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
@@ -236,10 +236,10 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -262,9 +262,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for the storage service.
+     * @return stats for the storage service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(
@@ -299,9 +299,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers.
+     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentSinglePageAsync(
@@ -352,9 +352,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a user delegation key.
+     * @return a user delegation key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithResponseAsync(
@@ -379,9 +379,9 @@ public final class ServicesImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithResponseAsync(Context context) {
@@ -405,9 +405,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> submitBatchWithResponseAsync(
@@ -455,9 +455,9 @@ public final class ServicesImpl {
      *     results than specified by maxresults, or than the default of 5000.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a Filter Blobs API call.
+     * @return the result of a Filter Blobs API call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesFilterBlobsResponse> filterBlobsWithResponseAsync(
@@ -485,9 +485,9 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of containers.
+     * @return an enumeration of containers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobContainerItem>> listBlobContainersSegmentNextSinglePageAsync(

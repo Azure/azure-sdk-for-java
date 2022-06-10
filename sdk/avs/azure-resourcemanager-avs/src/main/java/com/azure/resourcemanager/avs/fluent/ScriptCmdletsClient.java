@@ -14,8 +14,8 @@ import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 /** An instance of this class provides access to all the operations defined in ScriptCmdletsClient. */
 public interface ScriptCmdletsClient {
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -29,8 +29,8 @@ public interface ScriptCmdletsClient {
     PagedIterable<ScriptCmdletInner> list(String resourceGroupName, String privateCloudName, String scriptPackageName);
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.

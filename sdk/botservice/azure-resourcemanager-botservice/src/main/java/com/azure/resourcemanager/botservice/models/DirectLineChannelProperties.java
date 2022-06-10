@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The parameters to provide for the Direct Line channel. */
 @Fluent
 public final class DirectLineChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineChannelProperties.class);
-
     /*
      * The list of Direct Line sites
      */
     @JsonProperty(value = "sites")
     private List<DirectLineSite> sites;
+
+    /*
+     * Direct Line embed code of the resource
+     */
+    @JsonProperty(value = "DirectLineEmbedCode")
+    private String directLineEmbedCode;
 
     /**
      * Get the sites property: The list of Direct Line sites.
@@ -38,6 +40,26 @@ public final class DirectLineChannelProperties {
      */
     public DirectLineChannelProperties withSites(List<DirectLineSite> sites) {
         this.sites = sites;
+        return this;
+    }
+
+    /**
+     * Get the directLineEmbedCode property: Direct Line embed code of the resource.
+     *
+     * @return the directLineEmbedCode value.
+     */
+    public String directLineEmbedCode() {
+        return this.directLineEmbedCode;
+    }
+
+    /**
+     * Set the directLineEmbedCode property: Direct Line embed code of the resource.
+     *
+     * @param directLineEmbedCode the directLineEmbedCode value to set.
+     * @return the DirectLineChannelProperties object itself.
+     */
+    public DirectLineChannelProperties withDirectLineEmbedCode(String directLineEmbedCode) {
+        this.directLineEmbedCode = directLineEmbedCode;
         return this;
     }
 

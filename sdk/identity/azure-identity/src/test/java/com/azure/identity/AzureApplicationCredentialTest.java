@@ -7,12 +7,9 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -21,12 +18,9 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = "com.azure.identity.*")
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.net.ssl.*",
-    "io.netty.handler.ssl.*", "io.netty.buffer.*", "io.netty.channel.*"})
 public class AzureApplicationCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
@@ -34,35 +28,29 @@ public class AzureApplicationCredentialTest {
 
     @Test
     public void testUseEnvironmentCredential() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        try {
-            // setup
-            String secret = "secret";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put("AZURE_CLIENT_ID", CLIENT_ID);
-            configuration.put("AZURE_CLIENT_SECRET", secret);
-            configuration.put("AZURE_TENANT_ID", TENANT_ID);
+        // setup
+        String secret = "secret";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("AZURE_CLIENT_ID", CLIENT_ID);
+        configuration.put("AZURE_CLIENT_SECRET", secret);
+        configuration.put("AZURE_TENANT_ID", TENANT_ID);
 
-            // mock
-            IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
             when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
             when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(identityClient);
-
+        })) {
             // test
-            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().configuration(configuration).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-        } finally {
-            // clean up
-            configuration.remove("AZURE_CLIENT_ID");
-            configuration.remove("AZURE_CLIENT_SECRET");
-            configuration.remove("AZURE_TENANT_ID");
+            Assert.assertNotNull(identityClientMock);
         }
     }
 
@@ -74,22 +62,21 @@ public class AzureApplicationCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
 
-        IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
-        when(intelliJCredential.getToken(request))
-            .thenReturn(Mono.empty());
-        PowerMockito.whenNew(IntelliJCredential.class).withAnyArguments()
-            .thenReturn(intelliJCredential);
-
-        // test
-        AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
-        StepVerifier.create(credential.getToken(request))
-            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
-            .verifyComplete();
+        }); MockedConstruction<IntelliJCredential> intelliCredentialMock = mockConstruction(IntelliJCredential.class, (intelliJCredential, context) -> {
+            when(intelliJCredential.getToken(request)).thenReturn(Mono.empty());
+        })) {
+            // test
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
+            StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assert.assertNotNull(identityClientMock);
+            Assert.assertNotNull(intelliCredentialMock);
+        }
     }
 
     @Test
@@ -98,37 +85,39 @@ public class AzureApplicationCredentialTest {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
         // mock
-        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-        when(identityClient.authenticateToIMDSEndpoint(request))
-            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
-        PowerMockito.whenNew(IdentityClient.class).withAnyArguments()
-            .thenReturn(identityClient);
-
-        // test
-        AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                .startsWith("EnvironmentCredential authentication unavailable. "))
-            .verify();
+        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateToIMDSEndpoint(request))
+                .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from managed identity")));
+        })) {
+            // test
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder().build();
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
+                    .startsWith("EnvironmentCredential authentication unavailable. "))
+                .verify();
+            Assert.assertNotNull(identityClientMock);
+        }
     }
 
     @Test
     public void testCredentialUnavailable() throws Exception {
+        // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
-        ManagedIdentityCredential managedIdentityCredential = PowerMockito.mock(ManagedIdentityCredential.class);
-        when(managedIdentityCredential.getToken(request))
-            .thenReturn(Mono.error(
-                new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
-        PowerMockito.whenNew(ManagedIdentityCredential.class).withAnyArguments()
-            .thenReturn(managedIdentityCredential);
-
-        // test
-        AzureApplicationCredential credential = new AzureApplicationCredentialBuilder()
-            .build();
-        StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
-                .startsWith("EnvironmentCredential authentication unavailable. "))
-            .verify();
+        // mock
+        try (MockedConstruction<ManagedIdentityCredential> managedIdentityCredentialMock = mockConstruction(ManagedIdentityCredential.class, (managedIdentityCredential, context) -> {
+            when(managedIdentityCredential.getToken(request))
+                .thenReturn(Mono.error(
+                    new CredentialUnavailableException("Cannot get token from Managed Identity credential")));
+        })) {
+            // test
+            AzureApplicationCredential credential = new AzureApplicationCredentialBuilder()
+                .build();
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(t -> t instanceof CredentialUnavailableException && t.getMessage()
+                    .startsWith("EnvironmentCredential authentication unavailable. "))
+                .verify();
+            Assert.assertNotNull(managedIdentityCredentialMock);
+        }
     }
 }

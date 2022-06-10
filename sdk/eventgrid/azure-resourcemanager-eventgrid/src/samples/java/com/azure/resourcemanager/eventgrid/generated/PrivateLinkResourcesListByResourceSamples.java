@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources ListByResource. */
 public final class PrivateLinkResourcesListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateLinkResources_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_ListByResource.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByResource.

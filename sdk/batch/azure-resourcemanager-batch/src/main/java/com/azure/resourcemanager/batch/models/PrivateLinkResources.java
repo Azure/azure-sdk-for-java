@@ -18,7 +18,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> listByBatchAccount(String resourceGroupName, String accountName);
 
@@ -32,7 +32,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> listByBatchAccount(
         String resourceGroupName, String accountName, Integer maxresults, Context context);
@@ -60,7 +60,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified private link resource.
+     * @return information about the specified private link resource along with {@link Response}.
      */
     Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String accountName, String privateLinkResourceName, Context context);

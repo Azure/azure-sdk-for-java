@@ -15,6 +15,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityS
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public final class PartnerRegistrationImpl
     implements PartnerRegistration, PartnerRegistration.Definition, PartnerRegistration.Update {
@@ -53,6 +54,10 @@ public final class PartnerRegistrationImpl
 
     public PartnerRegistrationProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public UUID partnerRegistrationImmutableId() {
+        return this.innerModel().partnerRegistrationImmutableId();
     }
 
     public String partnerName() {
@@ -116,6 +121,10 @@ public final class PartnerRegistrationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerRegistrationInner innerModel() {
         return this.innerObject;
     }
@@ -140,8 +149,7 @@ public final class PartnerRegistrationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerRegistrations()
-                .createOrUpdateWithResponse(resourceGroupName, partnerRegistrationName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, partnerRegistrationName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -150,8 +158,7 @@ public final class PartnerRegistrationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerRegistrations()
-                .createOrUpdateWithResponse(resourceGroupName, partnerRegistrationName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, partnerRegistrationName, this.innerModel(), context);
         return this;
     }
 
@@ -171,9 +178,11 @@ public final class PartnerRegistrationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerRegistrations()
-                .updateWithResponse(
-                    resourceGroupName, partnerRegistrationName, updatePartnerRegistrationUpdateParameters, Context.NONE)
-                .getValue();
+                .update(
+                    resourceGroupName,
+                    partnerRegistrationName,
+                    updatePartnerRegistrationUpdateParameters,
+                    Context.NONE);
         return this;
     }
 
@@ -182,9 +191,7 @@ public final class PartnerRegistrationImpl
             serviceManager
                 .serviceClient()
                 .getPartnerRegistrations()
-                .updateWithResponse(
-                    resourceGroupName, partnerRegistrationName, updatePartnerRegistrationUpdateParameters, context)
-                .getValue();
+                .update(resourceGroupName, partnerRegistrationName, updatePartnerRegistrationUpdateParameters, context);
         return this;
     }
 
@@ -234,6 +241,11 @@ public final class PartnerRegistrationImpl
             this.updatePartnerRegistrationUpdateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public PartnerRegistrationImpl withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        this.innerModel().withPartnerRegistrationImmutableId(partnerRegistrationImmutableId);
+        return this;
     }
 
     public PartnerRegistrationImpl withPartnerName(String partnerName) {

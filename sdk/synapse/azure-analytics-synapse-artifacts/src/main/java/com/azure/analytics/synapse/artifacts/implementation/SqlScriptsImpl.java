@@ -58,7 +58,7 @@ public final class SqlScriptsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSqlSc")
-    private interface SqlScriptsService {
+    public interface SqlScriptsService {
         @Get("/sqlScripts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -127,15 +127,17 @@ public final class SqlScriptsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getSqlScriptsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                        this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -154,12 +156,14 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getSqlScriptsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getSqlScriptsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -176,7 +180,7 @@ public final class SqlScriptsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SqlScriptResource> getSqlScriptsByWorkspaceAsync() {
@@ -192,7 +196,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SqlScriptResource> getSqlScriptsByWorkspaceAsync(Context context) {
@@ -206,7 +210,7 @@ public final class SqlScriptsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace() {
@@ -220,7 +224,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlScriptResource> getSqlScriptsByWorkspace(Context context) {
@@ -237,18 +241,19 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateSqlScript(
                                 this.client.getEndpoint(),
                                 sqlScriptName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 ifMatch,
                                 sqlScript,
                                 accept,
@@ -266,20 +271,15 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.createOrUpdateSqlScript(
-                this.client.getEndpoint(),
-                sqlScriptName,
-                this.client.getApiVersion(),
-                ifMatch,
-                sqlScript,
-                accept,
-                context);
+                this.client.getEndpoint(), sqlScriptName, apiVersion, ifMatch, sqlScript, accept, context);
     }
 
     /**
@@ -292,7 +292,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
@@ -316,7 +316,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(String sqlScriptName, SqlScriptResource sqlScript) {
@@ -343,7 +343,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> createOrUpdateSqlScriptAsync(
@@ -404,7 +404,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Script resource type.
+     * @return sql Script resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlScriptResource> createOrUpdateSqlScriptWithResponse(
@@ -421,20 +421,16 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(String sqlScriptName, String ifNoneMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSqlScript(
-                                this.client.getEndpoint(),
-                                sqlScriptName,
-                                this.client.getApiVersion(),
-                                ifNoneMatch,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), sqlScriptName, apiVersion, ifNoneMatch, accept, context));
     }
 
     /**
@@ -447,14 +443,14 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(
             String sqlScriptName, String ifNoneMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifNoneMatch, accept, context);
+        return service.getSqlScript(this.client.getEndpoint(), sqlScriptName, apiVersion, ifNoneMatch, accept, context);
     }
 
     /**
@@ -466,7 +462,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch) {
@@ -488,7 +484,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName) {
@@ -514,7 +510,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlScriptResource> getSqlScriptAsync(String sqlScriptName, String ifNoneMatch, Context context) {
@@ -570,7 +566,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sql script.
+     * @return a sql script along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlScriptResource> getSqlScriptWithResponse(
@@ -585,19 +581,15 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteSqlScript(
-                                this.client.getEndpoint(),
-                                sqlScriptName,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                        service.deleteSqlScript(this.client.getEndpoint(), sqlScriptName, apiVersion, accept, context));
     }
 
     /**
@@ -608,13 +600,13 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.deleteSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), accept, context);
+        return service.deleteSqlScript(this.client.getEndpoint(), sqlScriptName, apiVersion, accept, context);
     }
 
     /**
@@ -624,7 +616,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlScriptAsync(String sqlScriptName) {
@@ -639,7 +631,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSqlScriptAsync(String sqlScriptName, Context context) {
@@ -667,7 +659,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSqlScriptWithResponse(String sqlScriptName, Context context) {
@@ -682,20 +674,16 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSqlScriptWithResponseAsync(String sqlScriptName, ArtifactRenameRequest request) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameSqlScript(
-                                this.client.getEndpoint(),
-                                sqlScriptName,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), sqlScriptName, apiVersion, request, accept, context));
     }
 
     /**
@@ -707,14 +695,14 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSqlScriptWithResponseAsync(
             String sqlScriptName, ArtifactRenameRequest request, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.renameSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), request, accept, context);
+        return service.renameSqlScript(this.client.getEndpoint(), sqlScriptName, apiVersion, request, accept, context);
     }
 
     /**
@@ -725,7 +713,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSqlScriptAsync(String sqlScriptName, ArtifactRenameRequest request) {
@@ -741,7 +729,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSqlScriptAsync(String sqlScriptName, ArtifactRenameRequest request, Context context) {
@@ -772,7 +760,7 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameSqlScriptWithResponse(
@@ -787,7 +775,8 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -815,7 +804,8 @@ public final class SqlScriptsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sql scripts resources.
+     * @return a list of sql scripts resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(

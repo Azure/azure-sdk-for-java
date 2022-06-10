@@ -49,7 +49,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
         String attestationName, AttestationInner parameters);
 
@@ -64,7 +64,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
         String attestationName, AttestationInner parameters, Context context);
 
@@ -183,7 +183,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String attestationName, AttestationInner parameters);
 
@@ -199,7 +199,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String attestationName, AttestationInner parameters, Context context);
 
@@ -326,7 +326,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
         String resourceId, String attestationName, AttestationInner parameters);
 
@@ -342,7 +342,7 @@ public interface AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
         String resourceId, String attestationName, AttestationInner parameters, Context context);
 

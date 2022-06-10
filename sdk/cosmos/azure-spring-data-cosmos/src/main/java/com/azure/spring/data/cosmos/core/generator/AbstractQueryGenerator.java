@@ -28,6 +28,9 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  */
 public abstract class AbstractQueryGenerator {
 
+    /**
+     * Initialization
+     */
     protected AbstractQueryGenerator() {
     }
 
@@ -124,7 +127,7 @@ public abstract class AbstractQueryGenerator {
                 && CriteriaType.isBinary(type),
             "Criteria type should be binary and closure operation");
 
-        return String.join(" ", left, type.getSqlKeyword(), right);
+        return String.format("(%s %s %s)", left, type.getSqlKeyword(), right);
     }
 
     @SuppressWarnings("unchecked")
@@ -246,6 +249,13 @@ public abstract class AbstractQueryGenerator {
     }
 
 
+    /**
+     * Generates a Cosmos query.
+     *
+     * @param query the representation for query method.
+     * @param queryHead the query head.
+     * @return the SQL query spec.
+     */
     protected SqlQuerySpec generateCosmosQuery(@NonNull CosmosQuery query,
                                                @NonNull String queryHead) {
         final AtomicInteger counter = new AtomicInteger();

@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,7 @@ public final class IotHubProperties {
      * while making create or update calls for the IoT hub.
      */
     @JsonProperty(value = "eventHubEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EventHubProperties> eventHubEndpoints;
 
     /*
@@ -132,6 +134,7 @@ public final class IotHubProperties {
      * an error to be thrown.
      */
     @JsonProperty(value = "storageEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StorageEndpointProperties> storageEndpoints;
 
     /*
@@ -139,6 +142,7 @@ public final class IotHubProperties {
      * queue.
      */
     @JsonProperty(value = "messagingEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, MessagingEndpointProperties> messagingEndpoints;
 
     /*
@@ -170,6 +174,13 @@ public final class IotHubProperties {
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<IotHubLocationDescription> locations;
+
+    /*
+     * This property when set to true, will enable data residency, thus,
+     * disabling disaster recovery.
+     */
+    @JsonProperty(value = "enableDataResidency")
+    private Boolean enableDataResidency;
 
     /**
      * Get the authorizationPolicies property: The shared access policies you can use to secure a connection to the IoT
@@ -609,6 +620,28 @@ public final class IotHubProperties {
      */
     public List<IotHubLocationDescription> locations() {
         return this.locations;
+    }
+
+    /**
+     * Get the enableDataResidency property: This property when set to true, will enable data residency, thus, disabling
+     * disaster recovery.
+     *
+     * @return the enableDataResidency value.
+     */
+    public Boolean enableDataResidency() {
+        return this.enableDataResidency;
+    }
+
+    /**
+     * Set the enableDataResidency property: This property when set to true, will enable data residency, thus, disabling
+     * disaster recovery.
+     *
+     * @param enableDataResidency the enableDataResidency value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withEnableDataResidency(Boolean enableDataResidency) {
+        this.enableDataResidency = enableDataResidency;
+        return this;
     }
 
     /**

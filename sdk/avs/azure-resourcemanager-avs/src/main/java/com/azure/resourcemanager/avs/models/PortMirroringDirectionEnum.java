@@ -10,9 +10,14 @@ import java.util.Collection;
 
 /** Defines values for PortMirroringDirectionEnum. */
 public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortMirroringDirectionEnum> {
-    /** Static value INGRESS, EGRESS, BIDIRECTIONAL for PortMirroringDirectionEnum. */
-    public static final PortMirroringDirectionEnum INGRESS_EGRESS_BIDIRECTIONAL =
-        fromString("INGRESS, EGRESS, BIDIRECTIONAL");
+    /** Static value INGRESS for PortMirroringDirectionEnum. */
+    public static final PortMirroringDirectionEnum INGRESS = fromString("INGRESS");
+
+    /** Static value EGRESS for PortMirroringDirectionEnum. */
+    public static final PortMirroringDirectionEnum EGRESS = fromString("EGRESS");
+
+    /** Static value BIDIRECTIONAL for PortMirroringDirectionEnum. */
+    public static final PortMirroringDirectionEnum BIDIRECTIONAL = fromString("BIDIRECTIONAL");
 
     /**
      * Creates or finds a PortMirroringDirectionEnum from its string representation.

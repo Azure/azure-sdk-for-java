@@ -31,14 +31,12 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                 .withNewVirtualNetwork("10.0.0.0/24")
                 .create();
 
-        Assertions.assertNotNull(containerGroup.networkProfileId());
+        Assertions.assertEquals(1, containerGroup.subnetIds().size());
 
         containerInstanceManager.containerGroups().deleteById(containerGroup.id());
 
         final String subnetName = "default";
-        final String networkProfileName = "aci-vnet-profile";
         final String containerGroupName1 = generateRandomResourceName("container", 20);
-        final String containerGroupName2 = generateRandomResourceName("container", 20);
 
         Network vnet = containerInstanceManager.networkManager().networks().define("vnet1")
             .withRegion(region)
@@ -57,20 +55,12 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
             .withPublicImageRegistryOnly()
             .withoutVolume()
             .withContainerInstance("nginx", 80)
-            .withNewNetworkProfileOnExistingVirtualNetwork(networkProfileName, vnet.id(), subnetName)
+            .withExistingSubnet(vnet.subnets().get(subnetName))
             .create();
 
-        ContainerGroup containerGroup2 = containerInstanceManager.containerGroups().define(containerGroupName2)
-            .withRegion(region)
-            .withExistingResourceGroup(rgName)
-            .withLinux()
-            .withPublicImageRegistryOnly()
-            .withoutVolume()
-            .withContainerInstance("nginx", 80)
-            .withExistingNetworkProfile(containerGroup1.networkProfileId())
-            .create();
-
-        Assertions.assertEquals(containerGroup1.networkProfileId(), containerGroup2.networkProfileId());
+        Assertions.assertEquals(1, containerGroup1.subnetIds().size());
+        Assertions.assertEquals(subnetName, containerGroup1.subnetIds().iterator().next().name());
+        Assertions.assertEquals(vnet.subnets().get(subnetName).id(), containerGroup1.subnetIds().iterator().next().id());
     }
 
     @Test

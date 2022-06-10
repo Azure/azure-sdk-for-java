@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Gateway. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkGatewayInner extends ProxyResource {
+public final class WorkloadNetworkGatewayInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkGatewayInner.class);
 
     /*
-     * Display name of the DHCP entity.
+     * Gateway properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkGatewayProperties innerProperties;
 
-    /*
-     * NSX Gateway Path.
+    /**
+     * Get the innerProperties property: Gateway properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.path", access = JsonProperty.Access.WRITE_ONLY)
-    private String path;
+    private WorkloadNetworkGatewayProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the DHCP entity.
@@ -35,7 +36,7 @@ public class WorkloadNetworkGatewayInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -45,7 +46,10 @@ public class WorkloadNetworkGatewayInner extends ProxyResource {
      * @return the WorkloadNetworkGatewayInner object itself.
      */
     public WorkloadNetworkGatewayInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkGatewayProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class WorkloadNetworkGatewayInner extends ProxyResource {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -64,5 +68,8 @@ public class WorkloadNetworkGatewayInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

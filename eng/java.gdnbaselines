@@ -1,0 +1,540 @@
+{
+  "version": "latest",
+  "baselines": {
+    "baseline": {
+      "name": "baseline",
+      "createdDate": "2022-02-16 19:00:07Z",
+      "lastUpdatedDate": "2022-02-16 19:00:07Z"
+    }
+  },
+  "results": {
+    "c08c04ea0fe6389eae3666e45228de613ac583913f3a7ba9b138c69a200ed2a3": {
+      "signature": "c08c04ea0fe6389eae3666e45228de613ac583913f3a7ba9b138c69a200ed2a3",
+      "alternativeSignatures": [
+        "ed824173fee09dc515622edd61640d577c3e9bedc7b023e667ca1d8997c1c9a0"
+      ],
+      "target": "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/session-records/createCertificatePemForCertificateOperationsTest.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "43f1b622f70df0a1b6dea2e359104ebfb6797c5743dfd3c376eb21b37ea82c1c": {
+      "signature": "43f1b622f70df0a1b6dea2e359104ebfb6797c5743dfd3c376eb21b37ea82c1c",
+      "alternativeSignatures": [
+        "e65763b223141e108acb6f919751431aa6a168b628ba4d3a9a81abb58425b91e"
+      ],
+      "target": "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/session-records/createSelfSignedCertificatePemForCertificateOperationsTest.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "46edbe27e32a28d61b37719072e7030064668f4580f25c7bba8b7a04e5356735": {
+      "signature": "46edbe27e32a28d61b37719072e7030064668f4580f25c7bba8b7a04e5356735",
+      "alternativeSignatures": [
+        "55fe0dd39cc42572e72067a1f52c2861f627539ae8338e2a7bc3f0c5e9cab66c"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/session-records/WebAppsMsiTests.canCRUDWebAppWithMsi.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "5c0af6c0a8a8423241034f37ac9ebbb95b06fbe491fa000d5d2c68cec7c38ee2": {
+      "signature": "5c0af6c0a8a8423241034f37ac9ebbb95b06fbe491fa000d5d2c68cec7c38ee2",
+      "alternativeSignatures": [
+        "5331fac3fe07d404894cc71e51f1b6c2261d545d6516e58e15d0210c06c8aaf9"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/session-records/WebAppsMsiTests.canCRUDWebAppWithUserAssignedMsi.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "9b1572ba5adeeff75c33598e949fb5e49e012cde430643ad59ae1434c3ece6de": {
+      "signature": "9b1572ba5adeeff75c33598e949fb5e49e012cde430643ad59ae1434c3ece6de",
+      "alternativeSignatures": [
+        "f8a6f7277561228f8c1b310bec7544206f81db1e0d0cfd7e6d984a8890564f5c"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/session-records/ZipDeployTests.canZipDeployFunction.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0258c0ac1efddcf15ab7c0f696ce417b2e351c87cecfec1733f4633a92e266ab": {
+      "signature": "0258c0ac1efddcf15ab7c0f696ce417b2e351c87cecfec1733f4633a92e266ab",
+      "alternativeSignatures": [
+        "276433d71eb6fb0b32b2226859cb196835de6fa5ec7fddc7ad7b36f5b76b8137"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/src/test/resources/session-records/WarDeployTests.canDeployMultipleWars.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "731fed63ad56b1a59cac47679160580ebc1db180d92fabb838543baebcde75c6": {
+      "signature": "731fed63ad56b1a59cac47679160580ebc1db180d92fabb838543baebcde75c6",
+      "alternativeSignatures": [
+        "15ac2d3dc08add72b33cede937faa06da2d970e7ab1d0af953e8e48c40338a0c"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/src/test/resources/session-records/WarDeployTests.canDeployWar.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c4851071483de4819162ff744b2b2d78958e5d9f1eb4d82ee6af5bc1ca7323c9": {
+      "signature": "c4851071483de4819162ff744b2b2d78958e5d9f1eb4d82ee6af5bc1ca7323c9",
+      "alternativeSignatures": [
+        "b30fd406cea8f4244170b319a60aaa3d4486fea57d965c191a7ec8eb4308a1c4"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/src/test/resources/session-records/WebAppsMsiTests.canCRUDWebAppWithMsi.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "098455758c185d26578cc1df1178c8c77597bd8e262c5dd1c96951c07bdc541e": {
+      "signature": "098455758c185d26578cc1df1178c8c77597bd8e262c5dd1c96951c07bdc541e",
+      "alternativeSignatures": [
+        "5cc45b23e0e417513cf25ad506742d3ee8ee886422211d158a0293903c75013c"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/src/test/resources/session-records/WebAppsMsiTests.canCRUDWebAppWithUserAssignedMsi.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8344791f83398c200ac88cd03a4b4054f6f8348b2ec4981b2b8e3ffac8cf00a2": {
+      "signature": "8344791f83398c200ac88cd03a4b4054f6f8348b2ec4981b2b8e3ffac8cf00a2",
+      "alternativeSignatures": [
+        "26714d308b21b09964ad760db814a6fe79829a12b7d8995c4422edf7cec4e605"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-appservice/src/test/resources/session-records/ZipDeployTests.canZipDeployFunction.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "f4667e9f2720e5ae59edbc0242194c30bd23d8d35ce09e2696a3aa71c1ced5a9": {
+      "signature": "f4667e9f2720e5ae59edbc0242194c30bd23d8d35ce09e2696a3aa71c1ced5a9",
+      "alternativeSignatures": [
+        "da952a5b1626fd69b74a4c0ca59bbae0d8218a71cbd33f4a7f590d7cb083a13f"
+      ],
+      "target": "sdk/core/azure-core/src/test/java/com/azure/core/credential/CredentialsTests.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "1e8416c5591fe2672d26cde9c2f91cc0423a43f215c97f7b5bb443005d4f9d53": {
+      "signature": "1e8416c5591fe2672d26cde9c2f91cc0423a43f215c97f7b5bb443005d4f9d53",
+      "alternativeSignatures": [
+        "b09941ae2d8b2659b63ce28807e4a3adca9b11f13f7a66689288a245a59430be"
+      ],
+      "target": "sdk/translation/azure-ai-documenttranslator/src/samples/java/com/azure/ai/documenttranslator/TranslateDocuments.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-AZURE0061",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "f6a8781bbc63f19c504c923944ab94e5320cb49e1d831badc9975ed4e284f5d1": {
+      "signature": "f6a8781bbc63f19c504c923944ab94e5320cb49e1d831badc9975ed4e284f5d1",
+      "alternativeSignatures": [
+        "e73567a91319514f40d1c1943f503d23f7722dd0783906afd8367f1255e1bb8c"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager/src/samples/java/com/azure/resourcemanager/containerregistry/generated/WebhooksCreateSamples.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "be66b316d9a12a7720fb42bf5557eb0096d08d34ed61809876cd9ba397c91105": {
+      "signature": "be66b316d9a12a7720fb42bf5557eb0096d08d34ed61809876cd9ba397c91105",
+      "alternativeSignatures": [
+        "cd4c1f7c5766ceef9b425efaf830003cdf48cf0b583ddc659a74246cef956e47"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager/src/samples/java/com/azure/resourcemanager/containerregistry/generated/WebhooksUpdateSamples.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "343376ede9c517c31a76e2aad40ae42bb1af8e3dff1170f0684cd26680c9dd43": {
+      "signature": "343376ede9c517c31a76e2aad40ae42bb1af8e3dff1170f0684cd26680c9dd43",
+      "alternativeSignatures": [
+        "08119f94dcf0792d9849847c4bac5510d0f54f2bd08ea05f1243f804397f8215"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/models/ApplicationBase.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "97657b7d7e29c63300cf904a0c67caa8902a6e0db6debec89ecca6ed7af286b8": {
+      "signature": "97657b7d7e29c63300cf904a0c67caa8902a6e0db6debec89ecca6ed7af286b8",
+      "alternativeSignatures": [
+        "868666c7caaa3c04e7c2ff93a698b0bea6c314ec8d49d0fd2d4cd5aa78e853ff"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/models/ApplicationBase.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b7fa8d10396dbd1638adecc6064bc073b2698e4647e03588d9bbfe151c8bb138": {
+      "signature": "b7fa8d10396dbd1638adecc6064bc073b2698e4647e03588d9bbfe151c8bb138",
+      "alternativeSignatures": [
+        "6d11aacc6b9925125a59c1463b6bfe44f578b6192d2d48d6215ab7847b81d767"
+      ],
+      "target": "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/blob/HelperTest.groovy",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-AZURE0060",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "e93f4a17093e5d7f026e9b0645acb66c7ab35c764e2fd97c05f75a71303953b0": {
+      "signature": "e93f4a17093e5d7f026e9b0645acb66c7ab35c764e2fd97c05f75a71303953b0",
+      "alternativeSignatures": [
+        "a8cab12f0603de10c6a87d190b14fe93ef733e5cff4226bc769735135654843d"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/Get2ItemsItem.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "45499e4d0d0cc02e44338eaff1e095ca9cc435a43676fa7a3dd90933e6019b39": {
+      "signature": "45499e4d0d0cc02e44338eaff1e095ca9cc435a43676fa7a3dd90933e6019b39",
+      "alternativeSignatures": [
+        "6eb2ad0663ba6c4b29d243c11d8cdd4300dc9a94030bcac1e16f18022c274c10"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/Get3ItemsItem.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "89d7a324a237aa0ad4050dd0fee224ca5af6fe2c53b597c718d34babe9ea6fd8": {
+      "signature": "89d7a324a237aa0ad4050dd0fee224ca5af6fe2c53b597c718d34babe9ea6fd8",
+      "alternativeSignatures": [
+        "9cbb0dc365ee3419705732afba468f6639e5ca86143ac7439270ab6fbf54284b"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/Get7ItemsItem.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "2914e893bfb383b43511e881998552e0068a9e6a4bba0f8dfeb0920108937167": {
+      "signature": "2914e893bfb383b43511e881998552e0068a9e6a4bba0f8dfeb0920108937167",
+      "alternativeSignatures": [
+        "6725b7226db11df4ea9ac4b6e411c6a72dc6efc4576b2296e0b11b78461f785d"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/Get8ItemsItem.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b09c71e7bffaa57335004c6fbd91fbdc8c00a0b5febfa56f34c669a609ade5ab": {
+      "signature": "b09c71e7bffaa57335004c6fbd91fbdc8c00a0b5febfa56f34c669a609ade5ab",
+      "alternativeSignatures": [
+        "0246b00825f93eede59e0f589c427fecfe3a7f115324f003a3f5d419c71ce048"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/MicrosoftGraphApiApplication.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "680bd1e214b82208e1d831a08f31a474fd9ed63dcdabe05426aa7bb6ce959e18": {
+      "signature": "680bd1e214b82208e1d831a08f31a474fd9ed63dcdabe05426aa7bb6ce959e18",
+      "alternativeSignatures": [
+        "5689795eec2b409822516b7fdcbd37e456b7c400457a16238cdffdba9f787ac2"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/MicrosoftGraphServicePrincipalInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "399f89fbc54cbc668e802da292f13c18e6ae7a0c8c02ed272a97dff58c680192": {
+      "signature": "399f89fbc54cbc668e802da292f13c18e6ae7a0c8c02ed272a97dff58c680192",
+      "alternativeSignatures": [
+        "bbf14e2d834b96f32989cf5d471982c2834e5967ec753bf89d24bb5ce87523b9"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/MicrosoftGraphServicePrincipalInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3c37bcf3288a1bed3a1da8fe7def633096583cceb0dcb8c80e57080af46db280": {
+      "signature": "3c37bcf3288a1bed3a1da8fe7def633096583cceb0dcb8c80e57080af46db280",
+      "alternativeSignatures": [
+        "06ae7a4a3d618eb53daf9fcbb43a874a5b11fb20f321ed9a693f3d9d8cef6711"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/MicrosoftGraphUserInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "dc20062df7ce1b72552811f387ba39015906c9548cad64ec89bf006772faab7a": {
+      "signature": "dc20062df7ce1b72552811f387ba39015906c9548cad64ec89bf006772faab7a",
+      "alternativeSignatures": [
+        "5c903217fe6ed8c5b9031d4b91985915b1e1c49b7350645c3e0c3b1c8718e0bc"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalsServicePrincipalExpand.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "708e4990a808c33857e1597bb0ca9d63b3d452850d1d72f820a87b68f45f0ba7": {
+      "signature": "708e4990a808c33857e1597bb0ca9d63b3d452850d1d72f820a87b68f45f0ba7",
+      "alternativeSignatures": [
+        "f3698c23125ed83e8ee038c6631ef835bb5e433abf922786c697e07e3beff70e"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalsServicePrincipalOrderby.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "edec27e49ed23bfa6bf1edad022a47d1858b24d82a4e257cfc7ca0be2a04cd47": {
+      "signature": "edec27e49ed23bfa6bf1edad022a47d1858b24d82a4e257cfc7ca0be2a04cd47",
+      "alternativeSignatures": [
+        "6765185ceb0c660ebbfd37942bae705a5aa4dcef4af8579251a212a7b49c6b25"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalsServicePrincipalOrderby.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "379b76fe81bc0b541bf8f80eb48bba70b2acadf0fecea8c429434afcc7a99f2c": {
+      "signature": "379b76fe81bc0b541bf8f80eb48bba70b2acadf0fecea8c429434afcc7a99f2c",
+      "alternativeSignatures": [
+        "2b749b36f579faa2edf673177b7a7e7a114df233833b8b9f0321efee89551b14"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalsServicePrincipalSelect.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0eea1b751c39d35f45c859eab5fc0cae72c6cc8a79231dbdf0583a401dbf1f9c": {
+      "signature": "0eea1b751c39d35f45c859eab5fc0cae72c6cc8a79231dbdf0583a401dbf1f9c",
+      "alternativeSignatures": [
+        "9f1fa49ab0b05ba4e399caf76a9fe9d80f8411a81dd72d30354384ba6df568d0"
+      ],
+      "target": "sdk/resourcemanager/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalsServicePrincipalSelect.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "ff3ad74c1ec4be67f4c9e8b01dbc9177cbf05ec158133b1045654657e59353c7": {
+      "signature": "ff3ad74c1ec4be67f4c9e8b01dbc9177cbf05ec158133b1045654657e59353c7",
+      "alternativeSignatures": [
+        "9de5e4a85b947993c826b4976cd096d3e9904ceda035f4f2821d1b56d726b329"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ApplicationInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "1e1b4c8ef0759c3943212137bfdef03f1da9d1a117705f56e8107ae502de5fb3": {
+      "signature": "1e1b4c8ef0759c3943212137bfdef03f1da9d1a117705f56e8107ae502de5fb3",
+      "alternativeSignatures": [
+        "30988657640112606dfd054d8c9c9c9fb2593d7ee3ed94242f32859c255a2ea5"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ApplicationInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c459147551918e1c4884bbcbbd8832086758444f5cf7637e328022167e48aab6": {
+      "signature": "c459147551918e1c4884bbcbbd8832086758444f5cf7637e328022167e48aab6",
+      "alternativeSignatures": [
+        "f05e67fcbd8fec8b6cee078b9f3b5c42534567596c5787fda1d7a7c0cec14ade"
+      ],
+      "target": "sdk/resourcemanagerhybrid/azure-resourcemanager-authorization/src/main/java/com/azure/resourcemanager/authorization/fluent/models/ServicePrincipalInner.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "credscan",
+      "ruleId": "CSCAN-GENERAL0120",
+      "justification": null,
+      "createdDate": "2022-02-16 19:00:07Z",
+      "expirationDate": null,
+      "type": null
+    }
+  }
+}

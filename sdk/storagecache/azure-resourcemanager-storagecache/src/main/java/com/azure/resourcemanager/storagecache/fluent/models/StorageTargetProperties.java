@@ -10,18 +10,16 @@ import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
+import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the Storage Target. */
 @Fluent
 public final class StorageTargetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageTargetProperties.class);
-
     /*
      * List of Cache namespace junctions to target for namespace associations.
      */
@@ -40,6 +38,12 @@ public final class StorageTargetProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
+
+    /*
+     * Storage target operational state.
+     */
+    @JsonProperty(value = "state")
+    private OperationalStateType state;
 
     /*
      * Properties when targetType is nfs3.
@@ -113,6 +117,26 @@ public final class StorageTargetProperties {
      */
     public ProvisioningStateType provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the state property: Storage target operational state.
+     *
+     * @return the state value.
+     */
+    public OperationalStateType state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Storage target operational state.
+     *
+     * @param state the state value to set.
+     * @return the StorageTargetProperties object itself.
+     */
+    public StorageTargetProperties withState(OperationalStateType state) {
+        this.state = state;
+        return this;
     }
 
     /**
@@ -205,7 +229,7 @@ public final class StorageTargetProperties {
             junctions().forEach(e -> e.validate());
         }
         if (targetType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetType in model StorageTargetProperties"));
@@ -223,4 +247,6 @@ public final class StorageTargetProperties {
             blobNfs().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageTargetProperties.class);
 }

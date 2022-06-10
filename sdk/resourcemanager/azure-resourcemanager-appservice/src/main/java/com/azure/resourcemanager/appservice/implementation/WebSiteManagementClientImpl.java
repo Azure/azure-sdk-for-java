@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
@@ -15,6 +14,8 @@ import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
+import com.azure.resourcemanager.appservice.fluent.ContainerAppsClient;
+import com.azure.resourcemanager.appservice.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.DomainRegistrationProvidersClient;
@@ -35,8 +36,6 @@ import java.time.Duration;
 /** Initializes a new instance of the WebSiteManagementClientImpl type. */
 @ServiceClient(builder = WebSiteManagementClientBuilder.class)
 public final class WebSiteManagementClientImpl extends AzureServiceClient implements WebSiteManagementClient {
-    private final ClientLogger logger = new ClientLogger(WebSiteManagementClientImpl.class);
-
     /** Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private final String subscriptionId;
 
@@ -217,6 +216,30 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.certificates;
     }
 
+    /** The ContainerAppsClient object to access its operations. */
+    private final ContainerAppsClient containerApps;
+
+    /**
+     * Gets the ContainerAppsClient object to access its operations.
+     *
+     * @return the ContainerAppsClient object.
+     */
+    public ContainerAppsClient getContainerApps() {
+        return this.containerApps;
+    }
+
+    /** The ContainerAppsRevisionsClient object to access its operations. */
+    private final ContainerAppsRevisionsClient containerAppsRevisions;
+
+    /**
+     * Gets the ContainerAppsRevisionsClient object to access its operations.
+     *
+     * @return the ContainerAppsRevisionsClient object.
+     */
+    public ContainerAppsRevisionsClient getContainerAppsRevisions() {
+        return this.containerAppsRevisions;
+    }
+
     /** The DeletedWebAppsClient object to access its operations. */
     private final DeletedWebAppsClient deletedWebApps;
 
@@ -361,7 +384,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-02-01";
+        this.apiVersion = "2021-03-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
@@ -371,6 +394,8 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
         this.appServicePlans = new AppServicePlansClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
+        this.containerApps = new ContainerAppsClientImpl(this);
+        this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.globals = new GlobalsClientImpl(this);

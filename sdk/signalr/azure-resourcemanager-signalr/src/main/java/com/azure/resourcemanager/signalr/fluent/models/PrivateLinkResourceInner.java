@@ -5,43 +5,28 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.signalr.models.ShareablePrivateLinkResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Private link resource. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
-
+public final class PrivateLinkResourceInner extends ProxyResource {
     /*
-     * Group Id of the private link resource
+     * Private link resource properties
      */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
+    @JsonProperty(value = "properties")
+    private PrivateLinkResourceProperties innerProperties;
 
-    /*
-     * Required members of the private link resource
+    /**
+     * Get the innerProperties property: Private link resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.requiredMembers")
-    private List<String> requiredMembers;
-
-    /*
-     * Required private DNS zone names
-     */
-    @JsonProperty(value = "properties.requiredZoneNames")
-    private List<String> requiredZoneNames;
-
-    /*
-     * The list of resources that are onboarded to private link service
-     */
-    @JsonProperty(value = "properties.shareablePrivateLinkResourceTypes")
-    private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
+    private PrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the groupId property: Group Id of the private link resource.
@@ -49,7 +34,7 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -59,7 +44,10 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withGroupId(String groupId) {
-        this.groupId = groupId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withGroupId(groupId);
         return this;
     }
 
@@ -69,7 +57,7 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.requiredMembers;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
     }
 
     /**
@@ -79,7 +67,10 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withRequiredMembers(List<String> requiredMembers) {
-        this.requiredMembers = requiredMembers;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredMembers(requiredMembers);
         return this;
     }
 
@@ -89,7 +80,7 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
     }
 
     /**
@@ -99,7 +90,10 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the PrivateLinkResourceInner object itself.
      */
     public PrivateLinkResourceInner withRequiredZoneNames(List<String> requiredZoneNames) {
-        this.requiredZoneNames = requiredZoneNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
         return this;
     }
 
@@ -110,7 +104,7 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @return the shareablePrivateLinkResourceTypes value.
      */
     public List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes() {
-        return this.shareablePrivateLinkResourceTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().shareablePrivateLinkResourceTypes();
     }
 
     /**
@@ -122,7 +116,10 @@ public class PrivateLinkResourceInner extends ProxyResource {
      */
     public PrivateLinkResourceInner withShareablePrivateLinkResourceTypes(
         List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes) {
-        this.shareablePrivateLinkResourceTypes = shareablePrivateLinkResourceTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkResourceProperties();
+        }
+        this.innerProperties().withShareablePrivateLinkResourceTypes(shareablePrivateLinkResourceTypes);
         return this;
     }
 
@@ -132,8 +129,8 @@ public class PrivateLinkResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (shareablePrivateLinkResourceTypes() != null) {
-            shareablePrivateLinkResourceTypes().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

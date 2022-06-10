@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20210603.1
+      ref: refs/tags/azure-sdk-build-tools_20220329.1
 
 parameters:
 - name: Artifacts
@@ -18,12 +18,12 @@ parameters:
 - name: SDKType
   type: string
   default: not-specified
-- name: TargetDocRepoOwner
-  type: string
-  default: Azure
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: UseEsrpRelease
+  type: boolean
+  default: true
 
 stages:
   - stage: Build
@@ -41,10 +41,13 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters:
-          - TestFromSource=^$
+          - TestFromSource=^$|false
         MatrixReplace:
-          - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
+        BuildParallelization: 1
+        AdditionalBuildOptions: '-DsparkShading'
+        TestOptions: '-Punit'
 
   - stage: TestEmulator
     displayName: Test Emulator
@@ -58,7 +61,11 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixReplace:
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         AdditionalParameters:
+          BuildParallelization: 1
+          AdditionalBuildOptions: '-DsparkShading'
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}
@@ -69,12 +76,8 @@ stages:
           # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
           # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
           TimeoutInMinutes: 90
-          TestStepMavenInputs:
-            goals: clean verify
-            options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
-            mavenOptions: '$(DefaultTestMavenOptions)'
-            mavenAuthenticateFeed: true
-            jdkVersionOption: $(JavaTestVersion)
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
@@ -127,5 +130,5 @@ stages:
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
-        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
         TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}

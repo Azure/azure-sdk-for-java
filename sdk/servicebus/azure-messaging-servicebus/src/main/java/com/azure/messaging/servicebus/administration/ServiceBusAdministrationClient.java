@@ -36,13 +36,45 @@ import java.util.function.Function;
  * A <b>synchronous</b> client for managing a Service Bus namespace.
  *
  * <p><strong>Create a queue</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string -->
+ * <pre>
+ * QueueProperties queue = client.createQueue&#40;&quot;my-new-queue&quot;&#41;;
+ * System.out.printf&#40;&quot;Queue created. Name: %s. Lock Duration: %s.%n&quot;,
+ *     queue.getName&#40;&#41;, queue.getLockDuration&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string -->
  *
  * <p><strong>Edit an existing subscription</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties -->
+ * <pre>
+ * &#47;&#47; To update the subscription we have to:
+ * &#47;&#47; 1. Get the subscription info from the service.
+ * &#47;&#47; 2. Update the SubscriptionProperties we want to change.
+ * &#47;&#47; 3. Call the updateSubscription&#40;&#41; with the updated object.
+ * SubscriptionProperties subscription = client.getSubscription&#40;&quot;my-topic&quot;, &quot;my-subscription&quot;&#41;;
+ *
+ * System.out.println&#40;&quot;Original delivery count: &quot; + subscription.getMaxDeliveryCount&#40;&#41;&#41;;
+ *
+ * &#47;&#47; Updating it to a new value.
+ * subscription.setMaxDeliveryCount&#40;5&#41;;
+ *
+ * &#47;&#47; Persisting the updates to the subscription object.
+ * SubscriptionProperties updated = client.updateSubscription&#40;subscription&#41;;
+ *
+ * System.out.printf&#40;&quot;Subscription updated. Name: %s. Delivery count: %s.%n&quot;,
+ *     updated.getSubscriptionName&#40;&#41;, updated.getMaxDeliveryCount&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties -->
  *
  * <p><strong>List all queues</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues -->
+ * <pre>
+ * client.listQueues&#40;&#41;.forEach&#40;queue -&gt; &#123;
+ *     System.out.printf&#40;&quot;Queue [%s]. Lock Duration: %s.%n&quot;,
+ *         queue.getName&#40;&#41;, queue.getLockDuration&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues -->
  *
  * @see ServiceBusAdministrationClientBuilder
  * @see ServiceBusAdministrationAsyncClient ServiceBusAdministrationAsyncClient for an asynchronous client.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resources that have an association with the parent resource. */
 @Fluent
 public final class TopologyAssociation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyAssociation.class);
-
     /*
      * The name of the resource that is associated with the parent resource.
      */

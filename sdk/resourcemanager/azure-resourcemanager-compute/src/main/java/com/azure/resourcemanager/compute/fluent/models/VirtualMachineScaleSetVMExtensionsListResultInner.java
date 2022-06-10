@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List VMSS VM Extension operation response. */
 @Fluent
 public final class VirtualMachineScaleSetVMExtensionsListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMExtensionsListResultInner.class);
-
     /*
      * The list of VMSS VM extensions
      */

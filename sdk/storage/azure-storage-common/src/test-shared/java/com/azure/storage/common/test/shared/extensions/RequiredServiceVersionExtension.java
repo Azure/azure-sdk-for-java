@@ -10,6 +10,7 @@ import org.spockframework.runtime.model.SpecInfo;
 
 import java.lang.reflect.InvocationTargetException;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class RequiredServiceVersionExtension implements IAnnotationDrivenExtension<RequiredServiceVersion> {
 
     @Override

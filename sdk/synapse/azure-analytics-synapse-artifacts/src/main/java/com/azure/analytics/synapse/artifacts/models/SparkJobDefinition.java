@@ -46,6 +46,13 @@ public final class SparkJobDefinition {
     private SparkJobProperties jobProperties;
 
     /*
+     * The folder that this Spark job definition is in. If not specified, this
+     * Spark job definition will appear at the root level.
+     */
+    @JsonProperty(value = "folder")
+    private SparkJobDefinitionFolder folder;
+
+    /*
      * Spark job definition.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -147,6 +154,28 @@ public final class SparkJobDefinition {
      */
     public SparkJobDefinition setJobProperties(SparkJobProperties jobProperties) {
         this.jobProperties = jobProperties;
+        return this;
+    }
+
+    /**
+     * Get the folder property: The folder that this Spark job definition is in. If not specified, this Spark job
+     * definition will appear at the root level.
+     *
+     * @return the folder value.
+     */
+    public SparkJobDefinitionFolder getFolder() {
+        return this.folder;
+    }
+
+    /**
+     * Set the folder property: The folder that this Spark job definition is in. If not specified, this Spark job
+     * definition will appear at the root level.
+     *
+     * @param folder the folder value to set.
+     * @return the SparkJobDefinition object itself.
+     */
+    public SparkJobDefinition setFolder(SparkJobDefinitionFolder folder) {
+        this.folder = folder;
         return this;
     }
 

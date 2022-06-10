@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,13 +15,19 @@ import java.util.List;
  */
 @Fluent
 public final class BlobInventoryPolicyFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyFilter.class);
-
     /*
-     * An array of strings for blob prefixes to be matched.
+     * An array of strings with maximum 10 blob prefixes to be included in the
+     * inventory.
      */
     @JsonProperty(value = "prefixMatch")
     private List<String> prefixMatch;
+
+    /*
+     * An array of strings with maximum 10 blob prefixes to be excluded from
+     * the inventory.
+     */
+    @JsonProperty(value = "excludePrefix")
+    private List<String> excludePrefix;
 
     /*
      * An array of predefined enum values. Valid values include blockBlob,
@@ -49,8 +53,20 @@ public final class BlobInventoryPolicyFilter {
     @JsonProperty(value = "includeSnapshots")
     private Boolean includeSnapshots;
 
+    /*
+     * For 'Container' definition.objectType the definition.schemaFields must
+     * include 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For
+     * 'Blob' definition.objectType and HNS enabled storage accounts the
+     * definition.schemaFields must include 'DeletionId, Deleted, DeletedTime
+     * and RemainingRetentionDays' and for Hns disabled accounts the
+     * definition.schemaFields must include 'Deleted and
+     * RemainingRetentionDays', else it must be excluded.
+     */
+    @JsonProperty(value = "includeDeleted")
+    private Boolean includeDeleted;
+
     /**
-     * Get the prefixMatch property: An array of strings for blob prefixes to be matched.
+     * Get the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
      *
      * @return the prefixMatch value.
      */
@@ -59,13 +75,35 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: An array of strings for blob prefixes to be matched.
+     * Set the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
      *
      * @param prefixMatch the prefixMatch value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
     public BlobInventoryPolicyFilter withPrefixMatch(List<String> prefixMatch) {
         this.prefixMatch = prefixMatch;
+        return this;
+    }
+
+    /**
+     * Get the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
+     * inventory.
+     *
+     * @return the excludePrefix value.
+     */
+    public List<String> excludePrefix() {
+        return this.excludePrefix;
+    }
+
+    /**
+     * Set the excludePrefix property: An array of strings with maximum 10 blob prefixes to be excluded from the
+     * inventory.
+     *
+     * @param excludePrefix the excludePrefix value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withExcludePrefix(List<String> excludePrefix) {
+        this.excludePrefix = excludePrefix;
         return this;
     }
 
@@ -136,6 +174,34 @@ public final class BlobInventoryPolicyFilter {
      */
     public BlobInventoryPolicyFilter withIncludeSnapshots(Boolean includeSnapshots) {
         this.includeSnapshots = includeSnapshots;
+        return this;
+    }
+
+    /**
+     * Get the includeDeleted property: For 'Container' definition.objectType the definition.schemaFields must include
+     * 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled
+     * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
+     * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
+     * RemainingRetentionDays', else it must be excluded.
+     *
+     * @return the includeDeleted value.
+     */
+    public Boolean includeDeleted() {
+        return this.includeDeleted;
+    }
+
+    /**
+     * Set the includeDeleted property: For 'Container' definition.objectType the definition.schemaFields must include
+     * 'Deleted, Version, DeletedTime and RemainingRetentionDays'. For 'Blob' definition.objectType and HNS enabled
+     * storage accounts the definition.schemaFields must include 'DeletionId, Deleted, DeletedTime and
+     * RemainingRetentionDays' and for Hns disabled accounts the definition.schemaFields must include 'Deleted and
+     * RemainingRetentionDays', else it must be excluded.
+     *
+     * @param includeDeleted the includeDeleted value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withIncludeDeleted(Boolean includeDeleted) {
+        this.includeDeleted = includeDeleted;
         return this;
     }
 

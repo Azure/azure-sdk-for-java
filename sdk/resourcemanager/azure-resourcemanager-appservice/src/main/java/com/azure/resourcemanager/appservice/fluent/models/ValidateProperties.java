@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** App properties used for validation. */
 @Fluent
 public final class ValidateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateProperties.class);
-
     /*
      * ARM resource ID of an App Service plan that would host the app.
      */

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.TumblingWindowTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,8 +21,6 @@ import java.util.List;
 @JsonTypeName("TumblingWindowTrigger")
 @Fluent
 public final class TumblingWindowTrigger extends Trigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TumblingWindowTrigger.class);
-
     /*
      * Pipeline for which runs are created when an event is fired for trigger
      * window that is ready.
@@ -285,14 +282,14 @@ public final class TumblingWindowTrigger extends Trigger {
     public void validate() {
         super.validate();
         if (pipeline() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
@@ -300,4 +297,6 @@ public final class TumblingWindowTrigger extends Trigger {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TumblingWindowTrigger.class);
 }

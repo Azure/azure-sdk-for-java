@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
  */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
      * Specifies the host OS name of the virtual machine. <br><br> This name
      * cannot be updated after the VM is created. <br><br> **Max-length
@@ -115,10 +111,7 @@ public final class OSProfile {
     private Boolean allowExtensionOperations;
 
     /*
-     * Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine.  **Note: This property is for
-     * private testing only, and all customers must not set the property to
-     * false.**
+     * Optional property which must either be set to True or omitted.
      */
     @JsonProperty(value = "requireGuestProvisionSignal")
     private Boolean requireGuestProvisionSignal;
@@ -354,9 +347,7 @@ public final class OSProfile {
     }
 
     /**
-     * Get the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
+     * Get the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
      *
      * @return the requireGuestProvisionSignal value.
      */
@@ -365,9 +356,7 @@ public final class OSProfile {
     }
 
     /**
-     * Set the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
+     * Set the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
      *
      * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
      * @return the OSProfile object itself.

@@ -6,15 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.network.models.NatRulePortMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of the load balancer backend addresses. */
 @Fluent
 public final class LoadBalancerBackendAddressPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddressPropertiesFormat.class);
-
     /*
      * Reference to an existing virtual network.
      */
@@ -45,6 +43,12 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
      */
     @JsonProperty(value = "loadBalancerFrontendIPConfiguration")
     private SubResource loadBalancerFrontendIpConfiguration;
+
+    /*
+     * Collection of inbound NAT rule port mappings.
+     */
+    @JsonProperty(value = "inboundNatRulesPortMapping", access = JsonProperty.Access.WRITE_ONLY)
+    private List<NatRulePortMapping> inboundNatRulesPortMapping;
 
     /**
      * Get the virtualNetwork property: Reference to an existing virtual network.
@@ -139,10 +143,22 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     }
 
     /**
+     * Get the inboundNatRulesPortMapping property: Collection of inbound NAT rule port mappings.
+     *
+     * @return the inboundNatRulesPortMapping value.
+     */
+    public List<NatRulePortMapping> inboundNatRulesPortMapping() {
+        return this.inboundNatRulesPortMapping;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (inboundNatRulesPortMapping() != null) {
+            inboundNatRulesPortMapping().forEach(e -> e.validate());
+        }
     }
 }

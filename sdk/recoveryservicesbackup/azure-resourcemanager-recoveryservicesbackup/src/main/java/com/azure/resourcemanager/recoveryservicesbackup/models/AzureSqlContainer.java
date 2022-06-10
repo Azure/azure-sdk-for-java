@@ -4,19 +4,15 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure Sql workload-specific container. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("AzureSqlContainer")
-@Immutable
+@Fluent
 public final class AzureSqlContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlContainer.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureSqlContainer withFriendlyName(String friendlyName) {
@@ -42,6 +38,13 @@ public final class AzureSqlContainer extends ProtectionContainer {
     @Override
     public AzureSqlContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
         return this;
     }
 

@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -63,7 +64,11 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String -->
+     * <pre>
+     * BlobContainerClient blobContainerClient = client.getBlobContainerClient&#40;&quot;containerName&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getBlobContainerClient#String -->
      *
      * @param containerName The name of the container to point to.
      * @return A {@link BlobContainerClient} object pointing to the specified container
@@ -97,7 +102,11 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainer#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainer#String -->
+     * <pre>
+     * BlobContainerClient blobContainerClient = client.createBlobContainer&#40;&quot;containerName&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainer#String -->
      *
      * @param containerName Name of the container to create
      * @return The {@link BlobContainerClient} used to interact with the container created.
@@ -114,7 +123,18 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * BlobContainerClient blobContainerClient = client.createBlobContainerWithResponse&#40;
+     *     &quot;containerName&quot;,
+     *     metadata,
+     *     PublicAccessType.CONTAINER,
+     *     context&#41;.getValue&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context -->
      *
      * @param containerName Name of the container to create
      * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
@@ -133,13 +153,80 @@ public final class BlobServiceClient {
     }
 
     /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExists#String -->
+     * <pre>
+     * BlobContainerClient blobContainerClient = client.createBlobContainerIfNotExists&#40;&quot;containerName&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExists#String -->
+     *
+     * @param containerName Name of the container to create
+     * @return The {@link BlobContainerClient} used to interact with the container created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobContainerClient createBlobContainerIfNotExists(String containerName) {
+        return createBlobContainerIfNotExistsWithResponse(containerName, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new container within a storage account if it does not exist. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * BlobContainerCreateOptions options = new BlobContainerCreateOptions&#40;&#41;.setMetadata&#40;metadata&#41;
+     *     .setPublicAccessType&#40;PublicAccessType.CONTAINER&#41;;
+     *
+     * Response&lt;BlobContainerClient&gt; response = client.createBlobContainerIfNotExistsWithResponse&#40;&quot;containerName&quot;,
+     *     options, context&#41;;
+     *
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.createBlobContainerIfNotExistsWithResponse#String-BlobContainerCreateOptions-Context -->
+     *
+     * @param containerName Name of the container to create
+     * @param options {@link BlobContainerCreateOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
+     * to interact with the container created. If {@link Response}'s status code is 201, a new container was
+     * successfully created. If status code is 409, a container with the same name already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobContainerClient> createBlobContainerIfNotExistsWithResponse(String containerName,
+        BlobContainerCreateOptions options, Context context) {
+        BlobContainerClient client = getBlobContainerClient(containerName);
+        return new SimpleResponse<>(client.createIfNotExistsWithResponse(options, null, context), client);
+    }
+
+    /**
      * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
      * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String -->
+     * <pre>
+     * try &#123;
+     *     client.deleteBlobContainer&#40;&quot;container Name&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete container completed with status %n&quot;&#41;;
+     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
+     *     System.out.printf&#40;&quot;Delete container failed: %s%n&quot;, error&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String -->
      *
      * @param containerName Name of the container to delete
      */
@@ -163,6 +250,58 @@ public final class BlobServiceClient {
     }
 
     /**
+     * Deletes the specified container in the storage account if it exists. For
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
+     * <pre>
+     * boolean result = client.deleteBlobContainerIfExists&#40;&quot;container Name&quot;&#41;;
+     * System.out.println&#40;&quot;Delete container completed: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExists#String -->
+     *
+     * @param containerName Name of the container to delete
+     * @return {@code true} if the container is successfully deleted, {@code false} if the container does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteBlobContainerIfExists(String containerName) {
+        return deleteBlobContainerIfExistsWithResponse(containerName, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the specified container in the storage account if it exists. For
+     * more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Boolean&gt; response = client.deleteBlobContainerIfExistsWithResponse&#40;&quot;containerName&quot;, context&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainerIfExistsWithResponse#String-Context -->
+     *
+     * @param containerName Name of the container to delete
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the blob
+     * container was successfully deleted. If status code is 404, the container does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
+        return blobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(containerName, context).block();
+    }
+
+    /**
      * Gets the URL of the storage account represented by this client.
      *
      * @return the URL.
@@ -178,7 +317,11 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.listBlobContainers -->
+     * <pre>
+     * client.listBlobContainers&#40;&#41;.forEach&#40;container -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, container.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.listBlobContainers -->
      *
      * @return The list of containers.
      */
@@ -194,7 +337,15 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration -->
+     * <pre>
+     * ListBlobContainersOptions options = new ListBlobContainersOptions&#40;&#41;
+     *     .setPrefix&#40;&quot;containerNamePrefixToMatch&quot;&#41;
+     *     .setDetails&#40;new BlobContainerListDetails&#40;&#41;.setRetrieveMetadata&#40;true&#41;&#41;;
+     *
+     * client.listBlobContainers&#40;options, timeout&#41;.forEach&#40;container -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, container.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration -->
      *
      * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
      * If iterating by page, the page size passed to byPage methods such as
@@ -214,7 +365,11 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String -->
+     * <pre>
+     * client.findBlobsByTags&#40;&quot;where=tag=value&quot;&#41;.forEach&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String -->
      *
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return The list of blobs.
@@ -231,7 +386,13 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;, timeout, context&#41;
+     *     .forEach&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration -->
      *
      * @param options {@link FindBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
@@ -250,7 +411,15 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getProperties}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getProperties -->
+     * <pre>
+     * BlobServiceProperties properties = client.getProperties&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
+     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
+     *     properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getProperties -->
      *
      * @return The storage account properties.
      */
@@ -265,7 +434,16 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     * BlobServiceProperties properties = client.getPropertiesWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
+     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
+     *     properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getPropertiesWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -289,7 +467,31 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties -->
+     * <pre>
+     * BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
+     * BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
+     *
+     * BlobServiceProperties properties = new BlobServiceProperties&#40;&#41;
+     *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
+     *         .setWrite&#40;true&#41;
+     *         .setDelete&#40;true&#41;
+     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
+     *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
+     *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
+     *
+     * try &#123;
+     *     client.setProperties&#40;properties&#41;;
+     *     System.out.printf&#40;&quot;Setting properties completed%n&quot;&#41;;
+     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
+     *     System.out.printf&#40;&quot;Setting properties failed: %s%n&quot;, error&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.setProperties#BlobServiceProperties -->
      *
      * @param properties Configures the service.
      */
@@ -308,7 +510,29 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context -->
+     * <pre>
+     * BlobRetentionPolicy loggingRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
+     * BlobRetentionPolicy metricsRetentionPolicy = new BlobRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
+     *
+     * BlobServiceProperties properties = new BlobServiceProperties&#40;&#41;
+     *     .setLogging&#40;new BlobAnalyticsLogging&#40;&#41;
+     *         .setWrite&#40;true&#41;
+     *         .setDelete&#40;true&#41;
+     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
+     *     .setHourMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
+     *     .setMinuteMetrics&#40;new BlobMetrics&#40;&#41;
+     *         .setEnabled&#40;true&#41;
+     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
+     *
+     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Setting properties completed with status %d%n&quot;,
+     *     client.setPropertiesWithResponse&#40;properties, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.setPropertiesWithResponse#BlobServiceProperties-Duration-Context -->
      *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -329,7 +553,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     * System.out.printf&#40;&quot;User delegation key: %s%n&quot;,
+     *     client.getUserDelegationKey&#40;delegationKeyStartTime, delegationKeyExpiryTime&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -346,7 +575,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context -->
+     * <pre>
+     * System.out.printf&#40;&quot;User delegation key: %s%n&quot;,
+     *     client.getUserDelegationKeyWithResponse&#40;delegationKeyStartTime, delegationKeyExpiryTime, timeout, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context -->
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -371,7 +605,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getStatistics}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getStatistics -->
+     * <pre>
+     * System.out.printf&#40;&quot;Geo-replication status: %s%n&quot;,
+     *     client.getStatistics&#40;&#41;.getGeoReplication&#40;&#41;.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getStatistics -->
      *
      * @return The storage account statistics.
      */
@@ -388,7 +627,12 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context -->
+     * <pre>
+     * System.out.printf&#40;&quot;Geo-replication status: %s%n&quot;,
+     *     client.getStatisticsWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;.getGeoReplication&#40;&#41;.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getStatisticsWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -407,7 +651,13 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.getAccountInfo}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.getAccountInfo -->
+     * <pre>
+     * StorageAccountInfo accountInfo = client.getAccountInfo&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Account kind: %s, SKU: %s%n&quot;, accountInfo.getAccountKind&#40;&#41;, accountInfo.getSkuName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.getAccountInfo -->
      *
      * @return The storage account info.
      */
@@ -448,7 +698,22 @@ public final class BlobServiceClient {
      * <p><strong>Generating an account SAS</strong></p>
      * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
      * read and list access to blob  and file shares.</p>
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = client.generateAccountSas&#40;sasValues&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
@@ -467,7 +732,22 @@ public final class BlobServiceClient {
      * <p><strong>Generating an account SAS</strong></p>
      * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
      * read and list access to blob  and file shares.</p>
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = client.generateAccountSas&#40;sasValues, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -487,7 +767,18 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String -->
+     * <pre>
+     * ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions&#40;&#41;;
+     * listBlobContainersOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
+     * client.listBlobContainers&#40;listBlobContainersOptions, null&#41;.forEach&#40;
+     *     deletedContainer -&gt; &#123;
+     *         BlobContainerClient blobContainerClient = client.undeleteBlobContainer&#40;
+     *             deletedContainer.getName&#40;&#41;, deletedContainer.getVersion&#40;&#41;&#41;;
+     *     &#125;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String -->
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
@@ -511,7 +802,19 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context -->
+     * <pre>
+     * ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions&#40;&#41;;
+     * listBlobContainersOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
+     * client.listBlobContainers&#40;listBlobContainersOptions, null&#41;.forEach&#40;
+     *     deletedContainer -&gt; &#123;
+     *         BlobContainerClient blobContainerClient = client.undeleteBlobContainerWithResponse&#40;
+     *             new UndeleteBlobContainerOptions&#40;deletedContainer.getName&#40;&#41;, deletedContainer.getVersion&#40;&#41;&#41;,
+     *             timeout, context&#41;.getValue&#40;&#41;;
+     *     &#125;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context -->
      *
      * @param options {@link UndeleteBlobContainerOptions}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -534,7 +837,8 @@ public final class BlobServiceClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String}
+//     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String -->
+//     * <!-- end com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String -->
 //     *
 //     * @param sourceContainerName The current name of the container.
 //     * @param destinationContainerName The new name of the container.
@@ -551,7 +855,8 @@ public final class BlobServiceClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions-Duration-Context}
+//     * <!-- src_embed com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions-Duration-Context -->
+//     * <!-- end com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions-Duration-Context -->
 //     *
 //     * @param options {@link BlobContainerRenameOptions}
 //     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

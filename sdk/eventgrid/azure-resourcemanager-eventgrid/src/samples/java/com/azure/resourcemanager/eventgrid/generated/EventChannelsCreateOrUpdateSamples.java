@@ -10,7 +10,7 @@ import com.azure.resourcemanager.eventgrid.models.EventChannelSource;
 /** Samples for EventChannels CreateOrUpdate. */
 public final class EventChannelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventChannels_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_CreateOrUpdate.json
      */
     /**
      * Sample code: EventChannels_CreateOrUpdate.

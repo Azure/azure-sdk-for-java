@@ -94,7 +94,7 @@ The following sections provide several code snippets covering some of the most c
 ### Spark batch job examples
 * [Create a Spark batch job](#create-a-spark-batch-job)
 * [List role Spark batch jobs](#list-spark-batch-jobs)
-* [Cancel a Spark batch job](#delete-a-spark-batch-job)
+* [Cancel a Spark batch job](#cancel-a-spark-batch-job)
 
 ### Create a Spark batch job
 
@@ -139,10 +139,9 @@ batchClient.cancelSparkBatchJob(jobId);
 ### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Synapse Spark service tasks, including:
 
-* [Create a Spark job asynchronously](#create-a-spark-batch-job-asynchronously)
-* [Retrieve a Spark job asynchronously](#retrieve-a-spark-batch-job-asynchronously)
+* [Create a Spark job asynchronously](#create-a-spark-job-asynchronously)
 * [List Spark jobs asynchronously](#list-spark-batch-jobs-asynchronously)
-* [Delete a Spark job asynchronously](#delete-a-spark-batch-job-asynchronously)
+* [Cancel a Spark batch job asynchronously](#cancel-a-spark-batch-job-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
@@ -221,7 +220,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
-[azure_cli]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace-cli
+[azure_cli]: https://docs.microsoft.com/cli/azure
+[jdk]: https://docs.microsoft.com/azure/developer/java/fundamentals/?view=azure-java-stable
+[azure_sub]: https://azure.microsoft.com/free/
 [rest_api]: https://docs.microsoft.com/rest/api/synapse/
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal

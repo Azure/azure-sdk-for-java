@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hubspot Service linked service properties. */
 @Fluent
 public final class HubspotLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubspotLinkedServiceTypeProperties.class);
-
     /*
      * The client ID associated with your Hubspot application.
      */
@@ -246,7 +243,7 @@ public final class HubspotLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model HubspotLinkedServiceTypeProperties"));
@@ -261,4 +258,6 @@ public final class HubspotLinkedServiceTypeProperties {
             refreshToken().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HubspotLinkedServiceTypeProperties.class);
 }

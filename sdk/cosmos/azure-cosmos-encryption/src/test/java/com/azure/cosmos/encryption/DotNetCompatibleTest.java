@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.encryption.implementation.Constants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -35,6 +38,7 @@ public class DotNetCompatibleTest extends TestSuiteBase {
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
+    private ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor;
 
     @Factory(dataProvider = "clientBuilders")
     public DotNetCompatibleTest(CosmosClientBuilder clientBuilder) {
@@ -57,10 +61,10 @@ public class DotNetCompatibleTest extends TestSuiteBase {
         cosmosAsyncDatabase.createClientEncryptionKey(keyProperties1).block();
         cosmosAsyncDatabase.createClientEncryptionKey(keyProperties2).block();
 
-        TestEncryptionKeyStoreProvider encryptionKeyStoreProvider =
-            new TestEncryptionKeyStoreProvider();
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            encryptionKeyStoreProvider);
+        KeyEncryptionKeyResolver keyEncryptionKeyResolver =
+            new TestKeyEncryptionKeyResolver();
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
+            keyEncryptionKeyResolver).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
 
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase.getId());
@@ -72,6 +76,8 @@ public class DotNetCompatibleTest extends TestSuiteBase {
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(containerProperties).block();
         cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
+        this.cosmosItemRequestOptionsAccessor =
+            ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -87,9 +93,12 @@ public class DotNetCompatibleTest extends TestSuiteBase {
 
 
         //storing .net encrypted json into database as it is
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        //Service wont allow to insert plain item in encrypted container, this is a work around to insert the plain item in container
+        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         PartitionKey partitionKey = new PartitionKey(dotNetEncryptedPocoJsonNode.get("mypk").asText());
         this.cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().createItem(dotNetEncryptedPocoJsonNode,
-            partitionKey, new CosmosItemRequestOptions()).block();
+            partitionKey, requestOptions).block();
 
         //reading above saved .net encrypted json via java encryption library
         EncryptionPojo unencryptedPojo =

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The identifier information of shared gallery. */
 @Fluent
 public final class SharedGalleryIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryIdentifier.class);
-
     /*
      * The unique id of this shared gallery.
      */

@@ -74,26 +74,27 @@ custom-types: CloudEvent,EventGridEvent
 model-override-setter-from-superclass: true
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/504bc4ece6c4a1ad983f148237c71a3f72fc977f/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.KeyVault/stable/2018-01-01/KeyVault.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.MachineLearningServices/stable/2018-01-01/MachineLearningServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Cache/stable/2018-01-01/RedisCache.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Web/stable/2018-01-01/Web.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.Communication/stable/2018-01-01/AzureCommunicationServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.PolicyInsights/stable/2018-01-01/PolicyInsights.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f8811b7dd784712c3fb0941e04d9042f59a4d367/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
 ```
-
 
 ### KeyVault updates
 
@@ -255,8 +256,55 @@ public class EventGridCustomization extends Customization {
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
-    }
 
+        replaceClassAnnotation(customization);
+    }
+    
+    public void replaceClassAnnotation(LibraryCustomization customization) {
+        // HealthcareFhirResource events
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
+        // Communication events
+        packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        // Api Management events
+        packageModels.getClass("ApiManagementApiCreatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementApiDeletedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementApiReleaseCreatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementApiReleaseDeletedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementApiReleaseUpdatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementApiUpdatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementProductCreatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementProductDeletedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementProductUpdatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementSubscriptionCreatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementSubscriptionDeletedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementSubscriptionUpdatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementUserCreatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementUserDeletedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+        packageModels.getClass("ApiManagementUserUpdatedEventData").removeAnnotation("@Fluent")
+            .addAnnotation("@Immutable");
+    }
+    
     public static String getConstantName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return name;

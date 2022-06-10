@@ -7,12 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** ExpressRouteCircuit resource. */
 @Fluent
 public final class ExpressRouteCircuitInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitInner.class);
-
     /*
      * The SKU.
      */

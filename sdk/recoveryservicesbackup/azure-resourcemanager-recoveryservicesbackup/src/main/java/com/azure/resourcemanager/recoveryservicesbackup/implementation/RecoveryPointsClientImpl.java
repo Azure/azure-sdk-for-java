@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -12,7 +11,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -27,18 +25,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AadPropertiesResourceInner;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.CrrAccessTokenResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResourceList;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
 public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryPointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecoveryPointsService service;
 
@@ -104,27 +97,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems"
-                + "/{protectedItemName}/recoveryPoints/{recoveryPointId}/accessToken")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CrrAccessTokenResourceInner>> getAccessToken(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("recoveryPointId") String recoveryPointId,
-            @BodyParam("application/json") AadPropertiesResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -147,7 +119,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
@@ -186,7 +159,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -194,7 +166,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
                     service
                         .list(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -229,7 +201,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
@@ -269,13 +242,12 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -308,7 +280,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoveryPointResourceInner> listAsync(
@@ -335,7 +307,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoveryPointResourceInner> listAsync(
@@ -360,7 +332,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoveryPointResourceInner> listAsync(
@@ -389,7 +361,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(
@@ -412,7 +384,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(
@@ -440,7 +412,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
+     * @return base class for backup copies along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoveryPointResourceInner>> getWithResponseAsync(
@@ -483,7 +455,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter recoveryPointId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -491,7 +462,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -518,7 +489,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
+     * @return base class for backup copies along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoveryPointResourceInner>> getWithResponseAsync(
@@ -562,13 +533,12 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter recoveryPointId is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -593,7 +563,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
+     * @return base class for backup copies on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecoveryPointResourceInner> getAsync(
@@ -605,14 +575,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String recoveryPointId) {
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap(
-                (Response<RecoveryPointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -656,7 +619,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
+     * @return base class for backup copies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPointResourceInner> getWithResponse(
@@ -673,283 +636,14 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     }
 
     /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CrrAccessTokenResourceInner>> getAccessTokenWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
-        if (recoveryPointId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter recoveryPointId is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2018-12-20";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAccessToken(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            recoveryPointId,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CrrAccessTokenResourceInner>> getAccessTokenWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (protectedItemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter protectedItemName is required and cannot be null."));
-        }
-        if (recoveryPointId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter recoveryPointId is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2018-12-20";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getAccessToken(
-                this.client.getEndpoint(),
-                apiVersion,
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CrrAccessTokenResourceInner> getAccessTokenAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters) {
-        return getAccessTokenWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .flatMap(
-                (Response<CrrAccessTokenResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CrrAccessTokenResourceInner getAccessToken(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters) {
-        return getAccessTokenAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .block();
-    }
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CrrAccessTokenResourceInner> getAccessTokenWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters,
-        Context context) {
-        return getAccessTokenWithResponseAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -985,7 +679,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

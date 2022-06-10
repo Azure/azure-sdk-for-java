@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
@@ -13,106 +12,28 @@ import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.UUID;
 
 /** A billing subscription. */
-@JsonFlatten
 @Fluent
-public class BillingSubscriptionInner extends ProxyResource {
+public final class BillingSubscriptionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionInner.class);
 
     /*
-     * The name of the subscription.
+     * The billing properties of a subscription.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private BillingSubscriptionProperties innerProperties;
 
-    /*
-     * The ID of the subscription.
+    /**
+     * Get the innerProperties property: The billing properties of a subscription.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID subscriptionId;
-
-    /*
-     * The current billing status of the subscription.
-     */
-    @JsonProperty(value = "properties.subscriptionBillingStatus")
-    private BillingSubscriptionStatusType subscriptionBillingStatus;
-
-    /*
-     * The last month charges.
-     */
-    @JsonProperty(value = "properties.lastMonthCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount lastMonthCharges;
-
-    /*
-     * The current month to date charges.
-     */
-    @JsonProperty(value = "properties.monthToDateCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount monthToDateCharges;
-
-    /*
-     * The ID of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The cost center applied to the subscription.
-     */
-    @JsonProperty(value = "properties.costCenter")
-    private String costCenter;
-
-    /*
-     * The ID of the customer for whom the subscription was created. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     */
-    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * The name of the customer for whom the subscription was created. The
-     * field is applicable only for Microsoft Partner Agreement billing
-     * account.
-     */
-    @JsonProperty(value = "properties.customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerDisplayName;
-
-    /*
-     * The ID of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * The name of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * Reseller for this subscription.
-     */
-    @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
-    private Reseller reseller;
-
-    /*
-     * The sku ID of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "properties.skuId")
-    private String skuId;
-
-    /*
-     * The sku description of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuDescription;
+    private BillingSubscriptionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: The name of the subscription.
@@ -120,7 +41,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -129,7 +50,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the subscriptionId value.
      */
     public UUID subscriptionId() {
-        return this.subscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
     }
 
     /**
@@ -138,7 +59,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the subscriptionBillingStatus value.
      */
     public BillingSubscriptionStatusType subscriptionBillingStatus() {
-        return this.subscriptionBillingStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionBillingStatus();
     }
 
     /**
@@ -149,7 +70,10 @@ public class BillingSubscriptionInner extends ProxyResource {
      */
     public BillingSubscriptionInner withSubscriptionBillingStatus(
         BillingSubscriptionStatusType subscriptionBillingStatus) {
-        this.subscriptionBillingStatus = subscriptionBillingStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withSubscriptionBillingStatus(subscriptionBillingStatus);
         return this;
     }
 
@@ -159,7 +83,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the lastMonthCharges value.
      */
     public Amount lastMonthCharges() {
-        return this.lastMonthCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().lastMonthCharges();
     }
 
     /**
@@ -168,7 +92,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the monthToDateCharges value.
      */
     public Amount monthToDateCharges() {
-        return this.monthToDateCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().monthToDateCharges();
     }
 
     /**
@@ -177,7 +101,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -186,7 +110,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -195,7 +119,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the costCenter value.
      */
     public String costCenter() {
-        return this.costCenter;
+        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
     }
 
     /**
@@ -205,7 +129,10 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the BillingSubscriptionInner object itself.
      */
     public BillingSubscriptionInner withCostCenter(String costCenter) {
-        this.costCenter = costCenter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withCostCenter(costCenter);
         return this;
     }
 
@@ -216,7 +143,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -226,7 +153,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
-        return this.customerDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().customerDisplayName();
     }
 
     /**
@@ -235,7 +162,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -244,7 +171,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
-        return this.invoiceSectionDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionDisplayName();
     }
 
     /**
@@ -253,7 +180,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the reseller value.
      */
     public Reseller reseller() {
-        return this.reseller;
+        return this.innerProperties() == null ? null : this.innerProperties().reseller();
     }
 
     /**
@@ -262,7 +189,7 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the skuId value.
      */
     public String skuId() {
-        return this.skuId;
+        return this.innerProperties() == null ? null : this.innerProperties().skuId();
     }
 
     /**
@@ -272,7 +199,10 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the BillingSubscriptionInner object itself.
      */
     public BillingSubscriptionInner withSkuId(String skuId) {
-        this.skuId = skuId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingSubscriptionProperties();
+        }
+        this.innerProperties().withSkuId(skuId);
         return this;
     }
 
@@ -282,7 +212,17 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @return the skuDescription value.
      */
     public String skuDescription() {
-        return this.skuDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().skuDescription();
+    }
+
+    /**
+     * Get the suspensionReasons property: The suspension reason for a subscription. Applies only to subscriptions in
+     * Microsoft Online Services Program billing accounts.
+     *
+     * @return the suspensionReasons value.
+     */
+    public List<String> suspensionReasons() {
+        return this.innerProperties() == null ? null : this.innerProperties().suspensionReasons();
     }
 
     /**
@@ -291,14 +231,8 @@ public class BillingSubscriptionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (lastMonthCharges() != null) {
-            lastMonthCharges().validate();
-        }
-        if (monthToDateCharges() != null) {
-            monthToDateCharges().validate();
-        }
-        if (reseller() != null) {
-            reseller().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

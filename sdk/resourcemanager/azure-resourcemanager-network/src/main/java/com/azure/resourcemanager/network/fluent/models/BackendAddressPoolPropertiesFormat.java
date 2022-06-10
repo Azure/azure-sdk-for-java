@@ -6,19 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the backend address pool. */
 @Fluent
 public final class BackendAddressPoolPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendAddressPoolPropertiesFormat.class);
-
     /*
      * The location of the backend address pool.
      */
@@ -62,6 +58,13 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     @JsonProperty(value = "outboundRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> outboundRules;
+
+    /*
+     * An array of references to inbound NAT rules that use this backend
+     * address pool.
+     */
+    @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> inboundNatRules;
 
     /*
      * The provisioning state of the backend address pool resource.
@@ -166,6 +169,15 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public List<SubResource> outboundRules() {
         return this.outboundRules;
+    }
+
+    /**
+     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
+     *
+     * @return the inboundNatRules value.
+     */
+    public List<SubResource> inboundNatRules() {
+        return this.inboundNatRules;
     }
 
     /**

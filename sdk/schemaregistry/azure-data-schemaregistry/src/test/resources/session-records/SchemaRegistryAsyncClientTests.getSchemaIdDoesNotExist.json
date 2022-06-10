@@ -1,11 +1,11 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/at/schemas/bar?api-version=2020-09-01-preview",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/bar:get-id?api-version=2021-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f4529c88-a07a-4167-a2b2-f04d4bef05ab",
-      "Content-Type" : "application/json"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "024136f2-787f-480e-b328-878d296277bf",
+      "Content-Type" : "application/json; serialization=avro"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,8 +13,8 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"Code\":404,\"Detail\":\"Schema at\\/bar does not exist. TrackingId:4ee57ad1-ac95-4bad-a45a-eb4b55458ac2_G3, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/at\\/schemas\\/bar, Timestamp:2021-08-15T17:50:58\"}",
-      "Date" : "Sun, 15 Aug 2021 17:50:58 GMT",
+      "Body" : "{\"Code\":404,\"Detail\":\"Schema mygroup\\/bar does not exist. TrackingId:ba7b3a34-fd4f-4813-81fe-671c2bf39dfd_G29, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/testgroup001\\/schemas\\/bar:get-id, Timestamp:2021-11-11T02:50:09\"}",
+      "Date" : "Thu, 11 Nov 2021 02:50:09 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("GenericProtectionPolicy")
 @Fluent
 public final class GenericProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericProtectionPolicy.class);
-
     /*
      * List of sub-protection policies which includes schedule and retention
      */
@@ -102,6 +98,13 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
     @Override
     public GenericProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

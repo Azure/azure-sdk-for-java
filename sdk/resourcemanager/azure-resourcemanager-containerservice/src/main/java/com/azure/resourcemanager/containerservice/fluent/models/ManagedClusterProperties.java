@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
@@ -18,11 +17,11 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdenti
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterStorageProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,8 +30,6 @@ import java.util.Map;
 /** Properties of the managed cluster. */
 @Fluent
 public final class ManagedClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterProperties.class);
-
     /*
      * The current provisioning state.
      */
@@ -52,8 +49,13 @@ public final class ManagedClusterProperties {
     private Integer maxAgentPools;
 
     /*
-     * The version of Kubernetes the Managed Cluster is running. When you
-     * upgrade a supported AKS cluster, Kubernetes minor versions cannot be
+     * The version of Kubernetes specified by the user. Both patch version
+     * <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are
+     * supported. When <major.minor> is specified, the latest supported GA
+     * patch version is chosen automatically. Updating the cluster with the
+     * same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will
+     * not trigger an upgrade, even if a newer patch version is available. When
+     * you upgrade a supported AKS cluster, Kubernetes minor versions cannot be
      * skipped. All upgrades must be performed sequentially by major version
      * number. For example, upgrades between 1.14.x -> 1.15.x or 1.15.x ->
      * 1.16.x are allowed, however 1.14.x -> 1.16.x is not allowed. See
@@ -63,6 +65,16 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
+
+    /*
+     * The version of Kubernetes the Managed Cluster is running. If
+     * kubernetesVersion was a fully specified version <major.minor.patch>,
+     * this field will be exactly equal to it. If kubernetesVersion was
+     * <major.minor>, this field will contain the full <major.minor.patch>
+     * version being used.
+     */
+    @JsonProperty(value = "currentKubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentKubernetesVersion;
 
     /*
      * The DNS prefix of the Managed Cluster. This cannot be updated once the
@@ -236,9 +248,14 @@ public final class ManagedClusterProperties {
     private ManagedClusterSecurityProfile securityProfile;
 
     /*
-     * Whether the cluster can be accessed through public network or not
-     * Default value is 'Enabled' (case insensitive). Could be set to
-     * 'Disabled' to enable private cluster
+     * Storage profile for the managed cluster.
+     */
+    @JsonProperty(value = "storageProfile")
+    private ManagedClusterStorageProfile storageProfile;
+
+    /*
+     * PublicNetworkAccess of the managedCluster Allow or deny public network
+     * access for AKS
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -271,11 +288,14 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Get the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @return the kubernetesVersion value.
      */
@@ -284,11 +304,14 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Set the kubernetesVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. When you upgrade a supported AKS cluster, Kubernetes minor
+     * versions cannot be skipped. All upgrades must be performed sequentially by major version number. For example,
+     * upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is not
+     * allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterProperties object itself.
@@ -296,6 +319,18 @@ public final class ManagedClusterProperties {
     public ManagedClusterProperties withKubernetesVersion(String kubernetesVersion) {
         this.kubernetesVersion = kubernetesVersion;
         return this;
+    }
+
+    /**
+     * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running. If
+     * kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
+     *
+     * @return the currentKubernetesVersion value.
+     */
+    public String currentKubernetesVersion() {
+        return this.currentKubernetesVersion;
     }
 
     /**
@@ -795,8 +830,28 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     * Get the storageProfile property: Storage profile for the managed cluster.
+     *
+     * @return the storageProfile value.
+     */
+    public ManagedClusterStorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Set the storageProfile property: Storage profile for the managed cluster.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withStorageProfile(ManagedClusterStorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster Allow or deny public network
+     * access for AKS.
      *
      * @return the publicNetworkAccess value.
      */
@@ -805,8 +860,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     * Set the publicNetworkAccess property: PublicNetworkAccess of the managedCluster Allow or deny public network
+     * access for AKS.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedClusterProperties object itself.
@@ -883,6 +938,9 @@ public final class ManagedClusterProperties {
         }
         if (securityProfile() != null) {
             securityProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
         }
     }
 }

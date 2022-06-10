@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunGetLogResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
+import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -55,6 +56,19 @@ public interface RunsClient {
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the runs for a registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RunInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * Gets all the runs for a registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
      *     string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
@@ -67,19 +81,6 @@ public interface RunsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RunInner> list(
         String resourceGroupName, String registryName, String filter, Integer top, Context context);
-
-    /**
-     * Gets all the runs for a registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the runs for a registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RunInner> list(String resourceGroupName, String registryName);
 
     /**
      * Gets the detailed information for a given run.
@@ -144,7 +145,7 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,7 +153,7 @@ public interface RunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled);
+        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
@@ -160,15 +161,15 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunInner>, RunInner> beginUpdateAsync(
-        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled);
+        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
@@ -176,15 +177,15 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
-        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled);
+        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
@@ -192,16 +193,20 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunInner>, RunInner> beginUpdate(
-        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context);
+        String resourceGroupName,
+        String registryName,
+        String runId,
+        RunUpdateParameters runUpdateParameters,
+        Context context);
 
     /**
      * Patch the run properties.
@@ -209,14 +214,15 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RunInner> updateAsync(String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled);
+    Mono<RunInner> updateAsync(
+        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
@@ -224,13 +230,15 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
+     * @param runUpdateParameters The run update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RunInner> updateAsync(String resourceGroupName, String registryName, String runId);
+    RunInner update(
+        String resourceGroupName, String registryName, String runId, RunUpdateParameters runUpdateParameters);
 
     /**
      * Patch the run properties.
@@ -238,22 +246,7 @@ public interface RunsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner update(String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled);
-
-    /**
-     * Patch the run properties.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runId The run ID.
-     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param runUpdateParameters The run update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,21 +255,11 @@ public interface RunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RunInner update(
-        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context);
-
-    /**
-     * Patch the run properties.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runId The run ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner update(String resourceGroupName, String registryName, String runId);
+        String resourceGroupName,
+        String registryName,
+        String runId,
+        RunUpdateParameters runUpdateParameters,
+        Context context);
 
     /**
      * Gets a link to download the run logs.
@@ -363,7 +346,7 @@ public interface RunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String registryName, String runId);
 
     /**
@@ -377,7 +360,7 @@ public interface RunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String registryName, String runId);
 
     /**
@@ -392,7 +375,7 @@ public interface RunsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(
         String resourceGroupName, String registryName, String runId, Context context);
 

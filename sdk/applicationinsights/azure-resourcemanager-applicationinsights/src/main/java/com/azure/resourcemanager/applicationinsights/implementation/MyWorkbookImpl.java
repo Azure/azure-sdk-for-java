@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.applicationinsights.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.MyWorkbookInner;
 import com.azure.resourcemanager.applicationinsights.models.Kind;
-import com.azure.resourcemanager.applicationinsights.models.ManagedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbook;
+import com.azure.resourcemanager.applicationinsights.models.MyWorkbookManagedIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
         }
     }
 
-    public ManagedIdentity identity() {
+    public MyWorkbookManagedIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -59,6 +60,10 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
 
     public Kind kind() {
         return this.innerModel().kind();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String displayName() {
@@ -108,6 +113,10 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MyWorkbookInner innerModel() {
@@ -229,7 +238,7 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
         return this;
     }
 
-    public MyWorkbookImpl withIdentity(ManagedIdentity identity) {
+    public MyWorkbookImpl withIdentity(MyWorkbookManagedIdentity identity) {
         this.innerModel().withIdentity(identity);
         return this;
     }
@@ -290,12 +299,16 @@ public final class MyWorkbookImpl implements MyWorkbook, MyWorkbook.Definition, 
     }
 
     public MyWorkbookImpl withSourceIdParameter(String sourceId) {
-        this.createSourceId = sourceId;
-        return this;
+        if (isInCreateMode()) {
+            this.createSourceId = sourceId;
+            return this;
+        } else {
+            this.updateSourceId = sourceId;
+            return this;
+        }
     }
 
-    public MyWorkbookImpl sourceIdParameter(String sourceId) {
-        this.updateSourceId = sourceId;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

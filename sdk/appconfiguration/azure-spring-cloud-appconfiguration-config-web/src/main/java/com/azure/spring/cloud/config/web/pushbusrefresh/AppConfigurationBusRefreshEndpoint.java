@@ -4,11 +4,9 @@ package com.azure.spring.cloud.config.web.pushbusrefresh;
 
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
 import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
-import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
@@ -37,8 +34,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final AppConfigurationProperties appConfiguration;
 
@@ -71,32 +66,32 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,
         @RequestParam Map<String, String> allRequestParams) throws IOException {
-        String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-        JsonNode kvReference = OBJECT_MAPPER.readTree(reference);
-
-        AppConfigurationEndpoint validation;
+        AppConfigurationEndpoint endpoint;
         try {
-            validation = new AppConfigurationEndpoint(kvReference, appConfiguration.getStores(),
+            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(),
                 allRequestParams);
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
         }
 
-        if (!validation.authenticate()) {
+        if (!endpoint.authenticate()) {
             return HttpStatus.UNAUTHORIZED.getReasonPhrase();
         }
 
-        JsonNode validationResponse = kvReference.findValue(VALIDATION_CODE_KEY);
+        String syncToken = endpoint.getSyncToken();
+
+        JsonNode validationResponse = endpoint.getValidationResponse();
         if (validationResponse != null) {
             // Validating Web Hook
             return VALIDATION_CODE_FORMAT_START + validationResponse.asText() + "\"}";
         } else {
-            if (validation.triggerRefresh()) {
+            if (endpoint.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
-                publish(new AppConfigurationBusRefreshEvent(validation.getEndpoint(), this, getInstanceId(),
-                    new PathDestinationFactory().getDestination(null)));
+
+                publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, this, getInstanceId(),
+                        new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");

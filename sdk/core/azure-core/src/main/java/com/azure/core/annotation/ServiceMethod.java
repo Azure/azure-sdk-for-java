@@ -10,8 +10,8 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
 /**
- * Annotation given to all service client methods that perform network operations.
- * All methods with this annotation should be contained in class annotated with {@link ServiceClient}
+ * Annotation given to all service client methods that perform network operations. All methods with this annotation
+ * should be contained in class annotated with {@link ServiceClient}
  */
 @Retention(CLASS)
 @Target(METHOD)
@@ -19,6 +19,7 @@ public @interface ServiceMethod {
 
     /**
      * This represents the return type expected from this service method.
+     *
      * @return the return type of the method annotated with {@link ServiceMethod}
      */
     ReturnType returns();

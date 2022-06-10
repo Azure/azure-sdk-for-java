@@ -18,7 +18,7 @@ public interface BackupEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupEngineBase resources.
+     * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupEngineBaseResource> list(String vaultName, String resourceGroupName);
 
@@ -33,7 +33,7 @@ public interface BackupEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupEngineBase resources.
+     * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BackupEngineBaseResource> list(
         String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
@@ -63,7 +63,7 @@ public interface BackupEngines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the base backup engine class.
+     * @return the base backup engine class along with {@link Response}.
      */
     Response<BackupEngineBaseResource> getWithResponse(
         String vaultName,

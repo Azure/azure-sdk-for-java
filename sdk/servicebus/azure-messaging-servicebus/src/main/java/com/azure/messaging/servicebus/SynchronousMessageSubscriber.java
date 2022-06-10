@@ -4,89 +4,148 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscription;
-import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
 import java.time.Duration;
-import java.util.Queue;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.NUMBER_OF_REQUESTED_MESSAGES_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.WORK_ID_KEY;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
-    private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
-    private final Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
-    private final Queue<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedQueue<>();
-    private final AtomicLong remaining = new AtomicLong();
+    private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
 
-    private final long requested;
     private final Object currentWorkLock = new Object();
+    private final ServiceBusReceiverAsyncClient asyncClient;
+    private final boolean isPrefetchDisabled;
+    private final Duration operationTimeout;
 
-    private Disposable currentTimeoutOperation;
-    private SynchronousReceiveWork currentWork;
-    private boolean subscriberInitialized;
+    private volatile SynchronousReceiveWork currentWork;
 
-    private volatile Subscription subscription;
+    /**
+     * The number of requested messages.
+     */
+    private volatile long requested;
+    private static final AtomicLongFieldUpdater<SynchronousMessageSubscriber> REQUESTED =
+        AtomicLongFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, "requested");
 
+    private volatile Subscription upstream;
     private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
         AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
-            "subscription");
+            "upstream");
 
+    /**
+     * Creates a synchronous subscriber with some initial work to queue.
+     *
+     *
+     * @param asyncClient Client to update disposition of messages.
+     * @param isPrefetchDisabled Indicates if the prefetch is disabled.
+     * @param operationTimeout Timeout to wait for operation to complete.
+     * @param initialWork Initial work to queue.
+     *
+     * <p>
+     * When {@code isPrefetchDisabled} is true, we release the messages those received during the timespan
+     * between the last terminated downstream and the next active downstream.
+     * </p>
+     *
+     * @throws NullPointerException if {@code initialWork} is null.
+     * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
+     */
+    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient,
+                                 SynchronousReceiveWork initialWork,
+                                 boolean isPrefetchDisabled,
+                                 Duration operationTimeout) {
+        this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
+        this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
-    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
-        this.workQueue.add(initialWork);
-        requested = initialWork.getNumberOfEvents() > prefetch ? initialWork.getNumberOfEvents() : prefetch;
+        this.isPrefetchDisabled = isPrefetchDisabled;
+        if (initialWork.getNumberOfEvents() < 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
+        }
+
+        Operators.addCap(REQUESTED, this, initialWork.getNumberOfEvents());
     }
 
     /**
      * On an initial subscription, will take the first work item, and request that amount of work for it.
+     *
      * @param subscription Subscription for upstream.
      */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
-
-        if (Operators.setOnce(UPSTREAM, this, subscription)) {
-            this.subscription = subscription;
-            subscriberInitialized = true;
-            drain();
-        } else {
-            logger.error("Already subscribed once.");
+        if (!Operators.setOnce(UPSTREAM, this, subscription)) {
+            LOGGER.warning("This should only be subscribed to once. Ignoring subscription.");
+            return;
         }
+
+        // Initialises or returns existing work. If existing work is returned, it's a no-op. Otherwise, it'll "start"
+        // the new current work.
+        getOrUpdateCurrentWork();
+
+        subscription.request(REQUESTED.get(this));
     }
 
     /**
      * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
      * the subscriber.
+     *
      * @param message Event to publish.
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessage message) {
-        bufferMessages.add(message);
-        drain();
+        if (isTerminated()) {
+            Operators.onNextDropped(message, Context.empty());
+        } else {
+            bufferMessages.add(message);
+            drain();
+        }
     }
 
     /**
      * Queue the work to be picked up by drain loop.
+     *
      * @param work to be queued.
      */
     void queueWork(SynchronousReceiveWork work) {
+        Objects.requireNonNull(work, "'work' cannot be null");
 
-        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
-            work.getTimeout());
         workQueue.add(work);
 
-        // Do not drain if another thread want to queue the work before we have subscriber
-        if (subscriberInitialized) {
+        LoggingEventBuilder logBuilder = LOGGER.atVerbose()
+            .addKeyValue(WORK_ID_KEY, work.getId())
+            .addKeyValue("numberOfEvents", work.getNumberOfEvents())
+            .addKeyValue("timeout", work.getTimeout());
+
+        // If previous work items were completed, the message queue is empty, and currentWork is null or terminal,
+        // Update the current work and request items upstream if we need to.
+        if (workQueue.peek() == work && (currentWork == null || currentWork.isTerminal())) {
+            logBuilder.log("First work in queue. Requesting upstream if needed.");
+            getOrUpdateCurrentWork();
+        } else {
+            logBuilder.log("Queuing receive work.");
+        }
+
+        if (UPSTREAM.get(this) != null) {
             drain();
         }
     }
@@ -95,17 +154,16 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * Drain the work, only one thread can be in this loop at a time.
      */
     private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        try {
-            drainQueue();
-        } finally {
-            final int decremented = wip.decrementAndGet();
-            if (decremented != 0) {
-                logger.warning("There should be 0, but was: {}", decremented);
+        int missed = 1;
+        while (missed != 0) {
+            try {
+                drainQueue();
+            } finally {
+                missed = wip.addAndGet(-missed);
             }
         }
     }
@@ -118,82 +176,71 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
-        // Acquiring the lock
-        synchronized (currentWorkLock) {
+        long numberRequested = REQUESTED.get(this);
+        boolean isEmpty = bufferMessages.isEmpty();
 
-            // Making sure current work not become terminal since last drain queue cycle
-            if (currentWork != null && currentWork.isTerminal()) {
-                workQueue.remove(currentWork);
-                if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                    currentTimeoutOperation.dispose();
-                }
-                currentTimeoutOperation = null;
+        SynchronousReceiveWork currentDownstream = null;
+        while (numberRequested != 0L && !isEmpty) {
+            if (isTerminated()) {
+                break;
             }
 
-            // We should process a work when
-            // 1. it is first time getting picked up
-            // 2. or more messages have arrived while we were in drain loop.
-            // We might not have all the message in bufferMessages needed for workQueue, Thus we will only remove work
-            // from queue when we have delivered all the messages to currentWork.
+            // Track the number of messages read from the buffer those are either emitted to downstream or released.
+            long numberConsumed = 0L;
+            // Iterate and attempt to read the requested number of events.
+            while (numberRequested != numberConsumed) {
+                if (isEmpty || isTerminated()) {
+                    break;
+                }
 
-            while ((currentWork = workQueue.peek()) != null
-                && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
-                // Additional check for safety, but normally this work should never be terminal
-                if (currentWork.isTerminal()) {
-                    // This work already finished by either timeout or no more messages to send, process next work.
-                    workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                        currentTimeoutOperation.dispose();
+                final ServiceBusReceivedMessage message = bufferMessages.poll();
+
+                // While there are messages in the buffer, obtain the current (unterminated) downstream and
+                // attempt to emit the message to it.
+                boolean isEmitted = false;
+                while (!isEmitted) {
+                    currentDownstream = getOrUpdateCurrentWork();
+                    if (currentDownstream == null) {
+                        break;
                     }
-                    continue;
+
+                    isEmitted = currentDownstream.emitNext(message);
                 }
 
-                if (!currentWork.isProcessingStarted()) {
-                    // timer to complete the currentWork in case of timeout trigger
-                    currentTimeoutOperation = getTimeoutOperation(currentWork);
-                    currentWork.startedProcessing();
-                    final long calculatedRequest = currentWork.getNumberOfEvents() - remaining.get();
-                    remaining.addAndGet(calculatedRequest);
-                    subscription.request(calculatedRequest);
-                }
-
-                // Send messages to currentWork from buffer
-                while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
-                    currentWork.next(bufferMessages.poll());
-                    remaining.decrementAndGet();
-                }
-
-                // if  we have delivered all the messages to currentWork, we will complete it.
-                if (currentWork.isTerminal()) {
-                    if (currentWork.getError() == null) {
-                        currentWork.complete();
+                if (!isEmitted) {
+                    // The only reason we can't emit was the downstream(s) were terminated hence nobody
+                    // to receive the message.
+                    if (isPrefetchDisabled) {
+                        // release is enabled only for no-prefetch scenario.
+                        asyncClient.release(message).subscribe(__ -> { },
+                            error -> LOGGER.atWarning()
+                                .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
+                                .log("Couldn't release the message.", error),
+                            () -> LOGGER.atVerbose()
+                                .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
+                                .log("Message successfully released."));
+                    } else {
+                        // Re-buffer the message as it couldn't be emitted or release was disabled.
+                        bufferMessages.addFirst(message);
+                        break;
                     }
-                    // Now remove from queue since it is complete
-                    workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                        currentTimeoutOperation.dispose();
-                    }
-                    logger.verbose("The work [{}] is complete.", currentWork.getId());
                 }
+
+                // account for consumed message - message is either emitted or released.
+                numberConsumed++;
+                isEmpty = bufferMessages.isEmpty();
+            }
+
+            final long requestedMessages = REQUESTED.get(this);
+            if (requestedMessages != Long.MAX_VALUE) {
+                numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
         }
-    }
-
-    /**
-     * @param work on which timeout thread need to start.
-     *
-     * @return {@link Disposable} for the timeout operation.
-     */
-    private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
-        Duration timeout = work.getTimeout();
-        return Mono.delay(timeout).thenReturn(work)
-            .subscribe(l -> {
-                synchronized (currentWorkLock) {
-                    if (currentWork == work) {
-                        work.timeout();
-                    }
-                }
-            });
+        if (numberRequested == 0L) {
+            LOGGER.atVerbose()
+                .log("Current work is completed. Schedule next work.");
+            getOrUpdateCurrentWork();
+        }
     }
 
     /**
@@ -201,45 +248,134 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("[{}] Errors occurred upstream", currentWork.getId(), throwable);
-        synchronized (currentWorkLock) {
-            currentWork.error(throwable);
-        }
-        dispose();
+        dispose("Errors occurred upstream", throwable);
     }
 
     @Override
     protected void hookOnCancel() {
+        this.dispose();
+    }
+
+    private boolean isTerminated() {
+        if (UPSTREAM.get(this) == Operators.cancelledSubscription()) {
+            return true;
+        }
+
+        return isDisposed.get();
+    }
+
+    /**
+     * Gets the current work item if it is not terminal and cleans up any existing timeout operations.
+     *
+     * @return Gets or sets the next work item. Null if there are no work items currently.
+     */
+    private SynchronousReceiveWork getOrUpdateCurrentWork() {
+        synchronized (currentWorkLock) {
+            // If the current work isn't terminal, then return it. Otherwise, poll for the next item.
+            if (currentWork != null && !currentWork.isTerminal()) {
+                return currentWork;
+            }
+
+            currentWork = workQueue.poll();
+            //The work in queue will not be terminal, here is double check
+            while (currentWork != null && currentWork.isTerminal()) {
+                LOGGER.atVerbose()
+                    .addKeyValue(WORK_ID_KEY, currentWork.getId())
+                    .addKeyValue("numberOfEvents", currentWork.getNumberOfEvents())
+                    .log("This work from queue is terminal. Skip it.");
+
+                currentWork = workQueue.poll();
+            }
+
+            if (currentWork != null) {
+                final SynchronousReceiveWork work = currentWork;
+                LOGGER.atVerbose()
+                    .addKeyValue(WORK_ID_KEY, work.getId())
+                    .addKeyValue("numberOfEvents", work.getNumberOfEvents())
+                    .log("Current work updated.");
+
+                work.start();
+
+                // Now that we updated REQUESTED to account for credits already on the line, we're good to
+                // place any credits for this new work item.
+                requestUpstream(work.getNumberOfEvents());
+            }
+
+            return currentWork;
+        }
+    }
+
+    /**
+     * Adds additional credits upstream if {@code numberOfMessages} is greater than the number of {@code REQUESTED}
+     * items.
+     *
+     * @param numberOfMessages Number of messages required downstream.
+     */
+    private void requestUpstream(long numberOfMessages) {
+        if (isTerminated()) {
+            LOGGER.info("Cannot request more messages upstream. Subscriber is terminated.");
+            return;
+        }
+
+        final Subscription subscription = UPSTREAM.get(this);
+        if (subscription == null) {
+            LOGGER.info("There is no upstream to request messages from.");
+            return;
+        }
+
+        final long currentRequested = REQUESTED.get(this);
+        final long difference = numberOfMessages - currentRequested;
+
+        LOGGER.atVerbose()
+            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, currentRequested)
+            .addKeyValue("numberOfMessages", numberOfMessages)
+            .addKeyValue("difference", difference)
+            .log("Requesting messages from upstream.");
+
+        if (difference <= 0) {
+            return;
+        }
+
+        Operators.addCap(REQUESTED, this, difference);
+
+        subscription.request(difference);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        dispose("Upstream completed the receive work.", null);
+    }
+
+    private void dispose(String message, Throwable throwable) {
+        super.dispose();
+
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
         synchronized (currentWorkLock) {
             if (currentWork != null) {
-                currentWork.complete();
+                currentWork.complete(message, throwable);
+                currentWork = null;
             }
-            if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
-                currentTimeoutOperation.dispose();
+
+            SynchronousReceiveWork w = workQueue.poll();
+            while (w != null) {
+                w.complete(message, throwable);
+                w = workQueue.poll();
             }
-            currentTimeoutOperation = null;
         }
-
-        subscription.cancel();
     }
 
-    private boolean isTerminated() {
-        return isDisposed.get();
-    }
-
+    /**
+     * package-private method to check queue size.
+     *
+     * @return The current number of items in the queue.
+     */
     int getWorkQueueSize() {
         return this.workQueue.size();
     }
-
-    long getRequested() {
-        return this.requested;
-    }
-
-    boolean isSubscriberInitialized() {
-        return this.subscriberInitialized;
-    }
 }
+

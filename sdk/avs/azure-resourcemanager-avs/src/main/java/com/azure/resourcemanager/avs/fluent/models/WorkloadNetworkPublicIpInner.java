@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIpProvisioningState;
@@ -13,34 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Public IP Block. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkPublicIpInner extends ProxyResource {
+public final class WorkloadNetworkPublicIpInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkPublicIpInner.class);
 
     /*
-     * Display name of the Public IP Block.
+     * Public IP Block properties
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkPublicIpProperties innerProperties;
 
-    /*
-     * Number of Public IPs requested.
+    /**
+     * Get the innerProperties property: Public IP Block properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.numberOfPublicIPs")
-    private Long numberOfPublicIPs;
-
-    /*
-     * CIDR Block of the Public IP Block.
-     */
-    @JsonProperty(value = "properties.publicIPBlock", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicIpBlock;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkPublicIpProvisioningState provisioningState;
+    private WorkloadNetworkPublicIpProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the Public IP Block.
@@ -48,7 +37,7 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -58,7 +47,10 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the WorkloadNetworkPublicIpInner object itself.
      */
     public WorkloadNetworkPublicIpInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPublicIpProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -68,7 +60,7 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the numberOfPublicIPs value.
      */
     public Long numberOfPublicIPs() {
-        return this.numberOfPublicIPs;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfPublicIPs();
     }
 
     /**
@@ -78,7 +70,10 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the WorkloadNetworkPublicIpInner object itself.
      */
     public WorkloadNetworkPublicIpInner withNumberOfPublicIPs(Long numberOfPublicIPs) {
-        this.numberOfPublicIPs = numberOfPublicIPs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPublicIpProperties();
+        }
+        this.innerProperties().withNumberOfPublicIPs(numberOfPublicIPs);
         return this;
     }
 
@@ -88,7 +83,7 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the publicIpBlock value.
      */
     public String publicIpBlock() {
-        return this.publicIpBlock;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpBlock();
     }
 
     /**
@@ -97,7 +92,7 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkPublicIpProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -106,5 +101,8 @@ public class WorkloadNetworkPublicIpInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

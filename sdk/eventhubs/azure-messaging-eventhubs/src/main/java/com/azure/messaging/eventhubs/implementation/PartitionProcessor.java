@@ -14,6 +14,8 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import java.util.function.Consumer;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
  * EventProcessorClient} should extend from this class and implement {@link #processEvent(EventContext)} for
@@ -33,7 +35,7 @@ import java.util.function.Consumer;
  */
 public abstract class PartitionProcessor {
 
-    private final ClientLogger logger = new ClientLogger(PartitionProcessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartitionProcessor.class);
 
     /**
      * This method is called when this {@link EventProcessorClient} takes ownership of a new partition and before any
@@ -42,8 +44,9 @@ public abstract class PartitionProcessor {
      * @param initializationContext The initialization context before events from the partition are processed.
      */
     public void initialize(InitializationContext initializationContext) {
-        logger.info("Initializing partition processor for partition {}",
-            initializationContext.getPartitionContext().getPartitionId());
+        LOGGER.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, initializationContext.getPartitionContext().getPartitionId())
+            .log("Initializing partition processor for partition");
     }
 
     /**
@@ -61,7 +64,7 @@ public abstract class PartitionProcessor {
      * @param eventBatchContext The event batch context containing the batch of events along with partition information.
      */
     public void processEventBatch(EventBatchContext eventBatchContext) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Processing event batch not implemented"));
     }
 
     /**
@@ -81,8 +84,8 @@ public abstract class PartitionProcessor {
      * events is closed.
      */
     public void close(CloseContext closeContext) {
-        logger.info("Closing partition processor for partition {} with close reason {}",
-            closeContext.getPartitionContext().getPartitionId(), closeContext.getCloseReason());
+        LOGGER.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, closeContext.getPartitionContext().getPartitionId())
+            .log("Closing partition processor with close reason {}", closeContext.getCloseReason());
     }
-
 }

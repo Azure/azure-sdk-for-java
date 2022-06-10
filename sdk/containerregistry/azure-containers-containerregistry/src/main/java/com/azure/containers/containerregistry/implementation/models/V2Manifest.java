@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.containers.containerregistry.models.OciBlobDescriptor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,13 +22,13 @@ public final class V2Manifest extends Manifest {
      * V2 image config descriptor
      */
     @JsonProperty(value = "config")
-    private Descriptor config;
+    private OciBlobDescriptor config;
 
     /*
      * List of V2 image layer information
      */
     @JsonProperty(value = "layers")
-    private List<Descriptor> layers;
+    private List<OciBlobDescriptor> layers;
 
     /**
      * Get the mediaType property: Media type for this Manifest.
@@ -54,7 +55,7 @@ public final class V2Manifest extends Manifest {
      *
      * @return the config value.
      */
-    public Descriptor getConfig() {
+    public OciBlobDescriptor getConfig() {
         return this.config;
     }
 
@@ -64,7 +65,7 @@ public final class V2Manifest extends Manifest {
      * @param config the config value to set.
      * @return the V2Manifest object itself.
      */
-    public V2Manifest setConfig(Descriptor config) {
+    public V2Manifest setConfig(OciBlobDescriptor config) {
         this.config = config;
         return this;
     }
@@ -74,7 +75,7 @@ public final class V2Manifest extends Manifest {
      *
      * @return the layers value.
      */
-    public List<Descriptor> getLayers() {
+    public List<OciBlobDescriptor> getLayers() {
         return this.layers;
     }
 
@@ -84,7 +85,7 @@ public final class V2Manifest extends Manifest {
      * @param layers the layers value to set.
      * @return the V2Manifest object itself.
      */
-    public V2Manifest setLayers(List<Descriptor> layers) {
+    public V2Manifest setLayers(List<OciBlobDescriptor> layers) {
         this.layers = layers;
         return this;
     }

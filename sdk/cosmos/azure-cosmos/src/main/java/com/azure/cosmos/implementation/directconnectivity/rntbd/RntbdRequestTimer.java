@@ -23,13 +23,13 @@ public final class RntbdRequestTimer implements AutoCloseable {
         true,
         Thread.NORM_PRIORITY);
 
-    private final long requestTimeoutInNanos;
+    private final long tcpNetworkRequestTimeoutInNanos;
     private final Timer timer;
 
-    public RntbdRequestTimer(final long requestTimeoutInNanos, final long requestTimerResolutionInNanos) {
+    public RntbdRequestTimer(final long tcpNetworkRequestTimeoutInNanos, final long requestTimerResolutionInNanos) {
         // The HashWheelTimer code shows that cancellation of a timeout takes two timer resolution units to complete
         this.timer = new HashedWheelTimer(threadFactory, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
-        this.requestTimeoutInNanos = requestTimeoutInNanos;
+        this.tcpNetworkRequestTimeoutInNanos = tcpNetworkRequestTimeoutInNanos;
     }
 
     @Override
@@ -39,6 +39,6 @@ public final class RntbdRequestTimer implements AutoCloseable {
     }
 
     public Timeout newTimeout(final TimerTask task) {
-        return this.timer.newTimeout(task, this.requestTimeoutInNanos, TimeUnit.NANOSECONDS);
+        return this.timer.newTimeout(task, this.tcpNetworkRequestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 }

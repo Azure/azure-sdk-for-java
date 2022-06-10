@@ -29,10 +29,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- * <p>
  * Code samples for the README.md
  */
 
@@ -46,100 +42,125 @@ public class ReadmeSamples {
     private final String jsonData = "Json encoded event";
 
     public void createSharedAccessSignature() {
+        // BEGIN: readme-sample-createSharedAccessSignature
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
         String sasToken = EventGridPublisherClient
             .generateSas("<your event grid endpoint>", new AzureKeyCredential("<key for the endpoint>"), expiration);
+        // END: readme-sample-createSharedAccessSignature
     }
 
     public void createCloudEventPublisherClient() {
+        // BEGIN: readme-sample-createCloudEventPublisherClient
         // For CloudEvent
         EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCloudEventPublisherClient();
+        // END: readme-sample-createCloudEventPublisherClient
     }
 
     public void createEventGridEventPublisherClient() {
+        // BEGIN: readme-sample-createEventGridEventPublisherClient
         // For EventGridEvent
         EventGridPublisherClient<EventGridEvent> eventGridEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts EventGridEvent schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildEventGridEventPublisherClient();
+        // END: readme-sample-createEventGridEventPublisherClient
     }
 
     public void createCustomEventPublisherClient() {
+        // BEGIN: readme-sample-createCustomEventPublisherClient
         // For custom event
         EventGridPublisherClient<BinaryData> customEventClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts custom event schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCustomEventPublisherClient();
+        // END: readme-sample-createCustomEventPublisherClient
     }
 
     public void createCloudEventPublisherAsyncClient() {
+        // BEGIN: readme-sample-createCloudEventPublisherAsyncClient
         // For CloudEvent
         EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCloudEventPublisherAsyncClient();
+        // END: readme-sample-createCloudEventPublisherAsyncClient
     }
 
     public void createEventGridEventPublisherAsyncClient() {
+        // BEGIN: readme-sample-createEventGridEventPublisherAsyncClient
         // For EventGridEvent
         EventGridPublisherAsyncClient<EventGridEvent> eventGridEventAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts EventGridEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts EventGridEvent schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildEventGridEventPublisherAsyncClient();
+        // END: readme-sample-createEventGridEventPublisherAsyncClient
     }
 
     public void createCustomEventPublisherAsyncClient() {
+        // BEGIN: readme-sample-createCustomEventPublisherAsyncClient
         // For custom event
         EventGridPublisherAsyncClient<BinaryData> customEventAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts custom event schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts custom event schema>")
             .credential(new AzureKeyCredential("<key for the endpoint>"))
             .buildCustomEventPublisherAsyncClient();
+        // END: readme-sample-createCustomEventPublisherAsyncClient
     }
 
     public void createPublisherClientWithSas() {
+        // BEGIN: readme-sample-createPublisherClientWithSas
         EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
             .buildCloudEventPublisherClient();
+        // END: readme-sample-createPublisherClientWithSas
     }
 
     public void createPublisherClientWithSasAsync() {
+        // BEGIN: readme-sample-createPublisherClientWithSasAsync
         EventGridPublisherAsyncClient<CloudEvent> cloudEventAsyncClient = new EventGridPublisherClientBuilder()
-            .endpoint("<endpont of your event grid topic/domain that accepts CloudEvent schema>")
+            .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new AzureSasCredential("<sas token that can access the endpoint>"))
             .buildCloudEventPublisherAsyncClient();
+        // END: readme-sample-createPublisherClientWithSasAsync
     }
 
     public void sendCloudEventsToTopic() {
-        // Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
+        // BEGIN: readme-sample-sendCloudEventsToTopic
+        // Make sure that the event grid topic or domain you're sending to is able to accept the CloudEvent schema.
         List<CloudEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType",
             BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json"));
         cloudEventClient.sendEvents(events);
+        // END: readme-sample-sendCloudEventsToTopic
     }
 
     public void sendEventGridEventsToTopic() {
-        // Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
+        // BEGIN: readme-sample-sendEventGridEventsToTopic
+        // Make sure that the event grid topic or domain you're sending to is able to accept the EventGridEvent schema.
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "0.1"));
         eventGridEventClient.sendEvents(events);
+        // END: readme-sample-sendEventGridEventsToTopic
     }
 
     public void sendEventGridEventsToDomain() {
+        // BEGIN: readme-sample-sendEventGridEventsToDomain
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", BinaryData.fromObject(user), "1")
             .setTopic("yourtopic"));
         eventGridEventClient.sendEvents(events);
+        // END: readme-sample-sendEventGridEventsToDomain
     }
 
     public void sendCustomEventsToTopic() {
-        // Make sure that the event grid topic or domain you're sending to accepts the custom event schema.
+        // BEGIN: readme-sample-sendCustomEventsToTopic
+        // Make sure that the event grid topic or domain you're sending to is able to accept the custom event schema.
         List<BinaryData> events = new ArrayList<>();
         events.add(BinaryData.fromObject(new HashMap<String, String>() {
             {
@@ -153,9 +174,11 @@ public class ReadmeSamples {
             }
         }));
         customEventClient.sendEvents(events);
+        // END: readme-sample-sendCustomEventsToTopic
     }
 
     public void deserializeEvents() {
+        // BEGIN: readme-sample-deserializeEvents
         // Deserialize an EventGridEvent
         String eventGridEventJsonData = "<your EventGridEvent json String>";
         List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventJsonData);
@@ -163,9 +186,11 @@ public class ReadmeSamples {
         // Deserialize a CloudEvent
         String cloudEventJsonData = "<your CloudEvent json String>";
         List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventJsonData);
+        // END: readme-sample-deserializeEvents
     }
 
     public void deserializeEventData(EventGridEvent eventGridEvent) {
+        // BEGIN: readme-sample-deserializeEventData
         BinaryData eventData = eventGridEvent.getData();
 
         //Deserialize data to a model class
@@ -183,6 +208,7 @@ public class ReadmeSamples {
 
         //Deserialize data to byte array (byte[])
         byte[] dataInBytes = eventData.toBytes();
+        // END: readme-sample-deserializeEventData
     }
 
 
@@ -191,18 +217,23 @@ public class ReadmeSamples {
         List<EventGridEvent> events = EventGridEvent.fromString(eventGridEventJsonData);
         EventGridEvent event = events.get(0);
 
+        // BEGIN: readme-sample-lookupSystemEventClass
         // Look up the System Event data class
         Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
+        // END: readme-sample-lookupSystemEventClass
 
+        // BEGIN: readme-sample-deserializeToSystemEventType
         // Deserialize the event data to an instance of a specific System Event data class type
         BinaryData data = event.getData();
         if (data != null) {
             StorageBlobCreatedEventData blobCreatedData = data.toObject(StorageBlobCreatedEventData.class);
             System.out.println(blobCreatedData.getUrl());
         }
+        // END: readme-sample-deserializeToSystemEventType
     }
 
     public void systemEventDifferentEventData() {
+        // BEGIN: readme-sample-systemEventDifferentEventData
         List<EventGridEvent> eventGridEvents = EventGridEvent.fromString("<Your EventGridEvent Json String>");
         for (EventGridEvent eventGridEvent : eventGridEvents) {
             BinaryData binaryData = eventGridEvent.getData();
@@ -224,19 +255,24 @@ public class ReadmeSamples {
                     break;
             }
         }
+        // END: readme-sample-systemEventDifferentEventData
     }
 
     public void createPublisherClientWithTokenCredential() {
+        // BEGIN: readme-sample-createPublisherClientWithTokenCredential
         EventGridPublisherClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildCloudEventPublisherClient();
+        // END: readme-sample-createPublisherClientWithTokenCredential
     }
 
     public void createPublisherAsyncClientWithTokenCredential() {
+        // BEGIN: readme-sample-createPublisherAsyncClientWithTokenCredential
         EventGridPublisherAsyncClient<CloudEvent> cloudEventClient = new EventGridPublisherClientBuilder()
             .endpoint("<endpoint of your event grid topic/domain that accepts CloudEvent schema>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildCloudEventPublisherAsyncClient();
+        // END: readme-sample-createPublisherAsyncClientWithTokenCredential
     }
 }

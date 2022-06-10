@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
@@ -20,7 +19,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
-public class DistinctDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public class DistinctDocumentQueryExecutionContext<T>
+    implements IDocumentQueryExecutionComponent<T> {
+
     private final IDocumentQueryExecutionComponent<T> component;
     private final DistinctMap distinctMap;
     private final AtomicReference<UInt128> lastHash;
@@ -42,7 +43,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
         this.lastHash = new AtomicReference<>();
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         DistinctQueryType distinctQueryType,
         String continuationToken,
@@ -73,11 +74,8 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
 
         return createSourceComponentFunction
             .apply(distinctContinuationToken.getSourceToken(), documentQueryParams)
-            .map(component -> new DistinctDocumentQueryExecutionContext<T>(component, distinctQueryType, continuationTokenLastHash));
-    }
-
-    IDocumentQueryExecutionComponent<T> getComponent() {
-        return this.component;
+            .map(component -> new DistinctDocumentQueryExecutionContext<>(
+                component, distinctQueryType, continuationTokenLastHash));
     }
 
     @Override

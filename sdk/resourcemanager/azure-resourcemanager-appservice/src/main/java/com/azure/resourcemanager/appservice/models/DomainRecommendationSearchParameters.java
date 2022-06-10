@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain recommendation search parameters. */
 @Fluent
 public final class DomainRecommendationSearchParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainRecommendationSearchParameters.class);
-
     /*
      * Keywords to be used for generating domain recommendations.
      */

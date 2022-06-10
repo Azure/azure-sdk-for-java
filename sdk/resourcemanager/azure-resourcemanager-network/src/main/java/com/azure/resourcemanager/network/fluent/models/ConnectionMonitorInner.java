@@ -12,7 +12,6 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,8 +20,6 @@ import java.util.Map;
 /** Parameters that define the operation to create a connection monitor. */
 @Fluent
 public final class ConnectionMonitorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
-
     /*
      * Connection monitor location.
      */
@@ -305,7 +302,7 @@ public final class ConnectionMonitorInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ConnectionMonitorInner"));
@@ -313,4 +310,6 @@ public final class ConnectionMonitorInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorInner.class);
 }

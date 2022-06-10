@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolSecurityAlertPolic
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.synapse.models.SqlPoolSecurityAlertPolicies;
 import com.azure.resourcemanager.synapse.models.SqlPoolSecurityAlertPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAlertPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolSecurityAlertPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolSecurityAlertPoliciesImpl.class);
 
     private final SqlPoolSecurityAlertPoliciesClient innerClient;
 
@@ -82,7 +81,7 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
     public SqlPoolSecurityAlertPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,14 +89,14 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -105,7 +104,7 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
         SecurityAlertPolicyName securityAlertPolicyName =
             SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(id, "securityAlertPolicies"));
         if (securityAlertPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,7 +120,7 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
     public Response<SqlPoolSecurityAlertPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,14 +128,14 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -144,7 +143,7 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
         SecurityAlertPolicyName securityAlertPolicyName =
             SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(id, "securityAlertPolicies"));
         if (securityAlertPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

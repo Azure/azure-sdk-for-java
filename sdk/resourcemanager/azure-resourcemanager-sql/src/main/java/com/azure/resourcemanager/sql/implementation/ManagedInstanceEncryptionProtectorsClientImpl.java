@@ -273,7 +273,8 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
             revalidateWithResponseAsync(resourceGroupName, managedInstanceName, encryptionProtectorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -954,7 +955,7 @@ public final class ManagedInstanceEncryptionProtectorsClientImpl implements Mana
                 this.client.getHttpPipeline(),
                 ManagedInstanceEncryptionProtectorInner.class,
                 ManagedInstanceEncryptionProtectorInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

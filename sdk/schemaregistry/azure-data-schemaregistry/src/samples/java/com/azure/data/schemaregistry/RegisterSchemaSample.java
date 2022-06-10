@@ -4,37 +4,34 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.models.SerializationType;
+import com.azure.data.schemaregistry.models.SchemaFormat;
+import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample to demonstrate registering a schema with Schema Registry.
+ *
+ * @see RegisterSchemaSampleAsync for the async sample.
  */
 public class RegisterSchemaSample {
     /**
      * The main method to run this program.
      * @param args Ignored args.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint}")
+        SchemaRegistryClient client = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .credential(tokenCredential)
-            .buildAsyncClient();
+            .buildClient();
 
-        CountDownLatch countDownLatch = new CountDownLatch(1);
         // Register a schema
-        schemaRegistryAsyncClient
-            .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SerializationType.AVRO)
-            .subscribe(schemaProperties -> {
-                System.out.println("Successfully registered a schema with id " + schemaProperties.getSchemaId());
-                countDownLatch.countDown();
-            });
+        SchemaProperties schemaProperties = client
+            .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO);
 
-        // wait for the async task to complete
-        countDownLatch.await();
+        System.out.println("Successfully registered a schema with id " + schemaProperties.getId());
+        System.out.println("Schema Group: " + schemaProperties.getGroupName());
+        System.out.println("Schema Name: " + schemaProperties.getName());
     }
 }

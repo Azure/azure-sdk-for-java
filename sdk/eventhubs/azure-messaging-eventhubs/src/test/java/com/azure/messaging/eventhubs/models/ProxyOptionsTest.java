@@ -6,31 +6,21 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-import static com.azure.core.amqp.ProxyOptions.SYSTEM_DEFAULTS;
-
 public class ProxyOptionsTest {
 
-    private static final String PROXY_HOST = "/127.0.0.1"; // InetAddressHolder's address starts with '/'
+    private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
-    private static final String HTTP_PROXY = String.join(":", PROXY_HOST, PROXY_PORT);
+    private static final String HTTP_PROXY = "/" + PROXY_HOST + ":" + PROXY_PORT; // InetAddressHolder's address starts with '/'
     private static final String PROXY_USERNAME = "dummyUsername";
     private static final String PROXY_PASSWORD = "dummyPassword";
 
     private static Proxy proxyAddress = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
-
-    @Test
-    public void nullProxyConfiguration() {
-        Assertions.assertNull(SYSTEM_DEFAULTS.getAuthentication());
-        Assertions.assertNull(SYSTEM_DEFAULTS.getCredential());
-        Assertions.assertNull(SYSTEM_DEFAULTS.getProxyAddress());
-    }
 
     @ParameterizedTest
     @EnumSource(ProxyAuthenticationType.class)
@@ -101,6 +91,6 @@ public class ProxyOptionsTest {
         Assertions.assertEquals(HTTP_PROXY, proxyAddressStr);
         Assertions.assertEquals(PROXY_USERNAME, proxyOptions.getCredential().getUserName());
         Assertions.assertEquals(PROXY_PASSWORD, new String(proxyOptions.getCredential().getPassword()));
-        Assertions.assertTrue(proxyAuthenticationType.equals(authentication));
+        Assertions.assertEquals(proxyAuthenticationType, authentication);
     }
 }

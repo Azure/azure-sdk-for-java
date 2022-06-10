@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
 import java.nio.ByteBuffer;
@@ -15,7 +15,6 @@ import java.security.SecureRandom;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
-import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
 /**
  * KeyVault Signature to key less sign
@@ -34,14 +33,6 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
      * @return the default algorithm.
      */
     public abstract String getAlgorithmName();
-
-    public AbstractKeyVaultKeyLessSignature() {
-        this.keyVaultClient = createKeyVaultClientBySystemProperty();
-    }
-
-    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
-        this.keyVaultClient = keyVaultClient;
-    }
 
     // After throw UnsupportedOperationException, other methods will be called.
     // such as RSAPSSSignature#engineInitVerify.
@@ -81,6 +72,7 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
+            keyVaultClient = ((KeyVaultPrivateKey) privateKey).getKeyVaultClient();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }

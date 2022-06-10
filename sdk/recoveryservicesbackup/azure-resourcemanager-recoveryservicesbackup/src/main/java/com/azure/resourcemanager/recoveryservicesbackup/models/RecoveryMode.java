@@ -30,7 +30,11 @@ public final class RecoveryMode extends ExpandableStringEnum<RecoveryMode> {
         return fromString(name, RecoveryMode.class);
     }
 
-    /** @return known RecoveryMode values. */
+    /**
+     * Gets known RecoveryMode values.
+     *
+     * @return known RecoveryMode values.
+     */
     public static Collection<RecoveryMode> values() {
         return values(RecoveryMode.class);
     }

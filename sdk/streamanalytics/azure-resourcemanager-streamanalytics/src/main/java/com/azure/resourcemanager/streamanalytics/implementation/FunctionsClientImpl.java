@@ -111,7 +111,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
                 + "/streamingjobs/{jobName}/functions/{functionName}")
@@ -124,6 +124,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("jobName") String jobName,
             @PathParam("functionName") String functionName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -178,7 +179,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/functions/{functionName}/RetrieveDefaultDefinition")
+                + "/streamingjobs/{jobName}/functions/{functionName}/retrieveDefaultDefinition")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FunctionInner>> retrieveDefaultDefinition(
@@ -256,7 +257,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -266,7 +266,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                             this.client.getEndpoint(),
                             ifMatch,
                             ifNoneMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -331,7 +331,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -339,7 +338,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                 this.client.getEndpoint(),
                 ifMatch,
                 ifNoneMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -517,7 +516,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -526,7 +524,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                         .update(
                             this.client.getEndpoint(),
                             ifMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -591,14 +589,13 @@ public final class FunctionsClientImpl implements FunctionsClient {
         } else {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
                 ifMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -759,18 +756,19 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
                             functionName,
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -812,16 +810,17 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
                 functionName,
+                accept,
                 context);
     }
 
@@ -911,7 +910,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -919,7 +917,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -966,13 +964,12 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter functionName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1074,7 +1071,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1083,7 +1079,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                         .listByStreamingJob(
                             this.client.getEndpoint(),
                             select,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1137,14 +1133,13 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByStreamingJob(
                 this.client.getEndpoint(),
                 select,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1302,7 +1297,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (function != null) {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1310,7 +1304,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                     service
                         .test(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1367,13 +1361,12 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (function != null) {
             function.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .test(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1400,7 +1393,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
         String resourceGroupName, String jobName, String functionName, FunctionInner function) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1412,7 +1405,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                 this.client.getHttpPipeline(),
                 ResourceTestStatusInner.class,
                 ResourceTestStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1433,7 +1426,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
         String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
         context = this.client.mergeContext(context);
@@ -1466,7 +1459,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String functionName, FunctionInner function) {
         return beginTestAsync(resourceGroupName, jobName, functionName, function).getSyncPoller();
@@ -1490,7 +1483,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context) {
         return beginTestAsync(resourceGroupName, jobName, functionName, function, context).getSyncPoller();
@@ -1676,7 +1669,6 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionRetrieveDefaultDefinitionParameters != null) {
             functionRetrieveDefaultDefinitionParameters.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1684,7 +1676,7 @@ public final class FunctionsClientImpl implements FunctionsClient {
                     service
                         .retrieveDefaultDefinition(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1741,13 +1733,12 @@ public final class FunctionsClientImpl implements FunctionsClient {
         if (functionRetrieveDefaultDefinitionParameters != null) {
             functionRetrieveDefaultDefinitionParameters.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .retrieveDefaultDefinition(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,

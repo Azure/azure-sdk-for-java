@@ -7,12 +7,10 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.NonComplianceMessage;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** The policy assignment. */
 @Fluent
 public final class PolicyAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentInner.class);
-
     /*
      * Properties for the policy assignment.
      */

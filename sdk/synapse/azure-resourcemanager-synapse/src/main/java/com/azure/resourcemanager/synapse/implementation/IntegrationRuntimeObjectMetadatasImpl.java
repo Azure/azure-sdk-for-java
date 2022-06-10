@@ -15,10 +15,9 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeObjectMetadatas;
 import com.azure.resourcemanager.synapse.models.SsisObjectMetadataListResponse;
 import com.azure.resourcemanager.synapse.models.SsisObjectMetadataStatusResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationRuntimeObjectMetadatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeObjectMetadatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeObjectMetadatasImpl.class);
 
     private final IntegrationRuntimeObjectMetadatasClient innerClient;
 

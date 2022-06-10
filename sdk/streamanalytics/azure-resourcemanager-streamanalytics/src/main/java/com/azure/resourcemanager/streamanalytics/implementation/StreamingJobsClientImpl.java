@@ -36,6 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.StreamingJobsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.models.StreamingJobInner;
+import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobListResult;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsGetByResourceGroupResponse;
@@ -107,7 +108,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
                 + "/streamingjobs/{jobName}")
@@ -119,6 +120,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("jobName") String jobName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -164,7 +166,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
                 + "/streamingjobs/{jobName}/start")
@@ -177,9 +179,10 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("jobName") String jobName,
             @BodyParam("application/json") StartStreamingJobParameters startJobParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
                 + "/streamingjobs/{jobName}/stop")
@@ -191,6 +194,23 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("jobName") String jobName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
+                + "/streamingjobs/{jobName}/scale")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> scale(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("jobName") String jobName,
+            @BodyParam("application/json") ScaleStreamingJobParameters scaleJobParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -257,7 +277,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +286,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                             this.client.getEndpoint(),
                             ifMatch,
                             ifNoneMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -326,7 +345,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -334,7 +352,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                 this.client.getEndpoint(),
                 ifMatch,
                 ifNoneMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -359,7 +377,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplaceAsync(
         String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -367,7 +385,11 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         return this
             .client
             .<StreamingJobInner, StreamingJobInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StreamingJobInner.class, StreamingJobInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                StreamingJobInner.class,
+                StreamingJobInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -387,7 +409,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplaceAsync(
         String resourceGroupName,
         String jobName,
@@ -420,7 +442,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
         String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch) {
         return beginCreateOrReplaceAsync(resourceGroupName, jobName, streamingJob, ifMatch, ifNoneMatch)
@@ -444,7 +466,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
         String resourceGroupName,
         String jobName,
@@ -645,7 +667,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -654,7 +675,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                         .update(
                             this.client.getEndpoint(),
                             ifMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -709,14 +730,13 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         } else {
             streamingJob.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
                 ifMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -862,17 +882,18 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -910,15 +931,16 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
+                accept,
                 context);
     }
 
@@ -932,12 +954,13 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String jobName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, jobName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -951,7 +974,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String jobName, Context context) {
         context = this.client.mergeContext(context);
@@ -971,7 +994,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName) {
         return beginDeleteAsync(resourceGroupName, jobName).getSyncPoller();
     }
@@ -987,7 +1010,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName, Context context) {
         return beginDeleteAsync(resourceGroupName, jobName, context).getSyncPoller();
     }
@@ -1090,7 +1113,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1099,7 +1121,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                         .getByResourceGroup(
                             this.client.getEndpoint(),
                             expand,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1145,14 +1167,13 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
                 expand,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1280,7 +1301,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1289,7 +1309,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                         .listByResourceGroup(
                             this.client.getEndpoint(),
                             expand,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accept,
@@ -1339,14 +1359,13 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
                 expand,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accept,
@@ -1482,7 +1501,6 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1491,7 +1509,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                         .list(
                             this.client.getEndpoint(),
                             expand,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -1534,11 +1552,16 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), expand, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .list(
+                this.client.getEndpoint(),
+                expand,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1666,18 +1689,19 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (startJobParameters != null) {
             startJobParameters.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .start(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
                             startJobParameters,
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1719,16 +1743,17 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (startJobParameters != null) {
             startJobParameters.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
                 startJobParameters,
+                accept,
                 context);
     }
 
@@ -1743,13 +1768,14 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, jobName, startJobParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1764,7 +1790,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1786,7 +1812,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters) {
         return beginStartAsync(resourceGroupName, jobName, startJobParameters).getSyncPoller();
@@ -1804,7 +1830,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context) {
         return beginStartAsync(resourceGroupName, jobName, startJobParameters, context).getSyncPoller();
@@ -1946,17 +1972,18 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .stop(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1995,15 +2022,16 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
+                accept,
                 context);
     }
 
@@ -2018,12 +2046,13 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String jobName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, jobName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2038,7 +2067,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String jobName, Context context) {
         context = this.client.mergeContext(context);
@@ -2059,7 +2088,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName) {
         return beginStopAsync(resourceGroupName, jobName).getSyncPoller();
     }
@@ -2076,7 +2105,7 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName, Context context) {
         return beginStopAsync(resourceGroupName, jobName, context).getSyncPoller();
     }
@@ -2145,6 +2174,293 @@ public final class StreamingJobsClientImpl implements StreamingJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String jobName, Context context) {
         stopAsync(resourceGroupName, jobName, context).block();
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (scaleJobParameters != null) {
+            scaleJobParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .scale(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            jobName,
+                            scaleJobParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (scaleJobParameters != null) {
+            scaleJobParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .scale(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                jobName,
+                scaleJobParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = scaleWithResponseAsync(resourceGroupName, jobName, scaleJobParameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            scaleWithResponseAsync(resourceGroupName, jobName, scaleJobParameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginScale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        return beginScaleAsync(resourceGroupName, jobName, scaleJobParameters).getSyncPoller();
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginScale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        return beginScaleAsync(resourceGroupName, jobName, scaleJobParameters, context).getSyncPoller();
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> scaleAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        return beginScaleAsync(resourceGroupName, jobName, scaleJobParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> scaleAsync(String resourceGroupName, String jobName) {
+        final ScaleStreamingJobParameters scaleJobParameters = null;
+        return beginScaleAsync(resourceGroupName, jobName, scaleJobParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> scaleAsync(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        return beginScaleAsync(resourceGroupName, jobName, scaleJobParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        scaleAsync(resourceGroupName, jobName, scaleJobParameters).block();
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void scale(String resourceGroupName, String jobName) {
+        final ScaleStreamingJobParameters scaleJobParameters = null;
+        scaleAsync(resourceGroupName, jobName, scaleJobParameters).block();
+    }
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void scale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        scaleAsync(resourceGroupName, jobName, scaleJobParameters, context).block();
     }
 
     /**

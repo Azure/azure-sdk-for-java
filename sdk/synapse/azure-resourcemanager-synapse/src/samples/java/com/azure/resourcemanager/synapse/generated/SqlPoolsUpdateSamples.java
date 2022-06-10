@@ -33,11 +33,7 @@ public final class SqlPoolsUpdateSamples {
             .withSku(new Sku().withTier("").withName(""))
             .withMaxSizeBytes(0L)
             .withCollation("")
-            .withSourceDatabaseId("")
-            .withRecoverableDatabaseId("")
             .withRestorePointInTime(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
-            .withCreateMode("")
-            .withCreationDate(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
             .apply();
     }
 

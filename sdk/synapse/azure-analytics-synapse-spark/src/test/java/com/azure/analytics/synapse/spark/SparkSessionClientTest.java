@@ -16,6 +16,7 @@ public class SparkSessionClientTest extends SparkClientTestBase {
             .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .sparkPoolName(getSparkPoolName())
+            .livyApiVersion(livyApiVersion)
             .buildSparkSessionClient());
     }
 

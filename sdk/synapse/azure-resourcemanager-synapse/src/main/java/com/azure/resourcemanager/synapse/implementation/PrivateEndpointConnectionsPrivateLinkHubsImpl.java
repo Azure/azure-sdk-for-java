@@ -13,11 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivat
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHub;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionsPrivateLinkHubs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements PrivateEndpointConnectionsPrivateLinkHubs {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsPrivateLinkHubsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionsPrivateLinkHubsImpl.class);
 
     private final PrivateEndpointConnectionsPrivateLinkHubsClient innerClient;
 

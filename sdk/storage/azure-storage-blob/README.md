@@ -17,12 +17,45 @@ definition, such as text or binary data.
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-storage-blob</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.14.0</version>
+    <version>12.17.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,8 +70,8 @@ az storage account create \
     --location <location>
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows:
-http(s)://<storage-account-name>.blob.core.windows.net
+Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows:
+`http(s)://<storage-account-name>.blob.core.windows.net`
 
 ### Authenticate the client
 
@@ -158,8 +191,7 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated above.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L47-L50 -->
-```java
+```java readme-sample-getBlobServiceClient1
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -168,9 +200,8 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L54-L57 -->
-```java
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+```java readme-sample-getBlobServiceClient2
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
     .buildClient();
@@ -180,15 +211,13 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 
 Create a `BlobContainerClient` using a `BlobServiceClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L61-L61 -->
-```java
+```java readme-sample-getBlobContainerClient1
 BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
 Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L65-L69 -->
-```java
+```java readme-sample-getBlobContainerClient2
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -198,9 +227,8 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L73-L76 -->
-```java
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+```java readme-sample-getBlobContainerClient3
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
     .buildClient();
@@ -210,8 +238,7 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 
 Create a `BlobClient` using a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L80-L80 -->
-```java
+```java readme-sample-getBlobClient1
 BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 ```
 
@@ -219,8 +246,7 @@ or
 
 Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L84-89 -->
-```java
+```java readme-sample-getBlobClient2
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -231,9 +257,8 @@ BlobClient blobClient = new BlobClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L93-L96 -->
-```java
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+```java readme-sample-getBlobClient3
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();
@@ -243,8 +268,7 @@ BlobClient blobClient = new BlobClientBuilder()
 
 Create a container using a `BlobServiceClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L100-L100 -->
-```java
+```java readme-sample-createBlobContainerClient1
 blobServiceClient.createBlobContainer("mycontainer");
 ```
 
@@ -252,8 +276,7 @@ or
 
 Create a container using a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L104-L104 -->
-```java
+```java readme-sample-createBlobContainerClient2
 blobContainerClient.create();
 ```
 
@@ -261,8 +284,7 @@ blobContainerClient.create();
 
 Upload `BinaryData` to a blob using a `BlobClient` generated from a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L157-L159 -->
-```java
+```java readme-sample-uploadBinaryDataToBlob
 BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
 String dataSample = "samples";
 blobClient.upload(BinaryData.fromString(dataSample));
@@ -272,8 +294,7 @@ blobClient.upload(BinaryData.fromString(dataSample));
 
 Upload from an `InputStream` to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L108-L114 -->
-```java
+```java readme-sample-uploadBlobFromStream
 BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
@@ -287,8 +308,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 Upload a file to a blob using a `BlobClient` generated from a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L118-L119 -->
-```java
+```java readme-sample-uploadBlobFromFile
 BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
 blobClient.uploadFromFile("local-file.jpg");
 ```
@@ -297,11 +317,10 @@ blobClient.uploadFromFile("local-file.jpg");
 
 Upload data to a blob and fail if one already exists.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L179-L1207 -->
-```java
+```java readme-sample-uploadIfNotExists
 /*
-Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using one
-network call instead of two. Equivalent options are present on all upload methods.
+ * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using
+ * one network call instead of two. Equivalent options are present on all upload methods.
  */
 // 1. The minimal upload method defaults to no overwriting
 String dataSample = "samples";
@@ -334,10 +353,10 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 Upload data to a blob and overwrite any existing data at the destination.
 
-```java
+```java readme-sample-overwriteBlob
 /*
-Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
-network call instead of two. Equivalent options are present on all upload methods.
+ * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
+ * network call instead of two. Equivalent options are present on all upload methods.
  */
 String dataSample = "samples";
 
@@ -349,8 +368,8 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 }
 
 /*
- 2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
- create and overwrite.
+ * 2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
+ * create and overwrite.
  */
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     BlobParallelUploadOptions options =
@@ -361,8 +380,8 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 }
 
 /*
- 3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
- not simply a create.
+ * 3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
+ * not simply a create.
  */
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     BlobParallelUploadOptions options =
@@ -379,13 +398,13 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 Upload a blob by opening a `BlobOutputStream` and writing to it through standard stream APIs.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L271-L281 -->
-```java
+```java readme-sample-openBlobOutputStream
 /*
-Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
-committed until the stream is closed.
-This option is convenient when the length of the data is unknown.
-This can only be done for block blobs. If the target blob already exists as another type of blob, it will fail.
+ * Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
+ * committed until the stream is closed.
+ * This option is convenient when the length of the data is unknown.
+ * This can only be done for block blobs. If the target blob already exists as another type of blob, it will
+ * fail.
  */
 try (BlobOutputStream blobOS = blobClient.getBlockBlobClient().getBlobOutputStream()) {
     blobOS.write(new byte[0]);
@@ -398,8 +417,7 @@ try (BlobOutputStream blobOS = blobClient.getBlockBlobClient().getBlobOutputStre
 
 Download a blob to an `OutputStream` using a `BlobClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L163-L163 -->
-```java
+```java readme-sample-downloadDataFromBlob
 BinaryData content = blobClient.downloadContent();
 ```
 
@@ -407,8 +425,7 @@ BinaryData content = blobClient.downloadContent();
 
 Download a blob to an `OutputStream` using a `BlobClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L123-L127 -->
-```java
+```java readme-sample-downloadBlobToStream
 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.downloadStream(outputStream);
 } catch (IOException e) {
@@ -420,8 +437,7 @@ try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
 Download blob to a local file using a `BlobClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L131-L131 -->
-```java
+```java readme-sample-downloadBlobToFile
 blobClient.downloadToFile("downloaded-file.jpg");
 ```
 
@@ -429,11 +445,10 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 Download a blob by opening a `BlobInputStream` and reading from it through standard stream APIs.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L259-L267 -->
-```java
+```java readme-sample-openBlobInputStream
 /*
-Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
-markable.
+ * Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
+ * mark-able.
 */
 try (BlobInputStream blobIS = blobClient.openInputStream()) {
     blobIS.read();
@@ -446,8 +461,7 @@ try (BlobInputStream blobIS = blobClient.openInputStream()) {
 
 Enumerating all blobs using a `BlobContainerClient`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L135-L137 -->
-```java
+```java readme-sample-enumerateBlobs
 for (BlobItem blobItem : blobContainerClient.listBlobs()) {
     System.out.println("This is the blob name: " + blobItem.getName());
 }
@@ -457,8 +471,7 @@ or
 
 Enumerate all blobs and create new clients pointing to the items.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L167-L175 -->
-```java
+```java readme-sample-enumerateBlobsCreateClient
 for (BlobItem blobItem : blobContainerClient.listBlobs()) {
     BlobClient blobClient;
     if (blobItem.getSnapshot() != null) {
@@ -475,16 +488,14 @@ for (BlobItem blobItem : blobContainerClient.listBlobs()) {
 Copying a blob. Please refer to the javadocs on each of these methods for more information around requirements on the 
 copy source and its authentication.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L148-L149 -->
-```java
+```java readme-sample-copyBlob
 SyncPoller<BlobCopyInfo, Void> poller = blobClient.beginCopy("<url-to-blob>", Duration.ofSeconds(1));
 poller.waitForCompletion();
 ```
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L153-L153 -->
-```java
+```java readme-sample-copyBlob2
 blobClient.copyFromUrl("url-to-blob");
 ```
 
@@ -493,9 +504,10 @@ blobClient.copyFromUrl("url-to-blob");
 Use an instance of a client to generate a new SAS token.
 
 
-```java
+```java readme-sample-generateSas
 /*
-Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas token.
+ * Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas
+ * token.
  */
 // Configure the sas parameters. This is the minimal set.
 OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
@@ -515,17 +527,16 @@ BlobServiceSasSignatureValues serviceSasValues =
 blobContainerClient.generateSas(serviceSasValues);
 
 // Generate a sas using a blob client
-BlobSasPermission blobSasPermission =  new BlobSasPermission().setReadPermission(true);
+BlobSasPermission blobSasPermission = new BlobSasPermission().setReadPermission(true);
 serviceSasValues = new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
 blobClient.generateSas(serviceSasValues);
-``` 
+```
 
 ### Authenticate with Azure Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L141-L144 -->
-```java
+```java readme-sample-authWithIdentity
 BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -534,11 +545,22 @@ BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
 
 ### Set a proxy when building a client
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L252-L255 -->
-```java
+```java readme-sample-setProxy
 ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
 BlobServiceClient client = new BlobServiceClientBuilder()
     .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
+    .buildClient();
+```
+
+or
+
+Allow the client builder to determine the `HttpClient` type to be used but construct it with passed configurations.
+
+```java readme-sample-setProxy2
+HttpClientOptions clientOptions = new HttpClientOptions()
+    .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888)));
+BlobServiceClient client = new BlobServiceClientBuilder()
+    .clientOptions(clientOptions)
     .buildClient();
 ```
 

@@ -3,19 +3,17 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -41,36 +39,10 @@ public class MonitorExporterClientTestBase extends TestBase {
 
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .policies(new AzureMonitorRedirectPolicy(), interceptorManager.getRecordPolicy())
+            .build();
 
         return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
-    }
-
-    AzureMonitorExporterBuilder getClientBuilderWithAuthentication() {
-        TokenCredential credential = null;
-        HttpClient httpClient;
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            httpClient = HttpClient.createDefault();
-            credential =
-                new ClientSecretCredentialBuilder()
-                    .tenantId(System.getenv("AZURE_TENANT_ID"))
-                    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                    .clientId(System.getenv("AZURE_CLIENT_ID"))
-                    .build();
-        } else {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
-        if (credential != null) {
-            return new AzureMonitorExporterBuilder()
-                .credential(credential)
-                .httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
-        } else {
-            return new AzureMonitorExporterBuilder()
-                .httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
     }
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {
@@ -88,7 +60,7 @@ public class MonitorExporterClientTestBase extends TestBase {
                                                    Duration duration, OffsetDateTime time) {
         MonitorDomain requestData = new RequestData()
             .setId(UUID.randomUUID().toString())
-            .setDuration(FormattedDuration.getFormattedDuration(duration.toNanos()))
+            .setDuration(FormattedDuration.fromNanos(duration.toNanos()))
             .setResponseCode(responseCode)
             .setSuccess(success)
             .setUrl("http://localhost:8080/")

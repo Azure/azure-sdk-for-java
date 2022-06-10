@@ -220,6 +220,14 @@ public final class TopicDescription {
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
 
+    /*
+     * The maximum message size for a message.
+     */
+    @JacksonXmlProperty(
+        localName = "MaxMessageSizeInKilobytes",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Long maxMessageSizeInKilobytes;
+
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
@@ -680,6 +688,26 @@ public final class TopicDescription {
      */
     public TopicDescription setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public Long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public TopicDescription setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

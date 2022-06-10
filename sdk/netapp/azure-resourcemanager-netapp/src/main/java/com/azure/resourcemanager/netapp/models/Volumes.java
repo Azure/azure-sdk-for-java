@@ -19,7 +19,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume resources.
+     * @return list of volume resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Volume> list(String resourceGroupName, String accountName, String poolName);
 
@@ -33,7 +33,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume resources.
+     * @return list of volume resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Volume> list(String resourceGroupName, String accountName, String poolName, Context context);
 
@@ -62,10 +62,25 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume.
+     * @return the details of the specified volume along with {@link Response}.
      */
     Response<Volume> getWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+
+    /**
+     * Delete the specified volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
+     *     volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, Boolean forceDelete);
 
     /**
      * Delete the specified volume.
@@ -87,12 +102,20 @@ public interface Volumes {
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
+     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
+     *     volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void delete(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        Boolean forceDelete,
+        Context context);
 
     /**
      * Revert a volume to the snapshot specified in the body.
@@ -204,7 +227,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the replication.
+     * @return the status of the replication along with {@link Response}.
      */
     Response<ReplicationStatus> replicationStatusWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
@@ -374,7 +397,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume.
+     * @return the details of the specified volume along with {@link Response}.
      */
     Volume getById(String id);
 
@@ -386,7 +409,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume.
+     * @return the details of the specified volume along with {@link Response}.
      */
     Response<Volume> getByIdWithResponse(String id, Context context);
 
@@ -404,12 +427,14 @@ public interface Volumes {
      * Delete the specified volume.
      *
      * @param id the resource ID.
+     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
+     *     volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean forceDelete, Context context);
 
     /**
      * Begins definition for a new Volume resource.

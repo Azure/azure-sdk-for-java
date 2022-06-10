@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.TopicsClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopicsClient. */
 public final class TopicsClientImpl implements TopicsClient {
-    private final ClientLogger logger = new ClientLogger(TopicsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TopicsService service;
 
@@ -238,7 +235,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String topicName) {
@@ -286,7 +283,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicInner>> getByResourceGroupWithResponseAsync(
@@ -331,19 +328,12 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> getByResourceGroupAsync(String resourceGroupName, String topicName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, topicName)
-            .flatMap(
-                (Response<TopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -370,7 +360,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
+     * @return properties of a topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicInner> getByResourceGroupWithResponse(
@@ -387,7 +377,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return eventGrid Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -443,7 +433,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return eventGrid Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -495,9 +485,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return the {@link PollerFlux} for polling of eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String topicName, TopicInner topicInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -505,7 +495,7 @@ public final class TopicsClientImpl implements TopicsClient {
         return this
             .client
             .<TopicInner, TopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, this.client.getContext());
     }
 
     /**
@@ -518,9 +508,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return the {@link PollerFlux} for polling of eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -541,9 +531,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return the {@link SyncPoller} for polling of eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo).getSyncPoller();
@@ -559,9 +549,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return the {@link SyncPoller} for polling of eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo, context).getSyncPoller();
@@ -576,7 +566,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return eventGrid Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> createOrUpdateAsync(String resourceGroupName, String topicName, TopicInner topicInfo) {
@@ -595,7 +585,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic.
+     * @return eventGrid Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> createOrUpdateAsync(
@@ -647,7 +637,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String topicName) {
@@ -693,7 +683,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -736,14 +726,15 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String topicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, topicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -755,9 +746,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String topicName, Context context) {
         context = this.client.mergeContext(context);
@@ -775,9 +766,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName) {
         return beginDeleteAsync(resourceGroupName, topicName).getSyncPoller();
     }
@@ -791,9 +782,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context) {
         return beginDeleteAsync(resourceGroupName, topicName, context).getSyncPoller();
     }
@@ -806,7 +797,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String topicName) {
@@ -822,7 +813,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String topicName, Context context) {
@@ -869,7 +860,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -926,7 +917,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -979,9 +970,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginUpdateAsync(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -989,7 +980,7 @@ public final class TopicsClientImpl implements TopicsClient {
         return this
             .client
             .<TopicInner, TopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), TopicInner.class, TopicInner.class, this.client.getContext());
     }
 
     /**
@@ -1002,9 +993,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginUpdateAsync(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1025,9 +1016,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters).getSyncPoller();
@@ -1043,9 +1034,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters, context).getSyncPoller();
@@ -1060,7 +1051,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> updateAsync(
@@ -1080,7 +1071,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicInner> updateAsync(
@@ -1138,7 +1129,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listSinglePageAsync(String filter, Integer top) {
@@ -1194,7 +1186,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listSinglePageAsync(String filter, Integer top, Context context) {
@@ -1246,7 +1239,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listAsync(String filter, Integer top) {
@@ -1259,7 +1252,7 @@ public final class TopicsClientImpl implements TopicsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listAsync() {
@@ -1284,7 +1277,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listAsync(String filter, Integer top, Context context) {
@@ -1298,7 +1291,7 @@ public final class TopicsClientImpl implements TopicsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> list() {
@@ -1322,7 +1315,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> list(String filter, Integer top, Context context) {
@@ -1344,7 +1337,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listByResourceGroupSinglePageAsync(
@@ -1407,7 +1401,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listByResourceGroupSinglePageAsync(
@@ -1466,7 +1461,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top) {
@@ -1482,7 +1477,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1509,7 +1504,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopicInner> listByResourceGroupAsync(
@@ -1526,7 +1521,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName) {
@@ -1551,7 +1546,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> listByResourceGroup(
@@ -1567,7 +1562,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
@@ -1616,7 +1611,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopicSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
@@ -1661,19 +1656,12 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicSharedAccessKeysInner> listSharedAccessKeysAsync(String resourceGroupName, String topicName) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, topicName)
-            .flatMap(
-                (Response<TopicSharedAccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1700,7 +1688,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(
@@ -1717,7 +1705,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
@@ -1774,7 +1762,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
@@ -1827,9 +1815,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return the {@link PollerFlux} for polling of shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1841,7 +1829,7 @@ public final class TopicsClientImpl implements TopicsClient {
                 this.client.getHttpPipeline(),
                 TopicSharedAccessKeysInner.class,
                 TopicSharedAccessKeysInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1854,9 +1842,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return the {@link PollerFlux} for polling of shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -1881,9 +1869,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
         return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest).getSyncPoller();
@@ -1899,9 +1887,9 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return the {@link SyncPoller} for polling of shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).getSyncPoller();
@@ -1916,7 +1904,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(
@@ -1936,7 +1924,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(
@@ -1991,7 +1979,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventTypeInner>> listEventTypesSinglePageAsync(
@@ -2056,7 +2045,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventTypeInner>> listEventTypesSinglePageAsync(
@@ -2121,7 +2111,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventTypeInner> listEventTypesAsync(
@@ -2141,7 +2131,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventTypeInner> listEventTypesAsync(
@@ -2166,7 +2156,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(
@@ -2186,7 +2176,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation.
+     * @return result of the List Event Types operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(
@@ -2206,7 +2196,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2243,7 +2234,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -2278,7 +2270,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2315,7 +2308,8 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation.
+     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopicInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {

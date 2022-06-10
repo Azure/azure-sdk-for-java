@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
@@ -48,8 +49,8 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         return this.innerModel().etag();
     }
 
-    public String namePropertiesName() {
-        return this.innerModel().namePropertiesName();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String backupPolicyId() {

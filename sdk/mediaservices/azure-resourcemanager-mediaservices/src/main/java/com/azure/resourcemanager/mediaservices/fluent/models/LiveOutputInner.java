@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputResourceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** The Live Output. */
-@JsonFlatten
 @Fluent
-public class LiveOutputInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveOutputInner.class);
+public final class LiveOutputInner extends ProxyResource {
+    /*
+     * Live output properties.
+     */
+    @JsonProperty(value = "properties")
+    private LiveOutputProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
@@ -28,71 +28,14 @@ public class LiveOutputInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The description of the live output.
+    /**
+     * Get the innerProperties property: Live output properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The asset that the live output will write to.
-     */
-    @JsonProperty(value = "properties.assetName")
-    private String assetName;
-
-    /*
-     * ISO 8601 time between 1 minute to 25 hours to indicate the maximum
-     * content length that can be archived in the asset for this live output.
-     * This also sets the maximum content length for the rewind window. For
-     * example, use PT1H30M to indicate 1 hour and 30 minutes of archive
-     * window.
-     */
-    @JsonProperty(value = "properties.archiveWindowLength")
-    private Duration archiveWindowLength;
-
-    /*
-     * The manifest file name. If not provided, the service will generate one
-     * automatically.
-     */
-    @JsonProperty(value = "properties.manifestName")
-    private String manifestName;
-
-    /*
-     * HTTP Live Streaming (HLS) packing setting for the live output.
-     */
-    @JsonProperty(value = "properties.hls")
-    private Hls hls;
-
-    /*
-     * The initial timestamp that the live output will start at, any content
-     * before this value will not be archived.
-     */
-    @JsonProperty(value = "properties.outputSnapTime")
-    private Long outputSnapTime;
-
-    /*
-     * The creation time the live output.
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * The time the live output was last modified.
-     */
-    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModified;
-
-    /*
-     * The provisioning state of the live output.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The resource state of the live output.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private LiveOutputResourceState resourceState;
+    private LiveOutputProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
@@ -109,7 +52,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -119,7 +62,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -129,7 +75,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the assetName value.
      */
     public String assetName() {
-        return this.assetName;
+        return this.innerProperties() == null ? null : this.innerProperties().assetName();
     }
 
     /**
@@ -139,7 +85,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withAssetName(String assetName) {
-        this.assetName = assetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withAssetName(assetName);
         return this;
     }
 
@@ -151,7 +100,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the archiveWindowLength value.
      */
     public Duration archiveWindowLength() {
-        return this.archiveWindowLength;
+        return this.innerProperties() == null ? null : this.innerProperties().archiveWindowLength();
     }
 
     /**
@@ -163,7 +112,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withArchiveWindowLength(Duration archiveWindowLength) {
-        this.archiveWindowLength = archiveWindowLength;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withArchiveWindowLength(archiveWindowLength);
         return this;
     }
 
@@ -174,7 +126,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the manifestName value.
      */
     public String manifestName() {
-        return this.manifestName;
+        return this.innerProperties() == null ? null : this.innerProperties().manifestName();
     }
 
     /**
@@ -185,7 +137,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withManifestName(String manifestName) {
-        this.manifestName = manifestName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withManifestName(manifestName);
         return this;
     }
 
@@ -195,7 +150,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the hls value.
      */
     public Hls hls() {
-        return this.hls;
+        return this.innerProperties() == null ? null : this.innerProperties().hls();
     }
 
     /**
@@ -205,7 +160,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withHls(Hls hls) {
-        this.hls = hls;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withHls(hls);
         return this;
     }
 
@@ -216,7 +174,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the outputSnapTime value.
      */
     public Long outputSnapTime() {
-        return this.outputSnapTime;
+        return this.innerProperties() == null ? null : this.innerProperties().outputSnapTime();
     }
 
     /**
@@ -227,7 +185,10 @@ public class LiveOutputInner extends ProxyResource {
      * @return the LiveOutputInner object itself.
      */
     public LiveOutputInner withOutputSnapTime(Long outputSnapTime) {
-        this.outputSnapTime = outputSnapTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withOutputSnapTime(outputSnapTime);
         return this;
     }
 
@@ -237,7 +198,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -246,7 +207,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
-        return this.lastModified;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModified();
     }
 
     /**
@@ -255,7 +216,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -264,7 +225,7 @@ public class LiveOutputInner extends ProxyResource {
      * @return the resourceState value.
      */
     public LiveOutputResourceState resourceState() {
-        return this.resourceState;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
     }
 
     /**
@@ -273,8 +234,8 @@ public class LiveOutputInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hls() != null) {
-            hls().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

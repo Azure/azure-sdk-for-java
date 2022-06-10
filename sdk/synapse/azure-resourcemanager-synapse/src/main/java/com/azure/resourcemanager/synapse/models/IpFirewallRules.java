@@ -18,7 +18,7 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP firewall rules.
+     * @return list of IP firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpFirewallRuleInfo> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -31,7 +31,7 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP firewall rules.
+     * @return list of IP firewall rules as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpFirewallRuleInfo> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
@@ -85,7 +85,7 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     Response<IpFirewallRuleInfo> getWithResponse(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
@@ -126,7 +126,7 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     IpFirewallRuleInfo getById(String id);
 
@@ -138,7 +138,7 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     Response<IpFirewallRuleInfo> getByIdWithResponse(String id, Context context);
 

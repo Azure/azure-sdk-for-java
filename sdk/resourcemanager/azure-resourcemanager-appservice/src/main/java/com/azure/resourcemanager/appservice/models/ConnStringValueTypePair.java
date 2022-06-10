@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Database connection string value to type pair. */
 @Fluent
 public final class ConnStringValueTypePair {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnStringValueTypePair.class);
-
     /*
      * Value of pair.
      */
@@ -73,14 +70,16 @@ public final class ConnStringValueTypePair {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ConnStringValueTypePair"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ConnStringValueTypePair"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnStringValueTypePair.class);
 }

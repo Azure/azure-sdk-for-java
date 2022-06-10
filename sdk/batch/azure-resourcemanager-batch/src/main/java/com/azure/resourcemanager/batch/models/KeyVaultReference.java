@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identifies the Azure key vault associated with a Batch account. */
 @Fluent
 public final class KeyVaultReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultReference.class);
-
     /*
      * The resource ID of the Azure key vault associated with the Batch
      * account.
@@ -74,14 +71,16 @@ public final class KeyVaultReference {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model KeyVaultReference"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property url in model KeyVaultReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultReference.class);
 }

@@ -3,50 +3,89 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.implementation.Constants;
+import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+
 /**
- * CosmosClient with encryption support.
+ * Provides a client-side logical representation of the Azure Cosmos DB service.
+ * This asynchronous encryption client is used to configure and execute requests against the service.
  */
-public class CosmosEncryptionAsyncClient {
+@ServiceClient(
+    builder = CosmosEncryptionClientBuilder.class,
+    isAsync = true)
+public final class CosmosEncryptionAsyncClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
-    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
+    private final String keyEncryptionKeyResolverName;
+    private final EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+    private final static ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.CosmosAsyncClientEncryptionKeyAccessor cosmosAsyncClientEncryptionKeyAccessor = ImplementationBridgeHelpers.CosmosAsyncClientEncryptionKeyHelper.getCosmosAsyncClientEncryptionKeyAccessor();
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+                                KeyEncryptionKeyResolver keyEncryptionKeyResolver,
+                                String keyEncryptionKeyResolverName) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
         }
-        if (encryptionKeyStoreProvider == null) {
-            throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
+        if (keyEncryptionKeyResolver == null) {
+            throw new IllegalArgumentException("keyEncryptionKeyResolver is null");
+        }
+        if (StringUtils.isEmpty(keyEncryptionKeyResolverName)) {
+            throw new IllegalArgumentException("keyEncryptionKeyResolverName is null");
         }
         this.cosmosAsyncClient = cosmosAsyncClient;
-        this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
+        this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
         this.clientEncryptionKeyPropertiesCacheByKeyId = new AsyncCache<>();
         this.containerPropertiesCacheByContainerId = new AsyncCache<>();
+        this.keyEncryptionKeyResolverName = keyEncryptionKeyResolverName;
+        this.encryptionKeyStoreProviderImpl = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, keyEncryptionKeyResolverName);
     }
 
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
-        return encryptionKeyStoreProvider;
+    /**
+     * @return the key encryption key resolver
+     */
+    public KeyEncryptionKeyResolver getKeyEncryptionKeyResolver() {
+        return this.keyEncryptionKeyResolver;
+    }
+
+    /**
+     * @return the key encryption key resolver name
+     */
+    public String getKeyEncryptionKeyResolverName() {
+        return keyEncryptionKeyResolverName;
+    }
+
+    /**
+     * Get the encryptionKeyStoreProvider implementation
+     * @return encryptionKeyStoreProviderImpl
+     */
+    EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl() {
+        return encryptionKeyStoreProviderImpl;
     }
 
     Mono<CosmosContainerProperties> getContainerPropertiesAsync(
@@ -79,31 +118,45 @@ public class CosmosEncryptionAsyncClient {
         String clientEncryptionKeyId,
         String databaseRid,
         CosmosAsyncContainer cosmosAsyncContainer,
-        boolean shouldForceRefresh) {
+        boolean shouldForceRefresh,
+        String ifNoneMatchEtag,
+        boolean shouldForceRefreshGateway) {
         /// Client Encryption key Id is unique within a Database.
         String cacheKey = databaseRid + "/" + clientEncryptionKeyId;
-        if (!shouldForceRefresh) {
+
+        // this allows us to read from the Gateway Cache. If an IfNoneMatchEtag is passed the logic around the gateway
+        // cache allows us to fetch the latest ClientEncryptionKeyProperties from the servers if the gateway cache has
+        // a stale value. This can happen if a client connected via different Gateway has re wrapped the key.
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setHeader(Constants.ALLOW_CACHED_READS_HEADER, String.valueOf(true));
+        requestOptions.setHeader(Constants.DATABASE_RID_HEADER, databaseRid);
+
+        if (StringUtils.isNotEmpty(ifNoneMatchEtag)) {
+            requestOptions.setIfNoneMatchETag(ifNoneMatchEtag);
+        }
+
+        if (!shouldForceRefresh && !shouldForceRefreshGateway) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId);
+                    clientEncryptionKeyId, requestOptions);
             });
         } else {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId)
+                    clientEncryptionKeyId, requestOptions)
             ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId)));
+                    clientEncryptionKeyId, requestOptions)));
         }
     }
 
     Mono<CosmosClientEncryptionKeyProperties> fetchClientEncryptionKeyPropertiesAsync(
         CosmosAsyncContainer container,
-        String clientEncryptionKeyId) {
+        String clientEncryptionKeyId, RequestOptions requestOptions) {
         CosmosAsyncClientEncryptionKey clientEncryptionKey =
             container.getDatabase().getClientEncryptionKey(clientEncryptionKeyId);
 
-        return clientEncryptionKey.read().map(cosmosClientEncryptionKeyResponse ->
+        return cosmosAsyncClientEncryptionKeyAccessor.readClientEncryptionKey(clientEncryptionKey, requestOptions).map(cosmosClientEncryptionKeyResponse ->
             cosmosClientEncryptionKeyResponse.getProperties()
         ).onErrorResume(throwable -> {
             if (!(throwable instanceof Exception)) {
@@ -136,19 +189,6 @@ public class CosmosEncryptionAsyncClient {
     }
 
     /**
-     * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
-     *
-     * @param cosmosAsyncClient          Regular Cosmos Client.
-     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
-     *                                   keys.
-     * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
-     */
-    public static CosmosEncryptionAsyncClient createCosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
-    }
-
-    /**
      * Gets a database with Encryption capabilities
      *
      * @param cosmosAsyncDatabase original database
@@ -172,6 +212,7 @@ public class CosmosEncryptionAsyncClient {
     /**
      * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
      */
+    @Override
     public void close() {
         cosmosAsyncClient.close();
     }
@@ -187,5 +228,27 @@ public class CosmosEncryptionAsyncClient {
         }
 
         return cosmosContainerResponse.getProperties();
+    }
+
+    static {
+        EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.seCosmosEncryptionAsyncClientAccessor(new EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor() {
+            @Override
+            public Mono<CosmosClientEncryptionKeyProperties> getClientEncryptionPropertiesAsync(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, String clientEncryptionKeyId, String databaseRid, CosmosAsyncContainer cosmosAsyncContainer, boolean shouldForceRefresh, String ifNoneMatchEtag,
+                                                                                                boolean shouldForceRefreshGateway) {
+                return cosmosEncryptionAsyncClient.getClientEncryptionPropertiesAsync(clientEncryptionKeyId,
+                    databaseRid, cosmosAsyncContainer, shouldForceRefresh, ifNoneMatchEtag, shouldForceRefreshGateway);
+            }
+
+            @Override
+            public Mono<CosmosContainerProperties> getContainerPropertiesAsync(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, CosmosAsyncContainer cosmosAsyncContainer, boolean shouldForceRefresh) {
+                return cosmosEncryptionAsyncClient.getContainerPropertiesAsync(cosmosAsyncContainer,
+                    shouldForceRefresh);
+            }
+
+            @Override
+            public EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
+                return cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl();
+            }
+        });
     }
 }

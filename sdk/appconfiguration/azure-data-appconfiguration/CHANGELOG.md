@@ -1,14 +1,69 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.4 (2022-06-08)
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 1.3.3 (2022-05-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 1.3.2 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 1.3.1 (2022-03-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 1.3.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ConfigurationClientBuilder`.
+- Added a new method `retryOptions` to `ConfigurationClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 1.2.5 (2022-01-13)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.22.0` to `1.24.1`.
+- Updated `azure-core-http-netty` from `1.11.2` to `1.11.6`.
+
+## 1.2.4 (2021-11-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 1.2.3 (2021-10-05)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
 
 ## 1.2.2 (2021-09-09)
 ### Other Changes

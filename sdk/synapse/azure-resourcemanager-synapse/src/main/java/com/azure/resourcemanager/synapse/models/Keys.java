@@ -18,7 +18,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of keys.
+     * @return list of keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Key> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -31,7 +31,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of keys.
+     * @return list of keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Key> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
@@ -58,7 +58,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Response<Key> getWithResponse(String resourceGroupName, String workspaceName, String keyName, Context context);
 
@@ -85,7 +85,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Response<Key> deleteWithResponse(String resourceGroupName, String workspaceName, String keyName, Context context);
 
@@ -96,7 +96,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Key getById(String id);
 
@@ -108,7 +108,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Response<Key> getByIdWithResponse(String id, Context context);
 
@@ -119,7 +119,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Key deleteById(String id);
 
@@ -131,7 +131,7 @@ public interface Keys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
+     * @return a workspace key along with {@link Response}.
      */
     Response<Key> deleteByIdWithResponse(String id, Context context);
 

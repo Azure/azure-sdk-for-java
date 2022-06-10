@@ -14,7 +14,8 @@ public interface ResourceSkus {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<ResourceSku> list();
 
@@ -25,7 +26,8 @@ public interface ResourceSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.CognitiveServices SKUs available for your Subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<ResourceSku> list(Context context);
 }

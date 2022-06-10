@@ -16,13 +16,13 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     @Test
     public abstract void listAlerts(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-    public static final String ALERT_CONFIG_ID = "204a211a-c5f4-45f3-a30e-512fb25d1d2c";
+    public static final String ALERT_CONFIG_ID = "126d1470-b500-4ef0-b5c0-47f9ca914a75";
 
     // Pre-configured test resource.
     protected static class ListAlertsInput {
         static final ListAlertsInput INSTANCE = new ListAlertsInput();
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-10-10T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-21T00:00:00Z");
+        final OffsetDateTime startTime = OffsetDateTime.parse("2022-01-01T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2022-03-22T00:00:00Z");
         final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
@@ -32,7 +32,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     protected static class ListAlertsOutput {
         static final ListAlertsOutput INSTANCE = new ListAlertsOutput();
-        final int expectedAlerts = 4;
+        final int expectedAlerts = 3;
     }
 
     protected void assertAlertOutput(AnomalyAlert anomalyAlert) {

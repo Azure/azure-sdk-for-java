@@ -8,19 +8,16 @@ import com.azure.containers.containerregistry.implementation.ArtifactManifestPro
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Manifest attributes details.
- */
+/** Manifest attributes details. */
 @JsonFlatten
 @Fluent
 public final class ArtifactManifestProperties {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -281,9 +278,8 @@ public final class ArtifactManifestProperties {
     }
 
     /**
-     * List of artifacts that are referenced by this manifest list, with
-     * information about the platform each of them supports. This list will be empty
-     * if this is a leaf manifest and not a manifest list.
+     * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
+     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
      *
      * @return the relatedArtifacts value.
      */

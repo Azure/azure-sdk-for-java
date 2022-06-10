@@ -4,66 +4,88 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An immutable client-side representation of BackupResourceEncryptionConfigResource. */
-public interface BackupResourceEncryptionConfigResource {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
+/** The BackupResourceEncryptionConfigResource model. */
+@Fluent
+public final class BackupResourceEncryptionConfigResource extends Resource {
+    /*
+     * BackupResourceEncryptionConfigResource properties
      */
-    String id();
+    @JsonProperty(value = "properties")
+    private BackupResourceEncryptionConfig properties;
+
+    /*
+     * Optional ETag.
+     */
+    @JsonProperty(value = "eTag")
+    private String etag;
 
     /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the properties property: BackupResourceEncryptionConfigResource properties.
+     * Get the properties property: BackupResourceEncryptionConfigResource properties.
      *
      * @return the properties value.
      */
-    BackupResourceEncryptionConfig properties();
+    public BackupResourceEncryptionConfig properties() {
+        return this.properties;
+    }
 
     /**
-     * Gets the etag property: Optional ETag.
+     * Set the properties property: BackupResourceEncryptionConfigResource properties.
+     *
+     * @param properties the properties value to set.
+     * @return the BackupResourceEncryptionConfigResource object itself.
+     */
+    public BackupResourceEncryptionConfigResource withProperties(BackupResourceEncryptionConfig properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Optional ETag.
      *
      * @return the etag value.
      */
-    String etag();
+    public String etag() {
+        return this.etag;
+    }
 
     /**
-     * Gets the inner
-     * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner
-     * object.
+     * Set the etag property: Optional ETag.
      *
-     * @return the inner object.
+     * @param etag the etag value to set.
+     * @return the BackupResourceEncryptionConfigResource object itself.
      */
-    BackupResourceEncryptionConfigResourceInner innerModel();
+    public BackupResourceEncryptionConfigResource withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BackupResourceEncryptionConfigResource withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BackupResourceEncryptionConfigResource withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
+    }
 }

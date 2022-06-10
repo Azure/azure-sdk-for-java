@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.netapp.models.Snapshot;
+import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
 import com.azure.resourcemanager.netapp.models.Snapshots;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -123,6 +124,29 @@ public final class SnapshotsImpl implements Snapshots {
         String snapshotName,
         Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
+    }
+
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        this.serviceClient().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
+    }
+
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        this
+            .serviceClient()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
     }
 
     public Snapshot getById(String id) {

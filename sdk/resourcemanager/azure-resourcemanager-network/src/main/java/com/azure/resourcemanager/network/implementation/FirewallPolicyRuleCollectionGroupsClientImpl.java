@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleCollectionGroupsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in FirewallPolicyRuleCollectionGroupsClient.
  */
 public final class FirewallPolicyRuleCollectionGroupsClientImpl implements FirewallPolicyRuleCollectionGroupsClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleCollectionGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyRuleCollectionGroupsService service;
 
@@ -157,7 +154,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -187,7 +184,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -215,7 +212,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -245,7 +242,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -269,16 +266,17 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -291,9 +289,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -313,9 +311,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
         return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName).getSyncPoller();
@@ -331,9 +329,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName, context)
@@ -349,7 +347,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName) {
@@ -368,7 +366,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -419,7 +417,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyRuleCollectionGroup.
+     * @return the specified FirewallPolicyRuleCollectionGroup along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyRuleCollectionGroupInner>> getWithResponseAsync(
@@ -449,7 +448,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -477,7 +476,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyRuleCollectionGroup.
+     * @return the specified FirewallPolicyRuleCollectionGroup along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FirewallPolicyRuleCollectionGroupInner>> getWithResponseAsync(
@@ -507,7 +507,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -531,7 +531,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyRuleCollectionGroup.
+     * @return the specified FirewallPolicyRuleCollectionGroup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyRuleCollectionGroupInner> getAsync(
@@ -574,7 +574,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified FirewallPolicyRuleCollectionGroup.
+     * @return the specified FirewallPolicyRuleCollectionGroup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyRuleCollectionGroupInner> getWithResponse(
@@ -592,7 +592,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return rule Collection Group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -630,7 +630,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -660,7 +660,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return rule Collection Group resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -699,7 +699,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -725,9 +725,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return the {@link PollerFlux} for polling of rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -743,7 +743,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                 this.client.getHttpPipeline(),
                 FirewallPolicyRuleCollectionGroupInner.class,
                 FirewallPolicyRuleCollectionGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -757,9 +757,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return the {@link PollerFlux} for polling of rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -791,9 +791,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return the {@link SyncPoller} for polling of rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -815,9 +815,9 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return the {@link SyncPoller} for polling of rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -840,7 +840,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return rule Collection Group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyRuleCollectionGroupInner> createOrUpdateAsync(
@@ -864,7 +864,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rule Collection Group resource.
+     * @return rule Collection Group resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FirewallPolicyRuleCollectionGroupInner> createOrUpdateAsync(
@@ -932,7 +932,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallPolicyRuleCollectionGroupInner>> listSinglePageAsync(
@@ -957,7 +958,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -992,7 +993,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallPolicyRuleCollectionGroupInner>> listSinglePageAsync(
@@ -1017,7 +1019,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1048,7 +1050,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FirewallPolicyRuleCollectionGroupInner> listAsync(
@@ -1067,7 +1070,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallPolicyRuleCollectionGroupInner> listAsync(
@@ -1085,7 +1089,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallPolicyRuleCollectionGroupInner> list(
@@ -1102,7 +1107,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FirewallPolicyRuleCollectionGroupInner> list(
@@ -1117,7 +1123,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallPolicyRuleCollectionGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1153,7 +1160,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListFirewallPolicyRuleCollectionGroups API service call.
+     * @return response for ListFirewallPolicyRuleCollectionGroups API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallPolicyRuleCollectionGroupInner>> listNextSinglePageAsync(

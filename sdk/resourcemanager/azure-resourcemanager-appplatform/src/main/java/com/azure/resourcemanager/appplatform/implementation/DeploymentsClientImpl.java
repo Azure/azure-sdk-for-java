@@ -31,24 +31,23 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceCollection;
+import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DeploymentsClient. */
 public final class DeploymentsClientImpl implements DeploymentsClient {
-    private final ClientLogger logger = new ClientLogger(DeploymentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DeploymentsService service;
 
@@ -156,7 +155,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
-            @QueryParam("version") String version,
+            @QueryParam(value = "version", multipleQueryParams = true) List<String> version,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -172,7 +171,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
-            @QueryParam("version") String version,
+            @QueryParam(value = "version", multipleQueryParams = true) List<String> version,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -245,6 +244,60 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
+                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateHeapDump")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> generateHeapDump(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @BodyParam("application/json") DiagnosticParameters diagnosticParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
+                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateThreadDump")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> generateThreadDump(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @BodyParam("application/json") DiagnosticParameters diagnosticParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
+                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/startJFR")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startJfr(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @BodyParam("application/json") DiagnosticParameters diagnosticParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -276,7 +329,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return a Deployment and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
@@ -321,7 +374,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -336,7 +389,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return a Deployment and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
@@ -392,20 +445,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return a Deployment and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<DeploymentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -439,7 +485,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
+     * @return a Deployment and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentResourceInner> getWithResponse(
@@ -459,7 +505,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -515,7 +561,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -531,7 +577,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -600,9 +646,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link PollerFlux} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
@@ -619,7 +665,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 this.client.getHttpPipeline(),
                 DeploymentResourceInner.class,
                 DeploymentResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -635,9 +681,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link PollerFlux} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
@@ -671,9 +717,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
@@ -697,9 +743,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
@@ -724,7 +770,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentResourceInner> createOrUpdateAsync(
@@ -751,7 +797,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentResourceInner> createOrUpdateAsync(
@@ -829,7 +875,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -874,7 +920,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -889,7 +935,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -945,16 +991,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -969,9 +1016,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -993,9 +1040,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
@@ -1013,9 +1060,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
@@ -1032,7 +1079,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
@@ -1053,7 +1100,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1111,7 +1158,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1167,7 +1214,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1183,7 +1230,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1252,9 +1299,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link PollerFlux} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String serviceName,
@@ -1270,7 +1317,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 this.client.getHttpPipeline(),
                 DeploymentResourceInner.class,
                 DeploymentResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1286,9 +1333,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link PollerFlux} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String serviceName,
@@ -1322,9 +1369,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
@@ -1348,9 +1395,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
@@ -1374,7 +1421,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentResourceInner> updateAsync(
@@ -1401,7 +1448,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment resource payload.
+     * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeploymentResourceInner> updateAsync(
@@ -1478,7 +1525,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listSinglePageAsync(
@@ -1506,8 +1554,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        List<String> versionConverted =
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1531,7 +1581,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1546,7 +1596,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listSinglePageAsync(
@@ -1574,8 +1625,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        List<String> versionConverted =
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1610,7 +1663,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentResourceInner> listAsync(
@@ -1630,7 +1684,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName) {
@@ -1652,7 +1707,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeploymentResourceInner> listAsync(
@@ -1672,7 +1728,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName) {
@@ -1692,7 +1749,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentResourceInner> list(
@@ -1710,7 +1768,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listForClusterSinglePageAsync(
@@ -1735,8 +1794,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        List<String> versionConverted =
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -1759,7 +1820,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1773,7 +1834,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listForClusterSinglePageAsync(
@@ -1798,8 +1860,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        String versionConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
+        List<String> versionConverted =
+            (version == null)
+                ? new ArrayList<>()
+                : version.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .listForCluster(
@@ -1832,7 +1896,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentResourceInner> listForClusterAsync(
@@ -1851,7 +1916,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentResourceInner> listForClusterAsync(String resourceGroupName, String serviceName) {
@@ -1872,7 +1938,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeploymentResourceInner> listForClusterAsync(
@@ -1891,7 +1958,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName) {
@@ -1910,7 +1978,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentResourceInner> listForCluster(
@@ -1929,7 +1998,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1974,7 +2043,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1989,7 +2058,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -2045,16 +2114,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2069,9 +2139,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -2093,9 +2163,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
@@ -2113,9 +2183,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
@@ -2132,7 +2202,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
@@ -2153,7 +2223,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(
@@ -2210,7 +2280,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -2255,7 +2325,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2270,7 +2340,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -2326,16 +2396,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2350,9 +2421,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -2374,9 +2445,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
@@ -2394,9 +2465,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
@@ -2413,7 +2484,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String serviceName, String appName, String deploymentName) {
@@ -2434,7 +2505,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(
@@ -2491,7 +2562,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -2536,7 +2607,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2551,7 +2622,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -2607,16 +2678,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restartWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2631,9 +2703,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -2655,9 +2727,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
@@ -2675,9 +2747,9 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
@@ -2694,7 +2766,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(
@@ -2716,7 +2788,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(
@@ -2773,7 +2845,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
+     * @return deployment log file URL along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
@@ -2818,7 +2890,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             deploymentName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2833,7 +2905,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
+     * @return deployment log file URL along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
@@ -2889,20 +2961,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
+     * @return deployment log file URL on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
         return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
-            .flatMap(
-                (Response<LogFileUrlResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2936,12 +3001,1092 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
+     * @return deployment log file URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> generateHeapDumpWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .generateHeapDump(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            diagnosticParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> generateHeapDumpWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .generateHeapDump(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                diagnosticParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginGenerateHeapDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generateHeapDumpWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginGenerateHeapDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generateHeapDumpWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginGenerateHeapDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> generateHeapDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> generateHeapDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginGenerateHeapDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void generateHeapDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        generateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters).block();
+    }
+
+    /**
+     * Generate Heap Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void generateHeapDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        generateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .block();
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> generateThreadDumpWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .generateThreadDump(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            diagnosticParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> generateThreadDumpWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .generateThreadDump(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                diagnosticParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginGenerateThreadDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generateThreadDumpWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginGenerateThreadDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            generateThreadDumpWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginGenerateThreadDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginGenerateThreadDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> generateThreadDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginGenerateThreadDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> generateThreadDumpAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginGenerateThreadDumpAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void generateThreadDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        generateThreadDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters).block();
+    }
+
+    /**
+     * Generate Thread Dump.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void generateThreadDump(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        generateThreadDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .block();
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startJfrWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .startJfr(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            diagnosticParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startJfrWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (diagnosticParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter diagnosticParameters is required and cannot be null."));
+        } else {
+            diagnosticParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .startJfr(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                diagnosticParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStartJfrAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            startJfrWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStartJfrAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            startJfrWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStartJfr(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginStartJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStartJfr(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginStartJfrAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startJfrAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        return beginStartJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> startJfrAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        return beginStartJfrAsync(
+                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startJfr(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters) {
+        startJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters).block();
+    }
+
+    /**
+     * Start JFR.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param diagnosticParameters Parameters for the diagnostic operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startJfr(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        DiagnosticParameters diagnosticParameters,
+        Context context) {
+        startJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context).block();
     }
 
     /**
@@ -2951,7 +4096,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2976,7 +4122,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2987,7 +4133,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -3022,7 +4169,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listForClusterNextSinglePageAsync(String nextLink) {
@@ -3047,7 +4195,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3058,7 +4206,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
+     * @return object that includes an array of App resources and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentResourceInner>> listForClusterNextSinglePageAsync(

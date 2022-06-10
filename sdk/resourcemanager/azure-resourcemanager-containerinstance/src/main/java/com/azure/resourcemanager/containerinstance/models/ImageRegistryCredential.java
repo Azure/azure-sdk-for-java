@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Image registry credential. */
 @Fluent
 public final class ImageRegistryCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageRegistryCredential.class);
-
     /*
      * The Docker image registry server without a protocol such as "http" and
      * "https".
@@ -32,6 +29,18 @@ public final class ImageRegistryCredential {
      */
     @JsonProperty(value = "password")
     private String password;
+
+    /*
+     * The identity for the private registry.
+     */
+    @JsonProperty(value = "identity")
+    private String identity;
+
+    /*
+     * The identity URL for the private registry.
+     */
+    @JsonProperty(value = "identityUrl")
+    private String identityUrl;
 
     /**
      * Get the server property: The Docker image registry server without a protocol such as "http" and "https".
@@ -94,21 +103,63 @@ public final class ImageRegistryCredential {
     }
 
     /**
+     * Get the identity property: The identity for the private registry.
+     *
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity for the private registry.
+     *
+     * @param identity the identity value to set.
+     * @return the ImageRegistryCredential object itself.
+     */
+    public ImageRegistryCredential withIdentity(String identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the identityUrl property: The identity URL for the private registry.
+     *
+     * @return the identityUrl value.
+     */
+    public String identityUrl() {
+        return this.identityUrl;
+    }
+
+    /**
+     * Set the identityUrl property: The identity URL for the private registry.
+     *
+     * @param identityUrl the identityUrl value to set.
+     * @return the ImageRegistryCredential object itself.
+     */
+    public ImageRegistryCredential withIdentityUrl(String identityUrl) {
+        this.identityUrl = identityUrl;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (server() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property server in model ImageRegistryCredential"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model ImageRegistryCredential"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageRegistryCredential.class);
 }

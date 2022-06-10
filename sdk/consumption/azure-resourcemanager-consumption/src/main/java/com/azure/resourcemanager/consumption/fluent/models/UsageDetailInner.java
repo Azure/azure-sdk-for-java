@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.LegacyUsageDetail;
 import com.azure.resourcemanager.consumption.models.ModernUsageDetail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -32,7 +33,7 @@ public class UsageDetailInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageDetailInner.class);
 
     /*
-     * Resource etag.
+     * The etag for the resource.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -41,10 +42,11 @@ public class UsageDetailInner extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: The etag for the resource.
      *
      * @return the etag value.
      */

@@ -4,21 +4,20 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBatchPatchItemRequestOptions {
 
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private String filterPredicate;
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Constructor
+     */
     public CosmosBatchPatchItemRequestOptions() {
-        super();
     }
 
     /**
@@ -26,7 +25,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -37,7 +35,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -48,7 +45,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -59,7 +55,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
@@ -70,7 +65,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -81,7 +75,6 @@ public final class CosmosBatchPatchItemRequestOptions {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;

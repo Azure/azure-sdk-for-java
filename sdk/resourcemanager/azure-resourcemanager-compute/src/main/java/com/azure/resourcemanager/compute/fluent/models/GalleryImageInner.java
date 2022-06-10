@@ -6,17 +6,16 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
-import com.azure.resourcemanager.compute.models.GalleryImagePropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,8 +24,6 @@ import java.util.Map;
 /** Specifies information about the gallery image definition that you want to create or update. */
 @Fluent
 public final class GalleryImageInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageInner.class);
-
     /*
      * Describes the properties of a gallery image definition.
      */
@@ -347,12 +344,12 @@ public final class GalleryImageInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image definition. The provisioning state,
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
      * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImagePropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -376,6 +373,29 @@ public final class GalleryImageInner extends Resource {
             this.innerProperties = new GalleryImageProperties();
         }
         this.innerProperties().withFeatures(features);
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.innerProperties() == null ? null : this.innerProperties().architecture();
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the GalleryImageInner object itself.
+     */
+    public GalleryImageInner withArchitecture(Architecture architecture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
+        }
+        this.innerProperties().withArchitecture(architecture);
         return this;
     }
 

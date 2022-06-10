@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import com.azure.storage.blob.models.GeoReplicationStatus
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
@@ -55,7 +56,7 @@ class ServiceAPITest extends APISpec {
         setup:
         // We shouldnt be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
@@ -331,6 +332,28 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         containers.each { container -> container.delete() }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "List system containers"() {
+        setup:
+        def retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true)
+        def logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+        def serviceProps = new BlobServiceProperties()
+            .setLogging(logging)
+
+        // Ensure $logs container exists. These will be reverted in test cleanup
+        primaryBlobServiceClient.setPropertiesWithResponse(serviceProps, null, null)
+
+        sleepIfRecord(30 * 1000) // allow the service properties to take effect
+
+        when:
+        def containers = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions().setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true)), null)
+
+        then:
+        containers.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -644,7 +667,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.primaryAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new BlobServiceProperties())
 
         then:
@@ -666,7 +689,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.primaryAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -733,7 +756,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
         def response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -741,12 +764,19 @@ class ServiceAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-request-id") != null
         response.getHeaders().getValue("Date") != null
         response.getValue().getGeoReplication().getStatus() != null
-        response.getValue().getGeoReplication().getLastSyncTime() != null
+
+        // The LastSyncTime will return a DateTimeRfc1123 if the replication status is LIVE
+        // but there are two other statuses, unavailable and bootstrap, which will return null.
+        if (response.getValue().getGeoReplication().getStatus() == GeoReplicationStatus.LIVE) {
+            assert response.getValue().getGeoReplication().getLastSyncTime() != null
+        } else {
+            assert response.getValue().getGeoReplication().getLastSyncTime() == null
+        }
     }
 
     def "Get stats min"() {
         setup:
-        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
 
         expect:
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
@@ -789,7 +819,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClientBuilder(env.primaryAccount.credential, badURL.toString())
+        def client = getServiceClientBuilder(environment.primaryAccount.credential, badURL.toString())
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
             .buildClient()
 
@@ -938,7 +968,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
         .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -969,7 +999,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -1035,7 +1065,7 @@ class ServiceAPITest extends APISpec {
 
     def "OAuth on secondary"() {
         setup:
-        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, env.primaryAccount.blobEndpointSecondary)).buildClient()
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, environment.primaryAccount.blobEndpointSecondary)).buildClient()
 
         when:
         serviceClient.getProperties()
@@ -1069,10 +1099,10 @@ class ServiceAPITest extends APISpec {
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def sc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+        def sc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
 
         when:
         def response = sc.getPropertiesWithResponse(null, null)
@@ -1080,6 +1110,68 @@ class ServiceAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Create container if not exists"() {
+        when:
+        def containerName = generateContainerName()
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+        def response2 = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        response2.getStatusCode() == 409
+    }
+
+    def "Delete container if exists"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+
+        then:
+        response.getValue()
+        response.getStatusCode() == 202
+    }
+
+    def "Delete container if exists min"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExists(containerName)
+
+        then:
+        response
+    }
+
+    def "Delete container if exists container does not exist"() {
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExists(generateContainerName())
+
+        then:
+        !response
+    }
+
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
+    def "Delete container if exists already deleted"() {
+        setup:
+        def containerName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+        def response2 = primaryBlobServiceClient.deleteBlobContainerIfExistsWithResponse(containerName, null)
+
+        then:
+        response.getStatusCode() == 202
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        response2.getStatusCode() == 202
     }
 
 //    def "Rename blob container"() {

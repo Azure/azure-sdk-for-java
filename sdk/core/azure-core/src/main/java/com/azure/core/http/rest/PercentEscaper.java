@@ -20,7 +20,7 @@ final class PercentEscaper {
      */
     private static final String SAFE_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    private final ClientLogger logger = new ClientLogger(PercentEscaper.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PercentEscaper.class);
 
     private final boolean usePlusForSpace;
     private final Set<Integer> safeCharacterPoints;
@@ -35,7 +35,7 @@ final class PercentEscaper {
         this.usePlusForSpace = usePlusForSpace;
 
         if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration."));
         }
 
@@ -68,16 +68,17 @@ final class PercentEscaper {
          * the conversion.
          */
         while (index < end) {
-            int codePoint = getCodePoint(original, index, end, logger);
+            int codePoint = getCodePoint(original, index, end);
 
-            // Supplementary code points comprise of two characters in the string.
+            // Supplementary code points are comprised of two characters in the string.
             index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
 
             if (safeCharacterPoints.contains(codePoint)) {
                 // This is a safe character, use it as is.
-                escapedBuilder.append(Character.toChars(codePoint));
+                // All safe characters should be ASCII.
+                escapedBuilder.append((char) codePoint);
             } else if (usePlusForSpace && codePoint == ' ') {
-                // Character is a space and we are using '+' instead of "%20".
+                // Character is a space, and we are using '+' instead of "%20".
                 escapedBuilder.append('+');
             } else if (codePoint <= 0x7F) {
                 // Character is one byte, use format '%xx'.
@@ -211,7 +212,7 @@ final class PercentEscaper {
      * Java uses UTF-16 to represent Strings, due to characters only being 2 bytes they must use surrogate pairs to
      * get the correct code point for characters above 0xFFFF.
      */
-    private static int getCodePoint(String original, int index, int end, ClientLogger logger) {
+    private static int getCodePoint(String original, int index, int end) {
         char char1 = original.charAt(index++);
         if (!Character.isSurrogate(char1)) {
             // Character isn't a surrogate, return it as is.
@@ -219,7 +220,7 @@ final class PercentEscaper {
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "String contains trailing high surrogate without paired low surrogate."));
             }
 
@@ -228,10 +229,10 @@ final class PercentEscaper {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "String contains high surrogate without trailing low surrogate."));
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "String contains low surrogate without leading high surrogate."));
         }
     }

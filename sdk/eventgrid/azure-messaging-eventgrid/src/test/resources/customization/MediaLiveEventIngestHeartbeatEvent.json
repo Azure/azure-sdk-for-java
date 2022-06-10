@@ -17,7 +17,9 @@
       "nonincreasingCount": 0,
       "unexpectedBitrate": true,
       "state": "Running",
-      "healthy": false
+      "healthy": false,
+      "lastFragmentArrivalTime": "2021-05-14T23:50:00.00Z",
+      "ingestDriftValue": "0"
     },
     "dataVersion": "1.0",
     "metadataVersion": "1"

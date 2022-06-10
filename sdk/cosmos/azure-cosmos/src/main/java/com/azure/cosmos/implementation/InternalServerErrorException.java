@@ -51,7 +51,7 @@ public class InternalServerErrorException extends CosmosException {
     }
 
 
-    InternalServerErrorException(String message, Exception innerException) {
+    public InternalServerErrorException(String message, Exception innerException) {
         this(message, innerException, (HttpHeaders) null, (String) null);
     }
 

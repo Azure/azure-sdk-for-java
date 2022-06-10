@@ -1,14 +1,14 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "afa35f19-92ad-402b-bbc9-f61b80b9945a"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "055bd9d7-3c66-496b-bf6a-53a5978d4cb2"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "ed40fae9-cc46-4405-a26b-239048c75675",
+      "X-Ms-Correlation-Request-Id" : "0852dc54-c96d-4b1d-bc27-c13d772326bd",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -17,20 +17,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Fri, 06 Aug 2021 00:15:00 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:44 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "44f68b16-ce29-475a-af56-82fe07b1d628"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3579ea6b-af8e-4d6e-a8c7-a901ec5951de"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "64c90a06-d4f0-44c3-a739-b2f4239bdb13",
+      "X-Ms-Correlation-Request-Id" : "4433da0d-6002-4f70-adab-8ab8e7e3c344",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -39,20 +39,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Fri, 06 Aug 2021 00:15:00 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:44 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "13273b68-41c7-4168-a3da-c097f4b1ee85"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "19f3818d-df51-4642-8adf-c23c5346880a"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "2c173067-b58c-41b8-a085-2251d3e95c00",
+      "X-Ms-Correlation-Request-Id" : "cc7969a8-c681-4e2f-bfd1-4051190c1bc2",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -61,20 +61,20 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Fri, 06 Aug 2021 00:15:00 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:44 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d9648384-25fe-4f14-8cdf-4fc057e2b2d0"
+      "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "dd9d6176-5fcd-4684-9b6d-0d3a0b65310a"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "fc5513f8-f313-4939-a5d2-81716d49c521",
+      "X-Ms-Correlation-Request-Id" : "93a376b3-92c4-4d8e-9ea4-d970c8e5f7e9",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -83,7 +83,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Fri, 06 Aug 2021 00:15:00 GMT",
+      "Date" : "Fri, 01 Apr 2022 18:16:44 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

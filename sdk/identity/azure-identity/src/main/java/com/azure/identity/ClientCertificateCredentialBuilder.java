@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.io.InputStream;
@@ -15,10 +16,11 @@ import java.util.HashMap;
  * @see ClientCertificateCredential
  */
 public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase<ClientCertificateCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCredentialBuilder.class);
+
     private String clientCertificatePath;
     private InputStream clientCertificate;
     private String clientCertificatePassword;
-    private final ClientLogger logger = new ClientLogger(ClientCertificateCredentialBuilder.class);
 
     /**
      * Sets the path of the PEM certificate for authenticating to AAD.
@@ -128,7 +130,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param regionalAuthority the regional authority
      * @return An updated instance of this builder with the regional authority configured.
      */
-    public ClientCertificateCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+    ClientCertificateCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
         this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }
@@ -143,9 +145,9 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
                 put("clientId", clientId);
                 put("tenantId", tenantId);
                 put("clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
-            }});
+            }}, LOGGER);
         if (clientCertificate != null && clientCertificatePath != null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
                     + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
                     + "be provided."));
         }

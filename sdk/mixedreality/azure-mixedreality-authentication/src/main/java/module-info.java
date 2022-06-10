@@ -10,7 +10,5 @@ module com.azure.mixedreality.authentication {
     exports com.azure.mixedreality.authentication;
 
     opens com.azure.mixedreality.authentication.implementation.models
-        to com.fasterxml.jackson.databind;
-    exports com.azure.mixedreality.authentication.implementation.models
         to com.fasterxml.jackson.databind, com.azure.core;
 }

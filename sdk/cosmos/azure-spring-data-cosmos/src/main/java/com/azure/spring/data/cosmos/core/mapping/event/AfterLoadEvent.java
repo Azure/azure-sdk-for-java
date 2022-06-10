@@ -15,6 +15,10 @@ import org.springframework.util.Assert;
 public class AfterLoadEvent<T> extends CosmosMappingEvent<JsonNode> {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Type
+     */
     private final Class<T> type;
 
     /**

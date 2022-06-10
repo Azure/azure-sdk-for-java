@@ -6,12 +6,15 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -27,11 +30,13 @@ import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAP
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
 import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
-import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveHeaders;
+import com.azure.storage.file.datalake.implementation.models.SetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
@@ -41,6 +46,8 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
+import com.azure.storage.file.datalake.implementation.models.CpkInfo;
+import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -53,6 +60,8 @@ import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -80,7 +89,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 @ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public class DataLakePathAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakePathAsyncClient.class);
 
     final AzureDataLakeStorageRestAPIImpl dataLakeStorage;
     final AzureDataLakeStorageRestAPIImpl fileSystemDataLakeStorage;
@@ -93,10 +102,13 @@ public class DataLakePathAsyncClient {
     private final String fileSystemName;
     final String pathName;
     private final DataLakeServiceVersion serviceVersion;
+    private final CpkInfo customerProvidedKey;
 
     final PathResourceType pathResourceType;
 
     final BlockBlobAsyncClient blockBlobAsyncClient;
+
+    private final AzureSasCredential sasToken;
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -111,12 +123,14 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient) {
+        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken,
+        CpkInfo customerProvidedKey) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
+        this.sasToken = sasToken;
         this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -141,6 +155,8 @@ public class DataLakePathAsyncClient {
             .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
             .buildClient();
+
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     /**
@@ -253,12 +269,54 @@ public class DataLakePathAsyncClient {
         return serviceVersion;
     }
 
+    AzureSasCredential getSasToken() {
+        return this.sasToken;
+    }
+
     /**
-     * Creates a resource. By default this method will not overwrite an existing path.
+     * Gets the {@link CpkInfo} used to encrypt this path's content on the server.
+     *
+     * @return the customer provided key used for encryption.
+     */
+    public CustomerProvidedKey getCustomerProvidedKey() {
+        return new CustomerProvidedKey(customerProvidedKey.getEncryptionKey());
+    }
+
+    CpkInfo getCpkInfo() {
+        return this.customerProvidedKey;
+    }
+
+    /**
+     * Creates a new {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the path,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link DataLakePathAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    public DataLakePathAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), getObjectPath(), this.pathResourceType, this.blockBlobAsyncClient, getSasToken(),
+            finalCustomerProvidedKey);
+    }
+
+    /**
+     * Creates a resource. By default, this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.create -->
+     * <pre>
+     * client.create&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.create -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -268,11 +326,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create() {
-        try {
-            return create(false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return create(false);
     }
 
     /**
@@ -280,27 +334,29 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean -->
+     * <pre>
+     * boolean overwrite = true;
+     * client.create&#40;overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
-     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     * @param overwrite Whether to overwrite, should data exist on the file.
      *
      * @return A reactive response containing information about the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create(boolean overwrite) {
-        try {
-            DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
-            if (!overwrite) {
-                requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(new DataLakePathCreateOptions().setRequestConditions(requestConditions)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -308,7 +364,21 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     *
+     * client.createWithResponse&#40;permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
+     *     requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
@@ -327,17 +397,72 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType,
-                headers, metadata, requestConditions, context));
+            DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+                .setPermissions(permissions)
+                .setUmask(umask)
+                .setPathHttpHeaders(headers).setMetadata(metadata)
+                .setRequestConditions(requestConditions);
+            return withContext(context -> createWithResponse(options));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathResourceType resourceType,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
-        Context context) {
-        requestConditions = requestConditions == null ? new DataLakeRequestConditions() : requestConditions;
+    /**
+     * Creates a resource.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
+     *
+     * client.createWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Last Modified Time:%s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#DataLakePathCreateOptions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * PathItem}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options) {
+        try {
+            return withContext(context -> createWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
+        options = options == null ? new DataLakePathCreateOptions() : options;
+        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
@@ -346,21 +471,155 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
+        String acl = options.getAccessControlList() != null ? PathAccessControlEntry
+            .serializeList(options.getAccessControlList()) : null;
+        PathExpiryOptions expiryOptions = setFieldsIfNull(options);
+
+        String expiresOnString = null; // maybe return string instead and do check for expiryOptions in here
+        if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            expiresOnString = DateTimeRfc1123.toRfc1123String(options.getScheduleDeletionOptions().getExpiresOn());
+        } else if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+            expiresOnString = Long.toString(options.getScheduleDeletionOptions().getTimeToExpire().toMillis());
+        }
+
+        Long leaseDuration = options.getLeaseDuration() != null ? Long.valueOf(options.getLeaseDuration()) : null;
+
         context = context == null ? Context.NONE : context;
-        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, resourceType, null, null, null, null,
-            buildMetadataString(metadata), permissions, umask, headers, lac, mac, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
+                options.getSourceLeaseId(), buildMetadataString(options.getMetadata()), options.getPermissions(),
+                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
+                leaseDuration, expiryOptions, expiresOnString, options.getPathHttpHeaders(),
+                lac, mac, null, customerProvidedKey, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
-                response.getDeserializedHeaders().getLastModified())));
+                response.getDeserializedHeaders().getLastModified(),
+                response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
+                response.getDeserializedHeaders().getXMsEncryptionKeySha256())));
+    }
+
+    PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options) {
+        if (pathResourceType == PathResourceType.DIRECTORY) {
+            if (options.getProposedLeaseId() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ProposedLeaseId does not apply to directories."));
+            }
+            if (options.getLeaseDuration() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("LeaseDuration does not apply to directories."));
+            }
+            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire does not apply to directories."));
+            }
+            if (options.getScheduleDeletionOptions() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("ExpiresOn does not apply to directories."));
+            }
+        }
+        if (options.getScheduleDeletionOptions() == null) {
+            return null;
+        }
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null && options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("TimeToExpire and ExpiresOn both cannot be set."));
+        }
+        if (options.getScheduleDeletionOptions().getTimeToExpire() != null) {
+            return PathExpiryOptions.RELATIVE_TO_NOW;
+        } else if (options.getScheduleDeletionOptions().getExpiresOn() != null) {
+            return PathExpiryOptions.ABSOLUTE;
+        }
+        return null;
+    }
+
+    /**
+     * Creates a resource if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return A reactive response signaling completion. {@link PathInfo} contains information about the created resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathInfo> createIfNotExists() {
+        return createIfNotExistsWithResponse(new DataLakePathCreateOptions()).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a resource if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
+     * <pre>
+     * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *         System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExistsWithResponse#DataLakePathCreateOptions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link PathInfo} containing information about the resource. If {@link Response}'s status code is
+     * 201, a new resource was successfully created. If status code is 409, a resource already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options) {
+        try {
+            return withContext(context -> createIfNotExistsWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PathInfo>> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Context context) {
+        try {
+            options = options == null ? new DataLakePathCreateOptions() : options;
+            options.setRequestConditions(new DataLakeRequestConditions()
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context)
+                .onErrorResume(t -> t instanceof DataLakeStorageException
+                        && ((DataLakeStorageException) t).getStatusCode() == 409,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), null));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
      * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
-     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     Mono<Response<Void>> deleteWithResponse(Boolean recursive, DataLakeRequestConditions requestConditions,
         Context context) {
@@ -380,12 +639,100 @@ public class DataLakePathAsyncClient {
     }
 
     /**
+     * Deletes paths under the resource if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists -->
+     * <pre>
+     * client.deleteIfExists&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Delete completed%n&quot;&#41;,
+     *     error -&gt; System.out.printf&#40;&quot;Delete failed: %s%n&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExists -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * Docs</a></p>
+     *
+     * @return a reactive response signaling completion. {@code true} indicates that the resource under the path was
+     * successfully deleted, {@code false} indicates the resource did not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> deleteIfExists() {
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions()).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes all paths under the specified resource if exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     *
+     * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;;
+     *
+     * client.deleteIfExistsWithResponse&#40;options&#41;.subscribe&#40;response -&gt; &#123;
+     *     if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *         System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;successfully deleted.&quot;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @param options {@link DataLakePathDeleteOptions}
+     *
+     * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the resource was
+     * successfully deleted. If status code is 404, the resource does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options) {
+        try {
+            return withContext(context -> deleteIfExistsWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Context context) {
+        try {
+            options = options == null ? new DataLakePathDeleteOptions() : options;
+            return deleteWithResponse(options.getIsRecursive(), options.getRequestConditions(), context)
+                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
+                .onErrorResume(t -> t instanceof DataLakeStorageException
+                        && ((DataLakeStorageException) t).getStatusCode() == 404,
+                    t -> {
+                        HttpResponse response = ((DataLakeStorageException) t).getResponse();
+                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                            response.getHeaders(), false));
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Changes a resource's metadata. The specified metadata in this method will replace existing metadata. If old
      * values must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map -->
+     * <pre>
+     * client.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Set metadata completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -396,11 +743,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
-        try {
-            return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -409,7 +752,15 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.setMetadataWithResponse&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Set metadata completed with status %d%n&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -422,13 +773,9 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
-                Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return this.blockBlobAsyncClient.setMetadataWithResponse(metadata,
+            Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -437,7 +784,13 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeaders#PathHttpHeaders}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeaders#PathHttpHeaders -->
+     * <pre>
+     * client.setHttpHeaders&#40;new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeaders#PathHttpHeaders -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -447,20 +800,25 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
-        try {
-            return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Changes a resources's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
+     * Changes a resource's HTTP header properties. If only one HTTP header is updated, the others will all be erased.
      * In order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.setHttpHeadersWithResponse&#40;new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Set HTTP headers completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -472,21 +830,22 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
+        return this.blockBlobAsyncClient.setHttpHeadersWithResponse(Transforms.toBlobHttpHeaders(headers),
                 Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
-     * Returns the resources's metadata and properties.
+     * Returns the resource's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getCreationTime&#40;&#41;, response.getFileSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -495,11 +854,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -507,7 +862,15 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.getPropertiesWithResponse&#40;requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getValue&#40;&#41;.getCreationTime&#40;&#41;,
+     *         response.getValue&#40;&#41;.getFileSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -517,13 +880,9 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
-        try {
-            return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }
 
     /**
@@ -534,17 +893,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.exists}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.exists -->
+     * <pre>
+     * client.exists&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.exists -->
      *
      * @return true if the path exists, false if it doesn't
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> exists() {
-        try {
-            return existsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return existsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -555,18 +914,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse -->
+     * <pre>
+     * client.existsWithResponse&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.existsWithResponse -->
      *
      * @return true if the path exists, false if it doesn't
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
-        try {
-            return blockBlobAsyncClient.existsWithResponse()
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return blockBlobAsyncClient.existsWithResponse().onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -574,7 +932,20 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String -->
+     * <pre>
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * String group = &quot;group&quot;;
+     * String owner = &quot;owner&quot;;
+     *
+     * client.setAccessControlList&#40;pathAccessControlEntries, group, owner&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Last Modified Time: %s&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -587,11 +958,7 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setAccessControlList(List<PathAccessControlEntry> accessControlList, String group,
         String owner) {
-        try {
-            return setAccessControlListWithResponse(accessControlList, group, owner, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessControlListWithResponse(accessControlList, group, owner, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -599,7 +966,21 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     * String group = &quot;group&quot;;
+     * String owner = &quot;owner&quot;;
+     *
+     * client.setAccessControlListWithResponse&#40;pathAccessControlEntries, group, owner, requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Last Modified Time: %s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -617,7 +998,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> setAccessControlWithResponse(accessControlList,
                 null, group, owner, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -626,7 +1007,19 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String -->
+     * <pre>
+     * PathPermissions permissions = new PathPermissions&#40;&#41;
+     *     .setGroup&#40;new RolePermissions&#40;&#41;.setExecutePermission&#40;true&#41;.setReadPermission&#40;true&#41;&#41;
+     *     .setOwner&#40;new RolePermissions&#40;&#41;.setExecutePermission&#40;true&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;&#41;
+     *     .setOther&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * String group = &quot;group&quot;;
+     * String owner = &quot;owner&quot;;
+     *
+     * client.setPermissions&#40;permissions, group, owner&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Last Modified Time: %s&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -638,11 +1031,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setPermissions(PathPermissions permissions, String group, String owner) {
-        try {
-            return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -650,7 +1039,20 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * PathPermissions permissions = new PathPermissions&#40;&#41;
+     *     .setGroup&#40;new RolePermissions&#40;&#41;.setExecutePermission&#40;true&#41;.setReadPermission&#40;true&#41;&#41;
+     *     .setOwner&#40;new RolePermissions&#40;&#41;.setExecutePermission&#40;true&#41;.setReadPermission&#40;true&#41;.setWritePermission&#40;true&#41;&#41;
+     *     .setOther&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * String group = &quot;group&quot;;
+     * String owner = &quot;owner&quot;;
+     *
+     * client.setPermissionsWithResponse&#40;permissions, group, owner, requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Last Modified Time: %s&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -668,7 +1070,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -704,7 +1106,19 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List -->
+     * <pre>
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * client.setAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -717,12 +1131,8 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
-        try {
-            return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -730,7 +1140,34 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions -->
+     * <pre>
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * Integer batchSize = 2;
+     * Integer maxBatches = 10;
+     * boolean continueOnFailure = false;
+     * String continuationToken = null;
+     * Consumer&lt;Response&lt;AccessControlChanges&gt;&gt; progressHandler =
+     *     response -&gt; System.out.println&#40;&quot;Received response&quot;&#41;;
+     *
+     * PathSetAccessControlRecursiveOptions options =
+     *     new PathSetAccessControlRecursiveOptions&#40;pathAccessControlEntries&#41;
+     *         .setBatchSize&#40;batchSize&#41;
+     *         .setMaxBatches&#40;maxBatches&#41;
+     *         .setContinueOnFailure&#40;continueOnFailure&#41;
+     *         .setContinuationToken&#40;continuationToken&#41;
+     *         .setProgressHandler&#40;progressHandler&#41;;
+     *
+     * client.setAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -744,14 +1181,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -760,7 +1197,19 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List -->
+     * <pre>
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * client.updateAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -774,13 +1223,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(
         List<PathAccessControlEntry> accessControlList) {
-        try {
-            return updateAccessControlRecursiveWithResponse(
-                new PathUpdateAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return updateAccessControlRecursiveWithResponse(new PathUpdateAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -788,7 +1232,34 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions -->
+     * <pre>
+     * PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;
+     *     .setPermissions&#40;new RolePermissions&#40;&#41;.setReadPermission&#40;true&#41;&#41;;
+     * List&lt;PathAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * Integer batchSize = 2;
+     * Integer maxBatches = 10;
+     * boolean continueOnFailure = false;
+     * String continuationToken = null;
+     * Consumer&lt;Response&lt;AccessControlChanges&gt;&gt; progressHandler =
+     *     response -&gt; System.out.println&#40;&quot;Received response&quot;&#41;;
+     *
+     * PathUpdateAccessControlRecursiveOptions options =
+     *     new PathUpdateAccessControlRecursiveOptions&#40;pathAccessControlEntries&#41;
+     *         .setBatchSize&#40;batchSize&#41;
+     *         .setMaxBatches&#40;maxBatches&#41;
+     *         .setContinueOnFailure&#40;continueOnFailure&#41;
+     *         .setContinuationToken&#40;continuationToken&#41;
+     *         .setProgressHandler&#40;progressHandler&#41;;
+     *
+     * client.updateAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -802,14 +1273,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
                 options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -818,7 +1289,18 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List -->
+     * <pre>
+     * PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;;
+     * List&lt;PathRemoveAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * client.removeAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -832,13 +1314,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
-        try {
-            return removeAccessControlRecursiveWithResponse(
-                new PathRemoveAccessControlRecursiveOptions(accessControlList))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return removeAccessControlRecursiveWithResponse(new PathRemoveAccessControlRecursiveOptions(accessControlList))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -846,7 +1323,33 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions -->
+     * <pre>
+     * PathRemoveAccessControlEntry pathAccessControlEntry = new PathRemoveAccessControlEntry&#40;&#41;
+     *     .setEntityId&#40;&quot;entityId&quot;&#41;;
+     * List&lt;PathRemoveAccessControlEntry&gt; pathAccessControlEntries = new ArrayList&lt;&gt;&#40;&#41;;
+     * pathAccessControlEntries.add&#40;pathAccessControlEntry&#41;;
+     *
+     * Integer batchSize = 2;
+     * Integer maxBatches = 10;
+     * boolean continueOnFailure = false;
+     * String continuationToken = null;
+     * Consumer&lt;Response&lt;AccessControlChanges&gt;&gt; progressHandler =
+     *     response -&gt; System.out.println&#40;&quot;Received response&quot;&#41;;
+     *
+     * PathRemoveAccessControlRecursiveOptions options =
+     *     new PathRemoveAccessControlRecursiveOptions&#40;pathAccessControlEntries&#41;
+     *         .setBatchSize&#40;batchSize&#41;
+     *         .setMaxBatches&#40;maxBatches&#41;
+     *         .setContinueOnFailure&#40;continueOnFailure&#41;
+     *         .setContinuationToken&#40;continuationToken&#41;
+     *         .setProgressHandler&#40;progressHandler&#41;;
+     *
+     * client.removeAccessControlRecursive&#40;pathAccessControlEntries&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Successful changed file operations: %d&quot;,
+     *         response.getCounters&#40;&#41;.getChangedFilesCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
@@ -860,14 +1363,14 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
                 options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),
                 options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -889,10 +1392,10 @@ public class DataLakePathAsyncClient {
             continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         continuationToken));
                 } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
                 }
                 return e;
             })
@@ -902,7 +1405,7 @@ public class DataLakePathAsyncClient {
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(
-        PathsSetAccessControlRecursiveResponse response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
+        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response, Integer maxBatches, AtomicInteger directoriesSuccessfulCount,
         AtomicInteger filesSuccessfulCount, AtomicInteger failureCount, AtomicInteger batchesCount,
         Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
         PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
@@ -1001,10 +1504,10 @@ public class DataLakePathAsyncClient {
             effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context)
             .onErrorMap(e -> {
                 if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                         effectiveNextToken));
                 } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
+                    return LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
                 }
                 return e;
             })
@@ -1018,7 +1521,14 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl -->
+     * <pre>
+     * client.getAccessControl&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Access Control List: %s, Group: %s, Owner: %s, Permissions: %s&quot;,
+     *         PathAccessControlEntry.serializeList&#40;response.getAccessControlList&#40;&#41;&#41;, response.getGroup&#40;&#41;,
+     *         response.getOwner&#40;&#41;, response.getPermissions&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
@@ -1027,11 +1537,7 @@ public class DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathAccessControl> getAccessControl() {
-        try {
-            return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1039,7 +1545,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions -->
+     * <pre>
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * boolean userPrincipalNameReturned = false;
+     *
+     * client.getAccessControlWithResponse&#40;userPrincipalNameReturned, requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Access Control List: %s, Group: %s, Owner: %s, Permissions: %s&quot;,
+     *         PathAccessControlEntry.serializeList&#40;response.getValue&#40;&#41;.getAccessControlList&#40;&#41;&#41;,
+     *         response.getValue&#40;&#41;.getGroup&#40;&#41;, response.getValue&#40;&#41;.getOwner&#40;&#41;, response.getValue&#40;&#41;.getPermissions&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
@@ -1056,7 +1572,7 @@ public class DataLakePathAsyncClient {
             return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned,
                 requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1096,6 +1612,7 @@ public class DataLakePathAsyncClient {
     Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
+        context = context == null ? Context.NONE : context;
 
         destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
             : destinationRequestConditions;
@@ -1120,13 +1637,15 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
-            null /* request id */, null /* timeout */, null /* pathResourceType */,
-            null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
-            null /* metadata */, null /* permissions */, null /* umask */,
-            null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
+                null /* metadata */, null /* permissions */, null /* umask */,
+                null /* pathHttpHeaders */, null, null, null, null, null, null,
+                null, destLac, destMac, sourceConditions, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, dataLakePathAsyncClient));
     }
 
@@ -1141,12 +1660,13 @@ public class DataLakePathAsyncClient {
             destinationFileSystem = getFileSystemName();
         }
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken,
+            customerProvidedKey);
     }
 
     /**
@@ -1180,7 +1700,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * PathSasPermission myPermission = new PathSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -1202,7 +1732,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * PathSasPermission myPermission = new PathSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues myValues = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey, accountName, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -1227,7 +1767,17 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * PathSasPermission permission = new PathSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
@@ -1244,7 +1794,18 @@ public class DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * PathSasPermission permission = new PathSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context -->
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

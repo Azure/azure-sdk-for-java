@@ -3,11 +3,15 @@
 
 package com.azure.storage.common;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 
+import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -18,27 +22,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 /**
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class StorageSharedKeyCredential {
-    private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageSharedKeyCredential.class);
 
-    private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
 
-    private final String accountName;
-    private final String accountKey;
+    private final AzureNamedKeyCredential azureNamedKeyCredential;
 
     /**
      * Initializes a new instance of StorageSharedKeyCredential contains an account's name and its primary or secondary
@@ -50,8 +51,12 @@ public final class StorageSharedKeyCredential {
     public StorageSharedKeyCredential(String accountName, String accountKey) {
         Objects.requireNonNull(accountName, "'accountName' cannot be null.");
         Objects.requireNonNull(accountKey, "'accountKey' cannot be null.");
-        this.accountName = accountName;
-        this.accountKey = accountKey;
+        this.azureNamedKeyCredential = new AzureNamedKeyCredential(accountName, accountKey);
+    }
+
+    private StorageSharedKeyCredential(AzureNamedKeyCredential azureNamedKeyCredential) {
+        Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
+        this.azureNamedKeyCredential = azureNamedKeyCredential;
     }
 
     /**
@@ -59,7 +64,11 @@ public final class StorageSharedKeyCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String}
+     * <!-- src_embed com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
+     * <pre>
+     * StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString&#40;connectionString&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
      *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey
@@ -83,12 +92,24 @@ public final class StorageSharedKeyCredential {
     }
 
     /**
+     * Creates a SharedKey credential from the passed {@link AzureNamedKeyCredential}.
+     *
+     * @param azureNamedKeyCredential {@link AzureNamedKeyCredential} used to build the SharedKey credential.
+     * @return a SharedKey credential converted from {@link AzureNamedKeyCredential}
+     * @throws NullPointerException If {@code azureNamedKeyCredential} is null.
+     */
+    public static StorageSharedKeyCredential fromAzureNamedKeyCredential(
+        AzureNamedKeyCredential azureNamedKeyCredential) {
+        return new StorageSharedKeyCredential(azureNamedKeyCredential);
+    }
+
+    /**
      * Gets the account name associated with the request.
      *
      * @return The account name.
      */
     public String getAccountName() {
-        return accountName;
+        return azureNamedKeyCredential.getAzureNamedKey().getName();
     }
 
     /**
@@ -107,14 +128,27 @@ public final class StorageSharedKeyCredential {
      * @param requestURL URL of the request
      * @param httpMethod HTTP method being used
      * @param headers Headers on the request
-     * @param logStringToSign Whether or not to log the string to sign
+     * @param logStringToSign Whether to log the string to sign
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers,
         boolean logStringToSign) {
-        String signature = StorageImplUtils.computeHMac256(accountKey,
+        return generateAuthorizationHeader(requestURL, httpMethod, new HttpHeaders(headers), logStringToSign);
+    }
+
+    /**
+     * Generates the SharedKey Authorization value from information in the request.
+     * @param requestURL URL of the request
+     * @param httpMethod HTTP method being used
+     * @param headers Headers on the request
+     * @param logStringToSign Whether to log the string to sign
+     * @return the SharedKey authorization value
+     */
+    public String generateAuthorizationHeader(URL requestURL, String httpMethod, HttpHeaders headers,
+        boolean logStringToSign) {
+        String signature = StorageImplUtils.computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(),
             buildStringToSign(requestURL, httpMethod, headers, logStringToSign));
-        return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
+        return "SharedKey " + azureNamedKeyCredential.getAzureNamedKey().getName() + ":" + signature;
     }
 
     /**
@@ -127,16 +161,16 @@ public final class StorageSharedKeyCredential {
      * string, or the UTF-8 charset isn't supported.
      */
     public String computeHmac256(final String stringToSign) {
-        return StorageImplUtils.computeHMac256(accountKey, stringToSign);
+        return StorageImplUtils.computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
     }
 
-    private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers,
+    private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
         boolean logStringToSign) {
-        String contentLength = headers.get("Content-Length");
-        contentLength = contentLength.equals("0") ? "" : contentLength;
+        String contentLength = headers.getValue("Content-Length");
+        contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? ""
+        String dateHeader = (headers.getValue("x-ms-date") != null) ? ""
             : getStandardHeaderValue(headers, "Date");
 
         String stringToSign =  String.join("\n",
@@ -156,7 +190,7 @@ public final class StorageSharedKeyCredential {
             getCanonicalizedResource(requestURL));
 
         if (logStringToSign) {
-            StorageImplUtils.logStringToSign(logger, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
+            StorageImplUtils.logStringToSign(LOGGER, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
         }
 
         return stringToSign;
@@ -165,37 +199,37 @@ public final class StorageSharedKeyCredential {
     /*
      * Returns an empty string if the header value is null or empty.
      */
-    private String getStandardHeaderValue(Map<String, String> headers, String headerName) {
-        final String headerValue = headers.get(headerName);
-
-        return headerValue == null ? "" : headerValue;
+    private String getStandardHeaderValue(HttpHeaders headers, String headerName) {
+        final Header header = headers.get(headerName);
+        return header == null ? "" : header.getValue();
     }
 
-    private String getAdditionalXmsHeaders(Map<String, String> headers) {
+    private String getAdditionalXmsHeaders(HttpHeaders headers) {
         // Add only headers that begin with 'x-ms-'
-        final List<String> xmsHeaderNameArray = headers.entrySet().stream()
-            .filter(entry -> entry.getKey().toLowerCase(Locale.ROOT).startsWith("x-ms-"))
-            .filter(entry -> entry.getValue() != null)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toList());
+        Map<String, String> sortedXmsHeaders = new TreeMap<>(
+            /* Culture-sensitive word sort */
+            Collator.getInstance(Locale.ROOT)
+        );
+        for (HttpHeader header : headers) {
+            String name = header.getName().toLowerCase(Locale.ROOT);
+            if (name.startsWith("x-ms-")) {
+                sortedXmsHeaders.put(name, header.getValue());
+            }
+        }
 
-        if (xmsHeaderNameArray.isEmpty()) {
+        if (sortedXmsHeaders.isEmpty()) {
             return "";
         }
 
-        /* Culture-sensitive word sort */
-        Collections.sort(xmsHeaderNameArray, Collator.getInstance(Locale.ROOT));
-
         final StringBuilder canonicalizedHeaders = new StringBuilder();
-        for (final String key : xmsHeaderNameArray) {
+        sortedXmsHeaders.forEach((name, value) -> {
             if (canonicalizedHeaders.length() > 0) {
                 canonicalizedHeaders.append('\n');
             }
-
-            canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT))
+            canonicalizedHeaders.append(name)
                 .append(':')
-                .append(headers.get(key));
-        }
+                .append(value);
+        });
 
         return canonicalizedHeaders.toString();
     }
@@ -204,7 +238,7 @@ public final class StorageSharedKeyCredential {
 
         // Resource path
         final StringBuilder canonicalizedResource = new StringBuilder("/");
-        canonicalizedResource.append(accountName);
+        canonicalizedResource.append(azureNamedKeyCredential.getAzureNamedKey().getName());
 
         // Note that AbsolutePath starts with a '/'.
         if (requestURL.getPath().length() > 0) {

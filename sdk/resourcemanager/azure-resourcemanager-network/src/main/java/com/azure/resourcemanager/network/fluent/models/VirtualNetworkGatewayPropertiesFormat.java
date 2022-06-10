@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -15,15 +14,12 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnGatewayGeneration;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualNetworkGateway properties. */
 @Fluent
 public final class VirtualNetworkGatewayPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayPropertiesFormat.class);
-
     /*
      * IP configurations for virtual network gateway.
      */
@@ -67,6 +63,12 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     @JsonProperty(value = "activeActive")
     private Boolean active;
+
+    /*
+     * disableIPSecReplayProtection flag.
+     */
+    @JsonProperty(value = "disableIPSecReplayProtection")
+    private Boolean disableIpSecReplayProtection;
 
     /*
      * The reference to the LocalNetworkGateway resource which represents local
@@ -290,6 +292,27 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     public VirtualNetworkGatewayPropertiesFormat withActive(Boolean active) {
         this.active = active;
+        return this;
+    }
+
+    /**
+     * Get the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @return the disableIpSecReplayProtection value.
+     */
+    public Boolean disableIpSecReplayProtection() {
+        return this.disableIpSecReplayProtection;
+    }
+
+    /**
+     * Set the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @param disableIpSecReplayProtection the disableIpSecReplayProtection value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withDisableIpSecReplayProtection(
+        Boolean disableIpSecReplayProtection) {
+        this.disableIpSecReplayProtection = disableIpSecReplayProtection;
         return this;
     }
 

@@ -13,9 +13,11 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.MongoDBCollectionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
@@ -158,7 +160,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabaseAsync(
             String resourceGroupName,
@@ -178,7 +180,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(
             String resourceGroupName,
@@ -199,7 +201,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(
             String resourceGroupName,
@@ -293,7 +295,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -308,7 +310,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -324,7 +326,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context);
 
@@ -471,7 +473,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughputAsync(
             String resourceGroupName,
@@ -492,7 +494,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(
             String resourceGroupName,
@@ -514,7 +516,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(
             String resourceGroupName,
@@ -611,7 +613,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
 
@@ -626,7 +628,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
 
@@ -642,7 +644,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -719,7 +721,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName);
@@ -735,7 +737,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName);
@@ -752,7 +754,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -948,7 +950,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB collection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollectionAsync(
             String resourceGroupName,
@@ -970,7 +972,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB collection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollection(
             String resourceGroupName,
@@ -993,7 +995,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB MongoDB collection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollection(
             String resourceGroupName,
@@ -1096,7 +1098,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBCollectionAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName);
 
@@ -1112,7 +1114,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
         String resourceGroupName, String accountName, String databaseName, String collectionName);
 
@@ -1129,7 +1131,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteMongoDBCollection(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
 
@@ -1289,7 +1291,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughputAsync(
             String resourceGroupName,
@@ -1312,7 +1314,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(
             String resourceGroupName,
@@ -1336,7 +1338,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(
             String resourceGroupName,
@@ -1442,7 +1444,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, String collectionName);
@@ -1459,7 +1461,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String collectionName);
@@ -1477,7 +1479,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
@@ -1559,7 +1561,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, String collectionName);
@@ -1576,7 +1578,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String collectionName);
@@ -1594,7 +1596,7 @@ public interface MongoDBResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
@@ -1647,4 +1649,156 @@ public interface MongoDBResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ThroughputSettingsGetResultsInner migrateMongoDBCollectionToManualThroughput(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location,
+        Context context);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a Mongodb collection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ContinuousBackupRestoreLocation location,
+        Context context);
 }

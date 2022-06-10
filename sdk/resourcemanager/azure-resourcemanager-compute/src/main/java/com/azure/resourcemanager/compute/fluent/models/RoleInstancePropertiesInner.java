@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.RoleInstanceNetworkProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RoleInstanceProperties model. */
 @Fluent
 public final class RoleInstancePropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstancePropertiesInner.class);
-
     /*
      * Describes the network profile for the role instance.
      */

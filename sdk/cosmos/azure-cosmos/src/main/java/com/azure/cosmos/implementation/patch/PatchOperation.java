@@ -16,7 +16,7 @@ public abstract class PatchOperation {
         this.operationType = operationType;
     }
 
-    PatchOperationType getOperationType() {
+    public PatchOperationType getOperationType() {
         return operationType;
     }
 }

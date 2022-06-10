@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of the PartnerNamespace update. */
+/** Properties of the Partner Namespace update. */
 @Fluent
 public final class PartnerNamespaceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceUpdateParameters.class);
-
     /*
-     * Tags of the partner namespace.
+     * Tags of the Partner Namespace.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -32,7 +28,7 @@ public final class PartnerNamespaceUpdateParameters {
     private PartnerNamespaceUpdateParameterProperties innerProperties;
 
     /**
-     * Get the tags property: Tags of the partner namespace.
+     * Get the tags property: Tags of the Partner Namespace.
      *
      * @return the tags value.
      */
@@ -41,7 +37,7 @@ public final class PartnerNamespaceUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags of the partner namespace.
+     * Set the tags property: Tags of the Partner Namespace.
      *
      * @param tags the tags value to set.
      * @return the PartnerNamespaceUpdateParameters object itself.

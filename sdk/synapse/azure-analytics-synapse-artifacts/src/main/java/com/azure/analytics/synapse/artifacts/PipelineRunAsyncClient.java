@@ -10,6 +10,7 @@ import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.PipelineRun;
 import com.azure.analytics.synapse.artifacts.models.PipelineRunsQueryResponse;
 import com.azure.analytics.synapse.artifacts.models.RunFilterParameters;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,13 +20,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class PipelineRunAsyncClient {
-    private final PipelineRunsImpl serviceClient;
+    @Generated private final PipelineRunsImpl serviceClient;
 
     /**
-     * Initializes an instance of PipelineRuns client.
+     * Initializes an instance of PipelineRunAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     PipelineRunAsyncClient(PipelineRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -37,8 +39,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
+     * @return a list pipeline runs along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRunsQueryResponse>> queryPipelineRunsByWorkspaceWithResponse(
             RunFilterParameters filterParameters) {
@@ -52,8 +55,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
+     * @return a list pipeline runs on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineRunsQueryResponse> queryPipelineRunsByWorkspace(RunFilterParameters filterParameters) {
         return this.serviceClient.queryPipelineRunsByWorkspaceAsync(filterParameters);
@@ -66,8 +70,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
+     * @return a pipeline run by its run ID along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineRun>> getPipelineRunWithResponse(String runId) {
         return this.serviceClient.getPipelineRunWithResponseAsync(runId);
@@ -80,8 +85,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
+     * @return a pipeline run by its run ID on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineRun> getPipelineRun(String runId) {
         return this.serviceClient.getPipelineRunAsync(runId);
@@ -96,8 +102,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ActivityRunsQueryResponse>> queryActivityRunsWithResponse(
             String pipelineName, String runId, RunFilterParameters filterParameters) {
@@ -113,8 +120,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActivityRunsQueryResponse> queryActivityRuns(
             String pipelineName, String runId, RunFilterParameters filterParameters) {
@@ -129,8 +137,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelPipelineRunWithResponse(String runId, Boolean isRecursive) {
         return this.serviceClient.cancelPipelineRunWithResponseAsync(runId, isRecursive);
@@ -144,8 +153,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRun(String runId, Boolean isRecursive) {
         return this.serviceClient.cancelPipelineRunAsync(runId, isRecursive);
@@ -158,8 +168,9 @@ public final class PipelineRunAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRun(String runId) {
         return this.serviceClient.cancelPipelineRunAsync(runId);

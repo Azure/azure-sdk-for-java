@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlDatabasePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB SQL database event. */
-@JsonFlatten
 @Fluent
-public class RestorableSqlDatabaseGetResultInner {
+public final class RestorableSqlDatabaseGetResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlDatabaseGetResultInner.class);
+
+    /*
+     * The properties of a SQL database event.
+     */
+    @JsonProperty(value = "properties")
+    private RestorableSqlDatabaseProperties innerProperties;
 
     /*
      * The unique resource Identifier of the ARM resource.
@@ -35,11 +39,14 @@ public class RestorableSqlDatabaseGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The resource of an Azure Cosmos DB SQL database event
+    /**
+     * Get the innerProperties property: The properties of a SQL database event.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.resource")
-    private RestorableSqlDatabasePropertiesResource resource;
+    private RestorableSqlDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
@@ -74,7 +81,7 @@ public class RestorableSqlDatabaseGetResultInner {
      * @return the resource value.
      */
     public RestorableSqlDatabasePropertiesResource resource() {
-        return this.resource;
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
     }
 
     /**
@@ -84,7 +91,10 @@ public class RestorableSqlDatabaseGetResultInner {
      * @return the RestorableSqlDatabaseGetResultInner object itself.
      */
     public RestorableSqlDatabaseGetResultInner withResource(RestorableSqlDatabasePropertiesResource resource) {
-        this.resource = resource;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableSqlDatabaseProperties();
+        }
+        this.innerProperties().withResource(resource);
         return this;
     }
 
@@ -94,8 +104,8 @@ public class RestorableSqlDatabaseGetResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resource() != null) {
-            resource().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

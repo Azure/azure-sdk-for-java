@@ -104,8 +104,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -169,8 +169,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -232,8 +232,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -252,8 +252,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -273,8 +273,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -291,8 +291,8 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     }
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.

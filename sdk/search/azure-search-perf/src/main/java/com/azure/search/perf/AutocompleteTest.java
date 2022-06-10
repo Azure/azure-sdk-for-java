@@ -13,6 +13,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Performs autocomplete operations.
  */
 public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
+    /**
+     * Creates an autocomplete operations performance test.
+     *
+     * @param options Performance test configuration options.
+     */
     public AutocompleteTest(SearchPerfStressOptions options) {
         super(options);
     }

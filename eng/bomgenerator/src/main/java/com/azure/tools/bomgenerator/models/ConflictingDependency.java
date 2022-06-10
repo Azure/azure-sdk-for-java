@@ -12,10 +12,6 @@ public class ConflictingDependency {
         this.actualDependency = actualDependency;
     }
 
-    ConflictingDependency(BomDependency actualDependency) {
-        this.actualDependency = actualDependency;
-    }
-
     public BomDependency getExpectedDependency() {
         return this.expectedDependency;
     }

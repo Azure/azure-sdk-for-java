@@ -263,7 +263,8 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
             revalidateWithResponseAsync(resourceGroupName, serverName, encryptionProtectorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -915,7 +916,7 @@ public final class EncryptionProtectorsClientImpl implements EncryptionProtector
                 this.client.getHttpPipeline(),
                 EncryptionProtectorInner.class,
                 EncryptionProtectorInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

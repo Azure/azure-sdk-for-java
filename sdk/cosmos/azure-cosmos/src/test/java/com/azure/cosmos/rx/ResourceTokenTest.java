@@ -3,20 +3,16 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -25,6 +21,11 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PermissionMode;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -168,29 +169,30 @@ public class ResourceTokenTest extends TestSuiteBase {
         return new Object[][]{
                  //These tests will try to read document from its own getPermission and validate it, both with request Id and getName.
                 {createdDocument.getSelfLink(), createdDocPermission, createdDocument.getId(), null},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdDocPermissionWithName, createdDocument.getId(), null},
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdDocPermissionWithName, createdDocument.getId(), null},
 
                 //These tests will try to read document from its getPermission having partition getKey 1 and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey.getSelfLink(), createdDocPermissionWithPartitionKey, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdDocPermissionWithPartitionKeyWithName
-                        , createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+// TODO uncomment after https://github.com/Azure/azure-sdk-for-java/issues/26050
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdDocPermissionWithPartitionKeyWithName
+//                        , createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
 
                 //These tests will try to read document from its getPermission having partition getKey 2 and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey2.getSelfLink(), createdDocPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
-                        createdDocPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
+//                        createdDocPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
 
                 // These tests will try to read document from its parent collection getPermission and validate it, both with request Id and getName.
                 {createdDocument.getSelfLink(), createdCollPermission, createdDocument.getId(), null},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdCollPermissionWithName, createdDocument.getId(), null},
+               // {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdCollPermissionWithName, createdDocument.getId(), null},
 
                 //This test will try to read document from collection getPermission having partition getKey 1 and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey.getSelfLink(), createdColPermissionWithPartitionKey, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+               //{TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
 
                 //This test will try to read document from collection getPermission having partition getKey 2 and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
+                //{TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
 
         };
     }
@@ -201,8 +203,8 @@ public class ResourceTokenTest extends TestSuiteBase {
                 //This test will try to read document from its resource token directly and validate it.
                 {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey, PARTITION_KEY_VALUE},
                 //This test will try to read document from its parent collection resource token directly and validate it.
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
-                        createdColPermissionWithPartitionKeyWithName, PARTITION_KEY_VALUE}
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
+//                        createdColPermissionWithPartitionKeyWithName, PARTITION_KEY_VALUE}
         };
     }
 
@@ -212,14 +214,14 @@ public class ResourceTokenTest extends TestSuiteBase {
                 //These tests will try to read document from partition 1 with two collection getPermissions having different partition keys and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey.getSelfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey.getId(),
                 PARTITION_KEY_VALUE},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName
-                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName
+//                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
 
                 //These tests will try to read document from partition 1 with two collection getPermissions having different partition keys and validate it, both with request Id and getName.
                 {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(),
                         PARTITION_KEY_VALUE_2},
-                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKeyWithName
-                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
+//                {TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKeyWithName
+//                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
         };
     }
 
@@ -254,9 +256,14 @@ public class ResourceTokenTest extends TestSuiteBase {
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(permission);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                            .build();
             Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
                     .readCollection(collectionUrl, null);
 
@@ -281,9 +288,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(permission);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                            .build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
                 options.setPartitionKey(new PartitionKey(partitionKey));
@@ -309,10 +321,14 @@ public class ResourceTokenTest extends TestSuiteBase {
     public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(resourceToken)
-                    .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy()).withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withMasterKeyOrResourceToken(resourceToken)
+                            .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(PartitionKey.NONE);
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -339,9 +355,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(collPermission2);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -368,9 +389,14 @@ public class ResourceTokenTest extends TestSuiteBase {
             permissionFeed.add(permission);
             ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
             defaultPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(defaultPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+            asyncClientResourceToken =
+                    new AsyncDocumentClient.Builder()
+                            .withServiceEndpoint(TestConfigurations.HOST)
+                            .withPermissionFeed(permissionFeed)
+                            .withConnectionPolicy(defaultPolicy)
+                            .withConsistencyLevel(ConsistencyLevel.SESSION)
+                            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
+                            .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(partitionKey));
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -399,6 +425,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withPermissionFeed(permissionFeed)
+                .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
                 .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
@@ -424,6 +451,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 .withConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
                 .withMasterKeyOrResourceToken(permission.getToken())
+                .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
                 .build();
 
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
@@ -432,7 +460,8 @@ public class ResourceTokenTest extends TestSuiteBase {
                 asyncClientResourceToken.queryDocuments(
                     documentCollection.getAltLink(),
                     "select * from c",
-                    queryRequestOptions);
+                    queryRequestOptions,
+                    Document.class);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(1)

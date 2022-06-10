@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the createManifest operation. */
 public final class ContainerRegistriesCreateManifestResponse
-        extends ResponseBase<ContainerRegistriesCreateManifestHeaders, Object> {
+        extends ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> {
     /**
      * Creates an instance of ContainerRegistriesCreateManifestResponse.
      *
@@ -24,14 +24,8 @@ public final class ContainerRegistriesCreateManifestResponse
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Object value,
+            Void value,
             ContainerRegistriesCreateManifestHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
-    }
-
-    /** @return the deserialized response body. */
-    @Override
-    public Object getValue() {
-        return super.getValue();
     }
 }

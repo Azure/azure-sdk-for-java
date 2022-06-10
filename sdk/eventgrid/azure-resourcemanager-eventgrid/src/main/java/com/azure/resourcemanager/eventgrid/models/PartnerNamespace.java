@@ -114,6 +114,15 @@ public interface PartnerNamespace {
     Boolean disableLocalAuth();
 
     /**
+     * Gets the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
+     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
+     * topic. If none is specified, source attribute routing will be used to match the partner topic.
+     *
+     * @return the partnerTopicRoutingMode value.
+     */
+    PartnerTopicRoutingMode partnerTopicRoutingMode();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -126,6 +135,13 @@ public interface PartnerNamespace {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner object.
@@ -183,7 +199,8 @@ public interface PartnerNamespace {
                 DefinitionStages.WithPartnerRegistrationFullyQualifiedId,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithInboundIpRules,
-                DefinitionStages.WithDisableLocalAuth {
+                DefinitionStages.WithDisableLocalAuth,
+                DefinitionStages.WithPartnerTopicRoutingMode {
             /**
              * Executes the create request.
              *
@@ -267,6 +284,22 @@ public interface PartnerNamespace {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+        /** The stage of the PartnerNamespace definition allowing to specify partnerTopicRoutingMode. */
+        interface WithPartnerTopicRoutingMode {
+            /**
+             * Specifies the partnerTopicRoutingMode property: This determines if events published to this partner
+             * namespace should use the source attribute in the event payload or use the channel name in the header when
+             * matching to the partner topic. If none is specified, source attribute routing will be used to match the
+             * partner topic..
+             *
+             * @param partnerTopicRoutingMode This determines if events published to this partner namespace should use
+             *     the source attribute in the event payload or use the channel name in the header when matching to the
+             *     partner topic. If none is specified, source attribute routing will be used to match the partner
+             *     topic.
+             * @return the next definition stage.
+             */
+            WithCreate withPartnerTopicRoutingMode(PartnerTopicRoutingMode partnerTopicRoutingMode);
+        }
     }
     /**
      * Begins update for the PartnerNamespace resource.
@@ -301,9 +334,9 @@ public interface PartnerNamespace {
         /** The stage of the PartnerNamespace update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Tags of the partner namespace..
+             * Specifies the tags property: Tags of the Partner Namespace..
              *
-             * @param tags Tags of the partner namespace.
+             * @param tags Tags of the Partner Namespace.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
@@ -384,7 +417,7 @@ public interface PartnerNamespace {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 
@@ -407,7 +440,7 @@ public interface PartnerNamespace {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
         PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);

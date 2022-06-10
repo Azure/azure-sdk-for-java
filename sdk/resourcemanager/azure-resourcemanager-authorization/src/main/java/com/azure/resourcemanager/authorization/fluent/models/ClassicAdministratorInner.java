@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Classic Administrators. */
-@JsonFlatten
 @Fluent
-public class ClassicAdministratorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClassicAdministratorInner.class);
-
+public final class ClassicAdministratorInner {
     /*
      * The ID of the administrator.
      */
@@ -35,16 +29,10 @@ public class ClassicAdministratorInner {
     private String type;
 
     /*
-     * The email address of the administrator.
+     * Properties for the classic administrator.
      */
-    @JsonProperty(value = "properties.emailAddress")
-    private String emailAddress;
-
-    /*
-     * The role of the administrator.
-     */
-    @JsonProperty(value = "properties.role")
-    private String role;
+    @JsonProperty(value = "properties")
+    private ClassicAdministratorProperties innerProperties;
 
     /**
      * Get the id property: The ID of the administrator.
@@ -107,12 +95,21 @@ public class ClassicAdministratorInner {
     }
 
     /**
+     * Get the innerProperties property: Properties for the classic administrator.
+     *
+     * @return the innerProperties value.
+     */
+    private ClassicAdministratorProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the emailAddress property: The email address of the administrator.
      *
      * @return the emailAddress value.
      */
     public String emailAddress() {
-        return this.emailAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().emailAddress();
     }
 
     /**
@@ -122,7 +119,10 @@ public class ClassicAdministratorInner {
      * @return the ClassicAdministratorInner object itself.
      */
     public ClassicAdministratorInner withEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClassicAdministratorProperties();
+        }
+        this.innerProperties().withEmailAddress(emailAddress);
         return this;
     }
 
@@ -132,7 +132,7 @@ public class ClassicAdministratorInner {
      * @return the role value.
      */
     public String role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -142,7 +142,10 @@ public class ClassicAdministratorInner {
      * @return the ClassicAdministratorInner object itself.
      */
     public ClassicAdministratorInner withRole(String role) {
-        this.role = role;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClassicAdministratorProperties();
+        }
+        this.innerProperties().withRole(role);
         return this;
     }
 
@@ -152,5 +155,8 @@ public class ClassicAdministratorInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

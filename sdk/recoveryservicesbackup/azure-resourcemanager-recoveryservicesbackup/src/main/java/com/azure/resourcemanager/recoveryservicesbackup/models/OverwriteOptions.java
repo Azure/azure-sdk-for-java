@@ -30,7 +30,11 @@ public final class OverwriteOptions extends ExpandableStringEnum<OverwriteOption
         return fromString(name, OverwriteOptions.class);
     }
 
-    /** @return known OverwriteOptions values. */
+    /**
+     * Gets known OverwriteOptions values.
+     *
+     * @return known OverwriteOptions values.
+     */
     public static Collection<OverwriteOptions> values() {
         return values(OverwriteOptions.class);
     }

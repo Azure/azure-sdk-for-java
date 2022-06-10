@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
@@ -15,52 +14,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Port Mirroring. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkPortMirroringInner extends ProxyResource {
+public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkPortMirroringInner.class);
 
     /*
-     * Display name of the port mirroring profile.
+     * Port Mirroring Properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkPortMirroringProperties innerProperties;
 
-    /*
-     * Direction of port mirroring profile.
+    /**
+     * Get the innerProperties property: Port Mirroring Properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.direction")
-    private PortMirroringDirectionEnum direction;
-
-    /*
-     * Source VM Group.
-     */
-    @JsonProperty(value = "properties.source")
-    private String source;
-
-    /*
-     * Destination VM Group.
-     */
-    @JsonProperty(value = "properties.destination")
-    private String destination;
-
-    /*
-     * Port Mirroring Status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private PortMirroringStatusEnum status;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkPortMirroringProvisioningState provisioningState;
-
-    /*
-     * NSX revision number.
-     */
-    @JsonProperty(value = "properties.revision")
-    private Long revision;
+    private WorkloadNetworkPortMirroringProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the port mirroring profile.
@@ -68,7 +39,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -78,7 +49,10 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
     public WorkloadNetworkPortMirroringInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPortMirroringProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -88,7 +62,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the direction value.
      */
     public PortMirroringDirectionEnum direction() {
-        return this.direction;
+        return this.innerProperties() == null ? null : this.innerProperties().direction();
     }
 
     /**
@@ -98,7 +72,10 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
     public WorkloadNetworkPortMirroringInner withDirection(PortMirroringDirectionEnum direction) {
-        this.direction = direction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPortMirroringProperties();
+        }
+        this.innerProperties().withDirection(direction);
         return this;
     }
 
@@ -108,7 +85,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the source value.
      */
     public String source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -118,7 +95,10 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
     public WorkloadNetworkPortMirroringInner withSource(String source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPortMirroringProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -128,7 +108,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the destination value.
      */
     public String destination() {
-        return this.destination;
+        return this.innerProperties() == null ? null : this.innerProperties().destination();
     }
 
     /**
@@ -138,7 +118,10 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
     public WorkloadNetworkPortMirroringInner withDestination(String destination) {
-        this.destination = destination;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPortMirroringProperties();
+        }
+        this.innerProperties().withDestination(destination);
         return this;
     }
 
@@ -148,7 +131,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the status value.
      */
     public PortMirroringStatusEnum status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -157,7 +140,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkPortMirroringProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -166,7 +149,7 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the revision value.
      */
     public Long revision() {
-        return this.revision;
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
     }
 
     /**
@@ -176,7 +159,10 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
     public WorkloadNetworkPortMirroringInner withRevision(Long revision) {
-        this.revision = revision;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkPortMirroringProperties();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -186,5 +172,8 @@ public class WorkloadNetworkPortMirroringInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

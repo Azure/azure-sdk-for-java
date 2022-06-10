@@ -10,8 +10,10 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.resources.fluent.models.CheckZonePeersResultInner;
 import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
+import com.azure.resourcemanager.resources.models.CheckZonePeersRequest;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
@@ -25,7 +27,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations);
@@ -38,7 +40,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LocationInner> listLocationsAsync(String subscriptionId);
@@ -51,7 +53,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationInner> listLocations(String subscriptionId);
@@ -66,7 +68,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationInner> listLocations(
@@ -79,7 +81,8 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId);
@@ -91,7 +94,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SubscriptionInner> getAsync(String subscriptionId);
@@ -116,7 +119,7 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context);
@@ -126,7 +129,7 @@ public interface SubscriptionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SubscriptionInner> listAsync();
@@ -136,7 +139,7 @@ public interface SubscriptionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionInner> list();
@@ -148,8 +151,64 @@ public interface SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionInner> list(Context context);
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckZonePeersResultInner>> checkZonePeersWithResponseAsync(
+        String subscriptionId, CheckZonePeersRequest parameters);
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckZonePeersResultInner> checkZonePeersAsync(String subscriptionId, CheckZonePeersRequest parameters);
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckZonePeersResultInner checkZonePeers(String subscriptionId, CheckZonePeersRequest parameters);
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckZonePeersResultInner> checkZonePeersWithResponse(
+        String subscriptionId, CheckZonePeersRequest parameters, Context context);
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Usages operation response. */
 @Fluent
 public final class ListUsagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListUsagesResult.class);
-
     /*
      * The list of compute resource usages.
      */
@@ -79,11 +76,13 @@ public final class ListUsagesResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ListUsagesResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ListUsagesResult.class);
 }

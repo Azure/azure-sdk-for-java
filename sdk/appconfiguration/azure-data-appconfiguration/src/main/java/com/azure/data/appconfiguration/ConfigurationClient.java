@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.data.appconfiguration.implementation.ConfigurationService;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
@@ -26,7 +27,13 @@ import java.time.OffsetDateTime;
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.data.applicationconfig.configurationclient.instantiation}
+ * <!-- src_embed com.azure.data.applicationconfig.configurationclient.instantiation -->
+ * <pre>
+ * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.configurationclient.instantiation -->
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -53,7 +60,13 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String -->
+     * <pre>
+     * ConfigurationSetting result = configurationClient
+     *     .addConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;db_connection&quot;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#String-String-String -->
      *
      * @param key The key of the configuration setting to add.
      * @param label The label of the configuration setting to create. If {@code null} no label will be used.
@@ -78,7 +91,13 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
      *
      * @param setting The setting to add based on its key and optional label combination.
      *
@@ -103,7 +122,18 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context -->
+     * <pre>
+     * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient
+     *     .addConfigurationSettingWithResponse&#40;
+     *         new ConfigurationSetting&#40;&#41;
+     *             .setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
+     *         new Context&#40;key1, value1&#41;&#41;;
+     * final ConfigurationSetting resultSetting = responseResultSetting.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getLabel&#40;&#41;,
+     *     resultSetting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context -->
      *
      * @param setting The setting to add based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -129,7 +159,18 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection", "westUS" and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String -->
+     * <pre>
+     * ConfigurationSetting result = configurationClient
+     *     .setConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;db_connection&quot;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
+     * result = configurationClient.setConfigurationSetting&#40;
+     *     &quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;updated_db_connection&quot;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String -->
      *
      * @param key The key of the configuration setting to create or update.
      * @param label The label of the configuration setting to create or update. If {@code null} no label will be used.
@@ -155,7 +196,18 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
+     * setting = configurationClient.setConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
      *
@@ -187,7 +239,25 @@ public final class ConfigurationClient {
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context}
+     * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
+     * <pre>
+     * &#47;&#47; Add a setting with the key &quot;prodDBConnection&quot;, label &quot;westUS&quot;, and value &quot;db_connection&quot;
+     * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
+     *     false,
+     *     new Context&#40;key2, value2&#41;&#41;;
+     * final ConfigurationSetting initSetting = responseSetting.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, initSetting.getKey&#40;&#41;, initSetting.getValue&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
+     * responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;,
+     *     false,
+     *     new Context&#40;key2, value2&#41;&#41;;
+     * final ConfigurationSetting updatedSetting = responseSetting.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, updatedSetting.getKey&#40;&#41;, updatedSetting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to create or update based on its key, optional label and optional ETag combination.
      * @param ifUnchanged A boolean indicates if {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
@@ -217,7 +287,13 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
+     * <pre>
+     * ConfigurationSetting resultNoDateTime =
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultNoDateTime.getKey&#40;&#41;, resultNoDateTime.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
@@ -240,7 +316,13 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
+     * <pre>
+     * ConfigurationSetting result =
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null, null&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
      *
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to create or update. If {@code null} no label will be used.
@@ -267,7 +349,13 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
      *
      * @param setting The setting to retrieve.
      *
@@ -292,7 +380,16 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context -->
+     * <pre>
+     * &#47;&#47; Retrieve the setting with the key-label &quot;prodDBConnection&quot;-&quot;westUS&quot;.
+     * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient.getConfigurationSettingWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
+     *     null, false, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, responseResultSetting.getValue&#40;&#41;.getKey&#40;&#41;,
+     *     responseResultSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSettingWithResponse#ConfigurationSetting-OffsetDateTime-boolean-Context -->
      *
      * @param setting The setting to retrieve.
      * @param acceptDateTime Datetime to access a past state of the configuration setting. If {@code null}
@@ -321,7 +418,12 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
+     * <pre>
+     * ConfigurationSetting result = configurationClient.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
      *
      * @param key The key of configuration setting to delete.
      * @param label The label of configuration setting to delete. If {@code null} no label will be used.
@@ -345,7 +447,13 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      *
@@ -376,7 +484,15 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
+     * <pre>
+     * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.deleteConfigurationSettingWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
+     *     false, new Context&#40;key2, value2&#41;&#41;;
+     * System.out.printf&#40;
+     *     &quot;Key: %s, Value: %s&quot;, responseSetting.getValue&#40;&#41;.getKey&#40;&#41;, responseSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      *
      * @param setting The setting to delete based on its key, optional label and optional ETag combination.
      * @param ifUnchanged Flag indicating if the {@code setting} {@link ConfigurationSetting#getETag ETag} is used as a
@@ -407,11 +523,21 @@ public final class ConfigurationClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean -->
+     * <pre>
+     * ConfigurationSetting result = configurationClient.setReadOnly&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, true&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean -->
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly -->
+     * <pre>
+     * ConfigurationSetting result = configurationClient.setReadOnly&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, false&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#string-string-boolean-clearReadOnly -->
      *
      * @param key The key of configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param label The label of configuration setting to set to read-only or not read-only based on the
@@ -436,11 +562,23 @@ public final class ConfigurationClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+     * <pre>
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
@@ -464,11 +602,27 @@ public final class ConfigurationClient {
      *
      * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context -->
+     * <pre>
+     * ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse&#40;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true, Context.NONE&#41;
+     *     .getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context -->
      *
      * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly -->
+     * <pre>
+     * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient
+     *     .setConfigurationSettingWithResponse&#40;
+     *         new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false,
+     *         new Context&#40;key2, value2&#41;&#41;;
+     * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, responseSetting.getValue&#40;&#41;.getKey&#40;&#41;,
+     *     responseSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly -->
      *
      * @param setting The configuration setting to set to read-only or not read-only based on the {@code isReadOnly}.
      * @param isReadOnly Flag used to set the read-only status of the configuration. {@code true} will put the
@@ -495,7 +649,14 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * configurationClient.listConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
@@ -514,7 +675,15 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -540,7 +709,18 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * client.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
+     *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+     *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+     *     resp.getItems&#40;&#41;.forEach&#40;value -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
@@ -563,7 +743,15 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context}
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     * configurationClient.listRevisions&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.

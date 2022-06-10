@@ -41,7 +41,7 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of an IoT Central application.
+     * @return the metadata of an IoT Central application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AppInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
@@ -57,9 +57,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
+     * @return the {@link SyncPoller} for polling of the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app);
 
@@ -75,9 +75,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
+     * @return the {@link SyncPoller} for polling of the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app, Context context);
 
@@ -123,11 +123,10 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
-        String resourceGroupName, String resourceName, AppPatch appPatch);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String resourceName, AppPatch appPatch);
 
     /**
      * Update the metadata of an IoT Central application.
@@ -139,10 +138,10 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpdate(
         String resourceGroupName, String resourceName, AppPatch appPatch, Context context);
 
     /**
@@ -154,10 +153,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppInner update(String resourceGroupName, String resourceName, AppPatch appPatch);
+    void update(String resourceGroupName, String resourceName, AppPatch appPatch);
 
     /**
      * Update the metadata of an IoT Central application.
@@ -169,10 +167,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IoT Central application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppInner update(String resourceGroupName, String resourceName, AppPatch appPatch, Context context);
+    void update(String resourceGroupName, String resourceName, AppPatch appPatch, Context context);
 
     /**
      * Delete an IoT Central application.
@@ -182,9 +179,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -196,9 +193,9 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -231,7 +228,7 @@ public interface AppsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IoT Central Applications in a subscription.
+     * @return all IoT Central Applications in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppInner> list();
@@ -243,7 +240,7 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all IoT Central Applications in a subscription.
+     * @return all IoT Central Applications in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppInner> list(Context context);
@@ -255,7 +252,7 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT Central Applications in a resource group.
+     * @return all the IoT Central Applications in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppInner> listByResourceGroup(String resourceGroupName);
@@ -268,7 +265,7 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT Central Applications in a resource group.
+     * @return all the IoT Central Applications in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -295,7 +292,8 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT Central application name or subdomain is available.
+     * @return the properties indicating whether a given IoT Central application name or subdomain is available along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AppAvailabilityInfoInner> checkNameAvailabilityWithResponse(
@@ -323,7 +321,8 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT Central application name or subdomain is available.
+     * @return the properties indicating whether a given IoT Central application name or subdomain is available along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AppAvailabilityInfoInner> checkSubdomainAvailabilityWithResponse(
@@ -334,7 +333,7 @@ public interface AppsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available application templates.
+     * @return all available application templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppTemplateInner> listTemplates();
@@ -346,7 +345,7 @@ public interface AppsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available application templates.
+     * @return all available application templates as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppTemplateInner> listTemplates(Context context);

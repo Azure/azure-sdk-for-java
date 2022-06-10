@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.digitaltwins.implementation;
 
-import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformation;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationProperties;
@@ -12,9 +11,11 @@ import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationPropertie
 public final class GroupIdInformationImpl implements GroupIdInformation {
     private GroupIdInformationInner innerObject;
 
-    private final AzureDigitalTwinsManager serviceManager;
+    private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    GroupIdInformationImpl(GroupIdInformationInner innerObject, AzureDigitalTwinsManager serviceManager) {
+    GroupIdInformationImpl(
+        GroupIdInformationInner innerObject,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +40,7 @@ public final class GroupIdInformationImpl implements GroupIdInformation {
         return this.innerObject;
     }
 
-    private AzureDigitalTwinsManager manager() {
+    private com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager() {
         return this.serviceManager;
     }
 }

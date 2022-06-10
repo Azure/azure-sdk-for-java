@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Create keyVault contract details. */
 @Fluent
 public class KeyVaultContractCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultContractCreateProperties.class);
-
     /*
      * Key vault secret identifier for fetching secret. Providing a versioned
-     * secret will prevent auto-refresh. This requires Api Management service
+     * secret will prevent auto-refresh. This requires API Management service
      * to be configured with aka.ms/apimmsi
      */
     @JsonProperty(value = "secretIdentifier")
@@ -31,7 +27,7 @@ public class KeyVaultContractCreateProperties {
 
     /**
      * Get the secretIdentifier property: Key vault secret identifier for fetching secret. Providing a versioned secret
-     * will prevent auto-refresh. This requires Api Management service to be configured with aka.ms/apimmsi.
+     * will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi.
      *
      * @return the secretIdentifier value.
      */
@@ -41,7 +37,7 @@ public class KeyVaultContractCreateProperties {
 
     /**
      * Set the secretIdentifier property: Key vault secret identifier for fetching secret. Providing a versioned secret
-     * will prevent auto-refresh. This requires Api Management service to be configured with aka.ms/apimmsi.
+     * will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi.
      *
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the KeyVaultContractCreateProperties object itself.

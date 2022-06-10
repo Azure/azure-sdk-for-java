@@ -6,10 +6,8 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** SSL certificate for an app. */
 @Fluent
 public final class CertificateInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateInner.class);
-
     /*
      * Certificate resource specific properties
      */
@@ -145,7 +141,7 @@ public final class CertificateInner extends Resource {
      * @return the pfxBlob value.
      */
     public byte[] pfxBlob() {
-        return this.innerProperties() == null ? null : this.innerProperties().pfxBlob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().pfxBlob();
     }
 
     /**
@@ -231,7 +227,7 @@ public final class CertificateInner extends Resource {
      * @return the cerBlob value.
      */
     public byte[] cerBlob() {
-        return this.innerProperties() == null ? null : this.innerProperties().cerBlob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().cerBlob();
     }
 
     /**

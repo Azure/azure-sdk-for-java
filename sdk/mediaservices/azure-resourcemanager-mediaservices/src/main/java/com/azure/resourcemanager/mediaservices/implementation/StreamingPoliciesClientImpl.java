@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingPoliciesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicyCollection;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StreamingPoliciesClient. */
 public final class StreamingPoliciesClientImpl implements StreamingPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(StreamingPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StreamingPoliciesService service;
 
@@ -152,7 +149,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(
@@ -176,6 +174,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -186,7 +185,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             filter,
                             top,
                             orderby,
@@ -217,7 +216,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(
@@ -241,6 +241,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -249,7 +250,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 filter,
                 top,
                 orderby,
@@ -278,7 +279,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingPolicyInner> listAsync(
@@ -296,7 +297,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingPolicyInner> listAsync(String resourceGroupName, String accountName) {
@@ -321,7 +322,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingPolicyInner> listAsync(
@@ -339,7 +340,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StreamingPolicyInner> list(String resourceGroupName, String accountName) {
@@ -362,7 +363,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StreamingPolicyInner> list(
@@ -379,7 +380,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(
@@ -407,6 +409,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +421,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -434,7 +437,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(
@@ -462,6 +466,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -471,7 +476,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -485,7 +490,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingPolicyInner> getAsync(
@@ -527,7 +532,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StreamingPolicyInner> getWithResponse(
@@ -545,7 +550,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
+     * @return a Streaming Policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(
@@ -578,6 +583,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -589,7 +595,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -607,7 +613,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
+     * @return a Streaming Policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> createWithResponseAsync(
@@ -644,6 +650,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -653,7 +660,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -669,7 +676,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
+     * @return a Streaming Policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingPolicyInner> createAsync(
@@ -714,7 +721,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Streaming Policy resource.
+     * @return a Streaming Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StreamingPolicyInner> createWithResponse(
@@ -736,7 +743,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -764,6 +771,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -775,7 +783,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                             resourceGroupName,
                             accountName,
                             streamingPolicyName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -791,7 +799,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -819,6 +827,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -828,7 +837,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
                 resourceGroupName,
                 accountName,
                 streamingPolicyName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -842,7 +851,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingPolicyName) {
@@ -875,7 +884,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -890,7 +899,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -926,7 +936,8 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {

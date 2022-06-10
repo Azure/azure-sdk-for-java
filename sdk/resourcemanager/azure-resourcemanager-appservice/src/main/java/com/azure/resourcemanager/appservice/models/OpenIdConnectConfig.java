@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the endpoints used for the custom Open ID Connect provider. */
 @Fluent
 public final class OpenIdConnectConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenIdConnectConfig.class);
-
     /*
      * The endpoint to be used to make an authorization request.
      */

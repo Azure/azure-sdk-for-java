@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationRequestResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static sites user roles invitation resource. */
 @Fluent
 public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserInvitationRequestResource.class);
-
     /*
      * StaticSiteUserInvitationRequestResource resource specific properties
      */

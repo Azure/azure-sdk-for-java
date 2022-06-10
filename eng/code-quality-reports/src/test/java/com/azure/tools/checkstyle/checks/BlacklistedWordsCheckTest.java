@@ -12,9 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
-    private static final String BLACKLISTED_WORD_ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow" +
-        " Camelcase standards for the following words: XML, HTTP, URL.";
-
     private Checker checker;
 
     @Before
@@ -36,8 +33,8 @@ public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void blacklistedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(BLACKLISTED_WORD_ERROR_MESSAGE, "errorHTTPMethod")),
-            expectedErrorMessage(9, 5, String.format(BLACKLISTED_WORD_ERROR_MESSAGE, "invalidXMLMethod"))
+            expectedErrorMessage(3, 5, String.format(BlacklistedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
+            expectedErrorMessage(9, 5, String.format(BlacklistedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
         };
         verify(checker, getPath("BlacklistedWordsTestData.java"), expected);
     }
@@ -62,7 +59,7 @@ public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
         DefaultConfiguration checks = new DefaultConfiguration("Checks");
         DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
         DefaultConfiguration blacklistedWordsCheck = new DefaultConfiguration(BlacklistedWordsCheck.class.getCanonicalName());
-        blacklistedWordsCheck.addAttribute("blacklistedWords", "URL, HTTP, XML");
+        blacklistedWordsCheck.addProperty("blacklistedWords", "URL, HTTP, XML");
         checks.addChild(treeWalker);
         treeWalker.addChild(blacklistedWordsCheck);
         return checks;

@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.LocationsClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.videoanalyzer.models.CheckNameAvailabilityRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationsClient. */
 public final class LocationsClientImpl implements LocationsClient {
-    private final ClientLogger logger = new ClientLogger(LocationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationsService service;
 
@@ -74,12 +71,12 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
+     * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -123,13 +120,13 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
+     * @return the check availability result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -170,31 +167,24 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
+     * @return the check availability result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(
         String locationName, CheckNameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
-            .flatMap(
-                (Response<CheckNameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -210,13 +200,13 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
+     * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(

@@ -21,12 +21,12 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-          <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+          <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-monitor-query</artifactId>
-          <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
         </dependency>
       </dependencies>
 
@@ -35,19 +35,10 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
+            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
           </plugin>
         </plugins>
       </build>

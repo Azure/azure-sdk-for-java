@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application logs to Azure table storage configuration. */
 @Fluent
 public final class AzureTableStorageApplicationLogsConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableStorageApplicationLogsConfig.class);
-
     /*
      * Log level.
      */
@@ -73,10 +70,12 @@ public final class AzureTableStorageApplicationLogsConfig {
      */
     public void validate() {
         if (sasUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sasUrl in model AzureTableStorageApplicationLogsConfig"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureTableStorageApplicationLogsConfig.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
 @Fluent
 public final class VirtualMachineExtensionUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
-
     /*
      * Describes the properties of a Virtual Machine Extension.
      */
@@ -256,6 +252,31 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
             this.innerProperties = new VirtualMachineExtensionUpdateProperties();
         }
         this.innerProperties().withSuppressFailures(suppressFailures);
+        return this;
+    }
+
+    /**
+     * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @return the protectedSettingsFromKeyVault value.
+     */
+    public Object protectedSettingsFromKeyVault() {
+        return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
+    }
+
+    /**
+     * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
+     * @return the VirtualMachineExtensionUpdate object itself.
+     */
+    public VirtualMachineExtensionUpdate withProtectedSettingsFromKeyVault(Object protectedSettingsFromKeyVault) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
+        }
+        this.innerProperties().withProtectedSettingsFromKeyVault(protectedSettingsFromKeyVault);
         return this;
     }
 

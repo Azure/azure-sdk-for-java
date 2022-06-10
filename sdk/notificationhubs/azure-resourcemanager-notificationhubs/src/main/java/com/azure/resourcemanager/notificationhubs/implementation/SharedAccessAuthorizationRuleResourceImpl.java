@@ -7,13 +7,12 @@ package com.azure.resourcemanager.notificationhubs.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import java.util.Collections;
@@ -51,6 +50,10 @@ public final class SharedAccessAuthorizationRuleResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public List<AccessRights> rights() {
@@ -92,10 +95,6 @@ public final class SharedAccessAuthorizationRuleResourceImpl
 
     public Integer revision() {
         return this.innerModel().revision();
-    }
-
-    public Sku sku() {
-        return this.innerModel().sku();
     }
 
     public Region region() {
@@ -218,11 +217,11 @@ public final class SharedAccessAuthorizationRuleResourceImpl
         return this;
     }
 
-    public SharedAccessAuthorizationRuleListResult listKeys() {
+    public ResourceListKeys listKeys() {
         return serviceManager.namespaces().listKeys(resourceGroupName, namespaceName, authorizationRuleName);
     }
 
-    public Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(Context context) {
+    public Response<ResourceListKeys> listKeysWithResponse(Context context) {
         return serviceManager
             .namespaces()
             .listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, context);

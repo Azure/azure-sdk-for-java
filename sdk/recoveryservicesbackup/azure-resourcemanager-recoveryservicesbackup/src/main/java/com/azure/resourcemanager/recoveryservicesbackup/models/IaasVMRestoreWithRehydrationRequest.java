@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("IaasVMRestoreWithRehydrationRequest")
 @Fluent
 public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMRestoreWithRehydrationRequest.class);
-
     /*
      * RP Rehydration Info
      */
@@ -169,6 +165,21 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
     @Override
     public IaasVMRestoreWithRehydrationRequest withZones(List<String> zones) {
         super.withZones(zones);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest withIdentityInfo(IdentityInfo identityInfo) {
+        super.withIdentityInfo(identityInfo);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest withIdentityBasedRestoreDetails(
+        IdentityBasedRestoreDetails identityBasedRestoreDetails) {
+        super.withIdentityBasedRestoreDetails(identityBasedRestoreDetails);
         return this;
     }
 

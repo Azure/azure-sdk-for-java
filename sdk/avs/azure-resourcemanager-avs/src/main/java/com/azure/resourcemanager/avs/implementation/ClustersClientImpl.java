@@ -635,7 +635,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -659,7 +659,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster, Context context) {
         context = this.client.mergeContext(context);
@@ -683,7 +683,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster).getSyncPoller();
@@ -702,7 +702,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterInner cluster, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, clusterName, cluster, context)
@@ -923,7 +923,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterUpdate clusterUpdate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -947,7 +947,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -975,7 +975,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String clusterName, ClusterUpdate clusterUpdate) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).getSyncPoller();
@@ -994,7 +994,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -1208,7 +1208,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1230,7 +1230,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
@@ -1252,7 +1252,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName).getSyncPoller();
@@ -1270,7 +1270,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, context).getSyncPoller();

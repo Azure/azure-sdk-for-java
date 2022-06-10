@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Akamai Signature Header authentication key. */
 @Fluent
 public final class AkamaiSignatureHeaderAuthenticationKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AkamaiSignatureHeaderAuthenticationKey.class);
-
     /*
      * identifier of the key
      */

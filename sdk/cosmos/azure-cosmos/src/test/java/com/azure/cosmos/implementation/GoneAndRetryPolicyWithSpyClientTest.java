@@ -59,7 +59,7 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     static Builder createDCBuilder(Protocol protocol) {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setRequestTimeout(Duration.ofSeconds(5));
+        connectionPolicy.setTcpNetworkRequestTimeout(Duration.ofSeconds(5));
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 
@@ -69,7 +69,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
             .withConnectionPolicy(connectionPolicy)
             .withConsistencyLevel(ConsistencyLevel.SESSION)
             .withContentResponseOnWriteEnabled(true)
-            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY);
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig());
     }
 
     @Factory(dataProvider = "directClientBuilder")

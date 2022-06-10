@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.SharedPrivateLinkResourceStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a Shared Private Link Resource. */
-@JsonFlatten
 @Fluent
-public class SharedPrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceInner.class);
-
+public final class SharedPrivateLinkResourceInner extends ProxyResource {
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -27,36 +21,10 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * The group id from the provider of resource the shared private link
-     * resource is for
+     * Describes the properties of an existing Shared Private Link Resource
      */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
-
-    /*
-     * The resource id of the resource the shared private link resource is for
-     */
-    @JsonProperty(value = "properties.privateLinkResourceId")
-    private String privateLinkResourceId;
-
-    /*
-     * Provisioning state of the shared private link resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The request message for requesting approval of the shared private link
-     * resource
-     */
-    @JsonProperty(value = "properties.requestMessage")
-    private String requestMessage;
-
-    /*
-     * Status of the shared private link resource
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private SharedPrivateLinkResourceStatus status;
+    @JsonProperty(value = "properties")
+    private SharedPrivateLinkResourceProperties innerProperties;
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -68,12 +36,21 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Describes the properties of an existing Shared Private Link Resource.
+     *
+     * @return the innerProperties value.
+     */
+    private SharedPrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the groupId property: The group id from the provider of resource the shared private link resource is for.
      *
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -83,7 +60,10 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the SharedPrivateLinkResourceInner object itself.
      */
     public SharedPrivateLinkResourceInner withGroupId(String groupId) {
-        this.groupId = groupId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperties();
+        }
+        this.innerProperties().withGroupId(groupId);
         return this;
     }
 
@@ -93,7 +73,7 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
-        return this.privateLinkResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkResourceId();
     }
 
     /**
@@ -103,17 +83,20 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the SharedPrivateLinkResourceInner object itself.
      */
     public SharedPrivateLinkResourceInner withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.privateLinkResourceId = privateLinkResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperties();
+        }
+        this.innerProperties().withPrivateLinkResourceId(privateLinkResourceId);
         return this;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the shared private link resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -122,7 +105,7 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the requestMessage value.
      */
     public String requestMessage() {
-        return this.requestMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().requestMessage();
     }
 
     /**
@@ -132,7 +115,10 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the SharedPrivateLinkResourceInner object itself.
      */
     public SharedPrivateLinkResourceInner withRequestMessage(String requestMessage) {
-        this.requestMessage = requestMessage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedPrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequestMessage(requestMessage);
         return this;
     }
 
@@ -142,7 +128,7 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @return the status value.
      */
     public SharedPrivateLinkResourceStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -151,5 +137,8 @@ public class SharedPrivateLinkResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

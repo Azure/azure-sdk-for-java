@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 
@@ -36,11 +38,45 @@ public interface PartnerRegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
+     * @return a partner registration with the specified parameters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PartnerRegistrationInner> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerRegistrationName, Context context);
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo);
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context);
 
     /**
      * Creates a new partner registration with the specified parameters.
@@ -70,11 +106,39 @@ public interface PartnerRegistrationsClient {
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerRegistrationInner> createOrUpdateWithResponse(
+    PartnerRegistrationInner createOrUpdate(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo,
         Context context);
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName);
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
      * Deletes a partner registration with the specified parameters.
@@ -97,10 +161,45 @@ public interface PartnerRegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String partnerRegistrationName, Context context);
+    void delete(String resourceGroupName, String partnerRegistrationName, Context context);
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context);
 
     /**
      * Updates a partner registration with the specified parameters.
@@ -132,7 +231,7 @@ public interface PartnerRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerRegistrationInner> updateWithResponse(
+    PartnerRegistrationInner update(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
@@ -143,7 +242,7 @@ public interface PartnerRegistrationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerRegistrationInner> list();
@@ -163,7 +262,7 @@ public interface PartnerRegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context);
@@ -175,7 +274,7 @@ public interface PartnerRegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName);
@@ -196,7 +295,7 @@ public interface PartnerRegistrationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerRegistrationInner> listByResourceGroup(

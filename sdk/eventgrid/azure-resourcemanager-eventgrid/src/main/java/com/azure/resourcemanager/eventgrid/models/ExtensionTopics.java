@@ -38,7 +38,7 @@ public interface ExtensionTopics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
+     * @return the properties of an extension topic along with {@link Response}.
      */
     Response<ExtensionTopic> getWithResponse(String scope, Context context);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS embedded child package. */
 @Fluent
 public final class SsisChildPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisChildPackage.class);
-
     /*
      * Path for embedded child package. Type: string (or Expression with
      * resultType string).
@@ -131,14 +128,16 @@ public final class SsisChildPackage {
      */
     public void validate() {
         if (packagePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
         }
         if (packageContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisChildPackage.class);
 }

@@ -52,10 +52,11 @@ import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLRespons
 import com.azure.storage.blob.implementation.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
@@ -91,7 +92,7 @@ public final class BlobsImpl {
     public interface BlobsService {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -118,7 +119,7 @@ public final class BlobsImpl {
 
         @Head("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -142,7 +143,7 @@ public final class BlobsImpl {
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsDeleteResponse> delete(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -165,7 +166,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsUndeleteResponse> undelete(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -179,7 +180,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetExpiryResponse> setExpiry(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -195,7 +196,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetHttpHeadersResponse> setHttpHeaders(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -221,7 +222,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicy(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -238,7 +239,7 @@ public final class BlobsImpl {
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -252,7 +253,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetLegalHoldResponse> setLegalHold(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -267,7 +268,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -292,7 +293,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsAcquireLeaseResponse> acquireLease(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -314,7 +315,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsReleaseLeaseResponse> releaseLease(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -335,8 +336,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsRenewLeaseResponse> renewLease(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -357,8 +357,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsChangeLeaseResponse> changeLease(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -380,7 +379,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsBreakLeaseResponse> breakLease(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -401,7 +400,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsCreateSnapshotResponse> createSnapshot(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -426,7 +425,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -459,7 +458,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsCopyFromURLResponse> copyFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -487,12 +486,14 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
                 @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("x-ms-copy-source-tag-option") BlobCopySourceTagsMode copySourceTags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -509,7 +510,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetTierResponse> setTier(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -529,7 +530,7 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetAccountInfoResponse> getAccountInfo(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -542,7 +543,7 @@ public final class BlobsImpl {
 
         @Post("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<StreamResponse> query(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -567,7 +568,7 @@ public final class BlobsImpl {
 
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsGetTagsResponse> getTags(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -585,7 +586,7 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetTagsResponse> setTags(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -637,9 +638,9 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> downloadWithResponseAsync(
@@ -733,9 +734,9 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsGetPropertiesResponse> getPropertiesWithResponseAsync(
@@ -840,9 +841,9 @@ public final class BlobsImpl {
      *     if blob soft delete is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsDeleteResponse> deleteWithResponseAsync(
@@ -899,9 +900,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsUndeleteResponse> undeleteWithResponseAsync(
@@ -934,9 +935,9 @@ public final class BlobsImpl {
      * @param expiresOn The time to set the blob to expiry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetExpiryResponse> setExpiryWithResponseAsync(
@@ -984,9 +985,9 @@ public final class BlobsImpl {
      * @param blobHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetHttpHeadersResponse> setHttpHeadersWithResponseAsync(
@@ -1079,9 +1080,9 @@ public final class BlobsImpl {
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicyWithResponseAsync(
@@ -1126,9 +1127,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
@@ -1160,9 +1161,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetLegalHoldResponse> setLegalHoldWithResponseAsync(
@@ -1208,12 +1209,12 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetMetadataResponse> setMetadataWithResponseAsync(
@@ -1229,7 +1230,7 @@ public final class BlobsImpl {
             String ifTags,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "metadata";
         final String accept = "application/xml";
@@ -1249,10 +1250,10 @@ public final class BlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
@@ -1268,7 +1269,7 @@ public final class BlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -1305,9 +1306,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsAcquireLeaseResponse> acquireLeaseWithResponseAsync(
@@ -1370,9 +1371,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsReleaseLeaseResponse> releaseLeaseWithResponseAsync(
@@ -1433,9 +1434,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsRenewLeaseResponse> renewLeaseWithResponseAsync(
@@ -1499,9 +1500,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsChangeLeaseResponse> changeLeaseWithResponseAsync(
@@ -1569,9 +1570,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsBreakLeaseResponse> breakLeaseWithResponseAsync(
@@ -1637,12 +1638,12 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsCreateSnapshotResponse> createSnapshotWithResponseAsync(
@@ -1658,7 +1659,7 @@ public final class BlobsImpl {
             String leaseId,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "snapshot";
         final String accept = "application/xml";
@@ -1678,10 +1679,10 @@ public final class BlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted =
@@ -1696,7 +1697,7 @@ public final class BlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -1752,9 +1753,9 @@ public final class BlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithResponseAsync(
@@ -1867,11 +1868,14 @@ public final class BlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
+     * @param copySourceTags Optional, default 'replace'. Indicates if source tags should be copied or replaced with the
+     *     tags specified by x-ms-tags.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsCopyFromURLResponse> copyFromURLWithResponseAsync(
@@ -1898,9 +1902,16 @@ public final class BlobsImpl {
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
             String copySourceAuthorization,
+            BlobCopySourceTagsMode copySourceTags,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
+        String encryptionScopeInternal = null;
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+        }
+        String encryptionScope = encryptionScopeInternal;
         DateTimeRfc1123 sourceIfModifiedSinceConverted =
                 sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted =
@@ -1939,6 +1950,8 @@ public final class BlobsImpl {
                 immutabilityPolicyMode,
                 legalHold,
                 copySourceAuthorization,
+                encryptionScope,
+                copySourceTags,
                 accept,
                 context);
     }
@@ -1958,9 +1971,9 @@ public final class BlobsImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURLWithResponseAsync(
@@ -2014,9 +2027,9 @@ public final class BlobsImpl {
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetTierResponse> setTierWithResponseAsync(
@@ -2058,9 +2071,9 @@ public final class BlobsImpl {
      * @param blob The blob name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsGetAccountInfoResponse> getAccountInfoWithResponseAsync(
@@ -2098,9 +2111,9 @@ public final class BlobsImpl {
      * @param cpkInfo Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StreamResponse> queryWithResponseAsync(
@@ -2182,9 +2195,9 @@ public final class BlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob tags.
+     * @return blob tags on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsGetTagsResponse> getTagsWithResponseAsync(
@@ -2234,9 +2247,9 @@ public final class BlobsImpl {
      * @param tags Blob tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetTagsResponse> setTagsWithResponseAsync(

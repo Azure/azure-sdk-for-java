@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Custom activity type. */
@@ -210,6 +211,48 @@ public class CustomActivity extends ExecutionActivity {
      */
     public CustomActivity setAutoUserSpecification(Object autoUserSpecification) {
         this.autoUserSpecification = autoUserSpecification;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

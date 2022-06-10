@@ -1,212 +1,316 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testKey/create?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/backupkey018207e0/create?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "750",
+      "content-length" : "757",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "322",
+      "x-ms-server-latency" : "842",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "721775da-cefb-11eb-9c83-000d3a9461a8",
-      "Body" : "{\"attributes\":{\"created\":1623886491,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1623886491},\"key\":{\"e\":\"AQAB\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://REDACTED.managedhsm.azure.net/keys/testKey/8b013581f704093e04c95faed6633d18\",\"kty\":\"RSA-HSM\",\"n\":\"pu6mM_Xx_Sws9n4XBCsQNgewtS40Y-vW9DJjoYksxnL2oC55JbKhY7md6UOpfvK7iuUItNhjHB6vrYr3fIAVsTDc5JW5jleZ50WIqaHywDsA4Sp7POHm5LomDsTs0IEvo3debdpeFT5F3Yly4Nv-Rq3y9qTiXowke-C-ZM1kfptOWOwrsxuL31Y1NVuDi9VQHIdZko1Di8YCmWJSO4Ko9d7XuR8HRABoa9YO4vRtTaM-qMCAYcbozcykbnjcgY5QSen1ukchFqrYjph8EwtUeos9O1zU_OHykG6Xsjrmstd1Cm6Yq0zseBfKHEmx45sO5YEaJoUEQrgMziJC9NM26w\"}}"
+      "x-ms-request-id" : "d374c3b0-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"attributes\":{\"created\":1648517862,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1648517862},\"key\":{\"e\":\"AQAB\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/backupkey018207e0/af009912be700ca21baa6de72e30c03d\",\"kty\":\"RSA-HSM\",\"n\":\"7aGml1J1LvtBmMibak_F2HrUEbheDOblbTUy9Xa-O3xehg2LJ_fVK3Hf3P-vHB0k36WUSeq5ySOTijK2RlEkIh-7mH_IyfppCdZqTX0vQfY-oLDMfoV-2g6iF38Gx3EEzV4dTkk5tyIqeVPROn9YFGzA2Xx6A-Hg6-48M65AHDLsSWmN0z63VD264T-d8hL2EBrIy2OMP8ldsPKoi6m_0IIjFqFNPsUZq8GFu4GkYZXs-Xoh2EUvFP1XWEt7CsjE8USFGnBRgYLeDpLl1z8Ny9_Vxgr7pJ9DDpqgjiwhO3bnvLXOFDIqEn0HgbRQ8CV_0eClB35OuA7Ow_p99jIfLw\"}}"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/backup?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/backup?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:34:54 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:44 GMT",
       "server" : "Kestrel",
       "content-length" : "174",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-server-latency" : "2724",
+      "x-ms-server-latency" : "1324",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "72feec30-cefb-11eb-9c83-000d3a9461a8",
-      "Body" : "{\"status\":\"InProgress\",\"statusDetails\":null,\"error\":null,\"startTime\":1623886494,\"endTime\":null,\"jobId\":\"e4d841871df14fbdae8ee119ae27a6cd\",\"azureStorageBlobContainerUri\":null}",
-      "azure-asyncoperation" : "https://REDACTED.managedhsm.azure.net/backup/e4d841871df14fbdae8ee119ae27a6cd/pending"
+      "x-ms-request-id" : "d409292e-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"status\":\"InProgress\",\"statusDetails\":null,\"error\":null,\"startTime\":1648517864,\"endTime\":null,\"jobId\":\"7b3ef6f32dfb46faa2aa93935867b024\",\"azureStorageBlobContainerUri\":null}",
+      "azure-asyncoperation" : "https://azsdktestshsm.managedhsm.azure.net/backup/7b3ef6f32dfb46faa2aa93935867b024/pending"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/e4d841871df14fbdae8ee119ae27a6cd/pending?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/7b3ef6f32dfb46faa2aa93935867b024/pending?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:34:58 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:46 GMT",
       "server" : "Kestrel",
       "content-length" : "174",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210520-1-d6634624-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1926",
+      "x-ms-server-latency" : "1099",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "758c5d48-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"azureStorageBlobContainerUri\":null,\"endTime\":null,\"error\":null,\"jobId\":\"e4d841871df14fbdae8ee119ae27a6cd\",\"startTime\":1623886494,\"status\":\"InProgress\",\"statusDetails\":null}"
+      "x-ms-request-id" : "d56f5068-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"azureStorageBlobContainerUri\":null,\"endTime\":null,\"error\":null,\"jobId\":\"7b3ef6f32dfb46faa2aa93935867b024\",\"startTime\":1648517864,\"status\":\"InProgress\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/e4d841871df14fbdae8ee119ae27a6cd/pending?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/7b3ef6f32dfb46faa2aa93935867b024/pending?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:35:07 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:48 GMT",
       "server" : "Kestrel",
-      "content-length" : "270",
+      "content-length" : "174",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210520-1-d6634624-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1908",
+      "x-ms-server-latency" : "1053",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7b0a8592-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"azureStorageBlobContainerUri\":\"https://testaccount.blob.core.windows.net/backup/REDACTED-2021061623345525\",\"endTime\":1623886506,\"error\":null,\"jobId\":\"e4d841871df14fbdae8ee119ae27a6cd\",\"startTime\":1623886494,\"status\":\"Succeeded\",\"statusDetails\":null}"
+      "x-ms-request-id" : "d6b2d576-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"azureStorageBlobContainerUri\":null,\"endTime\":null,\"error\":null,\"jobId\":\"7b3ef6f32dfb46faa2aa93935867b024\",\"startTime\":1648517864,\"status\":\"InProgress\",\"statusDetails\":null}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/7b3ef6f32dfb46faa2aa93935867b024/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 29 Mar 2022 01:37:50 GMT",
+      "server" : "Kestrel",
+      "content-length" : "174",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1126",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-region" : "westus2",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d7ee79d6-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"azureStorageBlobContainerUri\":null,\"endTime\":null,\"error\":null,\"jobId\":\"7b3ef6f32dfb46faa2aa93935867b024\",\"startTime\":1648517864,\"status\":\"InProgress\",\"statusDetails\":null}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/backup/7b3ef6f32dfb46faa2aa93935867b024/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 29 Mar 2022 01:37:53 GMT",
+      "server" : "Kestrel",
+      "content-length" : "270",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1346",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-region" : "westus2",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d935ce70-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"azureStorageBlobContainerUri\":\"https://azsdktests.blob.core.windows.net/backup/mhsm-azsdktestshsm-2022032901374456\",\"endTime\":1648517871,\"error\":null,\"jobId\":\"7b3ef6f32dfb46faa2aa93935867b024\",\"startTime\":1648517864,\"status\":\"Succeeded\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testKey/restore?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/backupkey018207e0/restore?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:35:09 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:54 GMT",
       "server" : "Kestrel",
       "content-length" : "138",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-server-latency" : "2176",
+      "x-ms-server-latency" : "1233",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7c431be0-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"b1e5360fcf0841fe8ec1d74083c10a43\",\"startTime\":1623886510,\"status\":\"InProgress\",\"statusDetails\":null}",
-      "azure-asyncoperation" : "https://REDACTED.managedhsm.azure.net/restore/b1e5360fcf0841fe8ec1d74083c10a43/pending"
+      "x-ms-request-id" : "da04badc-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"InProgress\",\"statusDetails\":null}",
+      "azure-asyncoperation" : "https://azsdktestshsm.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/b1e5360fcf0841fe8ec1d74083c10a43/pending?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:35:13 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:56 GMT",
       "server" : "Kestrel",
       "content-length" : "138",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210520-1-d6634624-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "2530",
+      "x-ms-server-latency" : "1064",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7e40440e-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"b1e5360fcf0841fe8ec1d74083c10a43\",\"startTime\":1623886510,\"status\":\"InProgress\",\"statusDetails\":null}"
+      "x-ms-request-id" : "db5b96da-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"InProgress\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/b1e5360fcf0841fe8ec1d74083c10a43/pending?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:35:28 GMT",
+      "date" : "Tue, 29 Mar 2022 01:37:58 GMT",
       "server" : "Kestrel",
-      "content-length" : "233",
+      "content-length" : "138",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210520-1-d6634624-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1854",
+      "x-ms-server-latency" : "1126",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "87a5b90c-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"endTime\":1623886526,\"error\":null,\"jobId\":\"b1e5360fcf0841fe8ec1d74083c10a43\",\"startTime\":1623886510,\"status\":\"Succeeded\",\"statusDetails\":\"Number of successful key versions restored: 0, Number of key versions could not overwrite: 2\"}"
+      "x-ms-request-id" : "dc99d872-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"InProgress\",\"statusDetails\":null}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/b1e5360fcf0841fe8ec1d74083c10a43/pending?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
-      "date" : "Wed, 16 Jun 2021 23:35:30 GMT",
+      "date" : "Tue, 29 Mar 2022 01:38:01 GMT",
       "server" : "Kestrel",
-      "content-length" : "233",
+      "content-length" : "138",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210520-1-d6634624-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1953",
+      "x-ms-server-latency" : "1194",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
-      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-region" : "westus2",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "88d4730e-cefb-11eb-8e90-000d3a9461a8",
-      "Body" : "{\"endTime\":1623886526,\"error\":null,\"jobId\":\"b1e5360fcf0841fe8ec1d74083c10a43\",\"startTime\":1623886510,\"status\":\"Succeeded\",\"statusDetails\":\"Number of successful key versions restored: 0, Number of key versions could not overwrite: 2\"}"
+      "x-ms-request-id" : "dde13b62-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"InProgress\",\"statusDetails\":null}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 29 Mar 2022 01:38:03 GMT",
+      "server" : "Kestrel",
+      "content-length" : "138",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1189",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-region" : "westus2",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "df32a73a-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":null,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"InProgress\",\"statusDetails\":null}"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/restore/738cc94c13504b35bdda3c5dadf4002f/pending?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 29 Mar 2022 01:38:05 GMT",
+      "server" : "Kestrel",
+      "content-length" : "233",
+      "x-frame-options" : "SAMEORIGIN",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "1083",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-region" : "westus2",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e0836d68-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"endTime\":1648517885,\"error\":null,\"jobId\":\"738cc94c13504b35bdda3c5dadf4002f\",\"startTime\":1648517874,\"status\":\"Succeeded\",\"statusDetails\":\"Number of successful key versions restored: 0, Number of key versions could not overwrite: 2\"}"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "backupkey018207e0" ]
 }

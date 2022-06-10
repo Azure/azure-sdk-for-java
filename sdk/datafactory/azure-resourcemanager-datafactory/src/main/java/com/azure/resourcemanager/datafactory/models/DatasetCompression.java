@@ -9,35 +9,71 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
 /** The compression method used on a dataset. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DatasetCompression.class)
-@JsonTypeName("DatasetCompression")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "BZip2", value = DatasetBZip2Compression.class),
-    @JsonSubTypes.Type(name = "GZip", value = DatasetGZipCompression.class),
-    @JsonSubTypes.Type(name = "Deflate", value = DatasetDeflateCompression.class),
-    @JsonSubTypes.Type(name = "ZipDeflate", value = DatasetZipDeflateCompression.class),
-    @JsonSubTypes.Type(name = "Tar", value = DatasetTarCompression.class),
-    @JsonSubTypes.Type(name = "TarGZip", value = DatasetTarGZipCompression.class)
-})
 @Fluent
-public class DatasetCompression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetCompression.class);
+public final class DatasetCompression {
+    /*
+     * Type of dataset compression. Type: string (or Expression with resultType
+     * string).
+     */
+    @JsonProperty(value = "type", required = true)
+    private Object type;
+
+    /*
+     * The dataset compression level. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "level")
+    private Object level;
 
     /*
      * The compression method used on a dataset.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /**
+     * Get the type property: Type of dataset compression. Type: string (or Expression with resultType string).
+     *
+     * @return the type value.
+     */
+    public Object type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of dataset compression. Type: string (or Expression with resultType string).
+     *
+     * @param type the type value to set.
+     * @return the DatasetCompression object itself.
+     */
+    public DatasetCompression withType(Object type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the level property: The dataset compression level. Type: string (or Expression with resultType string).
+     *
+     * @return the level value.
+     */
+    public Object level() {
+        return this.level;
+    }
+
+    /**
+     * Set the level property: The dataset compression level. Type: string (or Expression with resultType string).
+     *
+     * @param level the level value to set.
+     * @return the DatasetCompression object itself.
+     */
+    public DatasetCompression withLevel(Object level) {
+        this.level = level;
+        return this;
+    }
 
     /**
      * Get the additionalProperties property: The compression method used on a dataset.
@@ -74,5 +110,12 @@ public class DatasetCompression {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model DatasetCompression"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetCompression.class);
 }

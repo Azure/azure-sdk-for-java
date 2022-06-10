@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/virtualMachines?api-version=2021-07-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/virtualMachines?api-version=2022-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7df82e0b-4436-47c6-9022-e63fc49dbc6f",
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.Storage/storageAccounts/jmonitorsa234739?api-version=2021-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.Storage/storageAccounts/jmonitorsa234739?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "99b277c6-51b0-40bb-80b9-71dd6cf68251",
@@ -107,12 +107,12 @@
       "Body" : "",
       "x-ms-client-request-id" : "99b277c6-51b0-40bb-80b9-71dd6cf68251",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus2/asyncoperations/158fe9e9-4880-41b7-9f54-f4dd240e8e1b?monitor=true&api-version=2021-04-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus2/asyncoperations/158fe9e9-4880-41b7-9f54-f4dd240e8e1b?monitor=true&api-version=2021-09-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus2/asyncoperations/158fe9e9-4880-41b7-9f54-f4dd240e8e1b?monitor=true&api-version=2021-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/westus2/asyncoperations/158fe9e9-4880-41b7-9f54-f4dd240e8e1b?monitor=true&api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "55d56240-b6a6-45b5-b545-08a82dd42118"
@@ -139,7 +139,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.Storage/storageAccounts/jmonitorsa234739?api-version=2021-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.Storage/storageAccounts/jmonitorsa234739?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "536000e2-918b-4f3a-aff4-5f4909b5bf05",
@@ -193,7 +193,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0fcfd13f-6ad2-41e5-8038-e07e71cd9f0c",
@@ -222,7 +222,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "85f5fb4c-22a2-450c-8fc1-388182e8cca4"
@@ -250,7 +250,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0bc20ee5-f68a-45c7-a975-d2087a70a19c"
@@ -278,7 +278,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/mngRule1?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/mngRule1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "181d4885-3712-4d2e-a966-839d12d42e43",
@@ -307,7 +307,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/sndRule1?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/sndRule1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f9d34c40-c52f-4ce8-895f-21246117a44b",
@@ -336,7 +336,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c0fe4c97-249f-49a5-a8fe-af38e6e2adca",

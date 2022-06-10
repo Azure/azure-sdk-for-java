@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The results and errors from an execution of a pool autoscale formula. */
 @Fluent
 public final class AutoScaleRun {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleRun.class);
-
     /*
      * The time at which the autoscale formula was last evaluated.
      */
@@ -104,7 +101,7 @@ public final class AutoScaleRun {
      */
     public void validate() {
         if (evaluationTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property evaluationTime in model AutoScaleRun"));
         }
@@ -112,4 +109,6 @@ public final class AutoScaleRun {
             error().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoScaleRun.class);
 }

@@ -616,7 +616,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an addon resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddonInner>, AddonInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -640,7 +640,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an addon resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AddonInner>, AddonInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon, Context context) {
         context = this.client.mergeContext(context);
@@ -664,7 +664,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an addon resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon).getSyncPoller();
@@ -683,7 +683,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an addon resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AddonInner>, AddonInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String addonName, AddonInner addon, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, addonName, addon, context).getSyncPoller();
@@ -884,7 +884,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String addonName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName, addonName);
@@ -905,7 +905,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String addonName, Context context) {
         context = this.client.mergeContext(context);
@@ -927,7 +927,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String addonName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, addonName).getSyncPoller();
@@ -945,7 +945,7 @@ public final class AddonsClientImpl implements AddonsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String addonName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, addonName, context).getSyncPoller();

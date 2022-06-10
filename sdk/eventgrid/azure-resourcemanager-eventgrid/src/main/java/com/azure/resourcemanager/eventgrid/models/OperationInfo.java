@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about an operation. */
 @Fluent
 public final class OperationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInfo.class);
-
     /*
      * Name of the provider
      */

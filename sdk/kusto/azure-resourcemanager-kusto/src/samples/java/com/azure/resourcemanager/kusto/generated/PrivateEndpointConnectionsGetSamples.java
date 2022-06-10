@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoPrivateEndpointConnectionsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoPrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.
@@ -19,6 +19,6 @@ public final class PrivateEndpointConnectionsGetSamples {
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .privateEndpointConnections()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "privateEndpointConnectionName", Context.NONE);
+            .getWithResponse("kustorptest", "kustoCluster", "privateEndpointTest", Context.NONE);
     }
 }

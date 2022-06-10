@@ -21,7 +21,7 @@ import java.lang.reflect.Member;
  */
 public final class JacksonJsonSerializer implements JsonSerializer, MemberNameConverter {
 
-    private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonSerializer.class);
 
     private final ObjectMapperShim mapper;
 
@@ -34,6 +34,10 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         this.mapper = mapper;
     }
 
+    ObjectMapperShim getMapper() {
+        return mapper;
+    }
+
     @Override
     public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         if (data == null) {
@@ -43,7 +47,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         try {
             return mapper.readValue(data, typeReference.getJavaType());
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -56,7 +60,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         try {
             return mapper.readValue(stream, typeReference.getJavaType());
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -75,7 +79,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         try {
             return mapper.writeValueAsBytes(value);
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -84,7 +88,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         try {
             mapper.writeValue(stream, value);
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 

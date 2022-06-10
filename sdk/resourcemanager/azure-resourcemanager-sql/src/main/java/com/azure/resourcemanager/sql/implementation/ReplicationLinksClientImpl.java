@@ -647,7 +647,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             failoverWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -929,7 +930,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             failoverAllowDataLossWithResponseAsync(resourceGroupName, serverName, databaseName, linkId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1231,7 +1233,8 @@ public final class ReplicationLinksClientImpl implements ReplicationLinksClient 
             unlinkWithResponseAsync(resourceGroupName, serverName, databaseName, linkId, forcedTermination);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

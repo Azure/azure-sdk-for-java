@@ -118,7 +118,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -127,7 +128,8 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatch object itself.
@@ -235,6 +237,37 @@ public final class VolumePatch extends Resource {
             this.innerProperties = new VolumePatchProperties();
         }
         this.innerProperties().withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+        return this;
+    }
+
+    /**
+     * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @return the unixPermissions value.
+     */
+    public String unixPermissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().unixPermissions();
+    }
+
+    /**
+     * Set the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @param unixPermissions the unixPermissions value to set.
+     * @return the VolumePatch object itself.
+     */
+    public VolumePatch withUnixPermissions(String unixPermissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumePatchProperties();
+        }
+        this.innerProperties().withUnixPermissions(unixPermissions);
         return this;
     }
 

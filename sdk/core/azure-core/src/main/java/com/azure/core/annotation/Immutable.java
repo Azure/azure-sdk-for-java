@@ -3,15 +3,15 @@
 
 package com.azure.core.annotation;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 /**
- * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all
- * fields in this class are final.
+ * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all fields in
+ * this class are final.
  */
 @Retention(SOURCE)
 @Target(TYPE)

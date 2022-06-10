@@ -5,71 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to create and update Cosmos DB MongoDB database. */
-@JsonFlatten
 @Fluent
-public class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties {
+public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBDatabaseCreateUpdateParameters.class);
 
     /*
-     * The standard JSON format of a MongoDB database
+     * Properties to create and update Azure Cosmos DB MongoDB database.
      */
-    @JsonProperty(value = "properties.resource", required = true)
-    private MongoDBDatabaseResource resource;
-
-    /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
-     */
-    @JsonProperty(value = "properties.options")
-    private CreateUpdateOptions options;
+    @JsonProperty(value = "properties", required = true)
+    private MongoDBDatabaseCreateUpdateProperties innerProperties = new MongoDBDatabaseCreateUpdateProperties();
 
     /**
-     * Get the resource property: The standard JSON format of a MongoDB database.
+     * Get the innerProperties property: Properties to create and update Azure Cosmos DB MongoDB database.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public MongoDBDatabaseResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The standard JSON format of a MongoDB database.
-     *
-     * @param resource the resource value to set.
-     * @return the MongoDBDatabaseCreateUpdateParameters object itself.
-     */
-    public MongoDBDatabaseCreateUpdateParameters withResource(MongoDBDatabaseResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @return the options value.
-     */
-    public CreateUpdateOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @param options the options value to set.
-     * @return the MongoDBDatabaseCreateUpdateParameters object itself.
-     */
-    public MongoDBDatabaseCreateUpdateParameters withOptions(CreateUpdateOptions options) {
-        this.options = options;
-        return this;
+    private MongoDBDatabaseCreateUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +46,54 @@ public class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties
     }
 
     /**
+     * Get the resource property: The standard JSON format of a MongoDB database.
+     *
+     * @return the resource value.
+     */
+    public MongoDBDatabaseResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The standard JSON format of a MongoDB database.
+     *
+     * @param resource the resource value to set.
+     * @return the MongoDBDatabaseCreateUpdateParameters object itself.
+     */
+    public MongoDBDatabaseCreateUpdateParameters withResource(MongoDBDatabaseResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MongoDBDatabaseCreateUpdateProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @return the options value.
+     */
+    public CreateUpdateOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @param options the options value to set.
+     * @return the MongoDBDatabaseCreateUpdateParameters object itself.
+     */
+    public MongoDBDatabaseCreateUpdateParameters withOptions(CreateUpdateOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MongoDBDatabaseCreateUpdateProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,16 +101,13 @@ public class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties
     @Override
     public void validate() {
         super.validate();
-        if (resource() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property resource in model MongoDBDatabaseCreateUpdateParameters"));
+                        "Missing required property innerProperties in model MongoDBDatabaseCreateUpdateParameters"));
         } else {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+            innerProperties().validate();
         }
     }
 }

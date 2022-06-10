@@ -5,18 +5,16 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Describes the virtual machine used to build, customize and capture images. */
+/** Describes the virtual machines used to build and validate images. */
 @Fluent
 public final class ImageTemplateVmProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateVmProfile.class);
-
     /*
      * Size of the virtual machine used to build, customize and capture images.
-     * Omit or specify empty string to use the default (Standard_D1_v2).
+     * Omit or specify empty string to use the default (Standard_D1_v2 for Gen1
+     * images and Standard_D2ds_v4 for Gen2 images).
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
@@ -29,8 +27,16 @@ public final class ImageTemplateVmProfile {
     private Integer osDiskSizeGB;
 
     /*
+     * Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM and validation VM. This may include the
+     * identity of the image template.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    private List<String> userAssignedIdentities;
+
+    /*
      * Optional configuration of the virtual network to use to deploy the build
-     * virtual machine in. Omit if no specific virtual network needs to be
+     * VM and validation VM in. Omit if no specific virtual network needs to be
      * used.
      */
     @JsonProperty(value = "vnetConfig")
@@ -38,7 +44,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      *
      * @return the vmSize value.
      */
@@ -48,7 +54,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2).
+     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
      *
      * @param vmSize the vmSize value to set.
      * @return the ImageTemplateVmProfile object itself.
@@ -79,8 +85,30 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Get the vnetConfig property: Optional configuration of the virtual network to use to deploy the build virtual
-     * machine in. Omit if no specific virtual network needs to be used.
+     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM and validation VM. This may include the identity of the image template.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public List<String> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
+     * configured on the build VM and validation VM. This may include the identity of the image template.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ImageTemplateVmProfile object itself.
+     */
+    public ImageTemplateVmProfile withUserAssignedIdentities(List<String> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
+     * Get the vnetConfig property: Optional configuration of the virtual network to use to deploy the build VM and
+     * validation VM in. Omit if no specific virtual network needs to be used.
      *
      * @return the vnetConfig value.
      */
@@ -89,8 +117,8 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Set the vnetConfig property: Optional configuration of the virtual network to use to deploy the build virtual
-     * machine in. Omit if no specific virtual network needs to be used.
+     * Set the vnetConfig property: Optional configuration of the virtual network to use to deploy the build VM and
+     * validation VM in. Omit if no specific virtual network needs to be used.
      *
      * @param vnetConfig the vnetConfig value to set.
      * @return the ImageTemplateVmProfile object itself.

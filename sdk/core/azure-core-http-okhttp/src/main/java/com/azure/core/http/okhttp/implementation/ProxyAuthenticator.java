@@ -52,7 +52,7 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
-    private final ClientLogger logger = new ClientLogger(ProxyAuthenticator.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProxyAuthenticator.class);
 
     private final AuthorizationChallengeHandler challengeHandler;
 
@@ -196,7 +196,7 @@ public final class ProxyAuthenticator implements Authenticator {
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }

@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /** Properties of the Partner Topic. */
 @Fluent
 public final class PartnerTopicProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicProperties.class);
+    /*
+     * The immutableId of the corresponding partner registration.
+     */
+    @JsonProperty(value = "partnerRegistrationImmutableId")
+    private UUID partnerRegistrationImmutableId;
 
     /*
      * Source associated with this partner topic. This represents a unique
@@ -23,6 +27,12 @@ public final class PartnerTopicProperties {
      */
     @JsonProperty(value = "source")
     private String source;
+
+    /*
+     * Event Type information from the corresponding event channel.
+     */
+    @JsonProperty(value = "eventTypeInfo")
+    private EventTypeInfo eventTypeInfo;
 
     /*
      * Expiration time of the partner topic. If this timer expires while the
@@ -54,6 +64,33 @@ public final class PartnerTopicProperties {
     @JsonProperty(value = "partnerTopicFriendlyDescription")
     private String partnerTopicFriendlyDescription;
 
+    /*
+     * Context or helpful message that can be used during the approval process
+     * by the subscriber.
+     */
+    @JsonProperty(value = "messageForActivation")
+    private String messageForActivation;
+
+    /**
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @return the partnerRegistrationImmutableId value.
+     */
+    public UUID partnerRegistrationImmutableId() {
+        return this.partnerRegistrationImmutableId;
+    }
+
+    /**
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
+     * @return the PartnerTopicProperties object itself.
+     */
+    public PartnerTopicProperties withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        this.partnerRegistrationImmutableId = partnerRegistrationImmutableId;
+        return this;
+    }
+
     /**
      * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
      *
@@ -71,6 +108,26 @@ public final class PartnerTopicProperties {
      */
     public PartnerTopicProperties withSource(String source) {
         this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the eventTypeInfo property: Event Type information from the corresponding event channel.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.eventTypeInfo;
+    }
+
+    /**
+     * Set the eventTypeInfo property: Event Type information from the corresponding event channel.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the PartnerTopicProperties object itself.
+     */
+    public PartnerTopicProperties withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        this.eventTypeInfo = eventTypeInfo;
         return this;
     }
 
@@ -150,10 +207,35 @@ public final class PartnerTopicProperties {
     }
 
     /**
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
+     * @return the messageForActivation value.
+     */
+    public String messageForActivation() {
+        return this.messageForActivation;
+    }
+
+    /**
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
+     * @param messageForActivation the messageForActivation value to set.
+     * @return the PartnerTopicProperties object itself.
+     */
+    public PartnerTopicProperties withMessageForActivation(String messageForActivation) {
+        this.messageForActivation = messageForActivation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (eventTypeInfo() != null) {
+            eventTypeInfo().validate();
+        }
     }
 }

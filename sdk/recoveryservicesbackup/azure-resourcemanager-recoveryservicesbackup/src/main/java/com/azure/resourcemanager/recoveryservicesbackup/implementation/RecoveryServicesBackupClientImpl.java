@@ -15,15 +15,13 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.AadPropertiesOperationsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupCrrJobDetailsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupCrrJobsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupEnginesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupJobsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationResultsClient;
@@ -31,21 +29,16 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupOperationSt
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectableItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectedItemsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectedItemsCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionIntentsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceEncryptionConfigsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceStorageConfigsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceStorageConfigsNonCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVaultConfigsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummariesClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummariesCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrossRegionRestoresClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrrOperationResultsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.CrrOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
@@ -53,8 +46,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsC
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationsOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectableContainersClient;
@@ -69,27 +62,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicie
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicyOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPolicyOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsCrrsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsRecommendedForMovesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryServicesBackupClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxiesClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxyOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the RecoveryServicesBackupClientImpl type. */
 @ServiceClient(builder = RecoveryServicesBackupClientBuilder.class)
 public final class RecoveryServicesBackupClientImpl implements RecoveryServicesBackupClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryServicesBackupClientImpl.class);
-
     /** The subscription Id. */
     private final String subscriptionId;
 
@@ -112,6 +106,18 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -148,6 +154,90 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /** The BackupResourceStorageConfigsNonCrrsClient object to access its operations. */
+    private final BackupResourceStorageConfigsNonCrrsClient backupResourceStorageConfigsNonCrrs;
+
+    /**
+     * Gets the BackupResourceStorageConfigsNonCrrsClient object to access its operations.
+     *
+     * @return the BackupResourceStorageConfigsNonCrrsClient object.
+     */
+    public BackupResourceStorageConfigsNonCrrsClient getBackupResourceStorageConfigsNonCrrs() {
+        return this.backupResourceStorageConfigsNonCrrs;
+    }
+
+    /** The ProtectionIntentsClient object to access its operations. */
+    private final ProtectionIntentsClient protectionIntents;
+
+    /**
+     * Gets the ProtectionIntentsClient object to access its operations.
+     *
+     * @return the ProtectionIntentsClient object.
+     */
+    public ProtectionIntentsClient getProtectionIntents() {
+        return this.protectionIntents;
+    }
+
+    /** The BackupStatusClient object to access its operations. */
+    private final BackupStatusClient backupStatus;
+
+    /**
+     * Gets the BackupStatusClient object to access its operations.
+     *
+     * @return the BackupStatusClient object.
+     */
+    public BackupStatusClient getBackupStatus() {
+        return this.backupStatus;
+    }
+
+    /** The FeatureSupportsClient object to access its operations. */
+    private final FeatureSupportsClient featureSupports;
+
+    /**
+     * Gets the FeatureSupportsClient object to access its operations.
+     *
+     * @return the FeatureSupportsClient object.
+     */
+    public FeatureSupportsClient getFeatureSupports() {
+        return this.featureSupports;
+    }
+
+    /** The BackupProtectionIntentsClient object to access its operations. */
+    private final BackupProtectionIntentsClient backupProtectionIntents;
+
+    /**
+     * Gets the BackupProtectionIntentsClient object to access its operations.
+     *
+     * @return the BackupProtectionIntentsClient object.
+     */
+    public BackupProtectionIntentsClient getBackupProtectionIntents() {
+        return this.backupProtectionIntents;
+    }
+
+    /** The BackupUsageSummariesClient object to access its operations. */
+    private final BackupUsageSummariesClient backupUsageSummaries;
+
+    /**
+     * Gets the BackupUsageSummariesClient object to access its operations.
+     *
+     * @return the BackupUsageSummariesClient object.
+     */
+    public BackupUsageSummariesClient getBackupUsageSummaries() {
+        return this.backupUsageSummaries;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /** The BackupResourceVaultConfigsClient object to access its operations. */
@@ -390,16 +480,52 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         return this.backupProtectedItems;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The OperationOperationsClient object to access its operations. */
+    private final OperationOperationsClient operationOperations;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the OperationOperationsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the OperationOperationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public OperationOperationsClient getOperationOperations() {
+        return this.operationOperations;
+    }
+
+    /** The ValidateOperationsClient object to access its operations. */
+    private final ValidateOperationsClient validateOperations;
+
+    /**
+     * Gets the ValidateOperationsClient object to access its operations.
+     *
+     * @return the ValidateOperationsClient object.
+     */
+    public ValidateOperationsClient getValidateOperations() {
+        return this.validateOperations;
+    }
+
+    /** The ValidateOperationResultsClient object to access its operations. */
+    private final ValidateOperationResultsClient validateOperationResults;
+
+    /**
+     * Gets the ValidateOperationResultsClient object to access its operations.
+     *
+     * @return the ValidateOperationResultsClient object.
+     */
+    public ValidateOperationResultsClient getValidateOperationResults() {
+        return this.validateOperationResults;
+    }
+
+    /** The ValidateOperationStatusesClient object to access its operations. */
+    private final ValidateOperationStatusesClient validateOperationStatuses;
+
+    /**
+     * Gets the ValidateOperationStatusesClient object to access its operations.
+     *
+     * @return the ValidateOperationStatusesClient object.
+     */
+    public ValidateOperationStatusesClient getValidateOperationStatuses() {
+        return this.validateOperationStatuses;
     }
 
     /** The BackupEnginesClient object to access its operations. */
@@ -594,196 +720,28 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         return this.recoveryPointsRecommendedForMoves;
     }
 
-    /** The BackupUsageSummariesCrrsClient object to access its operations. */
-    private final BackupUsageSummariesCrrsClient backupUsageSummariesCrrs;
+    /** The ResourceGuardProxiesClient object to access its operations. */
+    private final ResourceGuardProxiesClient resourceGuardProxies;
 
     /**
-     * Gets the BackupUsageSummariesCrrsClient object to access its operations.
+     * Gets the ResourceGuardProxiesClient object to access its operations.
      *
-     * @return the BackupUsageSummariesCrrsClient object.
+     * @return the ResourceGuardProxiesClient object.
      */
-    public BackupUsageSummariesCrrsClient getBackupUsageSummariesCrrs() {
-        return this.backupUsageSummariesCrrs;
+    public ResourceGuardProxiesClient getResourceGuardProxies() {
+        return this.resourceGuardProxies;
     }
 
-    /** The AadPropertiesOperationsClient object to access its operations. */
-    private final AadPropertiesOperationsClient aadPropertiesOperations;
+    /** The ResourceGuardProxyOperationsClient object to access its operations. */
+    private final ResourceGuardProxyOperationsClient resourceGuardProxyOperations;
 
     /**
-     * Gets the AadPropertiesOperationsClient object to access its operations.
+     * Gets the ResourceGuardProxyOperationsClient object to access its operations.
      *
-     * @return the AadPropertiesOperationsClient object.
+     * @return the ResourceGuardProxyOperationsClient object.
      */
-    public AadPropertiesOperationsClient getAadPropertiesOperations() {
-        return this.aadPropertiesOperations;
-    }
-
-    /** The CrossRegionRestoresClient object to access its operations. */
-    private final CrossRegionRestoresClient crossRegionRestores;
-
-    /**
-     * Gets the CrossRegionRestoresClient object to access its operations.
-     *
-     * @return the CrossRegionRestoresClient object.
-     */
-    public CrossRegionRestoresClient getCrossRegionRestores() {
-        return this.crossRegionRestores;
-    }
-
-    /** The BackupCrrJobDetailsClient object to access its operations. */
-    private final BackupCrrJobDetailsClient backupCrrJobDetails;
-
-    /**
-     * Gets the BackupCrrJobDetailsClient object to access its operations.
-     *
-     * @return the BackupCrrJobDetailsClient object.
-     */
-    public BackupCrrJobDetailsClient getBackupCrrJobDetails() {
-        return this.backupCrrJobDetails;
-    }
-
-    /** The BackupCrrJobsClient object to access its operations. */
-    private final BackupCrrJobsClient backupCrrJobs;
-
-    /**
-     * Gets the BackupCrrJobsClient object to access its operations.
-     *
-     * @return the BackupCrrJobsClient object.
-     */
-    public BackupCrrJobsClient getBackupCrrJobs() {
-        return this.backupCrrJobs;
-    }
-
-    /** The CrrOperationResultsClient object to access its operations. */
-    private final CrrOperationResultsClient crrOperationResults;
-
-    /**
-     * Gets the CrrOperationResultsClient object to access its operations.
-     *
-     * @return the CrrOperationResultsClient object.
-     */
-    public CrrOperationResultsClient getCrrOperationResults() {
-        return this.crrOperationResults;
-    }
-
-    /** The CrrOperationStatusClient object to access its operations. */
-    private final CrrOperationStatusClient crrOperationStatus;
-
-    /**
-     * Gets the CrrOperationStatusClient object to access its operations.
-     *
-     * @return the CrrOperationStatusClient object.
-     */
-    public CrrOperationStatusClient getCrrOperationStatus() {
-        return this.crrOperationStatus;
-    }
-
-    /** The BackupResourceStorageConfigsClient object to access its operations. */
-    private final BackupResourceStorageConfigsClient backupResourceStorageConfigs;
-
-    /**
-     * Gets the BackupResourceStorageConfigsClient object to access its operations.
-     *
-     * @return the BackupResourceStorageConfigsClient object.
-     */
-    public BackupResourceStorageConfigsClient getBackupResourceStorageConfigs() {
-        return this.backupResourceStorageConfigs;
-    }
-
-    /** The RecoveryPointsCrrsClient object to access its operations. */
-    private final RecoveryPointsCrrsClient recoveryPointsCrrs;
-
-    /**
-     * Gets the RecoveryPointsCrrsClient object to access its operations.
-     *
-     * @return the RecoveryPointsCrrsClient object.
-     */
-    public RecoveryPointsCrrsClient getRecoveryPointsCrrs() {
-        return this.recoveryPointsCrrs;
-    }
-
-    /** The BackupProtectedItemsCrrsClient object to access its operations. */
-    private final BackupProtectedItemsCrrsClient backupProtectedItemsCrrs;
-
-    /**
-     * Gets the BackupProtectedItemsCrrsClient object to access its operations.
-     *
-     * @return the BackupProtectedItemsCrrsClient object.
-     */
-    public BackupProtectedItemsCrrsClient getBackupProtectedItemsCrrs() {
-        return this.backupProtectedItemsCrrs;
-    }
-
-    /** The ProtectionIntentsClient object to access its operations. */
-    private final ProtectionIntentsClient protectionIntents;
-
-    /**
-     * Gets the ProtectionIntentsClient object to access its operations.
-     *
-     * @return the ProtectionIntentsClient object.
-     */
-    public ProtectionIntentsClient getProtectionIntents() {
-        return this.protectionIntents;
-    }
-
-    /** The BackupStatusClient object to access its operations. */
-    private final BackupStatusClient backupStatus;
-
-    /**
-     * Gets the BackupStatusClient object to access its operations.
-     *
-     * @return the BackupStatusClient object.
-     */
-    public BackupStatusClient getBackupStatus() {
-        return this.backupStatus;
-    }
-
-    /** The FeatureSupportsClient object to access its operations. */
-    private final FeatureSupportsClient featureSupports;
-
-    /**
-     * Gets the FeatureSupportsClient object to access its operations.
-     *
-     * @return the FeatureSupportsClient object.
-     */
-    public FeatureSupportsClient getFeatureSupports() {
-        return this.featureSupports;
-    }
-
-    /** The BackupProtectionIntentsClient object to access its operations. */
-    private final BackupProtectionIntentsClient backupProtectionIntents;
-
-    /**
-     * Gets the BackupProtectionIntentsClient object to access its operations.
-     *
-     * @return the BackupProtectionIntentsClient object.
-     */
-    public BackupProtectionIntentsClient getBackupProtectionIntents() {
-        return this.backupProtectionIntents;
-    }
-
-    /** The BackupUsageSummariesClient object to access its operations. */
-    private final BackupUsageSummariesClient backupUsageSummaries;
-
-    /**
-     * Gets the BackupUsageSummariesClient object to access its operations.
-     *
-     * @return the BackupUsageSummariesClient object.
-     */
-    public BackupUsageSummariesClient getBackupUsageSummaries() {
-        return this.backupUsageSummaries;
-    }
-
-    /** The OperationsOperationsClient object to access its operations. */
-    private final OperationsOperationsClient operationsOperations;
-
-    /**
-     * Gets the OperationsOperationsClient object to access its operations.
-     *
-     * @return the OperationsOperationsClient object.
-     */
-    public OperationsOperationsClient getOperationsOperations() {
-        return this.operationsOperations;
+    public ResourceGuardProxyOperationsClient getResourceGuardProxyOperations() {
+        return this.resourceGuardProxyOperations;
     }
 
     /**
@@ -808,6 +766,14 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.apiVersion = "2022-02-01";
+        this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
+        this.protectionIntents = new ProtectionIntentsClientImpl(this);
+        this.backupStatus = new BackupStatusClientImpl(this);
+        this.featureSupports = new FeatureSupportsClientImpl(this);
+        this.backupProtectionIntents = new BackupProtectionIntentsClientImpl(this);
+        this.backupUsageSummaries = new BackupUsageSummariesClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
         this.backupResourceVaultConfigs = new BackupResourceVaultConfigsClientImpl(this);
         this.backupResourceEncryptionConfigs = new BackupResourceEncryptionConfigsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
@@ -828,7 +794,10 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.exportJobsOperationResults = new ExportJobsOperationResultsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.backupProtectedItems = new BackupProtectedItemsClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.operationOperations = new OperationOperationsClientImpl(this);
+        this.validateOperations = new ValidateOperationsClientImpl(this);
+        this.validateOperationResults = new ValidateOperationResultsClientImpl(this);
+        this.validateOperationStatuses = new ValidateOperationStatusesClientImpl(this);
         this.backupEngines = new BackupEnginesClientImpl(this);
         this.protectionContainerRefreshOperationResults =
             new ProtectionContainerRefreshOperationResultsClientImpl(this);
@@ -846,22 +815,8 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.backupProtectionContainers = new BackupProtectionContainersClientImpl(this);
         this.securityPINs = new SecurityPINsClientImpl(this);
         this.recoveryPointsRecommendedForMoves = new RecoveryPointsRecommendedForMovesClientImpl(this);
-        this.backupUsageSummariesCrrs = new BackupUsageSummariesCrrsClientImpl(this);
-        this.aadPropertiesOperations = new AadPropertiesOperationsClientImpl(this);
-        this.crossRegionRestores = new CrossRegionRestoresClientImpl(this);
-        this.backupCrrJobDetails = new BackupCrrJobDetailsClientImpl(this);
-        this.backupCrrJobs = new BackupCrrJobsClientImpl(this);
-        this.crrOperationResults = new CrrOperationResultsClientImpl(this);
-        this.crrOperationStatus = new CrrOperationStatusClientImpl(this);
-        this.backupResourceStorageConfigs = new BackupResourceStorageConfigsClientImpl(this);
-        this.recoveryPointsCrrs = new RecoveryPointsCrrsClientImpl(this);
-        this.backupProtectedItemsCrrs = new BackupProtectedItemsCrrsClientImpl(this);
-        this.protectionIntents = new ProtectionIntentsClientImpl(this);
-        this.backupStatus = new BackupStatusClientImpl(this);
-        this.featureSupports = new FeatureSupportsClientImpl(this);
-        this.backupProtectionIntents = new BackupProtectionIntentsClientImpl(this);
-        this.backupUsageSummaries = new BackupUsageSummariesClientImpl(this);
-        this.operationsOperations = new OperationsOperationsClientImpl(this);
+        this.resourceGuardProxies = new ResourceGuardProxiesClientImpl(this);
+        this.resourceGuardProxyOperations = new ResourceGuardProxyOperationsClientImpl(this);
     }
 
     /**
@@ -880,10 +835,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -947,7 +899,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -1006,4 +958,6 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesBackupClientImpl.class);
 }

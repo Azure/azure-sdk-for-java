@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -213,6 +214,14 @@ public interface RedisCache
             WithCreate withRedisConfiguration(String key, String value);
 
             /**
+             * Specifies Redis Setting.
+             *
+             * @param redisConfiguration the Redis configuration.
+             * @return the next stage of Redis Cache definition.
+             */
+            WithCreate withRedisConfiguration(RedisConfiguration redisConfiguration);
+
+            /**
              * Creates Redis cache firewall rule with range of IP addresses permitted to connect to the cache.
              *
              * @param name name of the rule.
@@ -273,6 +282,13 @@ public interface RedisCache
              * @return the next stage of Redis Cache with Premium SKU definition.
              */
             WithCreate withPatchSchedule(List<ScheduleEntry> scheduleEntry);
+
+            /**
+             * Explicitly specify the Redis version to create with
+             * @param redisVersion the redisVersion value to set.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithCreate withRedisVersion(RedisVersion redisVersion);
         }
 
         /** A Redis Cache definition with Premium Sku specific functionality. */
@@ -405,6 +421,14 @@ public interface RedisCache
             Update withRedisConfiguration(String key, String value);
 
             /**
+             * Specifies Redis Setting.
+             *
+             * @param redisConfiguration the Redis configuration.
+             * @return the next stage of Redis Cache update.
+             */
+            Update withRedisConfiguration(RedisConfiguration redisConfiguration);
+
+            /**
              * Cleans all the configuration settings being set on Redis Cache.
              *
              * @return the next stage of Redis Cache update.
@@ -519,5 +543,44 @@ public interface RedisCache
          * @return the next stage of Redis Cache definition.
          */
         Update withoutMinimumTlsVersion();
+
+        /**
+         * Update the Redis version.
+         * @param redisVersion the redisVersion value to set
+         * @return the next stage of Redis Cache definition.
+         */
+        Update withRedisVersion(RedisVersion redisVersion);
     }
+
+    /**
+     * major version of redis
+     * for version 4.x.x, use V4
+     * for version 6.x.x, use V6
+     */
+    enum RedisVersion {
+        /**
+         * version 6.x.x
+         */
+        V6("6"),
+        /**
+         * version 4.x.x
+         */
+        V4("4");
+
+        private final String value;
+
+        RedisVersion(String value) {
+            this.value = value;
+        }
+
+        /**
+         * Gets the string representation of the version.
+         *
+         * @return The string representation of the version.
+         */
+        public String getValue() {
+            return value;
+        }
+    }
+
 }

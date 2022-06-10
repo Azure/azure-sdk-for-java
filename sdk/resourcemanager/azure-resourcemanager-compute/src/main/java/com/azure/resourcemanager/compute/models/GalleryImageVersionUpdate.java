@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the gallery image version that you want to update. */
 @Fluent
 public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionUpdate.class);
-
     /*
      * Describes the properties of a gallery image version.
      */
@@ -62,12 +58,12 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
-     * only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
+     * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImageVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

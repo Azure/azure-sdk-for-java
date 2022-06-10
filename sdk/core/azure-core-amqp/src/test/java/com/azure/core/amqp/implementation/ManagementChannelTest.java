@@ -23,9 +23,7 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -61,6 +59,7 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ManagementChannel}.
  */
 public class ManagementChannelTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
     private static final String STATUS_CODE_KEY = "status-code";
     private static final String STATUS_DESCRIPTION_KEY = "status-description";
     private static final String ERROR_CONDITION_KEY = "errorCondition";
@@ -88,16 +87,6 @@ public class ManagementChannelTest {
     @Mock
     private AmqpRetryPolicy retryPolicy;
 
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     public void setup(TestInfo testInfo) {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
@@ -106,8 +95,7 @@ public class ManagementChannelTest {
 
         final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono =
             Mono.defer(() -> Mono.just(requestResponseChannel)).subscribeWith(new AmqpChannelProcessor<>(
-                "foo", "bar", RequestResponseChannel::getEndpointStates,
-                retryPolicy, logger));
+                "foo", RequestResponseChannel::getEndpointStates, retryPolicy, new HashMap<>()));
 
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
@@ -145,7 +133,7 @@ public class ManagementChannelTest {
                 assertEquals(errorContext, ((AmqpException) error).getContext());
                 assertTrue(((AmqpException) error).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -176,7 +164,7 @@ public class ManagementChannelTest {
                 assertEquals(body, actual.getBody().getFirstData());
             })
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -209,7 +197,7 @@ public class ManagementChannelTest {
                 assertEquals(body, actual.getBody().getFirstData());
             })
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -232,7 +220,7 @@ public class ManagementChannelTest {
                 assertEquals(errorContext, ((AmqpException) error).getContext());
                 assertTrue(((AmqpException) error).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -254,7 +242,7 @@ public class ManagementChannelTest {
                 assertTrue(error instanceof AmqpException);
                 assertFalse(((AmqpException) error).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         verify(requestResponseChannel, never()).sendWithAck(any(), any());
     }
@@ -290,7 +278,7 @@ public class ManagementChannelTest {
                 assertEquals(body, actual.getBody().getFirstData());
             })
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -320,7 +308,7 @@ public class ManagementChannelTest {
                 assertEquals(errorCondition, ((AmqpException) error).getErrorCondition());
                 assertEquals(errorContext, ((AmqpException) error).getContext());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     public static Stream<AmqpErrorCondition> sendMessageNotFound() {
@@ -347,6 +335,6 @@ public class ManagementChannelTest {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(expected, ((AmqpException) error).getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 }

@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Profile of network configuration. */
 @Fluent
 public final class ContainerServiceNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceNetworkProfile.class);
-
     /*
      * Network plugin used for building the Kubernetes network.
      */
@@ -91,6 +88,32 @@ public final class ContainerServiceNetworkProfile {
      */
     @JsonProperty(value = "natGatewayProfile")
     private ManagedClusterNatGatewayProfile natGatewayProfile;
+
+    /*
+     * The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR
+     * is expected for single-stack networking. Two CIDRs, one for each IP
+     * family (IPv4/IPv6), is expected for dual-stack networking.
+     */
+    @JsonProperty(value = "podCidrs")
+    private List<String> podCidrs;
+
+    /*
+     * The CIDR notation IP ranges from which to assign service cluster IPs.
+     * One IPv4 CIDR is expected for single-stack networking. Two CIDRs, one
+     * for each IP family (IPv4/IPv6), is expected for dual-stack networking.
+     * They must not overlap with any Subnet IP ranges.
+     */
+    @JsonProperty(value = "serviceCidrs")
+    private List<String> serviceCidrs;
+
+    /*
+     * The IP families used to specify IP versions available to the cluster. IP
+     * families are used to determine single-stack or dual-stack clusters. For
+     * single-stack, the expected value is IPv4. For dual-stack, the expected
+     * values are IPv4 and IPv6.
+     */
+    @JsonProperty(value = "ipFamilies")
+    private List<IpFamily> ipFamilies;
 
     /**
      * Get the networkPlugin property: Network plugin used for building the Kubernetes network.
@@ -326,6 +349,78 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNatGatewayProfile(ManagedClusterNatGatewayProfile natGatewayProfile) {
         this.natGatewayProfile = natGatewayProfile;
+        return this;
+    }
+
+    /**
+     * Get the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
+     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+     * networking.
+     *
+     * @return the podCidrs value.
+     */
+    public List<String> podCidrs() {
+        return this.podCidrs;
+    }
+
+    /**
+     * Set the podCidrs property: The CIDR notation IP ranges from which to assign pod IPs. One IPv4 CIDR is expected
+     * for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for dual-stack
+     * networking.
+     *
+     * @param podCidrs the podCidrs value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withPodCidrs(List<String> podCidrs) {
+        this.podCidrs = podCidrs;
+        return this;
+    }
+
+    /**
+     * Get the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
+     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
+     * dual-stack networking. They must not overlap with any Subnet IP ranges.
+     *
+     * @return the serviceCidrs value.
+     */
+    public List<String> serviceCidrs() {
+        return this.serviceCidrs;
+    }
+
+    /**
+     * Set the serviceCidrs property: The CIDR notation IP ranges from which to assign service cluster IPs. One IPv4
+     * CIDR is expected for single-stack networking. Two CIDRs, one for each IP family (IPv4/IPv6), is expected for
+     * dual-stack networking. They must not overlap with any Subnet IP ranges.
+     *
+     * @param serviceCidrs the serviceCidrs value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withServiceCidrs(List<String> serviceCidrs) {
+        this.serviceCidrs = serviceCidrs;
+        return this;
+    }
+
+    /**
+     * Get the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
+     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
+     * dual-stack, the expected values are IPv4 and IPv6.
+     *
+     * @return the ipFamilies value.
+     */
+    public List<IpFamily> ipFamilies() {
+        return this.ipFamilies;
+    }
+
+    /**
+     * Set the ipFamilies property: The IP families used to specify IP versions available to the cluster. IP families
+     * are used to determine single-stack or dual-stack clusters. For single-stack, the expected value is IPv4. For
+     * dual-stack, the expected values are IPv4 and IPv6.
+     *
+     * @param ipFamilies the ipFamilies value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withIpFamilies(List<IpFamily> ipFamilies) {
+        this.ipFamilies = ipFamilies;
         return this;
     }
 

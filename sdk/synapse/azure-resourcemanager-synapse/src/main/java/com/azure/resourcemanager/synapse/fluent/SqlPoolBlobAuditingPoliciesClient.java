@@ -37,7 +37,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's blob auditing policy.
+     * @return a SQL pool's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlPoolBlobAuditingPolicyInner> getWithResponse(
@@ -70,7 +70,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool blob auditing policy.
+     * @return a Sql pool blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(
@@ -89,7 +89,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings.
+     * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(
@@ -105,7 +105,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings.
+     * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(

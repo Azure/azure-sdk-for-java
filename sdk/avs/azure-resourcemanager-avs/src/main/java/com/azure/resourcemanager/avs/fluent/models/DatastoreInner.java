@@ -5,38 +5,34 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
+import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A datastore resource. */
-@JsonFlatten
 @Fluent
-public class DatastoreInner extends ProxyResource {
+public final class DatastoreInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatastoreInner.class);
 
     /*
-     * The state of the datastore provisioning
+     * The properties of a datastore resource
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DatastoreProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private DatastoreProperties innerProperties;
 
-    /*
-     * An Azure NetApp Files volume
+    /**
+     * Get the innerProperties property: The properties of a datastore resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.netAppVolume")
-    private NetAppVolume netAppVolume;
-
-    /*
-     * An iSCSI volume
-     */
-    @JsonProperty(value = "properties.diskPoolVolume")
-    private DiskPoolVolume diskPoolVolume;
+    private DatastoreProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the provisioningState property: The state of the datastore provisioning.
@@ -44,7 +40,7 @@ public class DatastoreInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public DatastoreProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -53,7 +49,7 @@ public class DatastoreInner extends ProxyResource {
      * @return the netAppVolume value.
      */
     public NetAppVolume netAppVolume() {
-        return this.netAppVolume;
+        return this.innerProperties() == null ? null : this.innerProperties().netAppVolume();
     }
 
     /**
@@ -63,7 +59,10 @@ public class DatastoreInner extends ProxyResource {
      * @return the DatastoreInner object itself.
      */
     public DatastoreInner withNetAppVolume(NetAppVolume netAppVolume) {
-        this.netAppVolume = netAppVolume;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatastoreProperties();
+        }
+        this.innerProperties().withNetAppVolume(netAppVolume);
         return this;
     }
 
@@ -73,7 +72,7 @@ public class DatastoreInner extends ProxyResource {
      * @return the diskPoolVolume value.
      */
     public DiskPoolVolume diskPoolVolume() {
-        return this.diskPoolVolume;
+        return this.innerProperties() == null ? null : this.innerProperties().diskPoolVolume();
     }
 
     /**
@@ -83,8 +82,20 @@ public class DatastoreInner extends ProxyResource {
      * @return the DatastoreInner object itself.
      */
     public DatastoreInner withDiskPoolVolume(DiskPoolVolume diskPoolVolume) {
-        this.diskPoolVolume = diskPoolVolume;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatastoreProperties();
+        }
+        this.innerProperties().withDiskPoolVolume(diskPoolVolume);
         return this;
+    }
+
+    /**
+     * Get the status property: The operational status of the datastore.
+     *
+     * @return the status value.
+     */
+    public DatastoreStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -93,11 +104,8 @@ public class DatastoreInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (netAppVolume() != null) {
-            netAppVolume().validate();
-        }
-        if (diskPoolVolume() != null) {
-            diskPoolVolume().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

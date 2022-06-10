@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -24,20 +23,21 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzersClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerCollectionInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
-import com.azure.resourcemanager.videoanalyzer.models.SyncStorageKeysInput;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerUpdate;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VideoAnalyzersClient. */
 public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
-    private final ClientLogger logger = new ClientLogger(VideoAnalyzersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VideoAnalyzersService service;
 
@@ -97,7 +97,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
                 + "/videoAnalyzers/{accountName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -126,31 +126,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
                 + "/videoAnalyzers/{accountName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VideoAnalyzerUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/syncStorageKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> syncStorageKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SyncStorageKeysInput parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -173,7 +157,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listWithResponseAsync(String resourceGroupName) {
@@ -216,7 +200,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listWithResponseAsync(
@@ -256,19 +240,11 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoAnalyzerCollectionInner> listAsync(String resourceGroupName) {
-        return listWithResponseAsync(resourceGroupName)
-            .flatMap(
-                (Response<VideoAnalyzerCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -293,7 +269,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoAnalyzerCollectionInner> listWithResponse(String resourceGroupName, Context context) {
@@ -308,7 +284,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(
@@ -357,7 +334,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(
@@ -402,19 +380,12 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoAnalyzerInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<VideoAnalyzerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -441,7 +412,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoAnalyzerInner> getByResourceGroupWithResponse(
@@ -458,10 +429,10 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -514,10 +485,10 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -566,20 +537,45 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the {@link PollerFlux} for polling of the Video Analyzer account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> createOrUpdateAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<VideoAnalyzerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters);
+        return this
+            .client
+            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VideoAnalyzerInner.class,
+                VideoAnalyzerInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this
+            .client
+            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
     }
 
     /**
@@ -591,7 +587,81 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VideoAnalyzerInner> createOrUpdateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VideoAnalyzerInner> createOrUpdateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VideoAnalyzerInner createOrUpdate(
@@ -609,12 +679,12 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoAnalyzerInner> createOrUpdateWithResponse(
+    public VideoAnalyzerInner createOrUpdate(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+        return createOrUpdateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -625,7 +695,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
@@ -673,7 +743,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -718,11 +788,11 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -748,7 +818,7 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
@@ -764,10 +834,10 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -820,10 +890,10 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -872,20 +942,44 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the {@link PollerFlux} for polling of the Video Analyzer account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> updateAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(
         String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
-        return updateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<VideoAnalyzerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, parameters);
+        return this
+            .client
+            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VideoAnalyzerInner.class,
+                VideoAnalyzerInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this
+            .client
+            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
     }
 
     /**
@@ -897,7 +991,81 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VideoAnalyzerInner> updateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VideoAnalyzerInner> updateAsync(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VideoAnalyzerInner update(String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
@@ -914,179 +1082,20 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoAnalyzerInner> updateWithResponse(
+    public VideoAnalyzerInner update(
         String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+        return updateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> syncStorageKeysWithResponseAsync(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .syncStorageKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> syncStorageKeysWithResponseAsync(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .syncStorageKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> syncStorageKeysAsync(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
-        return syncStorageKeysWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void syncStorageKeys(String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
-        syncStorageKeysAsync(resourceGroupName, accountName, parameters).block();
-    }
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context) {
-        return syncStorageKeysWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
-    }
-
-    /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listBySubscriptionWithResponseAsync() {
@@ -1117,13 +1126,13 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     }
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listBySubscriptionWithResponseAsync(Context context) {
@@ -1151,27 +1160,19 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     }
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoAnalyzerCollectionInner> listBySubscriptionAsync() {
-        return listBySubscriptionWithResponseAsync()
-            .flatMap(
-                (Response<VideoAnalyzerCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listBySubscriptionWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1183,13 +1184,13 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     }
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoAnalyzerCollectionInner> listBySubscriptionWithResponse(Context context) {

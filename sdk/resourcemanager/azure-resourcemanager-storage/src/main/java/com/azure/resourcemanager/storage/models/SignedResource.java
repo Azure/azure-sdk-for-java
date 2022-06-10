@@ -33,7 +33,11 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
         return fromString(name, SignedResource.class);
     }
 
-    /** @return known SignedResource values. */
+    /**
+     * Gets known SignedResource values.
+     *
+     * @return known SignedResource values.
+     */
     public static Collection<SignedResource> values() {
         return values(SignedResource.class);
     }

@@ -63,6 +63,20 @@ public final class VmSizeCompatibilityFilterV2 {
     @JsonProperty(value = "vmSizes")
     private List<String> vmSizes;
 
+    /*
+     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means
+     * only for non-ESP, null or empty string or others mean for both.
+     */
+    @JsonProperty(value = "espApplied")
+    private String espApplied;
+
+    /*
+     * Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     */
+    @JsonProperty(value = "computeIsolationSupported")
+    private String computeIsolationSupported;
+
     /**
      * Get the filterMode property: The filtering mode. Effectively this can enabling or disabling the VM sizes in a
      * particular set.
@@ -202,6 +216,50 @@ public final class VmSizeCompatibilityFilterV2 {
      */
     public VmSizeCompatibilityFilterV2 withVmSizes(List<String> vmSizes) {
         this.vmSizes = vmSizes;
+        return this;
+    }
+
+    /**
+     * Get the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
+     * non-ESP, null or empty string or others mean for both.
+     *
+     * @return the espApplied value.
+     */
+    public String espApplied() {
+        return this.espApplied;
+    }
+
+    /**
+     * Set the espApplied property: Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for
+     * non-ESP, null or empty string or others mean for both.
+     *
+     * @param espApplied the espApplied value to set.
+     * @return the VmSizeCompatibilityFilterV2 object itself.
+     */
+    public VmSizeCompatibilityFilterV2 withEspApplied(String espApplied) {
+        this.espApplied = espApplied;
+        return this;
+    }
+
+    /**
+     * Get the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     *
+     * @return the computeIsolationSupported value.
+     */
+    public String computeIsolationSupported() {
+        return this.computeIsolationSupported;
+    }
+
+    /**
+     * Set the computeIsolationSupported property: Whether support compute isolation. 'true' means only for
+     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     *
+     * @param computeIsolationSupported the computeIsolationSupported value to set.
+     * @return the VmSizeCompatibilityFilterV2 object itself.
+     */
+    public VmSizeCompatibilityFilterV2 withComputeIsolationSupported(String computeIsolationSupported) {
+        this.computeIsolationSupported = computeIsolationSupported;
         return this;
     }
 

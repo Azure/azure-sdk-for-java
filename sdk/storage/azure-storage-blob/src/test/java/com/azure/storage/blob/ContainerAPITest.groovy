@@ -5,6 +5,8 @@ package com.azure.storage.blob
 
 
 import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
@@ -25,7 +27,10 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobContainerCreateOptions
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -33,6 +38,7 @@ import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.test.StepVerifier
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -127,6 +133,127 @@ class ContainerAPITest extends APISpec {
         e.getServiceMessage().contains("The specified container already exists.")
     }
 
+    def "Create if not exists all null"() {
+        setup:
+        // Overwrite the existing cc, which has already been created
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        validateBasicHeaders(response.getHeaders())
+    }
+
+    def "Create if not exists min"() {
+        when:
+        def cc = primaryBlobServiceClient.createBlobContainerIfNotExists(generateContainerName())
+
+        then:
+        cc.exists()
+    }
+
+    def "Create if not exists min container"() {
+        when:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def result = cc.createIfNotExists()
+
+        then:
+        result
+    }
+
+    def "Create if not exists with response"() {
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(),
+            null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists blob service that already exists"() {
+        setup:
+        def containerName = generateContainerName()
+        when:
+        def response = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+        def secondResponse = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+    }
+
+    @Unroll
+    def "Create if not exists metadata if not exists"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new BlobContainerCreateOptions().setMetadata(metadata)
+
+        when:
+        def result = cc.createIfNotExistsWithResponse(options, null, null)
+        def response = cc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        response.getValue().getMetadata() == metadata
+        result.getValue()
+
+        where:
+        key1      | value1    | key2       | value2
+        null      | null      | null       | null
+        "foo"     | "bar"     | "fizz"     | "buzz"
+        "testFoo" | "testBar" | "testFizz" | "testBuzz"
+    }
+
+    @Unroll
+    def "Create if not exists publicAccess"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null)
+        def access = cc.getProperties().getBlobPublicAccess()
+
+        then:
+        access == publicAccess
+        result.getValue()
+
+        where:
+        publicAccess               | _
+        PublicAccessType.BLOB      | _
+        PublicAccessType.CONTAINER | _
+        null                       | _
+    }
+
+    def "Create if not exists on container that already exists"() {
+        when:
+        boolean result = cc.createIfNotExists()
+
+        then:
+        !result
+    }
+
+    def "Create if not exists on a container that already exists 2"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null)
+
+        when:
+        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue()
+        secondResponse.getStatusCode() == 409
+        !secondResponse.getValue()
+    }
 
     def "Get properties null"() {
         when:
@@ -574,6 +701,113 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(BlobStorageException)
     }
+
+    def "Delete if exists"() {
+        when:
+        def response = cc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        response.getValue()
+        response.getStatusCode() == 202
+        response.getHeaders().getValue("x-ms-request-id") != null
+        response.getHeaders().getValue("x-ms-version") != null
+        response.getHeaders().getValue("Date") != null
+    }
+
+    def "Delete if exists min"() {
+        when:
+        boolean result = cc.deleteIfExists()
+
+        then:
+        result
+        !cc.exists()
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        leaseID = setupContainerLeaseCondition(cc, leaseID)
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        expect:
+        cc.deleteIfExistsWithResponse(cac, null, null).getStatusCode() == 202
+
+        where:
+        modified | unmodified | leaseID
+        null     | null       | null
+        oldDate  | null       | null
+        null     | newDate    | null
+        null     | null       | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        when:
+        cc.deleteIfExistsWithResponse(cac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | leaseID
+        newDate  | null       | null
+        null     | oldDate    | null
+        null     | null       | garbageLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC illegal"() {
+        setup:
+        def mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch)
+
+        when:
+        cc.deleteIfExistsWithResponse(mac, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        match        | noneMatch
+        receivedEtag | null
+        null         | garbageEtag
+    }
+
+    def "Delete if exists on a container that does not exist"() {
+        setup:
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+    }
+
+    // We can't guarantee that the requests will always happen before the container is garbage collected
+    @PlaybackOnly
+    def "Delete if exists container that was already deleted"() {
+        when:
+        boolean result = cc.deleteIfExists()
+        boolean result2 = cc.deleteIfExists()
+
+        then:
+        result
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After delete has been called once but before it has been garbage collected
+        result2
+        !cc.exists()
+    }
+
 
     def "List block blobs flat"() {
         setup:
@@ -1067,6 +1301,19 @@ class ContainerAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs flat invalid xml"() {
+        setup:
+        def blobName = "dir1/dir2/file\uFFFE.blob";
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem = cc.listBlobs().iterator().next()
+
+        then:
+        blobItem.getName() == blobName
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1120,6 +1367,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
@@ -1436,6 +1684,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
@@ -1546,6 +1795,30 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs hier invalid xml"() {
+        setup:
+        def blobName = 'dir1/dir2/file\uFFFE.blob';
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem
+        if (!delimiter) {
+            blobItem = cc.listBlobsByHierarchy("", null, null).iterator().next()
+        } else {
+            blobItem = cc.listBlobsByHierarchy(".b", null, null).iterator().next()
+        }
+
+        then:
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
+        blobItem.isPrefix() == (delimiter ? true : null)
+
+        where:
+        delimiter | _
+        false     | _
+        true      | _
+    }
+
     def "List blobs hier error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1555,6 +1828,137 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs min"() {
+        when:
+        cc.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs query"() {
+        setup:
+        def blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        when:
+        def results = cc.findBlobsByTags(String.format("\"bar\"='foo'",
+            cc.getBlobContainerName()))
+
+        then:
+        results.size() == 1
+        def tags = results.first().getTags()
+        tags.size() == 1
+        tags.get("bar") == "foo"
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs marker"() {
+        setup:
+        def tags = Collections.singletonMap(tagKey, tagValue)
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        def firstPage = cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = cc.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults by page"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
+                .iterableByPage(PAGE_RESULTS)) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    def "Find blobs error"() {
+        when:
+        cc.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_BLOBS = 5
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        when: "Consume results by page"
+        cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
+            .streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
     }
 
     @Unroll
@@ -1583,7 +1987,7 @@ class ContainerAPITest extends APISpec {
 
         where:
         name                  | _
-        "中文"                | _
+        "中文"                  | _
         "az[]"                | _
         "hello world"         | _
         "hello/world"         | _
@@ -1668,8 +2072,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = instrument(new BlobClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
@@ -1694,8 +2098,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = instrument(new BlobContainerClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .containerName(null))
             .buildClient()
 
@@ -1798,7 +2202,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(env.primaryAccount.credential)
+            .credential(environment.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

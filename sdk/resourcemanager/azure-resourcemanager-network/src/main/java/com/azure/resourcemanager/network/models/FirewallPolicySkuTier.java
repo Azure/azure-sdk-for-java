@@ -16,6 +16,9 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
     /** Static value Premium for FirewallPolicySkuTier. */
     public static final FirewallPolicySkuTier PREMIUM = fromString("Premium");
 
+    /** Static value Basic for FirewallPolicySkuTier. */
+    public static final FirewallPolicySkuTier BASIC = fromString("Basic");
+
     /**
      * Creates or finds a FirewallPolicySkuTier from its string representation.
      *

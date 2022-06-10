@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.OperationInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an operation returned by the GetOperations request. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
-     * Name of the operation
+     * Name of the operation.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Display name of the operation
+     * Display name of the operation.
      */
     @JsonProperty(value = "display")
     private OperationInfo display;
 
     /*
-     * Origin of the operation
+     * Origin of the operation.
      */
     @JsonProperty(value = "origin")
     private String origin;
@@ -41,7 +37,7 @@ public final class OperationInner {
     private Boolean isDataAction;
 
     /*
-     * Properties of the operation
+     * Properties of the operation.
      */
     @JsonProperty(value = "properties")
     private Object properties;

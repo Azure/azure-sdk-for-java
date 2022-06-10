@@ -6,21 +6,25 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private endpoint connection of a provisioning service. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
      * The properties of a private endpoint connection
      */
     @JsonProperty(value = "properties", required = true)
     private PrivateEndpointConnectionProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the properties property: The properties of a private endpoint connection.
@@ -43,13 +47,22 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model PrivateEndpointConnectionInner"));
@@ -57,4 +70,6 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionInner.class);
 }

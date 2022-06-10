@@ -13,10 +13,9 @@ import com.azure.resourcemanager.eventgrid.fluent.PartnerRegistrationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PartnerRegistrationsImpl implements PartnerRegistrations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegistrationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerRegistrationsImpl.class);
 
     private final PartnerRegistrationsClient innerClient;
 
@@ -57,9 +56,8 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         this.serviceClient().delete(resourceGroupName, partnerRegistrationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String partnerRegistrationName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, partnerRegistrationName, context);
+    public void delete(String resourceGroupName, String partnerRegistrationName, Context context) {
+        this.serviceClient().delete(resourceGroupName, partnerRegistrationName, context);
     }
 
     public PagedIterable<PartnerRegistration> list() {
@@ -87,7 +85,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     public PartnerRegistration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +93,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         }
         String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +107,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     public Response<PartnerRegistration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +115,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         }
         String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +129,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +137,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         }
         String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,13 +145,13 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
                                 "The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, partnerRegistrationName, Context.NONE).getValue();
+        this.delete(resourceGroupName, partnerRegistrationName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +159,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         }
         String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +167,7 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
                                 "The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, partnerRegistrationName, context);
+        this.delete(resourceGroupName, partnerRegistrationName, context);
     }
 
     private PartnerRegistrationsClient serviceClient() {

@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
@@ -68,15 +67,28 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
+        assertNotNull(backupOperation);
 
         // Restore the backup
-        String backupFolderUrl = backupPollResponse.getFinalResult().block();
-
+        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
         AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
-            asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
+            asyncClient.beginRestore(backupFolderUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
+        KeyVaultRestoreOperation restoreOperation = restorePollResponse.getValue();
+        assertNotNull(restoreOperation);
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 
     /**
@@ -92,9 +104,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             .pipeline(getPipeline(httpClient, false))
             .buildAsyncClient();
 
-        String keyName = interceptorManager.isPlaybackMode()
-            ? "testKey"
-            : testResourceNamer.randomName("backupKey", 20);
+        String keyName = testResourceNamer.randomName("backupKey", 20);
         CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
@@ -105,13 +115,27 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
+        assertNotNull(backupOperation);
 
         // Restore the backup
-        String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePollResponse =
-            asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken).blockLast();
+        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
+        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePollResponse =
+            asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveKeyRestorePollResponse.getStatus());
+        KeyVaultSelectiveKeyRestoreOperation restoreOperation = restorePollResponse.getValue();
+        assertNotNull(restoreOperation);
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 }

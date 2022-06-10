@@ -1,0 +1,36 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: communication
+    Artifacts:
+      - name: azure-resourcemanager-communication
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommunication
+

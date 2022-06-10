@@ -10,8 +10,11 @@ import java.util.Collection;
 
 /** Defines values for PortMirroringStatusEnum. */
 public final class PortMirroringStatusEnum extends ExpandableStringEnum<PortMirroringStatusEnum> {
-    /** Static value SUCCESS, FAILURE for PortMirroringStatusEnum. */
-    public static final PortMirroringStatusEnum SUCCESS_FAILURE = fromString("SUCCESS, FAILURE");
+    /** Static value SUCCESS for PortMirroringStatusEnum. */
+    public static final PortMirroringStatusEnum SUCCESS = fromString("SUCCESS");
+
+    /** Static value FAILURE for PortMirroringStatusEnum. */
+    public static final PortMirroringStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates or finds a PortMirroringStatusEnum from its string representation.

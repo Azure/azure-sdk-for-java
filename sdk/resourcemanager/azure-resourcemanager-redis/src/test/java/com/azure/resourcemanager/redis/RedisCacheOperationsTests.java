@@ -3,28 +3,34 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
-import com.azure.core.management.Region;
+import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
 
@@ -58,7 +64,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(resourceGroups)
                 .withPremiumSku(2)
-                .withRedisConfiguration("maxclients", "2")
                 .withNonSslPort()
                 .withFirewallRule("rule1", "192.168.0.1", "192.168.0.4")
                 .withFirewallRule("rule2", "192.168.0.10", "192.168.0.40");
@@ -91,13 +96,13 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         // Redis configuration update
         premiumCache
             .update()
-            .withRedisConfiguration("maxclients", "3")
             .withoutFirewallRule("rule1")
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
             .apply();
 
-        Thread.sleep(10000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
         premiumCache.refresh();
 
         Assertions.assertEquals(2, premiumCache.firewallRules().size());
@@ -207,6 +212,34 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
+    public void canRedisVersionUpdate() {
+        RedisCache.RedisVersion redisVersion = RedisCache.RedisVersion.V4;
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .withRedisVersion(redisVersion)
+                .create();
+
+        Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));
+
+        redisVersion = RedisCache.RedisVersion.V6;
+        redisCache = redisCache.update()
+                .withRedisVersion(redisVersion)
+                .apply(); // response with "provisioningState" : "Succeeded", but it takes quite a while for the client to detect the actual version change
+
+        ResourceManagerUtils.sleep(Duration.ofSeconds(300)); // let redis cache take its time
+
+        redisCache = redisCache.refresh();
+        Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));
+
+    }
+
+    @Test
     public void canCRUDLinkedServers() throws Exception {
 
         RedisCache rgg =
@@ -257,5 +290,57 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
 
         linkedServers = premiumRgg.listLinkedServers();
         Assertions.assertEquals(0, linkedServers.size());
+    }
+
+    @Test
+    public void canCreateRedisWithRdbAof() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_WEST3)
+                .withNewResourceGroup(rgName)
+                .create();
+
+        String connectionString = ResourceManagerUtils.getStorageConnectionString(saName, storageAccount.getKeys().get(0).value(), AzureEnvironment.AZURE);
+
+        // RDB
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.US_WEST3)
+                .withExistingResourceGroup(rgName)
+                .withPremiumSku()
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withRedisConfiguration(new RedisConfiguration()
+                    .withRdbBackupEnabled("true")
+                    .withRdbBackupFrequency("15")
+                    .withRdbBackupMaxSnapshotCount("1")
+                    .withRdbStorageConnectionString(connectionString))
+                .create();
+        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
+        Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());
+        Assertions.assertEquals("1", redisCache.innerModel().redisConfiguration().rdbBackupMaxSnapshotCount());
+        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().rdbStorageConnectionString());
+
+        redisManager.redisCaches().deleteById(redisCache.id());
+
+        // AOF
+        redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.US_WEST3)
+                .withExistingResourceGroup(rgName)
+                .withPremiumSku()
+                .withMinimumTlsVersion(TlsVersion.ONE_TWO)
+                .withRedisConfiguration("aof-backup-enabled", "true")
+                .withRedisConfiguration("aof-storage-connection-string-0", connectionString)
+                .withRedisConfiguration("aof-storage-connection-string-1", connectionString)
+                .create();
+        Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().additionalProperties().get("aof-backup-enabled"));
+        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString0());
+        Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
     }
 }

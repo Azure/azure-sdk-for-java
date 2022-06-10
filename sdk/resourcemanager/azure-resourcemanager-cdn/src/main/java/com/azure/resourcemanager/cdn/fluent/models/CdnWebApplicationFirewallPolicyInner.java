@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.CustomRuleList;
 import com.azure.resourcemanager.cdn.models.EndpointResource;
@@ -16,17 +16,21 @@ import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Defines web application firewall policy for Azure CDN. */
-@JsonFlatten
 @Fluent
-public class CdnWebApplicationFirewallPolicyInner extends Resource {
+public final class CdnWebApplicationFirewallPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnWebApplicationFirewallPolicyInner.class);
+
+    /*
+     * Properties of the web application firewall policy.
+     */
+    @JsonProperty(value = "properties")
+    private CdnWebApplicationFirewallPolicyProperties innerProperties;
 
     /*
      * Gets a unique read-only string that changes whenever the resource is
@@ -43,53 +47,19 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
     private Sku sku;
 
     /*
-     * Describes  policySettings for policy
-     */
-    @JsonProperty(value = "properties.policySettings")
-    private PolicySettings policySettings;
-
-    /*
-     * Describes rate limit rules inside the policy.
-     */
-    @JsonProperty(value = "properties.rateLimitRules")
-    private RateLimitRuleList rateLimitRules;
-
-    /*
-     * Describes custom rules inside the policy.
-     */
-    @JsonProperty(value = "properties.customRules")
-    private CustomRuleList customRules;
-
-    /*
-     * Describes managed rules inside the policy.
-     */
-    @JsonProperty(value = "properties.managedRules")
-    private ManagedRuleSetList managedRules;
-
-    /*
-     * Describes Azure CDN endpoints associated with this Web Application
-     * Firewall policy.
-     */
-    @JsonProperty(value = "properties.endpointLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<EndpointResource> endpointLinks;
-
-    /*
-     * Provisioning state of the WebApplicationFirewallPolicy.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Resource status of the policy.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private PolicyResourceState resourceState;
-
-    /*
      * Read only system data
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /**
+     * Get the innerProperties property: Properties of the web application firewall policy.
+     *
+     * @return the innerProperties value.
+     */
+    private CdnWebApplicationFirewallPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
@@ -134,114 +104,6 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the policySettings property: Describes policySettings for policy.
-     *
-     * @return the policySettings value.
-     */
-    public PolicySettings policySettings() {
-        return this.policySettings;
-    }
-
-    /**
-     * Set the policySettings property: Describes policySettings for policy.
-     *
-     * @param policySettings the policySettings value to set.
-     * @return the CdnWebApplicationFirewallPolicyInner object itself.
-     */
-    public CdnWebApplicationFirewallPolicyInner withPolicySettings(PolicySettings policySettings) {
-        this.policySettings = policySettings;
-        return this;
-    }
-
-    /**
-     * Get the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
-     * @return the rateLimitRules value.
-     */
-    public RateLimitRuleList rateLimitRules() {
-        return this.rateLimitRules;
-    }
-
-    /**
-     * Set the rateLimitRules property: Describes rate limit rules inside the policy.
-     *
-     * @param rateLimitRules the rateLimitRules value to set.
-     * @return the CdnWebApplicationFirewallPolicyInner object itself.
-     */
-    public CdnWebApplicationFirewallPolicyInner withRateLimitRules(RateLimitRuleList rateLimitRules) {
-        this.rateLimitRules = rateLimitRules;
-        return this;
-    }
-
-    /**
-     * Get the customRules property: Describes custom rules inside the policy.
-     *
-     * @return the customRules value.
-     */
-    public CustomRuleList customRules() {
-        return this.customRules;
-    }
-
-    /**
-     * Set the customRules property: Describes custom rules inside the policy.
-     *
-     * @param customRules the customRules value to set.
-     * @return the CdnWebApplicationFirewallPolicyInner object itself.
-     */
-    public CdnWebApplicationFirewallPolicyInner withCustomRules(CustomRuleList customRules) {
-        this.customRules = customRules;
-        return this;
-    }
-
-    /**
-     * Get the managedRules property: Describes managed rules inside the policy.
-     *
-     * @return the managedRules value.
-     */
-    public ManagedRuleSetList managedRules() {
-        return this.managedRules;
-    }
-
-    /**
-     * Set the managedRules property: Describes managed rules inside the policy.
-     *
-     * @param managedRules the managedRules value to set.
-     * @return the CdnWebApplicationFirewallPolicyInner object itself.
-     */
-    public CdnWebApplicationFirewallPolicyInner withManagedRules(ManagedRuleSetList managedRules) {
-        this.managedRules = managedRules;
-        return this;
-    }
-
-    /**
-     * Get the endpointLinks property: Describes Azure CDN endpoints associated with this Web Application Firewall
-     * policy.
-     *
-     * @return the endpointLinks value.
-     */
-    public List<EndpointResource> endpointLinks() {
-        return this.endpointLinks;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the WebApplicationFirewallPolicy.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the resourceState property: Resource status of the policy.
-     *
-     * @return the resourceState value.
-     */
-    public PolicyResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
      * Get the systemData property: Read only system data.
      *
      * @return the systemData value.
@@ -265,11 +127,134 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the policySettings property: Describes policySettings for policy.
+     *
+     * @return the policySettings value.
+     */
+    public PolicySettings policySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().policySettings();
+    }
+
+    /**
+     * Set the policySettings property: Describes policySettings for policy.
+     *
+     * @param policySettings the policySettings value to set.
+     * @return the CdnWebApplicationFirewallPolicyInner object itself.
+     */
+    public CdnWebApplicationFirewallPolicyInner withPolicySettings(PolicySettings policySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CdnWebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withPolicySettings(policySettings);
+        return this;
+    }
+
+    /**
+     * Get the rateLimitRules property: Describes rate limit rules inside the policy.
+     *
+     * @return the rateLimitRules value.
+     */
+    public RateLimitRuleList rateLimitRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().rateLimitRules();
+    }
+
+    /**
+     * Set the rateLimitRules property: Describes rate limit rules inside the policy.
+     *
+     * @param rateLimitRules the rateLimitRules value to set.
+     * @return the CdnWebApplicationFirewallPolicyInner object itself.
+     */
+    public CdnWebApplicationFirewallPolicyInner withRateLimitRules(RateLimitRuleList rateLimitRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CdnWebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withRateLimitRules(rateLimitRules);
+        return this;
+    }
+
+    /**
+     * Get the customRules property: Describes custom rules inside the policy.
+     *
+     * @return the customRules value.
+     */
+    public CustomRuleList customRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().customRules();
+    }
+
+    /**
+     * Set the customRules property: Describes custom rules inside the policy.
+     *
+     * @param customRules the customRules value to set.
+     * @return the CdnWebApplicationFirewallPolicyInner object itself.
+     */
+    public CdnWebApplicationFirewallPolicyInner withCustomRules(CustomRuleList customRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CdnWebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withCustomRules(customRules);
+        return this;
+    }
+
+    /**
+     * Get the managedRules property: Describes managed rules inside the policy.
+     *
+     * @return the managedRules value.
+     */
+    public ManagedRuleSetList managedRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedRules();
+    }
+
+    /**
+     * Set the managedRules property: Describes managed rules inside the policy.
+     *
+     * @param managedRules the managedRules value to set.
+     * @return the CdnWebApplicationFirewallPolicyInner object itself.
+     */
+    public CdnWebApplicationFirewallPolicyInner withManagedRules(ManagedRuleSetList managedRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CdnWebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withManagedRules(managedRules);
+        return this;
+    }
+
+    /**
+     * Get the endpointLinks property: Describes Azure CDN endpoints associated with this Web Application Firewall
+     * policy.
+     *
+     * @return the endpointLinks value.
+     */
+    public List<EndpointResource> endpointLinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointLinks();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the WebApplicationFirewallPolicy.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the policy.
+     *
+     * @return the resourceState value.
+     */
+    public PolicyResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() == null) {
             throw logger
                 .logExceptionAsError(
@@ -277,24 +262,6 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
                         "Missing required property sku in model CdnWebApplicationFirewallPolicyInner"));
         } else {
             sku().validate();
-        }
-        if (policySettings() != null) {
-            policySettings().validate();
-        }
-        if (rateLimitRules() != null) {
-            rateLimitRules().validate();
-        }
-        if (customRules() != null) {
-            customRules().validate();
-        }
-        if (managedRules() != null) {
-            managedRules().validate();
-        }
-        if (endpointLinks() != null) {
-            endpointLinks().forEach(e -> e.validate());
-        }
-        if (systemData() != null) {
-            systemData().validate();
         }
     }
 }

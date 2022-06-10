@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The client access policy. */
 @Fluent
 public final class CrossSiteAccessPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CrossSiteAccessPolicies.class);
-
     /*
      * The content of clientaccesspolicy.xml used by Silverlight.
      */

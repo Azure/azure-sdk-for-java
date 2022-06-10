@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagecache.fluent.StorageTargetsClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StorageTargetsClient. */
 public final class StorageTargetsClientImpl implements StorageTargetsClient {
-    private final ClientLogger logger = new ClientLogger(StorageTargetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StorageTargetsService service;
 
@@ -170,7 +167,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> dnsRefreshWithResponseAsync(
@@ -226,7 +223,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> dnsRefreshWithResponseAsync(
@@ -278,16 +275,17 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDnsRefreshAsync(
         String resourceGroupName, String cacheName, String storageTargetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             dnsRefreshWithResponseAsync(resourceGroupName, cacheName, storageTargetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -301,9 +299,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDnsRefreshAsync(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         context = this.client.mergeContext(context);
@@ -324,9 +322,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName) {
         return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
@@ -343,9 +341,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         return beginDnsRefreshAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
@@ -361,7 +359,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> dnsRefreshAsync(String resourceGroupName, String cacheName, String storageTargetName) {
@@ -381,7 +379,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> dnsRefreshAsync(
@@ -433,7 +431,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTargetInner>> listByCacheSinglePageAsync(
@@ -492,7 +490,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTargetInner>> listByCacheSinglePageAsync(
@@ -547,7 +545,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTargetInner> listByCacheAsync(String resourceGroupName, String cacheName) {
@@ -566,7 +564,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTargetInner> listByCacheAsync(
@@ -585,7 +583,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTargetInner> listByCache(String resourceGroupName, String cacheName) {
@@ -602,7 +600,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTargetInner> listByCache(String resourceGroupName, String cacheName, Context context) {
@@ -624,7 +622,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -686,7 +684,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -744,16 +742,17 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String cacheName, String storageTargetName, String force) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, cacheName, storageTargetName, force);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -772,9 +771,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
         context = this.client.mergeContext(context);
@@ -800,9 +799,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cacheName, String storageTargetName, String force) {
         return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force).getSyncPoller();
@@ -824,9 +823,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cacheName, String storageTargetName, String force, Context context) {
         return beginDeleteAsync(resourceGroupName, cacheName, storageTargetName, force, context).getSyncPoller();
@@ -847,7 +846,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String storageTargetName, String force) {
@@ -869,7 +868,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String storageTargetName) {
@@ -895,7 +894,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -979,7 +978,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageTargetInner>> getWithResponseAsync(
@@ -1035,7 +1034,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageTargetInner>> getWithResponseAsync(
@@ -1087,7 +1086,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageTargetInner> getAsync(String resourceGroupName, String cacheName, String storageTargetName) {
@@ -1130,7 +1129,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageTargetInner> getWithResponse(
@@ -1150,7 +1149,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1212,7 +1211,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -1274,9 +1273,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return the {@link PollerFlux} for polling of type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cacheName, String storageTargetName, StorageTargetInner storagetarget) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1284,7 +1283,11 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
         return this
             .client
             .<StorageTargetInner, StorageTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StorageTargetInner.class, StorageTargetInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                StorageTargetInner.class,
+                StorageTargetInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1300,9 +1303,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return the {@link PollerFlux} for polling of type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String cacheName,
@@ -1330,9 +1333,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return the {@link SyncPoller} for polling of type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, String storageTargetName, StorageTargetInner storagetarget) {
         return beginCreateOrUpdateAsync(resourceGroupName, cacheName, storageTargetName, storagetarget).getSyncPoller();
@@ -1351,9 +1354,9 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return the {@link SyncPoller} for polling of type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String cacheName,
@@ -1376,7 +1379,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageTargetInner> createOrUpdateAsync(
@@ -1397,7 +1400,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageTargetInner> createOrUpdateAsync(
@@ -1421,7 +1424,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return type of the Storage Target.
+     * @return type of the Storage Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageTargetInner> createOrUpdateAsync(
@@ -1506,7 +1509,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTargetInner>> listByCacheNextSinglePageAsync(String nextLink) {
@@ -1542,7 +1545,7 @@ public final class StorageTargetsClientImpl implements StorageTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Storage Targets.
+     * @return a list of Storage Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTargetInner>> listByCacheNextSinglePageAsync(String nextLink, Context context) {

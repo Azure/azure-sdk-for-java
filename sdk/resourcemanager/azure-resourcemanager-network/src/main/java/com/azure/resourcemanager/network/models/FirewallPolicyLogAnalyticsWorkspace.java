@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log Analytics Workspace for Firewall Policy Insights. */
 @Fluent
 public final class FirewallPolicyLogAnalyticsWorkspace {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyLogAnalyticsWorkspace.class);
-
     /*
      * Region to configure the Workspace.
      */

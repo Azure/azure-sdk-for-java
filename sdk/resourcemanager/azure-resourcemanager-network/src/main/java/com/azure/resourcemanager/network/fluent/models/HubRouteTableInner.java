@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubRoute;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** RouteTable resource in a virtual hub. */
 @Fluent
 public final class HubRouteTableInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubRouteTableInner.class);
-
     /*
      * Properties of the RouteTable resource.
      */

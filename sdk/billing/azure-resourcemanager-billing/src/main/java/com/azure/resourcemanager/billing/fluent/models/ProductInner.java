@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
@@ -18,144 +17,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A product. */
-@JsonFlatten
 @Fluent
-public class ProductInner extends ProxyResource {
+public final class ProductInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductInner.class);
 
     /*
-     * Indicates whether auto renewal is turned on or off for a product.
+     * The properties of a product.
      */
-    @JsonProperty(value = "properties.autoRenew")
-    private AutoRenew autoRenew;
+    @JsonProperty(value = "properties")
+    private ProductProperties innerProperties;
 
-    /*
-     * The display name of the product.
+    /**
+     * Get the innerProperties property: The properties of a product.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * The date when the product was purchased.
-     */
-    @JsonProperty(value = "properties.purchaseDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime purchaseDate;
-
-    /*
-     * The ID of the type of product.
-     */
-    @JsonProperty(value = "properties.productTypeId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productTypeId;
-
-    /*
-     * The description of the type of product.
-     */
-    @JsonProperty(value = "properties.productType", access = JsonProperty.Access.WRITE_ONLY)
-    private String productType;
-
-    /*
-     * The current status of the product.
-     */
-    @JsonProperty(value = "properties.status")
-    private ProductStatusType status;
-
-    /*
-     * The date when the product will be renewed or canceled.
-     */
-    @JsonProperty(value = "properties.endDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endDate;
-
-    /*
-     * The frequency at which the product will be billed.
-     */
-    @JsonProperty(value = "properties.billingFrequency")
-    private BillingFrequency billingFrequency;
-
-    /*
-     * The last month charges.
-     */
-    @JsonProperty(value = "properties.lastCharge", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount lastCharge;
-
-    /*
-     * The date of the last charge.
-     */
-    @JsonProperty(value = "properties.lastChargeDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastChargeDate;
-
-    /*
-     * The quantity purchased for the product.
-     */
-    @JsonProperty(value = "properties.quantity", access = JsonProperty.Access.WRITE_ONLY)
-    private Float quantity;
-
-    /*
-     * The sku ID of the product.
-     */
-    @JsonProperty(value = "properties.skuId", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuId;
-
-    /*
-     * The sku description of the product.
-     */
-    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuDescription;
-
-    /*
-     * The id of the tenant in which the product is used.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * The availability of the product.
-     */
-    @JsonProperty(value = "properties.availabilityId", access = JsonProperty.Access.WRITE_ONLY)
-    private String availabilityId;
-
-    /*
-     * The ID of the invoice section to which the product is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * The name of the invoice section to which the product is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * The ID of the billing profile to which the product is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile to which the product is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The ID of the customer for whom the product was purchased. The field is
-     * applicable only for Microsoft Partner Agreement billing account.
-     */
-    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * The name of the customer for whom the product was purchased. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     */
-    @JsonProperty(value = "properties.customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerDisplayName;
-
-    /*
-     * Reseller for this product.
-     */
-    @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
-    private Reseller reseller;
+    private ProductProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the autoRenew property: Indicates whether auto renewal is turned on or off for a product.
@@ -163,7 +42,7 @@ public class ProductInner extends ProxyResource {
      * @return the autoRenew value.
      */
     public AutoRenew autoRenew() {
-        return this.autoRenew;
+        return this.innerProperties() == null ? null : this.innerProperties().autoRenew();
     }
 
     /**
@@ -173,7 +52,10 @@ public class ProductInner extends ProxyResource {
      * @return the ProductInner object itself.
      */
     public ProductInner withAutoRenew(AutoRenew autoRenew) {
-        this.autoRenew = autoRenew;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductProperties();
+        }
+        this.innerProperties().withAutoRenew(autoRenew);
         return this;
     }
 
@@ -183,7 +65,7 @@ public class ProductInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -192,7 +74,7 @@ public class ProductInner extends ProxyResource {
      * @return the purchaseDate value.
      */
     public OffsetDateTime purchaseDate() {
-        return this.purchaseDate;
+        return this.innerProperties() == null ? null : this.innerProperties().purchaseDate();
     }
 
     /**
@@ -201,7 +83,7 @@ public class ProductInner extends ProxyResource {
      * @return the productTypeId value.
      */
     public String productTypeId() {
-        return this.productTypeId;
+        return this.innerProperties() == null ? null : this.innerProperties().productTypeId();
     }
 
     /**
@@ -210,7 +92,7 @@ public class ProductInner extends ProxyResource {
      * @return the productType value.
      */
     public String productType() {
-        return this.productType;
+        return this.innerProperties() == null ? null : this.innerProperties().productType();
     }
 
     /**
@@ -219,7 +101,7 @@ public class ProductInner extends ProxyResource {
      * @return the status value.
      */
     public ProductStatusType status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -229,7 +111,10 @@ public class ProductInner extends ProxyResource {
      * @return the ProductInner object itself.
      */
     public ProductInner withStatus(ProductStatusType status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -239,7 +124,7 @@ public class ProductInner extends ProxyResource {
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
-        return this.endDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endDate();
     }
 
     /**
@@ -248,7 +133,7 @@ public class ProductInner extends ProxyResource {
      * @return the billingFrequency value.
      */
     public BillingFrequency billingFrequency() {
-        return this.billingFrequency;
+        return this.innerProperties() == null ? null : this.innerProperties().billingFrequency();
     }
 
     /**
@@ -258,7 +143,10 @@ public class ProductInner extends ProxyResource {
      * @return the ProductInner object itself.
      */
     public ProductInner withBillingFrequency(BillingFrequency billingFrequency) {
-        this.billingFrequency = billingFrequency;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProductProperties();
+        }
+        this.innerProperties().withBillingFrequency(billingFrequency);
         return this;
     }
 
@@ -268,7 +156,7 @@ public class ProductInner extends ProxyResource {
      * @return the lastCharge value.
      */
     public Amount lastCharge() {
-        return this.lastCharge;
+        return this.innerProperties() == null ? null : this.innerProperties().lastCharge();
     }
 
     /**
@@ -277,7 +165,7 @@ public class ProductInner extends ProxyResource {
      * @return the lastChargeDate value.
      */
     public OffsetDateTime lastChargeDate() {
-        return this.lastChargeDate;
+        return this.innerProperties() == null ? null : this.innerProperties().lastChargeDate();
     }
 
     /**
@@ -286,7 +174,7 @@ public class ProductInner extends ProxyResource {
      * @return the quantity value.
      */
     public Float quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -295,7 +183,7 @@ public class ProductInner extends ProxyResource {
      * @return the skuId value.
      */
     public String skuId() {
-        return this.skuId;
+        return this.innerProperties() == null ? null : this.innerProperties().skuId();
     }
 
     /**
@@ -304,7 +192,7 @@ public class ProductInner extends ProxyResource {
      * @return the skuDescription value.
      */
     public String skuDescription() {
-        return this.skuDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().skuDescription();
     }
 
     /**
@@ -313,7 +201,7 @@ public class ProductInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -322,7 +210,7 @@ public class ProductInner extends ProxyResource {
      * @return the availabilityId value.
      */
     public String availabilityId() {
-        return this.availabilityId;
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityId();
     }
 
     /**
@@ -331,7 +219,7 @@ public class ProductInner extends ProxyResource {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -340,7 +228,7 @@ public class ProductInner extends ProxyResource {
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
-        return this.invoiceSectionDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionDisplayName();
     }
 
     /**
@@ -349,7 +237,7 @@ public class ProductInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -358,7 +246,7 @@ public class ProductInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -368,7 +256,7 @@ public class ProductInner extends ProxyResource {
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -378,7 +266,7 @@ public class ProductInner extends ProxyResource {
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
-        return this.customerDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().customerDisplayName();
     }
 
     /**
@@ -387,7 +275,7 @@ public class ProductInner extends ProxyResource {
      * @return the reseller value.
      */
     public Reseller reseller() {
-        return this.reseller;
+        return this.innerProperties() == null ? null : this.innerProperties().reseller();
     }
 
     /**
@@ -396,11 +284,8 @@ public class ProductInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (lastCharge() != null) {
-            lastCharge().validate();
-        }
-        if (reseller() != null) {
-            reseller().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

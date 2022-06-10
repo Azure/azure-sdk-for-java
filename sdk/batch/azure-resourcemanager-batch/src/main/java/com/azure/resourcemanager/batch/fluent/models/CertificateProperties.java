@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.CertificateBaseProperties;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
 import com.azure.resourcemanager.batch.models.CertificateProvisioningState;
 import com.azure.resourcemanager.batch.models.DeleteCertificateError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Certificate properties. */
 @Fluent
 public final class CertificateProperties extends CertificateBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
-
     /*
      * The provisioningState property.
      */

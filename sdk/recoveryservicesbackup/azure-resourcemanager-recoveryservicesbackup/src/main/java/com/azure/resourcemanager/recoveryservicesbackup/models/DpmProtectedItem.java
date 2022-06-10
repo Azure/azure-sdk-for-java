@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Additional information on Backup engine specific backup item. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
 @JsonTypeName("DPMProtectedItem")
 @Fluent
 public final class DpmProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpmProtectedItem.class);
-
     /*
      * Friendly name of the managed item
      */
@@ -211,6 +208,27 @@ public final class DpmProtectedItem extends ProtectedItem {
     @Override
     public DpmProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DpmProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DpmProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DpmProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

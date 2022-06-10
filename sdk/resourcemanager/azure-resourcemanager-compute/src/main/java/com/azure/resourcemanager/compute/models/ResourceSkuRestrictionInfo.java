@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes an available Compute SKU Restriction Information. */
 @Immutable
 public final class ResourceSkuRestrictionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictionInfo.class);
-
     /*
      * Locations where the SKU is restricted
      */

@@ -14,7 +14,14 @@ import java.util.Locale;
 public class LinkErrorContext extends SessionErrorContext {
     private static final long serialVersionUID = 2581371351997722504L;
 
+    /**
+     * Tracking ID for the error.
+     */
     private final String trackingId;
+
+    /**
+     * Number of link credits the AMQP link had when the error occurred.
+     */
     private final Integer linkCredit;
 
     /**

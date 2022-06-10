@@ -24,6 +24,22 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEv
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -32,6 +48,9 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
@@ -70,6 +89,7 @@ import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEvent
 import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventChannelArchiveHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
@@ -233,6 +253,54 @@ public final class SystemEventMappingNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event. */
     public static final String ACS_SMS_RECEIVED = "Microsoft.Communication.SMSReceived";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event. */
+    public static final String ACS_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event. */
+    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiDeleted event. */
+    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseCreated event. */
+    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseDeleted event. */
+    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseUpdated event. */
+    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiUpdated event. */
+    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductCreated event. */
+    public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductDeleted event. */
+    public static final String API_MANAGEMENT_PRODUCT_DELETED = "Microsoft.ApiManagement.ProductDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductUpdated event. */
+    public static final String API_MANAGEMENT_PRODUCT_UPDATED = "Microsoft.ApiManagement.ProductUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionCreated event. */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_CREATED = "Microsoft.ApiManagement.SubscriptionCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionDeleted event. */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_DELETED = "Microsoft.ApiManagement.SubscriptionDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionUpdated event. */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_UPDATED = "Microsoft.ApiManagement.SubscriptionUpdated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserCreated event. */
+    public static final String API_MANAGEMENT_USER_CREATED = "Microsoft.ApiManagement.UserCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserDeleted event. */
+    public static final String API_MANAGEMENT_USER_DELETED = "Microsoft.ApiManagement.UserDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserUpdated event. */
+    public static final String API_MANAGEMENT_USER_UPDATED = "Microsoft.ApiManagement.UserUpdated";
+
     /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted event. */
     public static final String APP_CONFIGURATION_KEY_VALUE_DELETED = "Microsoft.AppConfiguration.KeyValueDeleted";
 
@@ -260,6 +328,15 @@ public final class SystemEventMappingNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_CREATED = "Microsoft.HealthcareApis.FhirResourceCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_DELETED = "Microsoft.HealthcareApis.FhirResourceDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_UPDATED = "Microsoft.HealthcareApis.FhirResourceUpdated";
 
     /** Event data for Microsoft.Devices.DeviceConnected event. */
     public static final String IOT_HUB_DEVICE_CONNECTED = "Microsoft.Devices.DeviceConnected";
@@ -428,6 +505,13 @@ public final class SystemEventMappingNames {
     public static final String MEDIA_JOB_STATE_CHANGE = "Microsoft.Media.JobStateChange";
 
     /**
+     * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
+     * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
+     */
+    public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
+        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
+
+    /**
      * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventConnectionRejected event.
      */
@@ -450,31 +534,31 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED =
-            "Microsoft.Media.LiveEventIncomingDataChunkDropped";
+        "Microsoft.Media.LiveEventIncomingDataChunkDropped";
 
     /**
      * Encoder connect event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamReceived event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED =
-            "Microsoft.Media.LiveEventIncomingStreamReceived";
+        "Microsoft.Media.LiveEventIncomingStreamReceived";
 
     /**
      * Incoming streams out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC =
-            "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
+        "Microsoft.Media.LiveEventIncomingStreamsOutOfSync";
 
     /**
-     * Incoming video stream out of synch event data. Schema of the data property of an EventGridEvent for a
+     * Incoming video stream out of sync event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync event.
      */
     public static final String MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC =
-            "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
+        "Microsoft.Media.LiveEventIncomingVideoStreamsOutOfSync";
 
     /**
-     * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
+     * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
      * Microsoft.Media.LiveEventIngestHeartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT = "Microsoft.Media.LiveEventIngestHeartbeat";
@@ -484,7 +568,7 @@ public final class SystemEventMappingNames {
      * Microsoft.Media.LiveEventTrackDiscontinuityDetected event.
      */
     public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED =
-            "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
+        "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.PolicyInsights.PolicyStateChanged event. */
     public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
@@ -706,6 +790,22 @@ public final class SystemEventMappingNames {
                     put(ACS_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
                     put(ACS_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(ACS_SMS_RECEIVED, AcsSmsReceivedEventData.class);
+                    put(ACS_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
+                    put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
+                    put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
+                    put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
+                    put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
+                    put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
+                    put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
+                    put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
+                    put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);
+                    put(API_MANAGEMENT_PRODUCT_UPDATED, ApiManagementProductUpdatedEventData.class);
+                    put(API_MANAGEMENT_SUBSCRIPTION_CREATED, ApiManagementSubscriptionCreatedEventData.class);
+                    put(API_MANAGEMENT_SUBSCRIPTION_DELETED, ApiManagementSubscriptionDeletedEventData.class);
+                    put(API_MANAGEMENT_SUBSCRIPTION_UPDATED, ApiManagementSubscriptionUpdatedEventData.class);
+                    put(API_MANAGEMENT_USER_CREATED, ApiManagementUserCreatedEventData.class);
+                    put(API_MANAGEMENT_USER_DELETED, ApiManagementUserDeletedEventData.class);
+                    put(API_MANAGEMENT_USER_UPDATED, ApiManagementUserUpdatedEventData.class);
                     put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
                     put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
                     put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
@@ -716,6 +816,9 @@ public final class SystemEventMappingNames {
                             CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
                             ContainerServiceNewKubernetesVersionAvailableEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
+                    put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
                     put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
                     put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
                     put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
@@ -760,23 +863,26 @@ public final class SystemEventMappingNames {
                     put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
                     put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
                     put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
+                    put(
+                        MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
+                        MediaLiveEventChannelArchiveHeartbeatEventData.class);
                     put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
                     put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
-                            MediaLiveEventIncomingDataChunkDroppedEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
+                        MediaLiveEventIncomingDataChunkDroppedEventData.class);
                     put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
-                            MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
-                            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
+                        MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUT_OF_SYNC,
+                        MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
                     put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
                     put(
-                            MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
-                            MediaLiveEventTrackDiscontinuityDetectedEventData.class);
+                        MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
+                        MediaLiveEventTrackDiscontinuityDetectedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
                     put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);

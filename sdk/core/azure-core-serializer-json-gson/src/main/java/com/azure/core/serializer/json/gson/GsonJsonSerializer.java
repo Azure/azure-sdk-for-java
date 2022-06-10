@@ -28,7 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * GSON based implementation of the {@link JsonSerializer} and {@link MemberNameConverter} interfaces.
  */
 public final class GsonJsonSerializer implements JsonSerializer, MemberNameConverter {
-    private final ClientLogger logger = new ClientLogger(GsonJsonSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GsonJsonSerializer.class);
 
     private final Gson gson;
 
@@ -63,7 +63,7 @@ public final class GsonJsonSerializer implements JsonSerializer, MemberNameConve
         try {
             writer.flush();
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 

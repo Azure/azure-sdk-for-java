@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-sdk-template</artifactId>
-  <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+  <version>1.2.2-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
 
   <name>Microsoft Azure SDK for Template</name>
   <description>This package contains Microsoft Azure SDK for Template.</description>
@@ -34,31 +34,31 @@
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
 
     <!-- If skipping test coverage is absolutely necessary, for example resources cannot be provisioned uncomment this -->
-    <!--<jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>-->
+    <!--<jacoco.skip>false</jacoco.skip>-->
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -7,8 +7,17 @@ package com.azure.spring.cloud.config.health;
  */
 public enum AppConfigurationStoreHealth {
     
+    /**
+     * Last connection attempt to Configuration Store succeeded.
+     */
     UP,
+    /**
+     * Last connection attempt to Configuration Store failed.
+     */
     DOWN,
+    /**
+     * Configuration Store isn't loaded.
+     */
     NOT_LOADED
 
 }

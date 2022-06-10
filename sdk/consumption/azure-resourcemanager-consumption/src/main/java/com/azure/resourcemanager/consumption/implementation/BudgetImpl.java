@@ -35,6 +35,10 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public CategoryType category() {
         return this.innerModel().category();
     }
@@ -70,10 +74,6 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
 
     public ForecastSpend forecastSpend() {
         return this.innerModel().forecastSpend();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public BudgetInner innerModel() {
@@ -168,6 +168,11 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
         return this;
     }
 
+    public BudgetImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
+        return this;
+    }
+
     public BudgetImpl withCategory(CategoryType category) {
         this.innerModel().withCategory(category);
         return this;
@@ -195,11 +200,6 @@ public final class BudgetImpl implements Budget, Budget.Definition, Budget.Updat
 
     public BudgetImpl withNotifications(Map<String, Notification> notifications) {
         this.innerModel().withNotifications(notifications);
-        return this;
-    }
-
-    public BudgetImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
         return this;
     }
 }

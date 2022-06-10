@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
@@ -10,9 +11,11 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.common.PropertyLoader;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
@@ -48,7 +51,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Flux;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -117,24 +124,23 @@ public class CosmosTemplateIT {
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
-
-            final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
             containerName = personInfo.getContainerName();
-
-            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-
-            final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext,
-                null);
-
-            cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
+            cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
                                                           GenIdEntity.class, AuditableEntity.class);
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
+    }
+
+    private CosmosTemplate createCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
+        final CosmosFactory cosmosFactory = new CosmosFactory(client, dbName);
+        final CosmosMappingContext mappingContext = new CosmosMappingContext();
+        mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+        final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
+        return new CosmosTemplate(cosmosFactory, config, cosmosConverter);
     }
 
     private void insertPerson(Person person) {
@@ -149,7 +155,8 @@ public class CosmosTemplateIT {
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
             fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException() instanceof ConflictException);
+            assertThat(ex.getCosmosException()).isInstanceOf(ConflictException.class);
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }
 
@@ -190,6 +197,7 @@ public class CosmosTemplateIT {
         final Person nullResult = cosmosTemplate.findById(Person.class.getSimpleName(),
             NOT_EXIST_ID, Person.class);
         assertThat(nullResult).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -219,7 +227,7 @@ public class CosmosTemplateIT {
 
         final String firstName = NEW_FIRST_NAME
             + "_"
-            + UUID.randomUUID().toString();
+            + UUID.randomUUID();
         final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null, null,
             AGE, PASSPORT_IDS_BY_COUNTRY);
 
@@ -276,6 +284,7 @@ public class CosmosTemplateIT {
             final Throwable cosmosClientException = e.getCosmosException();
             assertThat(cosmosClientException).isInstanceOf(CosmosException.class);
             assertThat(cosmosClientException.getMessage()).contains(PRECONDITION_IS_NOT_MET);
+            assertThat(responseDiagnosticsTestUtils.getDiagnostics()).isNotNull();
 
             final Person unmodifiedPerson = cosmosTemplate.findById(Person.class.getSimpleName(),
                 TEST_PERSON.getId(), Person.class);
@@ -645,6 +654,26 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
+    @Test
+    public void testRunSliceQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
+        final Slice<Person> slice = cosmosTemplate.runSliceQuery(sqlQuerySpec, pageRequest, Person.class, Person.class);
+        assertThat(slice.getContent().size()).isEqualTo(1);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
 
     @Test
     public void createWithAutoscale() throws ClassNotFoundException {
@@ -660,4 +689,76 @@ public class CosmosTemplateIT {
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
     }
+
+    @Test
+    public void createDatabaseWithThroughput() throws ClassNotFoundException {
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-configured-throughput";
+        deleteDatabaseIfExists(configuredThroughputDbName);
+
+        Integer expectedRequestUnits = 700;
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableDatabaseThroughput(false, expectedRequestUnits)
+            .build();
+        final CosmosTemplate configuredThroughputCosmosTemplate = createCosmosTemplate(config, configuredThroughputDbName);
+
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo);
+
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
+        final ThroughputResponse response = database.readThroughput().block();
+        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+    }
+
+    @Test
+    public void queryWithMaxDegreeOfParallelism() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .maxDegreeOfParallelism(20)
+            .build();
+        final CosmosTemplate maxDegreeOfParallelismCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = maxDegreeOfParallelismCosmosTemplate.count(query, containerName);
+
+        assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableQueryMetrics(true)
+            .build();
+        final CosmosTemplate queryMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = queryMetricsEnabledCosmosTemplate.count(query, containerName);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
+    }
+
+    @Test
+    public void userAgentSpringDataCosmosSuffix() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //  getUserAgentSuffix method from CosmosClientBuilder
+        Method getUserAgentSuffix = CosmosClientBuilder.class.getDeclaredMethod("getUserAgentSuffix");
+        getUserAgentSuffix.setAccessible(true);
+        String userAgentSuffix = (String) getUserAgentSuffix.invoke(cosmosClientBuilder);
+        assertThat(userAgentSuffix).contains(Constants.USER_AGENT_SUFFIX);
+        assertThat(userAgentSuffix).contains(PropertyLoader.getProjectVersion());
+    }
+
+    private void deleteDatabaseIfExists(String dbName) {
+        CosmosAsyncDatabase database = client.getDatabase(dbName);
+        try {
+            database.delete().block();
+        } catch (CosmosException ex) {
+            assertEquals(ex.getStatusCode(), 404);
+        }
+    }
+
 }

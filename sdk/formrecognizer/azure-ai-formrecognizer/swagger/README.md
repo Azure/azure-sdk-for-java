@@ -5,7 +5,7 @@
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
+git checkout v4
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/181d0d178029b86140802835d11b0e47318a43e9/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-06-30-preview/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRONLXHQWPPCNNJOISMYUXZFBA
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -32,25 +32,19 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: LengthUnit
 service-interface-as-public: true
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
-### Add multiple service API support
-This is better to fixed in the swagger, but we are working around now.
-```yaml
+### Change GetOperationResponse result from Object to ModelInfo
+
+``` yaml $(java)
 directive:
-- from: swagger-document
-  where: $["x-ms-parameterized-host"]
-  transform: >
-    $.hostTemplate = "{endpoint}/formrecognizer/{ApiVersion}";
-    $.parameters.push({
-      "name": "ApiVersion",
-      "description": "Form Recognizer API version.",
-      "x-ms-parameter-location": "client",
-      "required": true,
-      "type": "string",
-      "in": "path",
-      "x-ms-skip-url-encoding": true
-    });
+  - from: swagger-document
+    where: $.definitions.GetOperationResponse
+    transform: >
+      delete $.properties.result.type;
+      $.properties.result["$ref"] = "#/definitions/ModelInfo"; 
 ```
+

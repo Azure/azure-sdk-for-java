@@ -8,13 +8,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
-import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Grammar is a super set of this RFC: https://tools.ietf.org/html/rfc6902#section-4.1
@@ -45,13 +44,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *  </code>
  *
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosPatchOperations {
 
     private final List<PatchOperation> patchOperations;
 
     private CosmosPatchOperations() {
-        this.patchOperations = new ArrayList<>();
+        this.patchOperations = Collections.synchronizedList(new ArrayList<>());
     }
 
     /**
@@ -59,7 +57,6 @@ public final class CosmosPatchOperations {
      *
      * @return A new instance of {@link CosmosPatchOperations}.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosPatchOperations create() {
         return new CosmosPatchOperations();
     }
@@ -88,10 +85,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations add(String path, T value) {
-
-        checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
         this.patchOperations.add(
@@ -119,7 +113,6 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations remove(String path) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -152,7 +145,6 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations replace(String path, T value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -186,10 +178,8 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations set(String path, T value) {
 
-        checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
         this.patchOperations.add(
@@ -220,7 +210,6 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations increment(String path, long value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -253,7 +242,6 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations increment(String path, double value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -267,22 +255,22 @@ public final class CosmosPatchOperations {
         return this;
     }
 
+    // NOTE returning this patchOperations means any
+    // modifications - like adding new entries is still
+    // thread-safe - but enumerating over the collection is not
+    // unless synchronized
     List<PatchOperation> getPatchOperations() {
-        return patchOperations;
+        return this.patchOperations;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPatchOperationsHelper.setCosmosPatchOperationsAccessor(
-            new ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor() {
-                @Override
-                public List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations) {
-                    return cosmosPatchOperations.getPatchOperations();
-                }
-            }
+            cosmosPatchOperations -> cosmosPatchOperations.getPatchOperations()
         );
     }
+
+    static { initialize(); }
 }

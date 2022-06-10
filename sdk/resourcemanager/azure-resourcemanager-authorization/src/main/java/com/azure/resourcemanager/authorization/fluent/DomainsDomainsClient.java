@@ -10,9 +10,11 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainExpand;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainOrderby;
-import com.azure.resourcemanager.authorization.fluent.models.DomainsDomainSelect;
+import com.azure.resourcemanager.authorization.fluent.models.Get1ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get5ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get6ItemsItem;
+import com.azure.resourcemanager.authorization.fluent.models.Get7ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDomainInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -34,7 +36,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphDomainInner> listDomainAsync(
@@ -43,9 +45,9 @@ public interface DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand);
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand);
 
     /**
      * Get entities from domains.
@@ -53,7 +55,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphDomainInner> listDomainAsync();
@@ -64,7 +66,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphDomainInner> listDomain();
@@ -85,7 +87,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from domains.
+     * @return entities from domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphDomainInner> listDomain(
@@ -94,9 +96,9 @@ public interface DomainsDomainsClient {
         String search,
         String filter,
         Boolean count,
-        List<DomainsDomainOrderby> orderby,
-        List<DomainsDomainSelect> select,
-        List<DomainsDomainExpand> expand,
+        List<Get5ItemsItem> orderby,
+        List<Get6ItemsItem> select,
+        List<Get7ItemsItem> expand,
         Context context);
 
     /**
@@ -107,7 +109,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphDomainInner>> createDomainWithResponseAsync(MicrosoftGraphDomainInner body);
@@ -120,7 +122,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphDomainInner> createDomainAsync(MicrosoftGraphDomainInner body);
@@ -147,7 +149,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain.
+     * @return domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphDomainInner> createDomainWithResponse(MicrosoftGraphDomainInner body, Context context);
@@ -162,11 +164,11 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphDomainInner>> getDomainWithResponseAsync(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand);
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand);
 
     /**
      * Get entity from domains by key.
@@ -178,11 +180,11 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphDomainInner> getDomainAsync(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand);
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand);
 
     /**
      * Get entity from domains by key.
@@ -192,7 +194,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphDomainInner> getDomainAsync(String domainId);
@@ -221,11 +223,11 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from domains by key.
+     * @return entity from domains by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphDomainInner> getDomainWithResponse(
-        String domainId, List<DomainsDomainSelect> select, List<DomainsDomainExpand> expand, Context context);
+        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand, Context context);
 
     /**
      * Update entity in domains.
@@ -236,7 +238,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> updateDomainWithResponseAsync(String domainId, MicrosoftGraphDomainInner body);
@@ -250,7 +252,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> updateDomainAsync(String domainId, MicrosoftGraphDomainInner body);
@@ -278,7 +280,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateDomainWithResponse(String domainId, MicrosoftGraphDomainInner body, Context context);
@@ -292,7 +294,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteDomainWithResponseAsync(String domainId, String ifMatch);
@@ -306,7 +308,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteDomainAsync(String domainId, String ifMatch);
@@ -319,7 +321,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteDomainAsync(String domainId);
@@ -346,7 +348,7 @@ public interface DomainsDomainsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteDomainWithResponse(String domainId, String ifMatch, Context context);

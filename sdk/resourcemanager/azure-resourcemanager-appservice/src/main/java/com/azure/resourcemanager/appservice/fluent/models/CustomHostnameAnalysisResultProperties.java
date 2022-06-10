@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DnsVerificationTestResult;
 import com.azure.resourcemanager.appservice.models.ErrorEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** CustomHostnameAnalysisResult resource specific properties. */
 @Fluent
 public final class CustomHostnameAnalysisResultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomHostnameAnalysisResultProperties.class);
-
     /*
      * <code>true</code> if hostname is already verified; otherwise,
      * <code>false</code>.

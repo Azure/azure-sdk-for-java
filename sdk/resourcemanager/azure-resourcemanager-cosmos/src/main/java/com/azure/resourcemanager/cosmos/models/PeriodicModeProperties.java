@@ -26,6 +26,12 @@ public final class PeriodicModeProperties {
     @JsonProperty(value = "backupRetentionIntervalInHours")
     private Integer backupRetentionIntervalInHours;
 
+    /*
+     * Enum to indicate type of backup residency
+     */
+    @JsonProperty(value = "backupStorageRedundancy")
+    private BackupStorageRedundancy backupStorageRedundancy;
+
     /**
      * Get the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
      *
@@ -65,6 +71,26 @@ public final class PeriodicModeProperties {
      */
     public PeriodicModeProperties withBackupRetentionIntervalInHours(Integer backupRetentionIntervalInHours) {
         this.backupRetentionIntervalInHours = backupRetentionIntervalInHours;
+        return this;
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: Enum to indicate type of backup residency.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.backupStorageRedundancy;
+    }
+
+    /**
+     * Set the backupStorageRedundancy property: Enum to indicate type of backup residency.
+     *
+     * @param backupStorageRedundancy the backupStorageRedundancy value to set.
+     * @return the PeriodicModeProperties object itself.
+     */
+    public PeriodicModeProperties withBackupStorageRedundancy(BackupStorageRedundancy backupStorageRedundancy) {
+        this.backupStorageRedundancy = backupStorageRedundancy;
         return this;
     }
 

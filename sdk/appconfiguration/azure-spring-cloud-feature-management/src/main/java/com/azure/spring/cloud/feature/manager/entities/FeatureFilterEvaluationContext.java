@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.LinkedHashMap;
 
+/**
+ * Context passed into Feature Filters used for evaluation.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureFilterEvaluationContext {
 

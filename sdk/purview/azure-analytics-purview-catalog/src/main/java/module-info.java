@@ -4,7 +4,6 @@
 
 module com.azure.analytics.purview.catalog {
     requires transitive com.azure.core;
-    requires transitive com.azure.core.experimental;
 
     exports com.azure.analytics.purview.catalog;
 }

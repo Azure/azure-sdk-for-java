@@ -17,11 +17,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -46,8 +50,10 @@ public class StorageImplUtils {
     private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
 
     private static final String STRING_TO_SIGN_LOG_INFO_MESSAGE = "The string to sign computed by the SDK is: {}{}";
+
     private static final String STRING_TO_SIGN_LOG_WARNING_MESSAGE = "Please remember to disable '{}' before going "
         + "to production as this string can potentially contain PII.";
+
     private static final String STORAGE_EXCEPTION_LOG_STRING_TO_SIGN_MESSAGE = String.format(
         "If you are using a StorageSharedKeyCredential, and the server returned an "
             + "error message that says 'Signature did not match', you can compare the string to sign with"
@@ -61,6 +67,63 @@ public class StorageImplUtils {
             + "contain PII.%n",
         Constants.STORAGE_LOG_STRING_TO_SIGN, Constants.STORAGE_LOG_STRING_TO_SIGN,
         Constants.STORAGE_LOG_STRING_TO_SIGN);
+
+    /**
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
+
+    /**
+     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+
+    /**
+     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
+            .length();
+
+    /**
+     * Stores a reference to the ISO8601 date/time pattern.
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+    /**
+     * Stores a reference to the ISO8601 date/time pattern.
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
+
+    /**
+     * A compiled Pattern that finds 'Z'. This is used as Java 8's String.replace method uses Pattern.compile
+     * internally without simple case opt-outs.
+     * @deprecated See value in {@link StorageImplUtils}
+     */
+    @Deprecated
+    public static final Pattern Z_PATTERN = Pattern.compile("Z");
+
+    // Use constant DateTimeFormatters as 'ofPattern' requires the passed pattern to be parsed each time, significantly
+    // increasing the overhead of using DateTimeFormatter.
+    private static final DateTimeFormatter MAX_PRECISION_FORMATTER = DateTimeFormatter.ofPattern(MAX_PRECISION_PATTERN)
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern(ISO8601_PATTERN)
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter NO_SECONDS_FORMATTER = DateTimeFormatter
+        .ofPattern(ISO8601_PATTERN_NO_SECONDS)
+        .withLocale(Locale.ROOT);
+
+    private static final Pattern EMPTY_BODY_ERROR_PATTERN = Pattern.compile("\\(empty body\\)");
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -322,9 +385,52 @@ public class StorageImplUtils {
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
-                return message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE));
+                // Use a constant compiled Pattern as the match pattern is always the same and String.replaceFirst
+                // will compile the match String into a Pattern internally on each call.
+                return EMPTY_BODY_ERROR_PATTERN.matcher(message)
+                    .replaceFirst(response.getHeaders().getValue(ERROR_CODE));
             }
         }
         return message;
+    }
+
+    /**
+     * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
+     * millisecond precision.
+     *
+     * @param dateString the {@code String} to be interpreted as a <code>Date</code>
+     * @return the corresponding <code>Date</code> object
+     * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
+     */
+    public static TimeAndFormat parseDateAndFormat(String dateString) {
+        DateTimeFormatter formatter = MAX_PRECISION_FORMATTER;
+        switch (dateString.length()) {
+            case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
+            case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
+            case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
+            case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
+            case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
+                dateString = dateString.substring(0, MAX_PRECISION_DATESTRING_LENGTH);
+                break;
+            case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
+                // SS is assumed to be milliseconds, so a trailing 0 is necessary
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("0");
+                break;
+            case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
+                // S is assumed to be milliseconds, so trailing 0's are necessary
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
+                break;
+            case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
+                formatter = ISO8601_FORMATTER;
+                break;
+            case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
+                formatter = NO_SECONDS_FORMATTER;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
+        }
+
+        return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
+            formatter);
     }
 }

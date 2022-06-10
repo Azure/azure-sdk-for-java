@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
@@ -18,52 +17,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * An output object, containing all information associated with the named output. All outputs are contained under a
  * streaming job.
  */
-@JsonFlatten
 @Fluent
-public class OutputInner extends SubResource {
+public final class OutputInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputInner.class);
 
     /*
-     * Describes the data source that output will be written to. Required on
-     * PUT (CreateOrReplace) requests.
+     * The properties that are associated with an output. Required on PUT
+     * (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.datasource")
-    private OutputDataSource datasource;
-
-    /*
-     * The timeWindow property.
-     */
-    @JsonProperty(value = "properties.timeWindow")
-    private String timeWindow;
-
-    /*
-     * The sizeWindow property.
-     */
-    @JsonProperty(value = "properties.sizeWindow")
-    private Float sizeWindow;
-
-    /*
-     * Describes how data from an input is serialized or how data is serialized
-     * when written to an output. Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.serialization")
-    private Serialization serialization;
-
-    /*
-     * Describes conditions applicable to the Input, Output, or the job
-     * overall, that warrant customer attention.
-     */
-    @JsonProperty(value = "properties.diagnostics", access = JsonProperty.Access.WRITE_ONLY)
-    private Diagnostics diagnostics;
-
-    /*
-     * The current entity tag for the output. This is an opaque string. You can
-     * use it to detect whether the resource has changed between requests. You
-     * can also use it in the If-Match or If-None-Match headers for write
-     * operations for optimistic concurrency.
-     */
-    @JsonProperty(value = "properties.etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
+    @JsonProperty(value = "properties")
+    private OutputProperties innerProperties;
 
     /*
      * Resource name
@@ -78,108 +41,13 @@ public class OutputInner extends SubResource {
     private String type;
 
     /**
-     * Get the datasource property: Describes the data source that output will be written to. Required on PUT
+     * Get the innerProperties property: The properties that are associated with an output. Required on PUT
      * (CreateOrReplace) requests.
      *
-     * @return the datasource value.
+     * @return the innerProperties value.
      */
-    public OutputDataSource datasource() {
-        return this.datasource;
-    }
-
-    /**
-     * Set the datasource property: Describes the data source that output will be written to. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param datasource the datasource value to set.
-     * @return the OutputInner object itself.
-     */
-    public OutputInner withDatasource(OutputDataSource datasource) {
-        this.datasource = datasource;
-        return this;
-    }
-
-    /**
-     * Get the timeWindow property: The timeWindow property.
-     *
-     * @return the timeWindow value.
-     */
-    public String timeWindow() {
-        return this.timeWindow;
-    }
-
-    /**
-     * Set the timeWindow property: The timeWindow property.
-     *
-     * @param timeWindow the timeWindow value to set.
-     * @return the OutputInner object itself.
-     */
-    public OutputInner withTimeWindow(String timeWindow) {
-        this.timeWindow = timeWindow;
-        return this;
-    }
-
-    /**
-     * Get the sizeWindow property: The sizeWindow property.
-     *
-     * @return the sizeWindow value.
-     */
-    public Float sizeWindow() {
-        return this.sizeWindow;
-    }
-
-    /**
-     * Set the sizeWindow property: The sizeWindow property.
-     *
-     * @param sizeWindow the sizeWindow value to set.
-     * @return the OutputInner object itself.
-     */
-    public OutputInner withSizeWindow(Float sizeWindow) {
-        this.sizeWindow = sizeWindow;
-        return this;
-    }
-
-    /**
-     * Get the serialization property: Describes how data from an input is serialized or how data is serialized when
-     * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
-     * @return the serialization value.
-     */
-    public Serialization serialization() {
-        return this.serialization;
-    }
-
-    /**
-     * Set the serialization property: Describes how data from an input is serialized or how data is serialized when
-     * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
-     * @param serialization the serialization value to set.
-     * @return the OutputInner object itself.
-     */
-    public OutputInner withSerialization(Serialization serialization) {
-        this.serialization = serialization;
-        return this;
-    }
-
-    /**
-     * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
-     * warrant customer attention.
-     *
-     * @return the diagnostics value.
-     */
-    public Diagnostics diagnostics() {
-        return this.diagnostics;
-    }
-
-    /**
-     * Get the etag property: The current entity tag for the output. This is an opaque string. You can use it to detect
-     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
-     * for write operations for optimistic concurrency.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
+    private OutputProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -219,19 +87,130 @@ public class OutputInner extends SubResource {
     }
 
     /**
+     * Get the datasource property: Describes the data source that output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the datasource value.
+     */
+    public OutputDataSource datasource() {
+        return this.innerProperties() == null ? null : this.innerProperties().datasource();
+    }
+
+    /**
+     * Set the datasource property: Describes the data source that output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @param datasource the datasource value to set.
+     * @return the OutputInner object itself.
+     */
+    public OutputInner withDatasource(OutputDataSource datasource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutputProperties();
+        }
+        this.innerProperties().withDatasource(datasource);
+        return this;
+    }
+
+    /**
+     * Get the timeWindow property: The time frame for filtering Stream Analytics job outputs.
+     *
+     * @return the timeWindow value.
+     */
+    public String timeWindow() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeWindow();
+    }
+
+    /**
+     * Set the timeWindow property: The time frame for filtering Stream Analytics job outputs.
+     *
+     * @param timeWindow the timeWindow value to set.
+     * @return the OutputInner object itself.
+     */
+    public OutputInner withTimeWindow(String timeWindow) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutputProperties();
+        }
+        this.innerProperties().withTimeWindow(timeWindow);
+        return this;
+    }
+
+    /**
+     * Get the sizeWindow property: The size window to constrain a Stream Analytics output to.
+     *
+     * @return the sizeWindow value.
+     */
+    public Float sizeWindow() {
+        return this.innerProperties() == null ? null : this.innerProperties().sizeWindow();
+    }
+
+    /**
+     * Set the sizeWindow property: The size window to constrain a Stream Analytics output to.
+     *
+     * @param sizeWindow the sizeWindow value to set.
+     * @return the OutputInner object itself.
+     */
+    public OutputInner withSizeWindow(Float sizeWindow) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutputProperties();
+        }
+        this.innerProperties().withSizeWindow(sizeWindow);
+        return this;
+    }
+
+    /**
+     * Get the serialization property: Describes how data from an input is serialized or how data is serialized when
+     * written to an output. Required on PUT (CreateOrReplace) requests.
+     *
+     * @return the serialization value.
+     */
+    public Serialization serialization() {
+        return this.innerProperties() == null ? null : this.innerProperties().serialization();
+    }
+
+    /**
+     * Set the serialization property: Describes how data from an input is serialized or how data is serialized when
+     * written to an output. Required on PUT (CreateOrReplace) requests.
+     *
+     * @param serialization the serialization value to set.
+     * @return the OutputInner object itself.
+     */
+    public OutputInner withSerialization(Serialization serialization) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutputProperties();
+        }
+        this.innerProperties().withSerialization(serialization);
+        return this;
+    }
+
+    /**
+     * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
+     * warrant customer attention.
+     *
+     * @return the diagnostics value.
+     */
+    public Diagnostics diagnostics() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnostics();
+    }
+
+    /**
+     * Get the etag property: The current entity tag for the output. This is an opaque string. You can use it to detect
+     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
+     * for write operations for optimistic concurrency.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (datasource() != null) {
-            datasource().validate();
-        }
-        if (serialization() != null) {
-            serialization().validate();
-        }
-        if (diagnostics() != null) {
-            diagnostics().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

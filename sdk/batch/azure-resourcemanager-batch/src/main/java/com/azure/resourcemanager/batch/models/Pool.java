@@ -132,7 +132,7 @@ public interface Pool {
     Integer currentDedicatedNodes();
 
     /**
-     * Gets the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
+     * Gets the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */

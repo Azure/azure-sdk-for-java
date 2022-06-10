@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MigrateMySqlStatus resource specific properties. */
 @Immutable
 public final class MigrateMySqlStatusProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMySqlStatusProperties.class);
-
     /*
      * Status of the migration task.
      */

@@ -461,7 +461,7 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
                 this.client.getHttpPipeline(),
                 VirtualNetworkRuleInner.class,
                 VirtualNetworkRuleInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -769,7 +769,8 @@ public final class VirtualNetworkRulesClientImpl implements VirtualNetworkRulesC
             deleteWithResponseAsync(resourceGroupName, serverName, virtualNetworkRuleName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

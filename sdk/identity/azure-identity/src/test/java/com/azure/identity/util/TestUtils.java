@@ -41,27 +41,7 @@ public final class TestUtils {
 
             @Override
             public IAccount account() {
-                return new IAccount() {
-                    @Override
-                    public String homeAccountId() {
-                        return UUID.randomUUID().toString();
-                    }
-
-                    @Override
-                    public String environment() {
-                        return "http://login.microsoftonline.com";
-                    }
-
-                    @Override
-                    public String username() {
-                        return "testuser";
-                    }
-
-                    @Override
-                    public Map<String, ITenantProfile> getTenantProfiles() {
-                        return null;
-                    }
-                };
+                return new Account();
             }
 
             @Override
@@ -131,5 +111,28 @@ public final class TestUtils {
     }
 
     private TestUtils() {
+    }
+
+    static class Account implements IAccount {
+        static final long serialVersionUID = 1L;
+        @Override
+        public String homeAccountId() {
+            return UUID.randomUUID().toString();
+        }
+
+        @Override
+        public String environment() {
+            return "http://login.microsoftonline.com";
+        }
+
+        @Override
+        public String username() {
+            return "testuser";
+        }
+
+        @Override
+        public Map<String, ITenantProfile> getTenantProfiles() {
+            return null;
+        }
     }
 }

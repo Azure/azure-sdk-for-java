@@ -8,12 +8,12 @@
     "Response" : {
       "content-length" : "612",
       "Server" : "Kestrel",
-      "x-ms-maa-service-version" : "1.10.01644.0004",
+      "x-ms-maa-service-version" : "1.10.01762.0007",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-59f5f60a02be28f32f5c62b45b8c6c87-0000000000000000-00",
+      "x-ms-request-id" : "00-cee34a9b36f8618261f7f5c1f34bd19e-0000000000000000-00",
       "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://jalarryoattestationiso.wus.attest.azure.net/revoke\",\"issuer\":\"https://jalarryoattestationiso.wus.attest.azure.net\",\"jwks_uri\":\"https://jalarryoattestationiso.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Mon, 16 Aug 2021 21:27:31 GMT",
+      "Date" : "Tue, 16 Nov 2021 23:11:43 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

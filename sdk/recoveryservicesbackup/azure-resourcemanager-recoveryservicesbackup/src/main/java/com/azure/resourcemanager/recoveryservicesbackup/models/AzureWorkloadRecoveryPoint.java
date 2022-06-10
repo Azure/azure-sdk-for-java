@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -31,8 +30,6 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadRecoveryPoint.class);
-
     /*
      * UTC time at which recovery point was created
      */
@@ -49,12 +46,13 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      * Recovery point tier information.
      */
     @JsonProperty(value = "recoveryPointTierDetails")
-    private List<RecoveryPointTierInformation> recoveryPointTierDetails;
+    private List<RecoveryPointTierInformationV2> recoveryPointTierDetails;
 
     /*
      * Eligibility of RP to be moved to another tier
      */
     @JsonProperty(value = "recoveryPointMoveReadinessInfo")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
 
     /**
@@ -102,7 +100,7 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      *
      * @return the recoveryPointTierDetails value.
      */
-    public List<RecoveryPointTierInformation> recoveryPointTierDetails() {
+    public List<RecoveryPointTierInformationV2> recoveryPointTierDetails() {
         return this.recoveryPointTierDetails;
     }
 
@@ -113,7 +111,7 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      * @return the AzureWorkloadRecoveryPoint object itself.
      */
     public AzureWorkloadRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         this.recoveryPointTierDetails = recoveryPointTierDetails;
         return this;
     }

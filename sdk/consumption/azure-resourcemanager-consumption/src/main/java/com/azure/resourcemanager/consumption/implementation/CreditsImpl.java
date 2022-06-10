@@ -27,8 +27,8 @@ public final class CreditsImpl implements Credits {
         this.serviceManager = serviceManager;
     }
 
-    public CreditSummary get(String scope) {
-        CreditSummaryInner inner = this.serviceClient().get(scope);
+    public CreditSummary get(String billingAccountId, String billingProfileId) {
+        CreditSummaryInner inner = this.serviceClient().get(billingAccountId, billingProfileId);
         if (inner != null) {
             return new CreditSummaryImpl(inner, this.manager());
         } else {
@@ -36,8 +36,9 @@ public final class CreditsImpl implements Credits {
         }
     }
 
-    public Response<CreditSummary> getWithResponse(String scope, Context context) {
-        Response<CreditSummaryInner> inner = this.serviceClient().getWithResponse(scope, context);
+    public Response<CreditSummary> getWithResponse(String billingAccountId, String billingProfileId, Context context) {
+        Response<CreditSummaryInner> inner =
+            this.serviceClient().getWithResponse(billingAccountId, billingProfileId, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

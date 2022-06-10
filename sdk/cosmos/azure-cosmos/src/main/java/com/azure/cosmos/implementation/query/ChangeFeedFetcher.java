@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -21,6 +20,7 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
+class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final DocumentClientRetryPolicy feedRangeContinuationSplitRetryPolicy;
@@ -46,9 +46,10 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         Map<String, Object> requestOptionProperties,
         int top,
         int maxItemCount,
-        boolean isSplitHandlingDisabled) {
+        boolean isSplitHandlingDisabled,
+        OperationContextAndListenerTuple operationContext) {
 
-        super(executeFunc, true, top, maxItemCount);
+        super(executeFunc, true, top, maxItemCount, operationContext);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
@@ -81,7 +82,8 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                 this.changeFeedState,
                 retryPolicyInstance,
                 requestOptionProperties,
-                retryPolicyInstance.getRetryContext());
+                retryPolicyInstance.getRetryContext(),
+                () -> this.getOperationContextText());
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
                 this.feedRangeContinuationSplitRetryPolicy.onBeforeSendRequest(request);
@@ -178,20 +180,26 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         private final Map<String, Object> requestOptionProperties;
         private MetadataDiagnosticsContext diagnosticsContext;
         private final RetryContext retryContext;
+        private final Supplier<String> operationContextTextProvider;
 
         public FeedRangeContinuationSplitRetryPolicy(
             RxDocumentClientImpl client,
             ChangeFeedState state,
             DocumentClientRetryPolicy nextRetryPolicy,
             Map<String, Object> requestOptionProperties,
-            RetryContext retryContext) {
+            RetryContext retryContext,
+            Supplier<String> operationContextTextProvider) {
 
+            checkNotNull(
+                operationContextTextProvider,
+                "Argument 'operationContextTextProvider' must not be null.");
             this.client = client;
             this.state = state;
             this.nextRetryPolicy = nextRetryPolicy;
             this.requestOptionProperties = requestOptionProperties;
             this.diagnosticsContext = null;
             this.retryContext = retryContext;
+            this.operationContextTextProvider = operationContextTextProvider;
         }
 
         @Override
@@ -206,7 +214,10 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
             return this.nextRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
                 if (!shouldRetryResult.shouldRetry) {
                     if (!(e instanceof GoneException)) {
-                        LOGGER.warn("Exception not applicable - will fail the request.", e);
+                        LOGGER.warn(
+                            "Exception not applicable - will fail the request. Context: {}",
+                            this.operationContextTextProvider.get(),
+                            e);
                         return Mono.just(ShouldRetryResult.noRetry());
                     }
 
@@ -222,13 +233,11 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                         );
 
                         return effectiveRangeMono
-                            .map(effectiveRange -> {
-                                return this.state.setContinuation(
-                                    FeedRangeContinuation.create(
-                                        this.state.getContainerRid(),
-                                        this.state.getFeedRange(),
-                                        effectiveRange));
-                            })
+                            .map(effectiveRange -> this.state.setContinuation(
+                                FeedRangeContinuation.create(
+                                    this.state.getContainerRid(),
+                                    this.state.getFeedRange(),
+                                    effectiveRange)))
                             .flatMap(state -> state.getContinuation().handleSplit(client, (GoneException)e));
                     }
 
@@ -238,9 +247,15 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                         .handleSplit(client, (GoneException)e)
                         .flatMap(splitShouldRetryResult -> {
                             if (!splitShouldRetryResult.shouldRetry) {
-                                LOGGER.warn("No partition split error - will fail the request.", e);
+                                LOGGER.warn(
+                                    "No partition split error - will fail the request. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             } else {
-                                LOGGER.debug("HandleSplit will retry.", e);
+                                LOGGER.debug(
+                                    "HandleSplit will retry. Context: {}",
+                                    this.operationContextTextProvider.get(),
+                                    e);
                             }
 
                             return Mono.just(shouldRetryResult);

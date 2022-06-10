@@ -47,7 +47,7 @@ public final class WorkspacesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientWorks")
-    private interface WorkspacesService {
+    public interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -63,13 +63,13 @@ public final class WorkspacesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), apiVersion, accept, context));
     }
 
     /**
@@ -79,12 +79,13 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -92,7 +93,7 @@ public final class WorkspacesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync() {
@@ -114,7 +115,7 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync(Context context) {
@@ -148,7 +149,7 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {

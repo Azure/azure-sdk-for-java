@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/204a211a-c5f4-45f3-a30e-512fb25d1d2c/alerts/query?$maxpagesize=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/126d1470-b500-4ef0-b5c0-47f9ca914a75/alerts/query?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "deb3e2eb-4164-49b0-9b73-7a3dd93cc90e",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0d5f663c-6376-47b6-b334-b37e4624e7a6",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "286468f2-b0ea-4f35-9b84-7459e53c4058",
-      "content-length" : "587",
-      "x-envoy-upstream-service-time" : "107",
+      "x-request-id" : "67000902-1a33-4175-92d3-8bc2667c5317",
+      "content-length" : "443",
+      "x-envoy-upstream-service-time" : "113",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "286468f2-b0ea-4f35-9b84-7459e53c4058",
+      "apim-request-id" : "67000902-1a33-4175-92d3-8bc2667c5317",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"alertId\":\"175434e3400\",\"timestamp\":\"2020-10-20T00:00:00Z\",\"createdTime\":\"2020-10-21T15:54:37.687Z\",\"modifiedTime\":\"2020-10-22T00:03:26.275Z\"},{\"alertId\":\"1753e27d800\",\"timestamp\":\"2020-10-19T00:00:00Z\",\"createdTime\":\"2020-10-21T15:54:37.468Z\",\"modifiedTime\":\"2020-10-21T15:54:37.522Z\"},{\"alertId\":\"17539017c00\",\"timestamp\":\"2020-10-18T00:00:00Z\",\"createdTime\":\"2020-10-21T15:54:37.213Z\",\"modifiedTime\":\"2020-10-21T15:54:37.286Z\"},{\"alertId\":\"17533db2000\",\"timestamp\":\"2020-10-17T00:00:00Z\",\"createdTime\":\"2020-10-21T15:54:36.975Z\",\"modifiedTime\":\"2020-10-21T15:54:37.037Z\"}]}",
-      "Date" : "Tue, 06 Jul 2021 19:51:24 GMT",
+      "Body" : "{\"value\":[{\"alertId\":\"17f9f794800\",\"timestamp\":\"2022-03-19T00:00:00Z\",\"createdTime\":\"2022-04-06T00:25:24.721Z\",\"modifiedTime\":\"2022-04-06T00:29:33.895Z\"},{\"alertId\":\"17f8adfd800\",\"timestamp\":\"2022-03-15T00:00:00Z\",\"createdTime\":\"2022-04-06T00:25:07.018Z\",\"modifiedTime\":\"2022-04-06T00:28:52.754Z\"},{\"alertId\":\"17f85b97c00\",\"timestamp\":\"2022-03-14T00:00:00Z\",\"createdTime\":\"2022-04-06T00:25:06.612Z\",\"modifiedTime\":\"2022-04-06T00:28:51.832Z\"}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

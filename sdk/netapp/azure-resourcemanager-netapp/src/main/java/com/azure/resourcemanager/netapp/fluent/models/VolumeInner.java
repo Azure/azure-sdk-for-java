@@ -6,9 +6,12 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
@@ -36,6 +39,12 @@ public final class VolumeInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
@@ -52,6 +61,15 @@ public final class VolumeInner extends Resource {
      */
     private VolumeProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -536,7 +554,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -545,7 +564,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeInner object itself.
@@ -789,6 +809,153 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+        return this;
+    }
+
+    /**
+     * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    public Long maximumNumberOfFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfFiles();
+    }
+
+    /**
+     * Get the volumeGroupName property: Volume Group Name.
+     *
+     * @return the volumeGroupName value.
+     */
+    public String volumeGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().volumeGroupName();
+    }
+
+    /**
+     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
+     *
+     * @return the capacityPoolResourceId value.
+     */
+    public String capacityPoolResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityPoolResourceId();
+    }
+
+    /**
+     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
+     *
+     * @param capacityPoolResourceId the capacityPoolResourceId value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withCapacityPoolResourceId(String capacityPoolResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withCapacityPoolResourceId(capacityPoolResourceId);
+        return this;
+    }
+
+    /**
+     * Get the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @return the proximityPlacementGroup value.
+     */
+    public String proximityPlacementGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().proximityPlacementGroup();
+    }
+
+    /**
+     * Set the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @param proximityPlacementGroup the proximityPlacementGroup value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withProximityPlacementGroup(String proximityPlacementGroup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withProximityPlacementGroup(proximityPlacementGroup);
+        return this;
+    }
+
+    /**
+     * Get the t2Network property: T2 network information.
+     *
+     * @return the t2Network value.
+     */
+    public String t2Network() {
+        return this.innerProperties() == null ? null : this.innerProperties().t2Network();
+    }
+
+    /**
+     * Get the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @return the volumeSpecName value.
+     */
+    public String volumeSpecName() {
+        return this.innerProperties() == null ? null : this.innerProperties().volumeSpecName();
+    }
+
+    /**
+     * Set the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @param volumeSpecName the volumeSpecName value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withVolumeSpecName(String volumeSpecName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withVolumeSpecName(volumeSpecName);
+        return this;
+    }
+
+    /**
+     * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @return the placementRules value.
+     */
+    public List<PlacementKeyValuePairs> placementRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().placementRules();
+    }
+
+    /**
+     * Set the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @param placementRules the placementRules value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withPlacementRules(placementRules);
+        return this;
+    }
+
+    /**
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    public EnableSubvolumes enableSubvolumes() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSubvolumes();
+    }
+
+    /**
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @param enableSubvolumes the enableSubvolumes value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

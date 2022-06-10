@@ -7,22 +7,20 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.UUID;
 
-/** EventGrid Partner Topic. */
+/** Event Grid Partner Topic. */
 @Fluent
 public final class PartnerTopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicInner.class);
-
     /*
-     * Properties of the partner topic.
+     * Properties of the Partner Topic.
      */
     @JsonProperty(value = "properties")
     private PartnerTopicProperties innerProperties;
@@ -40,7 +38,7 @@ public final class PartnerTopicInner extends Resource {
     private IdentityInfo identity;
 
     /**
-     * Get the innerProperties property: Properties of the partner topic.
+     * Get the innerProperties property: Properties of the Partner Topic.
      *
      * @return the innerProperties value.
      */
@@ -92,6 +90,29 @@ public final class PartnerTopicInner extends Resource {
     }
 
     /**
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @return the partnerRegistrationImmutableId value.
+     */
+    public UUID partnerRegistrationImmutableId() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerRegistrationImmutableId();
+    }
+
+    /**
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withPartnerRegistrationImmutableId(partnerRegistrationImmutableId);
+        return this;
+    }
+
+    /**
      * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
      *
      * @return the source value.
@@ -111,6 +132,29 @@ public final class PartnerTopicInner extends Resource {
             this.innerProperties = new PartnerTopicProperties();
         }
         this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the eventTypeInfo property: Event Type information from the corresponding event channel.
+     *
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeInfo();
+    }
+
+    /**
+     * Set the eventTypeInfo property: Event Type information from the corresponding event channel.
+     *
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withEventTypeInfo(eventTypeInfo);
         return this;
     }
 
@@ -195,6 +239,31 @@ public final class PartnerTopicInner extends Resource {
             this.innerProperties = new PartnerTopicProperties();
         }
         this.innerProperties().withPartnerTopicFriendlyDescription(partnerTopicFriendlyDescription);
+        return this;
+    }
+
+    /**
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
+     * @return the messageForActivation value.
+     */
+    public String messageForActivation() {
+        return this.innerProperties() == null ? null : this.innerProperties().messageForActivation();
+    }
+
+    /**
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
+     *
+     * @param messageForActivation the messageForActivation value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withMessageForActivation(String messageForActivation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withMessageForActivation(messageForActivation);
         return this;
     }
 

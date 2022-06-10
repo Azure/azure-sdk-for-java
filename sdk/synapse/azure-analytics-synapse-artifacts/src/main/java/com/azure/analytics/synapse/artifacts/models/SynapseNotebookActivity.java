@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Execute Synapse notebook activity. */
@@ -24,10 +25,17 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     private SynapseNotebookReference notebook;
 
     /*
+     * The name of the big data pool which will be used to execute the
+     * notebook.
+     */
+    @JsonProperty(value = "typeProperties.sparkPool")
+    private BigDataPoolParametrizationReference sparkPool;
+
+    /*
      * Notebook parameters.
      */
     @JsonProperty(value = "typeProperties.parameters")
-    private Map<String, Object> parameters;
+    private Map<String, NotebookParameter> parameters;
 
     /**
      * Get the notebook property: Synapse notebook reference.
@@ -50,11 +58,31 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the sparkPool property: The name of the big data pool which will be used to execute the notebook.
+     *
+     * @return the sparkPool value.
+     */
+    public BigDataPoolParametrizationReference getSparkPool() {
+        return this.sparkPool;
+    }
+
+    /**
+     * Set the sparkPool property: The name of the big data pool which will be used to execute the notebook.
+     *
+     * @param sparkPool the sparkPool value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity setSparkPool(BigDataPoolParametrizationReference sparkPool) {
+        this.sparkPool = sparkPool;
+        return this;
+    }
+
+    /**
      * Get the parameters property: Notebook parameters.
      *
      * @return the parameters value.
      */
-    public Map<String, Object> getParameters() {
+    public Map<String, NotebookParameter> getParameters() {
         return this.parameters;
     }
 
@@ -64,8 +92,50 @@ public class SynapseNotebookActivity extends ExecutionActivity {
      * @param parameters the parameters value to set.
      * @return the SynapseNotebookActivity object itself.
      */
-    public SynapseNotebookActivity setParameters(Map<String, Object> parameters) {
+    public SynapseNotebookActivity setParameters(Map<String, NotebookParameter> parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setPolicy(ActivityPolicy policy) {
+        super.setPolicy(policy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

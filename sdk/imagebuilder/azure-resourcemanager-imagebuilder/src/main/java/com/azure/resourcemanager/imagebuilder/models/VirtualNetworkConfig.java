@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Network configuration. */
 @Fluent
 public final class VirtualNetworkConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConfig.class);
-
     /*
      * Resource id of a pre-existing subnet.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
+
+    /*
+     * Size of the proxy virtual machine used to pass traffic to the build VM
+     * and validation VM. Omit or specify empty string to use the default
+     * (Standard_A1_v2).
+     */
+    @JsonProperty(value = "proxyVmSize")
+    private String proxyVmSize;
 
     /**
      * Get the subnetId property: Resource id of a pre-existing subnet.
@@ -37,6 +41,28 @@ public final class VirtualNetworkConfig {
      */
     public VirtualNetworkConfig withSubnetId(String subnetId) {
         this.subnetId = subnetId;
+        return this;
+    }
+
+    /**
+     * Get the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
+     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
+     *
+     * @return the proxyVmSize value.
+     */
+    public String proxyVmSize() {
+        return this.proxyVmSize;
+    }
+
+    /**
+     * Set the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
+     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
+     *
+     * @param proxyVmSize the proxyVmSize value to set.
+     * @return the VirtualNetworkConfig object itself.
+     */
+    public VirtualNetworkConfig withProxyVmSize(String proxyVmSize) {
+        this.proxyVmSize = proxyVmSize;
         return this;
     }
 

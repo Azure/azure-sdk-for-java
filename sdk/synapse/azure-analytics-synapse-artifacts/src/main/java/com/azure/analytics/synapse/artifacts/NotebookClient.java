@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.NotebooksImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class NotebookClient {
-    private final NotebooksImpl serviceClient;
+    @Generated private final NotebooksImpl serviceClient;
 
     /**
-     * Initializes an instance of Notebooks client.
+     * Initializes an instance of NotebookClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     NotebookClient(NotebooksImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -34,8 +36,9 @@ public final class NotebookClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebooksByWorkspace() {
         return this.serviceClient.getNotebooksByWorkspace();
@@ -48,8 +51,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebooksByWorkspace(Context context) {
         return this.serviceClient.getNotebooksByWorkspace(context);
@@ -60,8 +64,9 @@ public final class NotebookClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebookSummaryByWorkSpace() {
         return this.serviceClient.getNotebookSummaryByWorkSpace();
@@ -74,8 +79,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebookSummaryByWorkSpace(Context context) {
         return this.serviceClient.getNotebookSummaryByWorkSpace(context);
@@ -93,6 +99,7 @@ public final class NotebookClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource createOrUpdateNotebook(String notebookName, NotebookResource notebook, String ifMatch) {
         return this.serviceClient.createOrUpdateNotebook(notebookName, notebook, ifMatch);
@@ -108,6 +115,7 @@ public final class NotebookClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notebook resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource createOrUpdateNotebook(String notebookName, NotebookResource notebook) {
         return this.serviceClient.createOrUpdateNotebook(notebookName, notebook);
@@ -124,8 +132,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookResource> createOrUpdateNotebookWithResponse(
             String notebookName, NotebookResource notebook, String ifMatch, Context context) {
@@ -143,6 +152,7 @@ public final class NotebookClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Note Book.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource getNotebook(String notebookName, String ifNoneMatch) {
         return this.serviceClient.getNotebook(notebookName, ifNoneMatch);
@@ -157,6 +167,7 @@ public final class NotebookClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Note Book.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookResource getNotebook(String notebookName) {
         return this.serviceClient.getNotebook(notebookName);
@@ -172,8 +183,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookResource> getNotebookWithResponse(
             String notebookName, String ifNoneMatch, Context context) {
@@ -188,6 +200,7 @@ public final class NotebookClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNotebook(String notebookName) {
         this.serviceClient.deleteNotebook(notebookName);
@@ -201,8 +214,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNotebookWithResponse(String notebookName, Context context) {
         return this.serviceClient.deleteNotebookWithResponse(notebookName, context);
@@ -217,6 +231,7 @@ public final class NotebookClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameNotebook(String notebookName, ArtifactRenameRequest request) {
         this.serviceClient.renameNotebook(notebookName, request);
@@ -231,8 +246,9 @@ public final class NotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameNotebookWithResponse(
             String notebookName, ArtifactRenameRequest request, Context context) {

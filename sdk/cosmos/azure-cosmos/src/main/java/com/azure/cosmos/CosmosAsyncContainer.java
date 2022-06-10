@@ -4,9 +4,8 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -14,6 +13,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -25,7 +25,6 @@ import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
@@ -35,40 +34,38 @@ import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
@@ -413,8 +410,11 @@ public class CosmosAsyncContainer {
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
-            return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, false, classType));
+
+            return getDatabase()
+                .getDocClientWrapper()
+                .readDocuments(getLink(), options, classType)
+                .map(response -> prepareFeedResponse(response, false));
         });
     }
 
@@ -435,51 +435,69 @@ public class CosmosAsyncContainer {
         return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
     }
 
-    /**
-     * Initializes the container by warming up the caches and connections for the current read region.
+    /***
+     *  Best effort to initializes the container by warming up the caches and connections for the current read region.
      *
-     * <p><br>The execution of this method is expected to result in some RU charges to your account.
-     * The number of RU consumed by this request varies, depending on data consistency, size of the overall data in the container,
-     * item indexing, number of projections. For more information regarding RU considerations please visit
-     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations">https://docs.microsoft.com/en-us/azure/cosmos-db/request-units#request-unit-considerations</a>.
-     * </p>
+     *  Depending on how many partitions the container has, the total time needed will also change. But generally you can use the following formula
+     *  to get an estimated time:
+     *  If it took 200ms to establish a connection, and you have 100 partitions in your container
+     *  then it will take around (100 * 4 / CPUCores) * 200ms to open all connections after get the address list
      *
-     * <p>
-     * <br>NOTE: This API ideally should be called only once during application initialization before any workload.
-     * <br>In case of any transient error, caller should consume the error and continue the regular workload.
-     * </p>
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
      *
-     * @return Mono of Void
+     *  @return Mono of Void.
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        int retryCount = Configs.getOpenConnectionsRetriesCount();
 
         if(isInitialized.compareAndSet(false, true)) {
-            return this.getFeedRanges().flatMap(feedRanges -> {
-                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-                SqlQuerySpec querySpec = new SqlQuerySpec();
-                querySpec.setQueryText("select * from c where c.id = @id");
-                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                    UUID.randomUUID().toString())));
-
-                for (int i = 0; i < retryCount; i++) {
-                    for (FeedRange feedRange : feedRanges) {
-                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                        options.setFeedRange(feedRange);
-                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                            ObjectNode.class);
-                        fluxList.add(cosmosPagedFlux.byPage());
-                    }
-                }
-
-                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
-                return listMono.flatMap(objects -> Mono.empty());
-            });
+            return withContext(context -> openConnectionsAndInitCachesInternal()
+                                            .flatMap(openResult -> {
+                                                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                                                return Mono.empty();
+                                            }));
         } else {
-            logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
+            logger.warn(
+                    String.format(
+                        "OpenConnectionsAndInitCaches is already called once on Container %s, no operation will take place in this call",
+                        this.getId()));
             return Mono.empty();
         }
+    }
+
+    /***
+     * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
+     *
+     * @return a string represents the open result.
+     */
+    private Mono<String> openConnectionsAndInitCachesInternal() {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+                .collectList()
+                .flatMap(openConnectionResponses -> {
+                    // Generate a simple statistics string for open connections
+                    int total = openConnectionResponses.size();
+
+                    ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
+                    for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
+                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURIAsString(), (key, value) -> {
+                            if (value == null) {
+                                return openConnectionResponse.isConnected();
+                            }
+
+                            // Sometimes different replicas can landed on the same server, that is why we could reach here
+                            // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
+                            // if one failed, one succeeded, then it is still good
+                            return openConnectionResponse.isConnected() || value;
+                        });
+                    }
+
+                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
+                    return Mono.just(String.format(
+                            "EndpointsConnected: %s, Failed: %s", endpointConnected, endPointOpenConnectionsStatistics.size() - endpointConnected));
+                });
     }
 
     /**
@@ -565,8 +583,8 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
                 return getDatabase().getDocClientWrapper()
-                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
-                             .map(response -> prepareFeedResponse(response, false, classType));
+                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions, classType)
+                             .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -583,8 +601,8 @@ public class CosmosAsyncContainer {
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
-                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
-                .map(response -> prepareFeedResponse(response, false, classType));
+                    .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions, classType))
+                .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -653,8 +671,8 @@ public class CosmosAsyncContainer {
                         }
 
                         return clientWrapper
-                            .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions)
-                            .map(response -> prepareFeedResponse(response, true, classType));
+                            .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions, classType)
+                            .map(response -> prepareFeedResponse(response, true));
                     });
         });
 
@@ -662,37 +680,17 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(
-        FeedResponse<Document> response,
-        boolean isChangeFeed,
-        Class<T> classType) {
+        FeedResponse<T> response,
+        boolean isChangeFeed) {
 
-        QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
         boolean useEtagAsContinuation = isChangeFeed;
         boolean isNoChangesResponse = isChangeFeed ?
             ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
             : false;
 
-        if (queryInfo != null && queryInfo.hasSelectValue()) {
-            List<T> transformedResults = response.getResults()
-                                                 .stream()
-                                                 .map(d -> d.has(Constants.Properties.VALUE) ?
-                                                     transform(d.get(Constants.Properties.VALUE), classType) :
-                                                     ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
-                                                 .collect(Collectors.toList());
-
-            return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
-                response.getResponseHeaders(),
-                ModelBridgeInternal.queryMetrics(response),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
-                useEtagAsContinuation,
-                isNoChangesResponse,
-                response.getCosmosDiagnostics()                                                     );
-
-        }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                                                                                                             classType))
-                 .collect(Collectors.toList())), response.getResponseHeaders(),
+            response.getResults(),
+            response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
@@ -700,50 +698,6 @@ public class CosmosAsyncContainer {
             response.getCosmosDiagnostics());
     }
 
-    private <T> T transform(Object object, Class<T> classType) {
-        return Utils.getSimpleObjectMapper().convertValue(object, classType);
-    }
-
-    /**
-     * Executes the transactional batch.
-     *
-     * @deprecated forRemoval = true, since = "4.19"
-     * This overload will be removed. Please use one of the following APIs instead
-     * - {@link CosmosAsyncContainer#executeCosmosBatch(CosmosBatch)}
-     * - {@link CosmosAsyncContainer#executeCosmosBatch(CosmosBatch, CosmosBatchRequestOptions)}
-     *
-     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
-     *
-     * @return A Mono response which contains details of execution of the transactional batch.
-     * <p>
-     * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
-     * <p>
-     * If an operation within the transactional batch fails during execution, no changes from the batch will be
-     * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
-     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
-     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
-     * transactional batch in the order they were added to the transactional batch.
-     * For a result corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getStatusCode}
-     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
-     * another operation within the transactional batch, the value of this field will be 424;
-     * for the operation that caused the batch to abort, the value of this field
-     * will indicate the cause of failure.
-     * <p>
-     * If there are issues such as request timeouts, Gone, session not available, network failure
-     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
-     * <p>
-     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
-     * transactional batch succeeded.
-     */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public Mono<TransactionalBatchResponse> executeTransactionalBatch(TransactionalBatch transactionalBatch) {
-        return executeTransactionalBatch(transactionalBatch, new TransactionalBatchRequestOptions());
-    }
-
     /**
      * Executes the transactional batch.
      *
@@ -773,7 +727,6 @@ public class CosmosAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch) {
         return executeCosmosBatch(cosmosBatch, new CosmosBatchRequestOptions());
     }
@@ -781,100 +734,6 @@ public class CosmosAsyncContainer {
     /**
      * Executes the transactional batch.
      *
-     * @deprecated forRemoval = true, since = "4.19"
-     * This overload will be removed. Please use one of the following APIs instead
-     * - {@link CosmosAsyncContainer#executeCosmosBatch(CosmosBatch)}
-     * - {@link CosmosAsyncContainer#executeCosmosBatch(CosmosBatch, CosmosBatchRequestOptions)}
-     *
-     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
-     * @param requestOptions Options that apply specifically to batch request.
-     *
-     * @return A Mono response which contains details of execution of the transactional batch.
-     * <p>
-     * If the transactional batch executes successfully, the value returned by {@link
-     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
-     * <p>
-     * If an operation within the transactional batch fails during execution, no changes from the batch will be
-     * committed and the status of the failing operation is made available by {@link
-     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
-     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
-     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
-     * transactional batch in the order they were added to the transactional batch.
-     * For a result corresponding to an operation within the transactional batch, use
-     * {@link TransactionalBatchOperationResult#getStatusCode}
-     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
-     * another operation within the transactional batch, the value of this field will be 424;
-     * for the operation that caused the batch to abort, the value of this field
-     * will indicate the cause of failure.
-     * <p>
-     * If there are issues such as request timeouts, Gone, session not available, network failure
-     * or if the service somehow returns 5xx then the Mono will return error instead of TransactionalBatchResponse.
-     * <p>
-     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
-     * transactional batch succeeded.
-     */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public Mono<TransactionalBatchResponse> executeTransactionalBatch(
-        TransactionalBatch transactionalBatch,
-        TransactionalBatchRequestOptions requestOptions) {
-
-        if (requestOptions == null) {
-            requestOptions = new TransactionalBatchRequestOptions();
-        }
-
-        CosmosBatchRequestOptions cosmosBatchRequestOptions = new CosmosBatchRequestOptions();
-        cosmosBatchRequestOptions.setSessionToken(requestOptions.getSessionToken());
-        ImplementationBridgeHelpers
-            .CosmosBatchRequestOptionsHelper
-            .getCosmosBatchRequestOptionsAccessor()
-            .setConsistencyLevel(cosmosBatchRequestOptions, requestOptions.getConsistencyLevel());
-
-        //  Convert TransactionalBatch to CosmosBatch
-        final CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(transactionalBatch.getPartitionKeyValue());
-        ImplementationBridgeHelpers
-            .CosmosBatchHelper
-            .getCosmosBatchAccessor()
-            .getOperationsInternal(cosmosBatch).addAll(transactionalBatch.getOperationsInternal());
-
-        Mono<CosmosBatchResponse> cosmosBatchResponseMono = executeCosmosBatch(cosmosBatch, cosmosBatchRequestOptions);
-
-        //  Convert CosmosBatchResponse to TransactionalBatchResponse
-        return convertToTransactionBatchResponse(cosmosBatchResponseMono);
-    }
-
-    private Mono<TransactionalBatchResponse> convertToTransactionBatchResponse(Mono<CosmosBatchResponse> cosmosBatchResponseMono) {
-        return cosmosBatchResponseMono.flatMap(cosmosBatchResponse -> {
-            TransactionalBatchResponse transactionBatchResponse =
-                BridgeInternal.createTransactionBatchResponse(cosmosBatchResponse.getStatusCode(),
-                    cosmosBatchResponse.getSubStatusCode(),
-                    cosmosBatchResponse.getErrorMessage(),
-                    cosmosBatchResponse.getResponseHeaders(),
-                    cosmosBatchResponse.getDiagnostics());
-            List<TransactionalBatchOperationResult> transactionalBatchOperationResults =
-                cosmosBatchResponse.getResults().stream().map(cosmosBatchOperationResult -> {
-                CosmosItemOperation cosmosItemOperation =
-                    BridgeInternal.toDeprecatedCosmosItemOperation(cosmosBatchOperationResult.getOperation());
-
-                    return BridgeInternal.createTransactionBatchResult(cosmosBatchOperationResult.getETag(),
-                        cosmosBatchOperationResult.getRequestCharge(),
-                        ImplementationBridgeHelpers
-                            .CosmosBatchOperationResultHelper
-                            .getCosmosBatchOperationResultAccessor()
-                            .getResourceObject(cosmosBatchOperationResult),
-                        cosmosBatchOperationResult.getStatusCode(),
-                        cosmosBatchOperationResult.getRetryAfterDuration(),
-                        cosmosBatchOperationResult.getSubStatusCode(),
-                        cosmosItemOperation);
-            }).collect(Collectors.toList());
-            transactionBatchResponse.addAll(Collections.unmodifiableList(transactionalBatchOperationResults));
-            return Mono.just(transactionBatchResponse);
-        });
-    }
-
-    /**
-     * Executes the transactional batch.
-     *
      * @param cosmosBatch Batch having list of operation and partition key which will be executed by this container.
      * @param requestOptions Options that apply specifically to batch request.
      *
@@ -902,7 +761,6 @@ public class CosmosAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(
         CosmosBatch cosmosBatch,
         CosmosBatchRequestOptions requestOptions) {
@@ -939,11 +797,6 @@ public class CosmosAsyncContainer {
     /**
      * Executes flux of operations in Bulk.
      *
-     * @deprecated forRemoval = true, since = "4.19"
-     * This overload will be removed. Please use one of the following overloads instead
-     * - {@link CosmosAsyncContainer#executeBulkOperations(Flux)}
-     * - {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}
-     *
      * @param <TContext> The context for the bulk processing.
      * @param operations Flux of operation which will be executed by this container.
      *
@@ -955,43 +808,14 @@ public class CosmosAsyncContainer {
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
      *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations) {
-
-        return this.processBulkOperations(operations, new BulkExecutionOptions());
-    }
-
-    /**
-     * Executes flux of operations in Bulk.
-     *
-     * @param <TContext> The context for the bulk processing.
-     * @param operations Flux of operation which will be executed by this container.
-     *
-     * @return A Flux of {@link com.azure.cosmos.models.CosmosBulkOperationResponse} which contains operation and it's response or exception.
-     * <p>
-     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
-     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
-     * </p>
-     * <p>
-     *     We can get the corresponding operation using {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
-     * </p>
-     * To check if the operation had any exception, use {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getException()} to
-     * get the exception.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
-        Flux<com.azure.cosmos.models.CosmosItemOperation> operations) {
 
         return this.executeBulkOperations(operations, new CosmosBulkExecutionOptions());
     }
@@ -999,15 +823,6 @@ public class CosmosAsyncContainer {
     /**
      * Executes flux of operations in Bulk.
      *
-     * @deprecated forRemoval = true, since = "4.18"
-     * This overload will be removed. Please use one of the following overloads instead
-     * - {@link CosmosAsyncContainer#processBulkOperations(Flux)}
-     * - {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkExecutionOptions)}
-     * - {@link CosmosContainer#processBulkOperations(Iterable)}
-     * - {@link CosmosContainer#processBulkOperations(Iterable, BulkExecutionOptions)}
-     * and to pass in a custom context use one of the {@link BulkOperations} factory methods allowing to provide
-     * an operation specific context
-     *
      * @param <TContext> The context for the bulk processing.
      *
      * @param operations Flux of operation which will be executed by this container.
@@ -1015,108 +830,21 @@ public class CosmosAsyncContainer {
      *                    concurrency, batching size, interval and context.
      *
      * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
-     * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
-     * </p>
-     * <p>
-     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
-     * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
-     * get the exception.
-     */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.18"
-    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
-        Flux<CosmosItemOperation> operations,
-        BulkProcessingOptions<TContext> bulkOptions) {
-
-        if (bulkOptions == null) {
-            bulkOptions = new BulkProcessingOptions<>();
-        }
-
-        final BulkExecutionOptions options = new BulkExecutionOptions(
-            bulkOptions.getBatchContext(),
-            new BulkExecutionThresholds(bulkOptions.getThresholds().getPartitionScopeThresholds()));
-        options.setTargetedMicroBatchRetryRate(
-            bulkOptions.getMinTargetedMicroBatchRetryRate(),
-            bulkOptions.getMaxTargetedMicroBatchRetryRate());
-
-        return this.processBulkOperations(operations, options);
-    }
-
-    /**
-     * Executes flux of operations in Bulk.
-     *
-     * @deprecated forRemoval = true, since = "4.19"
-     * This overload will be removed. Please use one of the following overloads instead
-     * - {@link CosmosAsyncContainer#executeBulkOperations(Flux)}
-     * - {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}
-     *
-     * @param <TContext> The context for the bulk processing.
-     *
-     * @param operations Flux of operation which will be executed by this container.
-     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
-     *                    concurrency, batching size, interval and context.
-     *
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
-     * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
-     * </p>
-     * <p>
-     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
-     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
-     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
-     * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
-     * get the exception.
-     */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
-        Flux<CosmosItemOperation> operations,
-        BulkExecutionOptions bulkOptions) {
-
-        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = operations.flatMap(operation ->
-                Flux.just(ModelBridgeInternal.toCosmosItemOperation(operation)));
-        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> cosmosBulkOperationResponseFlux =
-            executeBulkOperations(cosmosItemOperationFlux, bulkOptions.toCosmosBulkExecutionOptions());
-
-        return cosmosBulkOperationResponseFlux.flatMap(response ->
-            Flux.just(BridgeInternal.toDeprecatedCosmosBulkOperationResponse(response)));
-    }
-
-    /**
-     * Executes flux of operations in Bulk.
-     *
-     * @param <TContext> The context for the bulk processing.
-     *
-     * @param operations Flux of operation which will be executed by this container.
-     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
-     *                    concurrency, batching size, interval and context.
-     *
-     * @return A Flux of {@link com.azure.cosmos.models.CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
-     *     We can get the corresponding operation using {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getOperation()} and
-     *     it's response using {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
      *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
      * </p>
-     * To check if the operation had any exception, use {@link com.azure.cosmos.models.CosmosBulkOperationResponse#getException()} to
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
-        Flux<com.azure.cosmos.models.CosmosItemOperation> operations,
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+        Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
 
         if (bulkOptions == null) {
@@ -1128,7 +856,7 @@ public class CosmosAsyncContainer {
         return Flux.deferContextual(context -> {
             final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
 
-            return executor.execute();
+            return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });
     }
 
@@ -1263,8 +991,8 @@ public class CosmosAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase()
                 .getDocClientWrapper()
-                .readAllDocuments(getLink(), partitionKey, requestOptions)
-                .map(response -> prepareFeedResponse(response, false, classType));
+                .readAllDocuments(getLink(), partitionKey, requestOptions, classType)
+                .map(response -> prepareFeedResponse(response, false));
         });
     }
 
@@ -1313,12 +1041,6 @@ public class CosmosAsyncContainer {
 
     /**
      * Run patch operations on an Item.
-     *
-     * @deprecated forRemoval = true, since = "4.19"
-     * This overload will be removed. Please use one of the following APIs instead
-     * - {@link CosmosAsyncContainer#patchItem(String, PartitionKey, com.azure.cosmos.models.CosmosPatchOperations, Class)}
-     * - {@link CosmosAsyncContainer#patchItem(String, PartitionKey, com.azure.cosmos.models.CosmosPatchOperations, CosmosPatchItemRequestOptions, Class)}
-     *
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
@@ -1331,36 +1053,10 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        Class<T> itemType) {
-
-        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosPatchItemRequestOptions(), itemType);
-    }
-
-    /**
-     * Run patch operations on an Item.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
-     *
-     * @param <T> the type parameter.
-     * @param itemId the item id.
-     * @param partitionKey the partition key.
-     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
-     * @param itemType the item type.
-     *
-     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> Mono<CosmosItemResponse<T>> patchItem(
-        String itemId,
-        PartitionKey partitionKey,
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations,
         Class<T> itemType) {
 
         return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosPatchItemRequestOptions(), itemType);
@@ -1381,54 +1077,10 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
         CosmosPatchOperations cosmosPatchOperations,
-        CosmosPatchItemRequestOptions options,
-        Class<T> itemType) {
-
-        checkNotNull(itemId, "expected non-null itemId");
-        checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
-        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
-
-        if (options == null) {
-            options = new CosmosPatchItemRequestOptions();
-        }
-        ModelBridgeInternal.setPartitionKey(options, partitionKey);
-
-        final CosmosPatchItemRequestOptions requestOptions = options;
-        final com.azure.cosmos.models.CosmosPatchOperations modelsCosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
-        ImplementationBridgeHelpers
-            .CosmosPatchOperationsHelper
-            .getCosmosPatchOperationsAccessor()
-            .getPatchOperations(modelsCosmosPatchOperations)
-            .addAll(cosmosPatchOperations.getPatchOperations());
-        return withContext(context -> patchItemInternal(itemId, modelsCosmosPatchOperations, requestOptions, context, itemType));
-    }
-
-    /**
-     * Run patch operations on an Item.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
-     *
-     * @param <T> the type parameter.
-     * @param itemId the item id.
-     * @param partitionKey the partition key.
-     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
-     * @param options the request options.
-     * @param itemType the item type.
-     *
-     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> Mono<CosmosItemResponse<T>> patchItem(
-        String itemId,
-        PartitionKey partitionKey,
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations,
         CosmosPatchItemRequestOptions options,
         Class<T> itemType) {
 
@@ -1738,7 +1390,7 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations,
+        CosmosPatchOperations cosmosPatchOperations,
         CosmosPatchItemRequestOptions options,
         Context context,
         Class<T> itemType) {
@@ -2008,7 +1660,17 @@ public class CosmosAsyncContainer {
      /**
      * Enable the throughput control group with local control mode.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.localControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableLocalThroughputControlGroup&#40;groupConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.localControl -->
      *
      * @param groupConfig A {@link ThroughputControlGroupConfig}.
      */
@@ -2022,7 +1684,23 @@ public class CosmosAsyncContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.globalControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .groupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .targetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * GlobalThroughputControlConfig globalControlConfig =
+     *     this.client.createGlobalThroughputControlConfigBuilder&#40;database.getId&#40;&#41;, container.getId&#40;&#41;&#41;
+     *         .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableGlobalThroughputControlGroup&#40;groupConfig, globalControlConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.globalControl -->
      *
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.
@@ -2041,16 +1719,10 @@ public class CosmosAsyncContainer {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosAsyncContainerHelper.setCosmosAsyncContainerAccessor(
-            new ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor() {
-                @Override
-                public <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(CosmosAsyncContainer cosmosAsyncContainer,
-                                                                                                               CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
-                                                                                                               Class<T> classType) {
-                    return cosmosAsyncContainer.queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType);
-                }
-            });
+            CosmosAsyncContainer::queryChangeFeedInternalFunc);
     }
+
+    static { initialize(); }
 }

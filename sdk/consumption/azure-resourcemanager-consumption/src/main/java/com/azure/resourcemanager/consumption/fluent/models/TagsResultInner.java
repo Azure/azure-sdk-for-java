@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.Tag;
@@ -14,28 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A resource listing all tags. */
-@JsonFlatten
 @Fluent
-public class TagsResultInner extends ProxyResource {
+public final class TagsResultInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResultInner.class);
 
     /*
-     * A list of Tag.
+     * The properties of the tag.
      */
-    @JsonProperty(value = "properties.tags")
-    private List<Tag> tags;
-
-    /*
-     * The link (url) to the next page of results.
-     */
-    @JsonProperty(value = "properties.nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
-    /*
-     * The link (url) to the previous page of results.
-     */
-    @JsonProperty(value = "properties.previousLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String previousLink;
+    @JsonProperty(value = "properties")
+    private TagProperties innerProperties;
 
     /*
      * eTag of the resource. To handle concurrent update scenario, this field
@@ -46,41 +32,12 @@ public class TagsResultInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the tags property: A list of Tag.
+     * Get the innerProperties property: The properties of the tag.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public List<Tag> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: A list of Tag.
-     *
-     * @param tags the tags value to set.
-     * @return the TagsResultInner object itself.
-     */
-    public TagsResultInner withTags(List<Tag> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link (url) to the next page of results.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Get the previousLink property: The link (url) to the previous page of results.
-     *
-     * @return the previousLink value.
-     */
-    public String previousLink() {
-        return this.previousLink;
+    private TagProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -106,13 +63,54 @@ public class TagsResultInner extends ProxyResource {
     }
 
     /**
+     * Get the tags property: A list of Tag.
+     *
+     * @return the tags value.
+     */
+    public List<Tag> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: A list of Tag.
+     *
+     * @param tags the tags value to set.
+     * @return the TagsResultInner object itself.
+     */
+    public TagsResultInner withTags(List<Tag> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link (url) to the next page of results.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextLink();
+    }
+
+    /**
+     * Get the previousLink property: The link (url) to the previous page of results.
+     *
+     * @return the previousLink value.
+     */
+    public String previousLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().previousLink();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (tags() != null) {
-            tags().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

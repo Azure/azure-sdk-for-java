@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Communication Identity Service supported by this client library.
  */
 public enum SmsServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2021-03-07}.
+     */
     V2021_03_07("2021-03-07");
 
     private final String version;

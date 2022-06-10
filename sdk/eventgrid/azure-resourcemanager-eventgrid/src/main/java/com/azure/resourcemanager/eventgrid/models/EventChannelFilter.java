@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Filter for the Event Channel. */
 @Fluent
 public final class EventChannelFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelFilter.class);
-
     /*
      * Allows advanced filters to be evaluated against an array of values
      * instead of expecting a singular value. The default value is either false

@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
+import java.util.Collections;
+
 /**
  * Sample demonstrates how to use an intermediary service to connect to Azure Event Hubs. In this demo, an application
  * gateway.
@@ -50,7 +52,7 @@ public class PublishEventsCustomEndpoint {
             .setPartitionId("0");
 
         System.out.println("Sending event to partition: " + sendOptions.getPartitionId());
-        producer.send(event, sendOptions);
+        producer.send(Collections.singletonList(event), sendOptions);
 
         System.out.println("Disposing of producer");
         producer.close();

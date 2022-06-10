@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The Open Data Protocol (OData) resource dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -40,6 +42,55 @@ public class ODataResourceDataset extends Dataset {
      */
     public ODataResourceDataset setPath(Object path) {
         this.path = path;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ODataResourceDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

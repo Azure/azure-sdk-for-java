@@ -13,12 +13,9 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.SourceControlCon
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.SourceControlConfigurationInner;
 import com.azure.resourcemanager.kubernetesconfiguration.models.SourceControlConfiguration;
 import com.azure.resourcemanager.kubernetesconfiguration.models.SourceControlConfigurations;
-import com.azure.resourcemanager.kubernetesconfiguration.models.SourceControlConfigurationsClusterResourceName;
-import com.azure.resourcemanager.kubernetesconfiguration.models.SourceControlConfigurationsClusterRp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SourceControlConfigurationsImpl implements SourceControlConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlConfigurationsImpl.class);
 
     private final SourceControlConfigurationsClient innerClient;
 
@@ -33,8 +30,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public SourceControlConfiguration get(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName) {
         SourceControlConfigurationInner inner =
@@ -50,8 +47,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public Response<SourceControlConfiguration> getWithResponse(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName,
         Context context) {
@@ -78,8 +75,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public SourceControlConfiguration createOrUpdate(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration) {
@@ -102,8 +99,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public Response<SourceControlConfiguration> createOrUpdateWithResponse(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration,
@@ -132,8 +129,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public void delete(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName) {
         this
@@ -143,8 +140,8 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     public void delete(
         String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String sourceControlConfigurationName,
         Context context) {
@@ -160,21 +157,14 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
     }
 
     public PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
-        String clusterName) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
         PagedIterable<SourceControlConfigurationInner> inner =
             this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName,
-        SourceControlConfigurationsClusterRp clusterRp,
-        SourceControlConfigurationsClusterResourceName clusterResourceName,
-        String clusterName,
-        Context context) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
         PagedIterable<SourceControlConfigurationInner> inner =
             this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network Virtual Appliance Sku Properties Properties specific to NetworkVirtualApplianceSkus. */
 @Fluent
 public final class NetworkVirtualApplianceSkuPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceSkuPropertiesFormat.class);
-
     /*
      * Network Virtual Appliance Sku vendor.
      */

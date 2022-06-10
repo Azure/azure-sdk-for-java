@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appconfiguration.models.CreateMode;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appconfiguration.models.ResourceIdentity;
 import com.azure.resourcemanager.appconfiguration.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,16 +24,19 @@ import java.util.Map;
  * The configuration store along with all resource properties. The Configuration Store will have all information to
  * begin utilizing it.
  */
-@JsonFlatten
 @Fluent
-public class ConfigurationStoreInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreInner.class);
-
+public final class ConfigurationStoreInner extends Resource {
     /*
      * The managed identity information, if configured.
      */
     @JsonProperty(value = "identity")
     private ResourceIdentity identity;
+
+    /*
+     * The properties of a configuration store.
+     */
+    @JsonProperty(value = "properties")
+    private ConfigurationStoreProperties innerProperties;
 
     /*
      * The sku of the configuration store.
@@ -47,50 +49,6 @@ public class ConfigurationStoreInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
-
-    /*
-     * The provisioning state of the configuration store.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The creation date of configuration store.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The DNS endpoint where the configuration store API will be available.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
-
-    /*
-     * The encryption settings of the configuration store.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionProperties encryption;
-
-    /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionReference> privateEndpointConnections;
-
-    /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * Disables all authentication methods other than AAD authentication.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
 
     /**
      * Get the identity property: The managed identity information, if configured.
@@ -110,6 +68,15 @@ public class ConfigurationStoreInner extends Resource {
     public ConfigurationStoreInner withIdentity(ResourceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The properties of a configuration store.
+     *
+     * @return the innerProperties value.
+     */
+    private ConfigurationStoreProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -141,105 +108,6 @@ public class ConfigurationStoreInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the provisioningState property: The provisioning state of the configuration store.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the creationDate property: The creation date of configuration store.
-     *
-     * @return the creationDate value.
-     */
-    public OffsetDateTime creationDate() {
-        return this.creationDate;
-    }
-
-    /**
-     * Get the endpoint property: The DNS endpoint where the configuration store API will be available.
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Get the encryption property: The encryption settings of the configuration store.
-     *
-     * @return the encryption value.
-     */
-    public EncryptionProperties encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: The encryption settings of the configuration store.
-     *
-     * @param encryption the encryption value to set.
-     * @return the ConfigurationStoreInner object itself.
-     */
-    public ConfigurationStoreInner withEncryption(EncryptionProperties encryption) {
-        this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
-     * resource.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionReference> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the ConfigurationStoreInner object itself.
-     */
-    public ConfigurationStoreInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
-     *
-     * @return the disableLocalAuth value.
-     */
-    public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
-    }
-
-    /**
-     * Set the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
-     *
-     * @param disableLocalAuth the disableLocalAuth value to set.
-     * @return the ConfigurationStoreInner object itself.
-     */
-    public ConfigurationStoreInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public ConfigurationStoreInner withLocation(String location) {
@@ -255,6 +123,187 @@ public class ConfigurationStoreInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the configuration store.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the creationDate property: The creation date of configuration store.
+     *
+     * @return the creationDate value.
+     */
+    public OffsetDateTime creationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
+    }
+
+    /**
+     * Get the endpoint property: The DNS endpoint where the configuration store API will be available.
+     *
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the configuration store.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the configuration store.
+     *
+     * @param encryption the encryption value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withEncryption(EncryptionProperties encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
+     * resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionReference> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the softDeleteRetentionInDays property: The amount of time in days that the configuration store will be
+     * retained when it is soft deleted.
+     *
+     * @return the softDeleteRetentionInDays value.
+     */
+    public Integer softDeleteRetentionInDays() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeleteRetentionInDays();
+    }
+
+    /**
+     * Set the softDeleteRetentionInDays property: The amount of time in days that the configuration store will be
+     * retained when it is soft deleted.
+     *
+     * @param softDeleteRetentionInDays the softDeleteRetentionInDays value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withSoftDeleteRetentionInDays(softDeleteRetentionInDays);
+        return this;
+    }
+
+    /**
+     * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @return the enablePurgeProtection value.
+     */
+    public Boolean enablePurgeProtection() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePurgeProtection();
+    }
+
+    /**
+     * Set the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @param enablePurgeProtection the enablePurgeProtection value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withEnablePurgeProtection(Boolean enablePurgeProtection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withEnablePurgeProtection(enablePurgeProtection);
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Indicates whether the configuration store need to be recovered.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
+    }
+
+    /**
+     * Set the createMode property: Indicates whether the configuration store need to be recovered.
+     *
+     * @param createMode the createMode value to set.
+     * @return the ConfigurationStoreInner object itself.
+     */
+    public ConfigurationStoreInner withCreateMode(CreateMode createMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStoreProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -263,18 +312,17 @@ public class ConfigurationStoreInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ConfigurationStoreInner"));
         } else {
             sku().validate();
         }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationStoreInner.class);
 }

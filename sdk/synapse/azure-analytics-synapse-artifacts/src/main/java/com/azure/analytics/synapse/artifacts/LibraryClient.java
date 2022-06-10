@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.LibrariesImpl;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LibraryResource;
 import com.azure.analytics.synapse.artifacts.models.LibraryResourceInfo;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,13 +21,14 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class LibraryClient {
-    private final LibrariesImpl serviceClient;
+    @Generated private final LibrariesImpl serviceClient;
 
     /**
-     * Initializes an instance of Libraries client.
+     * Initializes an instance of LibraryClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     LibraryClient(LibrariesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -36,8 +38,9 @@ public final class LibraryClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResource> list() {
         return this.serviceClient.list();
@@ -50,8 +53,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResource> list(Context context) {
         return this.serviceClient.list(context);
@@ -67,6 +71,7 @@ public final class LibraryClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LibraryResourceInfo flush(String libraryName) {
         return this.serviceClient.flush(libraryName);
@@ -81,8 +86,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> flushWithResponse(String libraryName, Context context) {
         return this.serviceClient.flushWithResponse(libraryName, context);
@@ -97,6 +103,7 @@ public final class LibraryClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation result for Library.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LibraryResource getOperationResult(String operationId) {
         return this.serviceClient.getOperationResult(operationId);
@@ -110,8 +117,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
         return this.serviceClient.getOperationResultWithResponse(operationId, context);
@@ -127,6 +135,7 @@ public final class LibraryClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LibraryResourceInfo delete(String libraryName) {
         return this.serviceClient.delete(libraryName);
@@ -141,8 +150,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> deleteWithResponse(String libraryName, Context context) {
         return this.serviceClient.deleteWithResponse(libraryName, context);
@@ -158,6 +168,7 @@ public final class LibraryClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return library.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LibraryResource get(String libraryName) {
         return this.serviceClient.get(libraryName);
@@ -172,8 +183,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResource> getWithResponse(String libraryName, Context context) {
         return this.serviceClient.getWithResponse(libraryName, context);
@@ -189,6 +201,7 @@ public final class LibraryClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LibraryResourceInfo create(String libraryName) {
         return this.serviceClient.create(libraryName);
@@ -203,8 +216,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> createWithResponse(String libraryName, Context context) {
         return this.serviceClient.createWithResponse(libraryName, context);
@@ -225,6 +239,7 @@ public final class LibraryClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void append(
             String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
@@ -243,6 +258,7 @@ public final class LibraryClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void append(String libraryName, Flux<ByteBuffer> content, long contentLength) {
         this.serviceClient.append(libraryName, content, contentLength);
@@ -263,8 +279,9 @@ public final class LibraryClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendWithResponse(
             String libraryName,

@@ -750,7 +750,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreateAsync(
         String resourceGroupName, String organizationName, OrganizationResourceInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, organizationName, body);
@@ -776,7 +776,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreateAsync(
         String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context) {
         context = this.client.mergeContext(context);
@@ -803,7 +803,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
         String resourceGroupName, String organizationName, OrganizationResourceInner body) {
         return beginCreateAsync(resourceGroupName, organizationName, body).getSyncPoller();
@@ -821,7 +821,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return organization resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginCreate(
         String resourceGroupName, String organizationName, OrganizationResourceInner body, Context context) {
         return beginCreateAsync(resourceGroupName, organizationName, body, context).getSyncPoller();
@@ -1230,7 +1230,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String organizationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, organizationName);
         return this
@@ -1249,7 +1249,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String organizationName, Context context) {
         context = this.client.mergeContext(context);
@@ -1269,7 +1269,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String organizationName) {
         return beginDeleteAsync(resourceGroupName, organizationName).getSyncPoller();
     }
@@ -1285,7 +1285,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String organizationName, Context context) {
         return beginDeleteAsync(resourceGroupName, organizationName, context).getSyncPoller();

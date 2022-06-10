@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cross-Origin Resource Sharing (CORS) settings for the app. */
 @Fluent
 public final class CorsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsSettings.class);
-
     /*
      * Gets or sets the list of origins that should be allowed to make
      * cross-origin

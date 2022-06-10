@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Compliance Status details. */
 @Fluent
 public final class ComplianceStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComplianceStatus.class);
-
     /*
      * The compliance state of the configuration.
      */

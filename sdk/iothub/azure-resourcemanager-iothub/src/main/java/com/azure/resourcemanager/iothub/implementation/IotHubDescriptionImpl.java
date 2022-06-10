@@ -7,6 +7,7 @@ package com.azure.resourcemanager.iothub.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubDescriptionInner;
 import com.azure.resourcemanager.iothub.models.ArmIdentity;
@@ -66,6 +67,10 @@ public final class IotHubDescriptionImpl
 
     public ArmIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {

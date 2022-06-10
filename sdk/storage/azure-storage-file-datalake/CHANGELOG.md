@@ -1,15 +1,128 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
+## 12.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added ability to set permission, umask, owner, group, ACL, lease, and expiry time to the following:
+  DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse,
+  DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse,
+  DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
 
-### Breaking Changes
+### Bugs Fixed
+
+### Other Changes
+
+## 12.10.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-blob` from `12.17.0` to version `12.17.1`.
+
+## 12.10.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.9.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
+
+## 12.10.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added support for Customer Provided Keys.
+- Added creationTime and expiryTime fields to `PathItem`.
+
+## 12.9.0 (2022-04-07)
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a path object while authenticating with a sas.
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-blob` from `12.15.0` to version `12.16.0`.
+
+## 12.8.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.7.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.8.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
+
+## 12.7.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.14.2` to version `12.14.3`.
+
+## 12.8.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+
+### Bugs Fixed
+- Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
+
+## 12.7.2 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-blob` from `12.14.1` to version `12.14.2`.
+
+## 12.8.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.7.1 (2021-10-12)
 
 ### Bugs Fixed
 - Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version `1.21.0` of `azure-core`
 
 ## 12.7.0 (2021-09-15)
 - GA release
@@ -36,7 +149,7 @@
 - Updated `azure-core` to version `1.16.0`
 
 ## 12.5.0 (2021-04-29)
-- Fixed a bug where large files would hang when the upload method was called. 
+- Fixed a bug where large files would not respond when the upload method was called. 
 - DataLakeLeaseClient now remembers the Lease ID after a lease change.
 
 ## 12.5.0-beta.3 (2021-04-16)

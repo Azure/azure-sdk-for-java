@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DataFlowSink;
 import com.azure.resourcemanager.datafactory.models.DataFlowSource;
 import com.azure.resourcemanager.datafactory.models.Transformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Mapping data flow type properties. */
 @Fluent
 public final class MappingDataFlowTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MappingDataFlowTypeProperties.class);
-
     /*
      * List of sources in data flow.
      */
@@ -41,6 +37,12 @@ public final class MappingDataFlowTypeProperties {
      */
     @JsonProperty(value = "script")
     private String script;
+
+    /*
+     * Data flow script lines.
+     */
+    @JsonProperty(value = "scriptLines")
+    private List<String> scriptLines;
 
     /**
      * Get the sources property: List of sources in data flow.
@@ -119,6 +121,26 @@ public final class MappingDataFlowTypeProperties {
      */
     public MappingDataFlowTypeProperties withScript(String script) {
         this.script = script;
+        return this;
+    }
+
+    /**
+     * Get the scriptLines property: Data flow script lines.
+     *
+     * @return the scriptLines value.
+     */
+    public List<String> scriptLines() {
+        return this.scriptLines;
+    }
+
+    /**
+     * Set the scriptLines property: Data flow script lines.
+     *
+     * @param scriptLines the scriptLines value to set.
+     * @return the MappingDataFlowTypeProperties object itself.
+     */
+    public MappingDataFlowTypeProperties withScriptLines(List<String> scriptLines) {
+        this.scriptLines = scriptLines;
         return this;
     }
 

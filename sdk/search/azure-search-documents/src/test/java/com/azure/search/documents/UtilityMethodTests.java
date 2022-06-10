@@ -3,8 +3,8 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.QueryAnswer;
-import com.azure.search.documents.models.QueryCaption;
+import com.azure.search.documents.models.QueryAnswerType;
+import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.SearchOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,11 +30,12 @@ public class UtilityMethodTests {
             Arguments.of(new SearchOptions(), null),
 
             // Only QueryAnswer provided returns the string value of QueryAnswer.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswer.EXTRACTIVE), QueryAnswer.EXTRACTIVE.toString()),
+            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE),
+                QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryAnswer and count provided returns the concatenated string mentioned in docs.
-            Arguments.of(new SearchOptions().setAnswers(QueryAnswer.EXTRACTIVE).setAnswersCount(5),
-                QueryAnswer.EXTRACTIVE + "|count-5")
+            Arguments.of(new SearchOptions().setAnswers(QueryAnswerType.EXTRACTIVE).setAnswersCount(5),
+                QueryAnswerType.EXTRACTIVE + "|count-5")
         );
     }
 
@@ -50,14 +51,14 @@ public class UtilityMethodTests {
             Arguments.of(new SearchOptions(), null),
 
             // Only QueryCaption provided returns the string value of QueryCaption.
-            Arguments.of(new SearchOptions().setQueryCaption(QueryCaption.EXTRACTIVE),
-                QueryAnswer.EXTRACTIVE.toString()),
+            Arguments.of(new SearchOptions().setQueryCaption(QueryCaptionType.EXTRACTIVE),
+                QueryAnswerType.EXTRACTIVE.toString()),
 
             // Both QueryCaption and highlight provided returns the concatenated string mentioned in docs.
-            Arguments.of(new SearchOptions().setQueryCaption(QueryCaption.EXTRACTIVE).setQueryCaptionHighlight(true),
-                QueryAnswer.EXTRACTIVE + "|highlight-true"),
-            Arguments.of(new SearchOptions().setQueryCaption(QueryCaption.EXTRACTIVE).setQueryCaptionHighlight(false),
-                QueryAnswer.EXTRACTIVE + "|highlight-false")
+            Arguments.of(new SearchOptions().setQueryCaption(QueryCaptionType.EXTRACTIVE)
+                .setQueryCaptionHighlightEnabled(true), QueryAnswerType.EXTRACTIVE + "|highlight-true"),
+            Arguments.of(new SearchOptions().setQueryCaption(QueryCaptionType.EXTRACTIVE)
+                .setQueryCaptionHighlightEnabled(false), QueryAnswerType.EXTRACTIVE + "|highlight-false")
         );
     }
 }

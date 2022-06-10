@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.signalr.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
+import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
@@ -132,6 +134,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().tls();
     }
 
+    public String hostnamePrefix() {
+        return this.innerModel().hostnamePrefix();
+    }
+
     public List<SignalRFeature> features() {
         List<SignalRFeature> inner = this.innerModel().features();
         if (inner != null) {
@@ -139,6 +145,14 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerModel().liveTraceConfiguration();
+    }
+
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerModel().resourceLogConfiguration();
     }
 
     public SignalRCorsSettings cors() {
@@ -325,6 +339,16 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withFeatures(List<SignalRFeature> features) {
         this.innerModel().withFeatures(features);
+        return this;
+    }
+
+    public SignalRResourceImpl withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        this.innerModel().withLiveTraceConfiguration(liveTraceConfiguration);
+        return this;
+    }
+
+    public SignalRResourceImpl withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        this.innerModel().withResourceLogConfiguration(resourceLogConfiguration);
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** resourceVisualization. */
 @Fluent
 public final class MicrosoftGraphResourceVisualization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResourceVisualization.class);
-
     /*
      * A string describing where the item is stored. For example, the name of a
      * SharePoint site or the user name identifying the owner of the OneDrive

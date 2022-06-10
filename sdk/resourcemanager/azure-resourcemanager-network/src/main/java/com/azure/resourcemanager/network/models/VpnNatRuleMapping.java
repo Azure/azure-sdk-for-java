@@ -5,20 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vpn NatRule mapping. */
 @Fluent
 public final class VpnNatRuleMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnNatRuleMapping.class);
-
     /*
      * Address space for Vpn NatRule mapping.
      */
     @JsonProperty(value = "addressSpace")
     private String addressSpace;
+
+    /*
+     * Port range for Vpn NatRule mapping.
+     */
+    @JsonProperty(value = "portRange")
+    private String portRange;
 
     /**
      * Get the addressSpace property: Address space for Vpn NatRule mapping.
@@ -37,6 +39,26 @@ public final class VpnNatRuleMapping {
      */
     public VpnNatRuleMapping withAddressSpace(String addressSpace) {
         this.addressSpace = addressSpace;
+        return this;
+    }
+
+    /**
+     * Get the portRange property: Port range for Vpn NatRule mapping.
+     *
+     * @return the portRange value.
+     */
+    public String portRange() {
+        return this.portRange;
+    }
+
+    /**
+     * Set the portRange property: Port range for Vpn NatRule mapping.
+     *
+     * @param portRange the portRange value to set.
+     * @return the VpnNatRuleMapping object itself.
+     */
+    public VpnNatRuleMapping withPortRange(String portRange) {
+        this.portRange = portRange;
         return this;
     }
 

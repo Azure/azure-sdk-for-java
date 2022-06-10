@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.GoogleAdWordsAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Google AdWords service linked service properties. */
 @Fluent
 public final class GoogleAdWordsLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleAdWordsLinkedServiceTypeProperties.class);
+    /*
+     * Properties used to connect to GoogleAds. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "connectionProperties")
+    private Object connectionProperties;
 
     /*
      * The Client customer ID of the AdWords account that you want to fetch
      * report data for.
      */
-    @JsonProperty(value = "clientCustomerID", required = true)
+    @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
 
     /*
      * The developer token associated with the manager account that you use to
      * grant access to the AdWords API.
      */
-    @JsonProperty(value = "developerToken", required = true)
+    @JsonProperty(value = "developerToken")
     private SecretBase developerToken;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
      */
-    @JsonProperty(value = "authenticationType", required = true)
+    @JsonProperty(value = "authenticationType")
     private GoogleAdWordsAuthenticationType authenticationType;
 
     /*
@@ -95,6 +98,28 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
+     */
+    public GoogleAdWordsLinkedServiceTypeProperties withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
@@ -345,27 +370,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (clientCustomerId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientCustomerId in model"
-                            + " GoogleAdWordsLinkedServiceTypeProperties"));
-        }
-        if (developerToken() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property developerToken in model GoogleAdWordsLinkedServiceTypeProperties"));
-        } else {
+        if (developerToken() != null) {
             developerToken().validate();
-        }
-        if (authenticationType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model"
-                            + " GoogleAdWordsLinkedServiceTypeProperties"));
         }
         if (refreshToken() != null) {
             refreshToken().validate();

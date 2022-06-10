@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the OS profile for the cloud service. */
 @Fluent
 public final class CloudServiceOsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceOsProfile.class);
-
     /*
      * Specifies set of certificates that should be installed onto the role
      * instances.

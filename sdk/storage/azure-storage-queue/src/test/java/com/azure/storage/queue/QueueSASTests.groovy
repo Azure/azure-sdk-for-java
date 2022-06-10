@@ -4,14 +4,13 @@
 package com.azure.storage.queue
 
 import com.azure.core.credential.AzureSasCredential
-import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.TestMode
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
@@ -110,7 +109,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -155,7 +154,7 @@ class QueueSASTests extends APISpec {
         def sasProtocol = SasProtocol.HTTPS_HTTP
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasPermissions = new QueueServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -208,7 +207,7 @@ class QueueSASTests extends APISpec {
         sleepIfLive(30000)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasIdentifier = new QueueServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setQueueName(queueClient.getQueueName())
@@ -244,14 +243,13 @@ class QueueSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(credential)
-            .encode()
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = queueServiceBuilderHelper()
+            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+            .credential(credential)
+            .buildClient()
+            .generateAccountSas(sasValues)
 
         def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
@@ -282,14 +280,13 @@ class QueueSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(credential)
-            .encode()
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = queueServiceBuilderHelper()
+            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+            .credential(credential)
+            .buildClient()
+            .generateAccountSas(sasValues)
 
         def scBuilder = queueServiceBuilderHelper()
         scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
@@ -318,13 +315,13 @@ class QueueSASTests extends APISpec {
             .setDeletePermission(true)
         def expiryTime = namer.getUtcNow().plusDays(1)
 
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(env.primaryAccount.credential)
-            .encode()
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = queueServiceBuilderHelper()
+            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+            .credential(credential)
+            .buildClient()
+            .generateAccountSas(sasValues)
 
         def queueName = namer.getRandomName(60)
 
@@ -337,6 +334,51 @@ class QueueSASTests extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    /*
+    Ensures that we don't break the functionality of the deprecated means of generating an AccountSas.
+    Only run in live mode because recordings would frequently get messed up when we update recordings to new sas version
+     */
+    @LiveOnly
+    def "Account sas deprecated"() {
+        def service = new AccountSasService()
+            .setQueueAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
+
+        def scBuilder = queueServiceBuilderHelper()
+        scBuilder.endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+            .sasToken(sas)
+        def sc = scBuilder.buildClient()
+        def queueName = namer.getRandomName(60)
+        sc.createQueue(queueName)
+
+        then:
+        notThrown(QueueStorageException)
+
+        when:
+        sc.deleteQueue(queueName)
+
+        then:
+        notThrown(QueueStorageException)
     }
 
     def "can use sas to authenticate"() {

@@ -196,10 +196,10 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         //
         vm.update().withoutExtension("CustomScriptForLinux").apply();
 
-        Assertions.assertTrue(vm.listExtensions().isEmpty());
+        Assertions.assertFalse(vm.listExtensions().containsKey("CustomScriptForLinux"));
 
         vm.refresh();
-        Assertions.assertTrue(vm.listExtensions().isEmpty());
+        Assertions.assertFalse(vm.listExtensions().containsKey("CustomScriptForLinux"));
     }
 
     @Test

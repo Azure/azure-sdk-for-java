@@ -33,6 +33,8 @@ public abstract class ArtifactsClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
+    private static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -53,9 +55,9 @@ public abstract class ArtifactsClientTestBase extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("CLIENT_ID");
-            String clientKey = System.getenv("CLIENT_SECRET");
-            String tenantId = System.getenv("TENANT_ID");
+            String clientId = System.getenv("AZURE_CLIENT_ID");
+            String clientKey = System.getenv("AZURE_CLIENT_SECRET");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
@@ -78,7 +80,7 @@ public abstract class ArtifactsClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, ArtifactsClientBuilder.DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPES));
         }
 
         policies.add(new RetryPolicy());

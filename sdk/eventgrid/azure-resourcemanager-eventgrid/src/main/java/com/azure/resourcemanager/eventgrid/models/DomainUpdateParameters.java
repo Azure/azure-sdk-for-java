@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Properties of the Domain update. */
 @Fluent
 public final class DomainUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainUpdateParameters.class);
-
     /*
      * Tags of the domains resource.
      */
@@ -269,6 +265,29 @@ public final class DomainUpdateParameters {
             this.innerProperties = new DomainUpdateParameterProperties();
         }
         this.innerProperties().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: The data residency boundary for the domain.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: The data residency boundary for the domain.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
         return this;
     }
 

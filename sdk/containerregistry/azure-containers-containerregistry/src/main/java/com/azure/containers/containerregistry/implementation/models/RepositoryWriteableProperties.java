@@ -34,13 +34,6 @@ public final class RepositoryWriteableProperties {
     @JsonProperty(value = "readEnabled")
     private Boolean readEnabled;
 
-    /*
-     * Enables Teleport functionality on new images in the repository improving
-     * Container startup performance
-     */
-    @JsonProperty(value = "teleportEnabled")
-    private Boolean teleportEnabled;
-
     /**
      * Get the deleteEnabled property: Delete enabled.
      *
@@ -118,28 +111,6 @@ public final class RepositoryWriteableProperties {
      */
     public RepositoryWriteableProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
-        return this;
-    }
-
-    /**
-     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @return the teleportEnabled value.
-     */
-    public Boolean isTeleportEnabled() {
-        return this.teleportEnabled;
-    }
-
-    /**
-     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @param teleportEnabled the teleportEnabled value to set.
-     * @return the RepositoryWriteableProperties object itself.
-     */
-    public RepositoryWriteableProperties setTeleportEnabled(Boolean teleportEnabled) {
-        this.teleportEnabled = teleportEnabled;
         return this;
     }
 }

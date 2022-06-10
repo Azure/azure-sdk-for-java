@@ -180,6 +180,20 @@ public final class DockerTaskStep extends TaskStepProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DockerTaskStep withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerTaskStep withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Name and Type of the Resource. */
 @Fluent
 public final class ResourceName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceName.class);
-
     /*
      * Name of the resource
      */
@@ -73,14 +70,16 @@ public final class ResourceName {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ResourceName"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ResourceName"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceName.class);
 }

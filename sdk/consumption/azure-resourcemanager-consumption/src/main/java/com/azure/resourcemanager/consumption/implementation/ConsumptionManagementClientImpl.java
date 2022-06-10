@@ -28,7 +28,6 @@ import com.azure.resourcemanager.consumption.fluent.ChargesClient;
 import com.azure.resourcemanager.consumption.fluent.ConsumptionManagementClient;
 import com.azure.resourcemanager.consumption.fluent.CreditsClient;
 import com.azure.resourcemanager.consumption.fluent.EventsOperationsClient;
-import com.azure.resourcemanager.consumption.fluent.ForecastsClient;
 import com.azure.resourcemanager.consumption.fluent.LotsOperationsClient;
 import com.azure.resourcemanager.consumption.fluent.MarketplacesClient;
 import com.azure.resourcemanager.consumption.fluent.OperationsClient;
@@ -271,18 +270,6 @@ public final class ConsumptionManagementClientImpl implements ConsumptionManagem
         return this.priceSheets;
     }
 
-    /** The ForecastsClient object to access its operations. */
-    private final ForecastsClient forecasts;
-
-    /**
-     * Gets the ForecastsClient object to access its operations.
-     *
-     * @return the ForecastsClient object.
-     */
-    public ForecastsClient getForecasts() {
-        return this.forecasts;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -365,7 +352,7 @@ public final class ConsumptionManagementClientImpl implements ConsumptionManagem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-10-01";
+        this.apiVersion = "2021-10-01";
         this.usageDetails = new UsageDetailsClientImpl(this);
         this.marketplaces = new MarketplacesClientImpl(this);
         this.budgets = new BudgetsClientImpl(this);
@@ -378,7 +365,6 @@ public final class ConsumptionManagementClientImpl implements ConsumptionManagem
         this.reservationRecommendationDetails = new ReservationRecommendationDetailsClientImpl(this);
         this.reservationTransactions = new ReservationTransactionsClientImpl(this);
         this.priceSheets = new PriceSheetsClientImpl(this);
-        this.forecasts = new ForecastsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.aggregatedCosts = new AggregatedCostsClientImpl(this);
         this.eventsOperations = new EventsOperationsClientImpl(this);

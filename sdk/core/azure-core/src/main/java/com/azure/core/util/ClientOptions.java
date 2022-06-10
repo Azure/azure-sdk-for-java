@@ -19,7 +19,8 @@ public class ClientOptions {
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
-    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
+    // ClientOptions is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ClientOptions.class);
     private Iterable<Header> headers;
 
     private String applicationId;
@@ -45,7 +46,12 @@ public class ClientOptions {
      *
      * <p>Create ClientOptions with application ID 'myApplicationId'</p>
      *
-     * {@codesnippet com.azure.core.util.ClientOptions.setApplicationId#String}
+     * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
+     * <pre>
+     * ClientOptions clientOptions = new ClientOptions&#40;&#41;
+     *     .setApplicationId&#40;&quot;myApplicationId&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
      *
      * @param applicationId The application ID.
      *
@@ -57,9 +63,9 @@ public class ClientOptions {
     public ClientOptions setApplicationId(String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 
@@ -79,7 +85,12 @@ public class ClientOptions {
      *
      * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
      *
-     * {@codesnippet com.azure.core.util.ClientOptions.setHeaders#Iterable}
+     * <!-- src_embed com.azure.core.util.ClientOptions.setHeaders#Iterable -->
+     * <pre>
+     * ClientOptions clientOptions = new ClientOptions&#40;&#41;
+     *     .setHeaders&#40;Collections.singletonList&#40;new Header&#40;&quot;myCustomHeader&quot;, &quot;myStaticValue&quot;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ClientOptions.setHeaders#Iterable -->
      *
      * @param headers The headers.
      * @return The updated ClientOptions object.

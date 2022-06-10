@@ -19,7 +19,7 @@ import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParamet
 /** An instance of this class provides access to all the operations defined in PartnerTopicEventSubscriptionsClient. */
 public interface PartnerTopicEventSubscriptionsClient {
     /**
-     * Get an event subscription of a partner topic.
+     * Get properties of an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -28,13 +28,13 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a partner topic.
+     * @return properties of an event subscription of a partner topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EventSubscriptionInner get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Get an event subscription of a partner topic.
+     * Get properties of an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -44,7 +44,7 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a partner topic.
+     * @return properties of an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventSubscriptionInner> getWithResponse(
@@ -62,9 +62,9 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String partnerTopicName,
@@ -84,9 +84,9 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String partnerTopicName,
@@ -139,7 +139,7 @@ public interface PartnerTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -148,14 +148,14 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -165,14 +165,14 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -186,7 +186,7 @@ public interface PartnerTopicEventSubscriptionsClient {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -201,7 +201,7 @@ public interface PartnerTopicEventSubscriptionsClient {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -211,9 +211,9 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String partnerTopicName,
@@ -221,7 +221,7 @@ public interface PartnerTopicEventSubscriptionsClient {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -232,9 +232,9 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String partnerTopicName,
@@ -243,7 +243,7 @@ public interface PartnerTopicEventSubscriptionsClient {
         Context context);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -263,7 +263,7 @@ public interface PartnerTopicEventSubscriptionsClient {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -311,7 +311,7 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a partner topic.
+     * @return the full endpoint URL for an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(
@@ -325,7 +325,7 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventSubscriptionInner> listByPartnerTopic(String resourceGroupName, String partnerTopicName);
@@ -347,7 +347,7 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EventSubscriptionInner> listByPartnerTopic(
@@ -380,7 +380,7 @@ public interface PartnerTopicEventSubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription of a partner topic.
+     * @return all delivery attributes for an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(

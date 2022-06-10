@@ -9,12 +9,15 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
 import com.azure.resourcemanager.avs.models.AdminCredentials;
+import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.Circuit;
+import com.azure.resourcemanager.avs.models.Encryption;
 import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 import com.azure.resourcemanager.avs.models.Sku;
@@ -56,21 +59,8 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().sku();
     }
 
-    public ManagementCluster managementCluster() {
-        return this.innerModel().managementCluster();
-    }
-
-    public InternetEnum internet() {
-        return this.innerModel().internet();
-    }
-
-    public List<IdentitySource> identitySources() {
-        List<IdentitySource> inner = this.innerModel().identitySources();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public PrivateCloudIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public PrivateCloudProvisioningState provisioningState() {
@@ -124,6 +114,35 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public Circuit secondaryCircuit() {
+        return this.innerModel().secondaryCircuit();
+    }
+
+    public ManagementCluster managementCluster() {
+        return this.innerModel().managementCluster();
+    }
+
+    public InternetEnum internet() {
+        return this.innerModel().internet();
+    }
+
+    public List<IdentitySource> identitySources() {
+        List<IdentitySource> inner = this.innerModel().identitySources();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public AvailabilityProperties availability() {
+        return this.innerModel().availability();
+    }
+
+    public Encryption encryption() {
+        return this.innerModel().encryption();
     }
 
     public Region region() {
@@ -278,6 +297,41 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         }
     }
 
+    public PrivateCloudImpl withIdentity(PrivateCloudIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updatePrivateCloudUpdate.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public PrivateCloudImpl withCircuit(Circuit circuit) {
+        this.innerModel().withCircuit(circuit);
+        return this;
+    }
+
+    public PrivateCloudImpl withNetworkBlock(String networkBlock) {
+        this.innerModel().withNetworkBlock(networkBlock);
+        return this;
+    }
+
+    public PrivateCloudImpl withVcenterPassword(String vcenterPassword) {
+        this.innerModel().withVcenterPassword(vcenterPassword);
+        return this;
+    }
+
+    public PrivateCloudImpl withNsxtPassword(String nsxtPassword) {
+        this.innerModel().withNsxtPassword(nsxtPassword);
+        return this;
+    }
+
+    public PrivateCloudImpl withSecondaryCircuit(Circuit secondaryCircuit) {
+        this.innerModel().withSecondaryCircuit(secondaryCircuit);
+        return this;
+    }
+
     public PrivateCloudImpl withManagementCluster(ManagementCluster managementCluster) {
         if (isInCreateMode()) {
             this.innerModel().withManagementCluster(managementCluster);
@@ -308,24 +362,24 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         }
     }
 
-    public PrivateCloudImpl withCircuit(Circuit circuit) {
-        this.innerModel().withCircuit(circuit);
-        return this;
+    public PrivateCloudImpl withAvailability(AvailabilityProperties availability) {
+        if (isInCreateMode()) {
+            this.innerModel().withAvailability(availability);
+            return this;
+        } else {
+            this.updatePrivateCloudUpdate.withAvailability(availability);
+            return this;
+        }
     }
 
-    public PrivateCloudImpl withNetworkBlock(String networkBlock) {
-        this.innerModel().withNetworkBlock(networkBlock);
-        return this;
-    }
-
-    public PrivateCloudImpl withVcenterPassword(String vcenterPassword) {
-        this.innerModel().withVcenterPassword(vcenterPassword);
-        return this;
-    }
-
-    public PrivateCloudImpl withNsxtPassword(String nsxtPassword) {
-        this.innerModel().withNsxtPassword(nsxtPassword);
-        return this;
+    public PrivateCloudImpl withEncryption(Encryption encryption) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryption(encryption);
+            return this;
+        } else {
+            this.updatePrivateCloudUpdate.withEncryption(encryption);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

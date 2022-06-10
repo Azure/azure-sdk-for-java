@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -16,20 +16,10 @@
   <packaging>jar</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-
-    <!-- Don't require tests for perf tests. -->
-    <jacoco.skip>true</jacoco.skip>
+    <perf.test.mainClass>com.azure.messaging.eventhubs.perf.App</perf.test.mainClass>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs-eph</artifactId>
@@ -46,31 +36,6 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>
-                    com.azure.messaging.eventhubs.perf.App
-                  </mainClass>
-                </manifest>
-              </archive>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
@@ -78,7 +43,6 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-eventhubs-eph:[3.3.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

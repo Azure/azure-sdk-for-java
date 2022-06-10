@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsChec
 /** Samples for AttachedDatabaseConfigurations CheckNameAvailability. */
 public final class AttachedDatabaseConfigurationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoAttachedDatabaseConfigurationCheckNameAvailability.json
      */
     /**
      * Sample code: KustoAttachedDatabaseConfigurationCheckNameAvailability.
@@ -23,7 +23,7 @@ public final class AttachedDatabaseConfigurationsCheckNameAvailabilitySamples {
             .attachedDatabaseConfigurations()
             .checkNameAvailabilityWithResponse(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 new AttachedDatabaseConfigurationsCheckNameRequest().withName("adc1"),
                 Context.NONE);
     }

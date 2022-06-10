@@ -5,18 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appservice.models.ArcConfiguration;
+import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** KubeEnvironment resource specific properties. */
 @Fluent
 public final class KubeEnvironmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeEnvironmentProperties.class);
-
     /*
      * Provisioning state of the Kubernetes Environment.
      */
@@ -48,6 +45,13 @@ public final class KubeEnvironmentProperties {
     private String staticIp;
 
     /*
+     * Type of Kubernetes Environment. Only supported for Container App
+     * Environments with value as Managed
+     */
+    @JsonProperty(value = "environmentType")
+    private String environmentType;
+
+    /*
      * Cluster configuration which determines the ARC cluster
      * components types. Eg: Choosing between BuildService kind,
      * FrontEnd Service ArtifactsStorageType etc.
@@ -62,6 +66,13 @@ public final class KubeEnvironmentProperties {
      */
     @JsonProperty(value = "appLogsConfiguration")
     private AppLogsConfiguration appLogsConfiguration;
+
+    /*
+     * Cluster configuration for Container Apps Environments to configure Dapr
+     * Instrumentation Key and VNET Configuration
+     */
+    @JsonProperty(value = "containerAppsConfiguration")
+    private ContainerAppsConfiguration containerAppsConfiguration;
 
     /*
      * The aksResourceID property.
@@ -137,6 +148,28 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
+     * Get the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
+     * with value as Managed.
+     *
+     * @return the environmentType value.
+     */
+    public String environmentType() {
+        return this.environmentType;
+    }
+
+    /**
+     * Set the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
+     * with value as Managed.
+     *
+     * @param environmentType the environmentType value to set.
+     * @return the KubeEnvironmentProperties object itself.
+     */
+    public KubeEnvironmentProperties withEnvironmentType(String environmentType) {
+        this.environmentType = environmentType;
+        return this;
+    }
+
+    /**
      * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
      * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
      *
@@ -181,6 +214,29 @@ public final class KubeEnvironmentProperties {
     }
 
     /**
+     * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @return the containerAppsConfiguration value.
+     */
+    public ContainerAppsConfiguration containerAppsConfiguration() {
+        return this.containerAppsConfiguration;
+    }
+
+    /**
+     * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @param containerAppsConfiguration the containerAppsConfiguration value to set.
+     * @return the KubeEnvironmentProperties object itself.
+     */
+    public KubeEnvironmentProperties withContainerAppsConfiguration(
+        ContainerAppsConfiguration containerAppsConfiguration) {
+        this.containerAppsConfiguration = containerAppsConfiguration;
+        return this;
+    }
+
+    /**
      * Get the aksResourceId property: The aksResourceID property.
      *
      * @return the aksResourceId value.
@@ -211,6 +267,9 @@ public final class KubeEnvironmentProperties {
         }
         if (appLogsConfiguration() != null) {
             appLogsConfiguration().validate();
+        }
+        if (containerAppsConfiguration() != null) {
+            containerAppsConfiguration().validate();
         }
     }
 }

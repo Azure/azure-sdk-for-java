@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
@@ -32,10 +32,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateEndpointConnectionInner get(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
 
     /**
      * Get a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -50,12 +47,13 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -73,12 +71,12 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
@@ -97,12 +95,12 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection,
@@ -126,7 +124,7 @@ public interface PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateEndpointConnectionInner update(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
@@ -150,7 +148,7 @@ public interface PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateEndpointConnectionInner update(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection,
@@ -168,14 +166,11 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
 
     /**
      * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -190,12 +185,12 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -215,10 +210,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
 
     /**
      * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -237,7 +229,7 @@ public interface PrivateEndpointConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -253,11 +245,12 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace.
+     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByResource(
-        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName);
+        String resourceGroupName, ParentType parentType, String parentName);
 
     /**
      * Get all private endpoint connections under a topic, domain, or partner namespace.
@@ -279,12 +272,13 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace.
+     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> listByResource(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String filter,
         Integer top,

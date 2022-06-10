@@ -7,7 +7,7 @@ package com.azure.containers.containerregistry.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Manifest attributes details. */
+/** The artifact's platform, consisting of operating system and architecture. */
 @Immutable
 public final class ArtifactManifestPlatform {
     /*

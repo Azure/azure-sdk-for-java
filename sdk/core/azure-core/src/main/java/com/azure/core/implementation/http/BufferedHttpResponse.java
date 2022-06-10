@@ -22,7 +22,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  * HTTP response which will buffer the response's body when/if it is read.
  */
 public final class BufferedHttpResponse extends HttpResponse {
-    private final ClientLogger logger = new ClientLogger(BufferedHttpResponse.class);
+    // BufferedHttpResponse is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(BufferedHttpResponse.class);
 
     private final HttpResponse innerHttpResponse;
     private final Mono<List<ByteBuffer>> cachedBody;
@@ -69,7 +70,7 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Mono<byte[]> getBodyAsByteArray() {
         // Check that the body would fit into a byte array before spending time to create the merged byte array.
         return (cachedBodySize.get() > Integer.MAX_VALUE)
-            ? monoError(logger, new IllegalStateException(
+            ? monoError(LOGGER, new IllegalStateException(
                 "Response with body size " + cachedBodySize.get() + " doesn't fit into a byte array."))
             : FluxUtil.collectBytesInByteBufferStream(getBody(), (int) cachedBodySize.get());
     }
@@ -78,7 +79,7 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString() {
         // Check that the body would fit into a String before spending the time to create the String.
         return (cachedBodySize.get() > Integer.MAX_VALUE)
-            ? monoError(logger, new IllegalStateException(
+            ? monoError(LOGGER, new IllegalStateException(
                 "Response with body size " + cachedBodySize.get() + " doesn't fit into a String."))
             : getBodyAsByteArray().map(bytes ->
                 CoreUtils.bomAwareToString(bytes, innerHttpResponse.getHeaderValue("Content-Type")));
@@ -88,7 +89,7 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         // Check that the body would fit into a String before spending the time to create the String.
         return (cachedBodySize.get() > Integer.MAX_VALUE)
-            ? monoError(logger, new IllegalStateException(
+            ? monoError(LOGGER, new IllegalStateException(
                 "Response with body size " + cachedBodySize.get() + " doesn't fit into a String."))
             : getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }

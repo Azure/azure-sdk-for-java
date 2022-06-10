@@ -13,26 +13,20 @@ public final class DataFlowDebugCommandRequest {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId", required = true)
+    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
-     * The data flow which contains the debug session.
+     * The command type.
      */
-    @JsonProperty(value = "dataFlowName")
-    private String dataFlowName;
-
-    /*
-     * The command name.
-     */
-    @JsonProperty(value = "commandName")
-    private String commandName;
+    @JsonProperty(value = "command")
+    private DataFlowDebugCommandType command;
 
     /*
      * The command payload object.
      */
-    @JsonProperty(value = "commandPayload", required = true)
-    private Object commandPayload;
+    @JsonProperty(value = "commandPayload")
+    private DataFlowDebugCommandPayload commandPayload;
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
@@ -55,42 +49,22 @@ public final class DataFlowDebugCommandRequest {
     }
 
     /**
-     * Get the dataFlowName property: The data flow which contains the debug session.
+     * Get the command property: The command type.
      *
-     * @return the dataFlowName value.
+     * @return the command value.
      */
-    public String getDataFlowName() {
-        return this.dataFlowName;
+    public DataFlowDebugCommandType getCommand() {
+        return this.command;
     }
 
     /**
-     * Set the dataFlowName property: The data flow which contains the debug session.
+     * Set the command property: The command type.
      *
-     * @param dataFlowName the dataFlowName value to set.
+     * @param command the command value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
-    public DataFlowDebugCommandRequest setDataFlowName(String dataFlowName) {
-        this.dataFlowName = dataFlowName;
-        return this;
-    }
-
-    /**
-     * Get the commandName property: The command name.
-     *
-     * @return the commandName value.
-     */
-    public String getCommandName() {
-        return this.commandName;
-    }
-
-    /**
-     * Set the commandName property: The command name.
-     *
-     * @param commandName the commandName value to set.
-     * @return the DataFlowDebugCommandRequest object itself.
-     */
-    public DataFlowDebugCommandRequest setCommandName(String commandName) {
-        this.commandName = commandName;
+    public DataFlowDebugCommandRequest setCommand(DataFlowDebugCommandType command) {
+        this.command = command;
         return this;
     }
 
@@ -99,7 +73,7 @@ public final class DataFlowDebugCommandRequest {
      *
      * @return the commandPayload value.
      */
-    public Object getCommandPayload() {
+    public DataFlowDebugCommandPayload getCommandPayload() {
         return this.commandPayload;
     }
 
@@ -109,7 +83,7 @@ public final class DataFlowDebugCommandRequest {
      * @param commandPayload the commandPayload value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
-    public DataFlowDebugCommandRequest setCommandPayload(Object commandPayload) {
+    public DataFlowDebugCommandRequest setCommandPayload(DataFlowDebugCommandPayload commandPayload) {
         this.commandPayload = commandPayload;
         return this;
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics Delete. */
 public final class SystemTopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_Delete.json
      */
     /**
      * Sample code: SystemTopics_Delete.

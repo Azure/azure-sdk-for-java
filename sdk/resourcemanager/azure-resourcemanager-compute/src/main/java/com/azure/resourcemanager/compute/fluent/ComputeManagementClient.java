@@ -46,6 +46,90 @@ public interface ComputeManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    UsagesClient getUsages();
+
+    /**
+     * Gets the VirtualMachineSizesClient object to access its operations.
+     *
+     * @return the VirtualMachineSizesClient object.
+     */
+    VirtualMachineSizesClient getVirtualMachineSizes();
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
+
+    /**
+     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetExtensionsClient object.
+     */
+    VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
+
+    /**
+     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
+     */
+    VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMExtensionsClient object.
+     */
+    VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMsClient object.
+     */
+    VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs();
+
+    /**
+     * Gets the VirtualMachineExtensionsClient object to access its operations.
+     *
+     * @return the VirtualMachineExtensionsClient object.
+     */
+    VirtualMachineExtensionsClient getVirtualMachineExtensions();
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the VirtualMachineImagesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesClient object.
+     */
+    VirtualMachineImagesClient getVirtualMachineImages();
+
+    /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
+
+    /**
+     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
+     *
+     * @return the VirtualMachineExtensionImagesClient object.
+     */
+    VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages();
+
+    /**
      * Gets the AvailabilitySetsClient object to access its operations.
      *
      * @return the AvailabilitySetsClient object.
@@ -79,62 +163,6 @@ public interface ComputeManagementClient {
      * @return the SshPublicKeysClient object.
      */
     SshPublicKeysClient getSshPublicKeys();
-
-    /**
-     * Gets the VirtualMachineExtensionImagesClient object to access its operations.
-     *
-     * @return the VirtualMachineExtensionImagesClient object.
-     */
-    VirtualMachineExtensionImagesClient getVirtualMachineExtensionImages();
-
-    /**
-     * Gets the VirtualMachineExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineExtensionsClient object.
-     */
-    VirtualMachineExtensionsClient getVirtualMachineExtensions();
-
-    /**
-     * Gets the VirtualMachineImagesClient object to access its operations.
-     *
-     * @return the VirtualMachineImagesClient object.
-     */
-    VirtualMachineImagesClient getVirtualMachineImages();
-
-    /**
-     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
-     *
-     * @return the VirtualMachineImagesEdgeZonesClient object.
-     */
-    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    UsagesClient getUsages();
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
-
-    /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetsClient object.
-     */
-    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
-
-    /**
-     * Gets the VirtualMachineSizesClient object to access its operations.
-     *
-     * @return the VirtualMachineSizesClient object.
-     */
-    VirtualMachineSizesClient getVirtualMachineSizes();
 
     /**
      * Gets the ImagesClient object to access its operations.
@@ -172,34 +200,6 @@ public interface ComputeManagementClient {
     CapacityReservationsClient getCapacityReservations();
 
     /**
-     * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetExtensionsClient object.
-     */
-    VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions();
-
-    /**
-     * Gets the VirtualMachineScaleSetRollingUpgradesClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetRollingUpgradesClient object.
-     */
-    VirtualMachineScaleSetRollingUpgradesClient getVirtualMachineScaleSetRollingUpgrades();
-
-    /**
-     * Gets the VirtualMachineScaleSetVMExtensionsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetVMExtensionsClient object.
-     */
-    VirtualMachineScaleSetVMExtensionsClient getVirtualMachineScaleSetVMExtensions();
-
-    /**
-     * Gets the VirtualMachineScaleSetVMsClient object to access its operations.
-     *
-     * @return the VirtualMachineScaleSetVMsClient object.
-     */
-    VirtualMachineScaleSetVMsClient getVirtualMachineScaleSetVMs();
-
-    /**
      * Gets the LogAnalyticsClient object to access its operations.
      *
      * @return the LogAnalyticsClient object.
@@ -221,32 +221,11 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
 
     /**
-     * Gets the ResourceSkusClient object to access its operations.
-     *
-     * @return the ResourceSkusClient object.
-     */
-    ResourceSkusClient getResourceSkus();
-
-    /**
      * Gets the DisksClient object to access its operations.
      *
      * @return the DisksClient object.
      */
     DisksClient getDisks();
-
-    /**
-     * Gets the SnapshotsClient object to access its operations.
-     *
-     * @return the SnapshotsClient object.
-     */
-    SnapshotsClient getSnapshots();
-
-    /**
-     * Gets the DiskEncryptionSetsClient object to access its operations.
-     *
-     * @return the DiskEncryptionSetsClient object.
-     */
-    DiskEncryptionSetsClient getDiskEncryptionSets();
 
     /**
      * Gets the DiskAccessesClient object to access its operations.
@@ -256,11 +235,32 @@ public interface ComputeManagementClient {
     DiskAccessesClient getDiskAccesses();
 
     /**
+     * Gets the DiskEncryptionSetsClient object to access its operations.
+     *
+     * @return the DiskEncryptionSetsClient object.
+     */
+    DiskEncryptionSetsClient getDiskEncryptionSets();
+
+    /**
      * Gets the DiskRestorePointsClient object to access its operations.
      *
      * @return the DiskRestorePointsClient object.
      */
     DiskRestorePointsClient getDiskRestorePoints();
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    SnapshotsClient getSnapshots();
+
+    /**
+     * Gets the ResourceSkusClient object to access its operations.
+     *
+     * @return the ResourceSkusClient object.
+     */
+    ResourceSkusClient getResourceSkus();
 
     /**
      * Gets the GalleriesClient object to access its operations.
@@ -324,6 +324,27 @@ public interface ComputeManagementClient {
      * @return the SharedGalleryImageVersionsClient object.
      */
     SharedGalleryImageVersionsClient getSharedGalleryImageVersions();
+
+    /**
+     * Gets the CommunityGalleriesClient object to access its operations.
+     *
+     * @return the CommunityGalleriesClient object.
+     */
+    CommunityGalleriesClient getCommunityGalleries();
+
+    /**
+     * Gets the CommunityGalleryImagesClient object to access its operations.
+     *
+     * @return the CommunityGalleryImagesClient object.
+     */
+    CommunityGalleryImagesClient getCommunityGalleryImages();
+
+    /**
+     * Gets the CommunityGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the CommunityGalleryImageVersionsClient object.
+     */
+    CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
 
     /**
      * Gets the CloudServiceRoleInstancesClient object to access its operations.

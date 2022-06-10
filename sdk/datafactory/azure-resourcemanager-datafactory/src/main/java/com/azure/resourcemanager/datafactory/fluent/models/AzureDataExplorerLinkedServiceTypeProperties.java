@@ -8,15 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Explorer (Kusto) linked service properties. */
 @Fluent
 public final class AzureDataExplorerLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureDataExplorerLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be
      * in the format https://<clusterName>.<regionName>.kusto.windows.net.
@@ -193,7 +189,7 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
@@ -202,7 +198,7 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
@@ -211,4 +207,6 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerLinkedServiceTypeProperties.class);
 }

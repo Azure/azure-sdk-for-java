@@ -22,13 +22,24 @@ result in all dependencies being included in your project.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-sdk-bom</artifactId>
-      <version>1.0.3</version>
+      <version>1.2.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
   </dependencies>
 </dependencyManagement>
 ```
+
+#### Determine the version of azure-sdk-bom according to the version of Spring Boot
+
+If you are using Spring Boot in your project, you can determine the version of azure-sdk-bom according to the version of Spring Boot.
+
+| Version of Spring Boot | Version of azure-sdk-bom |
+| ---------------------- | ----------------------- |
+| 2.6.x                  | 1.1.0                   |
+| 2.5.x                  | 1.0.6                   |
+| 2.4.x                  | 1.0.3                   |
+| < 2.4.0                | Not supported           |
 
 ### Adding libraries to your project
 
@@ -52,43 +63,11 @@ listing the artifact's version.
 </dependencies>
 ```
 
-### Adding library dependencies to your project
-
-In addition to containing Azure client libraries the BOM also list dependencies that the Azure client libraries use.
-These are added to allow the BOM to configure them to reduce dependency conflict on commonly used libraries such as
-Jackson, Netty, OkHttp, SLF4J, and more.
-
-```xml
-<dependencies>
-  <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-  </dependency>
-  <dependency>
-    <groupId>io.projectreactor.netty</groupId>
-    <artifactId>reactor-netty</artifactId>
-  </dependency>
-  <dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-  </dependency>
-</dependencies>
-```
-
 ### Overview
 
 #### Release cadence
 
-Currently, the `azure-sdk-bom` releases on a quarterly cycle, excluding the end of year quarter (November - January).
-Releases will occur in February, May, and August using the latest GA versions of managed libraries which meet the
-requirement for release.
-
-#### Requirements for release
-
-The `azure-sdk-bom` has additional release requirements not found in other Azure SDKs. For the `azure-sdk-bom` to be
-considered as a release candidate all managed Azure SDK libraries contained within in it must have strong alignment
-on the Core SDK libraries. For example, all libraries must be using the same version of `azure-core` to be a viable
-release candidate.
+Currently, the `azure-sdk-bom` releases monthly using the latest globally available(GA) versions of managed libraries.
 
 #### Included library requirements
 

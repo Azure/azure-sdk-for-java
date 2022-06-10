@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -37,6 +40,14 @@ import com.azure.resourcemanager.synapse.implementation.IntegrationRuntimeStatus
 import com.azure.resourcemanager.synapse.implementation.IntegrationRuntimesImpl;
 import com.azure.resourcemanager.synapse.implementation.IpFirewallRulesImpl;
 import com.azure.resourcemanager.synapse.implementation.KeysImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoOperationsImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolAttachedDatabaseConfigurationsImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolChildResourcesImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolDataConnectionsImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolDatabasePrincipalAssignmentsImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolDatabasesImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolPrincipalAssignmentsImpl;
+import com.azure.resourcemanager.synapse.implementation.KustoPoolsImpl;
 import com.azure.resourcemanager.synapse.implementation.LibrariesImpl;
 import com.azure.resourcemanager.synapse.implementation.LibrariesOperationsImpl;
 import com.azure.resourcemanager.synapse.implementation.OperationsImpl;
@@ -78,6 +89,7 @@ import com.azure.resourcemanager.synapse.implementation.SynapseManagementClientB
 import com.azure.resourcemanager.synapse.implementation.WorkspaceAadAdminsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedIdentitySqlControlSettingsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerBlobAuditingPoliciesImpl;
+import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerEncryptionProtectorsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerRecoverableSqlPoolsImpl;
@@ -102,6 +114,14 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusOperatio
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimes;
 import com.azure.resourcemanager.synapse.models.IpFirewallRules;
 import com.azure.resourcemanager.synapse.models.Keys;
+import com.azure.resourcemanager.synapse.models.KustoOperations;
+import com.azure.resourcemanager.synapse.models.KustoPoolAttachedDatabaseConfigurations;
+import com.azure.resourcemanager.synapse.models.KustoPoolChildResources;
+import com.azure.resourcemanager.synapse.models.KustoPoolDataConnections;
+import com.azure.resourcemanager.synapse.models.KustoPoolDatabasePrincipalAssignments;
+import com.azure.resourcemanager.synapse.models.KustoPoolDatabases;
+import com.azure.resourcemanager.synapse.models.KustoPoolPrincipalAssignments;
+import com.azure.resourcemanager.synapse.models.KustoPools;
 import com.azure.resourcemanager.synapse.models.Libraries;
 import com.azure.resourcemanager.synapse.models.LibrariesOperations;
 import com.azure.resourcemanager.synapse.models.Operations;
@@ -142,6 +162,7 @@ import com.azure.resourcemanager.synapse.models.SqlPools;
 import com.azure.resourcemanager.synapse.models.WorkspaceAadAdmins;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedIdentitySqlControlSettings;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerBlobAuditingPolicies;
+import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerEncryptionProtectors;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerExtendedBlobAuditingPolicies;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerRecoverableSqlPools;
@@ -155,6 +176,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to SynapseManager. Azure Synapse Analytics Management Client. */
 public final class SynapseManager {
@@ -248,6 +270,9 @@ public final class SynapseManager {
 
     private WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools;
 
+    private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+
     private Workspaces workspaces;
 
     private WorkspaceAadAdmins workspaceAadAdmins;
@@ -286,6 +311,22 @@ public final class SynapseManager {
 
     private SparkConfigurationsOperations sparkConfigurationsOperations;
 
+    private KustoOperations kustoOperations;
+
+    private KustoPools kustoPools;
+
+    private KustoPoolChildResources kustoPoolChildResources;
+
+    private KustoPoolAttachedDatabaseConfigurations kustoPoolAttachedDatabaseConfigurations;
+
+    private KustoPoolDatabases kustoPoolDatabases;
+
+    private KustoPoolDataConnections kustoPoolDataConnections;
+
+    private KustoPoolPrincipalAssignments kustoPoolPrincipalAssignments;
+
+    private KustoPoolDatabasePrincipalAssignments kustoPoolDatabasePrincipalAssignments;
+
     private final SynapseManagementClient clientObject;
 
     private SynapseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
@@ -314,6 +355,19 @@ public final class SynapseManager {
     }
 
     /**
+     * Creates an instance of Synapse service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Synapse service API instance.
+     */
+    public static SynapseManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new SynapseManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create SynapseManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -324,13 +378,14 @@ public final class SynapseManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -392,15 +447,30 @@ public final class SynapseManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -422,7 +492,7 @@ public final class SynapseManager {
                 .append("-")
                 .append("com.azure.resourcemanager.synapse")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -440,16 +510,34 @@ public final class SynapseManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -862,6 +950,17 @@ public final class SynapseManager {
         return workspaceManagedSqlServerRecoverableSqlPools;
     }
 
+    /** @return Resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings. */
+    public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings() {
+        if (this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings == null) {
+            this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
+                new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl(
+                    clientObject.getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings(), this);
+        }
+        return workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    }
+
     /** @return Resource collection API of Workspaces. */
     public Workspaces workspaces() {
         if (this.workspaces == null) {
@@ -1026,6 +1125,77 @@ public final class SynapseManager {
                 new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
         }
         return sparkConfigurationsOperations;
+    }
+
+    /** @return Resource collection API of KustoOperations. */
+    public KustoOperations kustoOperations() {
+        if (this.kustoOperations == null) {
+            this.kustoOperations = new KustoOperationsImpl(clientObject.getKustoOperations(), this);
+        }
+        return kustoOperations;
+    }
+
+    /** @return Resource collection API of KustoPools. */
+    public KustoPools kustoPools() {
+        if (this.kustoPools == null) {
+            this.kustoPools = new KustoPoolsImpl(clientObject.getKustoPools(), this);
+        }
+        return kustoPools;
+    }
+
+    /** @return Resource collection API of KustoPoolChildResources. */
+    public KustoPoolChildResources kustoPoolChildResources() {
+        if (this.kustoPoolChildResources == null) {
+            this.kustoPoolChildResources =
+                new KustoPoolChildResourcesImpl(clientObject.getKustoPoolChildResources(), this);
+        }
+        return kustoPoolChildResources;
+    }
+
+    /** @return Resource collection API of KustoPoolAttachedDatabaseConfigurations. */
+    public KustoPoolAttachedDatabaseConfigurations kustoPoolAttachedDatabaseConfigurations() {
+        if (this.kustoPoolAttachedDatabaseConfigurations == null) {
+            this.kustoPoolAttachedDatabaseConfigurations =
+                new KustoPoolAttachedDatabaseConfigurationsImpl(
+                    clientObject.getKustoPoolAttachedDatabaseConfigurations(), this);
+        }
+        return kustoPoolAttachedDatabaseConfigurations;
+    }
+
+    /** @return Resource collection API of KustoPoolDatabases. */
+    public KustoPoolDatabases kustoPoolDatabases() {
+        if (this.kustoPoolDatabases == null) {
+            this.kustoPoolDatabases = new KustoPoolDatabasesImpl(clientObject.getKustoPoolDatabases(), this);
+        }
+        return kustoPoolDatabases;
+    }
+
+    /** @return Resource collection API of KustoPoolDataConnections. */
+    public KustoPoolDataConnections kustoPoolDataConnections() {
+        if (this.kustoPoolDataConnections == null) {
+            this.kustoPoolDataConnections =
+                new KustoPoolDataConnectionsImpl(clientObject.getKustoPoolDataConnections(), this);
+        }
+        return kustoPoolDataConnections;
+    }
+
+    /** @return Resource collection API of KustoPoolPrincipalAssignments. */
+    public KustoPoolPrincipalAssignments kustoPoolPrincipalAssignments() {
+        if (this.kustoPoolPrincipalAssignments == null) {
+            this.kustoPoolPrincipalAssignments =
+                new KustoPoolPrincipalAssignmentsImpl(clientObject.getKustoPoolPrincipalAssignments(), this);
+        }
+        return kustoPoolPrincipalAssignments;
+    }
+
+    /** @return Resource collection API of KustoPoolDatabasePrincipalAssignments. */
+    public KustoPoolDatabasePrincipalAssignments kustoPoolDatabasePrincipalAssignments() {
+        if (this.kustoPoolDatabasePrincipalAssignments == null) {
+            this.kustoPoolDatabasePrincipalAssignments =
+                new KustoPoolDatabasePrincipalAssignmentsImpl(
+                    clientObject.getKustoPoolDatabasePrincipalAssignments(), this);
+        }
+        return kustoPoolDatabasePrincipalAssignments;
     }
 
     /**

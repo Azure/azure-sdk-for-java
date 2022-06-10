@@ -15,6 +15,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Mono;
@@ -96,16 +99,6 @@ public class SmsBuilderTests {
     }
 
     @Test
-    public void nullRetryPolicyTest() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .retryPolicy(null);
-        });
-    }
-
-    @Test
     public void buildPiplineForClient() {
         SmsAsyncClient smsClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
@@ -113,5 +106,14 @@ public class SmsBuilderTests {
             .pipeline(new HttpPipelineBuilder().build())
             .buildAsyncClient();
         assertNotNull(smsClient);
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 }

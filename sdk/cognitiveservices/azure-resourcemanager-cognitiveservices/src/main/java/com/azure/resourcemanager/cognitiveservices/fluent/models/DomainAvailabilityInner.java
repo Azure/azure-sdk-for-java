@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain availability. */
 @Fluent
 public final class DomainAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainAvailabilityInner.class);
-
     /*
      * Indicates the given SKU is available or not.
      */
@@ -37,6 +33,12 @@ public final class DomainAvailabilityInner {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /*
+     * The Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /**
      * Get the isSubdomainAvailable property: Indicates the given SKU is available or not.
@@ -115,6 +117,26 @@ public final class DomainAvailabilityInner {
      */
     public DomainAvailabilityInner withType(String type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the kind property: The Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the DomainAvailabilityInner object itself.
+     */
+    public DomainAvailabilityInner withKind(String kind) {
+        this.kind = kind;
         return this;
     }
 

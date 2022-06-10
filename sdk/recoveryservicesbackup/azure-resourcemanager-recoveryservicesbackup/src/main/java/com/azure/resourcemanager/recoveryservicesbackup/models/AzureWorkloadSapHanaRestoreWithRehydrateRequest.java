@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +15,6 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSAPHanaRestoreWithRehydrateRequest")
 @Fluent
 public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends AzureWorkloadSapHanaRestoreRequest {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureWorkloadSapHanaRestoreWithRehydrateRequest.class);
-
     /*
      * RP Rehydration Info
      */
@@ -79,6 +74,13 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
     @Override
     public AzureWorkloadSapHanaRestoreWithRehydrateRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about orchestrator. */
 @Fluent
 public final class OrchestratorProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorProfile.class);
-
     /*
      * Orchestrator type.
      */
@@ -99,10 +96,12 @@ public final class OrchestratorProfile {
      */
     public void validate() {
         if (orchestratorVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorProfile.class);
 }

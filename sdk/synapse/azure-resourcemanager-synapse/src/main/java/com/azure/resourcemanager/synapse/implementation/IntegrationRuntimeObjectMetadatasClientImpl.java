@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeObjectMetadatasClient;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeObjectMetadatasClient.
  */
 public final class IntegrationRuntimeObjectMetadatasClientImpl implements IntegrationRuntimeObjectMetadatasClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeObjectMetadatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeObjectMetadatasService service;
 
@@ -112,7 +109,8 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsisObjectMetadataListResponseInner>> listWithResponseAsync(
@@ -177,7 +175,8 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsisObjectMetadataListResponseInner>> listWithResponseAsync(
@@ -239,7 +238,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataListResponseInner> listAsync(
@@ -267,7 +266,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataListResponseInner> listAsync(
@@ -313,7 +312,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object metadata from an integration runtime.
+     * @return object metadata from an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsisObjectMetadataListResponseInner> listWithResponse(
@@ -336,7 +335,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
@@ -393,7 +392,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
@@ -446,9 +445,9 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefreshAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -460,7 +459,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                 this.client.getHttpPipeline(),
                 SsisObjectMetadataStatusResponseInner.class,
                 SsisObjectMetadataStatusResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -473,9 +472,9 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefreshAsync(
             String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
@@ -501,9 +500,9 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginRefreshAsync(resourceGroupName, workspaceName, integrationRuntimeName).getSyncPoller();
@@ -519,9 +518,9 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginRefreshAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).getSyncPoller();
@@ -536,7 +535,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataStatusResponseInner> refreshAsync(
@@ -556,7 +555,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataStatusResponseInner> refreshAsync(

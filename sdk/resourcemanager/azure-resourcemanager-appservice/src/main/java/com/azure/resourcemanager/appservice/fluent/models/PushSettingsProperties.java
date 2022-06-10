@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PushSettings resource specific properties. */
 @Fluent
 public final class PushSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PushSettingsProperties.class);
-
     /*
      * Gets or sets a flag indicating whether the Push endpoint is enabled.
      */

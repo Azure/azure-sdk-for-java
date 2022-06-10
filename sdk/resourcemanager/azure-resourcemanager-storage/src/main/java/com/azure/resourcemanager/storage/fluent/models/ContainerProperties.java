@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -22,8 +20,6 @@ import java.util.Map;
 /** The properties of a container. */
 @Fluent
 public final class ContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerProperties.class);
-
     /*
      * The version of the deleted blob container.
      */
@@ -137,6 +133,18 @@ public final class ContainerProperties {
      */
     @JsonProperty(value = "immutableStorageWithVersioning")
     private ImmutableStorageWithVersioning immutableStorageWithVersioning;
+
+    /*
+     * Enable NFSv3 root squash on blob container.
+     */
+    @JsonProperty(value = "enableNfsV3RootSquash")
+    private Boolean enableNfsV3RootSquash;
+
+    /*
+     * Enable NFSv3 all squash on blob container.
+     */
+    @JsonProperty(value = "enableNfsV3AllSquash")
+    private Boolean enableNfsV3AllSquash;
 
     /**
      * Get the version property: The version of the deleted blob container.
@@ -355,6 +363,46 @@ public final class ContainerProperties {
     public ContainerProperties withImmutableStorageWithVersioning(
         ImmutableStorageWithVersioning immutableStorageWithVersioning) {
         this.immutableStorageWithVersioning = immutableStorageWithVersioning;
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @return the enableNfsV3RootSquash value.
+     */
+    public Boolean enableNfsV3RootSquash() {
+        return this.enableNfsV3RootSquash;
+    }
+
+    /**
+     * Set the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @param enableNfsV3RootSquash the enableNfsV3RootSquash value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withEnableNfsV3RootSquash(Boolean enableNfsV3RootSquash) {
+        this.enableNfsV3RootSquash = enableNfsV3RootSquash;
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @return the enableNfsV3AllSquash value.
+     */
+    public Boolean enableNfsV3AllSquash() {
+        return this.enableNfsV3AllSquash;
+    }
+
+    /**
+     * Set the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @param enableNfsV3AllSquash the enableNfsV3AllSquash value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withEnableNfsV3AllSquash(Boolean enableNfsV3AllSquash) {
+        this.enableNfsV3AllSquash = enableNfsV3AllSquash;
         return this;
     }
 

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.PerfMonSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Performance monitor API response. */
 @Fluent
 public final class PerfMonResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerfMonResponseInner.class);
-
     /*
      * The response code.
      */

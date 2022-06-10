@@ -343,7 +343,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(
         String resourceGroupName, String serverName, ServerInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, serverName, parameters);
@@ -365,7 +365,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateAsync(
         String resourceGroupName, String serverName, ServerInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -388,7 +388,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
         String resourceGroupName, String serverName, ServerInner parameters) {
         return beginCreateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
@@ -406,7 +406,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginCreate(
         String resourceGroupName, String serverName, ServerInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
@@ -605,7 +605,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
         String resourceGroupName, String serverName, ServerForUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serverName, parameters);
@@ -628,7 +628,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
         String resourceGroupName, String serverName, ServerForUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -652,7 +652,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerForUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, serverName, parameters).getSyncPoller();
@@ -671,7 +671,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerForUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
@@ -856,7 +856,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName);
         return this
@@ -875,7 +875,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, Context context) {
         context = this.client.mergeContext(context);
@@ -895,7 +895,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
         return beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
@@ -911,7 +911,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
@@ -1546,7 +1546,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serverName, RestartParameter parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, serverName, parameters);
@@ -1567,7 +1567,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String serverName, RestartParameter parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1589,7 +1589,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serverName, RestartParameter parameters) {
         return beginRestartAsync(resourceGroupName, serverName, parameters).getSyncPoller();
@@ -1607,7 +1607,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serverName, RestartParameter parameters, Context context) {
         return beginRestartAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
@@ -1818,7 +1818,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, serverName);
         return this
@@ -1837,7 +1837,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String serverName, Context context) {
         context = this.client.mergeContext(context);
@@ -1857,7 +1857,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName) {
         return beginStartAsync(resourceGroupName, serverName).getSyncPoller();
     }
@@ -1873,7 +1873,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serverName, Context context) {
         return beginStartAsync(resourceGroupName, serverName, context).getSyncPoller();
     }
@@ -2043,7 +2043,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, serverName);
         return this
@@ -2062,7 +2062,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String serverName, Context context) {
         context = this.client.mergeContext(context);
@@ -2082,7 +2082,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serverName) {
         return beginStopAsync(resourceGroupName, serverName).getSyncPoller();
     }
@@ -2098,7 +2098,7 @@ public final class ServersClientImpl implements ServersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serverName, Context context) {
         return beginStopAsync(resourceGroupName, serverName, context).getSyncPoller();
     }

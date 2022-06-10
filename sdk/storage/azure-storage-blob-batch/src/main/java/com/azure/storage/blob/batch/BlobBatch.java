@@ -45,7 +45,17 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>Azure Storage Blob batches are homogeneous which means a {@link #deleteBlob(String) delete} and {@link
  * #setBlobAccessTier(String, AccessTier) set tier} are not allowed to be in the same batch.</p>
  *
- * {@codesnippet com.azure.storage.blob.batch.BlobBatch.illegalBatchOperation}
+ * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.illegalBatchOperation -->
+ * <pre>
+ * try &#123;
+ *     Response&lt;Void&gt; deleteResponse = batch.deleteBlob&#40;&quot;&#123;url of blob&#125;&quot;&#41;;
+ *     Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;&quot;&#123;url of another blob&#125;&quot;, AccessTier.HOT&#41;;
+ * &#125; catch &#40;UnsupportedOperationException ex&#41; &#123;
+ *     System.err.printf&#40;&quot;This will fail as Azure Storage Blob batch operations are homogeneous. Exception: %s%n&quot;,
+ *         ex.getMessage&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.storage.blob.batch.BlobBatch.illegalBatchOperation -->
  *
  * <p>Please refer to the <a href="https://docs.microsoft.com/rest/api/storageservices/blob-batch">Azure Docs</a>
  * for more information.</p>
@@ -64,7 +74,7 @@ public final class BlobBatch {
     private static final int[] EXPECTED_DELETE_STATUS_CODES = {202};
     private static final int[] EXPECTED_SET_TIER_STATUS_CODES = {200, 202};
 
-    private final ClientLogger logger = new ClientLogger(BlobBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatch.class);
 
     private final BlobAsyncClient blobAsyncClient;
 
@@ -109,7 +119,11 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String -->
+     * <pre>
+     * Response&lt;Void&gt; deleteResponse = batch.deleteBlob&#40;&quot;&#123;container name&#125;&quot;, &quot;&#123;blob name&#125;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String -->
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -127,7 +141,14 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;&#123;lease ID&#125;&quot;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse = batch.deleteBlob&#40;&quot;&#123;container name&#125;&quot;, &quot;&#123;blob name&#125;&quot;,
+     *     DeleteSnapshotsOptionType.INCLUDE, blobRequestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-String-DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -148,7 +169,11 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.deleteBlob#String -->
+     * <pre>
+     * Response&lt;Void&gt; deleteResponse = batch.deleteBlob&#40;&quot;&#123;url of blob&#125;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String -->
      *
      * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -164,7 +189,14 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;&#123;lease ID&#125;&quot;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse = batch.deleteBlob&#40;&quot;&#123;url of blob&#125;&quot;, DeleteSnapshotsOptionType.INCLUDE,
+     *     blobRequestConditions&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.deleteBlob#String-DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
      * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param deleteOptions Delete options for the blob and its snapshots.
@@ -190,7 +222,11 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier -->
+     * <pre>
+     * Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;&quot;&#123;container name&#125;&quot;, &quot;&#123;blob name&#125;&quot;, AccessTier.HOT&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier -->
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -209,7 +245,12 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String -->
+     * <pre>
+     * Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;&quot;&#123;container name&#125;&quot;, &quot;&#123;blob name&#125;&quot;, AccessTier.HOT,
+     *     &quot;&#123;lease ID&#125;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-String-AccessTier-String -->
      *
      * @param containerName The container of the blob.
      * @param blobName The name of the blob.
@@ -230,7 +271,11 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier -->
+     * <pre>
+     * Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;&quot;&#123;url of blob&#125;&quot;, AccessTier.HOT&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier -->
      *
      * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
@@ -247,7 +292,11 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String -->
+     * <pre>
+     * Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;&quot;&#123;url of blob&#125;&quot;, AccessTier.HOT, &quot;&#123;lease ID&#125;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String -->
      *
      * @param blobUrl URL of the blob. Blob name must be encoded to UTF-8.
      * @param accessTier The tier to set on the blob.
@@ -265,7 +314,12 @@ public final class BlobBatch {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions -->
+     * <pre>
+     * Response&lt;Void&gt; setTierResponse = batch.setBlobAccessTier&#40;
+     *     new BlobBatchSetBlobAccessTierOptions&#40;&quot;&#123;url of blob&#125;&quot;, AccessTier.HOT&#41;.setLeaseId&#40;&quot;&#123;lease ID&#125;&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions -->
      *
      * @param options {@link BlobBatchSetBlobAccessTierOptions}
      * @return a {@link Response} that will be used to associate this operation to the response when the batch is
@@ -305,14 +359,14 @@ public final class BlobBatch {
         if (this.batchType == null) {
             this.batchType = batchType;
         } else if (this.batchType != batchType) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
                 "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
         }
     }
 
     Mono<BlobBatchOperationInfo> prepareBlobBatchSubmission() {
         if (batchOperationQueue.isEmpty()) {
-            return monoError(logger, new UnsupportedOperationException("Empty batch requests aren't allowed."));
+            return monoError(LOGGER, new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
         BlobBatchOperationInfo operationInfo = new BlobBatchOperationInfo();
@@ -374,7 +428,7 @@ public final class BlobBatch {
             requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
             context.getHttpRequest().setUrl(requestUrl.toUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
         }
 
         return next.process();

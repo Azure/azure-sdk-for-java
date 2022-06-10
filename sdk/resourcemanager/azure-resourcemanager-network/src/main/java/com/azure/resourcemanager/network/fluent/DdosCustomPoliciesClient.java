@@ -29,7 +29,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ddosCustomPolicyName);
@@ -42,9 +42,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ddosCustomPolicyName);
 
     /**
@@ -55,9 +55,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosCustomPolicyName);
 
     /**
@@ -69,9 +69,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String ddosCustomPolicyName, Context context);
 
@@ -83,7 +83,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String ddosCustomPolicyName);
@@ -121,7 +121,8 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified DDoS custom policy.
+     * @return information about the specified DDoS custom policy along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DdosCustomPolicyInner>> getByResourceGroupWithResponseAsync(
@@ -135,7 +136,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified DDoS custom policy.
+     * @return information about the specified DDoS custom policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DdosCustomPolicyInner> getByResourceGroupAsync(String resourceGroupName, String ddosCustomPolicyName);
@@ -162,7 +163,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified DDoS custom policy.
+     * @return information about the specified DDoS custom policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DdosCustomPolicyInner> getByResourceGroupWithResponse(
@@ -177,7 +178,8 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -192,9 +194,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return the {@link PollerFlux} for polling of a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
@@ -207,9 +209,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return the {@link SyncPoller} for polling of a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
@@ -223,9 +225,9 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return the {@link SyncPoller} for polling of a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context);
 
@@ -238,7 +240,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return a DDoS custom policy in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DdosCustomPolicyInner> createOrUpdateAsync(
@@ -284,7 +286,8 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(
@@ -299,7 +302,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return a DDoS custom policy in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DdosCustomPolicyInner> updateTagsAsync(
@@ -329,7 +332,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
+     * @return a DDoS custom policy in a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DdosCustomPolicyInner> updateTagsWithResponse(

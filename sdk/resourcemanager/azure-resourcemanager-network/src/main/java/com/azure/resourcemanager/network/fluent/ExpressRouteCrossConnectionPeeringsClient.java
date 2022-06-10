@@ -30,7 +30,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified ExpressRouteCrossConnection.
+     * @return all peerings in a specified ExpressRouteCrossConnection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRouteCrossConnectionPeeringInner> listAsync(String resourceGroupName, String crossConnectionName);
@@ -43,7 +43,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified ExpressRouteCrossConnection.
+     * @return all peerings in a specified ExpressRouteCrossConnection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(String resourceGroupName, String crossConnectionName);
@@ -57,7 +57,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified ExpressRouteCrossConnection.
+     * @return all peerings in a specified ExpressRouteCrossConnection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(
@@ -72,7 +72,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -87,9 +87,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String crossConnectionName, String peeringName);
 
@@ -102,9 +102,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName);
 
@@ -118,9 +118,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String crossConnectionName, String peeringName, Context context);
 
@@ -133,7 +133,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String crossConnectionName, String peeringName);
@@ -174,7 +174,8 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the ExpressRouteCrossConnection.
+     * @return the specified peering for the ExpressRouteCrossConnection along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(
@@ -189,7 +190,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the ExpressRouteCrossConnection.
+     * @return the specified peering for the ExpressRouteCrossConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionPeeringInner> getAsync(
@@ -220,7 +221,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the ExpressRouteCrossConnection.
+     * @return the specified peering for the ExpressRouteCrossConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(
@@ -237,7 +238,8 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRoute Cross Connection resource.
+     * @return peering in an ExpressRoute Cross Connection resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -257,9 +259,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRoute Cross Connection resource.
+     * @return the {@link PollerFlux} for polling of peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -278,9 +280,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRoute Cross Connection resource.
+     * @return the {@link SyncPoller} for polling of peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -300,9 +302,9 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRoute Cross Connection resource.
+     * @return the {@link SyncPoller} for polling of peering in an ExpressRoute Cross Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -322,7 +324,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRoute Cross Connection resource.
+     * @return peering in an ExpressRoute Cross Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(

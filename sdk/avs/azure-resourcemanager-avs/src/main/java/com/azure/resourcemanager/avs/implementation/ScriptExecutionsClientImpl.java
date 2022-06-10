@@ -163,14 +163,14 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptExecutionInner>> listSinglePageAsync(
@@ -221,7 +221,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -229,7 +229,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScriptExecutionInner>> listSinglePageAsync(
@@ -277,14 +277,14 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScriptExecutionInner> listAsync(String resourceGroupName, String privateCloudName) {
@@ -294,7 +294,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -302,7 +302,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScriptExecutionInner> listAsync(
@@ -313,14 +313,14 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptExecutionInner> list(String resourceGroupName, String privateCloudName) {
@@ -328,7 +328,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * List script executions in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -336,7 +336,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return pageable list of script executions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScriptExecutionInner> list(
@@ -345,7 +345,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * Get an script execution by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -353,7 +353,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return an script execution by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptExecutionInner>> getWithResponseAsync(
@@ -400,7 +400,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * Get an script execution by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -409,7 +409,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return an script execution by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptExecutionInner>> getWithResponseAsync(
@@ -453,7 +453,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * Get an script execution by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -461,7 +461,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return an script execution by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScriptExecutionInner> getAsync(
@@ -478,7 +478,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * Get an script execution by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -486,7 +486,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return an script execution by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptExecutionInner get(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
@@ -494,7 +494,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Get an script execution resource by name in a private cloud.
+     * Get an script execution by name in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -503,7 +503,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an script execution resource by name in a private cloud.
+     * @return an script execution by name in a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptExecutionInner> getWithResponse(
@@ -512,7 +512,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -578,7 +578,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -643,7 +643,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -654,7 +654,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -673,7 +673,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -685,7 +685,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -703,7 +703,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -714,7 +714,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -725,7 +725,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -737,7 +737,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an instance of a script executed by a user - custom or AVS.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ScriptExecutionInner>, ScriptExecutionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -750,7 +750,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -773,7 +773,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -799,7 +799,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -820,7 +820,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     }
 
     /**
-     * Create or update a script execution resource in a private cloud.
+     * Create or update a script execution in a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName The name of the private cloud.
@@ -962,7 +962,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String scriptExecutionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -984,7 +984,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1006,7 +1006,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String scriptExecutionName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName).getSyncPoller();
@@ -1024,7 +1024,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName, context).getSyncPoller();

@@ -10,8 +10,11 @@ import java.util.Collection;
 
 /** Defines values for VMGroupStatusEnum. */
 public final class VMGroupStatusEnum extends ExpandableStringEnum<VMGroupStatusEnum> {
-    /** Static value SUCCESS, FAILURE for VMGroupStatusEnum. */
-    public static final VMGroupStatusEnum SUCCESS_FAILURE = fromString("SUCCESS, FAILURE");
+    /** Static value SUCCESS for VMGroupStatusEnum. */
+    public static final VMGroupStatusEnum SUCCESS = fromString("SUCCESS");
+
+    /** Static value FAILURE for VMGroupStatusEnum. */
+    public static final VMGroupStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates or finds a VMGroupStatusEnum from its string representation.

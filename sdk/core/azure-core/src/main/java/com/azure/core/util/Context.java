@@ -24,12 +24,14 @@ import java.util.Optional;
 public class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
+    private static final Context[] EMPTY_CHAIN = new Context[0];
+
     // All fields must be immutable.
     //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null) {
+    public static final Context NONE = new Context(null, null, null, 0) {
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
@@ -43,18 +45,39 @@ public class Context {
         public Map<Object, Object> getValues() {
             return Collections.emptyMap();
         }
+
+        @Override
+        Context[] getContextChain() {
+            return EMPTY_CHAIN;
+        }
     };
 
     private final Context parent;
     private final Object key;
     private final Object value;
+    private final int contextCount;
 
     /**
      * Constructs a new {@link Context} object.
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context#object-object}
+     * <!-- src_embed com.azure.core.util.context#object-object -->
+     * <pre>
+     * &#47;&#47; Create an empty context having no data
+     * Context emptyContext = Context.NONE;
+     *
+     * &#47;&#47; Tracing spans or other properties defined by users can be passed
+     * &#47;&#47; to calling methods in sdk clients using Context object.
+     * Context keyValueContext = new Context&#40;USER_SPAN_NAME_KEY, &quot;span-name&quot;&#41;;
+     *
+     * &#47;&#47; OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
+     * &#47;&#47; when OpenTelemetry context is not provided explicitly, ambient
+     * &#47;&#47; io.opentelemetry.context.Context.current&#40;&#41; is used
+     *
+     * &#47;&#47; Context contextWithSpan = new Context&#40;PARENT_TRACE_CONTEXT_KEY, openTelemetryContext&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.context#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -64,12 +87,22 @@ public class Context {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
         this.value = value;
+        this.contextCount = 1;
     }
 
-    private Context(Context parent, Object key, Object value) {
+    private Context(Context parent, Object key, Object value, int contextCount) {
         this.parent = parent;
         this.key = key;
         this.value = value;
+        this.contextCount = contextCount;
+    }
+
+    Object getKey() {
+        return key;
+    }
+
+    Object getValue() {
+        return value;
     }
 
     /**
@@ -78,7 +111,26 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.addData#object-object}
+     * <!-- src_embed com.azure.core.util.context.addData#object-object -->
+     * <pre>
+     * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
+     * &#47;&#47; using the com.azure.core.util.Context object.
+     * final String hostNameValue = &quot;host-name-value&quot;;
+     * final String entityPathValue = &quot;entity-path-value&quot;;
+     *
+     * &#47;&#47; TraceContext represents a tracing solution context type - io.opentelemetry.context.Context for OpenTelemetry.
+     * final TraceContext parentContext = TraceContext.root&#40;&#41;;
+     * Context parentSpanContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, parentContext&#41;;
+     *
+     * &#47;&#47; Add a new key value pair to the existing context object.
+     * Context updatedContext = parentSpanContext.addData&#40;HOST_NAME_KEY, hostNameValue&#41;
+     *     .addData&#40;ENTITY_PATH_KEY, entityPathValue&#41;;
+     *
+     * &#47;&#47; Both key values found on the same updated context object
+     * System.out.printf&#40;&quot;Hostname value: %s%n&quot;, updatedContext.getData&#40;HOST_NAME_KEY&#41;.get&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Entity Path value: %s%n&quot;, updatedContext.getData&#40;ENTITY_PATH_KEY&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.context.addData#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -89,7 +141,7 @@ public class Context {
         if (key == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
-        return new Context(this, key, value);
+        return new Context(this, key, value, contextCount + 1);
     }
 
     /**
@@ -98,7 +150,18 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.of#map}
+     * <!-- src_embed com.azure.core.util.context.of#map -->
+     * <pre>
+     * final String key1 = &quot;Key1&quot;;
+     * final String value1 = &quot;first-value&quot;;
+     * Map&lt;Object, Object&gt; keyValueMap = new HashMap&lt;&gt;&#40;&#41;;
+     * keyValueMap.put&#40;key1, value1&#41;;
+     *
+     * &#47;&#47; Create a context using the provided key value pair map
+     * Context keyValueContext = Context.of&#40;keyValueMap&#41;;
+     * System.out.printf&#40;&quot;Key1 value %s%n&quot;, keyValueContext.getData&#40;key1&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.context.of#map -->
      *
      * @param keyValues The input key value pairs that will be added to this context.
      * @return Context object containing all the key-value pairs in the input map.
@@ -126,7 +189,23 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.getData#object}
+     * <!-- src_embed com.azure.core.util.context.getData#object -->
+     * <pre>
+     * final String key1 = &quot;Key1&quot;;
+     * final String value1 = &quot;first-value&quot;;
+     *
+     * &#47;&#47; Create a context object with given key and value
+     * Context context = new Context&#40;key1, value1&#41;;
+     *
+     * &#47;&#47; Look for the specified key in the returned context object
+     * Optional&lt;Object&gt; optionalObject = context.getData&#40;key1&#41;;
+     * if &#40;optionalObject.isPresent&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Key1 value: %s%n&quot;, optionalObject.get&#40;&#41;&#41;;
+     * &#125; else &#123;
+     *     System.out.println&#40;&quot;Key1 does not exist or have data.&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.util.context.getData#object -->
      *
      * @param key The key to search for.
      * @return The value of the specified key if it exists.
@@ -149,7 +228,30 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.Context.getValues}
+     * <!-- src_embed com.azure.core.util.Context.getValues -->
+     * <pre>
+     * final String key1 = &quot;Key1&quot;;
+     * final String value1 = &quot;first-value&quot;;
+     * final String key2 = &quot;Key2&quot;;
+     * final String value2 = &quot;second-value&quot;;
+     *
+     * Context context = new Context&#40;key1, value1&#41;
+     *     .addData&#40;key2, value2&#41;;
+     *
+     * Map&lt;Object, Object&gt; contextValues = context.getValues&#40;&#41;;
+     * if &#40;contextValues.containsKey&#40;key1&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Key1 value: %s%n&quot;, contextValues.get&#40;key1&#41;&#41;;
+     * &#125; else &#123;
+     *     System.out.println&#40;&quot;Key1 does not exist.&quot;&#41;;
+     * &#125;
+     *
+     * if &#40;contextValues.containsKey&#40;key2&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Key2 value: %s%n&quot;, contextValues.get&#40;key2&#41;&#41;;
+     * &#125; else &#123;
+     *     System.out.println&#40;&quot;Key2 does not exist.&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.util.Context.getValues -->
      *
      * @return A map containing all values of the context linked-list.
      */
@@ -163,5 +265,23 @@ public class Context {
         }
 
         return (parent == null) ? values : parent.getValuesHelper(values);
+    }
+
+    /**
+     * Gets the {@link Context Contexts} in the chain of Contexts that this Context is the tail.
+     *
+     * @return The Contexts, in oldest to newest order, in the chain of Contexts that this Context is the tail.
+     */
+    Context[] getContextChain() {
+        Context[] chain = new Context[contextCount];
+
+        Context pointer = this;
+        int chainPosition = contextCount - 1;
+        while (pointer != null && chainPosition >= 0) {
+            chain[chainPosition--] = pointer;
+            pointer = pointer.parent;
+        }
+
+        return chain;
     }
 }

@@ -4,12 +4,11 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.labservices.fluent.models.LabInner;
-import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Lab. */
@@ -50,81 +49,93 @@ public interface Lab {
     Map<String, String> tags();
 
     /**
-     * Gets the maxUsersInLab property: Maximum number of users allowed in the lab.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the lab.
      *
-     * @return the maxUsersInLab value.
+     * @return the systemData value.
      */
-    Integer maxUsersInLab();
+    SystemData systemData();
 
     /**
-     * Gets the userQuota property: Maximum value MaxUsersInLab can be set to, as specified by the service.
-     *
-     * @return the userQuota value.
-     */
-    Integer userQuota();
-
-    /**
-     * Gets the invitationCode property: Invitation code that users can use to join a lab.
-     *
-     * @return the invitationCode value.
-     */
-    String invitationCode();
-
-    /**
-     * Gets the createdByObjectId property: Object id of the user that created the lab.
-     *
-     * @return the createdByObjectId value.
-     */
-    String createdByObjectId();
-
-    /**
-     * Gets the usageQuota property: Maximum duration a user can use an environment for in the lab.
-     *
-     * @return the usageQuota value.
-     */
-    Duration usageQuota();
-
-    /**
-     * Gets the userAccessMode property: Lab user access mode (open to all vs. restricted to those listed on the lab).
-     *
-     * @return the userAccessMode value.
-     */
-    LabUserAccessMode userAccessMode();
-
-    /**
-     * Gets the createdByUserPrincipalName property: Lab creator name.
-     *
-     * @return the createdByUserPrincipalName value.
-     */
-    String createdByUserPrincipalName();
-
-    /**
-     * Gets the createdDate property: Creation date for the lab.
-     *
-     * @return the createdDate value.
-     */
-    OffsetDateTime createdDate();
-
-    /**
-     * Gets the provisioningState property: The provisioning status of the resource.
+     * Gets the provisioningState property: Current provisioning state of the lab.
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
-     * Gets the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * Gets the networkProfile property: The network profile for the lab, typically applied via a lab plan. This profile
+     * cannot be modified once a lab has been created.
      *
-     * @return the uniqueIdentifier value.
+     * @return the networkProfile value.
      */
-    String uniqueIdentifier();
+    LabNetworkProfile networkProfile();
 
     /**
-     * Gets the latestOperationResult property: The details of the latest operation. ex: status, error.
+     * Gets the state property: The lab state.
      *
-     * @return the latestOperationResult value.
+     * @return the state value.
      */
-    LatestOperationResult latestOperationResult();
+    LabState state();
+
+    /**
+     * Gets the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This controls
+     * whether actions are taken on resources that are sitting idle.
+     *
+     * @return the autoShutdownProfile value.
+     */
+    AutoShutdownProfile autoShutdownProfile();
+
+    /**
+     * Gets the connectionProfile property: The connection profile for the lab. This controls settings such as web
+     * access to lab resources or whether RDP or SSH ports are open.
+     *
+     * @return the connectionProfile value.
+     */
+    ConnectionProfile connectionProfile();
+
+    /**
+     * Gets the virtualMachineProfile property: The profile used for creating lab virtual machines.
+     *
+     * @return the virtualMachineProfile value.
+     */
+    VirtualMachineProfile virtualMachineProfile();
+
+    /**
+     * Gets the securityProfile property: The lab security profile.
+     *
+     * @return the securityProfile value.
+     */
+    SecurityProfile securityProfile();
+
+    /**
+     * Gets the rosterProfile property: The lab user list management profile.
+     *
+     * @return the rosterProfile value.
+     */
+    RosterProfile rosterProfile();
+
+    /**
+     * Gets the labPlanId property: The ID of the lab plan. Used during resource creation to provide defaults and acts
+     * as a permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
+     * organization..
+     *
+     * @return the labPlanId value.
+     */
+    String labPlanId();
+
+    /**
+     * Gets the title property: The title of the lab.
+     *
+     * @return the title value.
+     */
+    String title();
+
+    /**
+     * Gets the description property: The description of the lab.
+     *
+     * @return the description value.
+     */
+    String description();
 
     /**
      * Gets the region of the resource.
@@ -151,7 +162,7 @@ public interface Lab {
     interface Definition
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
+            DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
     /** The Lab definition stages. */
@@ -167,7 +178,7 @@ public interface Lab {
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithParentResource withRegion(Region location);
+            WithResourceGroup withRegion(Region location);
 
             /**
              * Specifies the region for the resource.
@@ -175,18 +186,17 @@ public interface Lab {
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
-            WithParentResource withRegion(String location);
+            WithResourceGroup withRegion(String location);
         }
         /** The stage of the Lab definition allowing to specify parent resource. */
-        interface WithParentResource {
+        interface WithResourceGroup {
             /**
-             * Specifies resourceGroupName, labAccountName.
+             * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
-             * @param labAccountName The name of the lab Account.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingLabaccount(String resourceGroupName, String labAccountName);
+            WithCreate withExistingResourceGroup(String resourceGroupName);
         }
         /**
          * The stage of the Lab definition which contains all the minimum required properties for the resource to be
@@ -194,11 +204,15 @@ public interface Lab {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithMaxUsersInLab,
-                DefinitionStages.WithUsageQuota,
-                DefinitionStages.WithUserAccessMode,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithUniqueIdentifier {
+                DefinitionStages.WithNetworkProfile,
+                DefinitionStages.WithAutoShutdownProfile,
+                DefinitionStages.WithConnectionProfile,
+                DefinitionStages.WithVirtualMachineProfile,
+                DefinitionStages.WithSecurityProfile,
+                DefinitionStages.WithRosterProfile,
+                DefinitionStages.WithLabPlanId,
+                DefinitionStages.WithTitle,
+                DefinitionStages.WithDescription {
             /**
              * Executes the create request.
              *
@@ -224,56 +238,105 @@ public interface Lab {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Lab definition allowing to specify maxUsersInLab. */
-        interface WithMaxUsersInLab {
+        /** The stage of the Lab definition allowing to specify networkProfile. */
+        interface WithNetworkProfile {
             /**
-             * Specifies the maxUsersInLab property: Maximum number of users allowed in the lab..
+             * Specifies the networkProfile property: The network profile for the lab, typically applied via a lab plan.
+             * This profile cannot be modified once a lab has been created..
              *
-             * @param maxUsersInLab Maximum number of users allowed in the lab.
+             * @param networkProfile The network profile for the lab, typically applied via a lab plan. This profile
+             *     cannot be modified once a lab has been created.
              * @return the next definition stage.
              */
-            WithCreate withMaxUsersInLab(Integer maxUsersInLab);
+            WithCreate withNetworkProfile(LabNetworkProfile networkProfile);
         }
-        /** The stage of the Lab definition allowing to specify usageQuota. */
-        interface WithUsageQuota {
+        /** The stage of the Lab definition allowing to specify autoShutdownProfile. */
+        interface WithAutoShutdownProfile {
             /**
-             * Specifies the usageQuota property: Maximum duration a user can use an environment for in the lab..
+             * Specifies the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This
+             * controls whether actions are taken on resources that are sitting idle..
              *
-             * @param usageQuota Maximum duration a user can use an environment for in the lab.
+             * @param autoShutdownProfile The resource auto shutdown configuration for the lab. This controls whether
+             *     actions are taken on resources that are sitting idle.
              * @return the next definition stage.
              */
-            WithCreate withUsageQuota(Duration usageQuota);
+            WithCreate withAutoShutdownProfile(AutoShutdownProfile autoShutdownProfile);
         }
-        /** The stage of the Lab definition allowing to specify userAccessMode. */
-        interface WithUserAccessMode {
+        /** The stage of the Lab definition allowing to specify connectionProfile. */
+        interface WithConnectionProfile {
             /**
-             * Specifies the userAccessMode property: Lab user access mode (open to all vs. restricted to those listed
-             * on the lab)..
+             * Specifies the connectionProfile property: The connection profile for the lab. This controls settings such
+             * as web access to lab resources or whether RDP or SSH ports are open..
              *
-             * @param userAccessMode Lab user access mode (open to all vs. restricted to those listed on the lab).
+             * @param connectionProfile The connection profile for the lab. This controls settings such as web access to
+             *     lab resources or whether RDP or SSH ports are open.
              * @return the next definition stage.
              */
-            WithCreate withUserAccessMode(LabUserAccessMode userAccessMode);
+            WithCreate withConnectionProfile(ConnectionProfile connectionProfile);
         }
-        /** The stage of the Lab definition allowing to specify provisioningState. */
-        interface WithProvisioningState {
+        /** The stage of the Lab definition allowing to specify virtualMachineProfile. */
+        interface WithVirtualMachineProfile {
             /**
-             * Specifies the provisioningState property: The provisioning status of the resource..
+             * Specifies the virtualMachineProfile property: The profile used for creating lab virtual machines..
              *
-             * @param provisioningState The provisioning status of the resource.
+             * @param virtualMachineProfile The profile used for creating lab virtual machines.
              * @return the next definition stage.
              */
-            WithCreate withProvisioningState(String provisioningState);
+            WithCreate withVirtualMachineProfile(VirtualMachineProfile virtualMachineProfile);
         }
-        /** The stage of the Lab definition allowing to specify uniqueIdentifier. */
-        interface WithUniqueIdentifier {
+        /** The stage of the Lab definition allowing to specify securityProfile. */
+        interface WithSecurityProfile {
             /**
-             * Specifies the uniqueIdentifier property: The unique immutable identifier of a resource (Guid)..
+             * Specifies the securityProfile property: The lab security profile..
              *
-             * @param uniqueIdentifier The unique immutable identifier of a resource (Guid).
+             * @param securityProfile The lab security profile.
              * @return the next definition stage.
              */
-            WithCreate withUniqueIdentifier(String uniqueIdentifier);
+            WithCreate withSecurityProfile(SecurityProfile securityProfile);
+        }
+        /** The stage of the Lab definition allowing to specify rosterProfile. */
+        interface WithRosterProfile {
+            /**
+             * Specifies the rosterProfile property: The lab user list management profile..
+             *
+             * @param rosterProfile The lab user list management profile.
+             * @return the next definition stage.
+             */
+            WithCreate withRosterProfile(RosterProfile rosterProfile);
+        }
+        /** The stage of the Lab definition allowing to specify labPlanId. */
+        interface WithLabPlanId {
+            /**
+             * Specifies the labPlanId property: The ID of the lab plan. Used during resource creation to provide
+             * defaults and acts as a permission container when creating a lab via labs.azure.com. Setting a labPlanId
+             * on an existing lab provides organization...
+             *
+             * @param labPlanId The ID of the lab plan. Used during resource creation to provide defaults and acts as a
+             *     permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab
+             *     provides organization..
+             * @return the next definition stage.
+             */
+            WithCreate withLabPlanId(String labPlanId);
+        }
+        /** The stage of the Lab definition allowing to specify title. */
+        interface WithTitle {
+            /**
+             * Specifies the title property: The title of the lab..
+             *
+             * @param title The title of the lab.
+             * @return the next definition stage.
+             */
+            WithCreate withTitle(String title);
+        }
+        /** The stage of the Lab definition allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: The description of the lab..
+             *
+             * @param description The description of the lab.
+             * @return the next definition stage.
+             */
+            WithCreate withDescription(String description);
         }
     }
     /**
@@ -286,11 +349,14 @@ public interface Lab {
     /** The template for Lab update. */
     interface Update
         extends UpdateStages.WithTags,
-            UpdateStages.WithMaxUsersInLab,
-            UpdateStages.WithUsageQuota,
-            UpdateStages.WithUserAccessMode,
-            UpdateStages.WithProvisioningState,
-            UpdateStages.WithUniqueIdentifier {
+            UpdateStages.WithAutoShutdownProfile,
+            UpdateStages.WithConnectionProfile,
+            UpdateStages.WithVirtualMachineProfile,
+            UpdateStages.WithSecurityProfile,
+            UpdateStages.WithRosterProfile,
+            UpdateStages.WithLabPlanId,
+            UpdateStages.WithTitle,
+            UpdateStages.WithDescription {
         /**
          * Executes the update request.
          *
@@ -316,58 +382,95 @@ public interface Lab {
              * @param tags Resource tags.
              * @return the next definition stage.
              */
-            Update withTags(Map<String, String> tags);
+            Update withTags(List<String> tags);
         }
-        /** The stage of the Lab update allowing to specify maxUsersInLab. */
-        interface WithMaxUsersInLab {
+        /** The stage of the Lab update allowing to specify autoShutdownProfile. */
+        interface WithAutoShutdownProfile {
             /**
-             * Specifies the maxUsersInLab property: Maximum number of users allowed in the lab..
+             * Specifies the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This
+             * controls whether actions are taken on resources that are sitting idle..
              *
-             * @param maxUsersInLab Maximum number of users allowed in the lab.
+             * @param autoShutdownProfile The resource auto shutdown configuration for the lab. This controls whether
+             *     actions are taken on resources that are sitting idle.
              * @return the next definition stage.
              */
-            Update withMaxUsersInLab(Integer maxUsersInLab);
+            Update withAutoShutdownProfile(AutoShutdownProfile autoShutdownProfile);
         }
-        /** The stage of the Lab update allowing to specify usageQuota. */
-        interface WithUsageQuota {
+        /** The stage of the Lab update allowing to specify connectionProfile. */
+        interface WithConnectionProfile {
             /**
-             * Specifies the usageQuota property: Maximum duration a user can use an environment for in the lab..
+             * Specifies the connectionProfile property: The connection profile for the lab. This controls settings such
+             * as web access to lab resources or whether RDP or SSH ports are open..
              *
-             * @param usageQuota Maximum duration a user can use an environment for in the lab.
+             * @param connectionProfile The connection profile for the lab. This controls settings such as web access to
+             *     lab resources or whether RDP or SSH ports are open.
              * @return the next definition stage.
              */
-            Update withUsageQuota(Duration usageQuota);
+            Update withConnectionProfile(ConnectionProfile connectionProfile);
         }
-        /** The stage of the Lab update allowing to specify userAccessMode. */
-        interface WithUserAccessMode {
+        /** The stage of the Lab update allowing to specify virtualMachineProfile. */
+        interface WithVirtualMachineProfile {
             /**
-             * Specifies the userAccessMode property: Lab user access mode (open to all vs. restricted to those listed
-             * on the lab)..
+             * Specifies the virtualMachineProfile property: The profile used for creating lab virtual machines..
              *
-             * @param userAccessMode Lab user access mode (open to all vs. restricted to those listed on the lab).
+             * @param virtualMachineProfile The profile used for creating lab virtual machines.
              * @return the next definition stage.
              */
-            Update withUserAccessMode(LabUserAccessMode userAccessMode);
+            Update withVirtualMachineProfile(VirtualMachineProfile virtualMachineProfile);
         }
-        /** The stage of the Lab update allowing to specify provisioningState. */
-        interface WithProvisioningState {
+        /** The stage of the Lab update allowing to specify securityProfile. */
+        interface WithSecurityProfile {
             /**
-             * Specifies the provisioningState property: The provisioning status of the resource..
+             * Specifies the securityProfile property: The lab security profile..
              *
-             * @param provisioningState The provisioning status of the resource.
+             * @param securityProfile The lab security profile.
              * @return the next definition stage.
              */
-            Update withProvisioningState(String provisioningState);
+            Update withSecurityProfile(SecurityProfile securityProfile);
         }
-        /** The stage of the Lab update allowing to specify uniqueIdentifier. */
-        interface WithUniqueIdentifier {
+        /** The stage of the Lab update allowing to specify rosterProfile. */
+        interface WithRosterProfile {
             /**
-             * Specifies the uniqueIdentifier property: The unique immutable identifier of a resource (Guid)..
+             * Specifies the rosterProfile property: The lab user list management profile..
              *
-             * @param uniqueIdentifier The unique immutable identifier of a resource (Guid).
+             * @param rosterProfile The lab user list management profile.
              * @return the next definition stage.
              */
-            Update withUniqueIdentifier(String uniqueIdentifier);
+            Update withRosterProfile(RosterProfile rosterProfile);
+        }
+        /** The stage of the Lab update allowing to specify labPlanId. */
+        interface WithLabPlanId {
+            /**
+             * Specifies the labPlanId property: The ID of the lab plan. Used during resource creation to provide
+             * defaults and acts as a permission container when creating a lab via labs.azure.com. Setting a labPlanId
+             * on an existing lab provides organization...
+             *
+             * @param labPlanId The ID of the lab plan. Used during resource creation to provide defaults and acts as a
+             *     permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab
+             *     provides organization..
+             * @return the next definition stage.
+             */
+            Update withLabPlanId(String labPlanId);
+        }
+        /** The stage of the Lab update allowing to specify title. */
+        interface WithTitle {
+            /**
+             * Specifies the title property: The title of the lab..
+             *
+             * @param title The title of the lab.
+             * @return the next definition stage.
+             */
+            Update withTitle(String title);
+        }
+        /** The stage of the Lab update allowing to specify description. */
+        interface WithDescription {
+            /**
+             * Specifies the description property: The description of the lab..
+             *
+             * @param description The description of the lab.
+             * @return the next definition stage.
+             */
+            Update withDescription(String description);
         }
     }
     /**
@@ -386,43 +489,38 @@ public interface Lab {
     Lab refresh(Context context);
 
     /**
-     * Add users to a lab.
-     *
-     * @param addUsersPayload Payload for Add Users operation on a Lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void addUsers(AddUsersPayload addUsersPayload);
-
-    /**
-     * Add users to a lab.
-     *
-     * @param addUsersPayload Payload for Add Users operation on a Lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> addUsersWithResponse(AddUsersPayload addUsersPayload, Context context);
-
-    /**
-     * Register to managed lab.
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void register();
+    void publish();
 
     /**
-     * Register to managed lab.
+     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> registerWithResponse(Context context);
+    void publish(Context context);
+
+    /**
+     * Action used to manually kick off an AAD group sync job.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncGroup();
+
+    /**
+     * Action used to manually kick off an AAD group sync job.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void syncGroup(Context context);
 }

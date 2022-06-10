@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
+## 12.18.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,10 +8,138 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.17.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+- Upgraded `azure-storage-internal-avro` from `12.3.0` to version `12.4.0-beta.1`.
+
+## 12.17.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+### Other Changes
+- Deprecated BlobClientBase.download and BlobClientBase.downloadWithResponse that downloads entire blob into an output
+  stream. Use BlobClientBase.downloadStream and BlobClientBase.downloadStreamWithResponse instead.
+
+## 12.16.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
+- Upgraded `azure-storage-internal-avro` from `12.2.1` to version `12.2.2`.
+
+## 12.17.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added the ability to list PageRanges and PageRangesDiff by page.
+
+## 12.16.0 (2022-04-07)
+
+### Bugs Fixed
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether blob existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-common` from `12.15.0` to version `12.15.1`.
+- Upgraded `azure-storage-internal-avro` from `12.2.0` to version `12.2.1`.
+
+## 12.15.0 (2022-03-09)
+
+### Bugs Fixed
+- Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.14.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-common` from `12.14.2` to version `12.14.3`.
+- Upgraded `azure-storage-internal-avro` from `12.1.3` to version `12.1.4`.
+
+## 12.15.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+- Added support for filterBlobs api on container clients.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
+
+## 12.14.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-common` from `12.14.1` to version `12.14.2`.
+- Upgraded `azure-storage-internal-avro` from `12.1.2` to version `12.1.3`.
+
+## 12.15.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+- Added support for listing blobs which contain invalid xml characters.
+
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
+
+### Bugs Fixed
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
+
+### Other Changes
+- Deprecated BlobClient.uploadWithResponse that does not return a response.
+
+## 12.14.2 (2021-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.22.0` of `azure-core`
+- Updated to version `12.14.1` of `azure-storage-common`
+
+## 12.15.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
+
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for setting encryption scopes on the destination of a sync copy.
+
+## 12.14.1 (2021-10-12)
+
+### Bugs Fixed
+
 - Fixed a bug when Blob Endpoint is provided as an IP address (e.g., `https://x.x.x.x:10000`) with 
   empty component path, the parsing fails with StringIndexOutOfBoundsException
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.14.0` of `azure-storage-common`
 
 ## 12.14.0 (2021-09-15)
 - GA release
@@ -38,11 +166,11 @@
 - Updated `azure-core` to version `1.16.0`
 
 ## 12.11.0 (2021-04-29)
-- Fixed a bug where large files would hang when the upload method was called. 
+- Fixed a bug where large files would not respond when the upload method was called. 
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
-- Fixed a bug where BlobOutputStream could hang when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
+- Fixed a bug where BlobOutputStream could not respond when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
 - Fixed a bug where a null check was placed on the wrong parameter of the InputStream constructor for BlobParallelUploadOptions
 
 ## 12.11.0-beta.2 (2021-03-29)
@@ -183,6 +311,7 @@ and
 - Added overloads to downloadToFile to add the option to overwrite existing files. Default behavior is to not overwrite.
 - Improved performance of BlockBlobOutputStream.
 - Added overloads to BlockBlobClient.getBlobOutputStream to allow users to provide parallel transfer options, http headers, metadata, access tier, and request conditions.
+
 
 ## 12.2.0-beta.1 (2019-12-17)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setContainerName, setBlobName, setSnapshotId, generateSasQueryParameters methods on BlobServiceSasSignatureValues to direct users to using the methods added on clients.

@@ -6,22 +6,17 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.IpVersions;
 import com.azure.resourcemanager.compute.models.PublicIpAllocationMethod;
 import com.azure.resourcemanager.compute.models.VirtualMachineIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressDnsSettingsConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machines IP Configuration's PublicIPAddress configuration. */
 @Fluent
 public final class VirtualMachinePublicIpAddressConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachinePublicIpAddressConfigurationProperties.class);
-
     /*
      * The idle timeout of the public IP address.
      */

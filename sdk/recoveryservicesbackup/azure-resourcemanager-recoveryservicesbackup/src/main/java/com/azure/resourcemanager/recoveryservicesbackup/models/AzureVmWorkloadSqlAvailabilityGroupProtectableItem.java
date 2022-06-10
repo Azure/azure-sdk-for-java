@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure VM workload-specific protectable item representing SQL Availability Group. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
 @JsonTypeName("SQLAvailabilityGroupContainer")
-@Immutable
+@Fluent
 public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends AzureVmWorkloadProtectableItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlAvailabilityGroupProtectableItem withParentName(String parentName) {

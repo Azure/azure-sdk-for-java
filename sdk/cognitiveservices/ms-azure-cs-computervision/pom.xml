@@ -15,7 +15,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-computervision</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.0.8-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;current} -->
+    <version>1.1.0-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Computer Vision</name>
     <description>This package contains Microsoft Cognitive Service Computer Vision SDK.</description>
@@ -76,7 +76,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
           <bottom>

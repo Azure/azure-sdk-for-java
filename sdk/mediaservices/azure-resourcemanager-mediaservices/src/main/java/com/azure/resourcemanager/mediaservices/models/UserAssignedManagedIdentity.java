@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The UserAssignedManagedIdentity model. */
 @Immutable
 public class UserAssignedManagedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedManagedIdentity.class);
-
     /*
      * The client ID.
      */

@@ -81,6 +81,12 @@ public final class BlobsCopyFromURLHeaders {
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
 
+    /*
+     * The x-ms-encryption-scope property.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String xMsEncryptionScope;
+
     /**
      * Get the xMsVersion property: The x-ms-version property.
      *
@@ -312,6 +318,26 @@ public final class BlobsCopyFromURLHeaders {
      */
     public BlobsCopyFromURLHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionScope property: The x-ms-encryption-scope property.
+     *
+     * @return the xMsEncryptionScope value.
+     */
+    public String getXMsEncryptionScope() {
+        return this.xMsEncryptionScope;
+    }
+
+    /**
+     * Set the xMsEncryptionScope property: The x-ms-encryption-scope property.
+     *
+     * @param xMsEncryptionScope the xMsEncryptionScope value to set.
+     * @return the BlobsCopyFromURLHeaders object itself.
+     */
+    public BlobsCopyFromURLHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
+        this.xMsEncryptionScope = xMsEncryptionScope;
         return this;
     }
 }

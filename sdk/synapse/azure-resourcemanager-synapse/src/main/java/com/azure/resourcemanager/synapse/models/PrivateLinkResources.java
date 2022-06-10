@@ -18,7 +18,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link resources for a workspaces.
+     * @return all private link resources for a workspaces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName);
 
@@ -31,7 +31,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link resources for a workspaces.
+     * @return all private link resources for a workspaces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName, Context context);
 
@@ -58,7 +58,7 @@ public interface PrivateLinkResources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
+     * @return private link resource in workspace along with {@link Response}.
      */
     Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);

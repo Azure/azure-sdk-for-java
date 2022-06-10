@@ -26,10 +26,7 @@ public interface PrivateEndpointConnections {
      * @return a specific private endpoint connection under a topic, domain, or partner namespace.
      */
     PrivateEndpointConnection get(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
 
     /**
      * Get a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -44,11 +41,12 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace along with {@link
+     *     Response}.
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -70,7 +68,7 @@ public interface PrivateEndpointConnections {
      */
     PrivateEndpointConnection update(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
@@ -93,7 +91,7 @@ public interface PrivateEndpointConnections {
      */
     PrivateEndpointConnection update(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection,
@@ -113,10 +111,7 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName);
+        String resourceGroupName, ParentType parentType, String parentName, String privateEndpointConnectionName);
 
     /**
      * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
@@ -134,7 +129,7 @@ public interface PrivateEndpointConnections {
      */
     void delete(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String privateEndpointConnectionName,
         Context context);
@@ -150,10 +145,11 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace.
+     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByResource(
-        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName);
+        String resourceGroupName, ParentType parentType, String parentName);
 
     /**
      * Get all private endpoint connections under a topic, domain, or partner namespace.
@@ -175,11 +171,12 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace.
+     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
+     *     {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> listByResource(
         String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
+        ParentType parentType,
         String parentName,
         String filter,
         Integer top,

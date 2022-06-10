@@ -15,6 +15,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -30,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerTopicsClient;
@@ -43,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PartnerTopicsClient. */
 public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
-    private final ClientLogger logger = new ClientLogger(PartnerTopicsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PartnerTopicsService service;
 
@@ -81,6 +79,22 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
+                + "/partnerTopics/{partnerTopicName}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PartnerTopicInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("partnerTopicName") String partnerTopicName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PartnerTopicInner partnerTopicInfo,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -202,7 +216,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
+     * @return properties of a partner topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> getByResourceGroupWithResponseAsync(
@@ -252,7 +266,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
+     * @return properties of a partner topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> getByResourceGroupWithResponseAsync(
@@ -298,19 +312,12 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
+     * @return properties of a partner topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> getByResourceGroupAsync(String resourceGroupName, String partnerTopicName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -337,12 +344,177 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic.
+     * @return properties of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerTopicName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerTopicName, context).block();
+    }
+
+    /**
+     * Asynchronously creates a new partner topic with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PartnerTopicInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerTopicName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter partnerTopicName is required and cannot be null."));
+        }
+        if (partnerTopicInfo == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter partnerTopicInfo is required and cannot be null."));
+        } else {
+            partnerTopicInfo.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            partnerTopicName,
+                            this.client.getApiVersion(),
+                            partnerTopicInfo,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Asynchronously creates a new partner topic with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PartnerTopicInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (partnerTopicName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter partnerTopicName is required and cannot be null."));
+        }
+        if (partnerTopicInfo == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter partnerTopicInfo is required and cannot be null."));
+        } else {
+            partnerTopicInfo.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                partnerTopicName,
+                this.client.getApiVersion(),
+                partnerTopicInfo,
+                accept,
+                context);
+    }
+
+    /**
+     * Asynchronously creates a new partner topic with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PartnerTopicInner> createOrUpdateAsync(
+        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, partnerTopicName, partnerTopicInfo)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Asynchronously creates a new partner topic with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PartnerTopicInner createOrUpdate(
+        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo) {
+        return createOrUpdateAsync(resourceGroupName, partnerTopicName, partnerTopicInfo).block();
+    }
+
+    /**
+     * Asynchronously creates a new partner topic with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PartnerTopicInner> createOrUpdateWithResponse(
+        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, partnerTopicName, partnerTopicInfo, context).block();
     }
 
     /**
@@ -353,7 +525,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -401,7 +573,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -445,14 +617,15 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String partnerTopicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, partnerTopicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -464,9 +637,9 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String partnerTopicName, Context context) {
         context = this.client.mergeContext(context);
@@ -484,9 +657,9 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName) {
         return beginDeleteAsync(resourceGroupName, partnerTopicName).getSyncPoller();
     }
@@ -500,9 +673,9 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerTopicName, Context context) {
         return beginDeleteAsync(resourceGroupName, partnerTopicName, context).getSyncPoller();
@@ -516,7 +689,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerTopicName) {
@@ -534,7 +707,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerTopicName, Context context) {
@@ -581,7 +754,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> updateWithResponseAsync(
@@ -641,7 +814,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> updateWithResponseAsync(
@@ -700,20 +873,13 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> updateAsync(
         String resourceGroupName, String partnerTopicName, PartnerTopicUpdateParameters partnerTopicUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, partnerTopicName, partnerTopicUpdateParameters)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -743,7 +909,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> updateWithResponse(
@@ -769,7 +935,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listSinglePageAsync(String filter, Integer top) {
@@ -825,7 +992,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listSinglePageAsync(String filter, Integer top, Context context) {
@@ -877,7 +1045,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listAsync(String filter, Integer top) {
@@ -890,7 +1058,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listAsync() {
@@ -915,7 +1083,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listAsync(String filter, Integer top, Context context) {
@@ -929,7 +1097,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> list() {
@@ -953,7 +1121,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> list(String filter, Integer top, Context context) {
@@ -975,7 +1143,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listByResourceGroupSinglePageAsync(
@@ -1038,7 +1207,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listByResourceGroupSinglePageAsync(
@@ -1097,7 +1267,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listByResourceGroupAsync(
@@ -1114,7 +1284,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1141,7 +1311,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerTopicInner> listByResourceGroupAsync(
@@ -1158,7 +1328,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> listByResourceGroup(String resourceGroupName) {
@@ -1183,7 +1353,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerTopicInner> listByResourceGroup(
@@ -1199,7 +1369,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> activateWithResponseAsync(
@@ -1249,7 +1419,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> activateWithResponseAsync(
@@ -1295,19 +1465,12 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> activateAsync(String resourceGroupName, String partnerTopicName) {
         return activateWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1318,7 +1481,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner activate(String resourceGroupName, String partnerTopicName) {
@@ -1334,7 +1497,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> activateWithResponse(
@@ -1350,7 +1513,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> deactivateWithResponseAsync(
@@ -1400,7 +1563,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerTopicInner>> deactivateWithResponseAsync(
@@ -1446,19 +1609,12 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerTopicInner> deactivateAsync(String resourceGroupName, String partnerTopicName) {
         return deactivateWithResponseAsync(resourceGroupName, partnerTopicName)
-            .flatMap(
-                (Response<PartnerTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1469,7 +1625,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartnerTopicInner deactivate(String resourceGroupName, String partnerTopicName) {
@@ -1485,7 +1641,7 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Topic.
+     * @return event Grid Partner Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerTopicInner> deactivateWithResponse(
@@ -1500,7 +1656,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1537,7 +1694,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listBySubscriptionNextSinglePageAsync(
@@ -1573,7 +1731,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1610,7 +1769,8 @@ public final class PartnerTopicsClientImpl implements PartnerTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Topics operation.
+     * @return result of the List Partner Topics operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerTopicInner>> listByResourceGroupNextSinglePageAsync(

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a Encryption Settings for a Disk. */
 @Fluent
 public final class DiskEncryptionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSettings.class);
-
     /*
      * Specifies the location of the disk encryption key, which is a Key Vault
      * Secret.

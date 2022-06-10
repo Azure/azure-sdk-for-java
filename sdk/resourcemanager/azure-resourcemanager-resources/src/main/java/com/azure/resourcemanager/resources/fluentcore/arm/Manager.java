@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasServiceClient;
 
 /**
@@ -19,17 +18,22 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     private ResourceManager resourceManager;
     private final String subscriptionId;
     private final AzureEnvironment environment;
-    private final HttpPipeline httpPipeline;
+    private HttpPipeline httpPipeline;
 
     private final InnerT innerManagementClient;
 
+    /**
+     * Creates a new instance of {@link Manager}.
+     *
+     * @param httpPipeline The HttpPipeline used by the manager.
+     * @param profile The AzureProfile used by the manager.
+     * @param innerManagementClient The inner management client.
+     */
     protected Manager(HttpPipeline httpPipeline, AzureProfile profile, InnerT innerManagementClient) {
         this.httpPipeline = httpPipeline;
         if (httpPipeline != null) {
-            this.resourceManager = AzureConfigurableImpl
-                .configureHttpPipeline(httpPipeline, ResourceManager.configure())
-                .authenticate(null, profile)
-                .withDefaultSubscription();
+            // ResourceManager sends httpPipeline=null to avoid recursive
+            this.resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         }
         this.subscriptionId = profile.getSubscriptionId();
         this.environment = profile.getEnvironment();
@@ -55,8 +59,17 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
         return this.environment;
     }
 
+    /**
+     * Configures the ResourceManager for this manager instance.
+     *
+     * @param resourceManager The ResourceManager to associate with this manager.
+     */
     protected final void withResourceManager(ResourceManager resourceManager) {
         this.resourceManager = resourceManager;
+        if (this.httpPipeline == null) {
+            // fill httpPipeline from resourceManager
+            this.httpPipeline = resourceManager.serviceClient().getHttpPipeline();
+        }
     }
 
     /**

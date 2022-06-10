@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A domain name and connection details used to access a dependency. */
 @Immutable
 public final class EndpointDependency {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDependency.class);
-
     /*
      * The domain name of the dependency. Domain names may be fully qualified
      * or may contain a * wildcard.

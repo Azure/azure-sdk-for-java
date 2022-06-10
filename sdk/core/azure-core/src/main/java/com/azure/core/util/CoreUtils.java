@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    // CoreUtils is a commonly used utility, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -181,7 +184,9 @@ public final class CoreUtils {
      * @param content The function which fetches items from the next page.
      * @param <T> The type of the item being returned by the paged response.
      * @return The publisher holding all the generic items combined.
+     * @deprecated Use localized implementation.
      */
+    @Deprecated
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
         BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
@@ -199,7 +204,6 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        ClientLogger logger = new ClientLogger(CoreUtils.class);
         try (InputStream inputStream = CoreUtils.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
@@ -210,7 +214,7 @@ public final class CoreUtils {
                         entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            logger.warning("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
         }
         return Collections.emptyMap();
     }
@@ -337,16 +341,44 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
-                    timeoutPropertyName, timeoutMillis);
+                logger.atVerbose()
+                    .addKeyValue(timeoutPropertyName, timeoutMillis)
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
-                defaultTimeout, ex);
+            logger.atWarning()
+                .addKeyValue(timeoutPropertyName, environmentTimeout)
+                .addKeyValue("defaultTimeout", defaultTimeout)
+                .log("Timeout is not valid number. Using default value.", ex);
+
             return defaultTimeout;
         }
+    }
+
+    /**
+     * Merges two {@link Context Contexts} into a new {@link Context}.
+     *
+     * @param into Context being merged into.
+     * @param from Context being merged.
+     * @return A new Context that is the merged Contexts.
+     * @throws NullPointerException If either {@code into} or {@code from} is null.
+     */
+    public static Context mergeContexts(Context into, Context from) {
+        Objects.requireNonNull(into, "'into' cannot be null.");
+        Objects.requireNonNull(from, "'from' cannot be null.");
+
+        Context[] contextChain = from.getContextChain();
+
+        Context returnContext = into;
+        for (Context toAdd : contextChain) {
+            if (toAdd != null) {
+                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+            }
+        }
+
+        return returnContext;
     }
 }

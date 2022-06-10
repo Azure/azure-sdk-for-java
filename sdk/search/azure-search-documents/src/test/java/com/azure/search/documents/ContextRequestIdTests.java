@@ -60,7 +60,7 @@ public class ContextRequestIdTests extends SearchTestBase {
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getDocumentCountWithResponse()
-            .subscriberContext(subscriberContext)
+            .contextWrite(subscriberContext)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
@@ -95,7 +95,7 @@ public class ContextRequestIdTests extends SearchTestBase {
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getIndexStatisticsWithResponse("index")
-            .subscriberContext(subscriberContext)
+            .contextWrite(subscriberContext)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
@@ -130,7 +130,7 @@ public class ContextRequestIdTests extends SearchTestBase {
             .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
 
         Mono<String> request = client.getIndexerWithResponse("indexer")
-            .subscriberContext(subscriberContext)
+            .contextWrite(subscriberContext)
             .map(ContextRequestIdTests::extractFromResponse)
             .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
             .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
@@ -139,7 +139,7 @@ public class ContextRequestIdTests extends SearchTestBase {
     }
 
     private static HttpHeaders createRequestIdHeaders(String requestId) {
-        return new HttpHeaders().put(REQUEST_ID_HEADER, requestId);
+        return new HttpHeaders().set(REQUEST_ID_HEADER, requestId);
     }
 
     private static void verifySync(Supplier<Response<?>> requestRunner, String expectedRequestId) {
@@ -150,9 +150,10 @@ public class ContextRequestIdTests extends SearchTestBase {
         } catch (HttpResponseException ex) {
             assertEquals(expectedRequestId, ex.getResponse().getHeaderValue(REQUEST_ID_HEADER));
         } catch (RuntimeException ex) {
-            assertTrue(ex.getCause() instanceof HttpResponseException);
+            Throwable cause = ex.getCause();
+            assertTrue(cause instanceof HttpResponseException);
 
-            assertEquals(expectedRequestId, ((HttpResponseException) ex.getCause())
+            assertEquals(expectedRequestId, ((HttpResponseException) cause)
                 .getResponse().getHeaderValue(REQUEST_ID_HEADER));
         } catch (Throwable throwable) {
             fail("Unexpected exception type.");
@@ -168,9 +169,10 @@ public class ContextRequestIdTests extends SearchTestBase {
     }
 
     private static Mono<String> extractFromRuntimeException(RuntimeException exception) {
-        assertTrue(exception.getCause() instanceof HttpResponseException);
+        Throwable cause = exception.getCause();
+        assertTrue(cause instanceof HttpResponseException);
 
-        return extractFromHttpRequestException((HttpResponseException) exception.getCause());
+        return extractFromHttpRequestException((HttpResponseException) cause);
     }
 
     private static void verifyAsync(Mono<String> requestIdMono, String expectedRequestId) {

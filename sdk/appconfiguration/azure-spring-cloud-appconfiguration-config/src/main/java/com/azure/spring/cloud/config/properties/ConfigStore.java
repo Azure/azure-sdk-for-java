@@ -16,7 +16,7 @@ import com.azure.spring.cloud.config.resource.Connection;
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
  */
-public  final class ConfigStore {
+public final class ConfigStore {
 
     private static final String DEFAULT_KEYS = "/application/";
 
@@ -35,34 +35,58 @@ public  final class ConfigStore {
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
+    /**
+     * @return the endpoint
+     */
     public String getEndpoint() {
-        return this.endpoint;
+        return endpoint;
     }
 
+    /**
+     * @param endpoint the endpoint to set
+     */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 
+    /**
+     * @return the connectionString
+     */
     public String getConnectionString() {
         return connectionString;
     }
 
+    /**
+     * @param connectionString the connectionString to set
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     * @return the failFast
+     */
     public boolean isFailFast() {
         return failFast;
     }
 
+    /**
+     * @param failFast the failFast to set
+     */
     public void setFailFast(boolean failFast) {
         this.failFast = failFast;
     }
 
+    /**
+     * @return the enabled
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * @param enabled the enabled to set
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -95,10 +119,16 @@ public  final class ConfigStore {
         this.monitoring = monitoring;
     }
 
+    /**
+     * @return the featureFlags
+     */
     public FeatureFlagStore getFeatureFlags() {
         return featureFlags;
     }
 
+    /**
+     * @param featureFlags the featureFlags to set
+     */
     public void setFeatureFlags(FeatureFlagStore featureFlags) {
         this.featureFlags = featureFlags;
     }

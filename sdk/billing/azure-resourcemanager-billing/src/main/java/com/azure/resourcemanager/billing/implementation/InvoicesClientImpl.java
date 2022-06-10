@@ -988,7 +988,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoiceAsync(
         String billingAccountName, String invoiceName, String downloadToken) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1012,7 +1012,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoiceAsync(
         String billingAccountName, String invoiceName, String downloadToken, Context context) {
         context = this.client.mergeContext(context);
@@ -1036,7 +1036,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
         String billingAccountName, String invoiceName, String downloadToken) {
         return beginDownloadInvoiceAsync(billingAccountName, invoiceName, downloadToken).getSyncPoller();
@@ -1055,7 +1055,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
         String billingAccountName, String invoiceName, String downloadToken, Context context) {
         return beginDownloadInvoiceAsync(billingAccountName, invoiceName, downloadToken, context).getSyncPoller();
@@ -1226,7 +1226,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoicesAsync(
         String billingAccountName, List<String> downloadUrls) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1250,7 +1250,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoicesAsync(
         String billingAccountName, List<String> downloadUrls, Context context) {
         context = this.client.mergeContext(context);
@@ -1274,7 +1274,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
         String billingAccountName, List<String> downloadUrls) {
         return beginDownloadMultipleBillingProfileInvoicesAsync(billingAccountName, downloadUrls).getSyncPoller();
@@ -1293,7 +1293,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
         String billingAccountName, List<String> downloadUrls, Context context) {
         return beginDownloadMultipleBillingProfileInvoicesAsync(billingAccountName, downloadUrls, context)
@@ -1793,7 +1793,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoiceAsync(
         String invoiceName, String downloadToken) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1815,7 +1815,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoiceAsync(
         String invoiceName, String downloadToken, Context context) {
         context = this.client.mergeContext(context);
@@ -1837,7 +1837,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
         String invoiceName, String downloadToken) {
         return beginDownloadBillingSubscriptionInvoiceAsync(invoiceName, downloadToken).getSyncPoller();
@@ -1854,7 +1854,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download an invoice.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
         String invoiceName, String downloadToken, Context context) {
         return beginDownloadBillingSubscriptionInvoiceAsync(invoiceName, downloadToken, context).getSyncPoller();
@@ -2016,7 +2016,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
         beginDownloadMultipleBillingSubscriptionInvoicesAsync(List<String> downloadUrls) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2037,7 +2037,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
         beginDownloadMultipleBillingSubscriptionInvoicesAsync(List<String> downloadUrls, Context context) {
         context = this.client.mergeContext(context);
@@ -2058,7 +2058,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(
         List<String> downloadUrls) {
         return beginDownloadMultipleBillingSubscriptionInvoicesAsync(downloadUrls).getSyncPoller();
@@ -2074,7 +2074,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(
         List<String> downloadUrls, Context context) {
         return beginDownloadMultipleBillingSubscriptionInvoicesAsync(downloadUrls, context).getSyncPoller();

@@ -3,9 +3,8 @@
 package com.azure.spring.cloud.feature.manager;
 
 import java.util.HashMap;
-import org.springframework.context.annotation.Configuration;
 
-import com.azure.spring.cloud.feature.manager.FeatureManager;
+import org.springframework.context.annotation.Configuration;
 
 import reactor.core.publisher.Mono;
 
@@ -20,9 +19,14 @@ public class FeatureManagerSnapshot {
 
     private HashMap<String, Boolean> requestMap;
 
+    /**
+     * Used to evaluate whether a feature is enabled or disabled. When setup with the <code>@RequestScope</code> it will
+     * return the same value for all checks of the given feature flag.
+     * @param featureManager FeatureManager
+     */
     public FeatureManagerSnapshot(FeatureManager featureManager) {
         this.featureManager = featureManager;
-        this.requestMap = new HashMap<String, Boolean>();
+        this.requestMap = new HashMap<>();
     }
 
     /**

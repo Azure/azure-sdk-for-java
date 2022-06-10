@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machine scale set data disk. */
 @Fluent
 public final class VirtualMachineScaleSetDataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
-
     /*
      * The disk name.
      */
@@ -78,6 +75,18 @@ public final class VirtualMachineScaleSetDataDisk {
      */
     @JsonProperty(value = "diskMBpsReadWrite")
     private Long diskMBpsReadWrite;
+
+    /*
+     * Specifies whether data disk should be deleted or detached upon VMSS Flex
+     * deletion (This feature is available for VMSS with Flexible
+     * OrchestrationMode only).<br><br> Possible values: <br><br> **Delete** If
+     * this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.<br><br> **Detach** If this value is used, the data disk is
+     * retained after VMSS Flex VM is deleted.<br><br> The default value is set
+     * to **Delete**.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
 
     /**
      * Get the name property: The disk name.
@@ -278,13 +287,41 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only).&lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data disk is deleted when the VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is retained after VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; The default value is set to **Delete**.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetDataDisk object itself.
+     */
+    public VirtualMachineScaleSetDataDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
@@ -293,4 +330,6 @@ public final class VirtualMachineScaleSetDataDisk {
             managedDisk().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
 }

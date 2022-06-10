@@ -16,6 +16,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -71,8 +72,8 @@ import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
 import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
-import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.MxRecord;
+import com.azure.resourcemanager.dns.models.MxRecordSet;
 import com.azure.resourcemanager.dns.models.NsRecordSet;
 import com.azure.resourcemanager.dns.models.PtrRecordSet;
 import com.azure.resourcemanager.dns.models.SoaRecord;
@@ -163,7 +164,6 @@ import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ManagementLock;
@@ -201,25 +201,31 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerAzureEndpoi
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
-import com.jcraft.jsch.JSchException;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -233,8 +239,9 @@ import java.util.stream.Collectors;
 /**
  * Common utils for Azure management samples.
  */
-
 public final class Utils {
+
+    // IMPORTANT: do not use SSHShell in Utils
 
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
 
@@ -256,8 +263,23 @@ public final class Utils {
     public static String sshPublicKey() {
         if (sshPublicKey == null) {
             try {
-                sshPublicKey = SSHShell.generateSSHKeys(null, null).getSshPublicKey();
-            } catch (UnsupportedEncodingException | JSchException e) {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+                keyGen.initialize(1024);
+                KeyPair pair = keyGen.generateKeyPair();
+                PublicKey publicKey = pair.getPublic();
+
+                RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+                ByteArrayOutputStream byteOs = new ByteArrayOutputStream();
+                DataOutputStream dos = new DataOutputStream(byteOs);
+                dos.writeInt("ssh-rsa".getBytes(StandardCharsets.US_ASCII).length);
+                dos.write("ssh-rsa".getBytes(StandardCharsets.US_ASCII));
+                dos.writeInt(rsaPublicKey.getPublicExponent().toByteArray().length);
+                dos.write(rsaPublicKey.getPublicExponent().toByteArray());
+                dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
+                dos.write(rsaPublicKey.getModulus().toByteArray());
+                String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+                sshPublicKey = "ssh-rsa " + publicKeyEncoded;
+            } catch (NoSuchAlgorithmException | IOException e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
             }
         }
@@ -373,6 +395,12 @@ public final class Utils {
             storageProfile.append("\n\t\t\tCaching: ").append(resource.storageProfile().osDisk().caching());
             storageProfile.append("\n\t\t\tCreateOption: ").append(resource.storageProfile().osDisk().createOption());
             storageProfile.append("\n\t\t\tDiskSizeGB: ").append(resource.storageProfile().osDisk().diskSizeGB());
+            if (resource.storageProfile().osDisk().managedDisk() != null) {
+                if (resource.storageProfile().osDisk().managedDisk().diskEncryptionSet() != null) {
+                    storageProfile.append("\n\t\t\tDiskEncryptionSet Id: ")
+                        .append(resource.storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
+                }
+            }
             if (resource.storageProfile().osDisk().image() != null) {
                 storageProfile.append("\n\t\t\tImage Uri: ").append(resource.storageProfile().osDisk().image().uri());
             }
@@ -407,6 +435,9 @@ public final class Utils {
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
                         storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
+                        if (disk.managedDisk().diskEncryptionSet() != null) {
+                            storageProfile.append("\n\t\t\tDiskEncryptionSet Id: ").append(disk.managedDisk().diskEncryptionSet().id());
+                        }
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
@@ -1603,7 +1634,7 @@ public final class Utils {
      *
      * @param envSecondaryServicePrincipal an Azure Container Registry
      * @return a service principal client ID
-     * @throws Exception exception
+     * @throws IOException exception
      */
     public static String getSecondaryServicePrincipalClientID(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
@@ -1626,7 +1657,7 @@ public final class Utils {
      *
      * @param envSecondaryServicePrincipal an Azure Container Registry
      * @return a service principal secret
-     * @throws Exception exception
+     * @throws IOException exception
      */
     public static String getSecondaryServicePrincipalSecret(String envSecondaryServicePrincipal) throws IOException {
         String content = new String(Files.readAllBytes(new File(envSecondaryServicePrincipal).toPath()), StandardCharsets.UTF_8).trim();
@@ -1663,7 +1694,6 @@ public final class Utils {
      * @param password alias password
      * @param cnName domain name
      * @param dnsName dns name in subject alternate name
-     * @throws Exception exceptions from the creation
      * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath, String alias,
@@ -1731,7 +1761,7 @@ public final class Utils {
      * @param ignoreErrorStream : Boolean which controls whether to throw exception or not
      *                          based on error stream.
      * @return result :- depending on the method invocation.
-     * @throws Exception exceptions thrown from the execution
+     * @throws IOException exceptions thrown from the execution
      */
     public static String cmdInvocation(String[] command,
                                        boolean ignoreErrorStream) throws IOException {
@@ -1748,7 +1778,7 @@ public final class Utils {
             result = br.readLine();
             process.waitFor();
             error = ebr.readLine();
-            if (error != null && (!error.equals(""))) {
+            if (error != null && (!"".equals(error))) {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {
@@ -3323,7 +3353,6 @@ public final class Utils {
         StringBuilder info = new StringBuilder("Spring Service: ")
             .append("\n\tId: ").append(springApp.id())
             .append("\n\tName: ").append(springApp.name())
-            .append("\n\tCreated Time: ").append(springApp.createdTime())
             .append("\n\tPublic Endpoint: ").append(springApp.isPublic())
             .append("\n\tUrl: ").append(springApp.url())
             .append("\n\tHttps Only: ").append(springApp.isHttpsOnly())
@@ -3504,11 +3533,19 @@ public final class Utils {
             new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
         .build();
 
+    /**
+     * Get the size of the iterable.
+     *
+     * @param iterable iterable to count size
+     * @param <T> generic type parameter of the iterable
+     * @return size of the iterable
+     */
     public static <T> int getSize(Iterable<T> iterable) {
         int res = 0;
         Iterator<T> iterator = iterable.iterator();
         while (iterator.hasNext()) {
             iterator.next();
+            res++;
         }
         return res;
     }

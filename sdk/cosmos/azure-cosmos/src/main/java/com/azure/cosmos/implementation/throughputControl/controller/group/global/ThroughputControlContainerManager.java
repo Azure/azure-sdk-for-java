@@ -15,6 +15,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.RetrySpec;
 
@@ -56,9 +57,9 @@ public class ThroughputControlContainerManager {
         String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
 
         this.clientItemId = encodedGroupId + UUID.randomUUID();
-        this.clientItemPartitionKeyValue = this.group.getId() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.clientItemPartitionKeyValue = this.group.getIdPrefix() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
         this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
-        this.configItemPartitionKeyValue = this.group.getId() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
+        this.configItemPartitionKeyValue = this.group.getIdPrefix() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;
     }
 
     public Mono<GlobalThroughputControlClientItem> createGroupClientItem(double loadFactor, double allocatedThroughput) {
@@ -139,15 +140,21 @@ public class ThroughputControlContainerManager {
     public Mono<Double> queryLoadFactorsOfAllClients(double clientLoadFactor) {
         // The current design is using ttl to expire client items, so there is no need to check whether the client item is expired.
 
-        String sqlQueryTest = "SELECT VALUE SUM(c.loadFactor) FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID";
+        // You probably have the question about why not use the following query:
+        // "SELECT VALUE SUM(c.loadFactor) FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID"
+        // The reason being that we might get some inconsistent results back for the query above, using the following query will make sure
+        // we always get the items within ttl.
+        String sqlQueryTest = "SELECT * FROM c WHERE c.groupId = @GROUPID AND c.id != @CLIENTITEMID";
         List<SqlParameter> parameters = new ArrayList<>();
         parameters.add(new SqlParameter("@GROUPID", this.clientItemPartitionKeyValue));
         parameters.add(new SqlParameter("@CLIENTITEMID", this.clientItemId));
 
         SqlQuerySpec querySpec = new SqlQuerySpec(sqlQueryTest, parameters);
-        return this.globalControlContainer.queryItems(querySpec, Double.class)
-            .single()
-            .map(result -> result + clientLoadFactor);
+        return this.globalControlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
+                .collectList()
+                .flatMapMany(clientItemList -> Flux.fromIterable(clientItemList))
+                .map(clientItem -> clientItem.getLoadFactor())
+                .reduce(clientLoadFactor, (loadFactor1, loadFactor2) -> loadFactor1 + loadFactor2);
     }
 
     /**

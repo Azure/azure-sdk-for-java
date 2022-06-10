@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch75672f4a1?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a9c4204b-05fd-4430-a453-b1453d5aea8a",
+      "Content-Type" : "application/json; serialization=avro"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "sch75672f4a1",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/1bfb1947c46f415a838f7365bfdea46c?api-version=2021-10",
+      "StatusCode" : "204",
+      "Date" : "Thu, 11 Nov 2021 02:50:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "1bfb1947c46f415a838f7365bfdea46c",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch75672f4a1/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/sch75672f4a1/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch75672f4a1:get-id?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ffbeb8d7-6048-4379-b77a-73208282caf8",
+      "Content-Type" : "application/json; serialization=protobuf"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "415",
+      "Body" : "{\"Code\":415,\"Detail\":\"Invalid schema type for POST request. 'protobuf' is not supported. TrackingId:3afd1daa-d918-4f87-b145-803b15684e05_G19, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/mygroup\\/schemas\\/sch75672f4a1:get-id, Timestamp:2021-11-11T02:50:21\"}",
+      "Date" : "Thu, 11 Nov 2021 02:50:20 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "sch75672f4a1" ]
+}

@@ -122,6 +122,20 @@ public interface AvsClient {
     AddonsClient getAddons();
 
     /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the PlacementPoliciesClient object to access its operations.
+     *
+     * @return the PlacementPoliciesClient object.
+     */
+    PlacementPoliciesClient getPlacementPolicies();
+
+    /**
      * Gets the ScriptPackagesClient object to access its operations.
      *
      * @return the ScriptPackagesClient object.

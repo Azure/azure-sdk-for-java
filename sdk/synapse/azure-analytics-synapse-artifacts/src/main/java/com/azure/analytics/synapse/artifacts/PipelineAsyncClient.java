@@ -9,11 +9,11 @@ import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.CreateRunResponse;
 import com.azure.analytics.synapse.artifacts.models.PipelineResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -21,13 +21,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class PipelineAsyncClient {
-    private final PipelinesImpl serviceClient;
+    @Generated private final PipelinesImpl serviceClient;
 
     /**
-     * Initializes an instance of Pipelines client.
+     * Initializes an instance of PipelineAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     PipelineAsyncClient(PipelinesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -37,20 +38,9 @@ public final class PipelineAsyncClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceSinglePage() {
-        return this.serviceClient.getPipelinesByWorkspaceSinglePageAsync();
-    }
-
-    /**
-     * Lists pipelines.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PipelineResource> getPipelinesByWorkspace() {
         return this.serviceClient.getPipelinesByWorkspaceAsync();
@@ -66,8 +56,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
+     * @return pipeline resource type along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> createOrUpdatePipelineWithResponse(
             String pipelineName, PipelineResource pipeline, String ifMatch) {
@@ -84,8 +75,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
+     * @return pipeline resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> createOrUpdatePipeline(
             String pipelineName, PipelineResource pipeline, String ifMatch) {
@@ -100,8 +92,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
+     * @return pipeline resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> createOrUpdatePipeline(String pipelineName, PipelineResource pipeline) {
         return this.serviceClient.createOrUpdatePipelineAsync(pipelineName, pipeline);
@@ -116,8 +109,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return a pipeline along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PipelineResource>> getPipelineWithResponse(String pipelineName, String ifNoneMatch) {
         return this.serviceClient.getPipelineWithResponseAsync(pipelineName, ifNoneMatch);
@@ -132,8 +126,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return a pipeline on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> getPipeline(String pipelineName, String ifNoneMatch) {
         return this.serviceClient.getPipelineAsync(pipelineName, ifNoneMatch);
@@ -146,8 +141,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
+     * @return a pipeline on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> getPipeline(String pipelineName) {
         return this.serviceClient.getPipelineAsync(pipelineName);
@@ -160,8 +156,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePipelineWithResponse(String pipelineName) {
         return this.serviceClient.deletePipelineWithResponseAsync(pipelineName);
@@ -174,8 +171,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePipeline(String pipelineName) {
         return this.serviceClient.deletePipelineAsync(pipelineName);
@@ -189,8 +187,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renamePipelineWithResponse(String pipelineName, ArtifactRenameRequest request) {
         return this.serviceClient.renamePipelineWithResponseAsync(pipelineName, request);
@@ -204,8 +203,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renamePipeline(String pipelineName, ArtifactRenameRequest request) {
         return this.serviceClient.renamePipelineAsync(pipelineName, request);
@@ -226,8 +226,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateRunResponse>> createPipelineRunWithResponse(
             String pipelineName,
@@ -254,8 +255,9 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateRunResponse> createPipelineRun(
             String pipelineName,
@@ -274,24 +276,11 @@ public final class PipelineAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateRunResponse> createPipelineRun(String pipelineName) {
         return this.serviceClient.createPipelineRunAsync(pipelineName);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getPipelinesByWorkspaceNextSinglePageAsync(nextLink);
     }
 }

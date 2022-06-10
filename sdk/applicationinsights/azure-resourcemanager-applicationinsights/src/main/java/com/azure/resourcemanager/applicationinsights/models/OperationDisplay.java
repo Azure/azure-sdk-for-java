@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Service provider: Microsoft.Insights
+     * Service provider: Microsoft.Cdn
      */
     @JsonProperty(value = "provider")
     private String provider;
@@ -33,7 +29,7 @@ public final class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider property: Service provider: Microsoft.Insights.
+     * Get the provider property: Service provider: Microsoft.Cdn.
      *
      * @return the provider value.
      */
@@ -42,7 +38,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Insights.
+     * Set the provider property: Service provider: Microsoft.Cdn.
      *
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.

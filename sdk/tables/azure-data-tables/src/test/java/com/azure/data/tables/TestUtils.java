@@ -13,6 +13,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.data.tables.models.TableServiceProperties;
@@ -46,7 +47,7 @@ public final class TestUtils {
     public static String getConnectionString(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : System.getenv("AZURE_TABLES_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
@@ -184,5 +185,11 @@ public final class TestUtils {
             assertNull(expected.getMinuteMetrics());
             assertNull(actual.getMinuteMetrics());
         }
+    }
+
+    static boolean isCosmosTest() {
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
     }
 }

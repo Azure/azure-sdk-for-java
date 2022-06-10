@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ClusterPrincipalAssignments Get. */
 public final class ClusterPrincipalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterPrincipalAssignmentsGet.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsGet.
@@ -19,6 +19,6 @@ public final class ClusterPrincipalAssignmentsGetSamples {
     public static void kustoClusterPrincipalAssignmentsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .clusterPrincipalAssignments()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "kustoprincipal1", Context.NONE);
+            .getWithResponse("kustorptest", "kustoCluster", "kustoprincipal1", Context.NONE);
     }
 }

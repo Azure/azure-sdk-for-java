@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backend entity base Parameter set. */
 @Fluent
 public class BackendBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendBaseParameters.class);
-
     /*
      * Backend Title.
      */
@@ -28,7 +24,7 @@ public class BackendBaseParameters {
 
     /*
      * Management Uri of the Resource in External System. This url can be the
-     * Arm Resource Id of Logic Apps, Function Apps or Api Apps.
+     * Arm Resource Id of Logic Apps, Function Apps or API Apps.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
@@ -99,7 +95,7 @@ public class BackendBaseParameters {
 
     /**
      * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
-     * Id of Logic Apps, Function Apps or Api Apps.
+     * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
      */
@@ -109,7 +105,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
-     * Id of Logic Apps, Function Apps or Api Apps.
+     * Id of Logic Apps, Function Apps or API Apps.
      *
      * @param resourceId the resourceId value to set.
      * @return the BackendBaseParameters object itself.

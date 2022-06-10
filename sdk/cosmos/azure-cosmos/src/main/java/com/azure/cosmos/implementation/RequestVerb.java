@@ -22,6 +22,7 @@ public enum  RequestVerb {
     RequestVerb(String stringValue) {
         this.stringValue = stringValue;
         this.lowerCaseStringValue = stringValue.toLowerCase(Locale.ROOT);
+        this.upperCaseStringValue = stringValue.toUpperCase(Locale.ROOT);
     }
 
     /**
@@ -33,6 +34,16 @@ public enum  RequestVerb {
         return lowerCaseStringValue;
     }
 
+    /**
+     * Provides upper case name of the verb.
+     * e.g, GET, PUT, POST, DELETE, HEAD
+     * @return upper case form of the verb
+     */
+    public String toUpperCase() {
+        return upperCaseStringValue;
+    }
+
     private final String lowerCaseStringValue;
+    private final String upperCaseStringValue;
     private final String stringValue;
 }

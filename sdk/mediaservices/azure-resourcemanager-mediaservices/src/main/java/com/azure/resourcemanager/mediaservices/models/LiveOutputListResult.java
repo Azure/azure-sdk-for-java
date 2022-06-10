@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LiveOutput list result. */
+/** LiveOutputListResult The LiveOutput list result. */
 @Fluent
 public final class LiveOutputListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveOutputListResult.class);
-
     /*
      * The result of the List LiveOutput operation.
      */

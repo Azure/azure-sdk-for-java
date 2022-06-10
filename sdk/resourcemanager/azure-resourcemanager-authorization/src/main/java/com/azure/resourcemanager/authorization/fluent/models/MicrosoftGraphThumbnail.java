@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** thumbnail. */
 @Fluent
 public final class MicrosoftGraphThumbnail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphThumbnail.class);
-
     /*
      * The content stream for the thumbnail.
      */
@@ -63,7 +60,7 @@ public final class MicrosoftGraphThumbnail {
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return new byte[0];
         }
         return this.content.decodedBytes();
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the destination of an event channel. */
 @Fluent
 public final class EventChannelDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelDestination.class);
-
     /*
      * Azure subscription ID of the customer creating the event channel. The
      * partner topic

@@ -31,7 +31,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner namespace.
+     * @return properties of a partner namespace along with {@link Response}.
      */
     Response<PartnerNamespace> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerNamespaceName, Context context);
@@ -64,7 +64,7 @@ public interface PartnerNamespaces {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerNamespace> list();
 
@@ -83,7 +83,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerNamespace> list(String filter, Integer top, Context context);
 
@@ -94,7 +94,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerNamespace> listByResourceGroup(String resourceGroupName);
 
@@ -114,7 +114,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PartnerNamespace> listByResourceGroup(
         String resourceGroupName, String filter, Integer top, Context context);
@@ -140,7 +140,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(
         String resourceGroupName, String partnerNamespaceName, Context context);
@@ -171,7 +171,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
         String resourceGroupName,
@@ -186,7 +186,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner namespace.
+     * @return properties of a partner namespace along with {@link Response}.
      */
     PartnerNamespace getById(String id);
 
@@ -198,7 +198,7 @@ public interface PartnerNamespaces {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner namespace.
+     * @return properties of a partner namespace along with {@link Response}.
      */
     Response<PartnerNamespace> getByIdWithResponse(String id, Context context);
 

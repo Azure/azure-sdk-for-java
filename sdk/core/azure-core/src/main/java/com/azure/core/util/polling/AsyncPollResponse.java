@@ -16,7 +16,7 @@ import java.util.function.Function;
  * AsyncPollResponse represents an event emitted by the {@link PollerFlux} that asynchronously polls
  * a long-running operation (LRO). An AsyncPollResponse event provides information such as the current
  * {@link LongRunningOperationStatus status} of the LRO, any {@link #getValue value} returned
- * in the poll, as well as other useful information provided by the service.
+ * by the poll, as well as other useful information provided by the service.
  * AsyncPollResponse also exposes {@link #cancelOperation} method to cancel the long-running operation
  * from reactor operator chain and {@link #getFinalResult()} method that returns final result of
  * the long-running operation.
@@ -25,7 +25,8 @@ import java.util.function.Function;
  * @param <U> The type of the final result of long-running operation.
  */
 public final class AsyncPollResponse<T, U> {
-    private final ClientLogger logger = new ClientLogger(AsyncPollResponse.class);
+    // AsyncPollResponse is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AsyncPollResponse.class);
     private final PollingContext<T> pollingContext;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
@@ -79,7 +80,7 @@ public final class AsyncPollResponse<T, U> {
                 return this.cancellationOperation
                         .apply(this.pollingContext, this.pollingContext.getActivationResponse());
             } catch (RuntimeException re) {
-                return FluxUtil.monoError(logger, re);
+                return FluxUtil.monoError(LOGGER, re);
             }
         });
     }
@@ -98,7 +99,7 @@ public final class AsyncPollResponse<T, U> {
                     return this.fetchResultOperation
                             .apply(this.pollingContext);
                 } catch (RuntimeException re) {
-                    return FluxUtil.monoError(logger, re);
+                    return FluxUtil.monoError(LOGGER, re);
                 }
             }
         });

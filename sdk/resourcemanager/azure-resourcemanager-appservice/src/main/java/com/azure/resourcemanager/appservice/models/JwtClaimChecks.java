@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration settings of the checks that should be made while validating the JWT Claims. */
 @Fluent
 public final class JwtClaimChecks {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JwtClaimChecks.class);
-
     /*
      * The list of the allowed groups.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions GetDeliveryAttributes. */
 public final class PartnerTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_GetDeliveryAttributes.

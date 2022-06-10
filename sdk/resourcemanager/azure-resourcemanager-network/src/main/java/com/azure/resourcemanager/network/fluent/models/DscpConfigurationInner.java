@@ -6,13 +6,11 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.QosDefinition;
 import com.azure.resourcemanager.network.models.QosIpRange;
 import com.azure.resourcemanager.network.models.QosPortRange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +18,6 @@ import java.util.Map;
 /** Differentiated Services Code Point configuration for any given network interface. */
 @Fluent
 public final class DscpConfigurationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscpConfigurationInner.class);
-
     /*
      * Properties of the network interface.
      */

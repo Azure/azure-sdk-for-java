@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Slack channel. */
 @Fluent
 public final class SlackChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlackChannelProperties.class);
-
     /*
      * The Slack client id
      */
@@ -33,6 +29,12 @@ public final class SlackChannelProperties {
      */
     @JsonProperty(value = "verificationToken")
     private String verificationToken;
+
+    /*
+     * The Slack permission scopes.
+     */
+    @JsonProperty(value = "scopes")
+    private String scopes;
 
     /*
      * The Slack landing page Url
@@ -62,7 +64,7 @@ public final class SlackChannelProperties {
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IsValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /*
@@ -138,6 +140,26 @@ public final class SlackChannelProperties {
      */
     public SlackChannelProperties withVerificationToken(String verificationToken) {
         this.verificationToken = verificationToken;
+        return this;
+    }
+
+    /**
+     * Get the scopes property: The Slack permission scopes.
+     *
+     * @return the scopes value.
+     */
+    public String scopes() {
+        return this.scopes;
+    }
+
+    /**
+     * Set the scopes property: The Slack permission scopes.
+     *
+     * @param scopes the scopes value to set.
+     * @return the SlackChannelProperties object itself.
+     */
+    public SlackChannelProperties withScopes(String scopes) {
+        this.scopes = scopes;
         return this;
     }
 

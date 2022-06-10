@@ -10,24 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
+@JacksonXmlRootElement(localName = "CopyFileSmbInfo")
 @Fluent
-@JacksonXmlRootElement(localName = "copy-file-smb-info")
 public final class CopyFileSmbInfo {
-    /*
-     * Specifies the option to copy file security descriptor from source file
-     * or to set it using the value which is defined by the header value of
-     * x-ms-file-permission or x-ms-file-permission-key.
-     */
-    @JsonProperty(value = "filePermissionCopyMode")
-    private PermissionCopyModeType filePermissionCopyMode;
-
-    /*
-     * Specifies the option to overwrite the target file if it already exists
-     * and has read-only attribute set.
-     */
-    @JsonProperty(value = "ignoreReadOnly")
-    private Boolean ignoreReadOnly;
-
     /*
      * Specifies either the option to copy file attributes from a source
      * file(source) to a target file or a list of attributes to set on a target
@@ -53,58 +38,35 @@ public final class CopyFileSmbInfo {
     private String fileLastWriteTime;
 
     /*
+     * Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set
+     * as last write time on a target file.
+     */
+    @JsonProperty(value = "fileChangeTime")
+    private String fileChangeTime;
+
+    /*
+     * Specifies the option to copy file security descriptor from source file
+     * or to set it using the value which is defined by the header value of
+     * x-ms-file-permission or x-ms-file-permission-key.
+     */
+    @JsonProperty(value = "filePermissionCopyMode")
+    private PermissionCopyModeType filePermissionCopyMode;
+
+    /*
+     * Specifies the option to overwrite the target file if it already exists
+     * and has read-only attribute set.
+     */
+    @JsonProperty(value = "ignoreReadOnly")
+    private Boolean ignoreReadOnly;
+
+    /*
      * Specifies the option to set archive attribute on a target file. True
      * means archive attribute will be set on a target file despite attribute
      * overrides or a source file state.
      */
     @JsonProperty(value = "setArchiveAttribute")
     private Boolean setArchiveAttribute;
-
-    /**
-     * Get the filePermissionCopyMode property: Specifies the option to copy file security descriptor from source file
-     * or to set it using the value which is defined by the header value of x-ms-file-permission or
-     * x-ms-file-permission-key.
-     *
-     * @return the filePermissionCopyMode value.
-     */
-    public PermissionCopyModeType getFilePermissionCopyMode() {
-        return this.filePermissionCopyMode;
-    }
-
-    /**
-     * Set the filePermissionCopyMode property: Specifies the option to copy file security descriptor from source file
-     * or to set it using the value which is defined by the header value of x-ms-file-permission or
-     * x-ms-file-permission-key.
-     *
-     * @param filePermissionCopyMode the filePermissionCopyMode value to set.
-     * @return the CopyFileSmbInfo object itself.
-     */
-    public CopyFileSmbInfo setFilePermissionCopyMode(PermissionCopyModeType filePermissionCopyMode) {
-        this.filePermissionCopyMode = filePermissionCopyMode;
-        return this;
-    }
-
-    /**
-     * Get the ignoreReadOnly property: Specifies the option to overwrite the target file if it already exists and has
-     * read-only attribute set.
-     *
-     * @return the ignoreReadOnly value.
-     */
-    public Boolean isIgnoreReadOnly() {
-        return this.ignoreReadOnly;
-    }
-
-    /**
-     * Set the ignoreReadOnly property: Specifies the option to overwrite the target file if it already exists and has
-     * read-only attribute set.
-     *
-     * @param ignoreReadOnly the ignoreReadOnly value to set.
-     * @return the CopyFileSmbInfo object itself.
-     */
-    public CopyFileSmbInfo setIgnoreReadOnly(Boolean ignoreReadOnly) {
-        this.ignoreReadOnly = ignoreReadOnly;
-        return this;
-    }
 
     /**
      * Get the fileAttributes property: Specifies either the option to copy file attributes from a source file(source)
@@ -169,6 +131,74 @@ public final class CopyFileSmbInfo {
      */
     public CopyFileSmbInfo setFileLastWriteTime(String fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the fileChangeTime property: Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     *
+     * @return the fileChangeTime value.
+     */
+    public String getFileChangeTime() {
+        return this.fileChangeTime;
+    }
+
+    /**
+     * Set the fileChangeTime property: Specifies either the option to copy file last write time from a source
+     * file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
+     *
+     * @param fileChangeTime the fileChangeTime value to set.
+     * @return the CopyFileSmbInfo object itself.
+     */
+    public CopyFileSmbInfo setFileChangeTime(String fileChangeTime) {
+        this.fileChangeTime = fileChangeTime;
+        return this;
+    }
+
+    /**
+     * Get the filePermissionCopyMode property: Specifies the option to copy file security descriptor from source file
+     * or to set it using the value which is defined by the header value of x-ms-file-permission or
+     * x-ms-file-permission-key.
+     *
+     * @return the filePermissionCopyMode value.
+     */
+    public PermissionCopyModeType getFilePermissionCopyMode() {
+        return this.filePermissionCopyMode;
+    }
+
+    /**
+     * Set the filePermissionCopyMode property: Specifies the option to copy file security descriptor from source file
+     * or to set it using the value which is defined by the header value of x-ms-file-permission or
+     * x-ms-file-permission-key.
+     *
+     * @param filePermissionCopyMode the filePermissionCopyMode value to set.
+     * @return the CopyFileSmbInfo object itself.
+     */
+    public CopyFileSmbInfo setFilePermissionCopyMode(PermissionCopyModeType filePermissionCopyMode) {
+        this.filePermissionCopyMode = filePermissionCopyMode;
+        return this;
+    }
+
+    /**
+     * Get the ignoreReadOnly property: Specifies the option to overwrite the target file if it already exists and has
+     * read-only attribute set.
+     *
+     * @return the ignoreReadOnly value.
+     */
+    public Boolean isIgnoreReadOnly() {
+        return this.ignoreReadOnly;
+    }
+
+    /**
+     * Set the ignoreReadOnly property: Specifies the option to overwrite the target file if it already exists and has
+     * read-only attribute set.
+     *
+     * @param ignoreReadOnly the ignoreReadOnly value to set.
+     * @return the CopyFileSmbInfo object itself.
+     */
+    public CopyFileSmbInfo setIgnoreReadOnly(Boolean ignoreReadOnly) {
+        this.ignoreReadOnly = ignoreReadOnly;
         return this;
     }
 

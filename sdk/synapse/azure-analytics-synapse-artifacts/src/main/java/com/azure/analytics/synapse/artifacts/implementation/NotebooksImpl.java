@@ -58,7 +58,7 @@ public final class NotebooksImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientNoteb")
-    private interface NotebooksService {
+    public interface NotebooksService {
         @Get("/notebooks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -145,15 +145,15 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getNotebooksByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                service.getNotebooksByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -172,12 +172,13 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getNotebooksByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getNotebooksByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -194,7 +195,7 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebooksByWorkspaceAsync() {
@@ -210,7 +211,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebooksByWorkspaceAsync(Context context) {
@@ -224,7 +225,7 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebooksByWorkspace() {
@@ -238,7 +239,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebooksByWorkspace(Context context) {
@@ -250,15 +251,16 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getNotebookSummaryByWorkSpace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                        this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -277,13 +279,13 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getNotebookSummaryByWorkSpace(
-                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getNotebookSummaryByWorkSpace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -300,7 +302,7 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebookSummaryByWorkSpaceAsync() {
@@ -316,7 +318,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NotebookResource> getNotebookSummaryByWorkSpaceAsync(Context context) {
@@ -330,7 +332,7 @@ public final class NotebooksImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebookSummaryByWorkSpace() {
@@ -344,7 +346,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotebookResource> getNotebookSummaryByWorkSpace(Context context) {
@@ -361,18 +363,19 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponseAsync(
             String notebookName, NotebookResource notebook, String ifMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateNotebook(
                                 this.client.getEndpoint(),
                                 notebookName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 ifMatch,
                                 notebook,
                                 accept,
@@ -390,20 +393,15 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponseAsync(
             String notebookName, NotebookResource notebook, String ifMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.createOrUpdateNotebook(
-                this.client.getEndpoint(),
-                notebookName,
-                this.client.getApiVersion(),
-                ifMatch,
-                notebook,
-                accept,
-                context);
+                this.client.getEndpoint(), notebookName, apiVersion, ifMatch, notebook, accept, context);
     }
 
     /**
@@ -416,7 +414,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebookAsync(
@@ -440,7 +438,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebookAsync(String notebookName, NotebookResource notebook) {
@@ -467,7 +465,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> createOrUpdateNotebookAsync(
@@ -527,7 +525,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
+     * @return notebook resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookResource> createOrUpdateNotebookWithResponse(
@@ -544,20 +542,16 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponseAsync(String notebookName, String ifNoneMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getNotebook(
-                                this.client.getEndpoint(),
-                                notebookName,
-                                this.client.getApiVersion(),
-                                ifNoneMatch,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), notebookName, apiVersion, ifNoneMatch, accept, context));
     }
 
     /**
@@ -570,14 +564,14 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponseAsync(
             String notebookName, String ifNoneMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), ifNoneMatch, accept, context);
+        return service.getNotebook(this.client.getEndpoint(), notebookName, apiVersion, ifNoneMatch, accept, context);
     }
 
     /**
@@ -589,7 +583,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch) {
@@ -611,7 +605,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName) {
@@ -637,7 +631,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch, Context context) {
@@ -693,7 +687,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Note Book.
+     * @return a Note Book along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotebookResource> getNotebookWithResponse(
@@ -708,15 +702,15 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponseAsync(String notebookName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteNotebook(
-                                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), accept, context));
+                        service.deleteNotebook(this.client.getEndpoint(), notebookName, apiVersion, accept, context));
     }
 
     /**
@@ -727,13 +721,13 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponseAsync(String notebookName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.deleteNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), accept, context);
+        return service.deleteNotebook(this.client.getEndpoint(), notebookName, apiVersion, accept, context);
     }
 
     /**
@@ -743,7 +737,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNotebookAsync(String notebookName) {
@@ -758,7 +752,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteNotebookAsync(String notebookName, Context context) {
@@ -786,7 +780,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNotebookWithResponse(String notebookName, Context context) {
@@ -801,20 +795,16 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponseAsync(String notebookName, ArtifactRenameRequest request) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameNotebook(
-                                this.client.getEndpoint(),
-                                notebookName,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), notebookName, apiVersion, request, accept, context));
     }
 
     /**
@@ -826,14 +816,14 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponseAsync(
             String notebookName, ArtifactRenameRequest request, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.renameNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), request, accept, context);
+        return service.renameNotebook(this.client.getEndpoint(), notebookName, apiVersion, request, accept, context);
     }
 
     /**
@@ -844,7 +834,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request) {
@@ -860,7 +850,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request, Context context) {
@@ -891,7 +881,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameNotebookWithResponse(
@@ -906,7 +896,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -934,7 +924,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(
@@ -959,7 +949,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(String nextLink) {
@@ -987,7 +977,7 @@ public final class NotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Notebook resources.
+     * @return a list of Notebook resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(

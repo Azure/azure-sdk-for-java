@@ -34,7 +34,11 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
         return fromString(name, SparkAuthenticationType.class);
     }
 
-    /** @return known SparkAuthenticationType values. */
+    /**
+     * Gets known SparkAuthenticationType values.
+     *
+     * @return known SparkAuthenticationType values.
+     */
     public static Collection<SparkAuthenticationType> values() {
         return values(SparkAuthenticationType.class);
     }

@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ComplianceStatus;
 import com.azure.resourcemanager.kubernetesconfiguration.models.HelmOperatorProperties;
 import com.azure.resourcemanager.kubernetesconfiguration.models.OperatorScopeType;
 import com.azure.resourcemanager.kubernetesconfiguration.models.OperatorType;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ProvisioningStateType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The SourceControl Configuration object returned in Get &amp; Put response. */
-@JsonFlatten
 @Fluent
-public class SourceControlConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlConfigurationInner.class);
+public final class SourceControlConfigurationInner extends ProxyResource {
+    /*
+     * Properties to create a Source Control Configuration resource
+     */
+    @JsonProperty(value = "properties")
+    private SourceControlConfigurationProperties innerProperties;
 
     /*
      * Top level metadata
@@ -31,87 +31,14 @@ public class SourceControlConfigurationInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Url of the SourceControl Repository.
+    /**
+     * Get the innerProperties property: Properties to create a Source Control Configuration resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.repositoryUrl")
-    private String repositoryUrl;
-
-    /*
-     * The namespace to which this operator is installed to. Maximum of 253
-     * lower case alphanumeric characters, hyphen and period only.
-     */
-    @JsonProperty(value = "properties.operatorNamespace")
-    private String operatorNamespace;
-
-    /*
-     * Instance name of the operator - identifying the specific configuration.
-     */
-    @JsonProperty(value = "properties.operatorInstanceName")
-    private String operatorInstanceName;
-
-    /*
-     * Type of the operator
-     */
-    @JsonProperty(value = "properties.operatorType")
-    private OperatorType operatorType;
-
-    /*
-     * Any Parameters for the Operator instance in string format.
-     */
-    @JsonProperty(value = "properties.operatorParams")
-    private String operatorParams;
-
-    /*
-     * Name-value pairs of protected configuration settings for the
-     * configuration
-     */
-    @JsonProperty(value = "properties.configurationProtectedSettings")
-    private Map<String, String> configurationProtectedSettings;
-
-    /*
-     * Scope at which the operator will be installed.
-     */
-    @JsonProperty(value = "properties.operatorScope")
-    private OperatorScopeType operatorScope;
-
-    /*
-     * Public Key associated with this SourceControl configuration (either
-     * generated within the cluster or provided by the user).
-     */
-    @JsonProperty(value = "properties.repositoryPublicKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String repositoryPublicKey;
-
-    /*
-     * Base64-encoded known_hosts contents containing public SSH keys required
-     * to access private Git instances
-     */
-    @JsonProperty(value = "properties.sshKnownHostsContents")
-    private String sshKnownHostsContents;
-
-    /*
-     * Option to enable Helm Operator for this git configuration.
-     */
-    @JsonProperty(value = "properties.enableHelmOperator")
-    private Boolean enableHelmOperator;
-
-    /*
-     * Properties for Helm operator.
-     */
-    @JsonProperty(value = "properties.helmOperatorProperties")
-    private HelmOperatorProperties helmOperatorProperties;
-
-    /*
-     * The provisioning state of the resource provider.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateType provisioningState;
-
-    /*
-     * Compliance Status of the Configuration
-     */
-    @JsonProperty(value = "properties.complianceStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private ComplianceStatus complianceStatus;
+    private SourceControlConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Top level metadata
@@ -129,7 +56,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
-        return this.repositoryUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().repositoryUrl();
     }
 
     /**
@@ -139,7 +66,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withRepositoryUrl(String repositoryUrl) {
-        this.repositoryUrl = repositoryUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withRepositoryUrl(repositoryUrl);
         return this;
     }
 
@@ -150,7 +80,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the operatorNamespace value.
      */
     public String operatorNamespace() {
-        return this.operatorNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().operatorNamespace();
     }
 
     /**
@@ -161,7 +91,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withOperatorNamespace(String operatorNamespace) {
-        this.operatorNamespace = operatorNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withOperatorNamespace(operatorNamespace);
         return this;
     }
 
@@ -171,7 +104,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the operatorInstanceName value.
      */
     public String operatorInstanceName() {
-        return this.operatorInstanceName;
+        return this.innerProperties() == null ? null : this.innerProperties().operatorInstanceName();
     }
 
     /**
@@ -181,7 +114,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withOperatorInstanceName(String operatorInstanceName) {
-        this.operatorInstanceName = operatorInstanceName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withOperatorInstanceName(operatorInstanceName);
         return this;
     }
 
@@ -191,7 +127,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the operatorType value.
      */
     public OperatorType operatorType() {
-        return this.operatorType;
+        return this.innerProperties() == null ? null : this.innerProperties().operatorType();
     }
 
     /**
@@ -201,7 +137,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withOperatorType(OperatorType operatorType) {
-        this.operatorType = operatorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withOperatorType(operatorType);
         return this;
     }
 
@@ -211,7 +150,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the operatorParams value.
      */
     public String operatorParams() {
-        return this.operatorParams;
+        return this.innerProperties() == null ? null : this.innerProperties().operatorParams();
     }
 
     /**
@@ -221,7 +160,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withOperatorParams(String operatorParams) {
-        this.operatorParams = operatorParams;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withOperatorParams(operatorParams);
         return this;
     }
 
@@ -232,7 +174,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the configurationProtectedSettings value.
      */
     public Map<String, String> configurationProtectedSettings() {
-        return this.configurationProtectedSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().configurationProtectedSettings();
     }
 
     /**
@@ -244,7 +186,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      */
     public SourceControlConfigurationInner withConfigurationProtectedSettings(
         Map<String, String> configurationProtectedSettings) {
-        this.configurationProtectedSettings = configurationProtectedSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withConfigurationProtectedSettings(configurationProtectedSettings);
         return this;
     }
 
@@ -254,7 +199,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the operatorScope value.
      */
     public OperatorScopeType operatorScope() {
-        return this.operatorScope;
+        return this.innerProperties() == null ? null : this.innerProperties().operatorScope();
     }
 
     /**
@@ -264,7 +209,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withOperatorScope(OperatorScopeType operatorScope) {
-        this.operatorScope = operatorScope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withOperatorScope(operatorScope);
         return this;
     }
 
@@ -275,7 +223,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the repositoryPublicKey value.
      */
     public String repositoryPublicKey() {
-        return this.repositoryPublicKey;
+        return this.innerProperties() == null ? null : this.innerProperties().repositoryPublicKey();
     }
 
     /**
@@ -285,7 +233,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the sshKnownHostsContents value.
      */
     public String sshKnownHostsContents() {
-        return this.sshKnownHostsContents;
+        return this.innerProperties() == null ? null : this.innerProperties().sshKnownHostsContents();
     }
 
     /**
@@ -296,7 +244,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withSshKnownHostsContents(String sshKnownHostsContents) {
-        this.sshKnownHostsContents = sshKnownHostsContents;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withSshKnownHostsContents(sshKnownHostsContents);
         return this;
     }
 
@@ -306,7 +257,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the enableHelmOperator value.
      */
     public Boolean enableHelmOperator() {
-        return this.enableHelmOperator;
+        return this.innerProperties() == null ? null : this.innerProperties().enableHelmOperator();
     }
 
     /**
@@ -316,7 +267,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withEnableHelmOperator(Boolean enableHelmOperator) {
-        this.enableHelmOperator = enableHelmOperator;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withEnableHelmOperator(enableHelmOperator);
         return this;
     }
 
@@ -326,7 +280,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the helmOperatorProperties value.
      */
     public HelmOperatorProperties helmOperatorProperties() {
-        return this.helmOperatorProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().helmOperatorProperties();
     }
 
     /**
@@ -336,7 +290,10 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the SourceControlConfigurationInner object itself.
      */
     public SourceControlConfigurationInner withHelmOperatorProperties(HelmOperatorProperties helmOperatorProperties) {
-        this.helmOperatorProperties = helmOperatorProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlConfigurationProperties();
+        }
+        this.innerProperties().withHelmOperatorProperties(helmOperatorProperties);
         return this;
     }
 
@@ -346,7 +303,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStateType provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -355,7 +312,7 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @return the complianceStatus value.
      */
     public ComplianceStatus complianceStatus() {
-        return this.complianceStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().complianceStatus();
     }
 
     /**
@@ -364,11 +321,8 @@ public class SourceControlConfigurationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (helmOperatorProperties() != null) {
-            helmOperatorProperties().validate();
-        }
-        if (complianceStatus() != null) {
-            complianceStatus().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

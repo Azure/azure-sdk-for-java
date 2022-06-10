@@ -18,7 +18,7 @@ public interface UserGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation.
+     * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<GroupContract> list(String resourceGroupName, String serviceName, String userId);
 
@@ -39,7 +39,7 @@ public interface UserGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation.
+     * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<GroupContract> list(
         String resourceGroupName,

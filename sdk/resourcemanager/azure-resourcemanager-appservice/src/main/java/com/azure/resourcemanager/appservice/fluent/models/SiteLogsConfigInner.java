@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ApplicationLogsConfig;
 import com.azure.resourcemanager.appservice.models.EnabledConfig;
 import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration of App Service site logs. */
 @Fluent
 public final class SiteLogsConfigInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLogsConfigInner.class);
-
     /*
      * SiteLogsConfig resource specific properties
      */

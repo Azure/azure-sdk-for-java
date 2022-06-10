@@ -299,7 +299,7 @@ public interface Factory {
     Factory.Update update();
 
     /** The template for Factory update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -337,6 +337,17 @@ public interface Factory {
              */
             Update withIdentity(FactoryIdentity identity);
         }
+        /** The stage of the Factory update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for the data
+             * factory..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for the data factory.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -372,7 +383,7 @@ public interface Factory {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
+     * @return gitHub Access Token along with {@link Response}.
      */
     Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
         GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context);
@@ -396,7 +407,7 @@ public interface Factory {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return data Plane access along with {@link Response}.
      */
     Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(UserAccessPolicy policy, Context context);
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DetectRequest model. */
+/** The request of entire or last anomaly detection. */
 @Fluent
 public final class DetectRequest {
     /*
@@ -58,6 +58,20 @@ public final class DetectRequest {
      */
     @JsonProperty(value = "sensitivity")
     private Integer sensitivity;
+
+    /*
+     * Used to specify how to deal with missing values in the input series,
+     * it's used when granularity is not "none".
+     */
+    @JsonProperty(value = "imputeMode")
+    private ImputeMode imputeMode;
+
+    /*
+     * Used to specify the value to fill, it's used when granularity is not
+     * "none" and imputeMode is "fixed".
+     */
+    @JsonProperty(value = "imputeFixedValue")
+    private Float imputeFixedValue;
 
     /**
      * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to
@@ -192,6 +206,50 @@ public final class DetectRequest {
      */
     public DetectRequest setSensitivity(Integer sensitivity) {
         this.sensitivity = sensitivity;
+        return this;
+    }
+
+    /**
+     * Get the imputeMode property: Used to specify how to deal with missing values in the input series, it's used when
+     * granularity is not "none".
+     *
+     * @return the imputeMode value.
+     */
+    public ImputeMode getImputeMode() {
+        return this.imputeMode;
+    }
+
+    /**
+     * Set the imputeMode property: Used to specify how to deal with missing values in the input series, it's used when
+     * granularity is not "none".
+     *
+     * @param imputeMode the imputeMode value to set.
+     * @return the DetectRequest object itself.
+     */
+    public DetectRequest setImputeMode(ImputeMode imputeMode) {
+        this.imputeMode = imputeMode;
+        return this;
+    }
+
+    /**
+     * Get the imputeFixedValue property: Used to specify the value to fill, it's used when granularity is not "none"
+     * and imputeMode is "fixed".
+     *
+     * @return the imputeFixedValue value.
+     */
+    public Float getImputeFixedValue() {
+        return this.imputeFixedValue;
+    }
+
+    /**
+     * Set the imputeFixedValue property: Used to specify the value to fill, it's used when granularity is not "none"
+     * and imputeMode is "fixed".
+     *
+     * @param imputeFixedValue the imputeFixedValue value to set.
+     * @return the DetectRequest object itself.
+     */
+    public DetectRequest setImputeFixedValue(Float imputeFixedValue) {
+        this.imputeFixedValue = imputeFixedValue;
         return this;
     }
 }

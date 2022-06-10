@@ -30,7 +30,7 @@ public interface CheckVirtualNetworkSubnetUsages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id.
+     * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
      */
     Response<VirtualNetworkSubnetUsageResult> executeWithResponse(
         String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context);

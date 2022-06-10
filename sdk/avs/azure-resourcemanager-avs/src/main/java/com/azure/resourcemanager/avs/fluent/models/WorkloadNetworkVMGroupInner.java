@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMGroupStatusEnum;
@@ -15,40 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX VM Group. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkVMGroupInner extends ProxyResource {
+public final class WorkloadNetworkVMGroupInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVMGroupInner.class);
 
     /*
-     * Display name of the VM group.
+     * VM Group properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkVMGroupProperties innerProperties;
 
-    /*
-     * Virtual machine members of this group.
+    /**
+     * Get the innerProperties property: VM Group properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.members")
-    private List<String> members;
-
-    /*
-     * VM Group status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private VMGroupStatusEnum status;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkVMGroupProvisioningState provisioningState;
-
-    /*
-     * NSX revision number.
-     */
-    @JsonProperty(value = "properties.revision")
-    private Long revision;
+    private WorkloadNetworkVMGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the VM group.
@@ -56,7 +39,7 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -66,7 +49,10 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the WorkloadNetworkVMGroupInner object itself.
      */
     public WorkloadNetworkVMGroupInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkVMGroupProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -76,7 +62,7 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the members value.
      */
     public List<String> members() {
-        return this.members;
+        return this.innerProperties() == null ? null : this.innerProperties().members();
     }
 
     /**
@@ -86,7 +72,10 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the WorkloadNetworkVMGroupInner object itself.
      */
     public WorkloadNetworkVMGroupInner withMembers(List<String> members) {
-        this.members = members;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkVMGroupProperties();
+        }
+        this.innerProperties().withMembers(members);
         return this;
     }
 
@@ -96,7 +85,7 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the status value.
      */
     public VMGroupStatusEnum status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -105,7 +94,7 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkVMGroupProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -114,7 +103,7 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the revision value.
      */
     public Long revision() {
-        return this.revision;
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
     }
 
     /**
@@ -124,7 +113,10 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @return the WorkloadNetworkVMGroupInner object itself.
      */
     public WorkloadNetworkVMGroupInner withRevision(Long revision) {
-        this.revision = revision;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkVMGroupProperties();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -134,5 +126,8 @@ public class WorkloadNetworkVMGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

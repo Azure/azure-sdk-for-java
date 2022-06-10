@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Skip error file. */
 @Fluent
 public final class SkipErrorFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkipErrorFile.class);
-
     /*
      * Skip if file is deleted by other client during copy. Default is true.
      * Type: boolean (or Expression with resultType boolean).

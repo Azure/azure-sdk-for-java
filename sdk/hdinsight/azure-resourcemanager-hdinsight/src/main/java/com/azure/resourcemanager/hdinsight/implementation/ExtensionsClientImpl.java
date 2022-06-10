@@ -345,7 +345,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableMonitoringAsync(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -367,7 +367,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableMonitoringAsync(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -389,7 +389,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters) {
         return beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -407,7 +407,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableMonitoring(
         String resourceGroupName, String clusterName, ClusterMonitoringRequest parameters, Context context) {
         return beginEnableMonitoringAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
@@ -738,7 +738,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableMonitoringAsync(
         String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = disableMonitoringWithResponseAsync(resourceGroupName, clusterName);
@@ -758,7 +758,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableMonitoringAsync(
         String resourceGroupName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
@@ -779,7 +779,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(String resourceGroupName, String clusterName) {
         return beginDisableMonitoringAsync(resourceGroupName, clusterName).getSyncPoller();
     }
@@ -795,7 +795,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableMonitoring(
         String resourceGroupName, String clusterName, Context context) {
         return beginDisableMonitoringAsync(resourceGroupName, clusterName, context).getSyncPoller();
@@ -984,7 +984,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableAzureMonitorAsync(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1006,7 +1006,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableAzureMonitorAsync(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1028,7 +1028,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
         return beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -1046,7 +1046,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableAzureMonitor(
         String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context) {
         return beginEnableAzureMonitorAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
@@ -1376,7 +1376,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableAzureMonitorAsync(
         String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = disableAzureMonitorWithResponseAsync(resourceGroupName, clusterName);
@@ -1396,7 +1396,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableAzureMonitorAsync(
         String resourceGroupName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
@@ -1417,7 +1417,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(String resourceGroupName, String clusterName) {
         return beginDisableAzureMonitorAsync(resourceGroupName, clusterName).getSyncPoller();
     }
@@ -1433,7 +1433,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableAzureMonitor(
         String resourceGroupName, String clusterName, Context context) {
         return beginDisableAzureMonitorAsync(resourceGroupName, clusterName, context).getSyncPoller();
@@ -1633,7 +1633,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateAsync(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1656,7 +1656,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateAsync(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1679,7 +1679,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters) {
         return beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters).getSyncPoller();
@@ -1698,7 +1698,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreate(
         String resourceGroupName, String clusterName, String extensionName, Extension parameters, Context context) {
         return beginCreateAsync(resourceGroupName, clusterName, extensionName, parameters, context).getSyncPoller();
@@ -2057,7 +2057,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String extensionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, extensionName);
@@ -2078,7 +2078,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String extensionName, Context context) {
         context = this.client.mergeContext(context);
@@ -2100,7 +2100,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String extensionName) {
         return beginDeleteAsync(resourceGroupName, clusterName, extensionName).getSyncPoller();
@@ -2118,7 +2118,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String extensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, extensionName, context).getSyncPoller();

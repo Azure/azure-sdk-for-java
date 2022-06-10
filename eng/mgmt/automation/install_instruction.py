@@ -20,7 +20,7 @@ def main():
         config = json.load(fin)
 
     artifact_id: str = config.get('packageName', '')
-    group_id = 'com.azure.resourcemanager'
+    group_id = 'com.azure.resourcemanager' if artifact_id.startswith('azure-resourcemanager') else 'com.azure'
     logging.debug('Got artifact_id: {0}'.format(artifact_id))
 
     for artifact in config.get('artifacts', []):
@@ -50,8 +50,9 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level = logging.DEBUG,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        datefmt = '%Y-%m-%d %X',
+        stream=sys.stdout,
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %X',
     )
     main()

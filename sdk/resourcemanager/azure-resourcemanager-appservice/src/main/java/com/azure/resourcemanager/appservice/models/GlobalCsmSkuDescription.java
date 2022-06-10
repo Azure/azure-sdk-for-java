@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.CapabilityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A Global SKU Description. */
 @Fluent
 public final class GlobalCsmSkuDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalCsmSkuDescription.class);
-
     /*
      * Name of the resource SKU.
      */

@@ -7,19 +7,16 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /** Information about a partner registration. */
 @Fluent
 public final class PartnerRegistrationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegistrationInner.class);
-
     /*
      * Properties of the partner registration.
      */
@@ -71,6 +68,29 @@ public final class PartnerRegistrationInner extends Resource {
      */
     public PartnerRegistrationProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @return the partnerRegistrationImmutableId value.
+     */
+    public UUID partnerRegistrationImmutableId() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerRegistrationImmutableId();
+    }
+
+    /**
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
+     * @return the PartnerRegistrationInner object itself.
+     */
+    public PartnerRegistrationInner withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerRegistrationProperties();
+        }
+        this.innerProperties().withPartnerRegistrationImmutableId(partnerRegistrationImmutableId);
+        return this;
     }
 
     /**

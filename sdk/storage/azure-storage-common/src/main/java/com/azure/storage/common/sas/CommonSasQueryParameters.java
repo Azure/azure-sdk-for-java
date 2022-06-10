@@ -3,9 +3,10 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -22,9 +23,9 @@ public class CommonSasQueryParameters {
 
     private final SasProtocol protocol;
 
-    private final OffsetDateTime startTime;
+    private final TimeAndFormat startTime;
 
-    private final OffsetDateTime expiryTime;
+    private final TimeAndFormat expiryTime;
 
     private final SasIpRange sasIpRange;
 
@@ -42,9 +43,9 @@ public class CommonSasQueryParameters {
 
     private final String keyTenantId;
 
-    private final OffsetDateTime keyStart;
+    private final TimeAndFormat keyStart;
 
-    private final OffsetDateTime keyExpiry;
+    private final TimeAndFormat keyExpiry;
 
     private final String keyService;
 
@@ -70,6 +71,8 @@ public class CommonSasQueryParameters {
 
     private final String correlationId;
 
+    private final String encryptionScope;
+
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
      *
@@ -83,9 +86,9 @@ public class CommonSasQueryParameters {
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSasParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.sasIpRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
             removeSasParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
@@ -103,9 +106,9 @@ public class CommonSasQueryParameters {
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
@@ -130,6 +133,8 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.directoryDepth = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
             removeSasParametersFromMap, Integer::parseInt);
+        this.encryptionScope = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE,
+            removeSasParametersFromMap);
     }
 
     /**
@@ -218,6 +223,7 @@ public class CommonSasQueryParameters {
             this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
     }
@@ -290,14 +296,14 @@ public class CommonSasQueryParameters {
      * @return the datetime when the key becomes active.
      */
     public OffsetDateTime getKeyStart() {
-        return keyStart;
+        return keyStart.getDateTime();
     }
 
     /**
      * @return the datetime when the key expires.
      */
     public OffsetDateTime getKeyExpiry() {
-        return keyExpiry;
+        return keyExpiry.getDateTime();
     }
 
     /**
@@ -348,14 +354,14 @@ public class CommonSasQueryParameters {
      * @return The start time for this SAS token or {@code null}.
      */
     public OffsetDateTime getStartTime() {
-        return startTime;
+        return startTime.getDateTime();
     }
 
     /**
      * @return The expiry time for this SAS token.
      */
     public OffsetDateTime getExpiryTime() {
-        return expiryTime;
+        return expiryTime.getDateTime();
     }
 
     /**
@@ -412,5 +418,12 @@ public class CommonSasQueryParameters {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    /**
+     * @return An encryption scope that will be applied to any write operations performed with the sas.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
     }
 }

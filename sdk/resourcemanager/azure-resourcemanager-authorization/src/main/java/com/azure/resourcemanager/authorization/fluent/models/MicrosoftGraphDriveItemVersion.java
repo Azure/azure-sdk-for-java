@@ -7,7 +7,6 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** driveItemVersion. */
 @Fluent
 public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItemVersion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDriveItemVersion.class);
-
     /*
      * The content stream for this version of the item.
      */
@@ -45,7 +42,7 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return new byte[0];
         }
         return this.content.decodedBytes();
     }

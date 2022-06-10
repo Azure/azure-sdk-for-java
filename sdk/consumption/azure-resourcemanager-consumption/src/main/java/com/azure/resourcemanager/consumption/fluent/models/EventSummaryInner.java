@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.Amount;
@@ -15,294 +14,38 @@ import com.azure.resourcemanager.consumption.models.Reseller;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /** An event summary resource. */
-@JsonFlatten
 @Fluent
-public class EventSummaryInner extends ProxyResource {
+public final class EventSummaryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSummaryInner.class);
 
     /*
-     * Credit Currency
+     * The event properties.
      */
-    @JsonProperty(value = "properties.creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditCurrency;
+    @JsonProperty(value = "properties")
+    private EventProperties innerProperties;
 
     /*
-     * Billing Currency.
+     * eTag of the resource. To handle concurrent update scenario, this field
+     * will be used to determine whether the user is updating the latest
+     * version or not.
      */
-    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrency;
-
-    /*
-     * Transaction date.
-     */
-    @JsonProperty(value = "properties.transactionDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime transactionDate;
-
-    /*
-     * Transaction description.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * New Credit.
-     */
-    @JsonProperty(value = "properties.newCredit", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount newCredit;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.newCreditInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate newCreditInBillingCurrency;
-
-    /*
-     * Adjustments amount.
-     */
-    @JsonProperty(value = "properties.adjustments", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount adjustments;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.adjustmentsInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate adjustmentsInBillingCurrency;
-
-    /*
-     * Credit expired.
-     */
-    @JsonProperty(value = "properties.creditExpired", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount creditExpired;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.creditExpiredInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate creditExpiredInBillingCurrency;
-
-    /*
-     * Charges amount.
-     */
-    @JsonProperty(value = "properties.charges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount charges;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.chargesInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate chargesInBillingCurrency;
-
-    /*
-     * Closed balance.
-     */
-    @JsonProperty(value = "properties.closedBalance", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount closedBalance;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "properties.closedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate closedBalanceInBillingCurrency;
-
-    /*
-     * The type of event.
-     */
-    @JsonProperty(value = "properties.eventType")
-    private EventType eventType;
-
-    /*
-     * Invoice number.
-     */
-    @JsonProperty(value = "properties.invoiceNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceNumber;
-
-    /*
-     * Reseller details.
-     */
-    @JsonProperty(value = "properties.reseller", access = JsonProperty.Access.WRITE_ONLY)
-    private Reseller reseller;
-
-    /*
-     * Resource etag.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "eTag")
     private String etag;
 
-    /*
-     * Resource tags.
-     */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> tags;
-
     /**
-     * Get the creditCurrency property: Credit Currency.
+     * Get the innerProperties property: The event properties.
      *
-     * @return the creditCurrency value.
+     * @return the innerProperties value.
      */
-    public String creditCurrency() {
-        return this.creditCurrency;
+    private EventProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the billingCurrency property: Billing Currency.
-     *
-     * @return the billingCurrency value.
-     */
-    public String billingCurrency() {
-        return this.billingCurrency;
-    }
-
-    /**
-     * Get the transactionDate property: Transaction date.
-     *
-     * @return the transactionDate value.
-     */
-    public OffsetDateTime transactionDate() {
-        return this.transactionDate;
-    }
-
-    /**
-     * Get the description property: Transaction description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Get the newCredit property: New Credit.
-     *
-     * @return the newCredit value.
-     */
-    public Amount newCredit() {
-        return this.newCredit;
-    }
-
-    /**
-     * Get the newCreditInBillingCurrency property: Current balance.
-     *
-     * @return the newCreditInBillingCurrency value.
-     */
-    public AmountWithExchangeRate newCreditInBillingCurrency() {
-        return this.newCreditInBillingCurrency;
-    }
-
-    /**
-     * Get the adjustments property: Adjustments amount.
-     *
-     * @return the adjustments value.
-     */
-    public Amount adjustments() {
-        return this.adjustments;
-    }
-
-    /**
-     * Get the adjustmentsInBillingCurrency property: Current balance.
-     *
-     * @return the adjustmentsInBillingCurrency value.
-     */
-    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
-        return this.adjustmentsInBillingCurrency;
-    }
-
-    /**
-     * Get the creditExpired property: Credit expired.
-     *
-     * @return the creditExpired value.
-     */
-    public Amount creditExpired() {
-        return this.creditExpired;
-    }
-
-    /**
-     * Get the creditExpiredInBillingCurrency property: Current balance.
-     *
-     * @return the creditExpiredInBillingCurrency value.
-     */
-    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
-        return this.creditExpiredInBillingCurrency;
-    }
-
-    /**
-     * Get the charges property: Charges amount.
-     *
-     * @return the charges value.
-     */
-    public Amount charges() {
-        return this.charges;
-    }
-
-    /**
-     * Get the chargesInBillingCurrency property: Current balance.
-     *
-     * @return the chargesInBillingCurrency value.
-     */
-    public AmountWithExchangeRate chargesInBillingCurrency() {
-        return this.chargesInBillingCurrency;
-    }
-
-    /**
-     * Get the closedBalance property: Closed balance.
-     *
-     * @return the closedBalance value.
-     */
-    public Amount closedBalance() {
-        return this.closedBalance;
-    }
-
-    /**
-     * Get the closedBalanceInBillingCurrency property: Current balance.
-     *
-     * @return the closedBalanceInBillingCurrency value.
-     */
-    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
-        return this.closedBalanceInBillingCurrency;
-    }
-
-    /**
-     * Get the eventType property: The type of event.
-     *
-     * @return the eventType value.
-     */
-    public EventType eventType() {
-        return this.eventType;
-    }
-
-    /**
-     * Set the eventType property: The type of event.
-     *
-     * @param eventType the eventType value to set.
-     * @return the EventSummaryInner object itself.
-     */
-    public EventSummaryInner withEventType(EventType eventType) {
-        this.eventType = eventType;
-        return this;
-    }
-
-    /**
-     * Get the invoiceNumber property: Invoice number.
-     *
-     * @return the invoiceNumber value.
-     */
-    public String invoiceNumber() {
-        return this.invoiceNumber;
-    }
-
-    /**
-     * Get the reseller property: Reseller details.
-     *
-     * @return the reseller value.
-     */
-    public Reseller reseller() {
-        return this.reseller;
-    }
-
-    /**
-     * Get the etag property: Resource etag.
+     * Get the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
      *
      * @return the etag value.
      */
@@ -311,12 +54,243 @@ public class EventSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Set the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
      *
-     * @return the tags value.
+     * @param etag the etag value to set.
+     * @return the EventSummaryInner object itself.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public EventSummaryInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the transactionDate property: The date of the event.
+     *
+     * @return the transactionDate value.
+     */
+    public OffsetDateTime transactionDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().transactionDate();
+    }
+
+    /**
+     * Get the description property: The description of the event.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Get the newCredit property: The amount of new credit or commitment for NewCredit or SettleCharges event.
+     *
+     * @return the newCredit value.
+     */
+    public Amount newCredit() {
+        return this.innerProperties() == null ? null : this.innerProperties().newCredit();
+    }
+
+    /**
+     * Get the adjustments property: The amount of balance adjustment. The property is not available for
+     * ConsumptionCommitment lots.
+     *
+     * @return the adjustments value.
+     */
+    public Amount adjustments() {
+        return this.innerProperties() == null ? null : this.innerProperties().adjustments();
+    }
+
+    /**
+     * Get the creditExpired property: The amount of expired credit or commitment for NewCredit or SettleCharges event.
+     *
+     * @return the creditExpired value.
+     */
+    public Amount creditExpired() {
+        return this.innerProperties() == null ? null : this.innerProperties().creditExpired();
+    }
+
+    /**
+     * Get the charges property: The amount of charges for events of type SettleCharges and PendingEligibleCharges.
+     *
+     * @return the charges value.
+     */
+    public Amount charges() {
+        return this.innerProperties() == null ? null : this.innerProperties().charges();
+    }
+
+    /**
+     * Get the closedBalance property: The balance after the event.
+     *
+     * @return the closedBalance value.
+     */
+    public Amount closedBalance() {
+        return this.innerProperties() == null ? null : this.innerProperties().closedBalance();
+    }
+
+    /**
+     * Get the eventType property: Identifies the type of the event.
+     *
+     * @return the eventType value.
+     */
+    public EventType eventType() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventType();
+    }
+
+    /**
+     * Set the eventType property: Identifies the type of the event.
+     *
+     * @param eventType the eventType value to set.
+     * @return the EventSummaryInner object itself.
+     */
+    public EventSummaryInner withEventType(EventType eventType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventProperties();
+        }
+        this.innerProperties().withEventType(eventType);
+        return this;
+    }
+
+    /**
+     * Get the invoiceNumber property: The number which uniquely identifies the invoice on which the event was billed.
+     * This will be empty for unbilled events.
+     *
+     * @return the invoiceNumber value.
+     */
+    public String invoiceNumber() {
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceNumber();
+    }
+
+    /**
+     * Get the billingProfileId property: The ID that uniquely identifies the billing profile for which the event
+     * happened. The property is only available for billing account of type MicrosoftCustomerAgreement.
+     *
+     * @return the billingProfileId value.
+     */
+    public String billingProfileId() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
+    }
+
+    /**
+     * Get the billingProfileDisplayName property: The display name of the billing profile for which the event happened.
+     * The property is only available for billing account of type MicrosoftCustomerAgreement.
+     *
+     * @return the billingProfileDisplayName value.
+     */
+    public String billingProfileDisplayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
+    }
+
+    /**
+     * Get the lotId property: The ID that uniquely identifies the lot for which the event happened.
+     *
+     * @return the lotId value.
+     */
+    public String lotId() {
+        return this.innerProperties() == null ? null : this.innerProperties().lotId();
+    }
+
+    /**
+     * Get the lotSource property: Identifies the source of the lot for which the event happened.
+     *
+     * @return the lotSource value.
+     */
+    public String lotSource() {
+        return this.innerProperties() == null ? null : this.innerProperties().lotSource();
+    }
+
+    /**
+     * Get the canceledCredit property: Amount of canceled credit.
+     *
+     * @return the canceledCredit value.
+     */
+    public Amount canceledCredit() {
+        return this.innerProperties() == null ? null : this.innerProperties().canceledCredit();
+    }
+
+    /**
+     * Get the creditCurrency property: The credit currency of the event.
+     *
+     * @return the creditCurrency value.
+     */
+    public String creditCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().creditCurrency();
+    }
+
+    /**
+     * Get the billingCurrency property: The billing currency of the event.
+     *
+     * @return the billingCurrency value.
+     */
+    public String billingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingCurrency();
+    }
+
+    /**
+     * Get the reseller property: The reseller of the event.
+     *
+     * @return the reseller value.
+     */
+    public Reseller reseller() {
+        return this.innerProperties() == null ? null : this.innerProperties().reseller();
+    }
+
+    /**
+     * Get the creditExpiredInBillingCurrency property: The amount of expired credit or commitment for NewCredit or
+     * SettleCharges event in billing currency.
+     *
+     * @return the creditExpiredInBillingCurrency value.
+     */
+    public AmountWithExchangeRate creditExpiredInBillingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().creditExpiredInBillingCurrency();
+    }
+
+    /**
+     * Get the newCreditInBillingCurrency property: The amount of new credit or commitment for NewCredit or
+     * SettleCharges event in billing currency.
+     *
+     * @return the newCreditInBillingCurrency value.
+     */
+    public AmountWithExchangeRate newCreditInBillingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().newCreditInBillingCurrency();
+    }
+
+    /**
+     * Get the adjustmentsInBillingCurrency property: The amount of balance adjustment in billing currency.
+     *
+     * @return the adjustmentsInBillingCurrency value.
+     */
+    public AmountWithExchangeRate adjustmentsInBillingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().adjustmentsInBillingCurrency();
+    }
+
+    /**
+     * Get the chargesInBillingCurrency property: The amount of charges for events of type SettleCharges and
+     * PendingEligibleCharges in billing currency.
+     *
+     * @return the chargesInBillingCurrency value.
+     */
+    public AmountWithExchangeRate chargesInBillingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().chargesInBillingCurrency();
+    }
+
+    /**
+     * Get the closedBalanceInBillingCurrency property: The balance in billing currency after the event.
+     *
+     * @return the closedBalanceInBillingCurrency value.
+     */
+    public AmountWithExchangeRate closedBalanceInBillingCurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().closedBalanceInBillingCurrency();
+    }
+
+    /**
+     * Get the etag property: The eTag for the resource.
+     *
+     * @return the etag value.
+     */
+    public String etagPropertiesEtag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
     }
 
     /**
@@ -325,38 +299,8 @@ public class EventSummaryInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (newCredit() != null) {
-            newCredit().validate();
-        }
-        if (newCreditInBillingCurrency() != null) {
-            newCreditInBillingCurrency().validate();
-        }
-        if (adjustments() != null) {
-            adjustments().validate();
-        }
-        if (adjustmentsInBillingCurrency() != null) {
-            adjustmentsInBillingCurrency().validate();
-        }
-        if (creditExpired() != null) {
-            creditExpired().validate();
-        }
-        if (creditExpiredInBillingCurrency() != null) {
-            creditExpiredInBillingCurrency().validate();
-        }
-        if (charges() != null) {
-            charges().validate();
-        }
-        if (chargesInBillingCurrency() != null) {
-            chargesInBillingCurrency().validate();
-        }
-        if (closedBalance() != null) {
-            closedBalance().validate();
-        }
-        if (closedBalanceInBillingCurrency() != null) {
-            closedBalanceInBillingCurrency().validate();
-        }
-        if (reseller() != null) {
-            reseller().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

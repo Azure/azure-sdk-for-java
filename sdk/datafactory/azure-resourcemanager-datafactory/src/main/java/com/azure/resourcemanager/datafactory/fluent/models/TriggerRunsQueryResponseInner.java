@@ -7,15 +7,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.TriggerRun;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of trigger runs. */
 @Fluent
 public final class TriggerRunsQueryResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerRunsQueryResponseInner.class);
-
     /*
      * List of trigger runs.
      */
@@ -78,7 +75,7 @@ public final class TriggerRunsQueryResponseInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model TriggerRunsQueryResponseInner"));
@@ -86,4 +83,6 @@ public final class TriggerRunsQueryResponseInner {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerRunsQueryResponseInner.class);
 }

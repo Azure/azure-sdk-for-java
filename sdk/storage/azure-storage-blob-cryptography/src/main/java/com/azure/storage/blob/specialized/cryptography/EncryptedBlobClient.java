@@ -51,7 +51,7 @@ import java.util.Map;
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
+ * For operations on a specific blob type (i.e. append, block, or page) use
  * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient()
  * getBlockBlobClient}, or {@link #getPageBlobClient() getPageBlobAsyncClient} to construct a client that
  * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
@@ -63,7 +63,7 @@ import java.util.Map;
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlobClient extends BlobClient {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClient.class);
     private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
@@ -117,14 +117,14 @@ public class EncryptedBlobClient extends BlobClient {
      * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
             if (exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -182,7 +182,16 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String -->
+     * <pre>
+     * try &#123;
+     *     client.uploadFromFile&#40;filePath&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String -->
      *
      * @param filePath Path of the file to upload
      */
@@ -197,16 +206,26 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean -->
+     * <pre>
+     * try &#123;
+     *     boolean overwrite = false; &#47;&#47; Default value
+     *     client.uploadFromFile&#40;filePath, overwrite&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path of the file to upload
-     * @param overwrite Whether or not to overwrite should data already exist on the blob
+     * @param overwrite Whether to overwrite should data already exist on the blob
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
         }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
@@ -216,7 +235,29 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * long blockSize = 100 * 1024 * 1024; &#47;&#47; 100 MB;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * try &#123;
+     *     client.uploadFromFile&#40;filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT,
+     *         requestConditions, timeout&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration -->
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
@@ -245,7 +286,32 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * long blockSize = 100 * 1024 * 1024; &#47;&#47; 100 MB;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * try &#123;
+     *     client.uploadFromFileWithResponse&#40;new BlobUploadFromFileOptions&#40;filePath&#41;
+     *         .setParallelTransferOptions&#40;parallelTransferOptions&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *         .setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setRequestConditions&#40;requestConditions&#41;, timeout,
+     *         Context.NONE&#41;;
+     *     System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;;
+     * &#125; catch &#40;UncheckedIOException ex&#41; &#123;
+     *     System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context -->
      *
      * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -265,7 +331,7 @@ public class EncryptedBlobClient extends BlobClient {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -274,7 +340,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public AppendBlobClient getAppendBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
             + " blob client"));
     }
 
@@ -283,7 +349,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public BlockBlobClient getBlockBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
             + " blob client"));
     }
 
@@ -292,7 +358,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public PageBlobClient getPageBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
             + " blob client"));
     }
 
@@ -301,7 +367,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public InputStream openQueryInputStream(String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -310,7 +376,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -319,7 +385,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public void query(OutputStream stream, String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -329,7 +395,7 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
         Duration timeout, Context context) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.PrincipalType;
 /** Samples for ClusterPrincipalAssignments CreateOrUpdate. */
 public final class ClusterPrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterPrincipalAssignmentsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCreateOrUpdate.
@@ -22,7 +22,7 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateSamples {
         manager
             .clusterPrincipalAssignments()
             .define("kustoprincipal1")
-            .withExistingCluster("kustorptest", "kustoclusterrptest4")
+            .withExistingCluster("kustorptest", "kustoCluster")
             .withPrincipalId("87654321-1234-1234-1234-123456789123")
             .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
             .withTenantId("12345678-1234-1234-1234-123456789123")

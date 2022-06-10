@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,18 +15,15 @@ import java.util.List;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = JobInputClip.class)
 @JsonTypeName("#Microsoft.Media.JobInputClip")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputAsset", value = JobInputAsset.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputHttp", value = JobInputHttp.class)
 })
-@JsonFlatten
 @Fluent
 public class JobInputClip extends JobInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInputClip.class);
-
     /*
      * List of files. Required for JobInputHttp. Maximum of 4000 characters
      * each. Query strings will not be returned in service responses to prevent

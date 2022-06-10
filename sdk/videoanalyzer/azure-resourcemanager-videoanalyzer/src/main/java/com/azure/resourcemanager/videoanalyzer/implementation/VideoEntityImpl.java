@@ -8,11 +8,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner;
+import com.azure.resourcemanager.videoanalyzer.models.VideoArchival;
+import com.azure.resourcemanager.videoanalyzer.models.VideoContentToken;
+import com.azure.resourcemanager.videoanalyzer.models.VideoContentUrls;
 import com.azure.resourcemanager.videoanalyzer.models.VideoEntity;
 import com.azure.resourcemanager.videoanalyzer.models.VideoFlags;
 import com.azure.resourcemanager.videoanalyzer.models.VideoMediaInfo;
-import com.azure.resourcemanager.videoanalyzer.models.VideoStreaming;
-import com.azure.resourcemanager.videoanalyzer.models.VideoStreamingToken;
 import com.azure.resourcemanager.videoanalyzer.models.VideoType;
 
 public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definition, VideoEntity.Update {
@@ -52,12 +53,20 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
         return this.innerModel().flags();
     }
 
-    public VideoStreaming streaming() {
-        return this.innerModel().streaming();
+    public VideoContentUrls contentUrls() {
+        return this.innerModel().contentUrls();
     }
 
     public VideoMediaInfo mediaInfo() {
         return this.innerModel().mediaInfo();
+    }
+
+    public VideoArchival archival() {
+        return this.innerModel().archival();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public VideoEntityInner innerModel() {
@@ -159,14 +168,12 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
         return this;
     }
 
-    public VideoStreamingToken listStreamingToken() {
-        return serviceManager.videos().listStreamingToken(resourceGroupName, accountName, videoName);
+    public VideoContentToken listContentToken() {
+        return serviceManager.videos().listContentToken(resourceGroupName, accountName, videoName);
     }
 
-    public Response<VideoStreamingToken> listStreamingTokenWithResponse(Context context) {
-        return serviceManager
-            .videos()
-            .listStreamingTokenWithResponse(resourceGroupName, accountName, videoName, context);
+    public Response<VideoContentToken> listContentTokenWithResponse(Context context) {
+        return serviceManager.videos().listContentTokenWithResponse(resourceGroupName, accountName, videoName, context);
     }
 
     public VideoEntityImpl withTitle(String title) {
@@ -176,6 +183,16 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
 
     public VideoEntityImpl withDescription(String description) {
         this.innerModel().withDescription(description);
+        return this;
+    }
+
+    public VideoEntityImpl withMediaInfo(VideoMediaInfo mediaInfo) {
+        this.innerModel().withMediaInfo(mediaInfo);
+        return this;
+    }
+
+    public VideoEntityImpl withArchival(VideoArchival archival) {
+        this.innerModel().withArchival(archival);
         return this;
     }
 }

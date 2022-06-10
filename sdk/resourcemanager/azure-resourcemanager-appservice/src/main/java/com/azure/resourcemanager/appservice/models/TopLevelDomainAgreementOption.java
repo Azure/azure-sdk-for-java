@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for retrieving the list of top level domain legal agreements. */
 @Fluent
 public final class TopLevelDomainAgreementOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopLevelDomainAgreementOption.class);
-
     /*
      * If <code>true</code>, then the list of agreements will include
      * agreements for domain privacy as well; otherwise, <code>false</code>.

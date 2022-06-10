@@ -16,6 +16,20 @@ public interface RunOutput {
     String id();
 
     /**
+     * Gets the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the artifactId property: The resource id of the artifact.
      *
      * @return the artifactId value.
@@ -35,20 +49,6 @@ public interface RunOutput {
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
-
-    /**
-     * Gets the name property: Resource name.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner object.

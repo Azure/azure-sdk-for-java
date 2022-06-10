@@ -6,15 +6,17 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
@@ -24,18 +26,25 @@ public final class CosmosBulkExecutionOptions {
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
     private final CosmosBulkExecutionThresholdsState thresholds;
+    private Integer maxConcurrentCosmosPartitions = null;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private Map<String, String> customOptions;
 
     /**
      * Constructor
      * @param thresholdsState thresholds
      */
-    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState) {
+    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
         this.legacyBatchScopedContext = legacyBatchScopedContext;
         if (thresholdsState == null) {
             this.thresholds = new CosmosBulkExecutionThresholdsState();
         } else {
             this.thresholds = thresholdsState;
+        }
+        if (customOptions == null) {
+            this.customOptions = new HashMap<>();
+        } else {
+            this.customOptions = customOptions;
         }
     }
 
@@ -43,17 +52,15 @@ public final class CosmosBulkExecutionOptions {
      * Constructor
      * @param thresholdsState thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState) {
-        this(null, thresholdsState);
+        this(null, thresholdsState, null);
     }
 
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionOptions() {
-        this(null);
+        this(null, null, null);
     }
 
     /**
@@ -94,13 +101,44 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    Integer getMaxConcurrentCosmosPartitions() {
+        return this.maxConcurrentCosmosPartitions;
+    }
+
+    CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(int maxConcurrentCosmosPartitions) {
+        this.maxConcurrentCosmosPartitions = maxConcurrentCosmosPartitions;
+        return this;
+    }
+
     /**
      * The maximum concurrency for executing requests for a partition key range.
+     * By default, the maxMicroBatchConcurrency is 1.
      *
      * @return max micro batch concurrency
      */
-    int getMaxMicroBatchConcurrency() {
+    public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
+    }
+
+    /**
+     * Set the maximum concurrency for executing requests for a partition key range.
+     * By default, the maxMicroBatchConcurrency is 1.
+     * It only allows values &ge;1 and &le;5.
+     *
+     * Attention! Please adjust this value with caution.
+     * By increasing this value, more concurrent requests will be allowed to be sent to the server,
+     * in which case may cause 429 or request timed out due to saturate local resources, which could degrade the performance.
+     *
+     * @param maxMicroBatchConcurrency the micro batch concurrency.
+     *
+     * @return the bulk processing options.
+     */
+    public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
+        checkArgument(
+            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
+            "maxMicroBatchConcurrency should be between [1, 5]");
+        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+        return this;
     }
 
     /**
@@ -172,7 +210,6 @@ public final class CosmosBulkExecutionOptions {
      * Returns threshold state that can be passed to other CosmosBulkExecutionOptions in the future
      * @return thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionThresholdsState getThresholdsState() {
         return this.thresholds;
     }
@@ -185,11 +222,34 @@ public final class CosmosBulkExecutionOptions {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
+    /**
+     * Sets the custom bulk request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     * @return the CosmosBulkExecutionOptions.
+     */
+    CosmosBulkExecutionOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom batch request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
 
@@ -239,6 +299,17 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
+                public Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options) {
+                    return options.getMaxConcurrentCosmosPartitions();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                    CosmosBulkExecutionOptions options, int maxConcurrentCosmosPartitions) {
+                    return options.setMaxConcurrentCosmosPartitions(maxConcurrentCosmosPartitions);
+                }
+
+                @Override
                 public Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options) {
                     return options.getMaxMicroBatchInterval();
                 }
@@ -252,7 +323,24 @@ public final class CosmosBulkExecutionOptions {
                     return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
                 }
 
+                @Override
+                public CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
+                                                            String name, String value) {
+                    return cosmosBulkExecutionOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.getHeaders();
+                }
+
+                @Override
+                public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.customOptions;
+                }
 
             });
     }
+
+    static { initialize(); }
 }

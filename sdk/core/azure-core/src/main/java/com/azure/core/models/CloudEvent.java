@@ -53,13 +53,60 @@ import java.util.UUID;
  * serialize the CloudEvent into its Json String representation and send it.</p>
  *
  * <p><strong>Create CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.core.model.CloudEvent#constructor}
+ * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+ * <pre>
+ * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
+ * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+ * CloudEvent cloudEvent = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromBytes&#40;exampleBytes&#41;, CloudEventDataFormat.BYTES, &quot;application&#47;octet-stream&quot;&#41;;
+ *
+ * &#47;&#47; Use BinaryData.fromObject&#40;&#41; to create CloudEvent data in format CloudEventDataFormat.JSON
+ * &#47;&#47; From a model class
+ * User user = new User&#40;&quot;Stephen&quot;, &quot;James&quot;&#41;;
+ * CloudEvent cloudEventDataObject = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;user&#41;, CloudEventDataFormat.JSON, &quot;application&#47;json&quot;&#41;;
+ *
+ * &#47;&#47; From a String
+ * CloudEvent cloudEventDataStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;&quot;Hello World&quot;&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
+ *
+ * &#47;&#47; From an Integer
+ * CloudEvent cloudEventDataInt = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;1&#41;, CloudEventDataFormat.JSON, &quot;int&quot;&#41;;
+ *
+ * &#47;&#47; From a Boolean
+ * CloudEvent cloudEventDataBool = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;true&#41;, CloudEventDataFormat.JSON, &quot;bool&quot;&#41;;
+ *
+ * &#47;&#47; From null
+ * CloudEvent cloudEventDataNull = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;null&#41;, CloudEventDataFormat.JSON, &quot;null&quot;&#41;;
+ *
+ * &#47;&#47; Use BinaryData.fromString&#40;&#41; if you have a Json String for the CloudEvent data.
+ * String jsonStringForData = &quot;&#92;&quot;Hello World&#92;&quot;&quot;;  &#47;&#47; A json String.
+ * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.model.CloudEvent#constructor -->
  *
  * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
  * use {@link #fromString(String)} to deserialize them from the Json string.</p>
  *
  * <p><strong>Deserialize CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.core.model.CloudEvent.fromString}
+ * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+ * <pre>
+ * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
+ * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
+ * BinaryData cloudEventData = cloudEvent.getData&#40;&#41;;
+ *
+ * byte[] bytesValue = cloudEventData.toBytes&#40;&#41;;  &#47;&#47; If data payload is in bytes &#40;data_base64 is not null&#41;.
+ * User objectValue = cloudEventData.toObject&#40;User.class&#41;;  &#47;&#47; If data payload is a User object.
+ * int intValue = cloudEventData.toObject&#40;Integer.class&#41;;  &#47;&#47; If data payload is an int.
+ * boolean boolValue = cloudEventData.toObject&#40;Boolean.class&#41;;  &#47;&#47; If data payload is boolean.
+ * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
+ * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
+ * </pre>
+ * <!-- end com.azure.core.model.CloudEvent.fromString -->
  */
 @Fluent
 public final class CloudEvent {
@@ -182,7 +229,41 @@ public final class CloudEvent {
      * attribute <em>data</em> of the CloudEvent's Json representation.</p>
      *
      * <p><strong>Create CloudEvent Samples</strong></p>
-     * {@codesnippet com.azure.core.model.CloudEvent#constructor}
+     * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+     * <pre>
+     * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
+     * byte[] exampleBytes = &quot;Hello World&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * CloudEvent cloudEvent = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromBytes&#40;exampleBytes&#41;, CloudEventDataFormat.BYTES, &quot;application&#47;octet-stream&quot;&#41;;
+     *
+     * &#47;&#47; Use BinaryData.fromObject&#40;&#41; to create CloudEvent data in format CloudEventDataFormat.JSON
+     * &#47;&#47; From a model class
+     * User user = new User&#40;&quot;Stephen&quot;, &quot;James&quot;&#41;;
+     * CloudEvent cloudEventDataObject = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromObject&#40;user&#41;, CloudEventDataFormat.JSON, &quot;application&#47;json&quot;&#41;;
+     *
+     * &#47;&#47; From a String
+     * CloudEvent cloudEventDataStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromObject&#40;&quot;Hello World&quot;&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
+     *
+     * &#47;&#47; From an Integer
+     * CloudEvent cloudEventDataInt = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromObject&#40;1&#41;, CloudEventDataFormat.JSON, &quot;int&quot;&#41;;
+     *
+     * &#47;&#47; From a Boolean
+     * CloudEvent cloudEventDataBool = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromObject&#40;true&#41;, CloudEventDataFormat.JSON, &quot;bool&quot;&#41;;
+     *
+     * &#47;&#47; From null
+     * CloudEvent cloudEventDataNull = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromObject&#40;null&#41;, CloudEventDataFormat.JSON, &quot;null&quot;&#41;;
+     *
+     * &#47;&#47; Use BinaryData.fromString&#40;&#41; if you have a Json String for the CloudEvent data.
+     * String jsonStringForData = &quot;&#92;&quot;Hello World&#92;&quot;&quot;;  &#47;&#47; A json String.
+     * CloudEvent cloudEventDataJsonStr = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+     *     BinaryData.fromString&#40;jsonStringForData&#41;, CloudEventDataFormat.JSON, &quot;text&#47;plain&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.model.CloudEvent#constructor -->
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
      *               for each distinct event.
@@ -231,7 +312,20 @@ public final class CloudEvent {
      * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
      * <p><strong>Deserialize CloudEvent Samples</strong></p>
-     * {@codesnippet com.azure.core.model.CloudEvent.fromString}
+     * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+     * <pre>
+     * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
+     * CloudEvent cloudEvent = cloudEventList.get&#40;0&#41;;
+     * BinaryData cloudEventData = cloudEvent.getData&#40;&#41;;
+     *
+     * byte[] bytesValue = cloudEventData.toBytes&#40;&#41;;  &#47;&#47; If data payload is in bytes &#40;data_base64 is not null&#41;.
+     * User objectValue = cloudEventData.toObject&#40;User.class&#41;;  &#47;&#47; If data payload is a User object.
+     * int intValue = cloudEventData.toObject&#40;Integer.class&#41;;  &#47;&#47; If data payload is an int.
+     * boolean boolValue = cloudEventData.toObject&#40;Boolean.class&#41;;  &#47;&#47; If data payload is boolean.
+     * String stringValue = cloudEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
+     * String jsonStringValue = cloudEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
+     * </pre>
+     * <!-- end com.azure.core.model.CloudEvent.fromString -->
      *
      * @param cloudEventsJson the JSON payload containing one or more events.
      *

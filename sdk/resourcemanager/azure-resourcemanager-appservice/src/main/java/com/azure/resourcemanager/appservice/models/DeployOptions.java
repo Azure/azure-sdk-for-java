@@ -11,6 +11,7 @@ public class DeployOptions {
     private String path;
     private Boolean restartSite;
     private Boolean cleanDeployment;
+    private Boolean trackDeployment;
 
     /**
      * @return the path for deploy
@@ -63,13 +64,34 @@ public class DeployOptions {
      * By default {@code type=zip} and {@code type=war&path=webapps/<appname>} performs clean deployment.
      * All other types of artifacts will be deployed incrementally.
      * The default behavior for any artifact type can be changed by this option.
-     * A clean deployment nukes the default directory associated with the type of artifact being deployed.
+     * A clean deployment removes the default directory associated with the type of artifact being deployed.
      *
      * @param cleanDeployment whether to perform clean deployment
      * @return the DeployOptions object
      */
     public DeployOptions withCleanDeployment(Boolean cleanDeployment) {
         this.cleanDeployment = cleanDeployment;
+        return this;
+    }
+
+    /**
+     * @return whether to track deployment progress
+     */
+    public Boolean trackDeployment() {
+        return trackDeployment;
+    }
+
+    /**
+     * Specifies whether to have {@link KuduDeploymentResult#deploymentId()} to track deployment progress.
+     *
+     * This option only takes effect when used in
+     * {@link SupportsOneDeploy#pushDeploy(DeployType, java.io.File, DeployOptions)}.
+     *
+     * @param trackDeployment whether to track deployment progress
+     * @return the DeployOptions object
+     */
+    public DeployOptions withTrackDeployment(Boolean trackDeployment) {
+        this.trackDeployment = trackDeployment;
         return this;
     }
 }

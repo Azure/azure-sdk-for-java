@@ -20,7 +20,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionQuotaItemInner> list(String location);
@@ -33,7 +33,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context);
@@ -60,7 +60,7 @@ public interface NetAppResourceQuotaLimitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SubscriptionQuotaItemInner> getWithResponse(String location, String quotaLimitName, Context context);

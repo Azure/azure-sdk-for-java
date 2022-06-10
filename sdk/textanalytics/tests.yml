@@ -4,8 +4,21 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
-      TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
+      SupportedClouds: 'Public,UsGov,China'
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
+      # temporary env vars for custom text features
+      EnvVars:
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_TEXT_ANALYTICS_API_KEY: $(java-textanalytics-test-api-key)
+        AZURE_TEXT_ANALYTICS_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
+        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME: $(java-single-category-classify-project-name)
+        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME: $(java-single-category-classify-deployment-name)
+        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME: $(java-multi-category-classify-project-name)
+        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME: $(java-multi-category-classify-deployment-name)
+        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME: $(java-recognize-custom-entities-project-name)
+        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME: $(java-recognize-custom-entities-deployment-name)

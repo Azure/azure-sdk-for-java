@@ -121,7 +121,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the consistency level required for the request. The effective consistency level
-     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * can only be reduced for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
      * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
      * request but will not guarantee session consistency (read-your-own-write) anymore
@@ -222,7 +222,7 @@ public class CosmosItemRequestOptions {
      * Gets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
-     * If set to false, service doesn't returns payload in the response. It reduces networking
+     * If set to false, service doesn't return a payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
      *
      * This feature does not impact RU usage for read or write operations.
@@ -327,11 +327,21 @@ public class CosmosItemRequestOptions {
         return requestOptions;
     }
 
+    /**
+     * Gets the throughput control group name.
+     *
+     * @return the throughput control group name.
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
 
+    /**
+     * Sets the throughput control group name.
+     *
+     * @param throughputControlGroupName the throughput control group name.
+     */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
@@ -339,7 +349,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Gets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     * diagnostics will be sent to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
      * Default is 100 ms.
      *
@@ -351,7 +361,7 @@ public class CosmosItemRequestOptions {
 
     /**
      * Sets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     * diagnostics will be sent to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
      * Default is 100 ms.
      *
@@ -399,8 +409,7 @@ public class CosmosItemRequestOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.setCosmosItemRequestOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor() {
 
@@ -433,4 +442,6 @@ public class CosmosItemRequestOptions {
             }
         );
     }
+
+    static { initialize(); }
 }

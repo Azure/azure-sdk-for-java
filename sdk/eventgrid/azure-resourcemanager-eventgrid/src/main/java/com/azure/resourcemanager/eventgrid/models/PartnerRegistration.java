@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /** An immutable client-side representation of PartnerRegistration. */
 public interface PartnerRegistration {
@@ -61,6 +62,13 @@ public interface PartnerRegistration {
      * @return the provisioningState value.
      */
     PartnerRegistrationProvisioningState provisioningState();
+
+    /**
+     * Gets the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @return the partnerRegistrationImmutableId value.
+     */
+    UUID partnerRegistrationImmutableId();
 
     /**
      * Gets the partnerName property: Official name of the partner name. For example: "Contoso".
@@ -172,6 +180,13 @@ public interface PartnerRegistration {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner object.
      *
      * @return the inner object.
@@ -224,6 +239,7 @@ public interface PartnerRegistration {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithPartnerRegistrationImmutableId,
                 DefinitionStages.WithPartnerName,
                 DefinitionStages.WithPartnerResourceTypeName,
                 DefinitionStages.WithPartnerResourceTypeDisplayName,
@@ -260,6 +276,17 @@ public interface PartnerRegistration {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the PartnerRegistration definition allowing to specify partnerRegistrationImmutableId. */
+        interface WithPartnerRegistrationImmutableId {
+            /**
+             * Specifies the partnerRegistrationImmutableId property: The immutableId of the corresponding partner
+             * registration..
+             *
+             * @param partnerRegistrationImmutableId The immutableId of the corresponding partner registration.
+             * @return the next definition stage.
+             */
+            WithCreate withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId);
         }
         /** The stage of the PartnerRegistration definition allowing to specify partnerName. */
         interface WithPartnerName {

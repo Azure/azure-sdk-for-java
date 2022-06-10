@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A data flow transformation. */
 @Fluent
 public class Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Transformation.class);
-
     /*
      * Transformation name.
      */
@@ -25,6 +22,24 @@ public class Transformation {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * Dataset reference.
+     */
+    @JsonProperty(value = "dataset")
+    private DatasetReference dataset;
+
+    /*
+     * Linked service reference.
+     */
+    @JsonProperty(value = "linkedService")
+    private LinkedServiceReference linkedService;
+
+    /*
+     * Flowlet Reference
+     */
+    @JsonProperty(value = "flowlet")
+    private DataFlowReference flowlet;
 
     /**
      * Get the name property: Transformation name.
@@ -67,15 +82,86 @@ public class Transformation {
     }
 
     /**
+     * Get the dataset property: Dataset reference.
+     *
+     * @return the dataset value.
+     */
+    public DatasetReference dataset() {
+        return this.dataset;
+    }
+
+    /**
+     * Set the dataset property: Dataset reference.
+     *
+     * @param dataset the dataset value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation withDataset(DatasetReference dataset) {
+        this.dataset = dataset;
+        return this;
+    }
+
+    /**
+     * Get the linkedService property: Linked service reference.
+     *
+     * @return the linkedService value.
+     */
+    public LinkedServiceReference linkedService() {
+        return this.linkedService;
+    }
+
+    /**
+     * Set the linkedService property: Linked service reference.
+     *
+     * @param linkedService the linkedService value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation withLinkedService(LinkedServiceReference linkedService) {
+        this.linkedService = linkedService;
+        return this;
+    }
+
+    /**
+     * Get the flowlet property: Flowlet Reference.
+     *
+     * @return the flowlet value.
+     */
+    public DataFlowReference flowlet() {
+        return this.flowlet;
+    }
+
+    /**
+     * Set the flowlet property: Flowlet Reference.
+     *
+     * @param flowlet the flowlet value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation withFlowlet(DataFlowReference flowlet) {
+        this.flowlet = flowlet;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model Transformation"));
         }
+        if (dataset() != null) {
+            dataset().validate();
+        }
+        if (linkedService() != null) {
+            linkedService().validate();
+        }
+        if (flowlet() != null) {
+            flowlet().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Transformation.class);
 }

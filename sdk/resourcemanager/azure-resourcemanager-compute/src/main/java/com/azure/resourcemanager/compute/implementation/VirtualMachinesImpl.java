@@ -77,6 +77,16 @@ public class VirtualMachinesImpl
     }
 
     @Override
+    public void deallocate(String groupName, String name, boolean hibernate) {
+        this.inner().deallocate(groupName, name, hibernate);
+    }
+
+    @Override
+    public Mono<Void> deallocateAsync(String groupName, String name, boolean hibernate) {
+        return this.inner().deallocateAsync(groupName, name, hibernate);
+    }
+
+    @Override
     public void generalize(String groupName, String name) {
         this.inner().generalize(groupName, name);
     }

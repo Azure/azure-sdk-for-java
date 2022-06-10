@@ -1,0 +1,40 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/edgeorder/ci.yml
+      - sdk/edgeorder/azure-resourcemanager-edgeorder/
+    exclude:
+      - sdk/edgeorder/pom.xml
+      - sdk/edgeorder/azure-resourcemanager-edgeorder/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/edgeorder/ci.yml
+      - sdk/edgeorder/azure-resourcemanager-edgeorder/
+    exclude:
+      - sdk/edgeorder/pom.xml
+      - sdk/edgeorder/azure-resourcemanager-edgeorder/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: edgeorder
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-edgeorder
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanageredgeorder

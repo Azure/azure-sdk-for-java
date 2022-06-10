@@ -5,12 +5,10 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,34 +41,17 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     }
 
     /**
-     * Verifies the dimension values returned for a metric with skip and top parameters.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listMetricDimensionValuesWithSkipTop(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        List<String> actualDimensionValues = new ArrayList<String>();
-        StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20)))
-            .thenConsumeWhile(actualDimensionValues::add)
-            .verifyComplete();
-
-        Collections.sort(actualDimensionValues);
-        Assertions.assertIterableEquals(EXPECTED_DIMENSION_VALUES, actualDimensionValues);
-    }
-
-    /**
      * Verifies all the dimension values returned for a metric.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        List<String> actualDimensionValues = new ArrayList<String>();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME))
-            .assertNext(dimensionValue -> assertEquals(dimensionValue, "Automotive & Powersports"))
-            .expectNextCount(EXPECTED_DIMENSION_VALUES_COUNT - 1)
+            .thenConsumeWhile(actualDimensionValues::add)
             .verifyComplete();
+        assertEquals(EXPECTED_DIMENSION_VALUES_COUNT, actualDimensionValues.size());
     }
 
     /**
@@ -118,15 +99,15 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
             new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("city", Collections.singletonList("Miami"));
+                        put("Dim1", Collections.singletonList("JPN"));
                     }})))
             .thenConsumeWhile(actualMetricSeriesDefinitions::add)
             .verifyComplete();
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("city");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim1");
             assertNotNull(dimensionFilterValue);
-            assertEquals("Miami", dimensionFilterValue);
+            assertEquals("JPN", dimensionFilterValue);
         });
     }
 
@@ -140,12 +121,11 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
         StepVerifier.create(
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"),
+                OffsetDateTime.parse("2021-10-01T00:00:00Z"), OffsetDateTime.parse("2021-10-30T00:00:00Z"),
                 ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();
 
-        assertEquals(ListEnrichmentStatusOutput.INSTANCE.expectedStatuses, enrichmentStatuses.size());
         enrichmentStatuses.forEach(MetricsSeriesTestBase::validateEnrichmentStatus);
     }
 }

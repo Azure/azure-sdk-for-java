@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The source control OAuth token. */
 @Fluent
 public final class SourceControlInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlInner.class);
-
     /*
      * SourceControl resource specific properties
      */

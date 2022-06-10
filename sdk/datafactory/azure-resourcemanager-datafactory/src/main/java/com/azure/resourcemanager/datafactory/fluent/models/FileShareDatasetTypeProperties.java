@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** On-premises file system dataset properties. */
 @Fluent
 public final class FileShareDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareDatasetTypeProperties.class);
-
     /*
      * The path of the on-premises file system. Type: string (or Expression
      * with resultType string).

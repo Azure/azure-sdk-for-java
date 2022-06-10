@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/aot/
+    exclude:
+      - sdk/aot/pom.xml
+      - sdk/aot/azure-aot-graalvm-support/pom.xml
+      - sdk/aot/azure-aot-graalvm-support-netty/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/aot/
+    exclude:
+      - sdk/aot/pom.xml
+      - sdk/aot/azure-aot-graalvm-support/pom.xml
+      - sdk/aot/azure-aot-graalvm-support-netty/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: aot
+    Artifacts:
+      - name: azure-aot-graalvm-support
+        groupId: com.azure
+        safeName: azureaotgraalvmsupport
+      - name: azure-aot-graalvm-support-netty
+        groupId: com.azure
+        safeName: azureaotgraalvmsupportnetty
+    AdditionalModules:
+      - name: azure-aot-graalvm-samples
+        groupId: com.azure
+      - name: azure-aot-graalvm-perf
+        groupId: com.azure

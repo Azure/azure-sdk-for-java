@@ -6,15 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error response from the Batch service. */
 @Fluent
 public final class DeleteCertificateError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteCertificateError.class);
-
     /*
      * An identifier for the error. Codes are invariant and are intended to be
      * consumed programmatically.
@@ -133,12 +130,12 @@ public final class DeleteCertificateError {
      */
     public void validate() {
         if (code() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property code in model DeleteCertificateError"));
         }
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property message in model DeleteCertificateError"));
         }
@@ -146,4 +143,6 @@ public final class DeleteCertificateError {
             details().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeleteCertificateError.class);
 }

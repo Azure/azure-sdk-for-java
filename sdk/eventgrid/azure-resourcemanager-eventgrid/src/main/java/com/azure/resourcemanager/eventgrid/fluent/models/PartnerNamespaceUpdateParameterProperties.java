@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information of Partner Namespace update parameter properties. */
 @Fluent
 public final class PartnerNamespaceUpdateParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceUpdateParameterProperties.class);
-
     /*
      * This determines if traffic is allowed over public network. By default it
      * is enabled.

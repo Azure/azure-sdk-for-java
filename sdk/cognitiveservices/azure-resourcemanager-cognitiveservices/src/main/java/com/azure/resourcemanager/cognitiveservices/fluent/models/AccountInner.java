@@ -6,12 +6,11 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.AzureEntityResource;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -20,8 +19,6 @@ import java.util.Map;
  */
 @Fluent
 public final class AccountInner extends AzureEntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountInner.class);
-
     /*
      * The Kind of the resource.
      */
@@ -50,6 +47,7 @@ public final class AccountInner extends AzureEntityResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*

@@ -15,6 +15,10 @@ import reactor.core.publisher.Mono;
 public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
 
     private final ReactiveCosmosQueryMethod method;
+
+    /**
+     * Reactive Cosmos operations
+     */
     protected final ReactiveCosmosOperations operations;
 
     /**
@@ -83,14 +87,31 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         return method;
     }
 
+    /**
+     * Creates a query.
+     * @param accessor Reactive Cosmos parameter accessor.
+     * @return a Cosmos query.
+     */
     protected abstract CosmosQuery createQuery(ReactiveCosmosParameterAccessor accessor);
 
+    /**
+     * @return whether this is a deletion query.
+     */
     protected abstract boolean isDeleteQuery();
 
+    /**
+     * @return whether this is an exists query.
+     */
     protected abstract boolean isExistsQuery();
 
+    /**
+     * @return whether this is a count query.
+     */
     protected abstract boolean isCountQuery();
 
+    /**
+     * @return whether this is a page query.
+     */
     protected boolean isPageQuery() {
         return method.isPageQuery();
     }

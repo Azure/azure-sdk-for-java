@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Google AdWords service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,24 +19,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class GoogleAdWordsLinkedService extends LinkedService {
     /*
+     * Properties used to connect to GoogleAds. It is mutually exclusive with
+     * any other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /*
      * The Client customer ID of the AdWords account that you want to fetch
      * report data for.
      */
-    @JsonProperty(value = "typeProperties.clientCustomerID", required = true)
+    @JsonProperty(value = "typeProperties.clientCustomerID")
     private Object clientCustomerID;
 
     /*
      * The developer token associated with the manager account that you use to
      * grant access to the AdWords API.
      */
-    @JsonProperty(value = "typeProperties.developerToken", required = true)
+    @JsonProperty(value = "typeProperties.developerToken")
     private SecretBase developerToken;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
      */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
+    @JsonProperty(value = "typeProperties.authenticationType")
     private GoogleAdWordsAuthenticationType authenticationType;
 
     /*
@@ -95,6 +104,28 @@ public class GoogleAdWordsLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object getConnectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService setConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get the clientCustomerID property: The Client customer ID of the AdWords account that you want to fetch report
@@ -335,6 +366,34 @@ public class GoogleAdWordsLinkedService extends LinkedService {
      */
     public GoogleAdWordsLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleAdWordsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleAdWordsLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleAdWordsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleAdWordsLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

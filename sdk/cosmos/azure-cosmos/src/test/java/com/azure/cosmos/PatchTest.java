@@ -3,12 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -55,7 +58,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "patched");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -111,6 +114,8 @@ public class PatchTest extends TestSuiteBase {
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
     public void itemPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
+        ToDoActivity testItem1 = ToDoActivity.createRandomItem(this.container);
+        ToDoActivity testItem2 = ToDoActivity.createRandomItem(this.container);
 
         int originalTaskNum = testItem.taskNum;
         int newTaskNum = originalTaskNum + 1;
@@ -118,9 +123,11 @@ public class PatchTest extends TestSuiteBase {
         assertThat(testItem.children[1].status).isNull();
 
         com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
-        cosmosPatchOperations.add("/children/1/CamelCase", "patched");
+        cosmosPatchOperations.add("/children/0/CamelCase", "patched");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
+        cosmosPatchOperations.replace("/children/1", testItem1);
+        cosmosPatchOperations.replace("/nestedChild",testItem2);
         cosmosPatchOperations.set("/valid", false);
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
@@ -136,10 +143,12 @@ public class PatchTest extends TestSuiteBase {
         ToDoActivity patchedItem = response.getItem();
         assertThat(patchedItem).isNotNull();
 
-        assertThat(patchedItem.children[1].camelCase).isEqualTo("patched");
+        assertThat(patchedItem.children[0].camelCase).isEqualTo("patched");
         assertThat(patchedItem.description).isNull();
         assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
         assertThat(patchedItem.valid).isEqualTo(false);
+        assertThat(patchedItem.children[1].id).isEqualTo(testItem1.id);
+        assertThat(patchedItem.nestedChild.id).isEqualTo(testItem2.id);
 
         // read resource to validate the patch operation
         response = this.container.readItem(
@@ -160,7 +169,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "alpha");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -180,7 +189,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isNull(); // skip content is true
 
         // Right now
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations2 = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
         cosmosPatchOperations2.set("/valid", false);
 
         CosmosItemResponse<ToDoActivity> response2 = this.container.patchItem(
@@ -214,7 +223,7 @@ public class PatchTest extends TestSuiteBase {
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/nonExistentParent/child", "bar");
         cosmosPatchOperations.remove("/cost");
 
@@ -243,7 +252,7 @@ public class PatchTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage())
-                .contains("Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'");
+                .contains("no path found beyond: 'nonExistentParent'");
         }
 
         // precondition failure - 412 response
@@ -265,6 +274,37 @@ public class PatchTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    public void itemPatchSuccessForNullValue() {
+        // Null value should be allowed for add, set, and replace
+
+        ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
+        String id = UUID.randomUUID().toString();
+        String pkValue = "mypk";
+
+        String stringColumnName = "stringColumn";
+        String stringColumnName2 = "stringColumn2";
+        String newStringColumnName = "newStringColumn";
+
+        objectNode.put("id", id);
+        objectNode.put("mypk", pkValue);
+        objectNode.put(stringColumnName, UUID.randomUUID().toString());
+        objectNode.put(stringColumnName2, UUID.randomUUID().toString());
+
+        this.container.createItem(objectNode);
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+        patchOperations.add("/" + newStringColumnName, null);
+        patchOperations.replace("/" + stringColumnName, null);
+        patchOperations.set("/" + stringColumnName2, null);
+
+        ObjectNode patchedItem = this.container.patchItem(id, new PartitionKey(pkValue), patchOperations, ObjectNode.class).getItem();
+        assertThat(patchedItem).isNotNull();
+        assert(patchedItem.get(newStringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName2)).isNull();
+    }
+
     public static class ToDoActivity {
 
         public String id;
@@ -280,6 +320,7 @@ public class PatchTest extends TestSuiteBase {
 
         public boolean valid;
         public ToDoActivity[] children;
+        public ToDoActivity nestedChild;
 
         public ToDoActivity() {
         }
@@ -290,7 +331,7 @@ public class PatchTest extends TestSuiteBase {
             this.taskNum = taskNum;
         }
 
-        public ToDoActivity(String id, String description, String status, int taskNum, double cost, String camelCase, ToDoActivity[] children, boolean valid) {
+        public ToDoActivity(String id, String description, String status, int taskNum, double cost, String camelCase, ToDoActivity[] children, boolean valid, ToDoActivity nestedChild) {
             this.id = id;
             this.description = description;
             this.status = status;
@@ -299,6 +340,7 @@ public class PatchTest extends TestSuiteBase {
             this.camelCase = camelCase;
             this.children = children;
             this.valid = valid;
+            this.nestedChild = nestedChild;
         }
 
         @Override
@@ -350,7 +392,8 @@ public class PatchTest extends TestSuiteBase {
                         new ToDoActivity(id = "child1", 30 ),
                         new ToDoActivity( "child2", 40)
                     },
-                true
+                true,
+                new ToDoActivity("nestedChild", 10)
             );
         }
     }

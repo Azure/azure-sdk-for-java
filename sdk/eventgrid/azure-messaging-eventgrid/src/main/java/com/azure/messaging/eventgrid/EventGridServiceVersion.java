@@ -11,9 +11,12 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum EventGridServiceVersion implements ServiceVersion {
 
+    /**
+     * Service version {@code 2018-01-01}.
+     */
     V2018_01_01("2018-01-01");
 
-    private String version;
+    private final String version;
 
     EventGridServiceVersion(String version) {
         this.version = version;

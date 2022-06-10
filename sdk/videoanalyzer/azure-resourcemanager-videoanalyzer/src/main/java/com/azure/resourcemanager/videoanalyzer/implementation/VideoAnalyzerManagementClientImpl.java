@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -23,9 +24,20 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.videoanalyzer.fluent.AccessPoliciesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.EdgeModulesClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.LivePipelineOperationStatusesClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.LivePipelinesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.LocationsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.OperationResultsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.OperationsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.PipelineJobOperationStatusesClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.PipelineJobsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.PipelineTopologiesClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzerManagementClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzerOperationResultsClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzerOperationStatusesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzersClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideosClient;
 import java.io.IOException;
@@ -34,15 +46,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the VideoAnalyzerManagementClientImpl type. */
 @ServiceClient(builder = VideoAnalyzerManagementClientBuilder.class)
 public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerManagementClient {
-    private final ClientLogger logger = new ClientLogger(VideoAnalyzerManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -115,6 +124,78 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
         return this.defaultPollInterval;
     }
 
+    /** The EdgeModulesClient object to access its operations. */
+    private final EdgeModulesClient edgeModules;
+
+    /**
+     * Gets the EdgeModulesClient object to access its operations.
+     *
+     * @return the EdgeModulesClient object.
+     */
+    public EdgeModulesClient getEdgeModules() {
+        return this.edgeModules;
+    }
+
+    /** The PipelineTopologiesClient object to access its operations. */
+    private final PipelineTopologiesClient pipelineTopologies;
+
+    /**
+     * Gets the PipelineTopologiesClient object to access its operations.
+     *
+     * @return the PipelineTopologiesClient object.
+     */
+    public PipelineTopologiesClient getPipelineTopologies() {
+        return this.pipelineTopologies;
+    }
+
+    /** The LivePipelinesClient object to access its operations. */
+    private final LivePipelinesClient livePipelines;
+
+    /**
+     * Gets the LivePipelinesClient object to access its operations.
+     *
+     * @return the LivePipelinesClient object.
+     */
+    public LivePipelinesClient getLivePipelines() {
+        return this.livePipelines;
+    }
+
+    /** The PipelineJobsClient object to access its operations. */
+    private final PipelineJobsClient pipelineJobs;
+
+    /**
+     * Gets the PipelineJobsClient object to access its operations.
+     *
+     * @return the PipelineJobsClient object.
+     */
+    public PipelineJobsClient getPipelineJobs() {
+        return this.pipelineJobs;
+    }
+
+    /** The LivePipelineOperationStatusesClient object to access its operations. */
+    private final LivePipelineOperationStatusesClient livePipelineOperationStatuses;
+
+    /**
+     * Gets the LivePipelineOperationStatusesClient object to access its operations.
+     *
+     * @return the LivePipelineOperationStatusesClient object.
+     */
+    public LivePipelineOperationStatusesClient getLivePipelineOperationStatuses() {
+        return this.livePipelineOperationStatuses;
+    }
+
+    /** The PipelineJobOperationStatusesClient object to access its operations. */
+    private final PipelineJobOperationStatusesClient pipelineJobOperationStatuses;
+
+    /**
+     * Gets the PipelineJobOperationStatusesClient object to access its operations.
+     *
+     * @return the PipelineJobOperationStatusesClient object.
+     */
+    public PipelineJobOperationStatusesClient getPipelineJobOperationStatuses() {
+        return this.pipelineJobOperationStatuses;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -139,6 +220,78 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
         return this.videoAnalyzers;
     }
 
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The OperationStatusesClient object to access its operations. */
+    private final OperationStatusesClient operationStatuses;
+
+    /**
+     * Gets the OperationStatusesClient object to access its operations.
+     *
+     * @return the OperationStatusesClient object.
+     */
+    public OperationStatusesClient getOperationStatuses() {
+        return this.operationStatuses;
+    }
+
+    /** The OperationResultsClient object to access its operations. */
+    private final OperationResultsClient operationResults;
+
+    /**
+     * Gets the OperationResultsClient object to access its operations.
+     *
+     * @return the OperationResultsClient object.
+     */
+    public OperationResultsClient getOperationResults() {
+        return this.operationResults;
+    }
+
+    /** The VideoAnalyzerOperationStatusesClient object to access its operations. */
+    private final VideoAnalyzerOperationStatusesClient videoAnalyzerOperationStatuses;
+
+    /**
+     * Gets the VideoAnalyzerOperationStatusesClient object to access its operations.
+     *
+     * @return the VideoAnalyzerOperationStatusesClient object.
+     */
+    public VideoAnalyzerOperationStatusesClient getVideoAnalyzerOperationStatuses() {
+        return this.videoAnalyzerOperationStatuses;
+    }
+
+    /** The VideoAnalyzerOperationResultsClient object to access its operations. */
+    private final VideoAnalyzerOperationResultsClient videoAnalyzerOperationResults;
+
+    /**
+     * Gets the VideoAnalyzerOperationResultsClient object to access its operations.
+     *
+     * @return the VideoAnalyzerOperationResultsClient object.
+     */
+    public VideoAnalyzerOperationResultsClient getVideoAnalyzerOperationResults() {
+        return this.videoAnalyzerOperationResults;
+    }
+
     /** The LocationsClient object to access its operations. */
     private final LocationsClient locations;
 
@@ -149,18 +302,6 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
      */
     public LocationsClient getLocations() {
         return this.locations;
-    }
-
-    /** The EdgeModulesClient object to access its operations. */
-    private final EdgeModulesClient edgeModules;
-
-    /**
-     * Gets the EdgeModulesClient object to access its operations.
-     *
-     * @return the EdgeModulesClient object.
-     */
-    public EdgeModulesClient getEdgeModules() {
-        return this.edgeModules;
     }
 
     /** The VideosClient object to access its operations. */
@@ -209,11 +350,22 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-05-01-preview";
+        this.apiVersion = "2021-11-01-preview";
+        this.edgeModules = new EdgeModulesClientImpl(this);
+        this.pipelineTopologies = new PipelineTopologiesClientImpl(this);
+        this.livePipelines = new LivePipelinesClientImpl(this);
+        this.pipelineJobs = new PipelineJobsClientImpl(this);
+        this.livePipelineOperationStatuses = new LivePipelineOperationStatusesClientImpl(this);
+        this.pipelineJobOperationStatuses = new PipelineJobOperationStatusesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.videoAnalyzers = new VideoAnalyzersClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.operationStatuses = new OperationStatusesClientImpl(this);
+        this.operationResults = new OperationResultsClientImpl(this);
+        this.videoAnalyzerOperationStatuses = new VideoAnalyzerOperationStatusesClientImpl(this);
+        this.videoAnalyzerOperationResults = new VideoAnalyzerOperationResultsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
-        this.edgeModules = new EdgeModulesClientImpl(this);
         this.videos = new VideosClientImpl(this);
         this.accessPolicies = new AccessPoliciesClientImpl(this);
     }
@@ -234,10 +386,7 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -301,7 +450,7 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -360,4 +509,6 @@ public final class VideoAnalyzerManagementClientImpl implements VideoAnalyzerMan
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VideoAnalyzerManagementClientImpl.class);
 }

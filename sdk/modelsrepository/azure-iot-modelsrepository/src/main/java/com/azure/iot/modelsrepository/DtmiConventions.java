@@ -41,7 +41,6 @@ public final class DtmiConventions {
         if (dtmi == null || dtmi.isEmpty()) {
             return false;
         }
-
         return VALID_DTMI_PATTERN.matcher(dtmi).matches();
     }
 
@@ -70,7 +69,45 @@ public final class DtmiConventions {
                 return new URI(stringUri + "/" + dtmiPath);
             }
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid uri syntax");
+            throw new IllegalArgumentException("Invalid uri syntax", e);
+        }
+    }
+
+    /**
+     * Generates the model path.
+     *
+     * @param dtmi DigitalTwin Model Id.
+     * @param expanded Is model from precomputed values
+     * @return The model path.
+     */
+    public static String getModelPath(String dtmi, boolean expanded) {
+        String dtmiPath = dtmiToPath(dtmi);
+
+        if (expanded) {
+            dtmiPath = dtmiPath.replace(ModelsRepositoryConstants.JSON_EXTENSION,
+                ModelsRepositoryConstants.JSON_EXPANDED_EXTENSION);
+        }
+
+        return dtmiPath;
+    }
+
+    /**
+     * Generates the model repository's metadata URI.
+     *
+     * @param repositoryUri The repository uri
+     * @return The repository metadata uri.
+     * @throws IllegalArgumentException if the provided repository URI is not valid
+     */
+    public static URI getMetadataUri(URI repositoryUri) {
+        try {
+            String stringUri = repositoryUri.toString();
+            if (stringUri.endsWith("/")) {
+                return new URI(stringUri + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
+            } else {
+                return new URI(stringUri + "/" + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
+            }
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid uri syntax", e);
         }
     }
 

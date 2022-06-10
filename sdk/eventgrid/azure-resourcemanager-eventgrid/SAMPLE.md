@@ -1,6 +1,35 @@
 # Code snippets and samples
 
 
+## Channels
+
+- [CreateOrUpdate](#channels_createorupdate)
+- [Delete](#channels_delete)
+- [Get](#channels_get)
+- [GetFullUrl](#channels_getfullurl)
+- [ListByPartnerNamespace](#channels_listbypartnernamespace)
+- [Update](#channels_update)
+
+## DomainEventSubscriptions
+
+- [CreateOrUpdate](#domaineventsubscriptions_createorupdate)
+- [Delete](#domaineventsubscriptions_delete)
+- [Get](#domaineventsubscriptions_get)
+- [GetDeliveryAttributes](#domaineventsubscriptions_getdeliveryattributes)
+- [GetFullUrl](#domaineventsubscriptions_getfullurl)
+- [List](#domaineventsubscriptions_list)
+- [Update](#domaineventsubscriptions_update)
+
+## DomainTopicEventSubscriptions
+
+- [CreateOrUpdate](#domaintopiceventsubscriptions_createorupdate)
+- [Delete](#domaintopiceventsubscriptions_delete)
+- [Get](#domaintopiceventsubscriptions_get)
+- [GetDeliveryAttributes](#domaintopiceventsubscriptions_getdeliveryattributes)
+- [GetFullUrl](#domaintopiceventsubscriptions_getfullurl)
+- [List](#domaintopiceventsubscriptions_list)
+- [Update](#domaintopiceventsubscriptions_update)
+
 ## DomainTopics
 
 - [CreateOrUpdate](#domaintopics_createorupdate)
@@ -53,6 +82,27 @@
 
 - [List](#operations_list)
 
+## PartnerConfigurations
+
+- [AuthorizePartner](#partnerconfigurations_authorizepartner)
+- [CreateOrUpdate](#partnerconfigurations_createorupdate)
+- [Delete](#partnerconfigurations_delete)
+- [GetByResourceGroup](#partnerconfigurations_getbyresourcegroup)
+- [List](#partnerconfigurations_list)
+- [ListByResourceGroup](#partnerconfigurations_listbyresourcegroup)
+- [UnauthorizePartner](#partnerconfigurations_unauthorizepartner)
+- [Update](#partnerconfigurations_update)
+
+## PartnerDestinations
+
+- [Activate](#partnerdestinations_activate)
+- [CreateOrUpdate](#partnerdestinations_createorupdate)
+- [Delete](#partnerdestinations_delete)
+- [GetByResourceGroup](#partnerdestinations_getbyresourcegroup)
+- [List](#partnerdestinations_list)
+- [ListByResourceGroup](#partnerdestinations_listbyresourcegroup)
+- [Update](#partnerdestinations_update)
+
 ## PartnerNamespaces
 
 - [CreateOrUpdate](#partnernamespaces_createorupdate)
@@ -86,6 +136,7 @@
 ## PartnerTopics
 
 - [Activate](#partnertopics_activate)
+- [CreateOrUpdate](#partnertopics_createorupdate)
 - [Deactivate](#partnertopics_deactivate)
 - [Delete](#partnertopics_delete)
 - [GetByResourceGroup](#partnertopics_getbyresourcegroup)
@@ -124,6 +175,16 @@
 - [ListByResourceGroup](#systemtopics_listbyresourcegroup)
 - [Update](#systemtopics_update)
 
+## TopicEventSubscriptions
+
+- [CreateOrUpdate](#topiceventsubscriptions_createorupdate)
+- [Delete](#topiceventsubscriptions_delete)
+- [Get](#topiceventsubscriptions_get)
+- [GetDeliveryAttributes](#topiceventsubscriptions_getdeliveryattributes)
+- [GetFullUrl](#topiceventsubscriptions_getfullurl)
+- [List](#topiceventsubscriptions_list)
+- [Update](#topiceventsubscriptions_update)
+
 ## TopicTypes
 
 - [Get](#topictypes_get)
@@ -141,6 +202,563 @@
 - [ListSharedAccessKeys](#topics_listsharedaccesskeys)
 - [RegenerateKey](#topics_regeneratekey)
 - [Update](#topics_update)
+
+## VerifiedPartners
+
+- [Get](#verifiedpartners_get)
+- [List](#verifiedpartners_list)
+### Channels_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.eventgrid.models.ChannelType;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
+import java.time.OffsetDateTime;
+
+/** Samples for Channels CreateOrUpdate. */
+public final class ChannelsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Channels_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .channels()
+            .define("exampleChannelName1")
+            .withExistingPartnerNamespace("examplerg", "examplePartnerNamespaceName1")
+            .withChannelType(ChannelType.PARTNER_TOPIC)
+            .withPartnerTopicInfo(
+                new PartnerTopicInfo()
+                    .withAzureSubscriptionId("5b4b650e-28b9-4790-b3ab-ddbd88d727c4")
+                    .withResourceGroupName("examplerg2")
+                    .withName("examplePartnerTopic1")
+                    .withSource("ContosoCorp.Accounts.User1"))
+            .withMessageForActivation("Example message to approver")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-21T22:50:25.410433Z"))
+            .create();
+    }
+}
+```
+
+### Channels_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Channels Delete. */
+public final class ChannelsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_Delete.json
+     */
+    /**
+     * Sample code: Channels_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .channels()
+            .delete("examplerg", "examplePartnerNamespaceName1", "exampleEventChannelName1", Context.NONE);
+    }
+}
+```
+
+### Channels_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Channels Get. */
+public final class ChannelsGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_Get.json
+     */
+    /**
+     * Sample code: Channels_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .channels()
+            .getWithResponse("examplerg", "examplePartnerNamespaceName1", "exampleChannelName1", Context.NONE);
+    }
+}
+```
+
+### Channels_GetFullUrl
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Channels GetFullUrl. */
+public final class ChannelsGetFullUrlSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_GetFullUrl.json
+     */
+    /**
+     * Sample code: Channels_GetFullUrl.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsGetFullUrl(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.channels().getFullUrlWithResponse("examplerg", "examplenamespace", "examplechannel", Context.NONE);
+    }
+}
+```
+
+### Channels_ListByPartnerNamespace
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for Channels ListByPartnerNamespace. */
+public final class ChannelsListByPartnerNamespaceSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_ListByPartnerNamespace.json
+     */
+    /**
+     * Sample code: Channels_ListByPartnerNamespace.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsListByPartnerNamespace(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .channels()
+            .listByPartnerNamespace("examplerg", "examplePartnerNamespaceName1", null, null, Context.NONE);
+    }
+}
+```
+
+### Channels_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.ChannelUpdateParameters;
+import java.time.OffsetDateTime;
+
+/** Samples for Channels Update. */
+public final class ChannelsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Channels_Update.json
+     */
+    /**
+     * Sample code: Channels_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void channelsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .channels()
+            .updateWithResponse(
+                "examplerg",
+                "examplePartnerNamespaceName1",
+                "exampleChannelName1",
+                new ChannelUpdateParameters()
+                    .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-23T23:06:11.785Z")),
+                Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_CreateOrUpdate
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+
+/** Samples for DomainEventSubscriptions CreateOrUpdate. */
+public final class DomainEventSubscriptionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsCreateOrUpdate(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainEventSubscriptions()
+            .createOrUpdate(
+                "examplerg",
+                "exampleDomain1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionInner()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("ExamplePrefix")
+                            .withSubjectEndsWith("ExampleSuffix")
+                            .withIsSubjectCaseSensitive(false)),
+                Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainEventSubscriptions Delete. */
+public final class DomainEventSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.domainEventSubscriptions().delete("examplerg", "exampleDomain1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainEventSubscriptions Get. */
+public final class DomainEventSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Get.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainEventSubscriptions()
+            .getWithResponse("examplerg", "exampleDomain1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_GetDeliveryAttributes
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainEventSubscriptions GetDeliveryAttributes. */
+public final class DomainEventSubscriptionsGetDeliveryAttributesSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_GetDeliveryAttributes.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_GetDeliveryAttributes.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsGetDeliveryAttributes(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainEventSubscriptions()
+            .getDeliveryAttributesWithResponse("examplerg", "exampleDomain1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_GetFullUrl
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainEventSubscriptions GetFullUrl. */
+public final class DomainEventSubscriptionsGetFullUrlSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_GetFullUrl.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_GetFullUrl.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsGetFullUrl(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainEventSubscriptions()
+            .getFullUrlWithResponse("examplerg", "exampleDomain1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainEventSubscriptions List. */
+public final class DomainEventSubscriptionsListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_List.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_List.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.domainEventSubscriptions().list("examplerg", "exampleDomain1", null, null, Context.NONE);
+    }
+}
+```
+
+### DomainEventSubscriptions_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+import java.util.Arrays;
+
+/** Samples for DomainEventSubscriptions Update. */
+public final class DomainEventSubscriptionsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainEventSubscriptions_Update.json
+     */
+    /**
+     * Sample code: DomainEventSubscriptions_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainEventSubscriptions()
+            .update(
+                "examplerg",
+                "exampleDomain1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionUpdateParameters()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("existingPrefix")
+                            .withSubjectEndsWith("newSuffix")
+                            .withIsSubjectCaseSensitive(true))
+                    .withLabels(Arrays.asList("label1", "label2")),
+                Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_CreateOrUpdate
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+
+/** Samples for DomainTopicEventSubscriptions CreateOrUpdate. */
+public final class DomainTopicEventSubscriptionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsCreateOrUpdate(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .createOrUpdate(
+                "examplerg",
+                "exampleDomain1",
+                "exampleDomainTopic1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionInner()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("ExamplePrefix")
+                            .withSubjectEndsWith("ExampleSuffix")
+                            .withIsSubjectCaseSensitive(false)),
+                Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainTopicEventSubscriptions Delete. */
+public final class DomainTopicEventSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsDelete(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .delete("examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainTopicEventSubscriptions Get. */
+public final class DomainTopicEventSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_Get.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .getWithResponse(
+                "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_GetDeliveryAttributes
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainTopicEventSubscriptions GetDeliveryAttributes. */
+public final class DomainTopicEventSubscriptionsGetDeliveryAttributesSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_GetDeliveryAttributes.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsGetDeliveryAttributes(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .getDeliveryAttributesWithResponse(
+                "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_GetFullUrl
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainTopicEventSubscriptions GetFullUrl. */
+public final class DomainTopicEventSubscriptionsGetFullUrlSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_GetFullUrl.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_GetFullUrl.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsGetFullUrl(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .getFullUrlWithResponse(
+                "examplerg", "exampleDomain1", "exampleDomainTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for DomainTopicEventSubscriptions List. */
+public final class DomainTopicEventSubscriptionsListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_List.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_List.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .list("examplerg", "exampleDomain1", "exampleDomainTopic1", null, null, Context.NONE);
+    }
+}
+```
+
+### DomainTopicEventSubscriptions_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+import java.util.Arrays;
+
+/** Samples for DomainTopicEventSubscriptions Update. */
+public final class DomainTopicEventSubscriptionsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopicEventSubscriptions_Update.json
+     */
+    /**
+     * Sample code: DomainTopicEventSubscriptions_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void domainTopicEventSubscriptionsUpdate(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .domainTopicEventSubscriptions()
+            .update(
+                "examplerg",
+                "exampleDomain1",
+                "exampleDomainTopic1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionUpdateParameters()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("existingPrefix")
+                            .withSubjectEndsWith("newSuffix")
+                            .withIsSubjectCaseSensitive(true))
+                    .withLabels(Arrays.asList("label1", "label2")),
+                Context.NONE);
+    }
+}
+```
+
 ### DomainTopics_CreateOrUpdate
 
 ```java
@@ -149,7 +767,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics CreateOrUpdate. */
 public final class DomainTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: DomainTopics_CreateOrUpdate.
@@ -170,7 +788,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics Delete. */
 public final class DomainTopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_Delete.json
      */
     /**
      * Sample code: DomainTopics_Delete.
@@ -191,7 +809,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics Get. */
 public final class DomainTopicsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_Get.json
      */
     /**
      * Sample code: DomainTopics_Get.
@@ -212,7 +830,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics ListByDomain. */
 public final class DomainTopicsListByDomainSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_ListByDomain.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_ListByDomain.json
      */
     /**
      * Sample code: DomainTopics_ListByDomain.
@@ -238,7 +856,7 @@ import java.util.Map;
 /** Samples for Domains CreateOrUpdate. */
 public final class DomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_CreateOrUpdate.json
      */
     /**
      * Sample code: Domains_CreateOrUpdate.
@@ -282,7 +900,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains Delete. */
 public final class DomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Delete.json
      */
     /**
      * Sample code: Domains_Delete.
@@ -303,7 +921,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains GetByResourceGroup. */
 public final class DomainsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Get.json
      */
     /**
      * Sample code: Domains_Get.
@@ -324,7 +942,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains List. */
 public final class DomainsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListBySubscription.json
      */
     /**
      * Sample code: Domains_ListBySubscription.
@@ -345,7 +963,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains ListByResourceGroup. */
 public final class DomainsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListByResourceGroup.json
      */
     /**
      * Sample code: Domains_ListByResourceGroup.
@@ -366,7 +984,7 @@ import com.azure.core.util.Context;
 /** Samples for Domains ListSharedAccessKeys. */
 public final class DomainsListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_ListSharedAccessKeys.json
      */
     /**
      * Sample code: Domains_ListSharedAccessKeys.
@@ -388,7 +1006,7 @@ import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 /** Samples for Domains RegenerateKey. */
 public final class DomainsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_RegenerateKey.json
      */
     /**
      * Sample code: Domains_RegenerateKey.
@@ -419,7 +1037,7 @@ import java.util.Map;
 /** Samples for Domains Update. */
 public final class DomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Domains_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Domains_Update.json
      */
     /**
      * Sample code: Domains_Update.
@@ -463,7 +1081,7 @@ import com.azure.resourcemanager.eventgrid.models.EventChannelSource;
 /** Samples for EventChannels CreateOrUpdate. */
 public final class EventChannelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventChannels_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_CreateOrUpdate.json
      */
     /**
      * Sample code: EventChannels_CreateOrUpdate.
@@ -494,7 +1112,7 @@ import com.azure.core.util.Context;
 /** Samples for EventChannels Delete. */
 public final class EventChannelsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventChannels_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_Delete.json
      */
     /**
      * Sample code: EventChannels_Delete.
@@ -517,7 +1135,7 @@ import com.azure.core.util.Context;
 /** Samples for EventChannels Get. */
 public final class EventChannelsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventChannels_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_Get.json
      */
     /**
      * Sample code: EventChannels_Get.
@@ -540,7 +1158,7 @@ import com.azure.core.util.Context;
 /** Samples for EventChannels ListByPartnerNamespace. */
 public final class EventChannelsListByPartnerNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventChannels_ListByPartnerNamespace.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventChannels_ListByPartnerNamespace.json
      */
     /**
      * Sample code: EventChannels_ListByPartnerNamespace.
@@ -557,9 +1175,12 @@ public final class EventChannelsListByPartnerNamespaceSamples {
 ### EventSubscriptions_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.eventgrid.models.AzureFunctionEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.HybridConnectionEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.ServiceBusQueueEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.ServiceBusTopicEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.StorageBlobDeadLetterDestination;
 import com.azure.resourcemanager.eventgrid.models.StorageQueueEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
@@ -567,7 +1188,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 /** Samples for EventSubscriptions CreateOrUpdate. */
 public final class EventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.
@@ -594,7 +1215,7 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForSubscription.
@@ -613,7 +1234,39 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsCreateOrUpdateForCustomTopicServiceBusTopicDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .define("examplesubscription1")
+            .withExistingScope(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1")
+            .withDestination(
+                new ServiceBusTopicEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/topics/SBT"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForResource.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForResource.
@@ -637,7 +1290,34 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic.json
+     */
+    /**
+     * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsCreateOrUpdateForCustomTopic(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .define("examplesubscription1")
+            .withExistingScope(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1")
+            .withDestination(
+                new EventHubEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForResourceGroup.
@@ -660,7 +1340,7 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.
@@ -692,7 +1372,7 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.
@@ -726,7 +1406,39 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsCreateOrUpdateForCustomTopicAzureFunctionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .define("examplesubscription1")
+            .withExistingScope(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1")
+            .withDestination(
+                new AzureFunctionEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Web/sites/ContosoSite/funtions/ContosoFunc"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.
@@ -756,6 +1468,38 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
                     .withBlobContainerName("contosocontainer"))
             .create();
     }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsCreateOrUpdateForCustomTopicServiceBusQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .define("examplesubscription1")
+            .withExistingScope(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1")
+            .withDestination(
+                new ServiceBusQueueEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/queues/SBQ"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .create();
+    }
 }
 ```
 
@@ -767,7 +1511,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions Delete. */
 public final class EventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_DeleteForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForCustomTopic.
@@ -785,7 +1529,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_DeleteForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResourceGroup.
@@ -803,7 +1547,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_DeleteForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForSubscription.
@@ -818,7 +1562,7 @@ public final class EventSubscriptionsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_DeleteForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_DeleteForResource.json
      */
     /**
      * Sample code: EventSubscriptions_DeleteForResource.
@@ -845,7 +1589,43 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions Get. */
 public final class EventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicHybridConnectionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicServiceBusTopicDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResourceGroup.
@@ -863,7 +1643,25 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_EventHubDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicEventHubDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetForSubscription.
@@ -879,7 +1677,43 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_WebhookDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicWebhookDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicAzureFunctionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic.
@@ -897,7 +1731,25 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_StorageQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicStorageQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResource.
@@ -912,6 +1764,24 @@ public final class EventSubscriptionsGetSamples {
                 "examplesubscription1",
                 Context.NONE);
     }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsGetForCustomTopicServiceBusQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .eventSubscriptions()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                "examplesubscription1",
+                Context.NONE);
+    }
 }
 ```
 
@@ -923,7 +1793,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions GetDeliveryAttributes. */
 public final class EventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: EventSubscriptions_GetDeliveryAttributes.
@@ -950,7 +1820,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions GetFullUrl. */
 public final class EventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetFullUrlForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetFullUrlForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResource.
@@ -968,7 +1838,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResourceGroup.
@@ -986,7 +1856,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForSubscription.
@@ -1002,7 +1872,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForCustomTopic.
@@ -1029,7 +1899,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions List. */
 public final class EventSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalBySubscription.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalBySubscription.
@@ -1051,7 +1921,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListByDomainTopic. */
 public final class EventSubscriptionsListByDomainTopicSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListByDomainTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListByDomainTopic.json
      */
     /**
      * Sample code: EventSubscriptions_ListByDomainTopic.
@@ -1073,7 +1943,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListByResource. */
 public final class EventSubscriptionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListByResource.json
      */
     /**
      * Sample code: EventSubscriptions_ListByResource.
@@ -1096,7 +1966,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListByResourceGroup. */
 public final class EventSubscriptionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalByResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalByResourceGroup.
@@ -1118,7 +1988,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListGlobalByResourceGroupForTopicType. */
 public final class EventSubscriptionsListGlobalByResourceGroupForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalByResourceGroupForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalByResourceGroupForTopicType.
@@ -1143,7 +2013,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListGlobalBySubscriptionForTopicType. */
 public final class EventSubscriptionsListGlobalBySubscriptionForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListGlobalBySubscriptionForTopicType.
@@ -1167,7 +2037,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListRegionalByResourceGroup. */
 public final class EventSubscriptionsListRegionalByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListRegionalByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalByResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_ListRegionalByResourceGroup.
@@ -1189,7 +2059,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListRegionalByResourceGroupForTopicType. */
 public final class EventSubscriptionsListRegionalByResourceGroupForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalByResourceGroupForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListRegionalByResourceGroupForTopicType.
@@ -1214,7 +2084,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListRegionalBySubscription. */
 public final class EventSubscriptionsListRegionalBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListRegionalBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalBySubscription.json
      */
     /**
      * Sample code: EventSubscriptions_ListRegionalBySubscription.
@@ -1236,7 +2106,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions ListRegionalBySubscriptionForTopicType. */
 public final class EventSubscriptionsListRegionalBySubscriptionForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListRegionalBySubscriptionForTopicType.
@@ -1257,16 +2127,264 @@ public final class EventSubscriptionsListRegionalBySubscriptionForTopicTypeSampl
 
 ```java
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.AzureFunctionEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.HybridConnectionEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.ServiceBusQueueEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.ServiceBusTopicEventSubscriptionDestination;
+import com.azure.resourcemanager.eventgrid.models.StorageBlobDeadLetterDestination;
+import com.azure.resourcemanager.eventgrid.models.StorageQueueEventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 import java.util.Arrays;
 
 /** Samples for EventSubscriptions Update. */
 public final class EventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_EventHubDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_EventHubDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicEventHubDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new EventHubEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.EventHub/namespaces/ContosoNamespace/eventhubs/EH1"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("existingPrefix")
+                    .withSubjectEndsWith("newSuffix")
+                    .withIsSubjectCaseSensitive(true))
+            .withLabels(Arrays.asList("label1", "label2"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_AzureFunctionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicAzureFunctionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new AzureFunctionEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Web/sites/ContosoSite/funtions/ContosoFunc"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_WebhookDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_WebhookDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicWebhookDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("existingPrefix")
+                    .withSubjectEndsWith("newSuffix")
+                    .withIsSubjectCaseSensitive(true))
+            .withLabels(Arrays.asList("label1", "label2"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_StorageQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicStorageQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new StorageQueueEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withQueueName("queue1")
+                    .withQueueMessageTimeToLiveInSeconds(300L))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_ServiceBusTopicDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicServiceBusTopicDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new ServiceBusTopicEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/topics/SBT"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("existingPrefix")
+                    .withSubjectEndsWith("newSuffix")
+                    .withIsSubjectCaseSensitive(true))
+            .withLabels(Arrays.asList("label1", "label2"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_HybridConnectionDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicHybridConnectionDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new HybridConnectionEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/d33c5f7a-02ea-40f4-bf52-07f17e84d6a8/resourceGroups/TestRG/providers/Microsoft.Relay/namespaces/ContosoNamespace/hybridConnections/HC1"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("existingPrefix")
+                    .withSubjectEndsWith("newSuffix")
+                    .withIsSubjectCaseSensitive(true))
+            .withLabels(Arrays.asList("label1", "label2"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.json
+     */
+    /**
+     * Sample code: EventSubscriptions_UpdateForCustomTopic_ServiceBusQueueDestination.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void eventSubscriptionsUpdateForCustomTopicServiceBusQueueDestination(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        EventSubscription resource =
+            manager
+                .eventSubscriptions()
+                .getWithResponse(
+                    "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic1",
+                    "examplesubscription1",
+                    Context.NONE)
+                .getValue();
+        resource
+            .update()
+            .withDestination(
+                new ServiceBusQueueEventSubscriptionDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.ServiceBus/namespaces/ContosoNamespace/queues/SBQ"))
+            .withFilter(
+                new EventSubscriptionFilter()
+                    .withSubjectBeginsWith("ExamplePrefix")
+                    .withSubjectEndsWith("ExampleSuffix")
+                    .withIsSubjectCaseSensitive(false))
+            .withDeadLetterDestination(
+                new StorageBlobDeadLetterDestination()
+                    .withResourceId(
+                        "/subscriptions/55f3dcd4-cac7-43b4-990b-a139d62a1eb2/resourceGroups/TestRG/providers/Microsoft.Storage/storageAccounts/contosostg")
+                    .withBlobContainerName("contosocontainer"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForCustomTopic.
@@ -1296,7 +2414,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForResource.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForResource.
@@ -1326,7 +2444,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForResourceGroup.
@@ -1359,7 +2477,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/EventSubscriptions_UpdateForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForSubscription.
@@ -1396,7 +2514,7 @@ import com.azure.core.util.Context;
 /** Samples for ExtensionTopics Get. */
 public final class ExtensionTopicsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/ExtensionTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/ExtensionTopics_Get.json
      */
     /**
      * Sample code: ExtensionTopics_Get.
@@ -1421,7 +2539,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -1430,6 +2548,432 @@ public final class OperationsListSamples {
      */
     public static void operationsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager.operations().list(Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_AuthorizePartner
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.Partner;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+/** Samples for PartnerConfigurations AuthorizePartner. */
+public final class PartnerConfigurationsAuthorizePartnerSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_AuthorizePartner.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_AuthorizePartner.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsAuthorizePartner(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerConfigurations()
+            .authorizePartnerWithResponse(
+                "examplerg",
+                new Partner()
+                    .withPartnerRegistrationImmutableId(UUID.fromString("941892bc-f5d0-4d1c-8fb5-477570fc2b71"))
+                    .withPartnerName("Contoso.Finance")
+                    .withAuthorizationExpirationTimeInUtc(OffsetDateTime.parse("2022-01-28T01:20:55.142Z")),
+                Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_CreateOrUpdate
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.fluent.models.PartnerConfigurationInner;
+import com.azure.resourcemanager.eventgrid.models.Partner;
+import com.azure.resourcemanager.eventgrid.models.PartnerAuthorization;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.UUID;
+
+/** Samples for PartnerConfigurations CreateOrUpdate. */
+public final class PartnerConfigurationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsCreateOrUpdate(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerConfigurations()
+            .createOrUpdate(
+                "examplerg",
+                new PartnerConfigurationInner()
+                    .withPartnerAuthorization(
+                        new PartnerAuthorization()
+                            .withDefaultMaximumExpirationTimeInDays(10)
+                            .withAuthorizedPartnersList(
+                                Arrays
+                                    .asList(
+                                        new Partner()
+                                            .withPartnerRegistrationImmutableId(
+                                                UUID.fromString("941892bc-f5d0-4d1c-8fb5-477570fc2b71"))
+                                            .withPartnerName("Contoso.Finance")
+                                            .withAuthorizationExpirationTimeInUtc(
+                                                OffsetDateTime.parse("2022-01-28T01:20:55.142Z")),
+                                        new Partner()
+                                            .withPartnerRegistrationImmutableId(
+                                                UUID.fromString("5362bdb6-ce3e-4d0d-9a5b-3eb92c8aab38"))
+                                            .withPartnerName("fabrikam.HR")
+                                            .withAuthorizationExpirationTimeInUtc(
+                                                OffsetDateTime.parse("2022-02-20T01:00:00.142Z"))))),
+                Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerConfigurations Delete. */
+public final class PartnerConfigurationsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_Delete.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerConfigurations().delete("examplerg", Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_GetByResourceGroup
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerConfigurations GetByResourceGroup. */
+public final class PartnerConfigurationsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_Get.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerConfigurations().getByResourceGroupWithResponse("examplerg", Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerConfigurations List. */
+public final class PartnerConfigurationsListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_ListBySubscription.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_ListBySubscription.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsListBySubscription(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerConfigurations().list(null, null, Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_ListByResourceGroup
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerConfigurations ListByResourceGroup. */
+public final class PartnerConfigurationsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_ListByResourceGroup.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsListByResourceGroup(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerConfigurations().listByResourceGroup("examplerg", Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_UnauthorizePartner
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.Partner;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+/** Samples for PartnerConfigurations UnauthorizePartner. */
+public final class PartnerConfigurationsUnauthorizePartnerSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_UnauthorizePartner.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_UnauthorizePartner.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsUnauthorizePartner(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerConfigurations()
+            .unauthorizePartnerWithResponse(
+                "examplerg",
+                new Partner()
+                    .withPartnerRegistrationImmutableId(UUID.fromString("941892bc-f5d0-4d1c-8fb5-477570fc2b71"))
+                    .withPartnerName("Contoso.Finance")
+                    .withAuthorizationExpirationTimeInUtc(OffsetDateTime.parse("2022-01-28T01:20:55.142Z")),
+                Context.NONE);
+    }
+}
+```
+
+### PartnerConfigurations_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationUpdateParameters;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Samples for PartnerConfigurations Update. */
+public final class PartnerConfigurationsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerConfigurations_Update.json
+     */
+    /**
+     * Sample code: PartnerConfigurations_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerConfigurationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerConfigurations()
+            .update(
+                "examplerg",
+                new PartnerConfigurationUpdateParameters()
+                    .withTags(mapOf("tag1", "value11", "tag2", "value22"))
+                    .withDefaultMaximumExpirationTimeInDays(100),
+                Context.NONE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### PartnerDestinations_Activate
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerDestinations Activate. */
+public final class PartnerDestinationsActivateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Activate.json
+     */
+    /**
+     * Sample code: PartnerDestinations_Activate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsActivate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerDestinations().activateWithResponse("examplerg", "examplePartnerDestination1", Context.NONE);
+    }
+}
+```
+
+### PartnerDestinations_CreateOrUpdate
+
+```java
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+/** Samples for PartnerDestinations CreateOrUpdate. */
+public final class PartnerDestinationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: PartnerDestinations_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerDestinations()
+            .define("examplePartnerDestinationName1")
+            .withRegion("westus2")
+            .withExistingResourceGroup("examplerg")
+            .withPartnerRegistrationImmutableId(UUID.fromString("0bd70ee2-7d95-447e-ab1f-c4f320019404"))
+            .withEndpointServiceContext("This is an example")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-14T19:33:43.430Z"))
+            .withEndpointBaseUrl("https://www.example/endpoint")
+            .withMessageForActivation("Sample Activation message")
+            .create();
+    }
+}
+```
+
+### PartnerDestinations_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerDestinations Delete. */
+public final class PartnerDestinationsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Delete.json
+     */
+    /**
+     * Sample code: PartnerDestinations_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerDestinations().delete("examplerg", "examplePartnerDestinationName1", Context.NONE);
+    }
+}
+```
+
+### PartnerDestinations_GetByResourceGroup
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerDestinations GetByResourceGroup. */
+public final class PartnerDestinationsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Get.json
+     */
+    /**
+     * Sample code: PartnerDestinations_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerDestinations()
+            .getByResourceGroupWithResponse("examplerg", "examplePartnerDestinationName1", Context.NONE);
+    }
+}
+```
+
+### PartnerDestinations_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerDestinations List. */
+public final class PartnerDestinationsListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_ListBySubscription.json
+     */
+    /**
+     * Sample code: PartnerDestinations_ListBySubscription.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsListBySubscription(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerDestinations().list(null, null, Context.NONE);
+    }
+}
+```
+
+### PartnerDestinations_ListByResourceGroup
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PartnerDestinations ListByResourceGroup. */
+public final class PartnerDestinationsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: PartnerDestinations_ListByResourceGroup.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsListByResourceGroup(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerDestinations().listByResourceGroup("examplerg", null, null, Context.NONE);
+    }
+}
+```
+
+### PartnerDestinations_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
+import java.util.HashMap;
+import java.util.Map;
+
+/** Samples for PartnerDestinations Update. */
+public final class PartnerDestinationsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerDestinations_Update.json
+     */
+    /**
+     * Sample code: PartnerDestinations_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerDestinationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        PartnerDestination resource =
+            manager
+                .partnerDestinations()
+                .getByResourceGroupWithResponse("examplerg", "examplePartnerDestinationName1", Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1443,7 +2987,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces CreateOrUpdate. */
 public final class PartnerNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerNamespaces_CreateOrUpdate.
@@ -1483,7 +3027,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces Delete. */
 public final class PartnerNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Delete.json
      */
     /**
      * Sample code: PartnerNamespaces_Delete.
@@ -1504,7 +3048,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces GetByResourceGroup. */
 public final class PartnerNamespacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Get.json
      */
     /**
      * Sample code: PartnerNamespaces_Get.
@@ -1527,7 +3071,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces List. */
 public final class PartnerNamespacesListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListBySubscription.json
      */
     /**
      * Sample code: PartnerNamespaces_ListBySubscription.
@@ -1549,7 +3093,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces ListByResourceGroup. */
 public final class PartnerNamespacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerNamespaces_ListByResourceGroup.
@@ -1571,7 +3115,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerNamespaces ListSharedAccessKeys. */
 public final class PartnerNamespacesListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_ListSharedAccessKeys.json
      */
     /**
      * Sample code: PartnerNamespaces_ListSharedAccessKeys.
@@ -1596,7 +3140,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyR
 /** Samples for PartnerNamespaces RegenerateKey. */
 public final class PartnerNamespacesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_RegenerateKey.json
      */
     /**
      * Sample code: PartnerNamespaces_RegenerateKey.
@@ -1626,7 +3170,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces Update. */
 public final class PartnerNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_Update.json
      */
     /**
      * Sample code: PartnerNamespaces_Update.
@@ -1665,7 +3209,7 @@ import java.util.Map;
 /** Samples for PartnerRegistrations CreateOrUpdate. */
 public final class PartnerRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerRegistrations_CreateOrUpdate.
@@ -1711,7 +3255,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerRegistrations Delete. */
 public final class PartnerRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_Delete.json
      */
     /**
      * Sample code: PartnerRegistrations_Delete.
@@ -1719,7 +3263,7 @@ public final class PartnerRegistrationsDeleteSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerRegistrationsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerRegistrations().deleteWithResponse("examplerg", "examplePartnerRegistrationName1", Context.NONE);
+        manager.partnerRegistrations().delete("examplerg", "examplePartnerRegistrationName1", Context.NONE);
     }
 }
 ```
@@ -1732,7 +3276,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerRegistrations GetByResourceGroup. */
 public final class PartnerRegistrationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_Get.json
      */
     /**
      * Sample code: PartnerRegistrations_Get.
@@ -1755,7 +3299,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerRegistrations List. */
 public final class PartnerRegistrationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_ListBySubscription.json
      */
     /**
      * Sample code: PartnerRegistrations_ListBySubscription.
@@ -1777,7 +3321,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerRegistrations ListByResourceGroup. */
 public final class PartnerRegistrationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerRegistrations_ListByResourceGroup.
@@ -1800,7 +3344,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
 /** Samples for PartnerRegistrations Update. */
 public final class PartnerRegistrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_Update.json
      */
     /**
      * Sample code: PartnerRegistrations_Update.
@@ -1833,7 +3377,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 /** Samples for PartnerTopicEventSubscriptions CreateOrUpdate. */
 public final class PartnerTopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_CreateOrUpdate.
@@ -1869,7 +3413,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions Delete. */
 public final class PartnerTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_Delete.
@@ -1893,7 +3437,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions Get. */
 public final class PartnerTopicEventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Get.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_Get.
@@ -1916,7 +3460,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions GetDeliveryAttributes. */
 public final class PartnerTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_GetDeliveryAttributes.
@@ -1941,7 +3485,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions GetFullUrl. */
 public final class PartnerTopicEventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_GetFullUrl.
@@ -1965,7 +3509,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopicEventSubscriptions ListByPartnerTopic. */
 public final class PartnerTopicEventSubscriptionsListByPartnerTopicSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_ListByPartnerTopic.
@@ -1993,7 +3537,7 @@ import java.util.Arrays;
 /** Samples for PartnerTopicEventSubscriptions Update. */
 public final class PartnerTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_Update.
@@ -2030,7 +3574,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics Activate. */
 public final class PartnerTopicsActivateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Activate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Activate.json
      */
     /**
      * Sample code: PartnerTopics_Activate.
@@ -2043,6 +3587,38 @@ public final class PartnerTopicsActivateSamples {
 }
 ```
 
+### PartnerTopics_CreateOrUpdate
+
+```java
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+/** Samples for PartnerTopics CreateOrUpdate. */
+public final class PartnerTopicsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: PartnerTopics_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void partnerTopicsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .partnerTopics()
+            .define("examplePartnerTopicName1")
+            .withRegion("westus2")
+            .withExistingResourceGroup("examplerg")
+            .withPartnerRegistrationImmutableId(UUID.fromString("6f541064-031d-4cc8-9ec3-a3b4fc0f7185"))
+            .withSource("ContosoCorp.Accounts.User1")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2022-03-23T23:06:13.109Z"))
+            .withPartnerTopicFriendlyDescription("Example description")
+            .withMessageForActivation("Example message for activation")
+            .create();
+    }
+}
+```
+
 ### PartnerTopics_Deactivate
 
 ```java
@@ -2051,7 +3627,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics Deactivate. */
 public final class PartnerTopicsDeactivateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Deactivate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Deactivate.json
      */
     /**
      * Sample code: PartnerTopics_Deactivate.
@@ -2072,7 +3648,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics Delete. */
 public final class PartnerTopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Delete.json
      */
     /**
      * Sample code: PartnerTopics_Delete.
@@ -2093,7 +3669,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics GetByResourceGroup. */
 public final class PartnerTopicsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Get.json
      */
     /**
      * Sample code: PartnerTopics_Get.
@@ -2114,7 +3690,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics List. */
 public final class PartnerTopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_ListBySubscription.json
      */
     /**
      * Sample code: PartnerTopics_ListBySubscription.
@@ -2135,7 +3711,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerTopics ListByResourceGroup. */
 public final class PartnerTopicsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_ListByResourceGroup.json
      */
     /**
      * Sample code: PartnerTopics_ListByResourceGroup.
@@ -2152,14 +3728,14 @@ public final class PartnerTopicsListByResourceGroupSamples {
 
 ```java
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PartnerTopicUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for PartnerTopics Update. */
 public final class PartnerTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Update.json
      */
     /**
      * Sample code: PartnerTopics_Update.
@@ -2167,13 +3743,12 @@ public final class PartnerTopicsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .partnerTopics()
-            .updateWithResponse(
-                "examplerg",
-                "examplePartnerTopicName1",
-                new PartnerTopicUpdateParameters().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+        PartnerTopic resource =
+            manager
+                .partnerTopics()
+                .getByResourceGroupWithResponse("examplerg", "examplePartnerTopicName1", Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
     @SuppressWarnings("unchecked")
@@ -2193,12 +3768,12 @@ public final class PartnerTopicsUpdateSamples {
 
 ```java
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
@@ -2210,7 +3785,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .privateEndpointConnections()
             .delete(
                 "examplerg",
-                PrivateEndpointConnectionsParentType.TOPICS,
+                ParentType.TOPICS,
                 "exampletopic1",
                 "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
                 Context.NONE);
@@ -2222,12 +3797,12 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 
 ```java
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateEndpointConnections_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get.
@@ -2239,7 +3814,7 @@ public final class PrivateEndpointConnectionsGetSamples {
             .privateEndpointConnections()
             .getWithResponse(
                 "examplerg",
-                PrivateEndpointConnectionsParentType.TOPICS,
+                ParentType.TOPICS,
                 "exampletopic1",
                 "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
                 Context.NONE);
@@ -2251,12 +3826,12 @@ public final class PrivateEndpointConnectionsGetSamples {
 
 ```java
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 
 /** Samples for PrivateEndpointConnections ListByResource. */
 public final class PrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateEndpointConnections_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_ListByResource.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByResource.
@@ -2267,8 +3842,7 @@ public final class PrivateEndpointConnectionsListByResourceSamples {
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .privateEndpointConnections()
-            .listByResource(
-                "examplerg", PrivateEndpointConnectionsParentType.TOPICS, "exampletopic1", null, null, Context.NONE);
+            .listByResource("examplerg", ParentType.TOPICS, "exampletopic1", null, null, Context.NONE);
     }
 }
 ```
@@ -2279,13 +3853,13 @@ public final class PrivateEndpointConnectionsListByResourceSamples {
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.ConnectionState;
+import com.azure.resourcemanager.eventgrid.models.ParentType;
 import com.azure.resourcemanager.eventgrid.models.PersistedConnectionStatus;
-import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsParentType;
 
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Update.
@@ -2297,7 +3871,7 @@ public final class PrivateEndpointConnectionsUpdateSamples {
             .privateEndpointConnections()
             .update(
                 "examplerg",
-                PrivateEndpointConnectionsParentType.TOPICS,
+                ParentType.TOPICS,
                 "exampletopic1",
                 "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
                 new PrivateEndpointConnectionInner()
@@ -2319,7 +3893,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateLinkResources_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: PrivateLinkResources_Get.
@@ -2340,7 +3914,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources ListByResource. */
 public final class PrivateLinkResourcesListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateLinkResources_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateLinkResources_ListByResource.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByResource.
@@ -2365,7 +3939,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 /** Samples for SystemTopicEventSubscriptions CreateOrUpdate. */
 public final class SystemTopicEventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_CreateOrUpdate.
@@ -2401,7 +3975,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions Delete. */
 public final class SystemTopicEventSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Delete.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Delete.
@@ -2425,7 +3999,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions Get. */
 public final class SystemTopicEventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Get.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Get.
@@ -2448,7 +4022,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions GetDeliveryAttributes. */
 public final class SystemTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_GetDeliveryAttributes.
@@ -2473,7 +4047,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions GetFullUrl. */
 public final class SystemTopicEventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_GetFullUrl.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_GetFullUrl.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_GetFullUrl.
@@ -2497,7 +4071,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopicEventSubscriptions ListBySystemTopic. */
 public final class SystemTopicEventSubscriptionsListBySystemTopicSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_ListBySystemTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_ListBySystemTopic.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_ListBySystemTopic.
@@ -2525,7 +4099,7 @@ import java.util.Arrays;
 /** Samples for SystemTopicEventSubscriptions Update. */
 public final class SystemTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Update.
@@ -2563,7 +4137,7 @@ import java.util.Map;
 /** Samples for SystemTopics CreateOrUpdate. */
 public final class SystemTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: SystemTopics_CreateOrUpdate.
@@ -2604,7 +4178,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics Delete. */
 public final class SystemTopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_Delete.json
      */
     /**
      * Sample code: SystemTopics_Delete.
@@ -2625,7 +4199,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics GetByResourceGroup. */
 public final class SystemTopicsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_Get.json
      */
     /**
      * Sample code: SystemTopics_Get.
@@ -2646,7 +4220,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics List. */
 public final class SystemTopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_ListBySubscription.json
      */
     /**
      * Sample code: SystemTopics_ListBySubscription.
@@ -2667,7 +4241,7 @@ import com.azure.core.util.Context;
 /** Samples for SystemTopics ListByResourceGroup. */
 public final class SystemTopicsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_ListByResourceGroup.json
      */
     /**
      * Sample code: SystemTopics_ListByResourceGroup.
@@ -2691,7 +4265,7 @@ import java.util.Map;
 /** Samples for SystemTopics Update. */
 public final class SystemTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/SystemTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/SystemTopics_Update.json
      */
     /**
      * Sample code: SystemTopics_Update.
@@ -2720,6 +4294,197 @@ public final class SystemTopicsUpdateSamples {
 }
 ```
 
+### TopicEventSubscriptions_CreateOrUpdate
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+
+/** Samples for TopicEventSubscriptions CreateOrUpdate. */
+public final class TopicEventSubscriptionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_CreateOrUpdate.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsCreateOrUpdate(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .topicEventSubscriptions()
+            .createOrUpdate(
+                "examplerg",
+                "exampleTopic1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionInner()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("ExamplePrefix")
+                            .withSubjectEndsWith("ExampleSuffix")
+                            .withIsSubjectCaseSensitive(false)),
+                Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for TopicEventSubscriptions Delete. */
+public final class TopicEventSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_Delete.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.topicEventSubscriptions().delete("examplerg", "exampleTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for TopicEventSubscriptions Get. */
+public final class TopicEventSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Get.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .topicEventSubscriptions()
+            .getWithResponse("examplerg", "exampleTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_GetDeliveryAttributes
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for TopicEventSubscriptions GetDeliveryAttributes. */
+public final class TopicEventSubscriptionsGetDeliveryAttributesSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_GetDeliveryAttributes.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_GetDeliveryAttributes.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsGetDeliveryAttributes(
+        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .topicEventSubscriptions()
+            .getDeliveryAttributesWithResponse("examplerg", "exampleTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_GetFullUrl
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for TopicEventSubscriptions GetFullUrl. */
+public final class TopicEventSubscriptionsGetFullUrlSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_GetFullUrl.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_GetFullUrl.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsGetFullUrl(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .topicEventSubscriptions()
+            .getFullUrlWithResponse("examplerg", "exampleTopic1", "examplesubscription1", Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for TopicEventSubscriptions List. */
+public final class TopicEventSubscriptionsListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_List.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_List.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.topicEventSubscriptions().list("examplerg", "exampleTopic1", null, null, Context.NONE);
+    }
+}
+```
+
+### TopicEventSubscriptions_Update
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
+import java.util.Arrays;
+
+/** Samples for TopicEventSubscriptions Update. */
+public final class TopicEventSubscriptionsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicEventSubscriptions_Update.json
+     */
+    /**
+     * Sample code: TopicEventSubscriptions_Update.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void topicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .topicEventSubscriptions()
+            .update(
+                "examplerg",
+                "exampleTopic1",
+                "exampleEventSubscriptionName1",
+                new EventSubscriptionUpdateParameters()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(
+                        new EventSubscriptionFilter()
+                            .withSubjectBeginsWith("existingPrefix")
+                            .withSubjectEndsWith("newSuffix")
+                            .withIsSubjectCaseSensitive(true))
+                    .withLabels(Arrays.asList("label1", "label2")),
+                Context.NONE);
+    }
+}
+```
+
 ### TopicTypes_Get
 
 ```java
@@ -2728,7 +4493,7 @@ import com.azure.core.util.Context;
 /** Samples for TopicTypes Get. */
 public final class TopicTypesGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/TopicTypes_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicTypes_Get.json
      */
     /**
      * Sample code: TopicTypes_Get.
@@ -2749,7 +4514,7 @@ import com.azure.core.util.Context;
 /** Samples for TopicTypes List. */
 public final class TopicTypesListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/TopicTypes_List.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicTypes_List.json
      */
     /**
      * Sample code: TopicTypes_List.
@@ -2770,7 +4535,7 @@ import com.azure.core.util.Context;
 /** Samples for TopicTypes ListEventTypes. */
 public final class TopicTypesListEventTypesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/TopicTypes_ListEventTypes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/TopicTypes_ListEventTypes.json
      */
     /**
      * Sample code: TopicTypes_ListEventTypes.
@@ -2799,7 +4564,7 @@ import java.util.Map;
 /** Samples for Topics CreateOrUpdate. */
 public final class TopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_CreateOrUpdate.json
      */
     /**
      * Sample code: Topics_CreateOrUpdate.
@@ -2823,7 +4588,7 @@ public final class TopicsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_CreateOrUpdateForAzureArc.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_CreateOrUpdateForAzureArc.json
      */
     /**
      * Sample code: Topics_CreateOrUpdateForAzureArc.
@@ -2868,7 +4633,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics Delete. */
 public final class TopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Delete.json
      */
     /**
      * Sample code: Topics_Delete.
@@ -2889,7 +4654,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics GetByResourceGroup. */
 public final class TopicsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Get.json
      */
     /**
      * Sample code: Topics_Get.
@@ -2910,7 +4675,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics List. */
 public final class TopicsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListBySubscription.json
      */
     /**
      * Sample code: Topics_ListBySubscription.
@@ -2931,7 +4696,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics ListByResourceGroup. */
 public final class TopicsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_ListByResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListByResourceGroup.json
      */
     /**
      * Sample code: Topics_ListByResourceGroup.
@@ -2952,7 +4717,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics ListEventTypes. */
 public final class TopicsListEventTypesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_ListEventTypes.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListEventTypes.json
      */
     /**
      * Sample code: Topics_ListEventTypes.
@@ -2975,7 +4740,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics ListSharedAccessKeys. */
 public final class TopicsListSharedAccessKeysSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_ListSharedAccessKeys.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListSharedAccessKeys.json
      */
     /**
      * Sample code: Topics_ListSharedAccessKeys.
@@ -2997,7 +4762,7 @@ import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 /** Samples for Topics RegenerateKey. */
 public final class TopicsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_RegenerateKey.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_RegenerateKey.json
      */
     /**
      * Sample code: Topics_RegenerateKey.
@@ -3028,7 +4793,7 @@ import java.util.Map;
 /** Samples for Topics Update. */
 public final class TopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/Topics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Update.json
      */
     /**
      * Sample code: Topics_Update.
@@ -3059,6 +4824,48 @@ public final class TopicsUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### VerifiedPartners_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for VerifiedPartners Get. */
+public final class VerifiedPartnersGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_Get.json
+     */
+    /**
+     * Sample code: VerifiedPartners_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void verifiedPartnersGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.verifiedPartners().getWithResponse("Contoso.Finance", Context.NONE);
+    }
+}
+```
+
+### VerifiedPartners_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for VerifiedPartners List. */
+public final class VerifiedPartnersListSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/VerifiedPartners_List.json
+     */
+    /**
+     * Sample code: VerifiedPartners_List.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void verifiedPartnersList(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.verifiedPartners().list(null, null, Context.NONE);
     }
 }
 ```

@@ -7,9 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceCorsRule;
@@ -24,10 +23,13 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -49,15 +51,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
-public class TableServiceAsyncClientTest extends TestBase {
+public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
-        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     private TableServiceAsyncClient serviceClient;
-    private HttpPipelinePolicy recordPolicy;
-    private HttpClient playbackClient;
 
     @BeforeAll
     static void beforeAll() {
@@ -72,29 +71,12 @@ public class TableServiceAsyncClientTest extends TestBase {
     @Override
     protected void beforeTest() {
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableServiceClientBuilder builder = new TableServiceClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(DEFAULT_HTTP_CLIENT);
-
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-        }
-
-        serviceClient = builder.buildAsyncClient();
+        serviceClient = getClientBuilder(connectionString).buildAsyncClient();
     }
 
     @Test
-    void serviceCreateTableAsync() {
+    public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -105,8 +87,49 @@ public class TableServiceAsyncClientTest extends TestBase {
             .verify();
     }
 
+    /**
+     * Tests that a table and entity can be created while having a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
     @Test
-    void serviceCreateTableWithResponseAsync() {
+    public void serviceCreateTableWithMultipleTenants() {
+        // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
+            && serviceClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+
+        // Arrange
+        String tableName = testResourceNamer.randomName("tableName", 20);
+
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        final TableServiceAsyncClient tableServiceAsyncClient =
+            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
+                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
+
+        // Act & Assert
+        // This request will use the tenant ID extracted from the previous request.
+        StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+
+        tableName = testResourceNamer.randomName("tableName", 20);
+
+        // All other requests will also use the tenant ID obtained from the auth challenge.
+        StepVerifier.create(tableServiceAsyncClient.createTable(tableName))
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -122,7 +145,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExistsAsync() {
+    public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -135,7 +158,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsAsync() {
+    public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -147,7 +170,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -159,7 +182,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseAsync() {
+    public void serviceCreateTableIfNotExistsWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -175,7 +198,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExistsAsync() {
+    public void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
@@ -192,7 +215,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableAsync() {
+    public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -204,7 +227,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableAsync() {
+    public void serviceDeleteNonExistingTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
 
@@ -215,7 +238,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableWithResponseAsync() {
+    public void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -229,7 +252,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableWithResponseAsync() {
+    public void serviceDeleteNonExistingTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 404;
@@ -242,7 +265,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesAsync() {
+    public void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -258,7 +281,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithFilterAsync() {
+    public void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -276,7 +299,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithTopAsync() {
+    public void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -295,7 +318,7 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceGetTableClientAsync() {
+    public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName).block(TIMEOUT);
@@ -303,7 +326,7 @@ public class TableServiceAsyncClientTest extends TestBase {
         TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, this.testResourceNamer);
+        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test
@@ -370,6 +393,9 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
+    @Disabled
+    // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
+    // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,65 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `checkNameAvailability` method for `WebApps`.
+
+### Breaking Changes
+
+- Behavior changed on `WebApps.list()` and `WebApps.listByResourceGroup()` method, that results include sites with `kind` be empty or `linux`.
+
+## 2.14.0 (2022-04-11)
+
+###  Bugs Fixed
+
+- Fixed a bug that `WebAppBase.getPublishingProfile()` failed to extract FTP profile, when web app is FTPS-only.
+- Supported Java SE 17 in `RuntimeStack` for `WebApp`.
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported Tomcat 10 and Java 8, 11, 17 in `RuntimeStack` for `WebApp`.
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-03-01`.
+
+## 2.10.0 (2021-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.8.0 (2021-09-15)
 

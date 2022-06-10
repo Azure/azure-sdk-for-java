@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Http logs to azure blob storage configuration. */
 @Fluent
 public final class AzureBlobStorageHttpLogsConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobStorageHttpLogsConfig.class);
-
     /*
      * SAS url to a azure blob container with read/write/list/delete
      * permissions.

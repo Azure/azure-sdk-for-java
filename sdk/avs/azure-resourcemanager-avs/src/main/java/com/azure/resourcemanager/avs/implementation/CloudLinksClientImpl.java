@@ -621,7 +621,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cloud link resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateCloudName, String cloudLinkName, CloudLinkInner cloudLink) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -645,7 +645,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cloud link resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -673,7 +673,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cloud link resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, String cloudLinkName, CloudLinkInner cloudLink) {
         return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, cloudLinkName, cloudLink).getSyncPoller();
@@ -692,7 +692,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a cloud link resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudLinkInner>, CloudLinkInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -906,7 +906,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String cloudLinkName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -928,7 +928,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
         context = this.client.mergeContext(context);
@@ -950,7 +950,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName).getSyncPoller();
@@ -968,7 +968,7 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String cloudLinkName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, cloudLinkName, context).getSyncPoller();

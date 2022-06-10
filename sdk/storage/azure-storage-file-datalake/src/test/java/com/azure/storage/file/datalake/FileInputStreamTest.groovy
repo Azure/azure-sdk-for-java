@@ -210,7 +210,8 @@ class FileInputStreamTest extends APISpec {
         // Since eTag is the only form of consistentReadControl and the blob is modified, we will throw.
         fc.upload(new ByteArrayInputStream(randomBytes), length, true)
 
-        inputStream.read()
+        inputStream.read() // initial block
+        inputStream.read() // trigger another download
 
         then: "Failed read"
         thrown(IOException) // BlobStorageException = ConditionNotMet

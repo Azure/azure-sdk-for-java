@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -19,8 +21,10 @@ import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
@@ -36,6 +40,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -51,6 +56,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
@@ -181,7 +187,7 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -917,6 +923,19 @@ class BlockBlobAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @LiveOnly
+    // Reading from recordings will not allow for the timing of the test to work correctly.
+    def "Upload from file timeout"() {
+        setup:
+        def file = getRandomFile(1024)
+
+        when:
+        blobClient.uploadFromFile(file.getPath(), null, null, null, null, null, Duration.ofNanos(5L))
+
+        then:
+        thrown(IllegalStateException)
+    }
+
     def "Upload min"() {
         when:
         blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
@@ -1161,7 +1180,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1449,7 +1468,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobAsyncClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1485,7 +1504,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1792,16 +1811,20 @@ class BlockBlobAPITest extends APISpec {
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return collectBytesInBuffer(context.getHttpRequest().getBody())
-                .map({ it == data.defaultData })
-                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+        def localData = data.defaultData
+        def mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
+                    .map({ it == localData })
+                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) }) as Mono<HttpResponse>
+            }
         }
 
         // Build the pipeline
         blobAsyncClient = new BlobServiceClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
@@ -1944,11 +1967,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
             .buildBlockBlobClient()
 
         when:
@@ -2143,5 +2166,41 @@ class BlockBlobAPITest extends APISpec {
         new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10))    | BlobErrorCode.CONDITION_NOT_MET
         new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CONDITION_NOT_MET
         new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")       | BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Upload from url copy source tags"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceTags = ["foo": "bar"]
+        def destTags = ["fizz": "buzz"]
+        blockBlobClient.setTags(sourceTags)
+
+        def sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)))
+
+        def bc2 = cc.getBlobClient(generateBlobName())
+
+        def options = new BlobCopyFromUrlOptions(blockBlobClient.getBlobUrl() + "?" + sas).setCopySourceTagsMode(mode)
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            options.setTags(destTags)
+        }
+
+        when:
+        bc2.copyFromUrlWithResponse(options, null, null)
+        def receivedTags = bc2.getTags()
+
+        then:
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            assert receivedTags == destTags
+        } else {
+            assert receivedTags == sourceTags
+        }
+
+        where:
+        mode                           | _
+        BlobCopySourceTagsMode.COPY    | _
+        BlobCopySourceTagsMode.REPLACE | _
     }
 }

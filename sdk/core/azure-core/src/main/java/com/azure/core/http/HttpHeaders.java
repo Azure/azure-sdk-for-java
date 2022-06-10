@@ -250,7 +250,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      *
      * @return the headers in a copied and unmodifiable form.
      */
-    public Map<String, String[]> toMultiMap() {
+    Map<String, String[]> toMultiMap() {
         final Map<String, String[]> result = new HashMap<>();
         for (final HttpHeader header : headers.values()) {
             result.put(header.getName(), header.getValues());

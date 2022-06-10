@@ -28,6 +28,8 @@ import com.azure.resourcemanager.hdinsight.fluent.ExtensionsClient;
 import com.azure.resourcemanager.hdinsight.fluent.HDInsightManagementClient;
 import com.azure.resourcemanager.hdinsight.fluent.LocationsClient;
 import com.azure.resourcemanager.hdinsight.fluent.OperationsClient;
+import com.azure.resourcemanager.hdinsight.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.hdinsight.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.hdinsight.fluent.ScriptActionsClient;
 import com.azure.resourcemanager.hdinsight.fluent.ScriptExecutionHistoriesClient;
 import com.azure.resourcemanager.hdinsight.fluent.VirtualMachinesClient;
@@ -230,6 +232,30 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         return this.virtualMachines;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
     /**
      * Initializes an instance of HDInsightManagementClient client.
      *
@@ -253,7 +279,7 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-06-01-preview";
+        this.apiVersion = "2021-06-01";
         this.clusters = new ClustersClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
@@ -263,6 +289,8 @@ public final class HDInsightManagementClientImpl implements HDInsightManagementC
         this.scriptExecutionHistories = new ScriptExecutionHistoriesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
 
     /**

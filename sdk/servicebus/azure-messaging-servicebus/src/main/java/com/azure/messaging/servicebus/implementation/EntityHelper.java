@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * Used to access internal methods on {@link QueueProperties}.
  */
 public final class EntityHelper {
+    private static final ClientLogger LOGGER = new ClientLogger(EntityHelper.class);
     private static QueueAccessor queueAccessor;
     private static SubscriptionAccessor subscriptionAccessor;
     private static TopicAccessor topicAccessor;
@@ -45,7 +46,7 @@ public final class EntityHelper {
             Class.forName(TopicProperties.class.getName(), true, TopicProperties.class.getClassLoader());
             Class.forName(RuleProperties.class.getName(), true, RuleProperties.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(e));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -77,6 +78,10 @@ public final class EntityHelper {
 
         if (!options.getAuthorizationRules().isEmpty()) {
             description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
+        }
+
+        if (options.getMaxMessageSizeInKilobytes() != 0) {
+            description.setMaxMessageSizeInKilobytes(options.getMaxMessageSizeInKilobytes());
         }
 
         return description;
@@ -117,6 +122,10 @@ public final class EntityHelper {
             description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
         }
 
+        if (options.getMaxMessageSizeInKilobytes() != 0) {
+            description.setMaxMessageSizeInKilobytes(options.getMaxMessageSizeInKilobytes());
+        }
+
         return description;
     }
 
@@ -131,7 +140,7 @@ public final class EntityHelper {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (queueAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
@@ -152,7 +161,7 @@ public final class EntityHelper {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -169,7 +178,7 @@ public final class EntityHelper {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -186,7 +195,7 @@ public final class EntityHelper {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -204,7 +213,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (subscriptionAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
@@ -222,7 +231,7 @@ public final class EntityHelper {
         Objects.requireNonNull(properties, "'properties' cannot be null.");
 
         if (topicAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'topicAccessor' should not be null."));
         }
 
@@ -244,7 +253,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (queueAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
@@ -261,7 +270,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -278,7 +287,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -295,7 +304,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (ruleAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'ruleAccessor' should not be null."));
         }
 
@@ -313,7 +322,7 @@ public final class EntityHelper {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (subscriptionAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
@@ -331,7 +340,7 @@ public final class EntityHelper {
         Objects.requireNonNull(description, "'description' cannot be null.");
 
         if (topicAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'topicAccessor' should not be null."));
         }
 
@@ -347,7 +356,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.queueAccessor != null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'accessor' is already set."));
         }
 
@@ -362,7 +371,7 @@ public final class EntityHelper {
      */
     public static void setQueueName(QueueProperties queueProperties, String name) {
         if (queueAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'queueAccessor' should not be null."));
         }
 
@@ -378,7 +387,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.ruleAccessor != null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'ruleAccessor' is already set."));
         }
 
@@ -394,7 +403,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.subscriptionAccessor != null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'subscriptionAccessor' is already set."));
         }
 
@@ -409,7 +418,7 @@ public final class EntityHelper {
      */
     public static void setSubscriptionName(SubscriptionProperties subscription, String subscriptionName) {
         if (subscriptionAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("'subscriptionAccessor' should not be null."));
         }
 
@@ -425,7 +434,7 @@ public final class EntityHelper {
         Objects.requireNonNull(accessor, "'accessor' cannot be null.");
 
         if (EntityHelper.topicAccessor != null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'topicAccessor' is already set."));
         }
 
@@ -440,7 +449,7 @@ public final class EntityHelper {
      */
     public static void setTopicName(SubscriptionProperties subscription, String topicName) {
         if (subscriptionAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'subscriptionAccessor' should not be null."));
         }
 
@@ -455,7 +464,7 @@ public final class EntityHelper {
      */
     public static void setTopicName(TopicProperties topicProperties, String topicName) {
         if (topicAccessor == null) {
-            throw new ClientLogger(EntityHelper.class).logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "'topicAccessor' should not be null."));
         }
 
@@ -479,7 +488,7 @@ public final class EntityHelper {
                 implementation.setType("SharedAccessAuthorizationRule");
             } else {
                 final String className = rule.getClass().getName();
-                new ClientLogger(EntityHelper.class).warning("AuthorizationRule type '{}' is unknown.", className);
+                LOGGER.warning("AuthorizationRule type '{}' is unknown.", className);
                 implementation.setType(className);
             }
 

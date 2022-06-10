@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics Get. */
 public final class DomainTopicsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_Get.json
      */
     /**
      * Sample code: DomainTopics_Get.

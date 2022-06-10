@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = AudioTrackDescriptor.class)
 @JsonTypeName("#Microsoft.Media.AudioTrackDescriptor")
 @JsonSubTypes({
@@ -26,11 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = SelectAudioTrackByAttribute.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.SelectAudioTrackById", value = SelectAudioTrackById.class)
 })
-@JsonFlatten
 @Fluent
 public class AudioTrackDescriptor extends TrackDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AudioTrackDescriptor.class);
-
     /*
      * Optional designation for single channel audio tracks.  Can be used to
      * combine the tracks into stereo or multi-channel audio tracks.

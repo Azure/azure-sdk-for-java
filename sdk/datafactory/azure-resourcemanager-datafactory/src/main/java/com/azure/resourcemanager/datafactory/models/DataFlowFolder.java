@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The folder that this data flow is in. If not specified, Data flow will appear at the root level. */
 @Fluent
 public final class DataFlowFolder {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowFolder.class);
-
     /*
      * The name of the folder that this data flow is in.
      */

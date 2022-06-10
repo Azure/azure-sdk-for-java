@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Encryption settings for disk or snapshot. */
 @Fluent
 public final class EncryptionSettingsCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsCollection.class);
-
     /*
      * Set this flag to true and provide DiskEncryptionKey and optional
      * KeyEncryptionKey to enable encryption. Set this flag to false and remove

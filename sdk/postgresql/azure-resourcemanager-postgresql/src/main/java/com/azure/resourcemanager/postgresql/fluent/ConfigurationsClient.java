@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationInner;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
 public interface ConfigurationsClient {
@@ -25,9 +26,9 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
+     * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
 
@@ -42,9 +43,9 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Configuration.
+     * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -113,7 +114,7 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a configuration of server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigurationInner> getWithResponse(

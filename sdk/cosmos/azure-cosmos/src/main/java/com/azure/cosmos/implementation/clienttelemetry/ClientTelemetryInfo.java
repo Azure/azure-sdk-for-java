@@ -3,15 +3,18 @@
 package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.Configs;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @JsonSerialize(using = ClientTelemetrySerializer.class)
 public class ClientTelemetryInfo {
     private String timeStamp;
+    private String machineId;
     private String clientId;
     private String processId;
     private String userAgent;
@@ -20,18 +23,23 @@ public class ClientTelemetryInfo {
     private String applicationRegion;
     private String hostEnvInfo;
     private Boolean acceleratedNetworking;
+    private int aggregationIntervalInSec;
+    private List<String> preferredRegions;
     private Map<ReportPayload, ConcurrentDoubleHistogram> systemInfoMap;
     private Map<ReportPayload, ConcurrentDoubleHistogram> cacheRefreshInfoMap;
     private Map<ReportPayload, ConcurrentDoubleHistogram> operationInfoMap;
 
-    public ClientTelemetryInfo(String clientId,
+    public ClientTelemetryInfo(String machineId,
+                               String clientId,
                                String processId,
                                String userAgent,
                                ConnectionMode connectionMode,
                                String globalDatabaseAccountName,
                                String applicationRegion,
                                String hostEnvInfo,
-                               Boolean acceleratedNetworking) {
+                               Boolean acceleratedNetworking,
+                               List<String> preferredRegions) {
+        this.machineId = machineId;
         this.clientId = clientId;
         this.processId = processId;
         this.userAgent = userAgent;
@@ -43,6 +51,8 @@ public class ClientTelemetryInfo {
         this.systemInfoMap = new ConcurrentHashMap<>();
         this.cacheRefreshInfoMap = new ConcurrentHashMap<>();
         this.operationInfoMap = new ConcurrentHashMap<>();
+        this.aggregationIntervalInSec = Configs.getClientTelemetrySchedulingInSec();
+        this.preferredRegions = preferredRegions;
     }
 
     public String getTimeStamp() {
@@ -101,6 +111,14 @@ public class ClientTelemetryInfo {
         this.applicationRegion = applicationRegion;
     }
 
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
     public String getHostEnvInfo() {
         return hostEnvInfo;
     }
@@ -115,6 +133,22 @@ public class ClientTelemetryInfo {
 
     public void setAcceleratedNetworking(Boolean acceleratedNetworking) {
         this.acceleratedNetworking = acceleratedNetworking;
+    }
+
+    public int getAggregationIntervalInSec() {
+        return aggregationIntervalInSec;
+    }
+
+    public void setAggregationIntervalInSec(int aggregationIntervalInSec) {
+        this.aggregationIntervalInSec = aggregationIntervalInSec;
+    }
+
+    public List<String> getPreferredRegions() {
+        return preferredRegions;
+    }
+
+    public void setPreferredRegions(List<String> preferredRegions) {
+        this.preferredRegions = preferredRegions;
     }
 
     public Map<ReportPayload, ConcurrentDoubleHistogram> getSystemInfoMap() {

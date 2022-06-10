@@ -9,6 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SparkBatchJob;
 import com.azure.analytics.synapse.artifacts.models.SparkJobDefinitionResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,13 +20,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SparkJobDefinitionClient {
-    private final SparkJobDefinitionsImpl serviceClient;
+    @Generated private final SparkJobDefinitionsImpl serviceClient;
 
     /**
-     * Initializes an instance of SparkJobDefinitions client.
+     * Initializes an instance of SparkJobDefinitionClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     SparkJobDefinitionClient(SparkJobDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -35,8 +37,9 @@ public final class SparkJobDefinitionClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of spark job definitions resources.
+     * @return a list of spark job definitions resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkJobDefinitionResource> getSparkJobDefinitionsByWorkspace() {
         return this.serviceClient.getSparkJobDefinitionsByWorkspace();
@@ -49,8 +52,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of spark job definitions resources.
+     * @return a list of spark job definitions resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkJobDefinitionResource> getSparkJobDefinitionsByWorkspace(Context context) {
         return this.serviceClient.getSparkJobDefinitionsByWorkspace(context);
@@ -68,6 +72,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return spark job definition resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobDefinitionResource createOrUpdateSparkJobDefinition(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
@@ -84,6 +89,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return spark job definition resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobDefinitionResource createOrUpdateSparkJobDefinition(
             String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition) {
@@ -101,8 +107,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark job definition resource type.
+     * @return spark job definition resource type along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkJobDefinitionResource> createOrUpdateSparkJobDefinitionWithResponse(
             String sparkJobDefinitionName,
@@ -124,6 +131,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Spark Job Definition.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobDefinitionResource getSparkJobDefinition(String sparkJobDefinitionName, String ifNoneMatch) {
         return this.serviceClient.getSparkJobDefinition(sparkJobDefinitionName, ifNoneMatch);
@@ -138,6 +146,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Spark Job Definition.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkJobDefinitionResource getSparkJobDefinition(String sparkJobDefinitionName) {
         return this.serviceClient.getSparkJobDefinition(sparkJobDefinitionName);
@@ -153,8 +162,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Spark Job Definition.
+     * @return a Spark Job Definition along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkJobDefinitionResource> getSparkJobDefinitionWithResponse(
             String sparkJobDefinitionName, String ifNoneMatch, Context context) {
@@ -169,6 +179,7 @@ public final class SparkJobDefinitionClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSparkJobDefinition(String sparkJobDefinitionName) {
         this.serviceClient.deleteSparkJobDefinition(sparkJobDefinitionName);
@@ -182,8 +193,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSparkJobDefinitionWithResponse(String sparkJobDefinitionName, Context context) {
         return this.serviceClient.deleteSparkJobDefinitionWithResponse(sparkJobDefinitionName, context);
@@ -198,6 +210,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob executeSparkJobDefinition(String sparkJobDefinitionName) {
         return this.serviceClient.executeSparkJobDefinition(sparkJobDefinitionName);
@@ -211,8 +224,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkBatchJob> executeSparkJobDefinitionWithResponse(
             String sparkJobDefinitionName, Context context) {
@@ -228,6 +242,7 @@ public final class SparkJobDefinitionClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameSparkJobDefinition(String sparkJobDefinitionName, ArtifactRenameRequest request) {
         this.serviceClient.renameSparkJobDefinition(sparkJobDefinitionName, request);
@@ -242,8 +257,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameSparkJobDefinitionWithResponse(
             String sparkJobDefinitionName, ArtifactRenameRequest request, Context context) {
@@ -259,6 +275,7 @@ public final class SparkJobDefinitionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SparkBatchJob debugSparkJobDefinition(SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
         return this.serviceClient.debugSparkJobDefinition(sparkJobDefinitionAzureResource);
@@ -272,8 +289,9 @@ public final class SparkJobDefinitionClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkBatchJob> debugSparkJobDefinitionWithResponse(
             SparkJobDefinitionResource sparkJobDefinitionAzureResource, Context context) {

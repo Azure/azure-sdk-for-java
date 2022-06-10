@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.CapabilityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of a SKU for a scalable resource. */
 @Fluent
 public final class SkuDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDescription.class);
-
     /*
      * Name of the resource SKU.
      */

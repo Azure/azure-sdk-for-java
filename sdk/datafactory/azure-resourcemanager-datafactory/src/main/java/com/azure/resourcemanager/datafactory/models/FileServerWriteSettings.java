@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
 public final class FileServerWriteSettings extends StoreWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerWriteSettings.class);
-
     /** {@inheritDoc} */
     @Override
     public FileServerWriteSettings withMaxConcurrentConnections(Object maxConcurrentConnections) {

@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.videoanalyzer.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the video and audio content. */
-@Immutable
+@Fluent
 public final class VideoMediaInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoMediaInfo.class);
-
     /*
      * Video segment length indicates the length of individual video files
      * (segments) which are persisted to storage. Smaller segments provide
@@ -23,7 +19,7 @@ public final class VideoMediaInfo {
      * in ISO8601 duration format (i.e. "PT30S" equals 30 seconds) and can vary
      * between 30 seconds to 5 minutes, in 30 seconds increments.
      */
-    @JsonProperty(value = "segmentLength", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "segmentLength")
     private String segmentLength;
 
     /**
@@ -37,6 +33,21 @@ public final class VideoMediaInfo {
      */
     public String segmentLength() {
         return this.segmentLength;
+    }
+
+    /**
+     * Set the segmentLength property: Video segment length indicates the length of individual video files (segments)
+     * which are persisted to storage. Smaller segments provide lower archive playback latency but generate larger
+     * volume of storage transactions. Larger segments reduce the amount of storage transactions while increasing the
+     * archive playback latency. Value must be specified in ISO8601 duration format (i.e. "PT30S" equals 30 seconds) and
+     * can vary between 30 seconds to 5 minutes, in 30 seconds increments.
+     *
+     * @param segmentLength the segmentLength value to set.
+     * @return the VideoMediaInfo object itself.
+     */
+    public VideoMediaInfo withSegmentLength(String segmentLength) {
+        this.segmentLength = segmentLength;
+        return this;
     }
 
     /**

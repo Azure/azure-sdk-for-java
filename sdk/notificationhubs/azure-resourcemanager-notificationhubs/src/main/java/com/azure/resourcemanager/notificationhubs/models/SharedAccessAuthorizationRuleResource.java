@@ -7,6 +7,7 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,13 @@ public interface SharedAccessAuthorizationRuleResource {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: The sku of the created namespace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
 
     /**
      * Gets the rights property: The rights associated with the rule.
@@ -110,13 +118,6 @@ public interface SharedAccessAuthorizationRuleResource {
      * @return the revision value.
      */
     Integer revision();
-
-    /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
 
     /**
      * Gets the region of the resource.
@@ -253,7 +254,7 @@ public interface SharedAccessAuthorizationRuleResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    SharedAccessAuthorizationRuleListResult listKeys();
+    ResourceListKeys listKeys();
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the namespace.
@@ -264,7 +265,7 @@ public interface SharedAccessAuthorizationRuleResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Primary and Secondary ConnectionStrings to the namespace.
      */
-    Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(Context context);
+    Response<ResourceListKeys> listKeysWithResponse(Context context);
 
     /**
      * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.

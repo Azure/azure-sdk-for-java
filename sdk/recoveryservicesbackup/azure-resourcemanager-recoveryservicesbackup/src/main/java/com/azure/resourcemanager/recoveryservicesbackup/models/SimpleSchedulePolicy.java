@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("SimpleSchedulePolicy")
 @Fluent
 public final class SimpleSchedulePolicy extends SchedulePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SimpleSchedulePolicy.class);
-
     /*
      * Frequency of the schedule operation of this policy.
      */
@@ -37,6 +33,12 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
      */
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
+
+    /*
+     * Hourly Schedule of this Policy
+     */
+    @JsonProperty(value = "hourlySchedule")
+    private HourlySchedule hourlySchedule;
 
     /*
      * At every number weeks this schedule has to be run.
@@ -105,6 +107,26 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     }
 
     /**
+     * Get the hourlySchedule property: Hourly Schedule of this Policy.
+     *
+     * @return the hourlySchedule value.
+     */
+    public HourlySchedule hourlySchedule() {
+        return this.hourlySchedule;
+    }
+
+    /**
+     * Set the hourlySchedule property: Hourly Schedule of this Policy.
+     *
+     * @param hourlySchedule the hourlySchedule value to set.
+     * @return the SimpleSchedulePolicy object itself.
+     */
+    public SimpleSchedulePolicy withHourlySchedule(HourlySchedule hourlySchedule) {
+        this.hourlySchedule = hourlySchedule;
+        return this;
+    }
+
+    /**
      * Get the scheduleWeeklyFrequency property: At every number weeks this schedule has to be run.
      *
      * @return the scheduleWeeklyFrequency value.
@@ -132,5 +154,8 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     @Override
     public void validate() {
         super.validate();
+        if (hourlySchedule() != null) {
+            hourlySchedule().validate();
+        }
     }
 }

@@ -8,9 +8,9 @@ stages:
         - name: azure-data-schemaregistry
           groupId: com.azure
           safeName: azuredataschemaregistry
-        - name: azure-data-schemaregistry-avro
+        - name: azure-data-schemaregistry-apacheavro
           groupId: com.azure
-          safeName: azuredataschemaregistryavro
+          safeName: azuredataschemaregistryapacheavro
       TimeoutInMinutes: 60
       EnvVars:
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)

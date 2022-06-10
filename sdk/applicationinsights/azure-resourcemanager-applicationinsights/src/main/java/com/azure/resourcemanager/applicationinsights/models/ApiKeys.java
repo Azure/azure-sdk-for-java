@@ -18,7 +18,7 @@ public interface ApiKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component.
+     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName);
 
@@ -31,7 +31,7 @@ public interface ApiKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component.
+     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApplicationInsightsComponentApiKey> list(
         String resourceGroupName, String resourceName, Context context);
@@ -62,7 +62,7 @@ public interface ApiKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
+     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     Response<ApplicationInsightsComponentApiKey> createWithResponse(
         String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context);
@@ -90,7 +90,7 @@ public interface ApiKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
+     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     Response<ApplicationInsightsComponentApiKey> deleteWithResponse(
         String resourceGroupName, String resourceName, String keyId, Context context);
@@ -118,7 +118,7 @@ public interface ApiKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Key for this key id.
+     * @return the API Key for this key id along with {@link Response}.
      */
     Response<ApplicationInsightsComponentApiKey> getWithResponse(
         String resourceGroupName, String resourceName, String keyId, Context context);

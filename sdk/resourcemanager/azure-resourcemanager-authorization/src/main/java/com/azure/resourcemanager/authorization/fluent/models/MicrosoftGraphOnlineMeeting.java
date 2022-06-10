@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,10 +16,8 @@ import java.util.Map;
 /** onlineMeeting. */
 @Fluent
 public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnlineMeeting.class);
-
     /*
-     * The allowedPresenters property.
+     * onlineMeetingPresenters
      */
     @JsonProperty(value = "allowedPresenters")
     private MicrosoftGraphOnlineMeetingPresenters allowedPresenters;
@@ -109,7 +106,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
     @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the allowedPresenters property: The allowedPresenters property.
+     * Get the allowedPresenters property: onlineMeetingPresenters.
      *
      * @return the allowedPresenters value.
      */
@@ -118,7 +115,7 @@ public final class MicrosoftGraphOnlineMeeting extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the allowedPresenters property: The allowedPresenters property.
+     * Set the allowedPresenters property: onlineMeetingPresenters.
      *
      * @param allowedPresenters the allowedPresenters value to set.
      * @return the MicrosoftGraphOnlineMeeting object itself.

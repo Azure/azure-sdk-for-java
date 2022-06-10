@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties for a event hub destination. */
 @Fluent
 public final class EventHubEventSubscriptionDestinationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EventHubEventSubscriptionDestinationProperties.class);
-
     /*
      * The Azure Resource Id that represents the endpoint of an Event Hub
      * destination of an event subscription.

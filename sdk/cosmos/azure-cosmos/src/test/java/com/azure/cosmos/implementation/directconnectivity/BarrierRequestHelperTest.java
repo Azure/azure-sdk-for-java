@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -158,8 +159,8 @@ public class BarrierRequestHelperTest {
     public void barrierWithAadAuthorizationTokenProviderType() throws URISyntaxException {
 
         TokenCredential tokenCredential = new AadSimpleTokenCredential(TestConfigurations.MASTER_KEY);
-
-        IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(new URI(TestConfigurations.HOST),
+        IAuthorizationTokenProvider authTokenProvider = new RxDocumentClientImpl(
+                new URI(TestConfigurations.HOST),
                 null,
                 null,
                 null,
@@ -171,7 +172,9 @@ public class BarrierRequestHelperTest {
                 false,
                 false,
                 false,
-                null);
+                null,
+                null,
+                ClientTelemetryConfig.getDefaultConfig());
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;
@@ -234,6 +237,7 @@ public class BarrierRequestHelperTest {
                 new AsyncDocumentClient.Builder()
                         .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                         .withServiceEndpoint(TestConfigurations.HOST)
+                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
                         .build();
     }
 

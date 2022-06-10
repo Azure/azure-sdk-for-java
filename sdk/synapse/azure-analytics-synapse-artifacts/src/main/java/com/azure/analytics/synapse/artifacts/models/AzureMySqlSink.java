@@ -42,4 +42,39 @@ public final class AzureMySqlSink extends CopySink {
         this.preCopyScript = preCopyScript;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink setWriteBatchSize(Object writeBatchSize) {
+        super.setWriteBatchSize(writeBatchSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink setWriteBatchTimeout(Object writeBatchTimeout) {
+        super.setWriteBatchTimeout(writeBatchTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink setSinkRetryCount(Object sinkRetryCount) {
+        super.setSinkRetryCount(sinkRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink setSinkRetryWait(Object sinkRetryWait) {
+        super.setSinkRetryWait(sinkRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

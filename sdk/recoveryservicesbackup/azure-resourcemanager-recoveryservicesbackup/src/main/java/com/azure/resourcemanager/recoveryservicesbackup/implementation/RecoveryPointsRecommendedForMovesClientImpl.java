@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsRecommendedForMovesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in RecoveryPointsRecommendedForMovesClient.
  */
 public final class RecoveryPointsRecommendedForMovesClientImpl implements RecoveryPointsRecommendedForMovesClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryPointsRecommendedForMovesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecoveryPointsRecommendedForMovesService service;
 
@@ -111,7 +108,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
@@ -155,7 +153,6 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -163,7 +160,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
                     service
                         .list(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -198,7 +195,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
@@ -243,13 +241,12 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -282,7 +279,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoveryPointResourceInner> listAsync(
@@ -312,7 +309,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoveryPointResourceInner> listAsync(
@@ -342,7 +339,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(
@@ -369,7 +366,7 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointResourceInner> list(
@@ -391,7 +388,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -427,7 +425,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.avs.models.Datastore;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
+import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
 
@@ -38,6 +39,10 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
 
     public DiskPoolVolume diskPoolVolume() {
         return this.innerModel().diskPoolVolume();
+    }
+
+    public DatastoreStatus status() {
+        return this.innerModel().status();
     }
 
     public DatastoreInner innerModel() {

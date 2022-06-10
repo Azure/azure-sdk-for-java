@@ -1,16 +1,21 @@
 # Azure Web PubSub service client library for Java
 
-Azure Web PubSub service client library for Java allows sending messages to Web PubSub. Azure Web PubSub service 
-enables you to build real-time messaging web applications using WebSockets and the publish-subscribe pattern. Any 
-platform supporting WebSocket APIs can connect to the service easily, e.g. web pages, mobile applications, edge devices,
-etc. The service manages the WebSocket connections for you and allows up to 100K concurrent connections. It provides 
-powerful APIs for you to manage these clients and deliver real-time messages.
+[Azure Web PubSub service](https://aka.ms/awps/doc) is an Azure-managed service that helps developers easily build web applications with real-time features and publish-subscribe pattern. Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients can use Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP requests can also use Azure Web PubSub service.
 
-Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients, can use
-Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP
-requests, can also use Azure Web PubSub service.
+You can use this library in your app server side to manage the WebSocket client connections, as shown in below diagram:
 
-[Source code][source_code] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+![overflow](https://user-images.githubusercontent.com/668244/140014067-25a00959-04dc-47e8-ac25-6957bd0a71ce.png)
+
+Use this library to:
+- Send messages to hubs and groups. 
+- Send messages to particular users and connections.
+- Organize users and connections into groups.
+- Close connections
+- Grant, revoke, and check permissions for an existing connection
+
+Details about the terms used here are described in [Key concepts](#key-concepts) section.
+
+[Source code][source_code] | [API reference documentation][api] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
 
@@ -19,7 +24,40 @@ requests, can also use Azure Web PubSub service.
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 
-### Include the Package
+### Include the package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-webpubsub</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-webpubsub;current})
 
@@ -27,102 +65,81 @@ requests, can also use Azure Web PubSub service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.1.3</version>
 </dependency>
 ```
 
 [//]: # ({x-version-update-end})
 
-### Create a Web PubSub client using connection string
+### Create a `WebPubSubServiceClient` using connection string
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L22-L25 -->
-```java
-WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
+```java readme-sample-createClientWithConnectionString
+WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilder()
     .connectionString("{connection-string}")
     .hub("chat")
     .buildClient();
 ```
 
-### Create a Web PubSub client using access key
+### Create a `WebPubSubServiceClient` using access key
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L32-L36 -->
-```java
-WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
+```java readme-sample-createClientWithKey
+WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilder()
     .credential(new AzureKeyCredential("{access-key}"))
     .endpoint("<Insert endpoint from Azure Portal>")
     .hub("chat")
     .buildClient();
 ```
 
-### Create a Web PubSub Group client
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L43-L47 -->
-```java
-WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
-    .credential(new AzureKeyCredential("{access-key}"))
-    .hub("chat")
-    .buildClient();
-WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("java");
-```
-
 ## Key concepts
-
-### Hub
-
-Hub is a logic set of connections. All connections to Web PubSub connect to a specific hub. Messages that are broadcast
-to the hub are dispatched to all connections to that hub. For example, hub can be used for different applications,
-different applications can share one Azure Web PubSub service by using different hub names.
-
-### Group
-
-Group allow broadcast messages to a subset of connections to the hub. You can add and remove users and connections as
-needed. A client can join multiple groups, and a group can contain multiple clients.
-
-### User
-
-Connections to Web PubSub can belong to one user. A user might have multiple connections, for example when a single user
-is connected across multiple devices or multiple browser tabs.
 
 ### Connection
 
-Connections, represented by a connection id, represent an individual websocket connection to the Web PubSub service.
-Connection id is always unique.
+A connection, also known as a client or a client connection, represents an individual WebSocket connection connected to the Web PubSub service. When successfully connected, a unique connection ID is assigned to this connection by the Web PubSub service.
+
+### Hub
+
+A hub is a logical concept for a set of client connections. Usually you use one hub for one purpose, for example, a chat hub, or a notification hub. When a client connection is created, it connects to a hub, and during its lifetime, it belongs to that hub. Different applications can share one Azure Web PubSub service by using different hub names.
+
+### Group
+
+A group is a subset of connections to the hub. You can add a client connection to a group, or remove the client connection from the group, anytime you want. For example, when a client joins a chat room, or when a client leaves the chat room, this chat room can be considered to be a group. A client can join multiple groups, and a group can contain multiple clients.
+
+### User
+
+Connections to Web PubSub can belong to one user. A user might have multiple connections, for example when a single user is connected across multiple devices or multiple browser tabs.
 
 ### Message
 
-A message is either an UTF-8 encoded string or raw binary data.
+When the client is connected, it can send messages to the upstream application, or receive messages from the upstream application, through the WebSocket connection.
 
 ## Examples
 
-* [Broadcast message to entire hub](#broadcast-all "Broadcast message to entire hub")
-* [Broadcast message to a group](#broadcast-group "Broadcast message to a group")
-* [Send message to a connection](#send-to-connection "Send message to a connection")
-* [Send message to a user](#send-to-user "Send message to a user")
+* [Broadcast message to entire hub](#broadcast-message-to-entire-hub)
+* [Broadcast message to a group](#broadcast-message-to-a-group)
+* [Send message to a connection](#send-message-to-a-connection)
+* [Send message to a user](#send-message-to-a-user)
 
 ### Broadcast message to entire hub
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L59-L59 -->
-```java
-webPubSubServiceClient.sendToAll("Hello world!");
+```java readme-sample-broadcastToAll
+webPubSubServiceClient.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ### Broadcast message to a group
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L71-L72 -->
-```java
-WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("Java");
-javaGroup.sendToAll("Hello Java!", WebPubSubContentType.TEXT_PLAIN);
+```java readme-sample-broadcastToGroup
+webPubSubServiceClient.sendToGroup("java", "Hello Java!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ### Send message to a connection
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L84-L84 -->
-```java
+```java readme-sample-sendToConnection
 webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ### Send message to a user
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L96-L96 -->
-```java
+
+```java readme-sample-sendToUser
 webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
@@ -175,5 +192,6 @@ comments.
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[api]: https://aka.ms/awps/sdk/java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)

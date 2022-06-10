@@ -20,10 +20,10 @@ class BlobCryptographyBuilderTest extends APISpec {
     def setup() {
         keyId = "keyId"
 
-        fakeKey = new FakeKey(keyId, (getEnv().getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : mockRandomData)
+        fakeKey = new FakeKey(keyId, (getEnvironment().getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : mockRandomData)
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        def sc = getServiceClientBuilder(env.primaryAccount)
+        def sc = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
         def containerName = generateContainerName()
         def blobName = generateBlobName()
@@ -66,7 +66,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Http pipeline"() {
         when:
         def regularClient = cc.getBlobClient(generateBlobName())
-        def encryptedClient = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def encryptedClient = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .pipeline(regularClient.getHttpPipeline())
             .blobName(regularClient.getBlobName())
             .buildEncryptedBlobAsyncClient()))
@@ -82,7 +82,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
         def encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient())
@@ -106,12 +106,12 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def encryptedClientWithCpk = mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def encryptedClientWithCpk = mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient())
 
-        def encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
+        def encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
             .buildEncryptedBlobAsyncClient()))
 
         when:
@@ -129,7 +129,7 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         def scope = "testscope1"
         cc.create()
-        def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def builder = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .encryptionScope(scope)
             .blobName(generateBlobName())
         def encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient())
@@ -174,7 +174,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "getCustomerProvidedKeyClient"() {
         setup:
         CustomerProvidedKey originalKey = new CustomerProvidedKey(getRandomKey())
-        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def client = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(originalKey)
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -191,7 +191,7 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "getEncryptionScopeClient"() {
         setup:
         def originalScope = "testscope1"
-        def client = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def client = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential, cc.getBlobContainerUrl())
             .encryptionScope(originalScope)
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()

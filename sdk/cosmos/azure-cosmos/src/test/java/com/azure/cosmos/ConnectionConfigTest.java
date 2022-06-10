@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -15,12 +16,14 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ConnectionConfigTest extends TestSuiteBase {
 
-    private static final Duration REQUEST_TIME_OUT = Duration.ofSeconds(15);
+    private static final Duration GATEWAY_NETWORK_REQUEST_TIME_OUT = Duration.ofSeconds(60);
     private static final Duration IDLE_CONNECTION_TIME_OUT = Duration.ofSeconds(30);
     private static final Duration CONNECTION_TIMEOUT = Duration.ofSeconds(100);
     private static final Duration IDLE_CHANNEL_TIMEOUT = Duration.ofSeconds(10);
@@ -51,7 +54,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         final List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("West US");
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
-        gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(GATEWAY_NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -125,7 +128,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
-        gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(GATEWAY_NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -146,7 +149,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
-        gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(GATEWAY_NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
         gatewayConnectionConfig.setProxy(proxyOptions);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -173,6 +176,74 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
         validateDirectConnectionConfig(connectionPolicy, cosmosClientBuilder, DirectConnectionConfig.getDefaultConfig());
         safeCloseSyncClient(cosmosClient);
+    }
+
+    @Test(groups = { "unit" })
+    public void directConnectionConfigWithNetworkRequestTimeout() {
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        assertThatThrownBy(() -> directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(4)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("NetworkRequestTimeout can not be less than 5000 Millis");
+        assertThatThrownBy(() -> directConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(11)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("NetworkRequestTimeout can not be larger than 10000 Millis");
+
+        Duration networkRequestTimeout = Duration.ofSeconds(6);
+        directConnectionConfig.setNetworkRequestTimeout(networkRequestTimeout);
+        assertThat(directConnectionConfig.getNetworkRequestTimeout().equals(networkRequestTimeout));
+    }
+
+    @Test(groups = { "unit" })
+    public void gatewayConnectionConfigWithNetworkRequestTimeout() {
+        GatewayConnectionConfig gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
+        assertThatThrownBy(() -> gatewayConnectionConfig.setNetworkRequestTimeout(Duration.ofSeconds(59)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("NetworkRequestTimeout can not be less than 60000 millis");
+
+        Duration networkRequestTimeout = Duration.ofSeconds(61);
+        gatewayConnectionConfig.setNetworkRequestTimeout(networkRequestTimeout);
+        assertThat(gatewayConnectionConfig.getNetworkRequestTimeout().equals(networkRequestTimeout));
+    }
+
+    @Test(groups = { "unit" })
+    public void buildClientTelemetryConfig() {
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+
+        String proxyHost = "127.0.0.0";
+        int proxyPort = 8080;
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+        String username = UUID.randomUUID().toString();
+        String password = UUID.randomUUID().toString();
+        proxyOptions.setCredentials(username, password);
+        System.setProperty(
+                "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
+                String.format(
+                    "{\"type\":\"%s\", \"host\": \"%s\", \"port\": %d, \"username\": \"%s\", \"password\":\"%s\"}",
+                    proxyOptions.getType().toString(),
+                    proxyHost,
+                    proxyPort,
+                    username,
+                    password));
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .directMode(directConnectionConfig, gatewayConnectionConfig)
+                .clientTelemetryEnabled(true);
+
+        ReflectionUtils.buildConnectionPolicy(cosmosClientBuilder);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(cosmosClientBuilder);
+        assertThat(connectionPolicy.getConnectionMode()).isEqualTo(ConnectionMode.DIRECT);
+        validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
+
+        ClientTelemetryConfig clientTelemetryConfig = ReflectionUtils.getClientTelemetryConfig(cosmosClientBuilder);
+        assertThat(clientTelemetryConfig.isClientTelemetryEnabled()).isTrue();
+        assertThat(clientTelemetryConfig.getProxy().getType()).isEqualTo(proxyOptions.getType());
+        assertThat(clientTelemetryConfig.getProxy().getAddress()).isEqualTo(proxyOptions.getAddress());
+        assertThat(clientTelemetryConfig.getProxy().getUsername()).isEqualTo(proxyOptions.getUsername());
+        assertThat(clientTelemetryConfig.getProxy().getPassword()).isEqualTo(proxyOptions.getPassword());
     }
 
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,
@@ -207,7 +278,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private void validateGatewayConfig(ConnectionPolicy connectionPolicy, GatewayConnectionConfig gatewayConnectionConfig) {
         assertThat(connectionPolicy.getIdleHttpConnectionTimeout()).isEqualTo(gatewayConnectionConfig.getIdleConnectionTimeout());
         assertThat(connectionPolicy.getMaxConnectionPoolSize()).isEqualTo(gatewayConnectionConfig.getMaxConnectionPoolSize());
-        assertThat(connectionPolicy.getRequestTimeout()).isEqualTo(gatewayConnectionConfig.getRequestTimeout());
+        assertThat(connectionPolicy.getHttpNetworkRequestTimeout()).isEqualTo(gatewayConnectionConfig.getNetworkRequestTimeout());
         assertThat(connectionPolicy.getProxy()).isEqualTo(gatewayConnectionConfig.getProxy());
     }
 

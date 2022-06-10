@@ -57,7 +57,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
     private final BlockBlobAsyncClient client;
 
@@ -139,14 +139,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
             if (exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -234,7 +234,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
      * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
      * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
      * PutBlock and PutBlockList. For more information, see the
@@ -242,7 +242,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long -->
+     * <pre>
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;data, length&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long -->
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
@@ -266,14 +271,20 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean -->
+     * <pre>
+     * boolean overwrite = false;
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.upload&#40;data, length, overwrite&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean -->
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
      * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -298,7 +309,29 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     *
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;, Base64.getEncoder&#40;&#41;
+     *     .encodeToString&#40;client.uploadWithResponse&#40;data, length, headers, metadata, AccessTier.HOT, md5,
+     *         requestConditions, timeout, context&#41;
+     *         .getValue&#40;&#41;
+     *         .getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context -->
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
@@ -343,7 +376,31 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     *
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;, Base64.getEncoder&#40;&#41;
+     *     .encodeToString&#40;client.uploadWithResponse&#40;new BlockBlobSimpleUploadOptions&#40;data, length&#41;
+     *         .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setContentMd5&#40;md5&#41;
+     *         .setRequestConditions&#40;requestConditions&#41;, timeout, context&#41;
+     *         .getValue&#40;&#41;
+     *         .getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context -->
      *
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -363,7 +420,7 @@ public final class BlockBlobClient extends BlobClientBase {
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -377,7 +434,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String -->
+     * <pre>
+     * System.out.printf&#40;&quot;Uploaded BlockBlob from URL, MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.uploadFromUrl&#40;sourceUrl&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String -->
      *
      * @param sourceUrl The source URL to upload from.
      * @return The information of the uploaded block blob.
@@ -397,10 +459,16 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean -->
+     * <pre>
+     * boolean overwrite = false;
+     * System.out.printf&#40;&quot;Uploaded BlockBlob from URL, MD5 is %s%n&quot;,
+     *     Base64.getEncoder&#40;&#41;.encodeToString&#40;client.uploadFromUrl&#40;sourceUrl, overwrite&#41;.getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean -->
      *
      * @param sourceUrl The source URL to upload from.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -427,7 +495,31 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     *
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;, Base64.getEncoder&#40;&#41;
+     *     .encodeToString&#40;client.uploadFromUrlWithResponse&#40;new BlobUploadFromUrlOptions&#40;sourceUrl&#41;
+     *         .setHeaders&#40;headers&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setContentMd5&#40;md5&#41;
+     *         .setDestinationRequestConditions&#40;requestConditions&#41;, timeout, context&#41;
+     *         .getValue&#40;&#41;
+     *         .getContentMd5&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context -->
      *
      * @param options {@link BlobUploadFromUrlOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -442,7 +534,7 @@ public final class BlockBlobClient extends BlobClientBase {
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -453,7 +545,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long -->
+     * <pre>
+     * client.stageBlock&#40;base64BlockId, data, length&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlock#String-InputStream-long -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -475,7 +571,13 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;,
+     *     client.stageBlockWithResponse&#40;base64BlockId, data, length, md5, leaseId, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockWithResponse#String-InputStream-long-byte-String-Duration-Context -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -516,7 +618,11 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange -->
+     * <pre>
+     * client.stageBlockFromUrl&#40;base64BlockId, sourceUrl, new BlobRange&#40;offset, count&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrl#String-String-BlobRange -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -539,7 +645,17 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Staging block from URL completed with status %d%n&quot;,
+     *     client.stageBlockFromUrlWithResponse&#40;base64BlockId, sourceUrl, new BlobRange&#40;offset, count&#41;, null,
+     *         leaseId, sourceRequestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions-Duration-Context -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -576,7 +692,18 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context -->
+     * <pre>
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Staging block from URL completed with status %d%n&quot;,
+     *     client.stageBlockFromUrlWithResponse&#40;new BlockBlobStageBlockFromUrlOptions&#40;base64BlockId, sourceUrl&#41;
+     *         .setSourceRange&#40;new BlobRange&#40;offset, count&#41;&#41;.setLeaseId&#40;leaseId&#41;
+     *         .setSourceRequestConditions&#40;sourceRequestConditions&#41;, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context -->
      *
      * @param options Parameters for the operation
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -599,7 +726,17 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocks#BlockListType}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.listBlocks#BlockListType -->
+     * <pre>
+     * BlockList block = client.listBlocks&#40;BlockListType.ALL&#41;;
+     *
+     * System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     * block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     * System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     * block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.listBlocks#BlockListType -->
      *
      * @param listType Specifies which type of blocks to return.
      *
@@ -616,7 +753,18 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-String-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-String-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * BlockList block = client.listBlocksWithResponse&#40;BlockListType.ALL, leaseId, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     * block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     * System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     * block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockListType-String-Duration-Context -->
      *
      * @param listType Specifies which type of blocks to return.
      * @param leaseId The lease ID the active lease on the blob must match.
@@ -637,7 +785,20 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context -->
+     * <pre>
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * BlockList block = client.listBlocksWithResponse&#40;new BlockBlobListBlocksOptions&#40;BlockListType.ALL&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfTagsMatch&#40;tags&#41;, timeout, context&#41;.getValue&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     * block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     * System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     * block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context -->
      *
      * @param options {@link BlockBlobListBlocksOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -661,7 +822,12 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List -->
+     * <pre>
+     * System.out.printf&#40;&quot;Committing block list completed. Last modified: %s%n&quot;,
+     *     client.commitBlockList&#40;Collections.singletonList&#40;base64BlockId&#41;&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return The information of the block blob.
@@ -681,10 +847,16 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * System.out.printf&#40;&quot;Committing block list completed. Last modified: %s%n&quot;,
+     *     client.commitBlockList&#40;Collections.singletonList&#40;base64BlockId&#41;, overwrite&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -709,7 +881,24 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Committing block list completed with status %d%n&quot;,
+     *     client.commitBlockListWithResponse&#40;Collections.singletonList&#40;base64BlockId&#41;, headers, metadata,
+     *         AccessTier.HOT, requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}
@@ -743,7 +932,28 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Committing block list completed with status %d%n&quot;,
+     *     client.commitBlockListWithResponse&#40;
+     *         new BlockBlobCommitBlockListOptions&#40;Collections.singletonList&#40;base64BlockId&#41;&#41;.setHeaders&#40;headers&#41;
+     *             .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
+     *             .setRequestConditions&#40;requestConditions&#41;, timeout, context&#41;
+     *         .getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context -->
      *
      * @param options {@link BlockBlobCommitBlockListOptions options}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

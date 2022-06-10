@@ -47,15 +47,6 @@ public final class SubscriptionQuotaItemInner extends ProxyResource {
     }
 
     /**
-     * Get the name property: Quota Item name.
-     *
-     * @return the name value.
-     */
-    public String namePropertiesName() {
-        return this.innerProperties() == null ? null : this.innerProperties().name();
-    }
-
-    /**
      * Get the current property: The current quota value.
      *
      * @return the current value.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -31,8 +29,6 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlRestoreRequest.class);
-
     /*
      * Default option set to true. If this is set to false, alternate data
      * directory must be provided
@@ -151,6 +147,13 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     @Override
     public AzureWorkloadSqlRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 

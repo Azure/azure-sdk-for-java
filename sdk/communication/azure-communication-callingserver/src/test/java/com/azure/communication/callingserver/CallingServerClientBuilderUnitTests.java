@@ -9,7 +9,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -227,6 +229,16 @@ public class CallingServerClientBuilderUnitTests {
             NullPointerException.class, () -> builder
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> builder
+            .connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 }
 

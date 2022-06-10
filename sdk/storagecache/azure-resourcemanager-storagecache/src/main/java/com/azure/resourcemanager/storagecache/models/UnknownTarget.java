@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Properties pertaining to the UnknownTarget. */
 @Fluent
 public final class UnknownTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnknownTarget.class);
-
     /*
      * Dictionary of string->string pairs containing information about the
      * Storage Target.

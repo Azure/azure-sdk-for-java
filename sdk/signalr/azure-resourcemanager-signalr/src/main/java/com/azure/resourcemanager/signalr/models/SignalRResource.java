@@ -50,21 +50,21 @@ public interface SignalRResource {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Gets the sku property: The billing information of the resource.
      *
      * @return the sku value.
      */
     ResourceSku sku();
 
     /**
-     * Gets the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Gets the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      *
      * @return the kind value.
      */
     ServiceKind kind();
 
     /**
-     * Gets the identity property: The managed identity response.
+     * Gets the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
      */
@@ -136,11 +136,18 @@ public interface SignalRResource {
     List<SharedPrivateLinkResource> sharedPrivateLinkResources();
 
     /**
-     * Gets the tls property: TLS settings.
+     * Gets the tls property: TLS settings for the resource.
      *
      * @return the tls value.
      */
     SignalRTlsSettings tls();
+
+    /**
+     * Gets the hostnamePrefix property: Deprecated.
+     *
+     * @return the hostnamePrefix value.
+     */
+    String hostnamePrefix();
 
     /**
      * Gets the features property: List of the featureFlags.
@@ -155,6 +162,20 @@ public interface SignalRResource {
     List<SignalRFeature> features();
 
     /**
+     * Gets the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    LiveTraceConfiguration liveTraceConfiguration();
+
+    /**
+     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the resourceLogConfiguration value.
+     */
+    ResourceLogConfiguration resourceLogConfiguration();
+
+    /**
      * Gets the cors property: Cross-Origin Resource Sharing (CORS) settings.
      *
      * @return the cors value.
@@ -162,14 +183,14 @@ public interface SignalRResource {
     SignalRCorsSettings cors();
 
     /**
-     * Gets the upstream property: Upstream settings when the service is in server-less mode.
+     * Gets the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @return the upstream value.
      */
     ServerlessUpstreamSettings upstream();
 
     /**
-     * Gets the networkACLs property: Network ACLs.
+     * Gets the networkACLs property: Network ACLs for the resource.
      *
      * @return the networkACLs value.
      */
@@ -193,7 +214,7 @@ public interface SignalRResource {
     Boolean disableLocalAuth();
 
     /**
-     * Gets the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
+     * Gets the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
      * AuthType=aad won't work.
      *
      * @return the disableAadAuth value.
@@ -273,6 +294,8 @@ public interface SignalRResource {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithTls,
                 DefinitionStages.WithFeatures,
+                DefinitionStages.WithLiveTraceConfiguration,
+                DefinitionStages.WithResourceLogConfiguration,
                 DefinitionStages.WithCors,
                 DefinitionStages.WithUpstream,
                 DefinitionStages.WithNetworkACLs,
@@ -307,9 +330,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             WithCreate withSku(ResourceSku sku);
@@ -317,10 +340,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify kind. */
         interface WithKind {
             /**
-             * Specifies the kind property: The kind of the service - e.g. "SignalR" for
-             * "Microsoft.SignalRService/SignalR".
+             * Specifies the kind property: The kind of the service, it can be SignalR or RawWebSockets.
              *
-             * @param kind The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+             * @param kind The kind of the service, it can be SignalR or RawWebSockets.
              * @return the next definition stage.
              */
             WithCreate withKind(ServiceKind kind);
@@ -328,9 +350,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ManagedIdentity identity);
@@ -338,9 +360,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             WithCreate withTls(SignalRTlsSettings tls);
@@ -364,6 +386,28 @@ public interface SignalRResource {
              */
             WithCreate withFeatures(List<SignalRFeature> features);
         }
+        /** The stage of the SignalRResource definition allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
+            /**
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
+        }
+        /** The stage of the SignalRResource definition allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
+            /**
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
+        }
         /** The stage of the SignalRResource definition allowing to specify cors. */
         interface WithCors {
             /**
@@ -377,9 +421,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify upstream. */
         interface WithUpstream {
             /**
-             * Specifies the upstream property: Upstream settings when the service is in server-less mode..
+             * Specifies the upstream property: The settings for the Upstream when the service is in server-less mode..
              *
-             * @param upstream Upstream settings when the service is in server-less mode.
+             * @param upstream The settings for the Upstream when the service is in server-less mode.
              * @return the next definition stage.
              */
             WithCreate withUpstream(ServerlessUpstreamSettings upstream);
@@ -387,9 +431,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             WithCreate withNetworkACLs(SignalRNetworkACLs networkACLs);
@@ -423,10 +467,10 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
              * connection with AuthType=aad won't work..
              *
-             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
              *     AuthType=aad won't work.
              * @return the next definition stage.
              */
@@ -447,6 +491,8 @@ public interface SignalRResource {
             UpdateStages.WithIdentity,
             UpdateStages.WithTls,
             UpdateStages.WithFeatures,
+            UpdateStages.WithLiveTraceConfiguration,
+            UpdateStages.WithResourceLogConfiguration,
             UpdateStages.WithCors,
             UpdateStages.WithUpstream,
             UpdateStages.WithNetworkACLs,
@@ -483,9 +529,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: The billing information of the resource.(e.g. Free, Standard).
+             * Specifies the sku property: The billing information of the resource..
              *
-             * @param sku The billing information of the resource.(e.g. Free, Standard).
+             * @param sku The billing information of the resource.
              * @return the next definition stage.
              */
             Update withSku(ResourceSku sku);
@@ -493,9 +539,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The managed identity response.
+             * Specifies the identity property: A class represent managed identities used for request and response.
              *
-             * @param identity The managed identity response.
+             * @param identity A class represent managed identities used for request and response.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedIdentity identity);
@@ -503,9 +549,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify tls. */
         interface WithTls {
             /**
-             * Specifies the tls property: TLS settings..
+             * Specifies the tls property: TLS settings for the resource.
              *
-             * @param tls TLS settings.
+             * @param tls TLS settings for the resource.
              * @return the next definition stage.
              */
             Update withTls(SignalRTlsSettings tls);
@@ -529,6 +575,28 @@ public interface SignalRResource {
              */
             Update withFeatures(List<SignalRFeature> features);
         }
+        /** The stage of the SignalRResource update allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
+            /**
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
+        }
+        /** The stage of the SignalRResource update allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
+            /**
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource..
+             *
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource.
+             * @return the next definition stage.
+             */
+            Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
+        }
         /** The stage of the SignalRResource update allowing to specify cors. */
         interface WithCors {
             /**
@@ -542,9 +610,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify upstream. */
         interface WithUpstream {
             /**
-             * Specifies the upstream property: Upstream settings when the service is in server-less mode..
+             * Specifies the upstream property: The settings for the Upstream when the service is in server-less mode..
              *
-             * @param upstream Upstream settings when the service is in server-less mode.
+             * @param upstream The settings for the Upstream when the service is in server-less mode.
              * @return the next definition stage.
              */
             Update withUpstream(ServerlessUpstreamSettings upstream);
@@ -552,9 +620,9 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {
             /**
-             * Specifies the networkACLs property: Network ACLs.
+             * Specifies the networkACLs property: Network ACLs for the resource.
              *
-             * @param networkACLs Network ACLs.
+             * @param networkACLs Network ACLs for the resource.
              * @return the next definition stage.
              */
             Update withNetworkACLs(SignalRNetworkACLs networkACLs);
@@ -588,10 +656,10 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
              * connection with AuthType=aad won't work..
              *
-             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
              *     AuthType=aad won't work.
              * @return the next definition stage.
              */
@@ -629,7 +697,7 @@ public interface SignalRResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
+     * @return the access keys of the resource along with {@link Response}.
      */
     Response<SignalRKeys> listKeysWithResponse(Context context);
 

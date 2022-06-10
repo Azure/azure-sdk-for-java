@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleAdWordsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("GoogleAdWords")
 @Fluent
 public final class GoogleAdWordsLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleAdWordsLinkedService.class);
-
     /*
      * Google AdWords service linked service properties.
      */
@@ -62,6 +59,31 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     @Override
     public GoogleAdWordsLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
+        return this;
+    }
+
+    /**
+     * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object connectionProperties() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionProperties();
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the GoogleAdWordsLinkedService object itself.
+     */
+    public GoogleAdWordsLinkedService withConnectionProperties(Object connectionProperties) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GoogleAdWordsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionProperties(connectionProperties);
         return this;
     }
 
@@ -349,7 +371,7 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
@@ -357,4 +379,6 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GoogleAdWordsLinkedService.class);
 }

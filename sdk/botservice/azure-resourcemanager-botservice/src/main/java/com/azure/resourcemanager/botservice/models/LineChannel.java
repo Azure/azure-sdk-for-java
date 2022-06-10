@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LineChannel")
 @Fluent
 public final class LineChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LineChannel.class);
-
     /*
      * The set of properties specific to line channel resource
      */
@@ -41,6 +37,20 @@ public final class LineChannel extends Channel {
      */
     public LineChannel withProperties(LineChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LineChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LineChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

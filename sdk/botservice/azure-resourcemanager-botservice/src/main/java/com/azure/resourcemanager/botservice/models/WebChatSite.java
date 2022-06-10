@@ -6,14 +6,11 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A site for the Webchat channel. */
 @Fluent
-public final class WebChatSite {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebChatSite.class);
-
+public class WebChatSite {
     /*
      * Site Id
      */
@@ -49,8 +46,8 @@ public final class WebChatSite {
     /*
      * Whether this site is enabled for preview versions of Webchat
      */
-    @JsonProperty(value = "enablePreview", required = true)
-    private boolean enablePreview;
+    @JsonProperty(value = "isWebchatPreviewEnabled", required = true)
+    private boolean isWebchatPreviewEnabled;
 
     /**
      * Get the siteId property: Site Id.
@@ -122,22 +119,22 @@ public final class WebChatSite {
     }
 
     /**
-     * Get the enablePreview property: Whether this site is enabled for preview versions of Webchat.
+     * Get the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
      *
-     * @return the enablePreview value.
+     * @return the isWebchatPreviewEnabled value.
      */
-    public boolean enablePreview() {
-        return this.enablePreview;
+    public boolean isWebchatPreviewEnabled() {
+        return this.isWebchatPreviewEnabled;
     }
 
     /**
-     * Set the enablePreview property: Whether this site is enabled for preview versions of Webchat.
+     * Set the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
      *
-     * @param enablePreview the enablePreview value to set.
+     * @param isWebchatPreviewEnabled the isWebchatPreviewEnabled value to set.
      * @return the WebChatSite object itself.
      */
-    public WebChatSite withEnablePreview(boolean enablePreview) {
-        this.enablePreview = enablePreview;
+    public WebChatSite withIsWebchatPreviewEnabled(boolean isWebchatPreviewEnabled) {
+        this.isWebchatPreviewEnabled = isWebchatPreviewEnabled;
         return this;
     }
 
@@ -148,9 +145,11 @@ public final class WebChatSite {
      */
     public void validate() {
         if (siteName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property siteName in model WebChatSite"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebChatSite.class);
 }

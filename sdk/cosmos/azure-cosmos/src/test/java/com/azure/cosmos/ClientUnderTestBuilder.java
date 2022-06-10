@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -36,6 +37,9 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
         this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
         this.clientTelemetryEnabled(builder.isClientTelemetryEnabled());
+        ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+        accessor.setCosmosClientApiType(this, builder.apiType());
     }
 
     @Override
@@ -50,7 +54,9 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getConsistencyLevel(),
                 this.configs(),
                 this.getCredential(),
-                this.isContentResponseOnWriteEnabled());
+                this.isContentResponseOnWriteEnabled(),
+                this.apiType(),
+                this.getClientTelemetryConfig());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

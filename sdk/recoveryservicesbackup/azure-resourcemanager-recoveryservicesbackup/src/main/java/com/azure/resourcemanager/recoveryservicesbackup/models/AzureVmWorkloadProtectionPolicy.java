@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("AzureWorkload")
 @Fluent
 public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectionPolicy.class);
-
     /*
      * Type of workload for the backup management
      */
@@ -127,6 +123,14 @@ public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
     @Override
     public AzureVmWorkloadProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectionPolicy withResourceGuardOperationRequests(
+        List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

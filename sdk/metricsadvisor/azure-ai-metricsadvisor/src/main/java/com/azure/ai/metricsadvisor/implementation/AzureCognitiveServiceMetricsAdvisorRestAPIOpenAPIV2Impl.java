@@ -192,7 +192,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      */
     @Host("{endpoint}/metricsadvisor/v1.0")
     @ServiceInterface(name = "AzureCognitiveServic")
-    private interface AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service {
+    public interface AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service {
         @Get("/stats/latest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)

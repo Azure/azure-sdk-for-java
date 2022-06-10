@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -39,10 +40,22 @@ public final class PathsFlushDataHeaders {
     private Long contentLength;
 
     /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String xMsEncryptionKeySha256;
+
+    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
@@ -55,6 +68,32 @@ public final class PathsFlushDataHeaders {
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsFlushDataHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsFlushDataHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        if (rawHeaders.getValue("Content-Length") != null) {
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
+        }
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -144,6 +183,26 @@ public final class PathsFlushDataHeaders {
     }
 
     /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
+     * @return the PathsFlushDataHeaders object itself.
+     */
+    public PathsFlushDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      *
      * @return the xMsRequestId value.
@@ -160,6 +219,26 @@ public final class PathsFlushDataHeaders {
      */
     public PathsFlushDataHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @return the xMsRequestServerEncrypted value.
+     */
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     *
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the PathsFlushDataHeaders object itself.
+     */
+    public PathsFlushDataHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
     }
 

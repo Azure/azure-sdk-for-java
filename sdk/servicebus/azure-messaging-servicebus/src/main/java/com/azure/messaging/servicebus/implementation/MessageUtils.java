@@ -13,23 +13,28 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import reactor.core.publisher.Signal;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,6 +45,9 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
 
 
 /**
@@ -212,6 +220,9 @@ public final class MessageUtils {
                     state = deferredOutcome;
                 }
                 break;
+            case RELEASED:
+                state = Released.getInstance();
+                break;
             default:
                 state = null;
         }
@@ -290,7 +301,10 @@ public final class MessageUtils {
 
     private static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
         TransactionalState transactionalState = new TransactionalState();
-        transactionalState.setTxnId(new Binary(transactionId.array()));
+
+        // Use Binary.create(ByteBuffer) as it'll handle differences between HeapByteBuffer and DirectByteBuffer, as
+        // well as handling when the ByteBuffer is read-only.
+        transactionalState.setTxnId(Binary.create(transactionId));
         transactionalState.setOutcome(outcome);
         return transactionalState;
     }
@@ -322,4 +336,37 @@ public final class MessageUtils {
         }
         return serviceBusMessage;
     }
+
+
+    /**
+     * Convert DescribedType to origin type based on the descriptor.
+     * @param describedType Service bus defined DescribedType.
+     * @param <T> Including URI, OffsetDateTime and Duration
+     * @return Original type value.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T describedToOrigin(DescribedType describedType) {
+        Object descriptor = describedType.getDescriptor();
+        Object described = describedType.getDescribed();
+        Objects.requireNonNull(descriptor, "descriptor of described type cannot be null.");
+        Objects.requireNonNull(described, "described of described type cannot be null.");
+
+        if (ServiceBusConstants.URI_SYMBOL.equals(descriptor)) {
+            try {
+                return (T) URI.create((String) described);
+            } catch (IllegalArgumentException ex) {
+                return (T) described;
+            }
+        } else if (ServiceBusConstants.OFFSETDATETIME_SYMBOL.equals(descriptor)) {
+            // Convert tick value to OffsetDateTime
+            long tickTime = (long) described - EPOCH_TICKS;
+            int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
+            long seconds = tickTime / TICK_PER_SECOND;
+            return (T) OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
+        } else if (ServiceBusConstants.DURATION_SYMBOL.equals(descriptor)) {
+            return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
+        }
+        return (T) described;
+    }
+
 }

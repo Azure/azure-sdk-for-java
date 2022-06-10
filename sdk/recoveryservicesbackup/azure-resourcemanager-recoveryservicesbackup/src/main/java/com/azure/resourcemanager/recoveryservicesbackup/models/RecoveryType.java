@@ -36,7 +36,11 @@ public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
         return fromString(name, RecoveryType.class);
     }
 
-    /** @return known RecoveryType values. */
+    /**
+     * Gets known RecoveryType values.
+     *
+     * @return known RecoveryType values.
+     */
     public static Collection<RecoveryType> values() {
         return values(RecoveryType.class);
     }

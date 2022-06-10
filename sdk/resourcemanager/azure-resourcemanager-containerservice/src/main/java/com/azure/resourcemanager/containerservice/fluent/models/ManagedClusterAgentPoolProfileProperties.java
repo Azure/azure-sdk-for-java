@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
@@ -15,14 +14,13 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,8 +29,6 @@ import java.util.Map;
 /** Properties for the container service agent pool profile. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
-
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 0 to 1000 (inclusive) for user pools and in the range of
@@ -118,7 +114,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Windows.
      */
     @JsonProperty(value = "osSKU")
-    private Ossku osSku;
+    private OSSku osSku;
 
     /*
      * The maximum number of nodes for auto-scaling
@@ -161,17 +157,32 @@ public class ManagedClusterAgentPoolProfileProperties {
     private AgentPoolMode mode;
 
     /*
-     * The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same
-     * Kubernetes version. The node pool version must have the same major
-     * version as the control plane. The node pool minor version must be within
-     * two minor versions of the control plane version. The node pool version
-     * cannot be greater than the control plane version. For more information
-     * see [upgrading a node
+     * The version of Kubernetes specified by the user. Both patch version
+     * <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are
+     * supported. When <major.minor> is specified, the latest supported GA
+     * patch version is chosen automatically. Updating the cluster with the
+     * same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will
+     * not trigger an upgrade, even if a newer patch version is available. As a
+     * best practice, you should upgrade all node pools in an AKS cluster to
+     * the same Kubernetes version. The node pool version must have the same
+     * major version as the control plane. The node pool minor version must be
+     * within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more
+     * information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      */
     @JsonProperty(value = "orchestratorVersion")
     private String orchestratorVersion;
+
+    /*
+     * The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version <major.minor.patch>,
+     * this field will be exactly equal to it. If orchestratorVersion is
+     * <major.minor>, this field will contain the full <major.minor.patch>
+     * version being used.
+     */
+    @JsonProperty(value = "currentOrchestratorVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentOrchestratorVersion;
 
     /*
      * The version of node image
@@ -192,9 +203,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     private String provisioningState;
 
     /*
-     * Describes whether the Agent Pool is Running or Stopped
+     * When an Agent Pool is first created it is initially Running. The Agent
+     * Pool can be stopped by setting this field to Stopped. A stopped Agent
+     * Pool stops all of its VMs and does not accrue billing charges. An Agent
+     * Pool can only be stopped if it is Running and provisioning state is
+     * Succeeded
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "powerState")
     private PowerState powerState;
 
     /*
@@ -561,7 +576,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.osSku;
     }
 
@@ -571,7 +586,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * @param osSku the osSku value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfileProperties withOsSku(OSSku osSku) {
         this.osSku = osSku;
         return this;
     }
@@ -703,11 +718,14 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Get the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @return the orchestratorVersion value.
@@ -717,11 +735,14 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Set the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
+     * Set the orchestratorVersion property: The version of Kubernetes specified by the user. Both patch version
+     * &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported. When
+     * &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating the
+     * cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger an
+     * upgrade, even if a newer patch version is available. As a best practice, you should upgrade all node pools in an
+     * AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control
+     * plane. The node pool minor version must be within two minor versions of the control plane version. The node pool
+     * version cannot be greater than the control plane version. For more information see [upgrading a node
      * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
      *
      * @param orchestratorVersion the orchestratorVersion value to set.
@@ -730,6 +751,18 @@ public class ManagedClusterAgentPoolProfileProperties {
     public ManagedClusterAgentPoolProfileProperties withOrchestratorVersion(String orchestratorVersion) {
         this.orchestratorVersion = orchestratorVersion;
         return this;
+    }
+
+    /**
+     * Get the currentOrchestratorVersion property: The version of Kubernetes the Agent Pool is running. If
+     * orchestratorVersion is a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal to
+     * it. If orchestratorVersion is &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
+     * version being used.
+     *
+     * @return the currentOrchestratorVersion value.
+     */
+    public String currentOrchestratorVersion() {
+        return this.currentOrchestratorVersion;
     }
 
     /**
@@ -771,12 +804,27 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     * Get the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
      *
      * @return the powerState value.
      */
     public PowerState powerState() {
         return this.powerState;
+    }
+
+    /**
+     * Set the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
+     *
+     * @param powerState the powerState value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withPowerState(PowerState powerState) {
+        this.powerState = powerState;
+        return this;
     }
 
     /**

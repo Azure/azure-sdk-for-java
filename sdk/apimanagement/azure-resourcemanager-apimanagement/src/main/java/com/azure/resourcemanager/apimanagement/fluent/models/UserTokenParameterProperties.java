@@ -7,15 +7,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.KeyType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Parameters supplied to the Get User Token operation. */
 @Fluent
 public final class UserTokenParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserTokenParameterProperties.class);
-
     /*
      * The Key to be used to generate token for user.
      */
@@ -80,16 +77,18 @@ public final class UserTokenParameterProperties {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyType in model UserTokenParameterProperties"));
         }
         if (expiry() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expiry in model UserTokenParameterProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserTokenParameterProperties.class);
 }

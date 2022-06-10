@@ -12,6 +12,7 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateIdentity;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateUpdateParameters;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
@@ -68,6 +69,10 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         }
     }
 
+    public ImageTemplatePropertiesValidate validation() {
+        return this.innerModel().validation();
+    }
+
     public List<ImageTemplateDistributor> distribute() {
         List<ImageTemplateDistributor> inner = this.innerModel().distribute();
         if (inner != null) {
@@ -97,12 +102,24 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this.innerModel().vmProfile();
     }
 
+    public String stagingResourceGroup() {
+        return this.innerModel().stagingResourceGroup();
+    }
+
+    public String exactStagingResourceGroup() {
+        return this.innerModel().exactStagingResourceGroup();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ImageTemplateInner innerModel() {
@@ -255,6 +272,11 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
         return this;
     }
 
+    public ImageTemplateImpl withValidation(ImageTemplatePropertiesValidate validation) {
+        this.innerModel().withValidation(validation);
+        return this;
+    }
+
     public ImageTemplateImpl withDistribute(List<ImageTemplateDistributor> distribute) {
         this.innerModel().withDistribute(distribute);
         return this;
@@ -267,6 +289,11 @@ public final class ImageTemplateImpl implements ImageTemplate, ImageTemplate.Def
 
     public ImageTemplateImpl withVmProfile(ImageTemplateVmProfile vmProfile) {
         this.innerModel().withVmProfile(vmProfile);
+        return this;
+    }
+
+    public ImageTemplateImpl withStagingResourceGroup(String stagingResourceGroup) {
+        this.innerModel().withStagingResourceGroup(stagingResourceGroup);
         return this;
     }
 

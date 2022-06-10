@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.GcmCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub GcmCredential. */
-@JsonFlatten
 @Fluent
-public class GcmCredential {
+public final class GcmCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GcmCredential.class);
 
     /*
-     * The FCM legacy endpoint. Default value is
-     * 'https://fcm.googleapis.com/fcm/send'
+     * Properties of NotificationHub GcmCredential.
      */
-    @JsonProperty(value = "properties.gcmEndpoint")
-    private String gcmEndpoint;
+    @JsonProperty(value = "properties")
+    private GcmCredentialProperties innerProperties;
 
-    /*
-     * The Google API key.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub GcmCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.googleApiKey")
-    private String googleApiKey;
+    private GcmCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
@@ -35,7 +36,7 @@ public class GcmCredential {
      * @return the gcmEndpoint value.
      */
     public String gcmEndpoint() {
-        return this.gcmEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().gcmEndpoint();
     }
 
     /**
@@ -45,7 +46,10 @@ public class GcmCredential {
      * @return the GcmCredential object itself.
      */
     public GcmCredential withGcmEndpoint(String gcmEndpoint) {
-        this.gcmEndpoint = gcmEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GcmCredentialProperties();
+        }
+        this.innerProperties().withGcmEndpoint(gcmEndpoint);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class GcmCredential {
      * @return the googleApiKey value.
      */
     public String googleApiKey() {
-        return this.googleApiKey;
+        return this.innerProperties() == null ? null : this.innerProperties().googleApiKey();
     }
 
     /**
@@ -65,7 +69,10 @@ public class GcmCredential {
      * @return the GcmCredential object itself.
      */
     public GcmCredential withGoogleApiKey(String googleApiKey) {
-        this.googleApiKey = googleApiKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GcmCredentialProperties();
+        }
+        this.innerProperties().withGoogleApiKey(googleApiKey);
         return this;
     }
 
@@ -75,5 +82,8 @@ public class GcmCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

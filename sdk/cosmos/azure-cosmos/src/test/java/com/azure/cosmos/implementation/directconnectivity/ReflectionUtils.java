@@ -8,8 +8,10 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -29,7 +31,10 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
@@ -173,12 +178,20 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
+    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
+    }
+
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
         invokeMethod(CosmosClientBuilder.class, cosmosClientBuilder, "buildConnectionPolicy");
     }
 
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
+    }
+
+    public static ApiType getApiType(RxDocumentClientImpl rxDocumentClient) {
+        return get(ApiType.class, rxDocumentClient, "apiType");
     }
 
     public static Future<?> getFuture() {
@@ -211,6 +224,10 @@ public class ReflectionUtils {
 
     public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
         set(client, httpClient, "httpClient");
+    }
+
+    public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {
+        return get(HttpHeaders.class, httpRequest, "headers");
     }
 
     public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
@@ -310,6 +327,10 @@ public class ReflectionUtils {
         return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
     }
 
+    public static HttpClient getHttpClient(RxStoreModel rxStoreModel) {
+        return get(HttpClient.class, rxStoreModel, "httpClient");
+    }
+
     public static HttpClient getHttpClient(ClientTelemetry telemetry) {
         return get(HttpClient.class, telemetry, "httpClient");
     }
@@ -331,5 +352,9 @@ public class ReflectionUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
+        return get(LocationCache.class, globalEndpointManager, "locationCache");
     }
 }

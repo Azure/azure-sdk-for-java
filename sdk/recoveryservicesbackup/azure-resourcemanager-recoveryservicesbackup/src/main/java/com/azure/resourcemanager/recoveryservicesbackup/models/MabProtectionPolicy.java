@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Mab container-specific backup policy. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("MAB")
 @Fluent
 public final class MabProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabProtectionPolicy.class);
-
     /*
      * Backup schedule of backup policy.
      */
@@ -74,6 +71,13 @@ public final class MabProtectionPolicy extends ProtectionPolicy {
     @Override
     public MabProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MabProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

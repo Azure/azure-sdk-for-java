@@ -1,6 +1,6 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,117 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.11.2 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 4.11.1 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 4.11.0 (2022-04-12)
+
+### Features Added
+- Added system event classes for Azure Healthcare FHIR Services under package `com.azure.messaging.eventgrid.systemevents`,
+  `HealthcareFhirResourceCreatedEventData`, `HealthcareFhirResourceDeletedEventData` and `HealthcareFhirResourceUpdatedEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 4.10.0 (2022-03-10)
+
+### Breaking Changes
+- Added new enum values for `MediaJobErrorCategory` and `MediaJobErrorCode`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 4.9.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `EventGridPublisherClientBuilder`.
+- Added a new method `retryOptions` to `EventGridPublisherClientBuilder`.
+- Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
+`ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
+`ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
+`ResourceWriteSuccessEventData`. 
+    - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
+    - Deprecated 
+      `getHttpRequest()` and replaced it with `getResourceAuthorization()`,
+      `setHttpRequest(String httpRequest)` and replaced it with `setResourceAuthorization(ResourceAuthorization authorization)`,
+      `getClaims()` and replaced it with `getResourceClaims()`,
+      `setClaims(String claims)` and replaced it with `setResourceClaims(Map<String, String> claims)`,
+      `getAuthorization()` and replaced it with `getResourceHttpRequest()`,
+      `setAuthorization(String authorization)` and replaced it with `setResourceHttpRequest(ResourceHttpRequest httpRequest)`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 4.8.0 (2022-01-14)
+
+### Features Added
+- Added new properties
+    - `deleteLocation` to `AcsRecordingChunkInfoProperties`
+    - `recordingChannelType`, `recordingContentType`, `recordingFormatType` to `AcsRecordingFileStatusUpdatedEventData`
+    - `connectedRegistry`, `location` to `ContainerRegistryImagePushedEventData`, `ContainerRegistryImageDeletedEventData`,
+      `ContainerRegistryEventConnectedRegistry`, `ContainerRegistryChartPushedEventData`,
+      `ContainerRegistryChartDeletedEventData`, `ContainerResistryArtifactEventData`
+
+- Added new model types,
+    - `ContainerRegistryEventConnectedRegistry`, `RecordingChannelType`, `RecordingContentType`, `RecordingFormatType`
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.24.1`.
+- Update `azure-core-http-netty` dependency to `1.11.6`.
+
+## 4.7.1 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 4.7.0 (2021-10-13)
+
+### Features Added
+- Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
+  `ApiManagementApiReleaseCreatedEventData`, `ApiManagementApiReleaseDeletedEventData`, 
+  `ApiManagementApiReleaseUpdatedEventData`, `ApiManagementApiUpdatedEventData`, `ApiManagementProductCreatedEventData`,
+  `ApiManagementProductDeletedEventData`, `ApiManagementProductUpdatedEventData`,
+  `ApiManagementSubscriptionCreatedEventData`, `ApiManagementSubscriptionDeletedEventData`,
+  `ApiManagementSubscriptionUpdatedEventData`,`ApiManagementUserCreatedEventData`, `ApiManagementUserDeletedEventData`,
+  `ApiManagementUserUpdatedEventData`. 
+- Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
+- Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.21.0`.
+- Update `azure-core-http-netty` dependency to `1.11.1`.
 
 ## 4.6.1 (2021-09-10)
 

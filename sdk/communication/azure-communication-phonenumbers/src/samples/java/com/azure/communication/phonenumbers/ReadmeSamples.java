@@ -29,6 +29,7 @@ public class ReadmeSamples {
      * @return the Phone Number Client.
      */
     public PhoneNumbersClient createPhoneNumberClient() {
+        // BEGIN: readme-sample-createPhoneNumberClient
         // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         AzureKeyCredential keyCredential = new AzureKeyCredential("SECRET");
@@ -41,6 +42,7 @@ public class ReadmeSamples {
             .credential(keyCredential)
             .httpClient(httpClient)
             .buildClient();
+        // END: readme-sample-createPhoneNumberClient
 
         return phoneNumberClient;
     }
@@ -51,6 +53,7 @@ public class ReadmeSamples {
      * @return the Phone Number Client.
      */
     public PhoneNumbersClient createPhoneNumberClientWithAAD() {
+        // BEGIN: readme-sample-createPhoneNumberClientWithAAD
         // You can find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -62,6 +65,7 @@ public class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(httpClient)
             .buildClient();
+        // END: readme-sample-createPhoneNumberClientWithAAD
 
         return phoneNumberClient;
     }
@@ -73,9 +77,13 @@ public class ReadmeSamples {
      */
     public PurchasedPhoneNumber getPurchasedPhoneNumber() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+
+        // BEGIN: readme-sample-getPurchasedPhoneNumber
         PurchasedPhoneNumber phoneNumber = phoneNumberClient.getPurchasedPhoneNumber("+18001234567");
         System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
         System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
+        // END: readme-sample-getPurchasedPhoneNumber
+
         return phoneNumber;
     }
 
@@ -85,17 +93,21 @@ public class ReadmeSamples {
      * @return all purchased phone number.
      */
     public PagedIterable<PurchasedPhoneNumber> listPhoneNumbers() {
+        // BEGIN: readme-sample-listPhoneNumbers
         PagedIterable<PurchasedPhoneNumber> phoneNumbers = createPhoneNumberClient().listPurchasedPhoneNumbers(Context.NONE);
         PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator().next();
         System.out.println("Phone Number Value: " + phoneNumber.getPhoneNumber());
         System.out.println("Phone Number Country Code: " + phoneNumber.getCountryCode());
+        // END: readme-sample-listPhoneNumbers
+
         return phoneNumbers;
     }
 
     /**
      * Search for available phone numbers and purchase phone numbers
      */
-    public void searchAvailablePhoneNumbersandPurchasePhoneNumbers() {
+    public void searchAvailablePhoneNumbersAndPurchasePhoneNumbers() {
+        // BEGIN: readme-sample-searchAvailablePhoneNumbers
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities()
             .setCalling(PhoneNumberCapabilityType.INBOUND)
@@ -114,10 +126,13 @@ public class ReadmeSamples {
             System.out.println("Search expires by: " + searchResult.getSearchExpiresBy());
             System.out.println("Phone number costs:" + searchResult.getCost().getAmount());
         }
+        // END: readme-sample-searchAvailablePhoneNumbers
 
+        // BEGIN: readme-sample-purchasePhoneNumbers
         PollResponse<PhoneNumberOperation> purchaseResponse =
             phoneNumberClient.beginPurchasePhoneNumbers(searchId, Context.NONE).waitForCompletion();
         System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
+        // END: readme-sample-purchasePhoneNumbers
     }
 
     /**
@@ -125,9 +140,12 @@ public class ReadmeSamples {
      */
     public void releasePhoneNumber() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+
+        // BEGIN: readme-sample-releasePhoneNumber
         PollResponse<PhoneNumberOperation> releaseResponse =
             phoneNumberClient.beginReleasePhoneNumber("+18001234567", Context.NONE).waitForCompletion();
         System.out.println("Release phone number is complete: " + releaseResponse.getStatus());
+        // END: readme-sample-releasePhoneNumber
     }
 
     /**
@@ -135,6 +153,8 @@ public class ReadmeSamples {
      */
     public void updatePhoneNumberCapabilities() {
         PhoneNumbersClient phoneNumberClient = createPhoneNumberClient();
+
+        // BEGIN: readme-sample-updatePhoneNumberCapabilities
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities
             .setCalling(PhoneNumberCapabilityType.INBOUND)
@@ -148,5 +168,6 @@ public class ReadmeSamples {
             System.out.println("Phone Number Calling capabilities: " + phoneNumber.getCapabilities().getCalling()); //Phone Number Calling capabilities: inbound
             System.out.println("Phone Number SMS capabilities: " + phoneNumber.getCapabilities().getSms()); //Phone Number SMS capabilities: inbound+outbound
         }
+        // END: readme-sample-updatePhoneNumberCapabilities
     }
 }

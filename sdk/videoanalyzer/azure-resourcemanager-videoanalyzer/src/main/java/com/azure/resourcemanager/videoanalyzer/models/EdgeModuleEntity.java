@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner;
 import java.util.UUID;
@@ -34,18 +33,18 @@ public interface EdgeModuleEntity {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the edgeModuleId property: Internal ID generated for the instance of the Video Analyzer edge module.
      *
      * @return the edgeModuleId value.
      */
     UUID edgeModuleId();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner object.
@@ -166,7 +165,7 @@ public interface EdgeModuleEntity {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response}.
      */
     Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
         ListProvisioningTokenInput parameters, Context context);

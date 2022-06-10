@@ -55,6 +55,11 @@ public abstract class CosmosConfigurationSupport {
         return mappingContext;
     }
 
+    /**
+     * Get the mapping base package name.
+     *
+     * @return Base mapping package name set.
+     */
     protected Collection<String> getMappingBasePackages() {
         final Package mappingBasePackage = getClass().getPackage();
         return Collections.singleton(mappingBasePackage == null ? null : mappingBasePackage.getName());

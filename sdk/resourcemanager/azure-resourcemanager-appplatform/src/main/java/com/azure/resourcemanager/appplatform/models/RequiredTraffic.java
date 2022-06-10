@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Required inbound or outbound traffic for Azure Spring Cloud instance. */
+/** Required inbound or outbound traffic for Azure Spring Apps resource. */
 @Immutable
 public final class RequiredTraffic {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequiredTraffic.class);
-
     /*
      * The protocol of required traffic
      */

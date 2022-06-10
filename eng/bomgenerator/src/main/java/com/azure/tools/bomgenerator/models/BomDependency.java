@@ -5,6 +5,7 @@ package com.azure.tools.bomgenerator.models;
 
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 
+
 public class BomDependency extends BomDependencyNoVersion {
     private String version;
     private ScopeType scope;

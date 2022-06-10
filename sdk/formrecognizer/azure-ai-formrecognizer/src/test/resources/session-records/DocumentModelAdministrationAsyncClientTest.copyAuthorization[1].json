@@ -1,0 +1,43 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2022-06-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5215edf1-771b-4618-9bf1-fb0230bafe63",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "368",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "0aaa3577-a8d8-4bd8-845f-04c63b84bcc7",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"java_copy_model_test\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2022-06-30-preview\",\n  \"accessToken\": \"36740680-82c3-40ea-8aee-d47af84b400d\",\n  \"expirationDateTime\": \"2022-06-01T23:02:34Z\"\n}",
+      "Date" : "Wed, 01 Jun 2022 22:02:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2022-06-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.5 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aa88b6cc-c9e2-4909-8723-24e3adee28e5"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "48",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2a426045-d21c-4a45-bcbf-35eea49a17c1",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 01 Jun 2022 22:02:34 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

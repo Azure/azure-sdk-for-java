@@ -1,6 +1,6 @@
 ## Guide for migrating to `com.azure.resourcemanager.**` from `com.microsoft.azure.management.**`
 
-This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
+This document is intended for users that are familiar with an older version of the Java SDK for management libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
 **For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)**
@@ -8,7 +8,7 @@ to the next version of Azure resource management libraries (`com.azure.resourcem
 ## Table of contents
 
 * [Prerequisites](#prerequisites)
-* [Updated Maven depedencies](#updated-maven-dependencies)
+* [Updated Maven dependencies](#updated-maven-dependencies)
 * [General Changes](#general-changes)
   * [Authentication](#authentication)
   * [AzureResourceManager Class](#azureresourcemanager-class)
@@ -41,7 +41,7 @@ The important breaking changes are listed in the following sections:
 
 In old version (`com.microsoft.azure.management.**`), ApplicationTokenCredentials is created with all the credential parameters.
 
-In new version (`com.azure.resourcemanager.**`), in order to provide an unified authentication based on Azure Identity for all Azure Java SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface. 
+In new version (`com.azure.resourcemanager.**`), in order to provide a unified authentication based on Azure Identity for all Azure Java SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface. 
 
 To the show the code snippets for the change:
 
@@ -54,8 +54,7 @@ ApplicationTokenCredential = new ApplicationTokenCredentials("<ClientId>", "<Ten
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L72-L77 -->
-```java
+```java readme-sample-authenticationMigration
 TokenCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<ClientId>")
     .clientSecret("<ClientSecret>")
@@ -100,8 +99,7 @@ Azure azure = Azure.configure()
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L81-L84 -->
-```java
+```java readme-sample-customizedPolicy
 AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new CustomizedPolicy())
     .authenticate(credential, profile)
@@ -126,8 +124,7 @@ Azure azure = Azure.authenticate(client, "<TenantId>")
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L95-L102 -->
-```java
+```java readme-sample-customizedHttpClient
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
     .build();
@@ -158,8 +155,7 @@ try {
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L106-L114 -->
-```java
+```java readme-sample-errorHandling
 final String resourceGroupName = "invalid resource group name";
 try {
     azure.resourceGroups().define(resourceGroupName)
@@ -242,8 +238,7 @@ Observable.merge(
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L133-L166 -->
-```java
+```java readme-sample-asynchronizeCreation
 final List<Object> createdResources = new ArrayList<>();
 azure.resourceGroups().define(rgName).withRegion(region).create();
 Flux.merge(
@@ -291,4 +286,4 @@ More samples can be found at :
 
 ## Need help?
 
-If you have encountered an issue during migration, please file an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues) and make sure you add the "Preview" label to the issue
+If you have encountered an issue during migration, please file an issue via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) and make sure you add the "Preview" label to the issue

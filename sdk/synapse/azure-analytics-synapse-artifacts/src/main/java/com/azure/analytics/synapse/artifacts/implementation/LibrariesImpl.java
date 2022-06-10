@@ -60,7 +60,7 @@ public final class LibrariesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientLibra")
-    private interface LibrariesService {
+    public interface LibrariesService {
         @Get("/libraries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -149,14 +149,13 @@ public final class LibrariesImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LibraryResource>> listSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -175,12 +174,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LibraryResource>> listSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -197,7 +197,7 @@ public final class LibrariesImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LibraryResource> listAsync() {
@@ -211,7 +211,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LibraryResource> listAsync(Context context) {
@@ -224,7 +224,7 @@ public final class LibrariesImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResource> list() {
@@ -238,7 +238,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LibraryResource> list(Context context) {
@@ -253,15 +253,14 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> flushWithResponseAsync(String libraryName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.flush(
-                                this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context));
+                context -> service.flush(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
@@ -273,12 +272,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> flushWithResponseAsync(String libraryName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.flush(this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context);
+        return service.flush(this.client.getEndpoint(), apiVersion, libraryName, accept, context);
     }
 
     /**
@@ -289,7 +289,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> flushAsync(String libraryName) {
@@ -313,7 +313,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> flushAsync(String libraryName, Context context) {
@@ -352,7 +352,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> flushWithResponse(String libraryName, Context context) {
@@ -366,15 +366,16 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getOperationResultWithResponseAsync(String operationId) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getOperationResult(
-                                this.client.getEndpoint(), this.client.getApiVersion(), operationId, accept, context));
+                                this.client.getEndpoint(), apiVersion, operationId, accept, context));
     }
 
     /**
@@ -385,13 +386,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getOperationResultWithResponseAsync(String operationId, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getOperationResult(
-                this.client.getEndpoint(), this.client.getApiVersion(), operationId, accept, context);
+        return service.getOperationResult(this.client.getEndpoint(), apiVersion, operationId, accept, context);
     }
 
     /**
@@ -401,7 +402,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getOperationResultAsync(String operationId) {
@@ -424,7 +425,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getOperationResultAsync(String operationId, Context context) {
@@ -461,7 +462,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result for Library.
+     * @return operation result for Library along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResource> getOperationResultWithResponse(String operationId, Context context) {
@@ -476,15 +477,14 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> deleteWithResponseAsync(String libraryName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context));
+                context -> service.delete(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
@@ -496,12 +496,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> deleteWithResponseAsync(String libraryName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, libraryName, accept, context);
     }
 
     /**
@@ -512,7 +513,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> deleteAsync(String libraryName) {
@@ -536,7 +537,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> deleteAsync(String libraryName, Context context) {
@@ -575,7 +576,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> deleteWithResponse(String libraryName, Context context) {
@@ -590,15 +591,14 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getWithResponseAsync(String libraryName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context));
+                context -> service.get(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
@@ -610,12 +610,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResource>> getWithResponseAsync(String libraryName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, libraryName, accept, context);
     }
 
     /**
@@ -626,7 +627,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getAsync(String libraryName) {
@@ -650,7 +651,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getAsync(String libraryName, Context context) {
@@ -689,7 +690,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library.
+     * @return library along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResource> getWithResponse(String libraryName, Context context) {
@@ -704,15 +705,14 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> createWithResponseAsync(String libraryName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context));
+                context -> service.create(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
@@ -724,12 +724,13 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LibraryResourceInfo>> createWithResponseAsync(String libraryName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), libraryName, accept, context);
+        return service.create(this.client.getEndpoint(), apiVersion, libraryName, accept, context);
     }
 
     /**
@@ -740,7 +741,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> createAsync(String libraryName) {
@@ -764,7 +765,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResourceInfo> createAsync(String libraryName, Context context) {
@@ -803,7 +804,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInfo> createWithResponse(String libraryName, Context context) {
@@ -824,19 +825,20 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponseAsync(
             String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
         final String comp = "appendblock";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.append(
                                 this.client.getEndpoint(),
                                 comp,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 libraryName,
                                 blobConditionAppendPosition,
                                 content,
@@ -860,7 +862,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendWithResponseAsync(
@@ -870,11 +872,12 @@ public final class LibrariesImpl {
             Long blobConditionAppendPosition,
             Context context) {
         final String comp = "appendblock";
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.append(
                 this.client.getEndpoint(),
                 comp,
-                this.client.getApiVersion(),
+                apiVersion,
                 libraryName,
                 blobConditionAppendPosition,
                 content,
@@ -897,7 +900,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> appendAsync(
@@ -917,7 +920,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> appendAsync(String libraryName, Flux<ByteBuffer> content, long contentLength) {
@@ -941,7 +944,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> appendAsync(
@@ -1008,7 +1011,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendWithResponse(
@@ -1028,7 +1031,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LibraryResource>> listNextSinglePageAsync(String nextLink) {
@@ -1053,7 +1056,7 @@ public final class LibrariesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LibraryResource>> listNextSinglePageAsync(String nextLink, Context context) {

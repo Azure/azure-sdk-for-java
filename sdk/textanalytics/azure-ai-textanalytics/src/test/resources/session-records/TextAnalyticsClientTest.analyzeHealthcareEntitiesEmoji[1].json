@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs?stringIndexType=Utf16CodeUnit&loggingOptOut=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e3857c74-ca50-4a8b-862a-6a93f99a0ac3",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c4ca59cd-d327-4422-ad3d-8d1f18e0188e",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "126",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "390",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://tacanaryjava.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/0a7f4340-5bbf-42e7-b567-852e4be0cf05",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/8ca2feff-1079-4886-9e61-a4c1d49f0653?api-version=2022-04-01-preview",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5d294040-c238-4eb3-bd3d-a1afd75d281c",
+      "apim-request-id" : "9f8ad797-fa79-42c2-b5d3-157323d86734",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Tue, 10 Aug 2021 19:37:56 GMT"
+      "Date" : "Fri, 06 May 2022 17:44:01 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/0a7f4340-5bbf-42e7-b567-852e4be0cf05?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/8ca2feff-1079-4886-9e61-a4c1d49f0653?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "648dd996-e207-4ed2-ac87-817bb6f1542e"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e3334ed8-d279-43f2-9c46-ef2a00c5a3e4"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "58",
+      "content-length" : "589",
+      "x-envoy-upstream-service-time" : "46",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6f91f609-0a62-41d0-9059-34dbe516f8d2",
+      "apim-request-id" : "8ed22814-6e9d-4544-8e4b-75a122f32a0d",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"0a7f4340-5bbf-42e7-b567-852e4be0cf05\",\"lastUpdateDateTime\":\"2021-08-10T19:38:00Z\",\"createdDateTime\":\"2021-08-10T19:37:56Z\",\"expirationDateTime\":\"2021-08-11T19:37:56Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":20,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
-      "Date" : "Tue, 10 Aug 2021 19:38:01 GMT",
+      "Body" : "{\"jobId\":\"8ca2feff-1079-4886-9e61-a4c1d49f0653\",\"lastUpdateDateTime\":\"2022-05-06T17:44:01Z\",\"createdDateTime\":\"2022-05-06T17:44:00Z\",\"expirationDateTime\":\"2022-05-07T17:44:00Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-05-06T17:44:01.983601Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":20,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
+      "Date" : "Fri, 06 May 2022 17:44:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/0a7f4340-5bbf-42e7-b567-852e4be0cf05?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/8ca2feff-1079-4886-9e61-a4c1d49f0653?api-version=2022-04-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5dc3750d-cbeb-4d73-8854-19dbc0c8f612"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1e8b7f7f-a80d-4c56-8495-6397f2e49c73"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "52",
+      "content-length" : "589",
+      "x-envoy-upstream-service-time" : "41",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "527fa385-20b8-435a-ac27-e422c8f0d838",
+      "apim-request-id" : "b70c4f3d-3dde-4d75-8766-30a7e78ece83",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"0a7f4340-5bbf-42e7-b567-852e4be0cf05\",\"lastUpdateDateTime\":\"2021-08-10T19:38:00Z\",\"createdDateTime\":\"2021-08-10T19:37:56Z\",\"expirationDateTime\":\"2021-08-11T19:37:56Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":20,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
-      "Date" : "Tue, 10 Aug 2021 19:38:01 GMT",
+      "Body" : "{\"jobId\":\"8ca2feff-1079-4886-9e61-a4c1d49f0653\",\"lastUpdateDateTime\":\"2022-05-06T17:44:01Z\",\"createdDateTime\":\"2022-05-06T17:44:00Z\",\"expirationDateTime\":\"2022-05-07T17:44:00Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-05-06T17:44:01.983601Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":20,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
+      "Date" : "Fri, 06 May 2022 17:44:31 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

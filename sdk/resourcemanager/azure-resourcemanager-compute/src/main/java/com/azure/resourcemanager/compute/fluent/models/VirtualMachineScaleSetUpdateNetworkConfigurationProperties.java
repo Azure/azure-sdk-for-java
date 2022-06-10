@@ -6,11 +6,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -20,10 +18,6 @@ import java.util.List;
  */
 @Fluent
 public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualMachineScaleSetUpdateNetworkConfigurationProperties.class);
-
     /*
      * Whether this is a primary NIC on a virtual machine.
      */

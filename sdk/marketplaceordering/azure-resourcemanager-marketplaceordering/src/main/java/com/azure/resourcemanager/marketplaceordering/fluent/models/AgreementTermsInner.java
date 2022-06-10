@@ -5,19 +5,19 @@
 package com.azure.resourcemanager.marketplaceordering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Terms properties for provided Publisher/Offer/Plan tuple. */
-@JsonFlatten
 @Fluent
-public class AgreementTermsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementTermsInner.class);
+public final class AgreementTermsInner extends ProxyResource {
+    /*
+     * Represents the properties of the resource.
+     */
+    @JsonProperty(value = "properties")
+    private AgreementProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
@@ -25,60 +25,14 @@ public class AgreementTermsInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Publisher identifier string of image being deployed.
+    /**
+     * Get the innerProperties property: Represents the properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.publisher")
-    private String publisher;
-
-    /*
-     * Offer identifier string of image being deployed.
-     */
-    @JsonProperty(value = "properties.product")
-    private String product;
-
-    /*
-     * Plan identifier string of image being deployed.
-     */
-    @JsonProperty(value = "properties.plan")
-    private String plan;
-
-    /*
-     * Link to HTML with Microsoft and Publisher terms.
-     */
-    @JsonProperty(value = "properties.licenseTextLink")
-    private String licenseTextLink;
-
-    /*
-     * Link to the privacy policy of the publisher.
-     */
-    @JsonProperty(value = "properties.privacyPolicyLink")
-    private String privacyPolicyLink;
-
-    /*
-     * Link to HTML with Azure Marketplace terms.
-     */
-    @JsonProperty(value = "properties.marketplaceTermsLink")
-    private String marketplaceTermsLink;
-
-    /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
-     */
-    @JsonProperty(value = "properties.retrieveDatetime")
-    private OffsetDateTime retrieveDatetime;
-
-    /*
-     * Terms signature.
-     */
-    @JsonProperty(value = "properties.signature")
-    private String signature;
-
-    /*
-     * If any version of the terms have been accepted, otherwise false.
-     */
-    @JsonProperty(value = "properties.accepted")
-    private Boolean accepted;
+    private AgreementProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
@@ -95,7 +49,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the publisher value.
      */
     public String publisher() {
-        return this.publisher;
+        return this.innerProperties() == null ? null : this.innerProperties().publisher();
     }
 
     /**
@@ -105,7 +59,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withPublisher(String publisher) {
-        this.publisher = publisher;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withPublisher(publisher);
         return this;
     }
 
@@ -115,7 +72,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -125,7 +82,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withProduct(String product) {
-        this.product = product;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withProduct(product);
         return this;
     }
 
@@ -135,7 +95,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the plan value.
      */
     public String plan() {
-        return this.plan;
+        return this.innerProperties() == null ? null : this.innerProperties().plan();
     }
 
     /**
@@ -145,7 +105,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withPlan(String plan) {
-        this.plan = plan;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withPlan(plan);
         return this;
     }
 
@@ -155,7 +118,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the licenseTextLink value.
      */
     public String licenseTextLink() {
-        return this.licenseTextLink;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseTextLink();
     }
 
     /**
@@ -165,7 +128,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withLicenseTextLink(String licenseTextLink) {
-        this.licenseTextLink = licenseTextLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withLicenseTextLink(licenseTextLink);
         return this;
     }
 
@@ -175,7 +141,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the privacyPolicyLink value.
      */
     public String privacyPolicyLink() {
-        return this.privacyPolicyLink;
+        return this.innerProperties() == null ? null : this.innerProperties().privacyPolicyLink();
     }
 
     /**
@@ -185,7 +151,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withPrivacyPolicyLink(String privacyPolicyLink) {
-        this.privacyPolicyLink = privacyPolicyLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withPrivacyPolicyLink(privacyPolicyLink);
         return this;
     }
 
@@ -195,7 +164,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the marketplaceTermsLink value.
      */
     public String marketplaceTermsLink() {
-        return this.marketplaceTermsLink;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceTermsLink();
     }
 
     /**
@@ -205,7 +174,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withMarketplaceTermsLink(String marketplaceTermsLink) {
-        this.marketplaceTermsLink = marketplaceTermsLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withMarketplaceTermsLink(marketplaceTermsLink);
         return this;
     }
 
@@ -216,7 +188,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the retrieveDatetime value.
      */
     public OffsetDateTime retrieveDatetime() {
-        return this.retrieveDatetime;
+        return this.innerProperties() == null ? null : this.innerProperties().retrieveDatetime();
     }
 
     /**
@@ -227,7 +199,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withRetrieveDatetime(OffsetDateTime retrieveDatetime) {
-        this.retrieveDatetime = retrieveDatetime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withRetrieveDatetime(retrieveDatetime);
         return this;
     }
 
@@ -237,7 +212,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the signature value.
      */
     public String signature() {
-        return this.signature;
+        return this.innerProperties() == null ? null : this.innerProperties().signature();
     }
 
     /**
@@ -247,7 +222,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withSignature(String signature) {
-        this.signature = signature;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withSignature(signature);
         return this;
     }
 
@@ -257,7 +235,7 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the accepted value.
      */
     public Boolean accepted() {
-        return this.accepted;
+        return this.innerProperties() == null ? null : this.innerProperties().accepted();
     }
 
     /**
@@ -267,7 +245,10 @@ public class AgreementTermsInner extends ProxyResource {
      * @return the AgreementTermsInner object itself.
      */
     public AgreementTermsInner withAccepted(Boolean accepted) {
-        this.accepted = accepted;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgreementProperties();
+        }
+        this.innerProperties().withAccepted(accepted);
         return this;
     }
 
@@ -277,5 +258,8 @@ public class AgreementTermsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

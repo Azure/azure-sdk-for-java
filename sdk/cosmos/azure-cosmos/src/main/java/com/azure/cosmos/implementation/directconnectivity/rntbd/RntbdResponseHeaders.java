@@ -98,6 +98,8 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     @JsonProperty
     private final RntbdToken indexUtilization;
     @JsonProperty
+    private final RntbdToken queryExecutionInfo;
+    @JsonProperty
     private final RntbdToken quorumAckedLSN;
     @JsonProperty
     private final RntbdToken quorumAckedLocalLSN;
@@ -135,6 +137,8 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     private final RntbdToken xpRole;
     @JsonProperty
     private final RntbdToken backendRequestDurationMilliseconds;
+    @JsonProperty
+    private final RntbdToken correlatedActivityId;
 
     // endregion
 
@@ -174,6 +178,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.queriesPerformed = this.get(RntbdResponseHeader.QueriesPerformed);
         this.queryMetrics = this.get(RntbdResponseHeader.QueryMetrics);
         this.indexUtilization = this.get(RntbdResponseHeader.IndexUtilization);
+        this.queryExecutionInfo = this.get(RntbdResponseHeader.QueryExecutionInfo);
         this.quorumAckedLSN = this.get(RntbdResponseHeader.QuorumAckedLSN);
         this.quorumAckedLocalLSN = this.get(RntbdResponseHeader.QuorumAckedLocalLSN);
         this.readsPerformed = this.get(RntbdResponseHeader.ReadsPerformed);
@@ -193,6 +198,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.writesPerformed = this.get(RntbdResponseHeader.WritesPerformed);
         this.xpRole = this.get(RntbdResponseHeader.XPRole);
         this.backendRequestDurationMilliseconds = this.get(RntbdResponseHeader.BackendRequestDurationMilliseconds);
+        this.correlatedActivityId = this.get(RntbdResponseHeader.CorrelatedActivityId);
     }
 
     boolean isPayloadPresent() {
@@ -276,6 +282,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.mapValue(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, String::toString, headers);
         this.mapValue(this.queryMetrics, BackendHeaders.QUERY_METRICS, String::toString, headers);
         this.mapValue(this.indexUtilization, BackendHeaders.INDEX_UTILIZATION, String::toString, headers);
+        this.mapValue(this.queryExecutionInfo, BackendHeaders.QUERY_EXECUTION_INFO, String::toString, headers);
         this.mapValue(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, Long::parseLong, headers);
         this.mapValue(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long::parseLong, headers);
         this.mapValue(this.requestCharge, HttpHeaders.REQUEST_CHARGE, Double::parseDouble, headers);
@@ -292,6 +299,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.mapValue(this.transportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID, Integer::parseInt, headers);
         this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
         this.mapValue(this.backendRequestDurationMilliseconds, BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, Double::parseDouble, headers);
+        this.mapValue(this.correlatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID, UUID::fromString, headers);
     }
 
     @Override
@@ -422,6 +430,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
             toStringEntry(BackendHeaders.INDEX_UTILIZATION, token)
         );
 
+        collector.accept(this.queryExecutionInfo, tokens ->
+            toStringEntry(BackendHeaders.QUERY_EXECUTION_INFO, tokens));
+
         collector.accept(this.quorumAckedLSN, token ->
             toLongEntry(BackendHeaders.QUORUM_ACKED_LSN, token)
         );
@@ -485,6 +496,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         collector.accept(this.backendRequestDurationMilliseconds, token ->
             toDoubleEntry(BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, token)
         );
+
+        collector.accept(this.correlatedActivityId, token ->
+            toUuidEntry(HttpHeaders.CORRELATED_ACTIVITY_ID, token));
     }
 
     private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {
@@ -515,6 +529,10 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private static Map.Entry<String, String> toDoubleEntry(final String name, final RntbdToken token) {
         return new Entry(name, Double.toString(token.getValue(Double.class)));
+    }
+
+    private static Map.Entry<String, String> toUuidEntry(final String name, final RntbdToken token) {
+        return new Entry(name, token.getValue(UUID.class).toString());
     }
 
     private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {

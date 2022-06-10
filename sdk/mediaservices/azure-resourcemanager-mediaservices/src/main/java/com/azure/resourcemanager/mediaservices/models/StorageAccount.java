@@ -6,14 +6,11 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The storage account details. */
 @Fluent
 public final class StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccount.class);
-
     /*
      * The ID of the storage account resource. Media Services relies on tables
      * and queues as well as blobs, so the primary storage account must be a
@@ -122,7 +119,7 @@ public final class StorageAccount {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model StorageAccount"));
         }
@@ -130,4 +127,6 @@ public final class StorageAccount {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccount.class);
 }

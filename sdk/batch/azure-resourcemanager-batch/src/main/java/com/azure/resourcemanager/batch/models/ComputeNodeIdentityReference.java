@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The reference to a user assigned identity associated with the Batch pool which a compute node will use. */
 @Fluent
 public final class ComputeNodeIdentityReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeNodeIdentityReference.class);
-
     /*
      * The ARM resource id of the user assigned identity.
      */

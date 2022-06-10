@@ -4,9 +4,10 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
+
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 
 /**
@@ -20,51 +21,49 @@ public class TracerJavaDocCodeSnippets {
      */
     public void startTracingSpan() {
         // BEGIN: com.azure.core.util.tracing.start#string-context
-        // pass the current tracing span context to the calling method
-        Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
-        // start a new tracing span with the given method name and explicit parent span
-        Context updatedContext = tracer.start("azure.keyvault.secrets/setsecret", traceContext);
-        System.out.printf("Span returned in the context object: %s%n",
-            updatedContext.getData(PARENT_SPAN_KEY).get());
+        // start a new tracing span with given name and parent context implicitly propagated
+        // in io.opentelemetry.context.Context.current()
+        Context traceContext = tracer.start("keyvault.setsecret", Context.NONE);
+        System.out.printf("OpenTelemetry Context with started `keyvault.setsecret` span: %s%n",
+            traceContext.getData(PARENT_TRACE_CONTEXT_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context
 
         // BEGIN: com.azure.core.util.tracing.start#options-context
-        // start a new CLIENT tracing span with the given start options and explicit parent span
+        // start a new CLIENT tracing span with the given start options and explicit parent context
         StartSpanOptions options = new StartSpanOptions(SpanKind.CLIENT)
             .setAttribute("key", "value");
-        Context updatedClientSpanContext = tracer.start("azure.keyvault.secrets/setsecret", options, traceContext);
-        System.out.printf("Span returned in the context object: %s%n",
-            updatedClientSpanContext.getData(PARENT_SPAN_KEY).get());
+        Context updatedClientSpanContext = tracer.start("keyvault.setsecret", options, traceContext);
+        System.out.printf("OpenTelemetry Context with started `keyvault.setsecret` span: %s%n",
+            updatedClientSpanContext.getData(PARENT_TRACE_CONTEXT_KEY).get());
         // END: com.azure.core.util.tracing.start#options-context
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-SEND
-        // pass the current tracing span and request metadata to the calling method
-        Context sendContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
-            .addData(ENTITY_PATH_KEY, "entity-path").addData(HOST_NAME_KEY, "hostname");
+        // pass request metadata to the calling method
+        Context sendContext = new Context(ENTITY_PATH_KEY, "entity-path").addData(HOST_NAME_KEY, "hostname");
 
         // start a new tracing span with explicit parent, sets the request attributes on the span and sets the span
         // kind to client when process kind SEND
-        Context updatedSendContext = tracer.start("azure.eventhubs.send", sendContext, ProcessKind.SEND);
-        System.out.printf("Span returned in the context object: %s%n",
-            updatedSendContext.getData(PARENT_SPAN_KEY).get());
+        Context updatedSendContext = tracer.start("eventhubs.send", sendContext, ProcessKind.SEND);
+        System.out.printf("OpenTelemetry Context with started `eventhubs.send` span: %s%n",
+            updatedSendContext.getData(PARENT_TRACE_CONTEXT_KEY).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-SEND
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
         String diagnosticIdKey = "Diagnostic-Id";
         // start a new tracing span with explicit parent, sets the diagnostic Id (traceparent headers) on the current
         // context when process kind MESSAGE
-        Context updatedReceiveContext = tracer.start("azure.eventhubs.receive", traceContext,
+        Context updatedReceiveContext = tracer.start("EventHubs.receive", traceContext,
             ProcessKind.MESSAGE);
-        System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(diagnosticIdKey).get().toString());
+        System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(diagnosticIdKey).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
         String spanImplContext = "span-context";
-        // start a new tracing span with remote parent and uses the span in the current context to return a scope
+        // start a new tracing span with remote parent and uses current context to return a scope
         // when process kind PROCESS
-        Context processContext = new Context(PARENT_SPAN_KEY, "<user-current-span>")
+        Context processContext = new Context(PARENT_TRACE_CONTEXT_KEY, "<OpenTelemetry-context>")
             .addData(spanImplContext, "<user-current-span-context>");
-        Context updatedProcessContext = tracer.start("azure.eventhubs.process", processContext,
+        Context updatedProcessContext = tracer.start("EventHubs.process", processContext,
             ProcessKind.PROCESS);
         System.out.printf("Scope: %s%n", updatedProcessContext.getData("scope").get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
@@ -75,16 +74,16 @@ public class TracerJavaDocCodeSnippets {
      */
     public void endTracingSpan() {
         // BEGIN: com.azure.core.util.tracing.end#int-throwable-context
-        // context containing the current tracing span to end
+        // context containing the span to end
         String openTelemetrySpanKey = "openTelemetry-span";
-        Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
+        Context traceContext = new Context(PARENT_TRACE_CONTEXT_KEY, "<user-current-span>");
 
         // completes the tracing span with the passed response status code
         tracer.end(200, null, traceContext);
         // END: com.azure.core.util.tracing.end#int-throwable-context
 
         // BEGIN: com.azure.core.util.tracing.end#string-throwable-context
-        // context containing the current tracing span to end
+        // context containing the current trace context to end
         // completes the tracing span with the passed status message
         tracer.end("success", null, traceContext);
         // END: com.azure.core.util.tracing.end#string-throwable-context
@@ -95,10 +94,12 @@ public class TracerJavaDocCodeSnippets {
      */
     public void setSpanName() {
         // BEGIN: com.azure.core.util.tracing.setSpanName#string-context
-        // Sets the span name of the returned span on the context object, with key PARENT_SPAN_KEY
-        String openTelemetrySpanKey = "openTelemetry-span";
-        Context context = tracer.setSpanName("test-span-method", Context.NONE);
-        System.out.printf("Span name: %s%n", context.getData(PARENT_SPAN_KEY).get().toString());
+        // Sets future span name - it will be used when span will be started on this context
+        Context contextWithName = tracer.setSpanName("keyvault.setsecret", Context.NONE);
+        Context traceContext = tracer.start("placeholder", contextWithName);
+
+        System.out.printf("OpenTelemetry Context with started `keyvault.setsecret` span: %s%n",
+            traceContext.getData(PARENT_TRACE_CONTEXT_KEY).get());
         // END: com.azure.core.util.tracing.setSpanName#string-context
     }
 
@@ -107,10 +108,9 @@ public class TracerJavaDocCodeSnippets {
      */
     public void addLink() {
         // BEGIN: com.azure.core.util.tracing.addLink#context
-        // use the parent context containing the current tracing span to start a child span
-        Context parentContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
-        // use the returned span context information of the current tracing span to link
-        Context spanContext = tracer.start("test.method", parentContext, ProcessKind.MESSAGE);
+        // start a new tracing span with given name and parent context implicitly propagated
+        // in io.opentelemetry.context.Context.current()
+        Context spanContext = tracer.start("test.method", Context.NONE, ProcessKind.MESSAGE);
 
         // Adds a link between multiple span's using the span context information of the Span
         // For each event processed, add a link with the created spanContext
@@ -138,7 +138,7 @@ public class TracerJavaDocCodeSnippets {
     public void makeSpanCurrent() {
         // BEGIN: com.azure.core.util.tracing.makeSpanCurrent#context
         // Starts a span, makes it current and then stops it.
-        Context traceContext = tracer.start("EventHub.process", Context.NONE);
+        Context traceContext = tracer.start("EventHubs.process", Context.NONE);
 
         // Make sure to always use try-with-resource statement with makeSpanCurrent
         try (AutoCloseable ignored = tracer.makeSpanCurrent(traceContext)) {
@@ -158,9 +158,8 @@ public class TracerJavaDocCodeSnippets {
     public void getSharedSpanBuilder() {
         // BEGIN: com.azure.core.util.tracing.getSpanBuilder#string-context
         // Returns a span builder with the provided name
-        String methodName = "message-span";
-        Context spanContext = tracer.getSharedSpanBuilder(methodName, Context.NONE);
-        System.out.printf("Span context of the current tracing span: %s%n", spanContext.getData(SPAN_BUILDER_KEY).get());
+        Context spanContext = tracer.getSharedSpanBuilder("message-span", Context.NONE);
+        System.out.printf("Builder of current span being built: %s%n", spanContext.getData(SPAN_BUILDER_KEY).get());
         // END: com.azure.core.util.tracing.getSpanBuilder#string-context
     }
 

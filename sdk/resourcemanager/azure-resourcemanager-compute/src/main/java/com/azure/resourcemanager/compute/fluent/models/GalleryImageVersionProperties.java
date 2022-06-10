@@ -6,18 +6,15 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.GalleryImageVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a gallery image version. */
 @Fluent
 public final class GalleryImageVersionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionProperties.class);
-
     /*
      * The publishing profile of a gallery image Version.
      */
@@ -25,11 +22,11 @@ public final class GalleryImageVersionProperties {
     private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
-     * The current state of the gallery image version. The provisioning state,
-     * which only appears in the response.
+     * The current state of the gallery or gallery artifact. The provisioning
+     * state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryImageVersionPropertiesProvisioningState provisioningState;
+    private GalleryProvisioningState provisioningState;
 
     /*
      * This is the storage profile of a Gallery Image Version.
@@ -64,12 +61,12 @@ public final class GalleryImageVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
-     * only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
+     * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImageVersionPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -112,7 +109,7 @@ public final class GalleryImageVersionProperties {
             publishingProfile().validate();
         }
         if (storageProfile() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageProfile in model GalleryImageVersionProperties"));
@@ -123,4 +120,6 @@ public final class GalleryImageVersionProperties {
             replicationStatus().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryImageVersionProperties.class);
 }

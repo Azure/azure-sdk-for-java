@@ -16,13 +16,11 @@ import java.util.Map;
 /** Credential reference type. */
 @Fluent
 public final class CredentialReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialReference.class);
-
     /*
      * Credential reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private CredentialReferenceType type;
 
     /*
      * Reference credential name.
@@ -35,17 +33,12 @@ public final class CredentialReference {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CredentialReference class. */
-    public CredentialReference() {
-        type = "CredentialReference";
-    }
-
     /**
      * Get the type property: Credential reference type.
      *
      * @return the type value.
      */
-    public String type() {
+    public CredentialReferenceType type() {
         return this.type;
     }
 
@@ -55,7 +48,7 @@ public final class CredentialReference {
      * @param type the type value to set.
      * @return the CredentialReference object itself.
      */
-    public CredentialReference withType(String type) {
+    public CredentialReference withType(CredentialReferenceType type) {
         this.type = type;
         return this;
     }
@@ -115,11 +108,18 @@ public final class CredentialReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model CredentialReference"));
+        }
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property referenceName in model CredentialReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialReference.class);
 }

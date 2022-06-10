@@ -6,10 +6,9 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -18,47 +17,50 @@ import org.apache.qpid.proton.engine.Session;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.concurrent.RejectedExecutionException;
+
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 
 public class SessionHandler extends Handler {
-    private final String entityName;
+    private final String sessionName;
     private final Duration openTimeout;
     private final ReactorDispatcher reactorDispatcher;
 
-    public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
+    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        super(connectionId, hostname, new ClientLogger(SessionHandler.class));
-        this.entityName = entityName;
+        super(connectionId, hostname);
+        this.sessionName = sessionName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
     }
 
     public AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(getHostname(), entityName);
+        return new SessionErrorContext(getHostname(), sessionName);
     }
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        logger.verbose("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
-            getConnectionId(), this.entityName,
-            e.getSession().getCondition() == null
-                ? ClientConstants.NOT_APPLICABLE
-                : e.getSession().getCondition().toString());
+        addErrorCondition(logger.atVerbose(), e.getSession().getCondition())
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .log("onSessionLocalOpen");
 
         final Session session = e.getSession();
 
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
-        } catch (IOException ioException) {
-            logger.warning("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
-                getConnectionId(), this.entityName,
-                ioException.getMessage());
+        } catch (IOException | RejectedExecutionException ioException) {
+            logger.atInfo()
+                .addKeyValue(SESSION_NAME_KEY, sessionName)
+                .addKeyValue("reactorDispatcherError", ioException.getMessage())
+                .log("onSessionLocalOpen");
 
             session.close();
 
             final String message =
                 String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
                         + " reactorDispatcher faulted with error: %s",
-                    getConnectionId(), this.entityName, ioException.getMessage());
+                    getConnectionId(), sessionName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
             onError(exception);
@@ -68,17 +70,19 @@ public class SessionHandler extends Handler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
+        LoggingEventBuilder logBuilder;
         if (session.getLocalState() == EndpointState.UNINITIALIZED) {
-            logger.warning("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
-                    + " sessionOutgoingWindow[{}] endpoint was uninitialised.",
-                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
-
+            logBuilder = logger.atWarning();
             session.open();
         } else {
-            logger.info("onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}],"
-                    + " sessionOutgoingWindow[{}]",
-                getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
+            logBuilder = logger.atInfo();
         }
+
+
+        logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
+            .addKeyValue("sessionOutgoingWindow", session.getOutgoingWindow())
+            .log("onSessionRemoteOpen");
 
         onNext(EndpointState.ACTIVE);
     }
@@ -89,30 +93,24 @@ public class SessionHandler extends Handler {
             ? e.getSession().getCondition()
             : null;
 
-        logger.verbose("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
-            entityName, getConnectionId(),
-            condition == null ? ClientConstants.NOT_APPLICABLE : condition.toString());
+        addErrorCondition(logger.atVerbose(), condition)
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .log("onSessionLocalClose");
     }
 
     @Override
     public void onSessionRemoteClose(Event e) {
         final Session session = e.getSession();
+        final ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
-        logger.info("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
-            entityName,
-            getConnectionId(),
-            session == null || session.getRemoteCondition() == null
-                ? ClientConstants.NOT_APPLICABLE
-                : session.getRemoteCondition().toString());
-
-        ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
+        addErrorCondition(logger.atInfo(), condition)
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .log("onSessionRemoteClose");
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.info("onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], "
-                    + "condition[{}], description[{}]",
-                getConnectionId(), entityName,
-                condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
-                condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
+            addErrorCondition(logger.atInfo(), condition)
+                .addKeyValue(SESSION_NAME_KEY, sessionName)
+                .log("onSessionRemoteClose closing a local session.");
 
             session.setCondition(session.getRemoteCondition());
             session.close();
@@ -126,7 +124,7 @@ public class SessionHandler extends Handler {
 
             final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
                 String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
-                    id, entityName, condition), context);
+                    id, sessionName, condition), context);
 
             onError(exception);
         }
@@ -137,11 +135,9 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        logger.info("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
-            getConnectionId(), entityName,
-            condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
-
+        addErrorCondition(logger.atInfo(), condition)
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .log("onSessionFinal.");
         close();
     }
 

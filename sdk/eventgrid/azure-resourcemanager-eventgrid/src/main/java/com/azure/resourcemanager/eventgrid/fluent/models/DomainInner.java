@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -15,7 +15,6 @@ import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,6 @@ import java.util.Map;
 /** EventGrid Domain. */
 @Fluent
 public final class DomainInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
-
     /*
      * Properties of the Event Grid Domain resource.
      */
@@ -361,6 +358,29 @@ public final class DomainInner extends Resource {
             this.innerProperties = new DomainProperties();
         }
         this.innerProperties().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the DomainInner object itself.
+     */
+    public DomainInner withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
         return this;
     }
 

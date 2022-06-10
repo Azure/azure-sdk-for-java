@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobUrlParts;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,13 +34,16 @@ import java.util.stream.Stream;
  * An object that may be used to locate a file in a file system.
  * <p>
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
- * character. Hence, only one instance of {@code ':'} may appear in a path string and it may only be the last character
- * of the first element in the path. The root component is used to identify which container a path belongs to.
+ * character. Hence, only one instance of {@code ':'} may appear in a path string, and it may only be the last character
+ * of the first element in the path. The root component is used to identify which container a path belongs to. All other
+ * path elements, including separators, are considered as the blob name. {@link AzurePath#fromBlobUrl} may
+ * be used to convert a typical http url pointing to a blob into an {@code AzurePath} object pointing to the same
+ * resource.
  * <p>
  * Constructing a syntactically valid path does not ensure a resource exists at the given path. An error will
  * not be thrown until trying to access an invalid resource, e.g. trying to access a resource that does not exist.
  * <p>
- * Path names are case sensitive.
+ * Path names are case-sensitive.
  * <p>
  * If a resource is accessed via a relative path, it will be resolved against the default directory of the file system.
  * The default directory is as defined in the {@link AzureFileSystem} docs.
@@ -49,7 +53,7 @@ import java.util.stream.Stream;
  * "foo".
  */
 public final class AzurePath implements Path {
-    private final ClientLogger logger = new ClientLogger(AzurePath.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzurePath.class);
     static final String ROOT_DIR_SUFFIX = ":";
 
     private final AzureFileSystem parentFileSystem;
@@ -82,12 +86,12 @@ public final class AzurePath implements Path {
              */
             if (i == 0) {
                 if (element.contains(ROOT_DIR_SUFFIX) && element.indexOf(ROOT_DIR_SUFFIX) < element.length() - 1) {
-                    throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                    throw LoggingUtility.logError(LOGGER, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
                         + " may only be used as the last character in the root component of a path"));
                 }
             // No element besides the first may contain the ROOT_DIR_SUFFIX, as only the first element may be the root.
             } else if (element.contains(ROOT_DIR_SUFFIX)) {
-                throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                throw LoggingUtility.logError(LOGGER, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
                     + " is an invalid character except to identify the root element of this path if there is one."));
             }
         }
@@ -104,7 +108,7 @@ public final class AzurePath implements Path {
     }
 
     /**
-     * Tells whether or not this path is absolute.
+     * Tells whether this path is absolute.
      * <p>
      * An absolute path is complete in that it doesn't need to be combined with other path information in order to
      * locate a file. A path is considered absolute in this file system if it contains a root component.
@@ -212,7 +216,7 @@ public final class AzurePath implements Path {
     @Override
     public Path getName(int index) {
         if (index < 0 || index >= this.getNameCount()) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of "
+            throw LoggingUtility.logError(LOGGER, new IllegalArgumentException(String.format("Index %d is out of "
                 + "bounds", index)));
         }
         // If the path is empty, the only valid option is also an empty path.
@@ -239,7 +243,7 @@ public final class AzurePath implements Path {
     public Path subpath(int begin, int end) {
         if (begin < 0 || begin >= this.getNameCount()
             || end <= begin || end > this.getNameCount()) {
-            throw LoggingUtility.logError(logger,
+            throw LoggingUtility.logError(LOGGER,
                 new IllegalArgumentException(String.format("Values of begin: %d and end: %d are invalid", begin, end)));
         }
 
@@ -395,9 +399,9 @@ public final class AzurePath implements Path {
         Path root = this.getRoot();
         String rootStr = root == null ? null : root.toString();
         for (String element : pathElements) {
-            if (element.equals(".")) {
+            if (".".equals(element)) {
                 continue;
-            } else if (element.equals("..")) {
+            } else if ("..".equals(element)) {
                 if (rootStr != null) {
                     // Root path. We never push "..".
                     if (!stack.isEmpty() && stack.peekLast().equals(rootStr)) {
@@ -428,7 +432,7 @@ public final class AzurePath implements Path {
      * Resolve the given path against this path.
      * <p>
      * If the other parameter is an absolute path then this method trivially returns other. If other is an empty path
-     * then this method trivially returns this path. Otherwise this method considers this path to be a directory and
+     * then this method trivially returns this path. Otherwise, this method considers this path to be a directory and
      * resolves the given path against this path. In the simplest case, the given path does not have a root component,
      * in which case this method joins the given path to this path and returns a resulting path that ends with the given
      * path. Where the given path has a root component then resolution is highly implementation dependent and therefore
@@ -514,7 +518,7 @@ public final class AzurePath implements Path {
     @Override
     public Path relativize(Path path) {
         if (path.getRoot() == null ^ this.getRoot() == null) {
-            throw LoggingUtility.logError(logger,
+            throw LoggingUtility.logError(LOGGER,
                 new IllegalArgumentException("Both paths must be absolute or neither can be"));
         }
 
@@ -552,10 +556,10 @@ public final class AzurePath implements Path {
     @Override
     public URI toUri() {
         try {
-            return new URI(this.parentFileSystem.provider().getScheme(), null, "/" + this.toAbsolutePath().toString(),
+            return new URI(this.parentFileSystem.provider().getScheme(), null, "/" + this.toAbsolutePath(),
                 null, null);
         } catch (URISyntaxException e) {
-            throw LoggingUtility.logError(logger, new IllegalStateException("Unable to create valid URI from path", e));
+            throw LoggingUtility.logError(LOGGER, new IllegalStateException("Unable to create valid URI from path", e));
         }
     }
 
@@ -578,10 +582,10 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param linkOptions options
      * @return the real path
-     * @throws UnsupportedOperationException operation not suported.
+     * @throws UnsupportedOperationException operation not supported.
      */
     @Override
     public Path toRealPath(LinkOption... linkOptions) throws IOException {
@@ -590,9 +594,9 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @return the file
-     * @throws UnsupportedOperationException operation not suported.
+     * @throws UnsupportedOperationException operation not supported.
      */
     @Override
     public File toFile() {
@@ -601,12 +605,12 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @param modifiers modifiers
      * @return the watch key
-     * @throws UnsupportedOperationException operation not suported.
+     * @throws UnsupportedOperationException operation not supported.
      */
     @Override
     public WatchKey register(WatchService watchService, WatchEvent.Kind<?>[] kinds, WatchEvent.Modifier... modifiers)
@@ -616,11 +620,11 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @return the watch key
-     * @throws UnsupportedOperationException operation not suported.
+     * @throws UnsupportedOperationException operation not supported.
      */
     @Override
     public WatchKey register(WatchService watchService, WatchEvent.Kind<?>... kinds) throws IOException {
@@ -662,7 +666,7 @@ public final class AzurePath implements Path {
     @Override
     public int compareTo(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new ClassCastException("Other path is not an instance of "
+            throw LoggingUtility.logError(LOGGER, new ClassCastException("Other path is not an instance of "
                 + "AzurePath."));
         }
 
@@ -725,7 +729,7 @@ public final class AzurePath implements Path {
         // Normalizing ensures the path is clean.
         Path root = this.normalize().toAbsolutePath().getRoot();
         if (root == null) {
-            throw LoggingUtility.logError(logger,
+            throw LoggingUtility.logError(LOGGER,
                 new IllegalStateException("Root should never be null after calling toAbsolutePath."));
         }
         String fileStoreName = this.rootToFileStore(root.toString());
@@ -735,11 +739,41 @@ public final class AzurePath implements Path {
 
         String blobName = this.withoutRoot();
         if (blobName.isEmpty()) {
-            throw LoggingUtility.logError(logger, new IOException("Cannot get a blob client to a path that only "
+            throw LoggingUtility.logError(LOGGER, new IOException("Cannot get a blob client to a path that only "
                 + "contains the root or is an empty path"));
         }
 
         return containerClient.getBlobClient(blobName);
+    }
+
+    /**
+     * A utility method to conveniently convert from a URL to a storage resource to an {@code AzurePath} pointing to the
+     * same resource.
+     *
+     * The url must be well formatted. There must be an open filesystem corresponding to the account which contains the
+     * blob. Otherwise, a {@link java.nio.file.FileSystemNotFoundException} will be thrown.
+     *
+     * The url may point to either an account, container, or blob. If it points to an account, the path will be empty,
+     * but it will have an internal reference to the file system containing it, meaning instance methods may be
+     * performed on the path to construct a reference to another object. If it points to a container, there will be one
+     * element, which is the root element. Everything after the container, that is the blob name, will then be appended
+     * after the root element.
+     *
+     * IP style urls are not currently supported.
+     *
+     * The {@link AzureFileSystemProvider} can typically be obtained via {@link AzureFileSystem#provider()}.
+     *
+     * @param provider The installed {@link AzureFileSystemProvider} that manages open file systems for this jvm.
+     * @param url The url to the desired resource.
+     * @return An {@link AzurePath} which points to the resource identified by the url.
+     * @throws URISyntaxException If the url contains elements which are not well formatted.
+     */
+    public static AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
+        BlobUrlParts parts = BlobUrlParts.parse(url);
+        URI fileSystemUri = hostToFileSystemUri(provider, parts.getScheme(), parts.getHost());
+        FileSystem parentFileSystem = provider.getFileSystem(fileSystemUri);
+        return new AzurePath((AzureFileSystem) parentFileSystem, fileStoreToRoot(parts.getBlobContainerName()),
+            parts.getBlobName() == null ? "" : parts.getBlobName());
     }
 
     /**
@@ -782,10 +816,21 @@ public final class AzurePath implements Path {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 
+    private static String fileStoreToRoot(String fileStore) {
+        if (fileStore == null || "".equals(fileStore)) {
+            return "";
+        }
+        return fileStore + ROOT_DIR_SUFFIX;
+    }
+
+    private static URI hostToFileSystemUri(AzureFileSystemProvider provider, String scheme, String host)
+        throws URISyntaxException {
+        return new URI(provider.getScheme() + "://?endpoint=" + scheme + "://" + host);
+    }
+
     static void ensureFileSystemOpen(Path p) {
         if (!p.getFileSystem().isOpen()) {
-            throw LoggingUtility.logError(((AzurePath) p).logger,
-                new ClosedFileSystemException());
+            throw LoggingUtility.logError(LOGGER, new ClosedFileSystemException());
         }
     }
 }

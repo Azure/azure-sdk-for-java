@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -16,10 +14,8 @@ import java.util.Map;
 /** IaaS VM workload-specific backup item representing the Azure Resource Manager VM. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
 @JsonTypeName("Microsoft.Compute/virtualMachines")
-@Immutable
+@Fluent
 public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSComputeVMProtectedItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureIaaSComputeVMProtectedItem withFriendlyName(String friendlyName) {
@@ -193,6 +189,28 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
     @Override
     public AzureIaaSComputeVMProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withResourceGuardOperationRequests(
+        List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

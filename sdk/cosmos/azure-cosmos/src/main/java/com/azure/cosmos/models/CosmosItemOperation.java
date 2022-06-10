@@ -3,26 +3,35 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Encapsulates Cosmos Item Operation
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface CosmosItemOperation {
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * @return the id.
+     */
     String getId();
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * @return the partition key value.
+     */
     PartitionKey getPartitionKeyValue();
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * @return the operation type.
+     */
     CosmosItemOperationType getOperationType();
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * @param <T> type of the item.
+     * @return the item.
+     */
     <T> T getItem();
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * @param <T> type of the context.
+     * @return the context.
+     */
     <T> T getContext();
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quotas associated with a Batch region for a particular subscription. */
 @Immutable
 public final class BatchLocationQuotaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchLocationQuotaInner.class);
-
     /*
      * The number of Batch accounts that may be created under the subscription
      * in the specified region.

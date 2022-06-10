@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
 import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.List;
 /** Spark pool properties Properties of a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class BigDataPoolResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolResourceProperties.class);
-
     /*
      * The state of the Big Data pool.
      */
@@ -38,7 +34,7 @@ public final class BigDataPoolResourceProperties {
     /*
      * The time when the Big Data pool was created.
      */
-    @JsonProperty(value = "creationDate")
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
@@ -179,17 +175,6 @@ public final class BigDataPoolResourceProperties {
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate property: The time when the Big Data pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the BigDataPoolResourceProperties object itself.
-     */
-    public BigDataPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
     }
 
     /**

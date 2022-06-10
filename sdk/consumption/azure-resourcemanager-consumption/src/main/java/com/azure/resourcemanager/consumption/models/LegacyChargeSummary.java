@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.consumption.fluent.models.LegacyChargeSummaryProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,52 +16,31 @@ import java.math.BigDecimal;
 /** Legacy charge summary. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("legacy")
-@JsonFlatten
-@Immutable
-public class LegacyChargeSummary extends ChargeSummary {
+@Fluent
+public final class LegacyChargeSummary extends ChargeSummary {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyChargeSummary.class);
 
     /*
-     * The id of the billing period resource that the charge belongs to.
+     * Properties for legacy charge summary
      */
-    @JsonProperty(value = "properties.billingPeriodId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingPeriodId;
+    @JsonProperty(value = "properties", required = true)
+    private LegacyChargeSummaryProperties innerProperties = new LegacyChargeSummaryProperties();
 
-    /*
-     * Usage start date.
+    /**
+     * Get the innerProperties property: Properties for legacy charge summary.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.usageStart", access = JsonProperty.Access.WRITE_ONLY)
-    private String usageStart;
+    private LegacyChargeSummaryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Usage end date.
-     */
-    @JsonProperty(value = "properties.usageEnd", access = JsonProperty.Access.WRITE_ONLY)
-    private String usageEnd;
-
-    /*
-     * Azure Charges.
-     */
-    @JsonProperty(value = "properties.azureCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal azureCharges;
-
-    /*
-     * Charges Billed separately.
-     */
-    @JsonProperty(value = "properties.chargesBilledSeparately", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal chargesBilledSeparately;
-
-    /*
-     * Marketplace Charges.
-     */
-    @JsonProperty(value = "properties.marketplaceCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal marketplaceCharges;
-
-    /*
-     * Currency Code
-     */
-    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
-    private String currency;
+    /** {@inheritDoc} */
+    @Override
+    public LegacyChargeSummary withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
 
     /**
      * Get the billingPeriodId property: The id of the billing period resource that the charge belongs to.
@@ -69,7 +48,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the billingPeriodId value.
      */
     public String billingPeriodId() {
-        return this.billingPeriodId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodId();
     }
 
     /**
@@ -78,7 +57,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the usageStart value.
      */
     public String usageStart() {
-        return this.usageStart;
+        return this.innerProperties() == null ? null : this.innerProperties().usageStart();
     }
 
     /**
@@ -87,7 +66,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the usageEnd value.
      */
     public String usageEnd() {
-        return this.usageEnd;
+        return this.innerProperties() == null ? null : this.innerProperties().usageEnd();
     }
 
     /**
@@ -96,7 +75,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the azureCharges value.
      */
     public BigDecimal azureCharges() {
-        return this.azureCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().azureCharges();
     }
 
     /**
@@ -105,7 +84,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the chargesBilledSeparately value.
      */
     public BigDecimal chargesBilledSeparately() {
-        return this.chargesBilledSeparately;
+        return this.innerProperties() == null ? null : this.innerProperties().chargesBilledSeparately();
     }
 
     /**
@@ -114,7 +93,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the marketplaceCharges value.
      */
     public BigDecimal marketplaceCharges() {
-        return this.marketplaceCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceCharges();
     }
 
     /**
@@ -123,7 +102,7 @@ public class LegacyChargeSummary extends ChargeSummary {
      * @return the currency value.
      */
     public String currency() {
-        return this.currency;
+        return this.innerProperties() == null ? null : this.innerProperties().currency();
     }
 
     /**
@@ -134,5 +113,13 @@ public class LegacyChargeSummary extends ChargeSummary {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LegacyChargeSummary"));
+        } else {
+            innerProperties().validate();
+        }
     }
 }

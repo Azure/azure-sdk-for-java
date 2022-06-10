@@ -11,41 +11,38 @@ import com.azure.core.util.Context;
 /** Resource collection API of EdgeModules. */
 public interface EdgeModules {
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EdgeModuleEntity> list(String resourceGroupName, String accountName);
 
     /**
-     * List all of the existing edge module resources for a given Video Analyzer account.
+     * List all existing edge module resources, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
      *     service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of EdgeModuleEntity items.
+     * @return a collection of EdgeModuleEntity items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EdgeModuleEntity> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<EdgeModuleEntity> list(String resourceGroupName, String accountName, Integer top, Context context);
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,16 +51,16 @@ public interface EdgeModules {
     EdgeModuleEntity get(String resourceGroupName, String accountName, String edgeModuleName);
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to retrieve.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response}.
      */
     Response<EdgeModuleEntity> getWithResponse(
         String resourceGroupName, String accountName, String edgeModuleName, Context context);
@@ -75,7 +72,7 @@ public interface EdgeModules {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -89,12 +86,12 @@ public interface EdgeModules {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module to be deleted.
+     * @param edgeModuleName The Edge Module name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String edgeModuleName, Context context);
@@ -109,7 +106,7 @@ public interface EdgeModules {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,13 +126,13 @@ public interface EdgeModules {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param edgeModuleName The name of the edge module used to create a new provisioning token.
+     * @param edgeModuleName The Edge Module name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provisioning token properties.
+     * @return provisioning token properties along with {@link Response}.
      */
     Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
         String resourceGroupName,
@@ -145,25 +142,25 @@ public interface EdgeModules {
         Context context);
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response}.
      */
     EdgeModuleEntity getById(String id);
 
     /**
-     * Retrieves a specific existing edge module resource in the given Video Analyzer account.
+     * Retrieves an existing edge module resource with the given name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of an edge module.
+     * @return the representation of an edge module along with {@link Response}.
      */
     Response<EdgeModuleEntity> getByIdWithResponse(String id, Context context);
 
@@ -189,7 +186,7 @@ public interface EdgeModules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

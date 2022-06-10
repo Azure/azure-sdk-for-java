@@ -35,12 +35,17 @@ public final class CreditSummaryImpl implements CreditSummary {
         return this.innerModel().type();
     }
 
-    public String creditCurrency() {
-        return this.innerModel().creditCurrency();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
-    public String billingCurrency() {
-        return this.innerModel().billingCurrency();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public CreditBalanceSummary balanceSummary() {
@@ -59,21 +64,20 @@ public final class CreditSummaryImpl implements CreditSummary {
         return this.innerModel().pendingEligibleCharges();
     }
 
+    public String creditCurrency() {
+        return this.innerModel().creditCurrency();
+    }
+
+    public String billingCurrency() {
+        return this.innerModel().billingCurrency();
+    }
+
     public Reseller reseller() {
         return this.innerModel().reseller();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public String etagPropertiesEtag() {
+        return this.innerModel().etagPropertiesEtag();
     }
 
     public CreditSummaryInner innerModel() {

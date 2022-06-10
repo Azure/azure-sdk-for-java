@@ -58,7 +58,7 @@ public final class DataFlowsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientDataF")
-    private interface DataFlowsService {
+    public interface DataFlowsService {
         @Put("/dataflows/{dataFlowName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -132,18 +132,19 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDataFlow(
                                 this.client.getEndpoint(),
                                 dataFlowName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 ifMatch,
                                 dataFlow,
                                 accept,
@@ -161,20 +162,15 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.createOrUpdateDataFlow(
-                this.client.getEndpoint(),
-                dataFlowName,
-                this.client.getApiVersion(),
-                ifMatch,
-                dataFlow,
-                accept,
-                context);
+                this.client.getEndpoint(), dataFlowName, apiVersion, ifMatch, dataFlow, accept, context);
     }
 
     /**
@@ -187,7 +183,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
@@ -211,7 +207,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(String dataFlowName, DataFlowResource dataFlow) {
@@ -238,7 +234,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> createOrUpdateDataFlowAsync(
@@ -298,7 +294,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data flow resource type.
+     * @return data flow resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFlowResource> createOrUpdateDataFlowWithResponse(
@@ -315,20 +311,16 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(String dataFlowName, String ifNoneMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDataFlow(
-                                this.client.getEndpoint(),
-                                dataFlowName,
-                                this.client.getApiVersion(),
-                                ifNoneMatch,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), dataFlowName, apiVersion, ifNoneMatch, accept, context));
     }
 
     /**
@@ -341,14 +333,14 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(
             String dataFlowName, String ifNoneMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifNoneMatch, accept, context);
+        return service.getDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion, ifNoneMatch, accept, context);
     }
 
     /**
@@ -360,7 +352,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch) {
@@ -382,7 +374,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName) {
@@ -408,7 +400,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowResource> getDataFlowAsync(String dataFlowName, String ifNoneMatch, Context context) {
@@ -464,7 +456,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFlowResource> getDataFlowWithResponse(
@@ -479,15 +471,15 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteDataFlow(
-                                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), accept, context));
+                        service.deleteDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion, accept, context));
     }
 
     /**
@@ -498,13 +490,13 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.deleteDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), accept, context);
+        return service.deleteDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion, accept, context);
     }
 
     /**
@@ -514,7 +506,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowAsync(String dataFlowName) {
@@ -529,7 +521,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFlowAsync(String dataFlowName, Context context) {
@@ -557,7 +549,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataFlowWithResponse(String dataFlowName, Context context) {
@@ -572,20 +564,16 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDataFlowWithResponseAsync(String dataFlowName, ArtifactRenameRequest request) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameDataFlow(
-                                this.client.getEndpoint(),
-                                dataFlowName,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), dataFlowName, apiVersion, request, accept, context));
     }
 
     /**
@@ -597,14 +585,14 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDataFlowWithResponseAsync(
             String dataFlowName, ArtifactRenameRequest request, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.renameDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), request, accept, context);
+        return service.renameDataFlow(this.client.getEndpoint(), dataFlowName, apiVersion, request, accept, context);
     }
 
     /**
@@ -615,7 +603,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDataFlowAsync(String dataFlowName, ArtifactRenameRequest request) {
@@ -631,7 +619,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDataFlowAsync(String dataFlowName, ArtifactRenameRequest request, Context context) {
@@ -662,7 +650,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameDataFlowWithResponse(
@@ -675,15 +663,15 @@ public final class DataFlowsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getDataFlowsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                service.getDataFlowsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -702,12 +690,13 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getDataFlowsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getDataFlowsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -724,7 +713,7 @@ public final class DataFlowsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFlowResource> getDataFlowsByWorkspaceAsync() {
@@ -740,7 +729,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFlowResource> getDataFlowsByWorkspaceAsync(Context context) {
@@ -754,7 +743,7 @@ public final class DataFlowsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowResource> getDataFlowsByWorkspace() {
@@ -768,7 +757,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowResource> getDataFlowsByWorkspace(Context context) {
@@ -782,7 +771,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -810,7 +799,7 @@ public final class DataFlowsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(

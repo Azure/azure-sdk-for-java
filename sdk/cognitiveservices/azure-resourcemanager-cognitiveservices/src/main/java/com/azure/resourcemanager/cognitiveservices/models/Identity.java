@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * The identity type.
      */
@@ -40,6 +37,7 @@ public class Identity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**

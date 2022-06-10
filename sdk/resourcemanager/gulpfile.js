@@ -13,7 +13,7 @@ var gulpif = require('gulp-if');
 var exec = require('child_process').exec;
 
 const mappings = require('./api-specs.json');
-const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
+const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main";
 
 async function defaultInfo() {
     console.log("Usage: gulp codegen " +
@@ -35,12 +35,12 @@ async function defaultInfo() {
     });
 
     console.log("--autorest");
-    console.log("\tThe version of AutoRest Core. E.g. 3.0.6368, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    console.log("\tThe version of AutoRest Core. E.g. 3.8.1, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
 
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
-    console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+    console.log("\tSee https://github.com/Azure/autorest/blob/main/docs/developer/writing-an-extension.md");
 
     console.log("--debug");
     console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
@@ -55,7 +55,7 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var projects = args['projects'];
-var autoRestVersion = 'latest'; // default
+var autoRestVersion = '3.8.1'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -97,13 +97,18 @@ function handleInput(projects, cb) {
 }
 
 function codegen(project, cb) {
+    packagePath = mappings[project].package.replace(/\./g, '/');
+
     if (!args['preserve']) {
         const sourcesToDelete = path.join(
             mappings[project].dir,
             '/src/main/java/',
-            mappings[project].package.replace(/\./g, '/'));
+            packagePath);
 
         deleteFolderRecursive(sourcesToDelete);
+
+        generatedSamplesTarget = path.join('azure-resourcemanager/src/samples/java/', packagePath, 'generated');
+        deleteFolderRecursive(generatedSamplesTarget);
     }
 
     // path.join won't work if specRoot is a URL
@@ -126,8 +131,8 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-models=false ' +
-                        ' --client-flattened-annotation-target=NONE ' +
+                        ' --modelerfour.additional-checks=false --modelerfour.lenient-model-deduplication=true ' +
+                        ' --generate-samples ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
@@ -145,7 +150,16 @@ function codegen(project, cb) {
     }
 
     console.log('Command: ' + cmd);
-    return execa(cmd, [], { shell: true, stdio: "inherit" });
+    autorest_result = execa.sync(cmd, [], { shell: true, stdio: "inherit" });
+
+    // move generated samples to azure-resourcemanager
+    generatedSamplesSource = path.join(mappings[project].dir, '/src/samples/java/', packagePath, 'generated');
+    generatedSamplesTarget = path.join('azure-resourcemanager/src/samples/java/', packagePath);
+    
+    copyFolderRecursiveSync(generatedSamplesSource, generatedSamplesTarget);
+    deleteFolderRecursive(generatedSamplesSource);
+
+    return autorest_result;
 };
 
 function deleteFolderRecursive(path) {
@@ -164,6 +178,45 @@ function deleteFolderRecursive(path) {
         });
     }
 };
+
+function copyFileSync(source, target) {
+
+    var targetFile = target;
+
+    // If target is a directory, a new file with the same name will be created
+    if ( fs.existsSync( target ) ) {
+        if ( fs.lstatSync( target ).isDirectory() ) {
+            targetFile = path.join( target, path.basename( source ) );
+        }
+    }
+
+    fs.writeFileSync(targetFile, fs.readFileSync(source));
+}
+
+function copyFolderRecursiveSync(source, target) {
+    if (fs.existsSync(source)) {
+        var files = [];
+
+        // Check if folder needs to be created or integrated
+        var targetFolder = path.join( target, path.basename( source ) );
+        if ( !fs.existsSync( targetFolder ) ) {
+            fs.mkdirSync( targetFolder, { recursive: true } );
+        }
+
+        // Copy
+        if ( fs.lstatSync( source ).isDirectory() ) {
+            files = fs.readdirSync( source );
+            files.forEach( function ( file ) {
+                var curSource = path.join( source, file );
+                if ( fs.lstatSync( curSource ).isDirectory() ) {
+                    copyFolderRecursiveSync( curSource, targetFolder );
+                } else {
+                    copyFileSync( curSource, targetFolder );
+                }
+            } );
+        }
+    }
+}
 
 async function prepareBuild() {
     return shell.task('mvn package javadoc:aggregate -DskipTests -q');

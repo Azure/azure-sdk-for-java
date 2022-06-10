@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.DatasetsImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.DatasetResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class DatasetClient {
-    private final DatasetsImpl serviceClient;
+    @Generated private final DatasetsImpl serviceClient;
 
     /**
-     * Initializes an instance of Datasets client.
+     * Initializes an instance of DatasetClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     DatasetClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -34,8 +36,9 @@ public final class DatasetClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResource> getDatasetsByWorkspace() {
         return this.serviceClient.getDatasetsByWorkspace();
@@ -48,8 +51,9 @@ public final class DatasetClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResource> getDatasetsByWorkspace(Context context) {
         return this.serviceClient.getDatasetsByWorkspace(context);
@@ -67,6 +71,7 @@ public final class DatasetClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dataset resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource createOrUpdateDataset(String datasetName, DatasetResource dataset, String ifMatch) {
         return this.serviceClient.createOrUpdateDataset(datasetName, dataset, ifMatch);
@@ -82,6 +87,7 @@ public final class DatasetClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dataset resource type.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource createOrUpdateDataset(String datasetName, DatasetResource dataset) {
         return this.serviceClient.createOrUpdateDataset(datasetName, dataset);
@@ -98,8 +104,9 @@ public final class DatasetClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResource> createOrUpdateDatasetWithResponse(
             String datasetName, DatasetResource dataset, String ifMatch, Context context) {
@@ -117,6 +124,7 @@ public final class DatasetClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dataset.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource getDataset(String datasetName, String ifNoneMatch) {
         return this.serviceClient.getDataset(datasetName, ifNoneMatch);
@@ -131,6 +139,7 @@ public final class DatasetClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dataset.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResource getDataset(String datasetName) {
         return this.serviceClient.getDataset(datasetName);
@@ -146,8 +155,9 @@ public final class DatasetClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResource> getDatasetWithResponse(String datasetName, String ifNoneMatch, Context context) {
         return this.serviceClient.getDatasetWithResponse(datasetName, ifNoneMatch, context);
@@ -161,6 +171,7 @@ public final class DatasetClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataset(String datasetName) {
         this.serviceClient.deleteDataset(datasetName);
@@ -174,8 +185,9 @@ public final class DatasetClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDatasetWithResponse(String datasetName, Context context) {
         return this.serviceClient.deleteDatasetWithResponse(datasetName, context);
@@ -190,6 +202,7 @@ public final class DatasetClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renameDataset(String datasetName, ArtifactRenameRequest request) {
         this.serviceClient.renameDataset(datasetName, request);
@@ -204,8 +217,9 @@ public final class DatasetClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameDatasetWithResponse(
             String datasetName, ArtifactRenameRequest request, Context context) {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters to provide for the Microsoft Teams channel. */
 @Fluent
 public final class MsTeamsChannelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsTeamsChannelProperties.class);
-
     /*
      * Enable calling for Microsoft Teams channel
      */
@@ -31,6 +27,24 @@ public final class MsTeamsChannelProperties {
      */
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
+
+    /*
+     * Webhook for Microsoft Teams channel calls
+     */
+    @JsonProperty(value = "incomingCallRoute")
+    private String incomingCallRoute;
+
+    /*
+     * Deployment environment for Microsoft Teams channel calls
+     */
+    @JsonProperty(value = "deploymentEnvironment")
+    private String deploymentEnvironment;
+
+    /*
+     * Whether this channel accepted terms
+     */
+    @JsonProperty(value = "acceptedTerms")
+    private Boolean acceptedTerms;
 
     /**
      * Get the enableCalling property: Enable calling for Microsoft Teams channel.
@@ -89,6 +103,66 @@ public final class MsTeamsChannelProperties {
      */
     public MsTeamsChannelProperties withIsEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
+        return this;
+    }
+
+    /**
+     * Get the incomingCallRoute property: Webhook for Microsoft Teams channel calls.
+     *
+     * @return the incomingCallRoute value.
+     */
+    public String incomingCallRoute() {
+        return this.incomingCallRoute;
+    }
+
+    /**
+     * Set the incomingCallRoute property: Webhook for Microsoft Teams channel calls.
+     *
+     * @param incomingCallRoute the incomingCallRoute value to set.
+     * @return the MsTeamsChannelProperties object itself.
+     */
+    public MsTeamsChannelProperties withIncomingCallRoute(String incomingCallRoute) {
+        this.incomingCallRoute = incomingCallRoute;
+        return this;
+    }
+
+    /**
+     * Get the deploymentEnvironment property: Deployment environment for Microsoft Teams channel calls.
+     *
+     * @return the deploymentEnvironment value.
+     */
+    public String deploymentEnvironment() {
+        return this.deploymentEnvironment;
+    }
+
+    /**
+     * Set the deploymentEnvironment property: Deployment environment for Microsoft Teams channel calls.
+     *
+     * @param deploymentEnvironment the deploymentEnvironment value to set.
+     * @return the MsTeamsChannelProperties object itself.
+     */
+    public MsTeamsChannelProperties withDeploymentEnvironment(String deploymentEnvironment) {
+        this.deploymentEnvironment = deploymentEnvironment;
+        return this;
+    }
+
+    /**
+     * Get the acceptedTerms property: Whether this channel accepted terms.
+     *
+     * @return the acceptedTerms value.
+     */
+    public Boolean acceptedTerms() {
+        return this.acceptedTerms;
+    }
+
+    /**
+     * Set the acceptedTerms property: Whether this channel accepted terms.
+     *
+     * @param acceptedTerms the acceptedTerms value to set.
+     * @return the MsTeamsChannelProperties object itself.
+     */
+    public MsTeamsChannelProperties withAcceptedTerms(Boolean acceptedTerms) {
+        this.acceptedTerms = acceptedTerms;
         return this;
     }
 

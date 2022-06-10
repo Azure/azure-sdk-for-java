@@ -7,21 +7,17 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.EventChannelDestination;
 import com.azure.resourcemanager.eventgrid.models.EventChannelFilter;
 import com.azure.resourcemanager.eventgrid.models.EventChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventChannelSource;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicReadinessState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Event Channel. */
 @Fluent
 public final class EventChannelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelInner.class);
-
     /*
      * Properties of the EventChannel.
      */

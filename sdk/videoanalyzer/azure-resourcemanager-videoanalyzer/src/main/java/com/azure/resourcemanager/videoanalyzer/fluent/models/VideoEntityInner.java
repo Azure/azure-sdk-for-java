@@ -5,71 +5,47 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.videoanalyzer.models.VideoArchival;
+import com.azure.resourcemanager.videoanalyzer.models.VideoContentUrls;
 import com.azure.resourcemanager.videoanalyzer.models.VideoFlags;
 import com.azure.resourcemanager.videoanalyzer.models.VideoMediaInfo;
-import com.azure.resourcemanager.videoanalyzer.models.VideoStreaming;
 import com.azure.resourcemanager.videoanalyzer.models.VideoType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The representation of a single video in a Video Analyzer account. */
-@JsonFlatten
+/**
+ * Represents a video resource within Azure Video Analyzer. Videos can be ingested from RTSP cameras through live
+ * pipelines or can be created by exporting sequences from existing captured video through a pipeline job. Videos
+ * ingested through live pipelines can be streamed through Azure Video Analyzer Player Widget or compatible players.
+ * Exported videos can be downloaded as MP4 files.
+ */
 @Fluent
-public class VideoEntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEntityInner.class);
+public final class VideoEntityInner extends ProxyResource {
+    /*
+     * The resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private VideoProperties innerProperties;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Optional video title provided by the user. Value can be up to 256
-     * characters long.
+    /**
+     * Get the innerProperties property: The resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
-
-    /*
-     * Optional video description provided by the user. Value can be up to 2048
-     * characters long.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Type of the video archive. Different archive formats provide different
-     * capabilities.
-     */
-    @JsonProperty(value = "properties.type", access = JsonProperty.Access.WRITE_ONLY)
-    private VideoType typePropertiesType;
-
-    /*
-     * Video flags contain information about the available video actions and
-     * its dynamic properties based on the current video state.
-     */
-    @JsonProperty(value = "properties.flags", access = JsonProperty.Access.WRITE_ONLY)
-    private VideoFlags flags;
-
-    /*
-     * Video streaming holds information about video streaming URLs.
-     */
-    @JsonProperty(value = "properties.streaming", access = JsonProperty.Access.WRITE_ONLY)
-    private VideoStreaming streaming;
-
-    /*
-     * Contains information about the video and audio content.
-     */
-    @JsonProperty(value = "properties.mediaInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private VideoMediaInfo mediaInfo;
+    private VideoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -83,7 +59,7 @@ public class VideoEntityInner extends ProxyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -93,7 +69,10 @@ public class VideoEntityInner extends ProxyResource {
      * @return the VideoEntityInner object itself.
      */
     public VideoEntityInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -104,7 +83,7 @@ public class VideoEntityInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -115,18 +94,21 @@ public class VideoEntityInner extends ProxyResource {
      * @return the VideoEntityInner object itself.
      */
     public VideoEntityInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
-     * Get the typePropertiesType property: Type of the video archive. Different archive formats provide different
-     * capabilities.
+     * Get the type property: Video content type. Different content types are suitable for different applications and
+     * scenarios.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public VideoType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
@@ -136,16 +118,16 @@ public class VideoEntityInner extends ProxyResource {
      * @return the flags value.
      */
     public VideoFlags flags() {
-        return this.flags;
+        return this.innerProperties() == null ? null : this.innerProperties().flags();
     }
 
     /**
-     * Get the streaming property: Video streaming holds information about video streaming URLs.
+     * Get the contentUrls property: Set of URLs to the video content.
      *
-     * @return the streaming value.
+     * @return the contentUrls value.
      */
-    public VideoStreaming streaming() {
-        return this.streaming;
+    public VideoContentUrls contentUrls() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentUrls();
     }
 
     /**
@@ -154,7 +136,44 @@ public class VideoEntityInner extends ProxyResource {
      * @return the mediaInfo value.
      */
     public VideoMediaInfo mediaInfo() {
-        return this.mediaInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().mediaInfo();
+    }
+
+    /**
+     * Set the mediaInfo property: Contains information about the video and audio content.
+     *
+     * @param mediaInfo the mediaInfo value to set.
+     * @return the VideoEntityInner object itself.
+     */
+    public VideoEntityInner withMediaInfo(VideoMediaInfo mediaInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoProperties();
+        }
+        this.innerProperties().withMediaInfo(mediaInfo);
+        return this;
+    }
+
+    /**
+     * Get the archival property: Video archival properties.
+     *
+     * @return the archival value.
+     */
+    public VideoArchival archival() {
+        return this.innerProperties() == null ? null : this.innerProperties().archival();
+    }
+
+    /**
+     * Set the archival property: Video archival properties.
+     *
+     * @param archival the archival value to set.
+     * @return the VideoEntityInner object itself.
+     */
+    public VideoEntityInner withArchival(VideoArchival archival) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoProperties();
+        }
+        this.innerProperties().withArchival(archival);
+        return this;
     }
 
     /**
@@ -163,14 +182,8 @@ public class VideoEntityInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (flags() != null) {
-            flags().validate();
-        }
-        if (streaming() != null) {
-            streaming().validate();
-        }
-        if (mediaInfo() != null) {
-            mediaInfo().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

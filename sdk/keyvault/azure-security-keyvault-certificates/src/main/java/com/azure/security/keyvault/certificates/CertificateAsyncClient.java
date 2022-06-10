@@ -22,6 +22,21 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.certificates.implementation.CertificateImportParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateIssuerSetParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateIssuerUpdateParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateMergeParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateOperationUpdateParameter;
+import com.azure.security.keyvault.certificates.implementation.CertificatePolicyRequest;
+import com.azure.security.keyvault.certificates.implementation.CertificateRequestAttributes;
+import com.azure.security.keyvault.certificates.implementation.CertificateRequestParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateRestoreParameters;
+import com.azure.security.keyvault.certificates.implementation.CertificateService;
+import com.azure.security.keyvault.certificates.implementation.CertificateUpdateParameters;
+import com.azure.security.keyvault.certificates.implementation.Contacts;
+import com.azure.security.keyvault.certificates.implementation.IssuerAttributes;
+import com.azure.security.keyvault.certificates.implementation.IssuerCredentials;
+import com.azure.security.keyvault.certificates.implementation.OrganizationDetails;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -65,7 +80,15 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  *
  * <p><strong>Samples to construct the async client</strong></p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
+ * <pre>
+ * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
  *
  * @see CertificateClientBuilder
  * @see PagedFlux
@@ -76,8 +99,7 @@ public final class CertificateAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
@@ -133,7 +155,20 @@ public final class CertificateAsyncClient {
      * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
+     * <pre>
+     * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
+     * tags.put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+     * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
+     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
@@ -186,7 +221,18 @@ public final class CertificateAsyncClient {
      * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
+     * <pre>
+     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
+     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
@@ -253,7 +299,17 @@ public final class CertificateAsyncClient {
      * <p>Get a pending certificate operation. The {@link PollerFlux poller} allows users to automatically poll on the certificate
      * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String -->
+     * <pre>
+     * certificateAsyncClient.getCertificateOperation&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
+     *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
@@ -275,7 +331,15 @@ public final class CertificateAsyncClient {
      * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
+     * <pre>
+     * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponse -&gt;
+     *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
+     *             certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getSecretId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -299,7 +363,16 @@ public final class CertificateAsyncClient {
      * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String -->
+     * <pre>
+     * certificateAsyncClient.getCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponse -&gt;
+     *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
+     *             certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *             certificateResponse.getValue&#40;&#41;.getSecretId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateWithResponse#String -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -341,7 +414,17 @@ public final class CertificateAsyncClient {
      * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string -->
+     * <pre>
+     * String certificateVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * certificateAsyncClient.getCertificateVersionWithResponse&#40;&quot;certificateName&quot;, certificateVersion&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
+     *             certificateWithVersion.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *             certificateWithVersion.getValue&#40;&#41;.getSecretId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersionWithResponse#string-string -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
      * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
@@ -366,7 +449,15 @@ public final class CertificateAsyncClient {
      * <p>Gets a specific version of the certificate in the key vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String -->
+     * <pre>
+     * certificateAsyncClient.getCertificateVersion&#40;&quot;certificateName&quot;, certificateVersion&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
+     *             certificateWithVersion.getProperties&#40;&#41;.getName&#40;&#41;, certificateWithVersion.getSecretId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificateVersion#String-String -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
      * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
@@ -392,7 +483,21 @@ public final class CertificateAsyncClient {
      * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure Key Vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties -->
+     * <pre>
+     * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponseValue -&gt; &#123;
+     *         KeyVaultCertificate certificate = certificateResponseValue;
+     *         &#47;&#47;Update enabled status of the certificate
+     *         certificate.getProperties&#40;&#41;.setEnabled&#40;false&#41;;
+     *         certificateAsyncClient.updateCertificateProperties&#40;certificate.getProperties&#40;&#41;&#41;
+     *             .subscribe&#40;certificateResponse -&gt;
+     *                 System.out.printf&#40;&quot;Certificate's enabled status %s %n&quot;,
+     *                     certificateResponse.getProperties&#40;&#41;.isEnabled&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificateProperties#CertificateProperties -->
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
      * @throws NullPointerException if {@code certificate} is {@code null}.
@@ -417,7 +522,21 @@ public final class CertificateAsyncClient {
      * <p>Gets latest version of the certificate, changes its enabled status and then updates it in the Azure Key Vault. Prints out the
      * returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties -->
+     * <pre>
+     * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponseValue -&gt; &#123;
+     *         KeyVaultCertificate certificate = certificateResponseValue;
+     *         &#47;&#47;Update the enabled status of the certificate.
+     *         certificate.getProperties&#40;&#41;.setEnabled&#40;false&#41;;
+     *         certificateAsyncClient.updateCertificatePropertiesWithResponse&#40;certificate.getProperties&#40;&#41;&#41;
+     *             .subscribe&#40;certificateResponse -&gt;
+     *                 System.out.printf&#40;&quot;Certificate's enabled status %s %n&quot;,
+     *                     certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.isEnabled&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePropertiesWithResponse#CertificateProperties -->
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
      * @throws NullPointerException if {@code properties} is {@code null}.
@@ -458,7 +577,16 @@ public final class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the certificate in the Azure Key Vault. Prints out the deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
+     * <pre>
+     * certificateAsyncClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Delete Certificate Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Certificate Delete Date: &quot; + pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
      *
      * @param certificateName The name of the certificate to be deleted.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -520,7 +648,14 @@ public final class CertificateAsyncClient {
      * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificate#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificate#string -->
+     * <pre>
+     * certificateAsyncClient.getDeletedCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedSecretResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;, deletedSecretResponse.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificate#string -->
      *
      * @param certificateName The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -546,7 +681,15 @@ public final class CertificateAsyncClient {
      * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificateWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificateWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.getDeletedCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedSecretResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
+     *             deletedSecretResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getDeletedCertificateWithResponse#string -->
      *
      * @param certificateName The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -580,7 +723,14 @@ public final class CertificateAsyncClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.purgeDeletedCertificateWithResponse&#40;&quot;deletedCertificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;purgeResponse -&gt;
+     *         System.out.printf&#40;&quot;Purge Status response %d %n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
      *
      * @param certificateName The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -604,7 +754,14 @@ public final class CertificateAsyncClient {
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * status code from the server response when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.purgeDeletedCertificateWithResponse&#40;&quot;deletedCertificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;purgeResponse -&gt;
+     *         System.out.printf&#40;&quot;Purge Status response %d %n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.purgeDeletedCertificateWithResponse#string -->
      *
      * @param certificateName The name of the deleted certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -639,7 +796,16 @@ public final class CertificateAsyncClient {
      * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
      * recovered certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String}
+     * <!-- src_embed com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String -->
+     * <pre>
+     * certificateAsyncClient.beginRecoverDeletedCertificate&#40;&quot;deletedCertificateName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;Recovery Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Recover Certificate Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Recover Certificate Id: &quot; + pollResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.certificatevault.certificates.CertificateAsyncClient.beginRecoverDeletedCertificate#String -->
      *
      * @param certificateName The name of the deleted certificate to be recovered.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
@@ -702,7 +868,14 @@ public final class CertificateAsyncClient {
      * <p>Backs up the certificate from the key vault. Prints out the
      * length of the certificate's backup byte array returned in the response.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificate#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificate#string -->
+     * <pre>
+     * certificateAsyncClient.backupCertificate&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateBackupResponse -&gt;
+     *         System.out.printf&#40;&quot;Certificate's Backup Byte array's length %s %n&quot;, certificateBackupResponse.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificate#string -->
      *
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -726,7 +899,15 @@ public final class CertificateAsyncClient {
      * <p>Backs up the certificate from the key vault. Prints out the
      * length of the certificate's backup byte array returned in the response.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificateWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificateWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.backupCertificateWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateBackupResponse -&gt;
+     *         System.out.printf&#40;&quot;Certificate's Backup Byte array's length %s %n&quot;,
+     *             certificateBackupResponse.getValue&#40;&#41;.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.backupCertificateWithResponse#string -->
      *
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -762,7 +943,15 @@ public final class CertificateAsyncClient {
      * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificate#byte}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificate#byte -->
+     * <pre>
+     * byte[] certificateBackupByteArray = &#123;&#125;;
+     * certificateAsyncClient.restoreCertificateBackup&#40;certificateBackupByteArray&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Restored Certificate with name %s and key id %s %n&quot;,
+     *         certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificate#byte -->
      *
      * @param backup The backup blob associated with the certificate.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -785,7 +974,15 @@ public final class CertificateAsyncClient {
      * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificateWithResponse#byte}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificateWithResponse#byte -->
+     * <pre>
+     * byte[] certificateBackup = &#123;&#125;;
+     * certificateAsyncClient.restoreCertificateBackup&#40;certificateBackup&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Restored Certificate with name %s and key id %s %n&quot;,
+     *         certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.restoreCertificateWithResponse#byte -->
      *
      * @param backup The backup blob associated with the certificate.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -820,7 +1017,16 @@ public final class CertificateAsyncClient {
      * <p>It is possible to get certificates with all the properties excluding the policy from this information. Convert the {@link Flux} containing {@link CertificateProperties} to
      * {@link Flux} containing {@link KeyVaultCertificate certificate} using {@link CertificateAsyncClient#getCertificateVersion(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
+     * <pre>
+     * certificateAsyncClient.listPropertiesOfCertificates&#40;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
+     *         certificate.getVersion&#40;&#41;&#41;
+     *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
+     *             certificateResponse.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
      *
      * @param includePending indicate if pending certificates should be included in the results.
      * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} for all the certificates in the vault.
@@ -846,7 +1052,16 @@ public final class CertificateAsyncClient {
      * <p>It is possible to get certificates with all the properties excluding the policy from this information. Convert the {@link Flux} containing {@link CertificateProperties} to
      * {@link Flux} containing {@link KeyVaultCertificate certificate} using {@link CertificateAsyncClient#getCertificateVersion(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
+     * <pre>
+     * certificateAsyncClient.listPropertiesOfCertificates&#40;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
+     *         certificate.getVersion&#40;&#41;&#41;
+     *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
+     *             certificateResponse.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificates -->
      *
      * @return A {@link PagedFlux} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
@@ -913,7 +1128,14 @@ public final class CertificateAsyncClient {
      * <p>Lists the deleted certificates in the key vault. Prints out the
      * recovery id of each deleted certificate when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
+     * <pre>
+     * certificateAsyncClient.listDeletedCertificates&#40;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedCertificateResponse -&gt;  System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
+     *         deletedCertificateResponse.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
      *
      * @return A {@link PagedFlux} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
@@ -940,7 +1162,14 @@ public final class CertificateAsyncClient {
      * <p>Lists the deleted certificates in the key vault. Prints out the
      * recovery id of each deleted certificate when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
+     * <pre>
+     * certificateAsyncClient.listDeletedCertificates&#40;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedCertificateResponse -&gt;  System.out.printf&#40;&quot;Deleted Certificate's Recovery Id %s %n&quot;,
+     *         deletedCertificateResponse.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listDeletedCertificates -->
      *
      * @param includePending indicate if pending deleted certificates should be included in the results.
      * @return A {@link PagedFlux} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
@@ -1009,7 +1238,16 @@ public final class CertificateAsyncClient {
      * containing {@link CertificateProperties} to {@link PagedFlux} containing {@link KeyVaultCertificate certificate} using
      * {@link CertificateAsyncClient#getCertificateVersion(String, String)} within {@link Flux#flatMap(Function)}.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions -->
+     * <pre>
+     * certificateAsyncClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificate -&gt; certificateAsyncClient.getCertificateVersion&#40;certificate.getName&#40;&#41;,
+     *         certificate.getVersion&#40;&#41;&#41;
+     *         .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received certificate with name %s and key id %s&quot;,
+     *             certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getKeyId&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listCertificateVersions -->
      *
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -1068,7 +1306,16 @@ public final class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Merges a certificate with a kay pair available in the service.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config -->
+     * <pre>
+     * List&lt;byte[]&gt; x509CertificatesToMerge = new ArrayList&lt;&gt;&#40;&#41;;
+     * MergeCertificateOptions config =
+     *     new MergeCertificateOptions&#40;&quot;certificateName&quot;, x509CertificatesToMerge&#41;.setEnabled&#40;false&#41;;
+     * certificateAsyncClient.mergeCertificate&#40;config&#41;
+     *     .subscribe&#40;certificate -&gt; System.out.printf&#40;&quot;Received Certificate with name %s and key id %s&quot;,
+     *         certificate.getProperties&#40;&#41;.getName&#40;&#41;, certificate.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificate#config -->
      *
      * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
@@ -1092,7 +1339,16 @@ public final class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Merges a certificate with a kay pair available in the service.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config -->
+     * <pre>
+     * List&lt;byte[]&gt; x509CertsToMerge = new ArrayList&lt;&gt;&#40;&#41;;
+     * MergeCertificateOptions mergeConfig =
+     *     new MergeCertificateOptions&#40;&quot;certificateName&quot;, x509CertsToMerge&#41;.setEnabled&#40;false&#41;;
+     * certificateAsyncClient.mergeCertificateWithResponse&#40;mergeConfig&#41;
+     *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received Certificate with name %s and key id %s&quot;,
+     *         certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getValue&#40;&#41;.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.mergeCertificateWithResponse#config -->
      *
      * @param mergeCertificateOptions the merge certificate options holding the x509 certificates.
      *
@@ -1129,7 +1385,15 @@ public final class CertificateAsyncClient {
      * <p>Gets the policy of a certirifcate in the key vault. Prints out the
      * returned certificate policy details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string -->
+     * <pre>
+     * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;policy -&gt;
+     *         System.out.printf&#40;&quot;Certificate policy is returned with issuer name %s and subject name %s %n&quot;,
+     *             policy.getIssuerName&#40;&#41;, policy.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved, cannot be null
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -1152,7 +1416,15 @@ public final class CertificateAsyncClient {
      * <p>Gets the policy of a certirifcate in the key vault. Prints out the
      * returned certificate policy details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.getCertificatePolicyWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;policyResponse -&gt;
+     *         System.out.printf&#40;&quot;Certificate policy is returned with issuer name %s and subject name %s %n&quot;,
+     *             policyResponse.getValue&#40;&#41;.getIssuerName&#40;&#41;, policyResponse.getValue&#40;&#41;.getSubject&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved, cannot be null
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -1185,7 +1457,21 @@ public final class CertificateAsyncClient {
      * <p>Gets the certificate policy, changes its properties and then updates it in the Azure Key Vault. Prints out the
      * returned policy details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string -->
+     * <pre>
+     * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificatePolicyResponseValue -&gt; &#123;
+     *         CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
+     *         &#47;&#47; Update transparency
+     *         certificatePolicy.setCertificateTransparent&#40;true&#41;;
+     *         certificateAsyncClient.updateCertificatePolicy&#40;&quot;certificateName&quot;, certificatePolicy&#41;
+     *             .subscribe&#40;updatedPolicy -&gt;
+     *                 System.out.printf&#40;&quot;Certificate policy's updated transparency status %s %n&quot;,
+     *                     updatedPolicy.isCertificateTransparent&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicy#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
      * @param policy The certificate policy to be updated.
@@ -1211,7 +1497,22 @@ public final class CertificateAsyncClient {
      * <p>Gets the certificate policy, changes its properties and then updates it in the Azure Key Vault. Prints out the
      * returned policy details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;certificatePolicyResponseValue -&gt; &#123;
+     *         CertificatePolicy certificatePolicy = certificatePolicyResponseValue;
+     *         &#47;&#47; Update transparency
+     *         certificatePolicy.setCertificateTransparent&#40;true&#41;;
+     *         certificateAsyncClient.updateCertificatePolicyWithResponse&#40;&quot;certificateName&quot;,
+     *             certificatePolicy&#41;
+     *             .subscribe&#40;updatedPolicyResponse -&gt;
+     *                 System.out.printf&#40;&quot;Certificate policy's updated transparency status %s %n&quot;,
+     *                     updatedPolicyResponse.getValue&#40;&#41;.isCertificateTransparent&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateCertificatePolicyWithResponse#string -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
      * @param policy The certificate policy is to be updated.
@@ -1247,7 +1548,19 @@ public final class CertificateAsyncClient {
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
      * issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer -->
+     * <pre>
+     * CertificateIssuer issuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
+     *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
+     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     * certificateAsyncClient.createIssuer&#40;issuer&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerResponse -&gt; &#123;
+     *         System.out.printf&#40;&quot;Issuer created with %s and %s&quot;, issuerResponse.getName&#40;&#41;,
+     *             issuerResponse.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuer#CertificateIssuer -->
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
@@ -1272,7 +1585,19 @@ public final class CertificateAsyncClient {
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
      * issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer -->
+     * <pre>
+     * CertificateIssuer newIssuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;providerName&quot;&#41;
+     *     .setAccountId&#40;&quot;keyvaultuser&quot;&#41;
+     *     .setPassword&#40;&quot;temp2&quot;&#41;;
+     * certificateAsyncClient.createIssuerWithResponse&#40;newIssuer&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerResponse -&gt; &#123;
+     *         System.out.printf&#40;&quot;Issuer created with %s and %s&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.createIssuerWithResponse#CertificateIssuer -->
      *
      * @param issuer The configuration of the certificate issuer to be created. Use
      * {@link CertificateIssuer#CertificateIssuer(String, String)} to initialize the issuer object
@@ -1293,14 +1618,23 @@ public final class CertificateAsyncClient {
         context = context == null ? Context.NONE : context;
         CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
             .provider(issuer.getProvider())
-            .credentials(new IssuerCredentials().accountId(issuer.getAccountId()).password(issuer.getPassword()))
-            .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
-        return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response -> logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create the certificate issuer - {}", issuer.getName(), error));
+            .organizationDetails(new OrganizationDetails()
+                .id(issuer.getOrganizationId())
+                .adminDetails(issuer.getAdministratorContacts()))
+            .credentials(new IssuerCredentials()
+                .password(issuer.getPassword())
+                .accountId(issuer.getAccountId()))
+            .attributes(new IssuerAttributes()
+                .enabled(issuer.isEnabled()));
+
+        return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Creating certificate issuer - {}",  issuer.getName()))
+            .doOnSuccess(response ->
+                logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to create the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**
@@ -1310,7 +1644,16 @@ public final class CertificateAsyncClient {
      * <p>Gets the specificed certifcate issuer in the key vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.getIssuerWithResponse&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerResponse -&gt; &#123;
+     *         System.out.printf&#40;&quot;Issuer returned with %s and %s&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string -->
      *
      * @param issuerName The name of the certificate issuer to retrieve, cannot be null
      * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
@@ -1333,7 +1676,16 @@ public final class CertificateAsyncClient {
      * <p>Gets the specified certificate issuer in the key vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string -->
+     * <pre>
+     * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuer -&gt; &#123;
+     *         System.out.printf&#40;&quot;Issuer returned with %s and %s&quot;, issuer.getName&#40;&#41;,
+     *             issuer.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuer#string -->
      *
      * @param issuerName The name of the certificate to retrieve, cannot be null
      * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
@@ -1352,11 +1704,14 @@ public final class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
         context = context == null ? Context.NONE : context;
-        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
+        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Retrieving certificate issuer - {}",  issuerName))
+            .doOnSuccess(response ->
+                logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1367,7 +1722,14 @@ public final class CertificateAsyncClient {
      * <p>Deletes the certificate issuer in the Azure Key Vault. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuerWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuerWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.deleteIssuerWithResponse&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedIssuerResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted issuer with name %s %n&quot;, deletedIssuerResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuerWithResponse#string -->
      *
      * @param issuerName The name of the certificate issuer to be deleted.
      * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
@@ -1391,7 +1753,14 @@ public final class CertificateAsyncClient {
      * <p>Deletes the certificate issuer in the Azure Key Vault. Prints out the
      * deleted certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuer#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuer#string -->
+     * <pre>
+     * certificateAsyncClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;deletedIssuerResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted issuer with name %s %n&quot;, deletedIssuerResponse.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteIssuer#string -->
      *
      * @param issuerName The name of the certificate issuer to be deleted.
      * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
@@ -1410,11 +1779,15 @@ public final class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
         context = context == null ? Context.NONE : context;
-        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
+
+        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Deleting certificate issuer - {}",  issuerName))
+            .doOnSuccess(response ->
+                logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
     }
 
 
@@ -1426,7 +1799,15 @@ public final class CertificateAsyncClient {
      * <p>It is possible to get the certificate issuer with all of its properties from this information. Convert the {@link PagedFlux}
      * containing {@link IssuerProperties issuerProperties} to {@link PagedFlux} containing {@link CertificateIssuer issuer} using
      * {@link CertificateAsyncClient#getIssuer(String)}
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers -->
+     * <pre>
+     * certificateAsyncClient.listPropertiesOfIssuers&#40;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerProperties -&gt; certificateAsyncClient.getIssuer&#40;issuerProperties.getName&#40;&#41;&#41;
+     *         .subscribe&#40;issuerResponse -&gt; System.out.printf&#40;&quot;Received issuer with name %s and provider %s&quot;,
+     *             issuerResponse.getName&#40;&#41;, issuerResponse.getProvider&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listPropertiesOfIssuers -->
      *
      * @return A {@link PagedFlux} containing all of the {@link IssuerProperties certificate issuers} in the vault.
      */
@@ -1450,8 +1831,8 @@ public final class CertificateAsyncClient {
 
     private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPage(Context context) {
         try {
-            return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
                 .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
@@ -1469,11 +1850,15 @@ public final class CertificateAsyncClient {
      */
     private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersNextPage(String continuationToken, Context context) {
         try {
-            return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next certificate issuers page - Page {} ", continuationToken))
-                .doOnError(error -> logger.warning("Failed to list next certificate issuers page - Page {} ", continuationToken, error));
+            return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored ->
+                    logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
+                .doOnSuccess(response ->
+                    logger.verbose("Listed next certificate issuers page - Page {} ", continuationToken))
+                .doOnError(error ->
+                    logger.warning("Failed to list next certificate issuers page - Page {} ", continuationToken,
+                        error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1487,7 +1872,21 @@ public final class CertificateAsyncClient {
      * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
+     * <pre>
+     * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerResponseValue -&gt; &#123;
+     *         CertificateIssuer issuer = issuerResponseValue;
+     *         &#47;&#47;Update the enabled status of the issuer.
+     *         issuer.setEnabled&#40;false&#41;;
+     *         certificateAsyncClient.updateIssuer&#40;issuer&#41;
+     *             .subscribe&#40;issuerResponse -&gt;
+     *                 System.out.printf&#40;&quot;Issuer's enabled status %s %n&quot;,
+     *                     issuerResponse.isEnabled&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties. Use
      * {@link CertificateIssuer#CertificateIssuer(String)} to initialize the issuer object
@@ -1514,7 +1913,21 @@ public final class CertificateAsyncClient {
      * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
+     * <pre>
+     * certificateAsyncClient.getIssuer&#40;&quot;issuerName&quot;&#41;
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;issuerResponseValue -&gt; &#123;
+     *         CertificateIssuer issuer = issuerResponseValue;
+     *         &#47;&#47;Update the enabled status of the issuer.
+     *         issuer.setEnabled&#40;false&#41;;
+     *         certificateAsyncClient.updateIssuer&#40;issuer&#41;
+     *             .subscribe&#40;issuerResponse -&gt;
+     *                 System.out.printf&#40;&quot;Issuer's enabled status %s %n&quot;,
+     *                     issuerResponse.isEnabled&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.updateIssuer#CertificateIssuer -->
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @throws NullPointerException if {@code issuer} is {@code null}.
@@ -1535,13 +1948,24 @@ public final class CertificateAsyncClient {
         context = context == null ? Context.NONE : context;
         CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
             .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
-        return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE, updateParameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to updated the certificate issuer - {}", issuer.getName(), error));
+            .organizationDetails(new OrganizationDetails()
+                .id(issuer.getOrganizationId())
+                .adminDetails(issuer.getAdministratorContacts()))
+            .credentials(new IssuerCredentials()
+                .password(issuer.getPassword())
+                .accountId(issuer.getAccountId()))
+            .attributes(new IssuerAttributes()
+                .enabled(issuer.isEnabled()));
+
+        return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
+            updateParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Updating certificate issuer - {}",  issuer.getName()))
+            .doOnSuccess(response ->
+                logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to updated the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**
@@ -1553,7 +1977,14 @@ public final class CertificateAsyncClient {
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the
      * returned contacts details.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts -->
+     * <pre>
+     * CertificateContact contactToAdd = new CertificateContact&#40;&#41;.setName&#40;&quot;user&quot;&#41;.setEmail&#40;&quot;useremail&#64;example.com&quot;&#41;;
+     * certificateAsyncClient.setContacts&#40;Collections.singletonList&#40;contactToAdd&#41;&#41;.subscribe&#40;contact -&gt;
+     *     System.out.printf&#40;&quot;Contact name %s and email %s&quot;, contact.getName&#40;&#41;, contact.getEmail&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts -->
      *
      * @param contacts The list of contacts to set on the vault.
      * @throws HttpResponseException when a contact information provided is invalid/incomplete.
@@ -1590,7 +2021,13 @@ public final class CertificateAsyncClient {
      * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the
      * returned contacts details.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts -->
+     * <pre>
+     * certificateAsyncClient.listContacts&#40;&#41;.subscribe&#40;contact -&gt;
+     *     System.out.printf&#40;&quot;Contact name %s and email %s&quot;, contact.getName&#40;&#41;, contact.getEmail&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.listContacts -->
      *
      * @return A {@link PagedFlux} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
@@ -1628,7 +2065,13 @@ public final class CertificateAsyncClient {
      * <p>Deletes the certificate contacts in the Azure Key Vault. Prints out the
      * deleted contacts details.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts -->
+     * <pre>
+     * certificateAsyncClient.deleteContacts&#40;&#41;.subscribe&#40;contact -&gt;
+     *     System.out.printf&#40;&quot;Deleted Contact name %s and email %s&quot;, contact.getName&#40;&#41;, contact.getEmail&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteContacts -->
      *
      * @return A {@link PagedFlux} containing all of the {@link CertificateContact deleted certificate contacts} in the vault.
      */
@@ -1663,7 +2106,13 @@ public final class CertificateAsyncClient {
      * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault. Prints out the
      * deleted certificate operation details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string -->
+     * <pre>
+     * certificateAsyncClient.deleteCertificateOperation&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;certificateOperation -&gt; System.out.printf&#40;&quot;Deleted Certificate operation last status %s&quot;,
+     *         certificateOperation.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperation#string -->
      *
      * @param certificateName The name of the certificate which is in the process of being created.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -1687,7 +2136,13 @@ public final class CertificateAsyncClient {
      * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault. Prints out the
      * deleted certificate operation details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.deleteCertificateOperationWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;certificateOperationResponse -&gt; System.out.printf&#40;&quot;Deleted Certificate operation's last&quot;
+     *         + &quot; status %s&quot;, certificateOperationResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.deleteCertificateOperationWithResponse#string -->
      *
      * @param certificateName The name of the certificate which is in the process of being created.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
@@ -1729,7 +2184,13 @@ public final class CertificateAsyncClient {
      * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Prints out the
      * updated certificate operation details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string -->
+     * <pre>
+     * certificateAsyncClient.cancelCertificateOperation&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;certificateOperation -&gt; System.out.printf&#40;&quot;Certificate operation status %s&quot;,
+     *         certificateOperation.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperation#string -->
      *
      * @param certificateName The name of the certificate which is in the process of being created.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
@@ -1752,7 +2213,13 @@ public final class CertificateAsyncClient {
      * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Prints out the
      * updated certificate operation details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string -->
+     * <pre>
+     * certificateAsyncClient.cancelCertificateOperationWithResponse&#40;&quot;certificateName&quot;&#41;
+     *     .subscribe&#40;certificateOperationResponse -&gt; System.out.printf&#40;&quot;Certificate operation status %s&quot;,
+     *         certificateOperationResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.cancelCertificateOperationWithResponse#string -->
      *
      * @param certificateName The name of the certificate which is in the process of being created.
      * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
@@ -1777,7 +2244,16 @@ public final class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Imports a certificate into the key vault.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificate#options}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificate#options -->
+     * <pre>
+     * byte[] certificateToImport = new byte[100];
+     * ImportCertificateOptions config =
+     *     new ImportCertificateOptions&#40;&quot;certificateName&quot;, certificateToImport&#41;.setEnabled&#40;false&#41;;
+     * certificateAsyncClient.importCertificate&#40;config&#41;
+     *     .subscribe&#40;certificate -&gt; System.out.printf&#40;&quot;Received Certificate with name %s and key id %s&quot;,
+     *         certificate.getProperties&#40;&#41;.getName&#40;&#41;, certificate.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificate#options -->
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @throws HttpResponseException when the {@code importCertificateOptions} are invalid.
@@ -1799,7 +2275,16 @@ public final class CertificateAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Imports a certificate into the key vault.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificateWithResponse#options}
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificateWithResponse#options -->
+     * <pre>
+     * byte[] certToImport = new byte[100];
+     * ImportCertificateOptions importCertificateOptions  =
+     *     new ImportCertificateOptions&#40;&quot;certificateName&quot;, certToImport&#41;.setEnabled&#40;false&#41;;
+     * certificateAsyncClient.importCertificateWithResponse&#40;importCertificateOptions&#41;
+     *     .subscribe&#40;certificateResponse -&gt; System.out.printf&#40;&quot;Received Certificate with name %s and key id %s&quot;,
+     *         certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getValue&#40;&#41;.getKeyId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.importCertificateWithResponse#options -->
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @throws HttpResponseException when the {@code importCertificateOptions} are invalid.

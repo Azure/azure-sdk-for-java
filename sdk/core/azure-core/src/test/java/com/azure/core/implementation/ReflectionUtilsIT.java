@@ -19,7 +19,7 @@ public class ReflectionUtilsIT {
     @Test
     public void validateImplementationVersion() {
         String javaSpecificationVersion = System.getProperty("java.specification.version");
-        if (javaSpecificationVersion.equals("1.8")) {
+        if ("1.8".equals(javaSpecificationVersion)) {
             assertEquals(8, ReflectionUtilsApi.INSTANCE.getJavaImplementationMajorVersion());
         } else {
             assertEquals(9, ReflectionUtilsApi.INSTANCE.getJavaImplementationMajorVersion());

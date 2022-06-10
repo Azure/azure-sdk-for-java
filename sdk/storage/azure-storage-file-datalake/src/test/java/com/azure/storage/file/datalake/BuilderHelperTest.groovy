@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.ClientOptions
 import com.azure.core.util.CoreUtils
@@ -27,6 +29,7 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.Duration
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -34,6 +37,7 @@ class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.windows.core.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
+    static def coreRetryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)))
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String SDK_NAME = "name";
@@ -51,8 +55,8 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null,
+            endpoint, requestRetryOptions, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -134,8 +138,8 @@ class BuilderHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null,
+            endpoint, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -395,6 +399,70 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint + "?sig=foo")
             .credential(new AzureSasCredential("foo"))
             .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+    }
+
+    def "Only one retryOptions can be applied"() {
+        when:
+        new DataLakeServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakeFileSystemClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .fileSystemName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .fileSystemName("foo")
+            .pathName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildFileClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .fileSystemName("foo")
+            .pathName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildFileClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new DataLakePathClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .fileSystemName("foo")
+            .pathName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildDirectoryClient()
 
         then:
         thrown(IllegalStateException.class)

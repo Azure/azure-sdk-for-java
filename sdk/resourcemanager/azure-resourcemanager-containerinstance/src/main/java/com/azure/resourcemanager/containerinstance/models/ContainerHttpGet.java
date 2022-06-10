@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The container Http Get settings, for liveness or readiness probe. */
 @Fluent
 public final class ContainerHttpGet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerHttpGet.class);
-
     /*
      * The path to probe.
      */
@@ -36,7 +33,7 @@ public final class ContainerHttpGet {
      * The HTTP headers.
      */
     @JsonProperty(value = "httpHeaders")
-    private HttpHeaders httpHeaders;
+    private List<HttpHeader> httpHeaders;
 
     /**
      * Get the path property: The path to probe.
@@ -103,7 +100,7 @@ public final class ContainerHttpGet {
      *
      * @return the httpHeaders value.
      */
-    public HttpHeaders httpHeaders() {
+    public List<HttpHeader> httpHeaders() {
         return this.httpHeaders;
     }
 
@@ -113,7 +110,7 @@ public final class ContainerHttpGet {
      * @param httpHeaders the httpHeaders value to set.
      * @return the ContainerHttpGet object itself.
      */
-    public ContainerHttpGet withHttpHeaders(HttpHeaders httpHeaders) {
+    public ContainerHttpGet withHttpHeaders(List<HttpHeader> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
     }
@@ -125,7 +122,7 @@ public final class ContainerHttpGet {
      */
     public void validate() {
         if (httpHeaders() != null) {
-            httpHeaders().validate();
+            httpHeaders().forEach(e -> e.validate());
         }
     }
 }

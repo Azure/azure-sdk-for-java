@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Additional information on Azure Workload for SQL specific backup item. */
 @Fluent
 public final class AzureVmWorkloadProtectedItemExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectedItemExtendedInfo.class);
-
     /*
      * The oldest backup copy available for this backup item.
      */
@@ -33,6 +29,13 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
      */
     @JsonProperty(value = "policyState")
     private String policyState;
+
+    /*
+     * Indicates consistency of policy object and policy applied to this backup
+     * item.
+     */
+    @JsonProperty(value = "recoveryModel")
+    private String recoveryModel;
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this backup item.
@@ -91,6 +94,26 @@ public final class AzureVmWorkloadProtectedItemExtendedInfo {
      */
     public AzureVmWorkloadProtectedItemExtendedInfo withPolicyState(String policyState) {
         this.policyState = policyState;
+        return this;
+    }
+
+    /**
+     * Get the recoveryModel property: Indicates consistency of policy object and policy applied to this backup item.
+     *
+     * @return the recoveryModel value.
+     */
+    public String recoveryModel() {
+        return this.recoveryModel;
+    }
+
+    /**
+     * Set the recoveryModel property: Indicates consistency of policy object and policy applied to this backup item.
+     *
+     * @param recoveryModel the recoveryModel value to set.
+     * @return the AzureVmWorkloadProtectedItemExtendedInfo object itself.
+     */
+    public AzureVmWorkloadProtectedItemExtendedInfo withRecoveryModel(String recoveryModel) {
+        this.recoveryModel = recoveryModel;
         return this;
     }
 

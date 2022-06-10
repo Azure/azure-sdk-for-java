@@ -7,13 +7,12 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,6 @@ import java.util.Map;
 /** Virtual Network resource. */
 @Fluent
 public final class VirtualNetworkInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
-
     /*
      * The extended location of the virtual network.
      */
@@ -351,6 +348,31 @@ public final class VirtualNetworkInner extends Resource {
             this.innerProperties = new VirtualNetworkPropertiesFormat();
         }
         this.innerProperties().withBgpCommunities(bgpCommunities);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
+     * is allowed in encrypted VNet.
+     *
+     * @return the encryption value.
+     */
+    public VirtualNetworkEncryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
+     * is allowed in encrypted VNet.
+     *
+     * @param encryption the encryption value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withEncryption(VirtualNetworkEncryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 

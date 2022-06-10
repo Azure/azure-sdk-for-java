@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -22,8 +20,6 @@ import java.util.Map;
 /** The blob container properties be listed out. */
 @Fluent
 public final class ListContainerItemInner extends AzureEntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListContainerItemInner.class);
-
     /*
      * The blob container properties be listed out.
      */
@@ -271,6 +267,52 @@ public final class ListContainerItemInner extends AzureEntityResource {
             this.innerProperties = new ContainerProperties();
         }
         this.innerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @return the enableNfsV3RootSquash value.
+     */
+    public Boolean enableNfsV3RootSquash() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3RootSquash();
+    }
+
+    /**
+     * Set the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @param enableNfsV3RootSquash the enableNfsV3RootSquash value to set.
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withEnableNfsV3RootSquash(Boolean enableNfsV3RootSquash) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withEnableNfsV3RootSquash(enableNfsV3RootSquash);
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @return the enableNfsV3AllSquash value.
+     */
+    public Boolean enableNfsV3AllSquash() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3AllSquash();
+    }
+
+    /**
+     * Set the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @param enableNfsV3AllSquash the enableNfsV3AllSquash value to set.
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withEnableNfsV3AllSquash(Boolean enableNfsV3AllSquash) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withEnableNfsV3AllSquash(enableNfsV3AllSquash);
         return this;
     }
 

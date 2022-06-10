@@ -16,6 +16,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningSt
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import java.util.Collections;
@@ -101,12 +102,20 @@ public final class PartnerNamespaceImpl
         return this.innerModel().disableLocalAuth();
     }
 
+    public PartnerTopicRoutingMode partnerTopicRoutingMode() {
+        return this.innerModel().partnerTopicRoutingMode();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public PartnerNamespaceInner innerModel() {
@@ -279,6 +288,11 @@ public final class PartnerNamespaceImpl
             this.updatePartnerNamespaceUpdateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
+    }
+
+    public PartnerNamespaceImpl withPartnerTopicRoutingMode(PartnerTopicRoutingMode partnerTopicRoutingMode) {
+        this.innerModel().withPartnerTopicRoutingMode(partnerTopicRoutingMode);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -55,6 +55,17 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
     /** Static value GenericContainer for ContainerType. */
     public static final ContainerType GENERIC_CONTAINER = fromString("GenericContainer");
 
+    /** Static value Microsoft.ClassicCompute/virtualMachines for ContainerType. */
+    public static final ContainerType MICROSOFT_CLASSIC_COMPUTE_VIRTUAL_MACHINES =
+        fromString("Microsoft.ClassicCompute/virtualMachines");
+
+    /** Static value Microsoft.Compute/virtualMachines for ContainerType. */
+    public static final ContainerType MICROSOFT_COMPUTE_VIRTUAL_MACHINES =
+        fromString("Microsoft.Compute/virtualMachines");
+
+    /** Static value AzureWorkloadContainer for ContainerType. */
+    public static final ContainerType AZURE_WORKLOAD_CONTAINER = fromString("AzureWorkloadContainer");
+
     /**
      * Creates or finds a ContainerType from its string representation.
      *
@@ -66,7 +77,11 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
         return fromString(name, ContainerType.class);
     }
 
-    /** @return known ContainerType values. */
+    /**
+     * Gets known ContainerType values.
+     *
+     * @return known ContainerType values.
+     */
     public static Collection<ContainerType> values() {
         return values(ContainerType.class);
     }

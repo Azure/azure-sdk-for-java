@@ -30,7 +30,7 @@ public final class InstructionImpl implements Instruction {
         return this.innerModel().type();
     }
 
-    public Float amount() {
+    public float amount() {
         return this.innerModel().amount();
     }
 

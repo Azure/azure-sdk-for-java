@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.implementation;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner;
 import com.azure.resourcemanager.videoanalyzer.models.EdgeModuleEntity;
@@ -31,12 +30,12 @@ public final class EdgeModuleEntityImpl
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public UUID edgeModuleId() {
         return this.innerModel().edgeModuleId();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public EdgeModuleEntityInner innerModel() {

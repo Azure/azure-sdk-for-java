@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("IaasVMRecoveryPoint")
 @Fluent
 public final class IaasVMRecoveryPoint extends RecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaasVMRecoveryPoint.class);
-
     /*
      * Type of the backup copy.
      */
@@ -68,7 +65,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * Recovery point tier information.
      */
     @JsonProperty(value = "recoveryPointTierDetails")
-    private List<RecoveryPointTierInformation> recoveryPointTierDetails;
+    private List<RecoveryPointTierInformationV2> recoveryPointTierDetails;
 
     /*
      * Whether VM is with Managed Disks
@@ -111,6 +108,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * Eligibility of RP to be moved to another tier
      */
     @JsonProperty(value = "recoveryPointMoveReadinessInfo")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
 
     /**
@@ -260,7 +258,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      *
      * @return the recoveryPointTierDetails value.
      */
-    public List<RecoveryPointTierInformation> recoveryPointTierDetails() {
+    public List<RecoveryPointTierInformationV2> recoveryPointTierDetails() {
         return this.recoveryPointTierDetails;
     }
 
@@ -271,7 +269,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * @return the IaasVMRecoveryPoint object itself.
      */
     public IaasVMRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         this.recoveryPointTierDetails = recoveryPointTierDetails;
         return this;
     }

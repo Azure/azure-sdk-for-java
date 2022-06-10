@@ -13,7 +13,10 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.samples.Utils;
+
+import java.util.Arrays;
 
 /**
  * Azure CosmosDB sample for high availability.
@@ -42,7 +45,9 @@ public final class CreateCosmosDBWithIPRange {
                     .withSessionConsistency()
                     .withWriteReplication(Region.US_WEST)
                     .withReadReplication(Region.US_CENTRAL)
-                    .withIpRangeFilter("13.91.6.132,13.91.6.1/24")
+                    .withIpRules(Arrays.asList(
+                        new IpAddressOrRange().withIpAddressOrRange("13.91.6.132"),
+                        new IpAddressOrRange().withIpAddressOrRange("13.91.6.1/24")))
                     .create();
 
             System.out.println("Created CosmosDB");

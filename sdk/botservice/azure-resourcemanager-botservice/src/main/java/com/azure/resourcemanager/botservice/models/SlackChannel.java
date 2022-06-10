@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SlackChannel")
 @Fluent
 public final class SlackChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlackChannel.class);
-
     /*
      * The set of properties specific to Slack channel resource
      */
@@ -41,6 +37,20 @@ public final class SlackChannel extends Channel {
      */
     public SlackChannel withProperties(SlackChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SlackChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SlackChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

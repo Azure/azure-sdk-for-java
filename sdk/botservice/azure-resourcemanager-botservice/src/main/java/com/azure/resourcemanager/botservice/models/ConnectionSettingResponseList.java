@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.fluent.models.ConnectionSettingInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of bot service connection settings response. */
 @Fluent
 public final class ConnectionSettingResponseList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionSettingResponseList.class);
-
     /*
      * The link used to get the next page of bot service connection setting
      * resources.

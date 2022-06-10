@@ -35,8 +35,8 @@ public class ManageContainerInstanceWithMultipleContainerImages {
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgACI", 15);
         final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
-        final String containerImageName1 = "microsoft/aci-helloworld";
-        final String containerImageName2 = "microsoft/aci-tutorial-sidecar";
+        final String containerImageName1 = "mcr.microsoft.com/azuredocs/aci-helloworld";
+        final String containerImageName2 = "mcr.microsoft.com/azuredocs/aci-tutorial-sidecar";
 
         try {
             //=============================================================

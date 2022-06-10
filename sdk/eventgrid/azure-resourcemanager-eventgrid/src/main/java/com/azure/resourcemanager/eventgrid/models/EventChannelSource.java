@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the source of an event channel. */
 @Fluent
 public final class EventChannelSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelSource.class);
-
     /*
      * The identifier of the resource that's the source of the events.
      * This represents a unique resource in the partner's resource model.

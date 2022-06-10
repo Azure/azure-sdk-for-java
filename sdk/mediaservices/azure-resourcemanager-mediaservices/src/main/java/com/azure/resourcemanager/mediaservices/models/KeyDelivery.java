@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyDelivery model. */
 @Fluent
 public final class KeyDelivery {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyDelivery.class);
-
     /*
      * The access control properties for Key Delivery.
      */

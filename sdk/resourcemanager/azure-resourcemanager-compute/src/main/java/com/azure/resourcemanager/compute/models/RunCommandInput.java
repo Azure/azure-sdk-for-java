@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Capture Virtual Machine parameters. */
 @Fluent
 public final class RunCommandInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInput.class);
-
     /*
      * The run command id.
      */
@@ -103,7 +100,7 @@ public final class RunCommandInput {
      */
     public void validate() {
         if (commandId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
         }
@@ -111,4 +108,6 @@ public final class RunCommandInput {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandInput.class);
 }

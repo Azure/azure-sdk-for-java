@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,12 +23,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "HybridConnection", value = HybridConnectionEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "ServiceBusQueue", value = ServiceBusQueueEventSubscriptionDestination.class),
     @JsonSubTypes.Type(name = "ServiceBusTopic", value = ServiceBusTopicEventSubscriptionDestination.class),
-    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionEventSubscriptionDestination.class)
+    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionEventSubscriptionDestination.class),
+    @JsonSubTypes.Type(name = "PartnerDestination", value = PartnerEventSubscriptionDestination.class)
 })
 @Immutable
 public class EventSubscriptionDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionDestination.class);
-
     /**
      * Validates the instance.
      *

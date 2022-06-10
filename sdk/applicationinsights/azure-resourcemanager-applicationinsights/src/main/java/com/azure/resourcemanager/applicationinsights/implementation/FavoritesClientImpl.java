@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.applicationinsights.fluent.FavoritesClient;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FavoritesClient. */
 public final class FavoritesClientImpl implements FavoritesClient {
-    private final ClientLogger logger = new ClientLogger(FavoritesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FavoritesService service;
 
@@ -162,7 +159,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> listWithResponseAsync(
@@ -229,7 +227,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ApplicationInsightsComponentFavoriteInner>>> listWithResponseAsync(
@@ -293,7 +292,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentFavoriteInner>> listAsync(
@@ -304,14 +304,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         Boolean canFetchContent,
         List<String> tags) {
         return listWithResponseAsync(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentFavoriteInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -322,7 +315,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentFavoriteInner>> listAsync(
@@ -332,14 +326,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         final Boolean canFetchContent = null;
         final List<String> tags = null;
         return listWithResponseAsync(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentFavoriteInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -376,7 +363,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(
@@ -401,7 +388,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(
@@ -456,7 +444,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> getWithResponseAsync(
@@ -507,20 +496,14 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentFavoriteInner> getAsync(
         String resourceGroupName, String resourceName, String favoriteId) {
         return getWithResponseAsync(resourceGroupName, resourceName, favoriteId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -550,7 +533,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(
@@ -569,7 +553,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(
@@ -636,7 +621,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> addWithResponseAsync(
@@ -700,7 +686,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentFavoriteInner> addAsync(
@@ -709,14 +696,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return addWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -753,7 +733,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(
@@ -775,7 +756,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(
@@ -841,7 +823,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFavoriteInner>> updateWithResponseAsync(
@@ -904,7 +887,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentFavoriteInner> updateAsync(
@@ -913,14 +897,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
         String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, favoriteId, favoriteProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentFavoriteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -955,7 +932,8 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(
@@ -977,7 +955,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1030,7 +1008,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1079,12 +1057,11 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String favoriteId) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, favoriteId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, favoriteId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1112,7 +1089,7 @@ public final class FavoritesClientImpl implements FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

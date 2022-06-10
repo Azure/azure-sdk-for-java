@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +18,6 @@ import java.util.Map;
 /** Specifies information about the capacity reservation. */
 @Fluent
 public final class CapacityReservationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationInner.class);
-
     /*
      * Properties of the Capacity reservation.
      */
@@ -172,6 +169,16 @@ public final class CapacityReservationInner extends Resource {
     }
 
     /**
+     * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -181,11 +188,13 @@ public final class CapacityReservationInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model CapacityReservationInner"));
         } else {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CapacityReservationInner.class);
 }

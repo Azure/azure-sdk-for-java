@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolConnectionPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolConnectionPolicyInner;
 import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolConnectionPoliciesClient. */
 public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnectionPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolConnectionPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolConnectionPoliciesService service;
 
@@ -85,7 +82,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolConnectionPolicyInner>> getWithResponseAsync(
@@ -146,7 +144,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolConnectionPolicyInner>> getWithResponseAsync(
@@ -207,7 +206,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolConnectionPolicyInner> getAsync(
@@ -252,7 +252,7 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolConnectionPolicyInner> getWithResponse(

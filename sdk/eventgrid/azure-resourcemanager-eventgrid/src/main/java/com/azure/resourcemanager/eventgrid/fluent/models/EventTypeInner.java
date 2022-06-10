@@ -6,15 +6,11 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Event Type for a subject under a topic. */
 @Fluent
 public final class EventTypeInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventTypeInner.class);
-
     /*
      * Properties of the event type.
      */

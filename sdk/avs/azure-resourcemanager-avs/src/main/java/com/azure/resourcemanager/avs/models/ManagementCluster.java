@@ -7,6 +7,7 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 /** The properties of a management cluster. */
 @Fluent
@@ -17,6 +18,13 @@ public final class ManagementCluster extends CommonClusterProperties {
     @Override
     public ManagementCluster withClusterSize(Integer clusterSize) {
         super.withClusterSize(clusterSize);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagementCluster withHosts(List<String> hosts) {
+        super.withHosts(hosts);
         return this;
     }
 

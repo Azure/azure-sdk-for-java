@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-04-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e53f7ec3-5631-46fe-b77a-0be27d495373",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "127",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/dcb0df9e-2a39-4a19-ade7-470f5e6be345?api-version=2022-04-01-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "ebbc9585-85b2-445c-908f-eb28e444bb23",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 13 May 2022 21:48:23 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/dcb0df9e-2a39-4a19-ade7-470f5e6be345?api-version=2022-04-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "451440ce-eaad-436c-94ca-a2ad9173ad85"
+    },
+    "Response" : {
+      "content-length" : "639",
+      "x-envoy-upstream-service-time" : "36",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "703a55ad-5c4e-4554-9179-0d62784aac66",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"dcb0df9e-2a39-4a19-ade7-470f5e6be345\",\"lastUpdateDateTime\":\"2022-05-13T21:48:23Z\",\"createdDateTime\":\"2022-05-13T21:48:23Z\",\"expirationDateTime\":\"2022-05-14T21:48:23Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomMultiLabelClassificationLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:48:23.957495Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"class\":[{\"category\":\"BookRestaurant\",\"confidenceScore\":0.97}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"7cdace98-537b-494a-b69a-c19754718025\",\"deploymentName\":\"7cdace98-537b-494a-b69a-c19754718025\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:48:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/dcb0df9e-2a39-4a19-ade7-470f5e6be345?api-version=2022-04-01-preview&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a1691e04-19c6-4b74-95bf-f6842d35247d"
+    },
+    "Response" : {
+      "content-length" : "639",
+      "x-envoy-upstream-service-time" : "46",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "454b0497-cc21-43fa-a450-f36e35bba44c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"dcb0df9e-2a39-4a19-ade7-470f5e6be345\",\"lastUpdateDateTime\":\"2022-05-13T21:48:23Z\",\"createdDateTime\":\"2022-05-13T21:48:23Z\",\"expirationDateTime\":\"2022-05-14T21:48:23Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"CustomMultiLabelClassificationLROResults\",\"lastUpdateDateTime\":\"2022-05-13T21:48:23.957495Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"class\":[{\"category\":\"BookRestaurant\",\"confidenceScore\":0.97}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"7cdace98-537b-494a-b69a-c19754718025\",\"deploymentName\":\"7cdace98-537b-494a-b69a-c19754718025\"}}]}}",
+      "Date" : "Fri, 13 May 2022 21:48:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

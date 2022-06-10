@@ -3,9 +3,15 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -15,7 +21,6 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -52,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -338,9 +344,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-                                                                          Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response);
+    public static <T> FeedResponse<T> toFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return new FeedResponse<T>(response.getQueryResponse(factoryMethod, cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -349,9 +358,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
-                                                                               Class<T> cls) {
-        return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
+    public static <T> FeedResponse<T> toChangeFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return new FeedResponse<T>(
+            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
             response.getResponseHeaders(), noChanges(response));
     }
 
@@ -847,83 +860,6 @@ public final class ModelBridgeInternal {
         return cosmosItemOperationType.getOperationValue();
     }
 
-    //  This is only temporary, and will be removed once we delete CosmosItemOperationType
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosItemOperationType toCosmosItemOperationType(com.azure.cosmos.CosmosItemOperationType cosmosItemOperationType) {
-        switch (cosmosItemOperationType) {
-            case CREATE:
-                return CosmosItemOperationType.CREATE;
-            case DELETE:
-                return CosmosItemOperationType.DELETE;
-            case PATCH:
-                return CosmosItemOperationType.PATCH;
-            case READ:
-                return CosmosItemOperationType.READ;
-            case UPSERT:
-                return CosmosItemOperationType.UPSERT;
-            case REPLACE:
-                return CosmosItemOperationType.REPLACE;
-            default:
-                throw new UnsupportedOperationException("CosmosOperationType : " + cosmosItemOperationType + " is not supported");
-        }
-    }
-
-    //  This is only temporary, and will be removed once we delete CosmosItemOperation
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosItemOperation toCosmosItemOperation(com.azure.cosmos.CosmosItemOperation cosmosItemOperation) {
-        return new CosmosItemOperation() {
-            @Override
-            public String getId() {
-                return cosmosItemOperation.getId();
-            }
-
-            @Override
-            public PartitionKey getPartitionKeyValue() {
-                return cosmosItemOperation.getPartitionKeyValue();
-            }
-
-            @Override
-            public CosmosItemOperationType getOperationType() {
-                return toCosmosItemOperationType(cosmosItemOperation.getOperationType());
-            }
-
-            @Override
-            public <T> T getItem() {
-                return cosmosItemOperation.getItem();
-            }
-
-            @Override
-            public <T> T getContext() {
-                return cosmosItemOperation.getContext();
-            }
-        };
-    }
-
-    //  This is only temporary, and will be removed once we delete CosmosBulkItemResponse
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosBulkItemResponse toCosmosBulkItemResponse(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse) {
-        return new CosmosBulkItemResponse(cosmosBulkItemResponse.getETag(),
-            cosmosBulkItemResponse.getRequestCharge(),
-            ImplementationBridgeHelpers
-                .DeprecatedCosmosBulkItemResponseHelper
-                .getCosmosBulkItemResponseAccessor()
-                .getResourceObject(cosmosBulkItemResponse),
-            cosmosBulkItemResponse.getStatusCode(),
-            cosmosBulkItemResponse.getRetryAfterDuration(),
-            cosmosBulkItemResponse.getSubStatusCode(),
-            cosmosBulkItemResponse.getResponseHeaders(),
-            cosmosBulkItemResponse.getCosmosDiagnostics());
-    }
-
-    //  This is only temporary, and will be removed once we delete CosmosBulkOperationResponse
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <TContext> CosmosBulkOperationResponse<TContext> toCosmosBulkOperationResponse(com.azure.cosmos.CosmosBulkOperationResponse<TContext> cosmosBulkOperationResponse) {
-        return new CosmosBulkOperationResponse<TContext>(toCosmosItemOperation(cosmosBulkOperationResponse.getOperation()),
-            toCosmosBulkItemResponse(cosmosBulkOperationResponse.getResponse()),
-            cosmosBulkOperationResponse.getException(),
-            cosmosBulkOperationResponse.getBatchContext());
-    }
-
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosBatchResponse createCosmosBatchResponse(
         int responseStatusCode,
@@ -1021,5 +957,24 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosBatch.initialize();
+        CosmosBatchOperationResult.initialize();
+        CosmosBatchRequestOptions.initialize();
+        CosmosBatchResponse.initialize();
+        CosmosBulkExecutionOptions.initialize();
+        CosmosBulkExecutionThresholdsState.initialize();
+        CosmosBulkItemResponse.initialize();
+        CosmosChangeFeedRequestOptions.initialize();
+        CosmosContainerProperties.initialize();
+        CosmosItemRequestOptions.initialize();
+        CosmosItemResponse.initialize();
+        CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptions.initialize();
+        FeedResponse.initialize();
+        PartitionKey.initialize();
     }
 }

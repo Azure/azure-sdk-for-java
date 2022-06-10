@@ -16,6 +16,7 @@ public class SparkBatchClientTest extends SparkClientTestBase {
             .endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .sparkPoolName(getSparkPoolName())
+            .livyApiVersion(livyApiVersion)
             .buildSparkBatchClient());
     }
 

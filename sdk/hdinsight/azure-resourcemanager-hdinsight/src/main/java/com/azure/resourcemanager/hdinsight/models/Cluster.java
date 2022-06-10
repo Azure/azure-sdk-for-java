@@ -6,8 +6,10 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Cluster. */
@@ -55,6 +57,13 @@ public interface Cluster {
     String etag();
 
     /**
+     * Gets the zones property: The availability zones.
+     *
+     * @return the zones value.
+     */
+    List<String> zones();
+
+    /**
      * Gets the properties property: The properties of the cluster.
      *
      * @return the properties value.
@@ -67,6 +76,13 @@ public interface Cluster {
      * @return the identity value.
      */
     ClusterIdentity identity();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the region of the resource.
@@ -115,6 +131,7 @@ public interface Cluster {
         interface WithCreate
             extends DefinitionStages.WithLocation,
                 DefinitionStages.WithTags,
+                DefinitionStages.WithZones,
                 DefinitionStages.WithProperties,
                 DefinitionStages.WithIdentity {
             /**
@@ -159,6 +176,16 @@ public interface Cluster {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Cluster definition allowing to specify zones. */
+        interface WithZones {
+            /**
+             * Specifies the zones property: The availability zones..
+             *
+             * @param zones The availability zones.
+             * @return the next definition stage.
+             */
+            WithCreate withZones(List<String> zones);
         }
         /** The stage of the Cluster definition allowing to specify properties. */
         interface WithProperties {

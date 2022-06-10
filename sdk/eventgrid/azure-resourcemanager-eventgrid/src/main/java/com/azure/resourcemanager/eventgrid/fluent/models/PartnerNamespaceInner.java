@@ -7,11 +7,10 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +18,8 @@ import java.util.Map;
 /** EventGrid Partner Namespace. */
 @Fluent
 public final class PartnerNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceInner.class);
-
     /*
-     * Properties of the partner namespace.
+     * Properties of the Partner Namespace.
      */
     @JsonProperty(value = "properties")
     private PartnerNamespaceProperties innerProperties;
@@ -34,7 +31,7 @@ public final class PartnerNamespaceInner extends Resource {
     private SystemData systemData;
 
     /**
-     * Get the innerProperties property: Properties of the partner namespace.
+     * Get the innerProperties property: Properties of the Partner Namespace.
      *
      * @return the innerProperties value.
      */
@@ -197,6 +194,33 @@ public final class PartnerNamespaceInner extends Resource {
             this.innerProperties = new PartnerNamespaceProperties();
         }
         this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
+     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
+     * topic. If none is specified, source attribute routing will be used to match the partner topic.
+     *
+     * @return the partnerTopicRoutingMode value.
+     */
+    public PartnerTopicRoutingMode partnerTopicRoutingMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerTopicRoutingMode();
+    }
+
+    /**
+     * Set the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
+     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
+     * topic. If none is specified, source attribute routing will be used to match the partner topic.
+     *
+     * @param partnerTopicRoutingMode the partnerTopicRoutingMode value to set.
+     * @return the PartnerNamespaceInner object itself.
+     */
+    public PartnerNamespaceInner withPartnerTopicRoutingMode(PartnerTopicRoutingMode partnerTopicRoutingMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceProperties();
+        }
+        this.innerProperties().withPartnerTopicRoutingMode(partnerTopicRoutingMode);
         return this;
     }
 

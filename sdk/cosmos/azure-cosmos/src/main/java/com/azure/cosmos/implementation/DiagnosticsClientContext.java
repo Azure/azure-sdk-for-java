@@ -6,9 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -20,48 +19,50 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@JsonSerialize(using = DiagnosticsClientContext.ClientContextSerializer.class)
 public interface DiagnosticsClientContext {
 
     DiagnosticsClientConfig getConfig();
 
     CosmosDiagnostics createDiagnostics();
 
+    static final class DiagnosticsClientConfigSerializer extends StdSerializer<DiagnosticsClientConfig> {
+        private final static Logger logger = LoggerFactory.getLogger(DiagnosticsClientConfigSerializer.class);
+        public final static DiagnosticsClientConfigSerializer INSTANCE = new DiagnosticsClientConfigSerializer();
 
-    static final class ClientContextSerializer extends StdSerializer<DiagnosticsClientContext> {
-        private final static Logger logger = LoggerFactory.getLogger(ClientContextSerializer.class);
-        public final static ClientContextSerializer INSTACE = new ClientContextSerializer();
+        private static final Pattern SPACE_PATTERN = Pattern.compile(" ");
 
         private static final long serialVersionUID = 1;
 
-        protected ClientContextSerializer() {
+        protected DiagnosticsClientConfigSerializer() {
             this(null);
         }
 
-        protected ClientContextSerializer(Class<DiagnosticsClientContext> t) {
+        protected DiagnosticsClientConfigSerializer(Class<DiagnosticsClientConfig> t) {
             super(t);
         }
 
         @Override
-        public void serialize(DiagnosticsClientContext clientContext, JsonGenerator generator,
+        public void serialize(DiagnosticsClientConfig clientConfig, JsonGenerator generator,
                               SerializerProvider serializerProvider) throws IOException {
             generator.writeStartObject();
             try {
-                generator.writeNumberField("id", clientContext.getConfig().getClientId());
-                generator.writeStringField("connectionMode", clientContext.getConfig().getConnectionMode().toString());
-                generator.writeNumberField("numberOfClients", clientContext.getConfig().getActiveClientsCount());
+                generator.writeNumberField("id", clientConfig.getClientId());
+                generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
+                generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
+                generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
                 generator.writeObjectFieldStart("connCfg");
                 try {
-                    generator.writeStringField("rntbd", clientContext.getConfig().rntbdConfig());
-                    generator.writeStringField("gw", clientContext.getConfig().gwConfig());
-                    generator.writeStringField("other", clientContext.getConfig().otherConnectionConfig());
+                    generator.writeStringField("rntbd", clientConfig.rntbdConfig());
+                    generator.writeStringField("gw", clientConfig.gwConfig());
+                    generator.writeStringField("other", clientConfig.otherConnectionConfig());
                 } catch (Exception e) {
                     logger.debug("unexpected failure", e);
                 }
                 generator.writeEndObject();
-                generator.writeStringField("consistencyCfg", clientContext.getConfig().consistencyRelatedConfig());
+                generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -69,6 +70,7 @@ public interface DiagnosticsClientContext {
         }
     }
 
+    @JsonSerialize(using = DiagnosticsClientContext.DiagnosticsClientConfigSerializer.class)
     class DiagnosticsClientConfig {
 
         private AtomicInteger activeClientsCnt;
@@ -79,14 +81,17 @@ public interface DiagnosticsClientContext {
         private String consistencyRelatedConfigAsString;
         private String httpConfigAsString;
         private String otherCfgAsString;
-        private List<String> preferredRegions;
+        private String preferredRegionsAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
 
-        private HttpClientConfig httpClientConfig;
-        private RntbdTransportClient.Options options;
         private String rntbdConfigAsString;
         private ConnectionMode connectionMode;
+        private String machineId;
+
+        public void withMachineId(String machineId) {
+            this.machineId = machineId;
+        }
 
         public void withActiveClientCounter(AtomicInteger activeClientsCnt) {
             this.activeClientsCnt = activeClientsCnt;
@@ -107,7 +112,14 @@ public interface DiagnosticsClientContext {
         }
 
         public DiagnosticsClientConfig withPreferredRegions(List<String> preferredRegions) {
-            this.preferredRegions = preferredRegions;
+            if (preferredRegions == null || preferredRegions.isEmpty()) {
+                this.preferredRegionsAsString = "";
+            } else {
+                this.preferredRegionsAsString = preferredRegions
+                    .stream()
+                    .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
+                    .collect(Collectors.joining(","));
+            }
             return this;
         }
 
@@ -121,13 +133,13 @@ public interface DiagnosticsClientContext {
             return this;
         }
 
-        public DiagnosticsClientConfig withRntbdOptions(RntbdTransportClient.Options options) {
-            this.options = options;
+        public DiagnosticsClientConfig withRntbdOptions(String rntbdConfigAsString) {
+            this.rntbdConfigAsString = rntbdConfigAsString;
             return this;
         }
 
-        public DiagnosticsClientConfig withGatewayHttpClientConfig(HttpClientConfig httpClientConfig) {
-            this.httpClientConfig = httpClientConfig;
+        public DiagnosticsClientConfig withGatewayHttpClientConfig(String httpConfigAsString) {
+            this.httpConfigAsString = httpConfigAsString;
             return this;
         }
 
@@ -149,18 +161,10 @@ public interface DiagnosticsClientContext {
         }
 
         public String rntbdConfig() {
-            if (this.rntbdConfigAsString == null) {
-                this.rntbdConfigAsString = this.rntbdConfigInternal(this.options);
-            }
-
             return this.rntbdConfigAsString;
         }
 
         public String gwConfig() {
-            if (this.httpConfigAsString == null) {
-                this.httpConfigAsString = this.gwConfigInternal();
-            }
-
             return this.httpConfigAsString;
         }
 
@@ -178,47 +182,16 @@ public interface DiagnosticsClientContext {
             return this.clientId;
         }
 
+        public String getMachineId() { return this.machineId; }
+
         public int getActiveClientsCount() {
             return this.activeClientsCnt != null ? this.activeClientsCnt.get() : -1;
-        }
-
-        private String gwConfigInternal() {
-            if (this.httpClientConfig == null) {
-                return null;
-            }
-            return Strings.lenientFormat("(cps:%s, rto:%s, icto:%s, p:%s)",
-                this.httpClientConfig.getMaxPoolSize(),
-                this.httpClientConfig.getRequestTimeout(),
-                this.httpClientConfig.getMaxIdleConnectionTimeout(),
-                this.httpClientConfig.getProxy() != null);
-        }
-
-        private String rntbdConfigInternal(RntbdTransportClient.Options rntbdOptions) {
-            if (rntbdOptions == null) {
-                return null;
-            }
-            return Strings.lenientFormat("(cto:%s, rto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
-                rntbdOptions.connectTimeout(),
-                rntbdOptions.requestTimeout(),
-                rntbdOptions.idleChannelTimeout(),
-                rntbdOptions.idleEndpointTimeout(),
-                rntbdOptions.maxChannelsPerEndpoint(),
-                rntbdOptions.maxRequestsPerChannel(),
-                rntbdOptions.isConnectionEndpointRediscoveryEnabled());
-        }
-
-        private String preferredRegionsInternal() {
-            if (preferredRegions == null) {
-                return "";
-            }
-
-            return preferredRegions.stream().map(r -> r.toLowerCase(Locale.ROOT).replaceAll(" ", "")).collect(Collectors.joining(","));
         }
 
         private String consistencyRelatedConfigInternal() {
             return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
-                preferredRegionsInternal());
+                preferredRegionsAsString);
         }
     }
 }

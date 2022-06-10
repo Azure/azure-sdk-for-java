@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.AvailableServiceAliasesClient;
 import com.azure.resourcemanager.network.fluent.models.AvailableServiceAliasInner;
 import com.azure.resourcemanager.network.models.AvailableServiceAliasesResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableServiceAliasesClient. */
 public final class AvailableServiceAliasesClientImpl implements AvailableServiceAliasesClient {
-    private final ClientLogger logger = new ClientLogger(AvailableServiceAliasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailableServiceAliasesService service;
 
@@ -115,7 +112,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listSinglePageAsync(String location) {
@@ -134,7 +132,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -167,7 +165,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listSinglePageAsync(String location, Context context) {
@@ -186,7 +185,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -209,7 +208,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableServiceAliasInner> listAsync(String location) {
@@ -224,7 +224,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceAliasInner> listAsync(String location, Context context) {
@@ -239,7 +240,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> list(String location) {
@@ -254,7 +256,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this subscription in this region.
+     * @return all available service aliases for this subscription in this region as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> list(String location, Context context) {
@@ -269,7 +272,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupSinglePageAsync(
@@ -293,7 +297,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -328,7 +332,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupSinglePageAsync(
@@ -352,7 +357,7 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -383,7 +388,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailableServiceAliasInner> listByResourceGroupAsync(String resourceGroupName, String location) {
@@ -401,7 +407,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailableServiceAliasInner> listByResourceGroupAsync(
@@ -419,7 +426,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> listByResourceGroup(String resourceGroupName, String location) {
@@ -435,7 +443,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available service aliases for this resource group in this region.
+     * @return all available service aliases for this resource group in this region as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailableServiceAliasInner> listByResourceGroup(
@@ -450,7 +459,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases.
+     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listNextSinglePageAsync(String nextLink) {
@@ -486,7 +496,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases.
+     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -521,7 +532,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases.
+     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -558,7 +570,8 @@ public final class AvailableServiceAliasesClientImpl implements AvailableService
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of available service aliases.
+     * @return an array of available service aliases along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableServiceAliasInner>> listByResourceGroupNextSinglePageAsync(

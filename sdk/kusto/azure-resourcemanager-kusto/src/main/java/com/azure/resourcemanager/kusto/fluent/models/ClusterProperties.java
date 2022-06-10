@@ -13,6 +13,7 @@ import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
@@ -155,6 +156,25 @@ public final class ClusterProperties {
      */
     @JsonProperty(value = "allowedFqdnList")
     private List<String> allowedFqdnList;
+
+    /*
+     * Indicates what public IP type to create - IPv4 (default), or DualStack
+     * (both IPv4 and IPv6)
+     */
+    @JsonProperty(value = "publicIPType")
+    private PublicIpType publicIpType;
+
+    /*
+     * Virtual Cluster graduation properties
+     */
+    @JsonProperty(value = "virtualClusterGraduationProperties")
+    private String virtualClusterGraduationProperties;
+
+    /*
+     * A list of private endpoint connections.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Get the state property: The state of the resource.
@@ -517,6 +537,57 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @return the publicIpType value.
+     */
+    public PublicIpType publicIpType() {
+        return this.publicIpType;
+    }
+
+    /**
+     * Set the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @param publicIpType the publicIpType value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withPublicIpType(PublicIpType publicIpType) {
+        this.publicIpType = publicIpType;
+        return this;
+    }
+
+    /**
+     * Get the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @return the virtualClusterGraduationProperties value.
+     */
+    public String virtualClusterGraduationProperties() {
+        return this.virtualClusterGraduationProperties;
+    }
+
+    /**
+     * Set the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @param virtualClusterGraduationProperties the virtualClusterGraduationProperties value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties) {
+        this.virtualClusterGraduationProperties = virtualClusterGraduationProperties;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: A list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -539,6 +610,9 @@ public final class ClusterProperties {
         }
         if (acceptedAudiences() != null) {
             acceptedAudiences().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

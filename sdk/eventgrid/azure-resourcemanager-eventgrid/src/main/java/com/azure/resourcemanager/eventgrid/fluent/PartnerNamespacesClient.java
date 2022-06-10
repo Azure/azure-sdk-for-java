@@ -40,7 +40,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner namespace.
+     * @return properties of a partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PartnerNamespaceInner> getByResourceGroupWithResponse(
@@ -55,9 +55,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Namespace.
+     * @return the {@link SyncPoller} for polling of eventGrid Partner Namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String partnerNamespaceName, PartnerNamespaceInner partnerNamespaceInfo);
 
@@ -71,9 +71,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Partner Namespace.
+     * @return the {@link SyncPoller} for polling of eventGrid Partner Namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String partnerNamespaceName,
@@ -122,9 +122,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerNamespaceName);
 
     /**
@@ -136,9 +136,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String partnerNamespaceName, Context context);
 
@@ -176,9 +176,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(
         String resourceGroupName,
         String partnerNamespaceName,
@@ -194,9 +194,9 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PartnerNamespaceInner>, PartnerNamespaceInner> beginUpdate(
         String resourceGroupName,
         String partnerNamespaceName,
@@ -244,7 +244,7 @@ public interface PartnerNamespacesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerNamespaceInner> list();
@@ -264,7 +264,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerNamespaceInner> list(String filter, Integer top, Context context);
@@ -276,7 +276,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerNamespaceInner> listByResourceGroup(String resourceGroupName);
@@ -297,7 +297,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Namespaces operation.
+     * @return result of the List Partner Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PartnerNamespaceInner> listByResourceGroup(
@@ -325,7 +325,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PartnerNamespaceSharedAccessKeysInner> listSharedAccessKeysWithResponse(
@@ -358,7 +358,7 @@ public interface PartnerNamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
+     * @return shared access keys of the partner namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PartnerNamespaceSharedAccessKeysInner> regenerateKeyWithResponse(

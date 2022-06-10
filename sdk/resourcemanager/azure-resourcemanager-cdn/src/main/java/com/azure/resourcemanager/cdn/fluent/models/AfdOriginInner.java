@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,87 +19,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint do
  * not have the requested content cached, they attempt to fetch it from one or more of the configured origins.
  */
-@JsonFlatten
 @Fluent
-public class AfdOriginInner extends ProxyResource {
+public final class AfdOriginInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginInner.class);
 
     /*
-     * Resource reference to the Azure origin resource.
+     * The JSON object that contains the properties of the origin.
      */
-    @JsonProperty(value = "properties.azureOrigin")
-    private ResourceReference azureOrigin;
-
-    /*
-     * The address of the origin. Domain names, IPv4 addresses, and IPv6
-     * addresses are supported.This should be unique across all origins in an
-     * endpoint.
-     */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
-
-    /*
-     * The value of the HTTP port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpPort")
-    private Integer httpPort;
-
-    /*
-     * The value of the HTTPS port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpsPort")
-    private Integer httpsPort;
-
-    /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default. This
-     * overrides the host header defined at Endpoint
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
-     * Priority of origin in given origin group for load balancing. Higher
-     * priorities will not be used for load balancing if any lower priority
-     * origin is healthy.Must be between 1 and 5
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Weight of the origin in given origin group for load balancing. Must be
-     * between 1 and 1000
-     */
-    @JsonProperty(value = "properties.weight")
-    private Integer weight;
-
-    /*
-     * The properties of the private link resource for private origin.
-     */
-    @JsonProperty(value = "properties.sharedPrivateLinkResource")
-    private Object sharedPrivateLinkResource;
-
-    /*
-     * Whether to enable health probes to be made against backends defined
-     * under backendPools. Health probes can only be disabled if there is a
-     * single enabled backend in single enabled backend pool.
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private EnabledState enabledState;
-
-    /*
-     * Provisioning status
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private AfdProvisioningState provisioningState;
-
-    /*
-     * The deploymentStatus property.
-     */
-    @JsonProperty(value = "properties.deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private DeploymentStatus deploymentStatus;
+    @JsonProperty(value = "properties")
+    private AfdOriginProperties innerProperties;
 
     /*
      * Read only system data
@@ -109,217 +36,12 @@ public class AfdOriginInner extends ProxyResource {
     private SystemData systemData;
 
     /**
-     * Get the azureOrigin property: Resource reference to the Azure origin resource.
+     * Get the innerProperties property: The JSON object that contains the properties of the origin.
      *
-     * @return the azureOrigin value.
+     * @return the innerProperties value.
      */
-    public ResourceReference azureOrigin() {
-        return this.azureOrigin;
-    }
-
-    /**
-     * Set the azureOrigin property: Resource reference to the Azure origin resource.
-     *
-     * @param azureOrigin the azureOrigin value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withAzureOrigin(ResourceReference azureOrigin) {
-        this.azureOrigin = azureOrigin;
-        return this;
-    }
-
-    /**
-     * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
-     * supported.This should be unique across all origins in an endpoint.
-     *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
-     * supported.This should be unique across all origins in an endpoint.
-     *
-     * @param hostname the hostname value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withHostname(String hostname) {
-        this.hostname = hostname;
-        return this;
-    }
-
-    /**
-     * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
-     * @return the httpPort value.
-     */
-    public Integer httpPort() {
-        return this.httpPort;
-    }
-
-    /**
-     * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
-     * @param httpPort the httpPort value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withHttpPort(Integer httpPort) {
-        this.httpPort = httpPort;
-        return this;
-    }
-
-    /**
-     * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
-     * @return the httpsPort value.
-     */
-    public Integer httpsPort() {
-        return this.httpsPort;
-    }
-
-    /**
-     * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
-     * @param httpsPort the httpsPort value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withHttpsPort(Integer httpsPort) {
-        this.httpsPort = httpsPort;
-        return this;
-    }
-
-    /**
-     * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
-     *
-     * @return the originHostHeader value.
-     */
-    public String originHostHeader() {
-        return this.originHostHeader;
-    }
-
-    /**
-     * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default. This overrides the host header
-     * defined at Endpoint.
-     *
-     * @param originHostHeader the originHostHeader value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
-        return this;
-    }
-
-    /**
-     * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
-     * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
-     * @return the priority value.
-     */
-    public Integer priority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
-     * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
-     * @param priority the priority value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withPriority(Integer priority) {
-        this.priority = priority;
-        return this;
-    }
-
-    /**
-     * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
-     * 1000.
-     *
-     * @return the weight value.
-     */
-    public Integer weight() {
-        return this.weight;
-    }
-
-    /**
-     * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
-     * 1000.
-     *
-     * @param weight the weight value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withWeight(Integer weight) {
-        this.weight = weight;
-        return this;
-    }
-
-    /**
-     * Get the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
-     * @return the sharedPrivateLinkResource value.
-     */
-    public Object sharedPrivateLinkResource() {
-        return this.sharedPrivateLinkResource;
-    }
-
-    /**
-     * Set the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
-     * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
-        this.sharedPrivateLinkResource = sharedPrivateLinkResource;
-        return this;
-    }
-
-    /**
-     * Get the enabledState property: Whether to enable health probes to be made against backends defined under
-     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
-     * pool.
-     *
-     * @return the enabledState value.
-     */
-    public EnabledState enabledState() {
-        return this.enabledState;
-    }
-
-    /**
-     * Set the enabledState property: Whether to enable health probes to be made against backends defined under
-     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
-     * pool.
-     *
-     * @param enabledState the enabledState value to set.
-     * @return the AfdOriginInner object itself.
-     */
-    public AfdOriginInner withEnabledState(EnabledState enabledState) {
-        this.enabledState = enabledState;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning status.
-     *
-     * @return the provisioningState value.
-     */
-    public AfdProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the deploymentStatus property: The deploymentStatus property.
-     *
-     * @return the deploymentStatus value.
-     */
-    public DeploymentStatus deploymentStatus() {
-        return this.deploymentStatus;
+    private AfdOriginProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -332,16 +54,286 @@ public class AfdOriginInner extends ProxyResource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning status.
+     *
+     * @return the provisioningState value.
+     */
+    public AfdProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deploymentStatus property: The deploymentStatus property.
+     *
+     * @return the deploymentStatus value.
+     */
+    public DeploymentStatus deploymentStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentStatus();
+    }
+
+    /**
+     * Get the originGroupName property: The name of the origin group which contains this origin.
+     *
+     * @return the originGroupName value.
+     */
+    public String originGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().originGroupName();
+    }
+
+    /**
+     * Get the azureOrigin property: Resource reference to the Azure origin resource.
+     *
+     * @return the azureOrigin value.
+     */
+    public ResourceReference azureOrigin() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureOrigin();
+    }
+
+    /**
+     * Set the azureOrigin property: Resource reference to the Azure origin resource.
+     *
+     * @param azureOrigin the azureOrigin value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withAzureOrigin(ResourceReference azureOrigin) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withAzureOrigin(azureOrigin);
+        return this;
+    }
+
+    /**
+     * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
+     * supported.This should be unique across all origins in an endpoint.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
+     * supported.This should be unique across all origins in an endpoint.
+     *
+     * @param hostname the hostname value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withHostname(String hostname) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withHostname(hostname);
+        return this;
+    }
+
+    /**
+     * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
+     *
+     * @return the httpPort value.
+     */
+    public Integer httpPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().httpPort();
+    }
+
+    /**
+     * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
+     *
+     * @param httpPort the httpPort value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withHttpPort(Integer httpPort) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withHttpPort(httpPort);
+        return this;
+    }
+
+    /**
+     * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
+     *
+     * @return the httpsPort value.
+     */
+    public Integer httpsPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().httpsPort();
+    }
+
+    /**
+     * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
+     *
+     * @param httpsPort the httpsPort value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withHttpsPort(Integer httpsPort) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withHttpsPort(httpsPort);
+        return this;
+    }
+
+    /**
+     * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
+     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
+     * Services require this host header value to match the origin hostname by default. This overrides the host header
+     * defined at Endpoint.
+     *
+     * @return the originHostHeader value.
+     */
+    public String originHostHeader() {
+        return this.innerProperties() == null ? null : this.innerProperties().originHostHeader();
+    }
+
+    /**
+     * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
+     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
+     * Services require this host header value to match the origin hostname by default. This overrides the host header
+     * defined at Endpoint.
+     *
+     * @param originHostHeader the originHostHeader value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withOriginHostHeader(String originHostHeader) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withOriginHostHeader(originHostHeader);
+        return this;
+    }
+
+    /**
+     * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
+     * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
+     *
+     * @return the priority value.
+     */
+    public Integer priority() {
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
+    }
+
+    /**
+     * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
+     * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
+     *
+     * @param priority the priority value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withPriority(Integer priority) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withPriority(priority);
+        return this;
+    }
+
+    /**
+     * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
+     * 1000.
+     *
+     * @return the weight value.
+     */
+    public Integer weight() {
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
+    }
+
+    /**
+     * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
+     * 1000.
+     *
+     * @param weight the weight value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withWeight(Integer weight) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withWeight(weight);
+        return this;
+    }
+
+    /**
+     * Get the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
+     *
+     * @return the sharedPrivateLinkResource value.
+     */
+    public Object sharedPrivateLinkResource() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResource();
+    }
+
+    /**
+     * Set the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
+     *
+     * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withSharedPrivateLinkResource(sharedPrivateLinkResource);
+        return this;
+    }
+
+    /**
+     * Get the enabledState property: Whether to enable health probes to be made against backends defined under
+     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
+     * pool.
+     *
+     * @return the enabledState value.
+     */
+    public EnabledState enabledState() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
+    }
+
+    /**
+     * Set the enabledState property: Whether to enable health probes to be made against backends defined under
+     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
+     * pool.
+     *
+     * @param enabledState the enabledState value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withEnabledState(EnabledState enabledState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
+        return this;
+    }
+
+    /**
+     * Get the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
+     *
+     * @return the enforceCertificateNameCheck value.
+     */
+    public Boolean enforceCertificateNameCheck() {
+        return this.innerProperties() == null ? null : this.innerProperties().enforceCertificateNameCheck();
+    }
+
+    /**
+     * Set the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
+     *
+     * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
+     * @return the AfdOriginInner object itself.
+     */
+    public AfdOriginInner withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AfdOriginProperties();
+        }
+        this.innerProperties().withEnforceCertificateNameCheck(enforceCertificateNameCheck);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (azureOrigin() != null) {
-            azureOrigin().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

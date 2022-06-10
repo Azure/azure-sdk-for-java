@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /** Execute pipeline activity. */
@@ -95,6 +96,34 @@ public class ExecutePipelineActivity extends ControlActivity {
      */
     public ExecutePipelineActivity setWaitOnCompletion(Boolean waitOnCompletion) {
         this.waitOnCompletion = waitOnCompletion;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity setName(String name) {
+        super.setName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity setDependsOn(List<ActivityDependency> dependsOn) {
+        super.setDependsOn(dependsOn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
+        super.setUserProperties(userProperties);
         return this;
     }
 }

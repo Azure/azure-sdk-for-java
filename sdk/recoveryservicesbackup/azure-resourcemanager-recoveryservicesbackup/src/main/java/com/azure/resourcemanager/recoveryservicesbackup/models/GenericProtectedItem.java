@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Base class for backup items. */
@@ -18,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("GenericProtectedItem")
 @Fluent
 public final class GenericProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericProtectedItem.class);
-
     /*
      * Friendly name of the container.
      */
@@ -50,6 +48,7 @@ public final class GenericProtectedItem extends ProtectedItem {
      * protected item)
      */
     @JsonProperty(value = "sourceAssociations")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceAssociations;
 
     /*
@@ -268,6 +267,27 @@ public final class GenericProtectedItem extends ProtectedItem {
     @Override
     public GenericProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

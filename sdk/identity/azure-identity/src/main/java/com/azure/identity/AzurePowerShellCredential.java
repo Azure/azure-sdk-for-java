@@ -15,24 +15,26 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * A credential provider that provides token credentials based on Azure Power Shell command.
+ * A credential provider that provides token credentials based on Azure PowerShell command.
  */
 @Immutable
 public class AzurePowerShellCredential implements TokenCredential {
-    private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(AzurePowerShellCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredential.class);
 
-    AzurePowerShellCredential(IdentityClientOptions options) {
+    private final IdentityClient identityClient;
+
+    AzurePowerShellCredential(String tenantId, IdentityClientOptions options) {
         identityClient = new IdentityClientBuilder()
             .identityClientOptions(options)
+            .tenantId(tenantId)
             .build();
-
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzurePowerShell(request)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
     }
 }

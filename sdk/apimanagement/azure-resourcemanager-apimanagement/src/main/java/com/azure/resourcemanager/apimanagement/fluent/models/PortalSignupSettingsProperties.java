@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sign-up settings contract properties. */
 @Fluent
 public final class PortalSignupSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSignupSettingsProperties.class);
-
     /*
      * Allow users to sign up on a developer portal.
      */

@@ -7,38 +7,28 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSSku;
+import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A node pool snapshot resource. */
 @Fluent
 public final class SnapshotInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
-
-    /*
-     * The system metadata relating to this snapshot.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /*
      * Properties of a snapshot.
      */
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
-    /**
-     * Get the systemData property: The system metadata relating to this snapshot.
-     *
-     * @return the systemData value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the innerProperties property: Properties of a snapshot.
@@ -47,6 +37,15 @@ public final class SnapshotInner extends Resource {
      */
     private SnapshotProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -109,6 +108,60 @@ public final class SnapshotInner extends Resource {
         }
         this.innerProperties().withSnapshotType(snapshotType);
         return this;
+    }
+
+    /**
+     * Get the kubernetesVersion property: The version of Kubernetes.
+     *
+     * @return the kubernetesVersion value.
+     */
+    public String kubernetesVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().kubernetesVersion();
+    }
+
+    /**
+     * Get the nodeImageVersion property: The version of node image.
+     *
+     * @return the nodeImageVersion value.
+     */
+    public String nodeImageVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeImageVersion();
+    }
+
+    /**
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
+     * @return the osType value.
+     */
+    public OSType osType() {
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
+    }
+
+    /**
+     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     *
+     * @return the osSku value.
+     */
+    public OSSku osSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().osSku();
+    }
+
+    /**
+     * Get the vmSize property: The size of the VM.
+     *
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmSize();
+    }
+
+    /**
+     * Get the enableFips property: Whether to use a FIPS-enabled OS.
+     *
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableFips();
     }
 
     /**

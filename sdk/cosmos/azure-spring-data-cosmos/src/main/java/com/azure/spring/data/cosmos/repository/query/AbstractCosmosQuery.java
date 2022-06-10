@@ -14,6 +14,10 @@ import org.springframework.data.repository.query.ReturnedType;
 public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     private final CosmosQueryMethod method;
+
+    /**
+     * CosmosOperations
+     */
     protected final CosmosOperations operations;
 
     /**
@@ -81,22 +85,45 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         return method;
     }
 
+    /**
+     * Creates a query.
+     * @param accessor Cosmos parameter accessor.
+     * @return a Cosmos query.
+     */
     protected abstract CosmosQuery createQuery(CosmosParameterAccessor accessor);
 
+    /**
+     * @return whether this is a deletion query.
+     */
     protected abstract boolean isDeleteQuery();
 
+    /**
+     * @return whether this is an exists query.
+     */
     protected abstract boolean isExistsQuery();
 
+    /**
+     * @return whether this is a count query.
+     */
     protected abstract boolean isCountQuery();
 
+    /**
+     * @return whether this is a page query.
+     */
     protected boolean isPageQuery() {
         return method.isPageQuery();
     }
 
+    /**
+     * @return whether this is a collection query.
+     */
     protected boolean isCollectionQuery() {
         return method.isCollectionQuery();
     }
 
+    /**
+     * @return whether this is a slice query.
+     */
     protected boolean isSliceQuery() {
         return method.isSliceQuery();
     }

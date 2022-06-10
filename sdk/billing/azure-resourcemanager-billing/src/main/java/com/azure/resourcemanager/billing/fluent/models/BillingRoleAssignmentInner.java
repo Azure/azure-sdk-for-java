@@ -5,77 +5,30 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The role assignment. */
-@JsonFlatten
 @Fluent
-public class BillingRoleAssignmentInner extends ProxyResource {
+public final class BillingRoleAssignmentInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleAssignmentInner.class);
 
     /*
-     * The date the role assignment was created.
+     * The properties of the role assignment.
      */
-    @JsonProperty(value = "properties.createdOn", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdOn;
+    @JsonProperty(value = "properties")
+    private BillingRoleAssignmentProperties innerProperties;
 
-    /*
-     * The tenant Id of the user who created the role assignment.
+    /**
+     * Get the innerProperties property: The properties of the role assignment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdByPrincipalTenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdByPrincipalTenantId;
-
-    /*
-     * The principal Id of the user who created the role assignment.
-     */
-    @JsonProperty(value = "properties.createdByPrincipalId", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdByPrincipalId;
-
-    /*
-     * The email address of the user who created the role assignment.
-     */
-    @JsonProperty(value = "properties.createdByUserEmailAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdByUserEmailAddress;
-
-    /*
-     * The principal id of the user to whom the role was assigned.
-     */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
-
-    /*
-     * The principal tenant id of the user to whom the role was assigned.
-     */
-    @JsonProperty(value = "properties.principalTenantId")
-    private String principalTenantId;
-
-    /*
-     * The ID of the role definition.
-     */
-    @JsonProperty(value = "properties.roleDefinitionId")
-    private String roleDefinitionId;
-
-    /*
-     * The scope at which the role was assigned.
-     */
-    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
-    private String scope;
-
-    /*
-     * The authentication type.
-     */
-    @JsonProperty(value = "properties.userAuthenticationType")
-    private String userAuthenticationType;
-
-    /*
-     * The email address of the user.
-     */
-    @JsonProperty(value = "properties.userEmailAddress")
-    private String userEmailAddress;
+    private BillingRoleAssignmentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the createdOn property: The date the role assignment was created.
@@ -83,7 +36,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the createdOn value.
      */
     public String createdOn() {
-        return this.createdOn;
+        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
     }
 
     /**
@@ -92,7 +45,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the createdByPrincipalTenantId value.
      */
     public String createdByPrincipalTenantId() {
-        return this.createdByPrincipalTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().createdByPrincipalTenantId();
     }
 
     /**
@@ -101,7 +54,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the createdByPrincipalId value.
      */
     public String createdByPrincipalId() {
-        return this.createdByPrincipalId;
+        return this.innerProperties() == null ? null : this.innerProperties().createdByPrincipalId();
     }
 
     /**
@@ -110,7 +63,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the createdByUserEmailAddress value.
      */
     public String createdByUserEmailAddress() {
-        return this.createdByUserEmailAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().createdByUserEmailAddress();
     }
 
     /**
@@ -119,7 +72,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -129,7 +82,10 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the BillingRoleAssignmentInner object itself.
      */
     public BillingRoleAssignmentInner withPrincipalId(String principalId) {
-        this.principalId = principalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleAssignmentProperties();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -139,7 +95,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the principalTenantId value.
      */
     public String principalTenantId() {
-        return this.principalTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalTenantId();
     }
 
     /**
@@ -149,7 +105,10 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the BillingRoleAssignmentInner object itself.
      */
     public BillingRoleAssignmentInner withPrincipalTenantId(String principalTenantId) {
-        this.principalTenantId = principalTenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleAssignmentProperties();
+        }
+        this.innerProperties().withPrincipalTenantId(principalTenantId);
         return this;
     }
 
@@ -159,7 +118,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
-        return this.roleDefinitionId;
+        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
     }
 
     /**
@@ -169,7 +128,10 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the BillingRoleAssignmentInner object itself.
      */
     public BillingRoleAssignmentInner withRoleDefinitionId(String roleDefinitionId) {
-        this.roleDefinitionId = roleDefinitionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleAssignmentProperties();
+        }
+        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
         return this;
     }
 
@@ -179,7 +141,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -188,7 +150,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the userAuthenticationType value.
      */
     public String userAuthenticationType() {
-        return this.userAuthenticationType;
+        return this.innerProperties() == null ? null : this.innerProperties().userAuthenticationType();
     }
 
     /**
@@ -198,7 +160,10 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the BillingRoleAssignmentInner object itself.
      */
     public BillingRoleAssignmentInner withUserAuthenticationType(String userAuthenticationType) {
-        this.userAuthenticationType = userAuthenticationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleAssignmentProperties();
+        }
+        this.innerProperties().withUserAuthenticationType(userAuthenticationType);
         return this;
     }
 
@@ -208,7 +173,7 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the userEmailAddress value.
      */
     public String userEmailAddress() {
-        return this.userEmailAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().userEmailAddress();
     }
 
     /**
@@ -218,7 +183,10 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @return the BillingRoleAssignmentInner object itself.
      */
     public BillingRoleAssignmentInner withUserEmailAddress(String userEmailAddress) {
-        this.userEmailAddress = userEmailAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleAssignmentProperties();
+        }
+        this.innerProperties().withUserEmailAddress(userEmailAddress);
         return this;
     }
 
@@ -228,5 +196,8 @@ public class BillingRoleAssignmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -6,10 +6,6 @@ package com.azure.analytics.purview.catalog;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
 public class ReadmeSamples {
@@ -17,9 +13,11 @@ public class ReadmeSamples {
      * Sample for creating low level client.
      */
     public void createClient() {
-        GlossaryBaseClient client = new PurviewCatalogClientBuilder()
-            .endpoint(System.getenv("<account-name>.catalog.purview.azure.com"))
+        // BEGIN: readme-sample-createGlossaryClient
+        GlossaryClient client = new GlossaryClientBuilder()
+            .endpoint(System.getenv("<account-name>.purview.azure.com"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildGlossaryBaseClient();
+            .buildClient();
+        // END: readme-sample-createGlossaryClient
     }
 }

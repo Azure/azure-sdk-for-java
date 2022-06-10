@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.MyWorkbookInner;
 import java.util.List;
@@ -31,7 +32,7 @@ public interface MyWorkbook {
      *
      * @return the identity value.
      */
-    ManagedIdentity identity();
+    MyWorkbookManagedIdentity identity();
 
     /**
      * Gets the id property: Azure resource Id.
@@ -67,6 +68,13 @@ public interface MyWorkbook {
      * @return the kind value.
      */
     Kind kind();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the displayName property: The user-defined name of the private workbook.
@@ -148,6 +156,13 @@ public interface MyWorkbook {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.applicationinsights.fluent.models.MyWorkbookInner object.
@@ -248,7 +263,7 @@ public interface MyWorkbook {
              * @param identity Identity used for BYOS.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ManagedIdentity identity);
+            WithCreate withIdentity(MyWorkbookManagedIdentity identity);
         }
         /** The stage of the MyWorkbook definition allowing to specify name. */
         interface WithName {
@@ -388,8 +403,6 @@ public interface MyWorkbook {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
-            UpdateStages.WithName,
-            UpdateStages.WithType,
             UpdateStages.WithEtag,
             UpdateStages.WithKind,
             UpdateStages.WithDisplayName,
@@ -399,7 +412,7 @@ public interface MyWorkbook {
             UpdateStages.WithTagsPropertiesTags,
             UpdateStages.WithSourceId,
             UpdateStages.WithStorageUri,
-            UpdateStages.WithsourceIdParameter {
+            UpdateStages.WithSourceIdParameter {
         /**
          * Executes the update request.
          *
@@ -435,27 +448,7 @@ public interface MyWorkbook {
              * @param identity Identity used for BYOS.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedIdentity identity);
-        }
-        /** The stage of the MyWorkbook update allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Azure resource name.
-             *
-             * @param name Azure resource name.
-             * @return the next definition stage.
-             */
-            Update withName(String name);
-        }
-        /** The stage of the MyWorkbook update allowing to specify type. */
-        interface WithType {
-            /**
-             * Specifies the type property: Azure resource type.
-             *
-             * @param type Azure resource type.
-             * @return the next definition stage.
-             */
-            Update withType(String type);
+            Update withIdentity(MyWorkbookManagedIdentity identity);
         }
         /** The stage of the MyWorkbook update allowing to specify etag. */
         interface WithEtag {
@@ -554,14 +547,14 @@ public interface MyWorkbook {
             Update withStorageUri(String storageUri);
         }
         /** The stage of the MyWorkbook update allowing to specify sourceId. */
-        interface WithsourceIdParameter {
+        interface WithSourceIdParameter {
             /**
              * Specifies the sourceId property: Azure Resource Id that will fetch all linked workbooks..
              *
              * @param sourceId Azure Resource Id that will fetch all linked workbooks.
              * @return the next definition stage.
              */
-            Update sourceIdParameter(String sourceId);
+            Update withSourceIdParameter(String sourceId);
         }
     }
     /**

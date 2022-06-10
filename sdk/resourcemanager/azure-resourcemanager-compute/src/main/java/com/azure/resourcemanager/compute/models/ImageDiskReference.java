@@ -5,21 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The source image used for creating the disk. */
 @Fluent
 public final class ImageDiskReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDiskReference.class);
+    /*
+     * A relative uri containing either a Platform Image Repository, user
+     * image, or Azure Compute Gallery image reference.
+     */
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
-     * A relative uri containing either a Platform Image Repository or user
-     * image reference.
+     * A relative uri containing a direct shared Azure Compute Gallery image
+     * reference.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    @JsonProperty(value = "sharedGalleryImageId")
+    private String sharedGalleryImageId;
+
+    /*
+     * A relative uri containing a community Azure Compute Gallery image
+     * reference.
+     */
+    @JsonProperty(value = "communityGalleryImageId")
+    private String communityGalleryImageId;
 
     /*
      * If the disk is created from an image's data disk, this is an index that
@@ -30,7 +40,8 @@ public final class ImageDiskReference {
     private Integer lun;
 
     /**
-     * Get the id property: A relative uri containing either a Platform Image Repository or user image reference.
+     * Get the id property: A relative uri containing either a Platform Image Repository, user image, or Azure Compute
+     * Gallery image reference.
      *
      * @return the id value.
      */
@@ -39,13 +50,58 @@ public final class ImageDiskReference {
     }
 
     /**
-     * Set the id property: A relative uri containing either a Platform Image Repository or user image reference.
+     * Set the id property: A relative uri containing either a Platform Image Repository, user image, or Azure Compute
+     * Gallery image reference.
      *
      * @param id the id value to set.
      * @return the ImageDiskReference object itself.
      */
     public ImageDiskReference withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the sharedGalleryImageId property: A relative uri containing a direct shared Azure Compute Gallery image
+     * reference.
+     *
+     * @return the sharedGalleryImageId value.
+     */
+    public String sharedGalleryImageId() {
+        return this.sharedGalleryImageId;
+    }
+
+    /**
+     * Set the sharedGalleryImageId property: A relative uri containing a direct shared Azure Compute Gallery image
+     * reference.
+     *
+     * @param sharedGalleryImageId the sharedGalleryImageId value to set.
+     * @return the ImageDiskReference object itself.
+     */
+    public ImageDiskReference withSharedGalleryImageId(String sharedGalleryImageId) {
+        this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the communityGalleryImageId property: A relative uri containing a community Azure Compute Gallery image
+     * reference.
+     *
+     * @return the communityGalleryImageId value.
+     */
+    public String communityGalleryImageId() {
+        return this.communityGalleryImageId;
+    }
+
+    /**
+     * Set the communityGalleryImageId property: A relative uri containing a community Azure Compute Gallery image
+     * reference.
+     *
+     * @param communityGalleryImageId the communityGalleryImageId value to set.
+     * @return the ImageDiskReference object itself.
+     */
+    public ImageDiskReference withCommunityGalleryImageId(String communityGalleryImageId) {
+        this.communityGalleryImageId = communityGalleryImageId;
         return this;
     }
 
@@ -77,10 +133,5 @@ public final class ImageDiskReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ImageDiskReference"));
-        }
     }
 }

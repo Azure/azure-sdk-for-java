@@ -71,4 +71,18 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
         this.version = version;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GoogleCloudStorageLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
+        return this;
+    }
 }

@@ -20,6 +20,7 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
     public void serialize(ClientTelemetryInfo telemetry, JsonGenerator generator, SerializerProvider serializerProvider) throws IOException {
         generator.writeStartObject();
         generator.writeStringField("timeStamp", telemetry.getTimeStamp());
+        generator.writeStringField("machineId", telemetry.getMachineId());
         generator.writeStringField("clientId", telemetry.getClientId());
 
         if (telemetry.getProcessId() != null) {
@@ -47,6 +48,12 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
                 telemetry.getAcceleratedNetworking().toString());
         }
 
+        if (telemetry.getPreferredRegions() != null && telemetry.getPreferredRegions().size() > 0) {
+            generator.writeObjectField("preferredRegions",
+                telemetry.getPreferredRegions());
+        }
+
+        generator.writeNumberField("aggregationIntervalInSec", telemetry.getAggregationIntervalInSec());
         generator.writeObjectField("systemInfo", telemetry.getSystemInfoMap().keySet());
         generator.writeObjectField("cacheRefreshInfo", telemetry.getCacheRefreshInfoMap().keySet());
         generator.writeObjectField("operationInfo", telemetry.getOperationInfoMap().keySet());

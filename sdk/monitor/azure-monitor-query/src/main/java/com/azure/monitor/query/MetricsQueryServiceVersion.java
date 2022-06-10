@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The service version of the Metrics service that can be queried to retrieved Azure Monitor metrics.
  */
 public enum MetricsQueryServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2018-01-01}.
+     */
     V2018_01_01("2018-01-01");
 
     String version;

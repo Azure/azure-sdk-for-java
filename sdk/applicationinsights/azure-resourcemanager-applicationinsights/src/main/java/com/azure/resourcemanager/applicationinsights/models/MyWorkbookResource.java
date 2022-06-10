@@ -6,21 +6,18 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An azure resource object. */
 @Fluent
 public class MyWorkbookResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MyWorkbookResource.class);
-
     /*
      * Identity used for BYOS
      */
     @JsonProperty(value = "identity")
-    private ManagedIdentity identity;
+    private MyWorkbookManagedIdentity identity;
 
     /*
      * Azure resource Id
@@ -44,6 +41,7 @@ public class MyWorkbookResource extends Resource {
      * Resource etag
      */
     @JsonProperty(value = "etag")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> etag;
 
     /**
@@ -51,7 +49,7 @@ public class MyWorkbookResource extends Resource {
      *
      * @return the identity value.
      */
-    public ManagedIdentity identity() {
+    public MyWorkbookManagedIdentity identity() {
         return this.identity;
     }
 
@@ -61,7 +59,7 @@ public class MyWorkbookResource extends Resource {
      * @param identity the identity value to set.
      * @return the MyWorkbookResource object itself.
      */
-    public MyWorkbookResource withIdentity(ManagedIdentity identity) {
+    public MyWorkbookResource withIdentity(MyWorkbookManagedIdentity identity) {
         this.identity = identity;
         return this;
     }

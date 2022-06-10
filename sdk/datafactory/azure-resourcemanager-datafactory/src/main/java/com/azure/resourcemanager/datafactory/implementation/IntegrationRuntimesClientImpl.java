@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimesClient;
@@ -52,8 +51,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationRuntimesClient. */
 public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimesService service;
 
@@ -377,7 +374,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationRuntimeResourceInner>> listByFactorySinglePageAsync(
@@ -435,7 +433,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationRuntimeResourceInner>> listByFactorySinglePageAsync(
@@ -489,7 +488,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationRuntimeResourceInner> listByFactoryAsync(
@@ -508,7 +507,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationRuntimeResourceInner> listByFactoryAsync(
@@ -526,7 +525,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationRuntimeResourceInner> listByFactory(String resourceGroupName, String factoryName) {
@@ -542,7 +541,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationRuntimeResourceInner> listByFactory(
@@ -562,7 +561,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> createOrUpdateWithResponseAsync(
@@ -633,7 +632,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> createOrUpdateWithResponseAsync(
@@ -701,7 +700,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeResourceInner> createOrUpdateAsync(
@@ -732,7 +731,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeResourceInner> createOrUpdateAsync(
@@ -789,7 +788,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResourceInner> createOrUpdateWithResponse(
@@ -815,7 +814,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> getWithResponseAsync(
@@ -874,7 +873,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> getWithResponseAsync(
@@ -933,7 +932,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeResourceInner> getAsync(
@@ -958,7 +957,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeResourceInner> getAsync(
@@ -1005,7 +1004,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResourceInner> getWithResponse(
@@ -1028,7 +1027,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> updateWithResponseAsync(
@@ -1097,7 +1096,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeResourceInner>> updateWithResponseAsync(
@@ -1163,7 +1162,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeResourceInner> updateAsync(
@@ -1216,7 +1215,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResourceInner> updateWithResponse(
@@ -1239,7 +1238,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1295,7 +1294,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1347,7 +1346,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
@@ -1380,7 +1379,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1397,7 +1396,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStatusResponseInner>> getStatusWithResponseAsync(
@@ -1453,7 +1453,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStatusResponseInner>> getStatusWithResponseAsync(
@@ -1505,7 +1506,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeStatusResponseInner> getStatusAsync(
@@ -1548,7 +1549,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(
@@ -1565,7 +1566,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
@@ -1622,7 +1624,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>>
@@ -1675,7 +1678,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
@@ -1721,7 +1725,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
@@ -1743,7 +1748,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeConnectionInfoInner>> getConnectionInfoWithResponseAsync(
@@ -1801,7 +1806,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeConnectionInfoInner>> getConnectionInfoWithResponseAsync(
@@ -1855,7 +1860,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeConnectionInfoInner> getConnectionInfoAsync(
@@ -1902,7 +1907,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeConnectionInfoInner> getConnectionInfoWithResponse(
@@ -1921,7 +1926,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateAuthKeyWithResponseAsync(
@@ -1989,7 +1995,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> regenerateAuthKeyWithResponseAsync(
@@ -2054,7 +2061,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeAuthKeysInner> regenerateAuthKeyAsync(
@@ -2107,7 +2114,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeAuthKeysInner> regenerateAuthKeyWithResponse(
@@ -2130,7 +2137,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> listAuthKeysWithResponseAsync(
@@ -2186,7 +2194,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeAuthKeysInner>> listAuthKeysWithResponseAsync(
@@ -2238,7 +2247,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeAuthKeysInner> listAuthKeysAsync(
@@ -2281,7 +2290,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeAuthKeysInner> listAuthKeysWithResponse(
@@ -2298,7 +2307,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -2354,7 +2363,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -2406,9 +2415,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return the {@link PollerFlux} for polling of integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2420,7 +2429,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
                 this.client.getHttpPipeline(),
                 IntegrationRuntimeStatusResponseInner.class,
                 IntegrationRuntimeStatusResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2433,9 +2442,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return the {@link PollerFlux} for polling of integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2460,9 +2469,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2478,9 +2487,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStartAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
@@ -2495,7 +2504,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeStatusResponseInner> startAsync(
@@ -2515,7 +2524,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeStatusResponseInner> startAsync(
@@ -2569,7 +2578,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -2625,7 +2634,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -2677,16 +2686,17 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2699,9 +2709,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2721,9 +2731,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName).getSyncPoller();
@@ -2739,9 +2749,9 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return beginStopAsync(resourceGroupName, factoryName, integrationRuntimeName, context).getSyncPoller();
@@ -2756,7 +2766,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
@@ -2775,7 +2785,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(
@@ -2828,7 +2838,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> syncCredentialsWithResponseAsync(
@@ -2887,7 +2897,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> syncCredentialsWithResponseAsync(
@@ -2942,7 +2952,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> syncCredentialsAsync(
@@ -2982,7 +2992,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> syncCredentialsWithResponse(
@@ -3002,7 +3012,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> getMonitoringDataWithResponseAsync(
@@ -3060,7 +3070,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> getMonitoringDataWithResponseAsync(
@@ -3114,7 +3124,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeMonitoringDataInner> getMonitoringDataAsync(
@@ -3161,7 +3171,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeMonitoringDataInner> getMonitoringDataWithResponse(
@@ -3179,7 +3189,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> upgradeWithResponseAsync(
@@ -3235,7 +3245,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> upgradeWithResponseAsync(
@@ -3287,7 +3297,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> upgradeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
@@ -3320,7 +3330,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upgradeWithResponse(
@@ -3338,7 +3348,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeLinksWithResponseAsync(
@@ -3407,7 +3417,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeLinksWithResponseAsync(
@@ -3473,7 +3483,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> removeLinksAsync(
@@ -3518,7 +3528,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeLinksWithResponse(
@@ -3542,7 +3552,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStatusResponseInner>> createLinkedIntegrationRuntimeWithResponseAsync(
@@ -3611,7 +3621,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStatusResponseInner>> createLinkedIntegrationRuntimeWithResponseAsync(
@@ -3677,7 +3687,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationRuntimeStatusResponseInner> createLinkedIntegrationRuntimeAsync(
@@ -3731,7 +3741,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeStatusResponseInner> createLinkedIntegrationRuntimeWithResponse(
@@ -3752,7 +3762,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationRuntimeResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
@@ -3788,7 +3799,8 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationRuntimeResourceInner>> listByFactoryNextSinglePageAsync(

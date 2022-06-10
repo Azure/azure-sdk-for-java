@@ -7,16 +7,18 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -65,10 +67,11 @@ public final class CosmosAsyncClient implements Closeable {
     private final TokenCredential tokenCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
-    private final boolean clientTelemetryEnabled;
+    private final ClientTelemetryConfig clientTelemetryConfig;
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
+    private final ApiType apiType;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -92,9 +95,10 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
+        this.clientTelemetryConfig = builder.getClientTelemetryConfig();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+        this.apiType = builder.apiType();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -120,6 +124,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenCredential(this.tokenCredential)
                                        .withState(builder.metadataCaches())
                                        .withPermissionFeed(permissionList)
+                                       .withApiType(this.apiType)
+                                       .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .build();
     }
 
@@ -228,8 +234,13 @@ public final class CosmosAsyncClient implements Closeable {
         return contentResponseOnWriteEnabled;
     }
 
-    boolean isClientTelemetryEnabled() {
-        return clientTelemetryEnabled;
+    /***
+     * Get the client telemetry config.
+     *
+     * @return the {@link ClientTelemetryConfig}.
+     */
+    ClientTelemetryConfig getClientTelemetryConfig() {
+        return this.clientTelemetryConfig;
     }
 
     /**

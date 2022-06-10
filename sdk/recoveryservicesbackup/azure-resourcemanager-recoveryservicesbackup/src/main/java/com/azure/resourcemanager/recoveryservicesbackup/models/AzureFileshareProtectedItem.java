@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Azure File Share workload-specific backup item. */
@@ -18,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureFileShareProtectedItem")
 @Fluent
 public final class AzureFileshareProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileshareProtectedItem.class);
-
     /*
      * Friendly name of the fileshare represented by this backup item.
      */
@@ -54,6 +52,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
      * Health details of different KPIs
      */
     @JsonProperty(value = "kpisHealths")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KpiResourceHealthDetails> kpisHealths;
 
     /*
@@ -290,6 +289,27 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
     @Override
     public AzureFileshareProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileshareProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileshareProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFileshareProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

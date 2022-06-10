@@ -129,8 +129,6 @@ public interface SqlDatabaseThreatDetectionPolicy
             /**
              * Sets the security alert policy storage endpoint.
              *
-             * <p>
-             *
              * @param storageEndpoint the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net); this
              *     blob storage will hold all Threat Detection audit logs.
              * @return the next stage of the definition
@@ -157,8 +155,6 @@ public interface SqlDatabaseThreatDetectionPolicy
         interface WithAlertsFilter {
             /**
              * Sets the security alert policy alerts to be disabled.
-             *
-             * <p>
              *
              * @param alertsFilter the semicolon-separated list of alerts that are disabled, or empty string to disable
              *     no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
@@ -280,8 +276,6 @@ public interface SqlDatabaseThreatDetectionPolicy
             /**
              * Updates the security alert policy storage endpoint.
              *
-             * <p>
-             *
              * @param storageEndpoint the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net); this
              *     blob storage will hold all Threat Detection audit logs.
              * @return the next stage of the definition
@@ -308,8 +302,6 @@ public interface SqlDatabaseThreatDetectionPolicy
             /**
              * Updates the security alert policy alerts to be disabled.
              *
-             * <p>
-             *
              * @param alertsFilter the semicolon-separated list of alerts that are disabled, or empty string to disable
              *     no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
              *     Usage_Anomaly.
@@ -324,8 +316,6 @@ public interface SqlDatabaseThreatDetectionPolicy
         interface WithEmailAddresses {
             /**
              * Updates the security alert policy email addresses.
-             *
-             * <p>
              *
              * @param addresses the semicolon-separated list of e-mail addresses to which the alert is sent to
              * @return the next stage of the definition

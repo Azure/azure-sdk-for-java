@@ -20,11 +20,23 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  *
  * <p><strong>Instantiating an asynchronous Logs query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
+ * <pre>
+ * LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.LogsQueryClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.LogsQueryClient.instantiation -->
+ * <pre>
+ * LogsQueryClient logsQueryClient = new LogsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
 public final class LogsQueryClientBuilder {
@@ -116,7 +128,7 @@ public final class LogsQueryClientBuilder {
     /**
      * Set the {@link ClientOptions} used for creating the client.
      * @param clientOptions The {@link ClientOptions}.
-     * @return the {@link LogsQueryClientBuilder}
+     * @return the {@link LogsQueryClientBuilder}.
      */
     public LogsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -126,7 +138,7 @@ public final class LogsQueryClientBuilder {
     /**
      * The service version to use when creating the client.
      * @param serviceVersion The {@link LogsQueryServiceVersion}.
-     * @return the {@link LogsQueryClientBuilder}
+     * @return the {@link LogsQueryClientBuilder}.
      */
     public LogsQueryClientBuilder serviceVersion(LogsQueryServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;

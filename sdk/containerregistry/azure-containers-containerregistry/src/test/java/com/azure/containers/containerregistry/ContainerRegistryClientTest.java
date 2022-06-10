@@ -9,21 +9,17 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Collections;
 
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
-import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -62,72 +58,40 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void deleteRepositoryByRegistryWithResponseAsyncClient() {
-        Mono<Boolean> deleteRepositoryTest = registryAsyncClient.deleteRepositoryWithResponse(repositoryName)
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(registryAsyncClient.getRepository(repositoryName).getProperties())
-            .flatMap(res -> Mono.just(false))
-            .onErrorResume(res -> registryAsyncClient.getRepository(repositoryName)
-                .delete()
-                .then(Mono.just(true))
-                .onErrorResume(err -> Mono.just(false)));
+        StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(repositoryName))
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .verifyComplete();
 
-        StepVerifier.create(deleteRepositoryTest)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(repositoryName))
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
     }
 
     @Test
     public void deleteRepositoryByRegistryAsyncClient() {
-        Mono<Boolean> deleteRepositoryTest = registryAsyncClient.deleteRepository(repositoryName)
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(registryAsyncClient.getRepository(repositoryName).getProperties())
-            .flatMap(res -> Mono.just(false))
-            .onErrorResume(res -> {
-                System.out.println("First time:" + res.getStackTrace());
-                return registryAsyncClient.getRepository(repositoryName)
-                    .delete()
-                    .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-                    .then(Mono.just(true))
-                    .onErrorResume(err -> {
-                        System.out.println("Second Time:" + err.getStackTrace());
-                        return Mono.just(false);
-                    });
-            });
+        StepVerifier.create(registryAsyncClient.deleteRepository(repositoryName))
+            .verifyComplete();
 
-        StepVerifier.create(deleteRepositoryTest)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(registryAsyncClient.deleteRepository(repositoryName))
             .verifyComplete();
     }
 
     @Test
     public void deleteRepositoryWithResponseAsyncClient() {
-        Mono<Boolean> deleteRepositoryTest = asyncClient.deleteWithResponse()
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(registryAsyncClient.getRepository(repositoryName).getProperties())
-            .flatMap(res -> Mono.just(false))
-            .onErrorResume(res -> registryAsyncClient.getRepository(repositoryName)
-                .delete()
-                .then(Mono.just(true))
-                .onErrorResume(err -> Mono.just(false)));
+        StepVerifier.create(asyncClient.deleteWithResponse())
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .verifyComplete();
 
-        StepVerifier.create(deleteRepositoryTest)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.deleteWithResponse())
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
     }
 
     @Test
     public void deleteRepositoryAsyncClient() {
-        Mono<Boolean> deleteRepositoryTest = asyncClient.delete()
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(registryAsyncClient.getRepository(repositoryName).getProperties())
-            .flatMap(res -> Mono.just(false))
-            .onErrorResume(res -> registryAsyncClient.getRepository(repositoryName)
-                .delete()
-                .then(Mono.just(true))
-                .onErrorResume(err -> Mono.just(false)));
-
-        StepVerifier.create(deleteRepositoryTest)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.delete())
+            .verifyComplete();
+        StepVerifier.create(asyncClient.delete())
             .verifyComplete();
     }
 

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobFSDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.Map;
 @JsonTypeName("AzureBlobFSFile")
 @Fluent
 public final class AzureBlobFSDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSDataset.class);
-
     /*
      * Azure Data Lake Storage Gen2 dataset properties.
      */

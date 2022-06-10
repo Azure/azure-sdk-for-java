@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceupdate/sdkinstance/management/devices?api-version=2021-06-01-preview",
+    "Headers" : { },
+    "Response" : {
+      "content-length" : "1374",
+      "traceparent" : "00-c8b21027570393408e9a6312cdfbf69d-2ae72ad49fc63c42-00",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"deviceId\":\"adu-sdk-test-device-1\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"manufacturer\":\"fabrikam\",\"model\":\"vacuum\",\"lastAttemptedUpdateId\":null,\"installedUpdateId\":null,\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"groupId\":\"testgroup\",\"lastDeploymentId\":null,\"lastInstallResult\":{\"updateInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"},\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"dpokluda-edgevm\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"manufacturer\":\"fabrikam\",\"model\":\"vacuum\",\"lastAttemptedUpdateId\":null,\"installedUpdateId\":null,\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"groupId\":\"dpokluda-edgevm\",\"lastDeploymentId\":null,\"lastInstallResult\":{\"updateInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"},\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}},{\"deviceId\":\"joseph-edgevm2\",\"deviceClassId\":\"0919e3ae422a2bfa8c84ff905813e60351e456d1\",\"manufacturer\":\"fabrikam\",\"model\":\"vacuum\",\"lastAttemptedUpdateId\":null,\"installedUpdateId\":null,\"onLatestUpdate\":false,\"deploymentStatus\":\"Succeeded\",\"groupId\":\"joegroup\",\"lastDeploymentId\":null,\"lastInstallResult\":{\"updateInstallResult\":{\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"},\"resultCode\":700,\"extendedResultCode\":0,\"resultDetails\":\"\"}}]}",
+      "Date" : "Mon, 29 Nov 2021 06:46:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

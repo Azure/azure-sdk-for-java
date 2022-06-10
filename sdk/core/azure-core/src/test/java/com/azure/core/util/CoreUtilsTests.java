@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoreUtilsTests {
@@ -40,6 +41,7 @@ public class CoreUtilsTests {
     private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -256,24 +258,89 @@ public class CoreUtilsTests {
             Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), Duration.ofMillis(10000), logger,
-                Duration.ofMillis(10000)),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                    .put(TIMEOUT_PROPERTY_NAME, ""))
+                    .build(),
+                Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), Duration.ofMillis(10000), logger,
-                Duration.ofMillis(10000)),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                    .put(TIMEOUT_PROPERTY_NAME, "ten"))
+                    .build(),
+                Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), Duration.ofMillis(10000), logger,
-                Duration.ZERO),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                    .put(TIMEOUT_PROPERTY_NAME, "-10"))
+                    .build(),
+                Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), Duration.ofMillis(10000), logger,
-                Duration.ZERO),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                    .put(TIMEOUT_PROPERTY_NAME, "0"))
+                    .build(),
+                Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), Duration.ofMillis(10000), logger,
-                Duration.ofMillis(42))
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                    .put(TIMEOUT_PROPERTY_NAME, "42"))
+                    .build(),
+                Duration.ofMillis(10000), logger, Duration.ofMillis(42))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidContextMergeSupplier")
+    public void invalidContextMerge(Context into, Context from) {
+        assertThrows(NullPointerException.class, () -> CoreUtils.mergeContexts(into, from));
+    }
+
+    private static Stream<Arguments> invalidContextMergeSupplier() {
+        return Stream.of(
+            Arguments.of(null, Context.NONE),
+            Arguments.of(Context.NONE, null)
+        );
+    }
+
+    @Test
+    public void mergingContextNoneReturnsIntoContext() {
+        Context into = new Context("key", "value");
+
+        Context merged = CoreUtils.mergeContexts(into, Context.NONE);
+        assertEquals(into, merged);
+    }
+
+    @Test
+    public void mergingReturnsTheExpectedResult() {
+        List<Context> expectedMergedContextChain = new ArrayList<>();
+        Context into = new Context("key1", "value1");
+        expectedMergedContextChain.add(into);
+
+        into = into.addData("key2", "value2");
+        expectedMergedContextChain.add(into);
+
+        into = into.addData("key3", "value3");
+        expectedMergedContextChain.add(into);
+
+        Context from = new Context("key4", "value4");
+        expectedMergedContextChain.add(from);
+
+        from = from.addData("key5", "value5");
+        expectedMergedContextChain.add(from);
+
+        from = from.addData("key6", "value6");
+        expectedMergedContextChain.add(from);
+
+        Context merged = CoreUtils.mergeContexts(into, from);
+        Context[] mergedContextChain = merged.getContextChain();
+
+        assertEquals(expectedMergedContextChain.size(), mergedContextChain.length);
+        for (int i = 0; i < expectedMergedContextChain.size(); i++) {
+            Context expected = expectedMergedContextChain.get(i);
+            Context actual = mergedContextChain[i];
+
+            assertEquals(expected.getKey(), actual.getKey());
+            assertEquals(expected.getValue(), actual.getValue());
+        }
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** employeeOrgData. */
 @Fluent
 public final class MicrosoftGraphEmployeeOrgData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphEmployeeOrgData.class);
-
     /*
      * The cost center associated with the user. Returned only on $select.
      * Supports $filter.

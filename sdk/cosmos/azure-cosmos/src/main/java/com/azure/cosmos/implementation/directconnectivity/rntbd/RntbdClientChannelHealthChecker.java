@@ -12,6 +12,7 @@ import io.netty.util.concurrent.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
@@ -34,7 +35,9 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     // Guidance: The grace period should be large enough to accommodate the round trip time of the slowest server
     // request. Assuming 1s of network RTT, a 2 MB request, a 2 MB response, a connection that can sustain 1 MB/s
     // both ways, and a 5-second deadline at the server, 10 seconds should be enough.
-    private static final long readHangGracePeriodInNanos = 10L * 1_000_000_000L;
+    // Adding an additional 45 seconds grace period because of relatively high number of
+    // false negatives here under high CPU load (in Spark for example)
+    private static final long readHangGracePeriodInNanos = (45L + 10L) * 1_000_000_000L;
 
     // A channel will not be declared unhealthy if a write was attempted recently. As such gaps between
     // Timestamps.lastChannelWriteAttempt and Timestamps.lastChannelWrite lower than this value are ignored.
@@ -124,7 +127,6 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
      * @return A future with a result of {@code true} if the channel is healthy, or {@code false} otherwise.
      */
     public Future<Boolean> isHealthy(final Channel channel) {
-
         checkNotNull(channel, "expected non-null channel");
 
         final RntbdRequestManager requestManager = channel.pipeline().get(RntbdRequestManager.class);
@@ -144,7 +146,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         // Black hole detection, part 1:
         // Treat the channel as unhealthy if the gap between the last attempted write and the last successful write
-        // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a hung write.
+        // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a nonresponding write.
 
         final long writeDelayInNanos =
             timestamps.lastChannelWriteAttemptNanoTime() - timestamps.lastChannelWriteNanoTime();
@@ -157,7 +159,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            logger.warn("{} health check failed due to hung write: {lastChannelWriteAttemptNanoTime: {}, " +
+            logger.warn("{} health check failed due to nonresponding write: {lastChannelWriteAttemptNanoTime: {}, " +
                     "lastChannelWriteNanoTime: {}, writeDelayInNanos: {}, writeDelayLimitInNanos: {}, " +
                     "rntbdContext: {}, pendingRequestCount: {}}",
                 channel, timestamps.lastChannelWriteAttemptNanoTime(), timestamps.lastChannelWriteNanoTime(),
@@ -168,7 +170,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         // Black hole detection, part 2:
         // Treat the connection as unhealthy if the gap between the last successful write and the last successful read
-        // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a hung read.
+        // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a nonresponding read.
 
         final long readDelay = timestamps.lastChannelWriteNanoTime() - timestamps.lastChannelReadNanoTime();
         final long readHangDuration = currentTime - timestamps.lastChannelWriteNanoTime();
@@ -178,8 +180,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            logger.warn("{} health check failed due to hung read: {lastChannelWrite: {}, lastChannelRead: {}, "
-                + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
+            logger.warn("{} health check failed due to nonresponding read: {lastChannelWrite: {}, lastChannelRead: {}, "
+                    + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
                 timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
                 this.readDelayLimitInNanos, rntbdContext, pendingRequestCount);
 
@@ -198,6 +200,122 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             } else {
                 logger.warn("{} health check request failed due to:", channel, completed.cause());
                 promise.setSuccess(Boolean.FALSE);
+            }
+        });
+
+        return promise;
+    }
+
+    /**
+     * Determines whether a specified channel is healthy.
+     *
+     * @param channel A channel whose health is to be checked.
+     * @return A future with a result of {@code true} if the channel is healthy, or {@code false} otherwise.
+     */
+    public Future<String> isHealthyWithFailureReason(final Channel channel) {
+
+        checkNotNull(channel, "expected non-null channel");
+
+        final RntbdRequestManager requestManager = channel.pipeline().get(RntbdRequestManager.class);
+        final Promise<String> promise = channel.eventLoop().newPromise();
+
+        if (requestManager == null) {
+            reportIssueUnless(logger, !channel.isActive(), channel, "active with no request manager");
+            return promise.setSuccess("active with no request manager");
+        }
+
+        final Timestamps timestamps = requestManager.snapshotTimestamps();
+        final long currentTime = System.nanoTime();
+
+        if (currentTime - timestamps.lastChannelReadNanoTime() < recentReadWindowInNanos) {
+            // because we recently received data
+            return promise.setSuccess(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+        }
+
+        // Black hole detection, part 1:
+        // Treat the channel as unhealthy if the gap between the last attempted write and the last successful write
+        // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a nonresponding write.
+
+        final long writeDelayInNanos =
+            timestamps.lastChannelWriteAttemptNanoTime() - timestamps.lastChannelWriteNanoTime();
+
+        final long writeHangDurationInNanos =
+            currentTime - timestamps.lastChannelWriteAttemptNanoTime();
+
+        if (writeDelayInNanos > this.writeDelayLimitInNanos && writeHangDurationInNanos > writeHangGracePeriodInNanos) {
+
+            final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
+            final int pendingRequestCount = requestManager.pendingRequestCount();
+
+            logger.warn("{} health check failed due to nonresponding write: {lastChannelWriteAttemptNanoTime: {}, " +
+                    "lastChannelWriteNanoTime: {}, writeDelayInNanos: {}, writeDelayLimitInNanos: {}, " +
+                    "rntbdContext: {}, pendingRequestCount: {}}",
+                channel, timestamps.lastChannelWriteAttemptNanoTime(), timestamps.lastChannelWriteNanoTime(),
+                writeDelayInNanos, this.writeDelayLimitInNanos, rntbdContext, pendingRequestCount);
+
+            String msg = MessageFormat.format(
+                "{0} health check failed due to nonresponding write: (lastChannelWriteAttemptNanoTime: {1}, " +
+                    "lastChannelWriteNanoTime: {2}, writeDelayInNanos: {3}, writeDelayLimitInNanos: {4}, " +
+                    "rntbdContext: {5}, pendingRequestCount: {6})",
+                channel, timestamps.lastChannelWriteAttemptNanoTime(), timestamps.lastChannelWriteNanoTime(),
+                writeDelayInNanos, this.writeDelayLimitInNanos, rntbdContext, pendingRequestCount
+            );
+
+            return promise.setSuccess(msg);
+        }
+
+        // Black hole detection, part 2:
+        // Treat the connection as unhealthy if the gap between the last successful write and the last successful read
+        // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a nonresponding read.
+
+        final long readDelay = timestamps.lastChannelWriteNanoTime() - timestamps.lastChannelReadNanoTime();
+        final long readHangDuration = currentTime - timestamps.lastChannelWriteNanoTime();
+
+        if (readDelay > this.readDelayLimitInNanos && readHangDuration > readHangGracePeriodInNanos) {
+
+            final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
+            final int pendingRequestCount = requestManager.pendingRequestCount();
+
+            logger.warn("{} health check failed due to nonresponding read: {lastChannelWrite: {}, lastChannelRead: {}, "
+                + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
+                timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
+                this.readDelayLimitInNanos, rntbdContext, pendingRequestCount);
+
+            String msg = MessageFormat.format(
+                "{0} health check failed due to nonresponding read: (lastChannelWrite: {1}, lastChannelRead: {2}, "
+                    + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6})", channel,
+                timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
+                this.readDelayLimitInNanos, rntbdContext, pendingRequestCount
+            );
+
+            return promise.setSuccess(msg);
+        }
+
+        if (this.idleConnectionTimeoutInNanos > 0L) {
+            if (currentTime - timestamps.lastChannelReadNanoTime() > this.idleConnectionTimeoutInNanos) {
+                String msg = MessageFormat.format(
+                    "{0} health check failed due to idle connection timeout: (lastChannelWrite: {1}, lastChannelRead: {2}, "
+                        + "idleConnectionTimeout: {3}, currentTime: {4}", channel,
+                    timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(),
+                    idleConnectionTimeoutInNanos, currentTime
+                );
+                return promise.setSuccess(msg);
+            }
+        }
+
+        channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
+            if (completed.isSuccess()) {
+                promise.setSuccess(RntbdConstants.RntbdHealthCheckResults.SuccessValue);
+            } else {
+                logger.warn("{} health check request failed due to:", channel, completed.cause());
+
+                String msg = MessageFormat.format(
+                    "{0} health check request failed due to: {1}",
+                    channel,
+                    completed.cause().toString()
+                );
+
+                promise.setSuccess(msg);
             }
         });
 

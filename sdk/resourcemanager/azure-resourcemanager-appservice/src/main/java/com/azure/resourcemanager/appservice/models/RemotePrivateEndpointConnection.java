@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A remote private endpoint connection. */
 @Fluent
 public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemotePrivateEndpointConnection.class);
-
     /*
      * RemotePrivateEndpointConnection resource specific properties
      */

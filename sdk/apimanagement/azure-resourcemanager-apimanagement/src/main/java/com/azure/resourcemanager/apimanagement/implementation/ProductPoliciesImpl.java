@@ -19,10 +19,9 @@ import com.azure.resourcemanager.apimanagement.models.ProductPolicies;
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesCreateOrUpdateResponse;
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductPoliciesImpl implements ProductPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductPoliciesImpl.class);
 
     private final ProductPoliciesClient innerClient;
 

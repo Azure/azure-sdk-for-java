@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
-import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -21,7 +20,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBatchOperation<TInternal> implements CosmosItemOperation {
+public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase {
 
     private TInternal item;
 
@@ -53,7 +52,8 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
      *
      * @return instance of JsonSerializable containing values for a operation.
      */
-    JsonSerializable serializeOperation() {
+    @Override
+    JsonSerializable getSerializedOperationInternal() {
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(

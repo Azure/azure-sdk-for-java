@@ -31,7 +31,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -46,9 +46,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName);
 
@@ -61,9 +61,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName);
 
@@ -77,9 +77,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName, Context context);
 
@@ -92,7 +92,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String circuitName, String authorizationName);
@@ -133,7 +133,8 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit.
+     * @return the specified authorization from the specified express route circuit along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteCircuitAuthorizationInner>> getWithResponseAsync(
@@ -148,7 +149,8 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit.
+     * @return the specified authorization from the specified express route circuit on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCircuitAuthorizationInner> getAsync(
@@ -178,7 +180,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified authorization from the specified express route circuit.
+     * @return the specified authorization from the specified express route circuit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteCircuitAuthorizationInner> getWithResponse(
@@ -195,7 +197,8 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
+     * @return authorization in an ExpressRouteCircuit resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -215,9 +218,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
+     * @return the {@link PollerFlux} for polling of authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -236,9 +239,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
+     * @return the {@link SyncPoller} for polling of authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -258,9 +261,9 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
+     * @return the {@link SyncPoller} for polling of authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -280,7 +283,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization in an ExpressRouteCircuit resource.
+     * @return authorization in an ExpressRouteCircuit resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(
@@ -339,7 +342,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit.
+     * @return all authorizations in an express route circuit as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRouteCircuitAuthorizationInner> listAsync(String resourceGroupName, String circuitName);
@@ -352,7 +355,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit.
+     * @return all authorizations in an express route circuit as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCircuitAuthorizationInner> list(String resourceGroupName, String circuitName);
@@ -366,7 +369,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all authorizations in an express route circuit.
+     * @return all authorizations in an express route circuit as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCircuitAuthorizationInner> list(

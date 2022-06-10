@@ -14,6 +14,7 @@ import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnCollectionT
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnJsonIgnoredProperty;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenOnPrimitiveType;
 import com.azure.core.implementation.models.jsonflatten.JsonFlattenWithJsonInfoDiscriminator;
+import com.azure.core.implementation.models.jsonflatten.SampleResource;
 import com.azure.core.implementation.models.jsonflatten.School;
 import com.azure.core.implementation.models.jsonflatten.Student;
 import com.azure.core.implementation.models.jsonflatten.Teacher;
@@ -26,6 +27,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import wiremock.com.google.common.collect.ImmutableList;
 
 import java.io.IOException;
@@ -37,6 +41,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -679,6 +684,31 @@ public class FlatteningSerializerTests {
         Assertions.assertEquals(expectedSerialization, actualSerialization);
     }
 
+    @Test
+    public void jsonFlattenRepeatedPropertyNameDeserialize() throws IOException {
+        SampleResource deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
+            "{\"name\":\"...-01\",\"properties\":{\"registrationTtl\":\"10675199.02:48:05.4775807\",\"authorizationRules\":[]}}",
+            SampleResource.class,
+            SerializerEncoding.JSON
+        );
+
+        assertEquals("10675199.02:48:05.4775807", deserialized.getRegistrationTtl());
+        assertNull(deserialized.getNamePropertiesName());
+    }
+
+    @ParameterizedTest
+    @MethodSource("emptyDanglingNodeJsonSupplier")
+    public void jsonFlattenEmptyDanglingNodesDeserialize(String json, Object expected) throws IOException {
+        // test to verify null dangling nodes are still retained and set to null
+        FlattenDangling deserialized = JacksonAdapter.createDefaultSerializerAdapter().deserialize(
+            json,
+            FlattenDangling.class,
+            SerializerEncoding.JSON
+        );
+
+        assertEquals(expected, deserialized.getFlattenedProperty());
+    }
+
     private static String serialize(Object object) {
         try {
             return ADAPTER.serialize(object, SerializerEncoding.JSON);
@@ -693,6 +723,18 @@ public class FlatteningSerializerTests {
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+    }
+
+    private static Stream<Arguments> emptyDanglingNodeJsonSupplier() {
+        return Stream.of(
+            Arguments.of("{\"a\":{}}", null),
+
+            Arguments.of("{\"a\":{\"flattened\": {}}}", null),
+
+            Arguments.of("{\"a\":{\"flattened\": {\"property\": null}}}", null),
+
+            Arguments.of("{\"a\":{\"flattened\": {\"property\": \"value\"}}}", "value")
+        );
     }
 
     private School prepareSchoolModel() {

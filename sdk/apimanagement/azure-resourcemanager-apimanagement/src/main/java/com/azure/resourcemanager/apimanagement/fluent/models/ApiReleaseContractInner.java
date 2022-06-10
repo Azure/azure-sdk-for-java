@@ -6,16 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** ApiRelease details. */
 @Fluent
 public final class ApiReleaseContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiReleaseContractInner.class);
-
     /*
      * ApiRelease entity contract properties.
      */

@@ -5,165 +5,186 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.ArtifactsClientImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the ArtifactsClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            LinkedServiceClient.class,
-            DatasetClient.class,
-            PipelineClient.class,
-            PipelineRunClient.class,
-            TriggerClient.class,
-            TriggerRunClient.class,
-            DataFlowClient.class,
-            DataFlowDebugSessionClient.class,
-            SqlScriptClient.class,
-            SparkJobDefinitionClient.class,
-            NotebookClient.class,
-            NotebookOperationResultClient.class,
+            LinkConnectionClient.class,
+            KqlScriptsClient.class,
+            KqlScriptClient.class,
+            MetastoreClient.class,
             SparkConfigurationClient.class,
             BigDataPoolsClient.class,
+            DataFlowClient.class,
+            DataFlowDebugSessionClient.class,
+            DatasetClient.class,
             WorkspaceGitRepoManagementClient.class,
             IntegrationRuntimesClient.class,
             LibraryClient.class,
-            OperationResultClient.class,
-            OperationStatusClient.class,
+            LinkedServiceClient.class,
+            NotebookClient.class,
+            NotebookOperationResultClient.class,
+            PipelineClient.class,
+            PipelineRunClient.class,
+            SparkJobDefinitionClient.class,
             SqlPoolsClient.class,
+            SqlScriptClient.class,
+            TriggerClient.class,
+            TriggerRunClient.class,
             WorkspaceClient.class,
-            LinkedServiceAsyncClient.class,
-            DatasetAsyncClient.class,
-            PipelineAsyncClient.class,
-            PipelineRunAsyncClient.class,
-            TriggerAsyncClient.class,
-            TriggerRunAsyncClient.class,
-            DataFlowAsyncClient.class,
-            DataFlowDebugSessionAsyncClient.class,
-            SqlScriptAsyncClient.class,
-            SparkJobDefinitionAsyncClient.class,
-            NotebookAsyncClient.class,
-            NotebookOperationResultAsyncClient.class,
+            LinkConnectionAsyncClient.class,
+            KqlScriptsAsyncClient.class,
+            KqlScriptAsyncClient.class,
+            MetastoreAsyncClient.class,
             SparkConfigurationAsyncClient.class,
             BigDataPoolsAsyncClient.class,
+            DataFlowAsyncClient.class,
+            DataFlowDebugSessionAsyncClient.class,
+            DatasetAsyncClient.class,
             WorkspaceGitRepoManagementAsyncClient.class,
             IntegrationRuntimesAsyncClient.class,
             LibraryAsyncClient.class,
-            OperationResultAsyncClient.class,
-            OperationStatusAsyncClient.class,
+            LinkedServiceAsyncClient.class,
+            NotebookAsyncClient.class,
+            NotebookOperationResultAsyncClient.class,
+            PipelineAsyncClient.class,
+            PipelineRunAsyncClient.class,
+            SparkJobDefinitionAsyncClient.class,
             SqlPoolsAsyncClient.class,
+            SqlScriptAsyncClient.class,
+            TriggerAsyncClient.class,
+            TriggerRunAsyncClient.class,
             WorkspaceAsyncClient.class
         })
-public final class ArtifactsClientBuilder {
-    private static final String SDK_NAME = "name";
+public final class ArtifactsClientBuilder
+        implements HttpTrait<ArtifactsClientBuilder>,
+                ConfigurationTrait<ArtifactsClientBuilder>,
+                TokenCredentialTrait<ArtifactsClientBuilder>,
+                EndpointTrait<ArtifactsClientBuilder> {
+    @Generated private static final String SDK_NAME = "name";
 
-    private static final String SDK_VERSION = "version";
+    @Generated private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
 
-    private final Map<String, String> properties = new HashMap<>();
+    @Generated
+    private final Map<String, String> properties =
+            CoreUtils.getProperties("azure-analytics-synapse-artifacts.properties");
+
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the ArtifactsClientBuilder. */
+    @Generated
     public ArtifactsClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
     /*
-     * The workspace development endpoint, for example
-     * https://myworkspace.dev.azuresynapse.net.
+     * The HTTP pipeline to send requests through.
      */
-    private String endpoint;
+    @Generated private HttpPipeline pipeline;
 
-    /**
-     * Sets The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
-     *
-     * @param endpoint the endpoint value.
-     * @return the ArtifactsClientBuilder.
-     */
-    public ArtifactsClientBuilder endpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the ArtifactsClientBuilder.
-     */
-    public ArtifactsClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
-
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the ArtifactsClientBuilder.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public ArtifactsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
     /*
-     * The serializer to serialize an object into a string
+     * The HTTP client used to send the request.
      */
-    private SerializerAdapter serializerAdapter;
+    @Generated private HttpClient httpClient;
 
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the ArtifactsClientBuilder.
-     */
-    public ArtifactsClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
         return this;
     }
 
     /*
-     * The HTTP client used to send the request.
+     * The logging configuration for HTTP requests and responses.
      */
-    private HttpClient httpClient;
+    @Generated private HttpLogOptions httpLogOptions;
 
-    /**
-     * Sets The HTTP client used to send the request.
-     *
-     * @param httpClient the httpClient value.
-     * @return the ArtifactsClientBuilder.
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
      */
-    public ArtifactsClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+    @Generated private ClientOptions clientOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    @Generated private RetryOptions retryOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
         return this;
     }
 
@@ -171,14 +192,11 @@ public final class ArtifactsClientBuilder {
      * The configuration store that is used during construction of the service
      * client.
      */
-    private Configuration configuration;
+    @Generated private Configuration configuration;
 
-    /**
-     * Sets The configuration store that is used during construction of the service client.
-     *
-     * @param configuration the configuration value.
-     * @return the ArtifactsClientBuilder.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public ArtifactsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -187,32 +205,43 @@ public final class ArtifactsClientBuilder {
     /*
      * The TokenCredential used for authentication.
      */
-    private TokenCredential tokenCredential;
+    @Generated private TokenCredential tokenCredential;
 
-    /**
-     * Sets The TokenCredential used for authentication.
-     *
-     * @param tokenCredential the tokenCredential value.
-     * @return the ArtifactsClientBuilder.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public ArtifactsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
 
     /*
-     * The logging configuration for HTTP requests and responses.
+     * The service endpoint
      */
-    private HttpLogOptions httpLogOptions;
+    @Generated private String endpoint;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public ArtifactsClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * The serializer to serialize an object into a string
+     */
+    @Generated private SerializerAdapter serializerAdapter;
 
     /**
-     * Sets The logging configuration for HTTP requests and responses.
+     * Sets The serializer to serialize an object into a string.
      *
-     * @param httpLogOptions the httpLogOptions value.
+     * @param serializerAdapter the serializerAdapter value.
      * @return the ArtifactsClientBuilder.
      */
-    public ArtifactsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = httpLogOptions;
+    @Generated
+    public ArtifactsClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -220,7 +249,7 @@ public final class ArtifactsClientBuilder {
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -228,24 +257,9 @@ public final class ArtifactsClientBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the ArtifactsClientBuilder.
      */
+    @Generated
     public ArtifactsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /*
-     * The list of Http pipeline policies to add.
-     */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /**
-     * Adds a custom Http pipeline policy.
-     *
-     * @param customPolicy The custom Http pipeline policy to add.
-     * @return the ArtifactsClientBuilder.
-     */
-    public ArtifactsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        pipelinePolicies.add(customPolicy);
         return this;
     }
 
@@ -254,422 +268,522 @@ public final class ArtifactsClientBuilder {
      *
      * @return an instance of ArtifactsClientImpl.
      */
+    @Generated
     private ArtifactsClientImpl buildInnerClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-06-01-preview";
-        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(this.pipelinePolicies);
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
+                        .clientOptions(clientOptions)
                         .build();
         return httpPipeline;
     }
 
     /**
-     * Builds an instance of LinkedServiceAsyncClient async client.
+     * Builds an instance of LinkConnectionAsyncClient class.
      *
-     * @return an instance of LinkedServiceAsyncClient.
+     * @return an instance of LinkConnectionAsyncClient.
      */
-    public LinkedServiceAsyncClient buildLinkedServiceAsyncClient() {
-        return new LinkedServiceAsyncClient(buildInnerClient().getLinkedServices());
+    @Generated
+    public LinkConnectionAsyncClient buildLinkConnectionAsyncClient() {
+        return new LinkConnectionAsyncClient(buildInnerClient().getLinkConnections());
     }
 
     /**
-     * Builds an instance of DatasetAsyncClient async client.
+     * Builds an instance of KqlScriptsAsyncClient class.
      *
-     * @return an instance of DatasetAsyncClient.
+     * @return an instance of KqlScriptsAsyncClient.
      */
-    public DatasetAsyncClient buildDatasetAsyncClient() {
-        return new DatasetAsyncClient(buildInnerClient().getDatasets());
+    @Generated
+    public KqlScriptsAsyncClient buildKqlScriptsAsyncClient() {
+        return new KqlScriptsAsyncClient(buildInnerClient().getKqlScripts());
     }
 
     /**
-     * Builds an instance of PipelineAsyncClient async client.
+     * Builds an instance of KqlScriptAsyncClient class.
      *
-     * @return an instance of PipelineAsyncClient.
+     * @return an instance of KqlScriptAsyncClient.
      */
-    public PipelineAsyncClient buildPipelineAsyncClient() {
-        return new PipelineAsyncClient(buildInnerClient().getPipelines());
+    @Generated
+    public KqlScriptAsyncClient buildKqlScriptAsyncClient() {
+        return new KqlScriptAsyncClient(buildInnerClient().getKqlScriptsOperations());
     }
 
     /**
-     * Builds an instance of PipelineRunAsyncClient async client.
+     * Builds an instance of MetastoreAsyncClient class.
      *
-     * @return an instance of PipelineRunAsyncClient.
+     * @return an instance of MetastoreAsyncClient.
      */
-    public PipelineRunAsyncClient buildPipelineRunAsyncClient() {
-        return new PipelineRunAsyncClient(buildInnerClient().getPipelineRuns());
+    @Generated
+    public MetastoreAsyncClient buildMetastoreAsyncClient() {
+        return new MetastoreAsyncClient(buildInnerClient().getMetastores());
     }
 
     /**
-     * Builds an instance of TriggerAsyncClient async client.
-     *
-     * @return an instance of TriggerAsyncClient.
-     */
-    public TriggerAsyncClient buildTriggerAsyncClient() {
-        return new TriggerAsyncClient(buildInnerClient().getTriggers());
-    }
-
-    /**
-     * Builds an instance of TriggerRunAsyncClient async client.
-     *
-     * @return an instance of TriggerRunAsyncClient.
-     */
-    public TriggerRunAsyncClient buildTriggerRunAsyncClient() {
-        return new TriggerRunAsyncClient(buildInnerClient().getTriggerRuns());
-    }
-
-    /**
-     * Builds an instance of DataFlowAsyncClient async client.
-     *
-     * @return an instance of DataFlowAsyncClient.
-     */
-    public DataFlowAsyncClient buildDataFlowAsyncClient() {
-        return new DataFlowAsyncClient(buildInnerClient().getDataFlows());
-    }
-
-    /**
-     * Builds an instance of DataFlowDebugSessionAsyncClient async client.
-     *
-     * @return an instance of DataFlowDebugSessionAsyncClient.
-     */
-    public DataFlowDebugSessionAsyncClient buildDataFlowDebugSessionAsyncClient() {
-        return new DataFlowDebugSessionAsyncClient(buildInnerClient().getDataFlowDebugSessions());
-    }
-
-    /**
-     * Builds an instance of SqlScriptAsyncClient async client.
-     *
-     * @return an instance of SqlScriptAsyncClient.
-     */
-    public SqlScriptAsyncClient buildSqlScriptAsyncClient() {
-        return new SqlScriptAsyncClient(buildInnerClient().getSqlScripts());
-    }
-
-    /**
-     * Builds an instance of SparkJobDefinitionAsyncClient async client.
-     *
-     * @return an instance of SparkJobDefinitionAsyncClient.
-     */
-    public SparkJobDefinitionAsyncClient buildSparkJobDefinitionAsyncClient() {
-        return new SparkJobDefinitionAsyncClient(buildInnerClient().getSparkJobDefinitions());
-    }
-
-    /**
-     * Builds an instance of NotebookAsyncClient async client.
-     *
-     * @return an instance of NotebookAsyncClient.
-     */
-    public NotebookAsyncClient buildNotebookAsyncClient() {
-        return new NotebookAsyncClient(buildInnerClient().getNotebooks());
-    }
-
-    /**
-     * Builds an instance of NotebookOperationResultAsyncClient async client.
-     *
-     * @return an instance of NotebookOperationResultAsyncClient.
-     */
-    public NotebookOperationResultAsyncClient buildNotebookOperationResultAsyncClient() {
-        return new NotebookOperationResultAsyncClient(buildInnerClient().getNotebookOperationResults());
-    }
-
-    /**
-     * Builds an instance of SparkConfigurationAsyncClient async client.
+     * Builds an instance of SparkConfigurationAsyncClient class.
      *
      * @return an instance of SparkConfigurationAsyncClient.
      */
+    @Generated
     public SparkConfigurationAsyncClient buildSparkConfigurationAsyncClient() {
         return new SparkConfigurationAsyncClient(buildInnerClient().getSparkConfigurations());
     }
 
     /**
-     * Builds an instance of BigDataPoolsAsyncClient async client.
+     * Builds an instance of BigDataPoolsAsyncClient class.
      *
      * @return an instance of BigDataPoolsAsyncClient.
      */
+    @Generated
     public BigDataPoolsAsyncClient buildBigDataPoolsAsyncClient() {
         return new BigDataPoolsAsyncClient(buildInnerClient().getBigDataPools());
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
+     * Builds an instance of DataFlowAsyncClient class.
+     *
+     * @return an instance of DataFlowAsyncClient.
+     */
+    @Generated
+    public DataFlowAsyncClient buildDataFlowAsyncClient() {
+        return new DataFlowAsyncClient(buildInnerClient().getDataFlows());
+    }
+
+    /**
+     * Builds an instance of DataFlowDebugSessionAsyncClient class.
+     *
+     * @return an instance of DataFlowDebugSessionAsyncClient.
+     */
+    @Generated
+    public DataFlowDebugSessionAsyncClient buildDataFlowDebugSessionAsyncClient() {
+        return new DataFlowDebugSessionAsyncClient(buildInnerClient().getDataFlowDebugSessions());
+    }
+
+    /**
+     * Builds an instance of DatasetAsyncClient class.
+     *
+     * @return an instance of DatasetAsyncClient.
+     */
+    @Generated
+    public DatasetAsyncClient buildDatasetAsyncClient() {
+        return new DatasetAsyncClient(buildInnerClient().getDatasets());
+    }
+
+    /**
+     * Builds an instance of WorkspaceGitRepoManagementAsyncClient class.
      *
      * @return an instance of WorkspaceGitRepoManagementAsyncClient.
      */
+    @Generated
     public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
         return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
     }
 
     /**
-     * Builds an instance of IntegrationRuntimesAsyncClient async client.
+     * Builds an instance of IntegrationRuntimesAsyncClient class.
      *
      * @return an instance of IntegrationRuntimesAsyncClient.
      */
+    @Generated
     public IntegrationRuntimesAsyncClient buildIntegrationRuntimesAsyncClient() {
         return new IntegrationRuntimesAsyncClient(buildInnerClient().getIntegrationRuntimes());
     }
 
     /**
-     * Builds an instance of LibraryAsyncClient async client.
+     * Builds an instance of LibraryAsyncClient class.
      *
      * @return an instance of LibraryAsyncClient.
      */
+    @Generated
     public LibraryAsyncClient buildLibraryAsyncClient() {
         return new LibraryAsyncClient(buildInnerClient().getLibraries());
     }
 
     /**
-     * Builds an instance of OperationResultAsyncClient async client.
+     * Builds an instance of LinkedServiceAsyncClient class.
      *
-     * @return an instance of OperationResultAsyncClient.
+     * @return an instance of LinkedServiceAsyncClient.
      */
-    public OperationResultAsyncClient buildOperationResultAsyncClient() {
-        return new OperationResultAsyncClient(buildInnerClient().getOperationResults());
+    @Generated
+    public LinkedServiceAsyncClient buildLinkedServiceAsyncClient() {
+        return new LinkedServiceAsyncClient(buildInnerClient().getLinkedServices());
     }
 
     /**
-     * Builds an instance of OperationStatusAsyncClient async client.
+     * Builds an instance of NotebookAsyncClient class.
      *
-     * @return an instance of OperationStatusAsyncClient.
+     * @return an instance of NotebookAsyncClient.
      */
-    public OperationStatusAsyncClient buildOperationStatusAsyncClient() {
-        return new OperationStatusAsyncClient(buildInnerClient().getOperationStatus());
+    @Generated
+    public NotebookAsyncClient buildNotebookAsyncClient() {
+        return new NotebookAsyncClient(buildInnerClient().getNotebooks());
     }
 
     /**
-     * Builds an instance of SqlPoolsAsyncClient async client.
+     * Builds an instance of NotebookOperationResultAsyncClient class.
+     *
+     * @return an instance of NotebookOperationResultAsyncClient.
+     */
+    @Generated
+    public NotebookOperationResultAsyncClient buildNotebookOperationResultAsyncClient() {
+        return new NotebookOperationResultAsyncClient(buildInnerClient().getNotebookOperationResults());
+    }
+
+    /**
+     * Builds an instance of PipelineAsyncClient class.
+     *
+     * @return an instance of PipelineAsyncClient.
+     */
+    @Generated
+    public PipelineAsyncClient buildPipelineAsyncClient() {
+        return new PipelineAsyncClient(buildInnerClient().getPipelines());
+    }
+
+    /**
+     * Builds an instance of PipelineRunAsyncClient class.
+     *
+     * @return an instance of PipelineRunAsyncClient.
+     */
+    @Generated
+    public PipelineRunAsyncClient buildPipelineRunAsyncClient() {
+        return new PipelineRunAsyncClient(buildInnerClient().getPipelineRuns());
+    }
+
+    /**
+     * Builds an instance of SparkJobDefinitionAsyncClient class.
+     *
+     * @return an instance of SparkJobDefinitionAsyncClient.
+     */
+    @Generated
+    public SparkJobDefinitionAsyncClient buildSparkJobDefinitionAsyncClient() {
+        return new SparkJobDefinitionAsyncClient(buildInnerClient().getSparkJobDefinitions());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsAsyncClient class.
      *
      * @return an instance of SqlPoolsAsyncClient.
      */
+    @Generated
     public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
         return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
     }
 
     /**
-     * Builds an instance of WorkspaceAsyncClient async client.
+     * Builds an instance of SqlScriptAsyncClient class.
+     *
+     * @return an instance of SqlScriptAsyncClient.
+     */
+    @Generated
+    public SqlScriptAsyncClient buildSqlScriptAsyncClient() {
+        return new SqlScriptAsyncClient(buildInnerClient().getSqlScripts());
+    }
+
+    /**
+     * Builds an instance of TriggerAsyncClient class.
+     *
+     * @return an instance of TriggerAsyncClient.
+     */
+    @Generated
+    public TriggerAsyncClient buildTriggerAsyncClient() {
+        return new TriggerAsyncClient(buildInnerClient().getTriggers());
+    }
+
+    /**
+     * Builds an instance of TriggerRunAsyncClient class.
+     *
+     * @return an instance of TriggerRunAsyncClient.
+     */
+    @Generated
+    public TriggerRunAsyncClient buildTriggerRunAsyncClient() {
+        return new TriggerRunAsyncClient(buildInnerClient().getTriggerRuns());
+    }
+
+    /**
+     * Builds an instance of WorkspaceAsyncClient class.
      *
      * @return an instance of WorkspaceAsyncClient.
      */
+    @Generated
     public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
         return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
     }
 
     /**
-     * Builds an instance of LinkedServiceClient sync client.
+     * Builds an instance of LinkConnectionClient class.
      *
-     * @return an instance of LinkedServiceClient.
+     * @return an instance of LinkConnectionClient.
      */
-    public LinkedServiceClient buildLinkedServiceClient() {
-        return new LinkedServiceClient(buildInnerClient().getLinkedServices());
+    @Generated
+    public LinkConnectionClient buildLinkConnectionClient() {
+        return new LinkConnectionClient(buildInnerClient().getLinkConnections());
     }
 
     /**
-     * Builds an instance of DatasetClient sync client.
+     * Builds an instance of KqlScriptsClient class.
      *
-     * @return an instance of DatasetClient.
+     * @return an instance of KqlScriptsClient.
      */
-    public DatasetClient buildDatasetClient() {
-        return new DatasetClient(buildInnerClient().getDatasets());
+    @Generated
+    public KqlScriptsClient buildKqlScriptsClient() {
+        return new KqlScriptsClient(buildInnerClient().getKqlScripts());
     }
 
     /**
-     * Builds an instance of PipelineClient sync client.
+     * Builds an instance of KqlScriptClient class.
      *
-     * @return an instance of PipelineClient.
+     * @return an instance of KqlScriptClient.
      */
-    public PipelineClient buildPipelineClient() {
-        return new PipelineClient(buildInnerClient().getPipelines());
+    @Generated
+    public KqlScriptClient buildKqlScriptClient() {
+        return new KqlScriptClient(buildInnerClient().getKqlScriptsOperations());
     }
 
     /**
-     * Builds an instance of PipelineRunClient sync client.
+     * Builds an instance of MetastoreClient class.
      *
-     * @return an instance of PipelineRunClient.
+     * @return an instance of MetastoreClient.
      */
-    public PipelineRunClient buildPipelineRunClient() {
-        return new PipelineRunClient(buildInnerClient().getPipelineRuns());
+    @Generated
+    public MetastoreClient buildMetastoreClient() {
+        return new MetastoreClient(buildInnerClient().getMetastores());
     }
 
     /**
-     * Builds an instance of TriggerClient sync client.
-     *
-     * @return an instance of TriggerClient.
-     */
-    public TriggerClient buildTriggerClient() {
-        return new TriggerClient(buildInnerClient().getTriggers());
-    }
-
-    /**
-     * Builds an instance of TriggerRunClient sync client.
-     *
-     * @return an instance of TriggerRunClient.
-     */
-    public TriggerRunClient buildTriggerRunClient() {
-        return new TriggerRunClient(buildInnerClient().getTriggerRuns());
-    }
-
-    /**
-     * Builds an instance of DataFlowClient sync client.
-     *
-     * @return an instance of DataFlowClient.
-     */
-    public DataFlowClient buildDataFlowClient() {
-        return new DataFlowClient(buildInnerClient().getDataFlows());
-    }
-
-    /**
-     * Builds an instance of DataFlowDebugSessionClient sync client.
-     *
-     * @return an instance of DataFlowDebugSessionClient.
-     */
-    public DataFlowDebugSessionClient buildDataFlowDebugSessionClient() {
-        return new DataFlowDebugSessionClient(buildInnerClient().getDataFlowDebugSessions());
-    }
-
-    /**
-     * Builds an instance of SqlScriptClient sync client.
-     *
-     * @return an instance of SqlScriptClient.
-     */
-    public SqlScriptClient buildSqlScriptClient() {
-        return new SqlScriptClient(buildInnerClient().getSqlScripts());
-    }
-
-    /**
-     * Builds an instance of SparkJobDefinitionClient sync client.
-     *
-     * @return an instance of SparkJobDefinitionClient.
-     */
-    public SparkJobDefinitionClient buildSparkJobDefinitionClient() {
-        return new SparkJobDefinitionClient(buildInnerClient().getSparkJobDefinitions());
-    }
-
-    /**
-     * Builds an instance of NotebookClient sync client.
-     *
-     * @return an instance of NotebookClient.
-     */
-    public NotebookClient buildNotebookClient() {
-        return new NotebookClient(buildInnerClient().getNotebooks());
-    }
-
-    /**
-     * Builds an instance of NotebookOperationResultClient sync client.
-     *
-     * @return an instance of NotebookOperationResultClient.
-     */
-    public NotebookOperationResultClient buildNotebookOperationResultClient() {
-        return new NotebookOperationResultClient(buildInnerClient().getNotebookOperationResults());
-    }
-
-    /**
-     * Builds an instance of SparkConfigurationClient sync client.
+     * Builds an instance of SparkConfigurationClient class.
      *
      * @return an instance of SparkConfigurationClient.
      */
+    @Generated
     public SparkConfigurationClient buildSparkConfigurationClient() {
         return new SparkConfigurationClient(buildInnerClient().getSparkConfigurations());
     }
 
     /**
-     * Builds an instance of BigDataPoolsClient sync client.
+     * Builds an instance of BigDataPoolsClient class.
      *
      * @return an instance of BigDataPoolsClient.
      */
+    @Generated
     public BigDataPoolsClient buildBigDataPoolsClient() {
         return new BigDataPoolsClient(buildInnerClient().getBigDataPools());
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
+     * Builds an instance of DataFlowClient class.
+     *
+     * @return an instance of DataFlowClient.
+     */
+    @Generated
+    public DataFlowClient buildDataFlowClient() {
+        return new DataFlowClient(buildInnerClient().getDataFlows());
+    }
+
+    /**
+     * Builds an instance of DataFlowDebugSessionClient class.
+     *
+     * @return an instance of DataFlowDebugSessionClient.
+     */
+    @Generated
+    public DataFlowDebugSessionClient buildDataFlowDebugSessionClient() {
+        return new DataFlowDebugSessionClient(buildInnerClient().getDataFlowDebugSessions());
+    }
+
+    /**
+     * Builds an instance of DatasetClient class.
+     *
+     * @return an instance of DatasetClient.
+     */
+    @Generated
+    public DatasetClient buildDatasetClient() {
+        return new DatasetClient(buildInnerClient().getDatasets());
+    }
+
+    /**
+     * Builds an instance of WorkspaceGitRepoManagementClient class.
      *
      * @return an instance of WorkspaceGitRepoManagementClient.
      */
+    @Generated
     public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
         return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
     }
 
     /**
-     * Builds an instance of IntegrationRuntimesClient sync client.
+     * Builds an instance of IntegrationRuntimesClient class.
      *
      * @return an instance of IntegrationRuntimesClient.
      */
+    @Generated
     public IntegrationRuntimesClient buildIntegrationRuntimesClient() {
         return new IntegrationRuntimesClient(buildInnerClient().getIntegrationRuntimes());
     }
 
     /**
-     * Builds an instance of LibraryClient sync client.
+     * Builds an instance of LibraryClient class.
      *
      * @return an instance of LibraryClient.
      */
+    @Generated
     public LibraryClient buildLibraryClient() {
         return new LibraryClient(buildInnerClient().getLibraries());
     }
 
     /**
-     * Builds an instance of OperationResultClient sync client.
+     * Builds an instance of LinkedServiceClient class.
      *
-     * @return an instance of OperationResultClient.
+     * @return an instance of LinkedServiceClient.
      */
-    public OperationResultClient buildOperationResultClient() {
-        return new OperationResultClient(buildInnerClient().getOperationResults());
+    @Generated
+    public LinkedServiceClient buildLinkedServiceClient() {
+        return new LinkedServiceClient(buildInnerClient().getLinkedServices());
     }
 
     /**
-     * Builds an instance of OperationStatusClient sync client.
+     * Builds an instance of NotebookClient class.
      *
-     * @return an instance of OperationStatusClient.
+     * @return an instance of NotebookClient.
      */
-    public OperationStatusClient buildOperationStatusClient() {
-        return new OperationStatusClient(buildInnerClient().getOperationStatus());
+    @Generated
+    public NotebookClient buildNotebookClient() {
+        return new NotebookClient(buildInnerClient().getNotebooks());
     }
 
     /**
-     * Builds an instance of SqlPoolsClient sync client.
+     * Builds an instance of NotebookOperationResultClient class.
+     *
+     * @return an instance of NotebookOperationResultClient.
+     */
+    @Generated
+    public NotebookOperationResultClient buildNotebookOperationResultClient() {
+        return new NotebookOperationResultClient(buildInnerClient().getNotebookOperationResults());
+    }
+
+    /**
+     * Builds an instance of PipelineClient class.
+     *
+     * @return an instance of PipelineClient.
+     */
+    @Generated
+    public PipelineClient buildPipelineClient() {
+        return new PipelineClient(buildInnerClient().getPipelines());
+    }
+
+    /**
+     * Builds an instance of PipelineRunClient class.
+     *
+     * @return an instance of PipelineRunClient.
+     */
+    @Generated
+    public PipelineRunClient buildPipelineRunClient() {
+        return new PipelineRunClient(buildInnerClient().getPipelineRuns());
+    }
+
+    /**
+     * Builds an instance of SparkJobDefinitionClient class.
+     *
+     * @return an instance of SparkJobDefinitionClient.
+     */
+    @Generated
+    public SparkJobDefinitionClient buildSparkJobDefinitionClient() {
+        return new SparkJobDefinitionClient(buildInnerClient().getSparkJobDefinitions());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsClient class.
      *
      * @return an instance of SqlPoolsClient.
      */
+    @Generated
     public SqlPoolsClient buildSqlPoolsClient() {
         return new SqlPoolsClient(buildInnerClient().getSqlPools());
     }
 
     /**
-     * Builds an instance of WorkspaceClient sync client.
+     * Builds an instance of SqlScriptClient class.
+     *
+     * @return an instance of SqlScriptClient.
+     */
+    @Generated
+    public SqlScriptClient buildSqlScriptClient() {
+        return new SqlScriptClient(buildInnerClient().getSqlScripts());
+    }
+
+    /**
+     * Builds an instance of TriggerClient class.
+     *
+     * @return an instance of TriggerClient.
+     */
+    @Generated
+    public TriggerClient buildTriggerClient() {
+        return new TriggerClient(buildInnerClient().getTriggers());
+    }
+
+    /**
+     * Builds an instance of TriggerRunClient class.
+     *
+     * @return an instance of TriggerRunClient.
+     */
+    @Generated
+    public TriggerRunClient buildTriggerRunClient() {
+        return new TriggerRunClient(buildInnerClient().getTriggerRuns());
+    }
+
+    /**
+     * Builds an instance of WorkspaceClient class.
      *
      * @return an instance of WorkspaceClient.
      */
+    @Generated
     public WorkspaceClient buildWorkspaceClient() {
         return new WorkspaceClient(buildInnerClient().getWorkspaces());
     }

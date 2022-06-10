@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.AzureADOnlyAuthenticationsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AzureADOnlyAuthenticationsClient. */
 public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAuthenticationsClient {
-    private final ClientLogger logger = new ClientLogger(AzureADOnlyAuthenticationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AzureADOnlyAuthenticationsService service;
 
@@ -137,7 +134,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory only authentication property.
+     * @return a Azure Active Directory only authentication property along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(
@@ -195,7 +193,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory only authentication property.
+     * @return a Azure Active Directory only authentication property along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(
@@ -252,7 +251,7 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory only authentication property.
+     * @return a Azure Active Directory only authentication property on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureADOnlyAuthenticationInner> getAsync(
@@ -295,7 +294,7 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory only authentication property.
+     * @return a Azure Active Directory only authentication property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureADOnlyAuthenticationInner> getWithResponse(
@@ -316,7 +315,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return azure Active Directory Only Authentication Info along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -387,7 +387,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return azure Active Directory Only Authentication Info along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -455,9 +456,9 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return the {@link PollerFlux} for polling of azure Active Directory Only Authentication Info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -473,7 +474,7 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
                 this.client.getHttpPipeline(),
                 AzureADOnlyAuthenticationInner.class,
                 AzureADOnlyAuthenticationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -487,9 +488,9 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return the {@link PollerFlux} for polling of azure Active Directory Only Authentication Info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -524,9 +525,9 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return the {@link SyncPoller} for polling of azure Active Directory Only Authentication Info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -548,9 +549,9 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return the {@link SyncPoller} for polling of azure Active Directory Only Authentication Info.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -572,7 +573,7 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return azure Active Directory Only Authentication Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureADOnlyAuthenticationInner> createAsync(
@@ -597,7 +598,7 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory Only Authentication Info.
+     * @return azure Active Directory Only Authentication Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureADOnlyAuthenticationInner> createAsync(
@@ -668,7 +669,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(
@@ -727,7 +729,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(
@@ -782,7 +785,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureADOnlyAuthenticationInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -799,7 +803,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureADOnlyAuthenticationInner> listAsync(
@@ -817,7 +822,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureADOnlyAuthenticationInner> list(String resourceGroupName, String workspaceName) {
@@ -833,7 +839,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory only authentication property for a workspace.
+     * @return a list of Azure Active Directory only authentication property for a workspace as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureADOnlyAuthenticationInner> list(
@@ -848,7 +855,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory only authentications.
+     * @return a list of active directory only authentications along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listNextSinglePageAsync(String nextLink) {
@@ -884,7 +892,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory only authentications.
+     * @return a list of active directory only authentications along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listNextSinglePageAsync(

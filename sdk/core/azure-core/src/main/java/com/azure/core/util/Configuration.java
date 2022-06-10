@@ -3,12 +3,30 @@
 
 package com.azure.core.util;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
+ *
+ * <!-- src_embed com.azure.core.util.Configuration -->
+ * <pre>
+ * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+ *     .root&#40;&quot;azure.sdk&quot;&#41;
+ *     .buildSection&#40;&quot;client-name&quot;&#41;;
+ *
+ * ConfigurationProperty&lt;String&gt; proxyHostnameProperty = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+ *     .shared&#40;true&#41;
+ *     .build&#40;&#41;;
+ * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.Configuration -->
  */
 public class Configuration implements Cloneable {
 
@@ -93,7 +111,7 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
 
-    /*
+    /**
      * Name of Azure AAD regional authority.
      */
     public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
@@ -168,41 +186,6 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
 
     /*
-     * Configurations that are loaded into the global configuration store when the application starts.
-     */
-    private static final String[] DEFAULT_CONFIGURATIONS = {
-        PROPERTY_HTTP_PROXY,
-        PROPERTY_HTTPS_PROXY,
-        PROPERTY_IDENTITY_ENDPOINT,
-        PROPERTY_IDENTITY_HEADER,
-        PROPERTY_NO_PROXY,
-        PROPERTY_MSI_ENDPOINT,
-        PROPERTY_MSI_SECRET,
-        PROPERTY_AZURE_SUBSCRIPTION_ID,
-        PROPERTY_AZURE_USERNAME,
-        PROPERTY_AZURE_PASSWORD,
-        PROPERTY_AZURE_CLIENT_ID,
-        PROPERTY_AZURE_CLIENT_SECRET,
-        PROPERTY_AZURE_TENANT_ID,
-        PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
-        PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
-        PROPERTY_AZURE_RESOURCE_GROUP,
-        PROPERTY_AZURE_CLOUD,
-        PROPERTY_AZURE_AUTHORITY_HOST,
-        PROPERTY_AZURE_TELEMETRY_DISABLED,
-        PROPERTY_AZURE_LOG_LEVEL,
-        PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
-        PROPERTY_AZURE_TRACING_DISABLED,
-        PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME,
-        PROPERTY_AZURE_REQUEST_RETRY_COUNT,
-        PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_READ_TIMEOUT
-    };
-
-    /*
      * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
@@ -213,19 +196,51 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
+    private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
-    private final ConcurrentMap<String, String> configurations;
+    private final EnvironmentConfiguration environmentConfiguration;
+    private final Map<String, String> configurations;
+    private final String path;
+    private final Configuration sharedConfiguration;
+    private final boolean isEmpty;
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
+     *
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} that allow to
+     * provide all properties before creating configuration and keep it immutable.
      */
+    @Deprecated
     public Configuration() {
-        this.configurations = new ConcurrentHashMap<>();
-        loadBaseConfiguration(this);
+        this(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
     }
 
-    private Configuration(ConcurrentMap<String, String> configurations) {
-        this.configurations = new ConcurrentHashMap<>(configurations);
+    /**
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     *
+     * @param configurationSource Configuration property source.
+     * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
+     * @param path Absolute path of current configuration section for logging and diagnostics purposes.
+     * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
+     */
+    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+        this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
+    }
+
+    /**
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     *
+     * @param configurations map of all properties.
+     * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
+     * @param path Absolute path of current configuration section for logging and diagnostics purposes.
+     * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
+     */
+    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+        this.configurations = configurations;
+        this.isEmpty = configurations.isEmpty();
+        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
+        this.path = path;
+        this.sharedConfiguration = sharedConfiguration;
     }
 
     /**
@@ -238,7 +253,9 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Gets the value of the configuration.
+     * Gets the value of system property or environment variable. Use {@link Configuration#get(ConfigurationProperty)}
+     * overload to get explicit configuration or environment configuration from specific source.
+     *
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
@@ -247,16 +264,32 @@ public class Configuration implements Cloneable {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return getOrLoad(name);
+        return environmentConfiguration.get(name);
     }
 
     /**
-     * Gets the value of the configuration converted to {@code T}.
+     * Gets the value of system property or environment variable converted to given primitive {@code T} using
+     * corresponding {@code parse} method on this type.
+     *
+     * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or
+     * environment configuration from specific source.
+     *
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
      * <p>
      * If no configuration is found, the {@code defaultValue} is returned.
+     *
+     * <p><b>Following types are supported:</b></p>
+     * <ul>
+     * <li>{@link Byte}</li>
+     * <li>{@link Short}</li>
+     * <li>{@link Integer}</li>
+     * <li>{@link Long}</li>
+     * <li>{@link Float}</li>
+     * <li>{@link Double}</li>
+     * <li>{@link Boolean}</li>
+     * </ul>
      *
      * @param name Name of the configuration.
      * @param defaultValue Value to return if the configuration isn't found.
@@ -264,11 +297,11 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertOrDefault(getOrLoad(name), defaultValue);
+        return convertToPrimitiveOrDefault(get(name), defaultValue);
     }
 
     /**
-     * Gets the value of the configuration and converts it with the {@code converter}.
+     * Gets the value of system property or environment variable and converts it with the {@code converter}.
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
      * it will be returned. Otherwise, this will attempt to load the value from the environment.
@@ -281,63 +314,8 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        String value = getOrLoad(name);
-        if (CoreUtils.isNullOrEmpty(value)) {
-            return null;
-        }
-
-        return converter.apply(value);
-    }
-
-    /*
-     * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
-     * attempts to load it from the runtime parameters then the environment variables.
-     *
-     * If no configuration is found null is returned.
-     *
-     * @param name Name of the configuration.
-     * @return The configuration value from either the configuration store, runtime parameters, or environment
-     * variable, in that order, if found, otherwise null.
-     */
-    private String getOrLoad(String name) {
-        String value = configurations.get(name);
-        if (value != null) {
-            return value;
-        }
-
-        value = load(name);
-        if (value != null) {
-            configurations.put(name, value);
-            return value;
-        }
-
-        return null;
-    }
-
-    /*
-     * Attempts to load the configuration from the environment.
-     *
-     * The runtime parameters are checked first followed by the environment variables.
-     *
-     * @param name Name of the configuration.
-     * @return If found the loaded configuration, otherwise null.
-     */
-    private String load(String name) {
-        String value = loadFromProperties(name);
-
-        if (value != null) {
-            return value;
-        }
-
-        return loadFromEnvironment(name);
-    }
-
-    String loadFromEnvironment(String name) {
-        return System.getenv(name);
-    }
-
-    String loadFromProperties(String name) {
-        return System.getProperty(name);
+        Objects.requireNonNull(converter, "'converter' can't be null");
+        return converter.apply(get(name));
     }
 
     /**
@@ -348,9 +326,13 @@ public class Configuration implements Cloneable {
      * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
+     *
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to
+     * provide all properties before creating configuration.
      */
+    @Deprecated
     public Configuration put(String name, String value) {
-        configurations.put(name, value);
+        environmentConfiguration.put(name, value);
         return this;
     }
 
@@ -361,13 +343,21 @@ public class Configuration implements Cloneable {
      *
      * @param name Name of the configuration.
      * @return The configuration if it previously existed, otherwise null.
+     *
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to
+     * provide all properties before creating configuration.
      */
+    @Deprecated
     public String remove(String name) {
-        return configurations.remove(name);
+        return environmentConfiguration.remove(name);
     }
 
     /**
-     * Determines if the configuration exists.
+     * Determines if the system property or environment variable is defined.
+     *
+     * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or
+     * environment configuration from specific source.
+     *
      * <p>
      * This only checks against values previously loaded into the Configuration object, this won't inspect the
      * environment for containing the value.
@@ -376,21 +366,220 @@ public class Configuration implements Cloneable {
      * @return True if the configuration exists, otherwise false.
      */
     public boolean contains(String name) {
-        return configurations.containsKey(name);
+        return get(name) != null;
     }
 
     /**
      * Clones this Configuration object.
      *
      * @return A clone of the Configuration object.
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to create configuration.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
+    @Deprecated
     public Configuration clone() {
-        return new Configuration(configurations);
+        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path, sharedConfiguration);
     }
 
-    /*
-     * Attempts to convert the configuration value to {@code T}.
+    /**
+     * Checks if configuration contains the property. If property can be shared between clients, checks this {@code Configuration} and
+     * falls back to shared section. If property has aliases, system property or environment variable defined, checks them as well.
+     * <p>
+     * Value is not validated.
+     *
+     * @param property instance.
+     * @return true if property is available, false otherwise.
+     */
+    public boolean contains(ConfigurationProperty<?> property) {
+        Objects.requireNonNull(property, "'property' can't be null");
+        return getWithFallback(property) != null;
+    }
+
+    /**
+     * Gets property value from all available sources in the following order:
+     *
+     * <ul>
+     *     <li>Explicit configuration from given {@link ConfigurationSource} by property name</li>
+     *     <li>Explicit configuration by property aliases in the order they were provided in {@link ConfigurationProperty}</li>
+     *     <li>Explicit configuration by property name in the shared section (if {@link ConfigurationProperty} is shared)</li>
+     *     <li>Explicit configuration by property aliases in the shared section (if {@link ConfigurationProperty} is shared)</li>
+     *     <li>System property (if set)</li>
+     *     <li>Environment variable (if set)</li>
+     * </ul>
+     *
+     * <p>
+     * Property value is converted to specified type. If property value is missing and not required, default value is returned.
+     *
+     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <pre>
+     * ConfigurationProperty&lt;String&gt; property = ConfigurationPropertyBuilder.ofString&#40;&quot;http.proxy.hostname&quot;&#41;
+     *     .shared&#40;true&#41;
+     *     .logValue&#40;true&#41;
+     *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     *
+     * @param property instance.
+     * @param <T> Type that the configuration is converted to if found.
+     * @return true if property is available, false otherwise.
+     * @throws NullPointerException when property instance is null.
+     * @throws IllegalArgumentException when required property is missing.
+     * @throws RuntimeException when property value conversion (and validation) throws.
+     */
+    public <T> T get(ConfigurationProperty<T> property) {
+        Objects.requireNonNull(property, "'property' cannot be null");
+        String value = getWithFallback(property);
+
+        if (value == null) {
+            if (property.isRequired()) {
+                throw LOGGER.atError()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("path", path)
+                    .log(new IllegalArgumentException("Missing required property."));
+            }
+            return property.getDefaultValue();
+        }
+
+        try {
+            return property.getConverter().apply(value);
+        } catch (RuntimeException ex) {
+            throw LOGGER.atError()
+                .addKeyValue("name", property.getName())
+                .addKeyValue("path", path)
+                .addKeyValue("value", property.getValueSanitizer().apply(value))
+                .log(ex);
+        }
+    }
+
+    private String getLocalProperty(String name, Iterable<String> aliases, Function<String, String> valueSanitizer) {
+        if (this.isEmpty) {
+            return null;
+        }
+
+        final String value = configurations.get(name);
+        if (value != null) {
+            LOGGER.atVerbose()
+                .addKeyValue("name", name)
+                .addKeyValue("path", path)
+                .addKeyValue("value", () -> valueSanitizer.apply(value))
+                .log("Got property value by name.");
+
+            return value;
+        }
+
+        for (String alias : aliases) {
+            final String valueByAlias = configurations.get(alias);
+            if (valueByAlias != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("path", path)
+                    .addKeyValue("alias", alias)
+                    .addKeyValue("value", () -> valueSanitizer.apply(valueByAlias))
+                    .log("Got property value by alias.");
+                return valueByAlias;
+            }
+        }
+
+        return null;
+    }
+
+    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+        String name = property.getName();
+        if (!CoreUtils.isNullOrEmpty(name)) {
+            String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
+            if (value != null) {
+                return value;
+            }
+
+            if (property.isShared() && sharedConfiguration != null) {
+                value = sharedConfiguration.getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+        return getFromEnvironment(property);
+    }
+
+    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
+        String systemProperty = property.getSystemPropertyName();
+        if (systemProperty != null) {
+            final String value = environmentConfiguration.getSystemProperty(systemProperty);
+            if (value != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("systemProperty", systemProperty)
+                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .log("Got property from system property.");
+                return value;
+            }
+        }
+
+        String envVar = property.getEnvironmentVariableName();
+        if (envVar != null) {
+            final String value = environmentConfiguration.getEnvironmentVariable(envVar);
+            if (value != null) {
+                LOGGER.atVerbose()
+                    .addKeyValue("name", property.getName())
+                    .addKeyValue("envVar", envVar)
+                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .log("Got property from environment variable.");
+                return value;
+            }
+        }
+
+        return null;
+    }
+
+    private static Map<String, String> readConfigurations(ConfigurationSource source, String path) {
+        Objects.requireNonNull(source, "'source' cannot be null");
+        Map<String, String> configs = source.getProperties(path);
+
+        if (configs == null || configs.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, String> props = new HashMap<>();
+
+        for (Map.Entry<String, String> prop : configs.entrySet()) {
+            String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
+            String value = prop.getValue();
+
+            LOGGER.atVerbose()
+                .addKeyValue("name", prop.getKey())
+                .log("Got property from configuration source.");
+
+            if (key != null && value != null) {
+                props.put(key, value);
+            } else {
+                LOGGER.atWarning()
+                    .addKeyValue("name", prop.getKey())
+                    .log("Key or value is null, property is ignored.");
+            }
+        }
+
+        return props;
+    }
+
+    /**
+     * Attempts to convert the configuration value to given primitive {@code T} using
+     * corresponding {@code parse} method on this type.
+     *
+     * <p><b>Following types are supported:</b></p>
+     * <ul>
+     * <li>{@link Byte}</li>
+     * <li>{@link Short}</li>
+     * <li>{@link Integer}</li>
+     * <li>{@link Long}</li>
+     * <li>{@link Float}</li>
+     * <li>{@link Double}</li>
+     * <li>{@link Boolean}</li>
+     * </ul>
      *
      * If the value is null or empty then the default value is returned.
      *
@@ -400,7 +589,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration, if null or empty the default value.
      */
     @SuppressWarnings("unchecked")
-    private static <T> T convertOrDefault(String value, T defaultValue) {
+    private static <T> T convertToPrimitiveOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
         if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;
@@ -427,14 +616,5 @@ public class Configuration implements Cloneable {
         }
 
         return (T) convertedValue;
-    }
-
-    private void loadBaseConfiguration(Configuration configuration) {
-        for (String config : DEFAULT_CONFIGURATIONS) {
-            String value = load(config);
-            if (value != null) {
-                configuration.put(config, value);
-            }
-        }
     }
 }

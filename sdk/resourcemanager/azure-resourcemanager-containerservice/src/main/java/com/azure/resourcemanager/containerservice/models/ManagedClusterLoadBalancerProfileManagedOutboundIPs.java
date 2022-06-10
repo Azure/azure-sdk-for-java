@@ -5,26 +5,30 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Desired managed outbound IPs for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileManagedOutboundIPs.class);
-
     /*
-     * The desired number of outbound IPs created/managed by Azure for the
+     * The desired number of IPv4 outbound IPs created/managed by Azure for the
      * cluster load balancer. Allowed values must be in the range of 1 to 100
      * (inclusive). The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
+    /*
+     * The desired number of IPv6 outbound IPs created/managed by Azure for the
+     * cluster load balancer. Allowed values must be in the range of 1 to 100
+     * (inclusive). The default value is 0 for single-stack and 1 for
+     * dual-stack.
+     */
+    @JsonProperty(value = "countIPv6")
+    private Integer countIPv6;
+
     /**
-     * Get the count property: The desired number of outbound IPs created/managed by Azure for the cluster load
+     * Get the count property: The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load
      * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
      *
      * @return the count value.
@@ -34,7 +38,7 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the count property: The desired number of outbound IPs created/managed by Azure for the cluster load
+     * Set the count property: The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load
      * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
      *
      * @param count the count value to set.
@@ -42,6 +46,30 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
      */
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs withCount(Integer count) {
         this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
+     * and 1 for dual-stack.
+     *
+     * @return the countIPv6 value.
+     */
+    public Integer countIPv6() {
+        return this.countIPv6;
+    }
+
+    /**
+     * Set the countIPv6 property: The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load
+     * balancer. Allowed values must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack
+     * and 1 for dual-stack.
+     *
+     * @param countIPv6 the countIPv6 value to set.
+     * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.
+     */
+    public ManagedClusterLoadBalancerProfileManagedOutboundIPs withCountIPv6(Integer countIPv6) {
+        this.countIPv6 = countIPv6;
         return this;
     }
 

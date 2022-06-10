@@ -16,8 +16,8 @@ module com.azure.cosmos {
     requires io.netty.codec.http;
     requires io.netty.codec.http2;
     requires io.netty.transport.epoll;
+    requires io.netty.transport.classes.epoll;
     requires io.netty.handler.proxy;
-    requires reactor.netty;
     requires reactor.netty.core;
     requires reactor.netty.http;
     requires com.codahale.metrics;
@@ -33,6 +33,19 @@ module com.azure.cosmos {
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;
+
+    // exporting implementation packages specifically for cosmos encryption
+    exports com.azure.cosmos.implementation to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.query to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.patch to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.batch to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.apachecommons.lang to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.apachecommons.lang.tuple to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.guava25.base to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.guava25.collect to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.guava27 to com.azure.cosmos.encryption;
+    exports com.azure.cosmos.implementation.directconnectivity to com.azure.cosmos.encryption;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind, com.azure.spring.data.cosmos;

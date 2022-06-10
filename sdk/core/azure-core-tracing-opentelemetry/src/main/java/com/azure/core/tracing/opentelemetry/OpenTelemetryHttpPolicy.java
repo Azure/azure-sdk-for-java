@@ -12,33 +12,32 @@ import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanBuilder;
-import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.context.propagation.TextMapPropagator;
 import io.opentelemetry.context.propagation.TextMapSetter;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 import reactor.core.publisher.Signal;
-import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
  * Pipeline policy that creates an OpenTelemetry span which traces the service request.
  */
 public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
-
     /**
      * @return a OpenTelemetry HTTP policy.
      */
@@ -73,7 +72,12 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static final String HTTP_METHOD = "http.method";
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
-    private static final String REQUEST_ID = "x-ms-request-id";
+    private static final String SERVICE_REQUEST_ID_HEADER = "x-ms-request-id";
+    private static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
+
+    private static final String CLIENT_REQUEST_ID_HEADER = "x-ms-client-request-id";
+    private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
+    private static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
     // request
@@ -85,48 +89,48 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             return next.process();
         }
 
-        io.opentelemetry.context.Context currentContext = io.opentelemetry.context.Context.current();
-        Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(Span.current());
-        HttpRequest request = context.getHttpRequest();
-
-        // Build new child span representing this outgoing request.
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-
-        SpanBuilder spanBuilder = tracer.spanBuilder(urlBuilder.getPath())
-            .setParent(currentContext.with(parentSpan));
-
-        // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
-        spanBuilder.setSpanKind(SpanKind.CLIENT);
-
-        // Starting the span makes the sampling decision (nothing is logged at this time)
-        Span span = spanBuilder.startSpan();
-
-        // If span is sampled in, add additional TRACING attributes
-        if (span.isRecording()) {
-            addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
-        }
-
-        // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
-        SpanContext spanContext = span.getSpanContext();
-        if (spanContext.isValid()) {
-            traceContextFormat.inject(currentContext.with(span), request, contextSetter);
-        }
-
-        // run the next policy and handle success and error
-        return next.process()
-            .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
-            .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
+        // OpenTelemetry reactor instrumentation needs a bit of help
+        // to pick up Azure SDK context. While we're working on explicit
+        // context propagation, ScalarPropagatingMono.INSTANCE is the workaround
+        return ScalarPropagatingMono.INSTANCE
+                .flatMap(ignored -> next.process())
+                .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
     }
 
-    private static void addSpanRequestAttributes(Span span, HttpRequest request,
+    private Context startSpan(HttpPipelineCallContext azContext) {
+        Context parentContext = getTraceContextOrCurrent(azContext);
+
+        HttpRequest request = azContext.getHttpRequest();
+
+        // Build new child span representing this outgoing request.
+        String methodName = request.getHttpMethod().toString();
+        Span span = tracer.spanBuilder("HTTP " + methodName)
+            .setAttribute(HTTP_METHOD, methodName)
+            .setAttribute(HTTP_URL, request.getUrl().toString())
+            .setParent(parentContext)
+            .setSpanKind(SpanKind.CLIENT)
+            .startSpan();
+
+        if (span.isRecording()) {
+            addPostSamplingAttributes(span, request, azContext);
+        }
+
+        Context traceContext = parentContext.with(span);
+        traceContextFormat.inject(traceContext, request, contextSetter);
+        return traceContext;
+    }
+
+    private static void addPostSamplingAttributes(Span span, HttpRequest request,
         HttpPipelineCallContext context) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT,
             request.getHeaders().getValue("User-Agent"));
-        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
-        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         tracingNamespace.ifPresent(o -> putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY,
             o.toString()));
+
+        String requestId = request.getHeaders().getValue(CLIENT_REQUEST_ID_HEADER);
+        putAttributeIfNotEmptyOrNull(span, CLIENT_REQUEST_ID_ATTRIBUTE, requestId);
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
@@ -149,13 +153,12 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         ContextView context = signal.getContextView();
-        Optional<Span> tracingSpan = context.getOrEmpty("TRACING_SPAN");
-
-        if (!tracingSpan.isPresent()) {
+        Optional<io.opentelemetry.context.Context> traceContext = context.getOrEmpty(REACTOR_PARENT_TRACE_CONTEXT_KEY);
+        if (!traceContext.isPresent()) {
             return;
         }
 
-        Span span = tracingSpan.get();
+        Span span = Span.fromContext(traceContext.get());
         HttpResponse httpResponse = null;
         Throwable error = null;
         if (signal.isOnNext()) {
@@ -183,10 +186,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             String requestId = null;
             if (response != null) {
                 statusCode = response.getStatusCode();
-                requestId = response.getHeaderValue(REQUEST_ID);
+                requestId = response.getHeaderValue(SERVICE_REQUEST_ID_HEADER);
             }
 
-            putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
+            putAttributeIfNotEmptyOrNull(span, SERVICE_REQUEST_ID_ATTRIBUTE, requestId);
             span.setAttribute(HTTP_STATUS_CODE, statusCode);
             span = HttpTraceUtil.setSpanStatus(span, statusCode, error);
         }
@@ -195,7 +198,52 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         span.end();
     }
 
+    /**
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
+     * or {@link io.opentelemetry.context.Context#current()}
+     */
+    private static io.opentelemetry.context.Context getTraceContextOrCurrent(HttpPipelineCallContext azContext) {
+        final Optional<Object> traceContextOpt = azContext.getData(PARENT_TRACE_CONTEXT_KEY);
+        if (traceContextOpt.isPresent() && traceContextOpt.get() instanceof Context) {
+            return (io.opentelemetry.context.Context) traceContextOpt.get();
+        }
+
+        // no need for back-compat with PARENT_SPAN_KEY - OpenTelemetryTracer will always set
+        // PARENT_TRACE_CONTEXT_KEY
+
+        return io.opentelemetry.context.Context.current();
+    }
+
     // lambda that actually injects arbitrary header into the request
     private final TextMapSetter<HttpRequest> contextSetter =
         (request, key, value) -> request.getHeaders().set(key, value);
+
+    /**
+     * Helper class allowing to run Mono subscription and any hot path
+     * in scope of trace context. This enables OpenTelemetry auto-collection
+     * to pick it up and correlate lower levels of instrumentation and logs
+     * to logical/HTTP spans.
+     *
+     * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
+     */
+    static final class ScalarPropagatingMono extends Mono<Object> {
+        public static final Mono<Object> INSTANCE = new ScalarPropagatingMono();
+        private final Object value = new Object();
+
+        private ScalarPropagatingMono() {
+        }
+
+        @Override
+        @SuppressWarnings("try")
+        public void subscribe(CoreSubscriber<? super Object> actual) {
+            Context traceContext = actual.currentContext().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, null);
+            if (traceContext != null) {
+                try (Scope scope = traceContext.makeCurrent()) {
+                    actual.onSubscribe(Operators.scalarSubscription(actual, value));
+                }
+            } else {
+                actual.onSubscribe(Operators.scalarSubscription(actual, value));
+            }
+        }
+    }
 }

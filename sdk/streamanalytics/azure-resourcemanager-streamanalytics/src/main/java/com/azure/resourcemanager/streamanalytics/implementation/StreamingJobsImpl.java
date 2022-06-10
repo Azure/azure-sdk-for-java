@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.StreamingJobsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.models.StreamingJobInner;
+import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobs;
@@ -103,6 +104,19 @@ public final class StreamingJobsImpl implements StreamingJobs {
 
     public void stop(String resourceGroupName, String jobName, Context context) {
         this.serviceClient().stop(resourceGroupName, jobName, context);
+    }
+
+    public void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
+        this.serviceClient().scale(resourceGroupName, jobName, scaleJobParameters);
+    }
+
+    public void scale(String resourceGroupName, String jobName) {
+        this.serviceClient().scale(resourceGroupName, jobName);
+    }
+
+    public void scale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        this.serviceClient().scale(resourceGroupName, jobName, scaleJobParameters, context);
     }
 
     public StreamingJob getById(String id) {

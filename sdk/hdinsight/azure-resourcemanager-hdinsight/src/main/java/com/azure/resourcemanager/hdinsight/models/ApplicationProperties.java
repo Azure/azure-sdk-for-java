@@ -81,6 +81,12 @@ public final class ApplicationProperties {
     @JsonProperty(value = "marketplaceIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String marketplaceIdentifier;
 
+    /*
+     * The private link configurations.
+     */
+    @JsonProperty(value = "privateLinkConfigurations")
+    private List<PrivateLinkConfiguration> privateLinkConfigurations;
+
     /**
      * Get the computeProfile property: The list of roles in the cluster.
      *
@@ -258,6 +264,27 @@ public final class ApplicationProperties {
     }
 
     /**
+     * Get the privateLinkConfigurations property: The private link configurations.
+     *
+     * @return the privateLinkConfigurations value.
+     */
+    public List<PrivateLinkConfiguration> privateLinkConfigurations() {
+        return this.privateLinkConfigurations;
+    }
+
+    /**
+     * Set the privateLinkConfigurations property: The private link configurations.
+     *
+     * @param privateLinkConfigurations the privateLinkConfigurations value to set.
+     * @return the ApplicationProperties object itself.
+     */
+    public ApplicationProperties withPrivateLinkConfigurations(
+        List<PrivateLinkConfiguration> privateLinkConfigurations) {
+        this.privateLinkConfigurations = privateLinkConfigurations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -280,6 +307,9 @@ public final class ApplicationProperties {
         }
         if (errors() != null) {
             errors().forEach(e -> e.validate());
+        }
+        if (privateLinkConfigurations() != null) {
+            privateLinkConfigurations().forEach(e -> e.validate());
         }
     }
 }

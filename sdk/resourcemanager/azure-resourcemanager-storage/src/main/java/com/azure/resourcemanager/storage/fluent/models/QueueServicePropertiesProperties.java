@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Queue service. */
 @Fluent
 public final class QueueServicePropertiesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueueServicePropertiesProperties.class);
-
     /*
      * Specifies CORS rules for the Queue service. You can include up to five
      * CorsRule elements in the request. If no CorsRule elements are included

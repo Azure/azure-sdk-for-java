@@ -13,6 +13,9 @@ import java.time.Duration;
  */
 public interface RetryStrategy {
 
+    /**
+     * HTTP response status code for {@code Too Many Requests}.
+     */
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     /**
@@ -54,6 +57,6 @@ public interface RetryStrategy {
      * @return Whether a retry should be attempted.
      */
     default boolean shouldRetryException(Throwable throwable) {
-        return true;
+        return throwable instanceof Exception;
     }
 }

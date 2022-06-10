@@ -43,11 +43,18 @@ public class FeatureManager extends HashMap<String, Object> {
 
     private transient Map<String, Feature> featureManagement;
 
+    /**
+     * Holds FeatureFlags that are either enabled or disabled.
+     */
     private Map<String, Boolean> onOff;
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
         .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
+    /**
+     * Used to evaluate whether a feature is enabled or disabled.
+     * @param properties Configuration options for Feature Management
+     */
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
         featureManagement = new HashMap<>();
@@ -79,7 +86,7 @@ public class FeatureManager extends HashMap<String, Object> {
         }
 
         Feature featureItem = featureManagement.get(feature);
-        if (featureItem == null) {
+        if (featureItem == null || !featureItem.getEvaluate()) {
             return false;
         }
 

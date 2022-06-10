@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Class representing Diagnostic Metric. */
 @Fluent
 public final class DiagnosticMetricSample {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticMetricSample.class);
-
     /*
      * Time at which metric is measured
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.PrivateAccessVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateAccess resource specific properties. */
 @Fluent
 public final class PrivateAccessProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessProperties.class);
-
     /*
      * Whether private access is enabled or not.
      */

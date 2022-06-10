@@ -10,8 +10,14 @@ import java.util.Collection;
 
 /** Defines values for VMTypeEnum. */
 public final class VMTypeEnum extends ExpandableStringEnum<VMTypeEnum> {
-    /** Static value REGULAR, EDGE, SERVICE for VMTypeEnum. */
-    public static final VMTypeEnum REGULAR_EDGE_SERVICE = fromString("REGULAR, EDGE, SERVICE");
+    /** Static value REGULAR for VMTypeEnum. */
+    public static final VMTypeEnum REGULAR = fromString("REGULAR");
+
+    /** Static value EDGE for VMTypeEnum. */
+    public static final VMTypeEnum EDGE = fromString("EDGE");
+
+    /** Static value SERVICE for VMTypeEnum. */
+    public static final VMTypeEnum SERVICE = fromString("SERVICE");
 
     /**
      * Creates or finds a VMTypeEnum from its string representation.

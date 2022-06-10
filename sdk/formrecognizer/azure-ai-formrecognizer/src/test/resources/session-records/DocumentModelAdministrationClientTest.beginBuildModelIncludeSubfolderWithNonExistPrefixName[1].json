@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2022-01-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e6e8dc3-bf44-4507-872c-78c398941b76",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "527",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "79b88d49-2994-4641-afa3-497c1a0e0ad5",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\n  \"error\": {\n    \"code\": \"InvalidRequest\",\n    \"message\": \"Invalid request.\",\n    \"innererror\": {\n      \"code\": \"TrainingContentMissing\",\n      \"message\": \"Training data is missing: Could not find any training data at the given path.\"\n    }\n  }\n}",
+      "Date" : "Mon, 24 Jan 2022 23:11:28 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

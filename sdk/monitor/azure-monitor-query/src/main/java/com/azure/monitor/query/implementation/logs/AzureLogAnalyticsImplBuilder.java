@@ -21,6 +21,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -192,15 +193,16 @@ public final class AzureLogAnalyticsImplBuilder {
      */
     public AzureLogAnalyticsImpl buildClient() {
         if (host == null) {
-            this.host = "https://api.monitor.azure.com/v1";
+            this.host = "https://api.loganalytics.io";
         }
+        String hostVersion = this.host + "/v1";
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureLogAnalyticsImpl client = new AzureLogAnalyticsImpl(pipeline, serializerAdapter, host);
+        AzureLogAnalyticsImpl client = new AzureLogAnalyticsImpl(pipeline, serializerAdapter, hostVersion);
         return client;
     }
 
@@ -217,8 +219,10 @@ public final class AzureLogAnalyticsImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
+        String resolvedAudience = host + "/.default";
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://api.monitor.azure.com/.default");
+                resolvedAudience);
+
         policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());

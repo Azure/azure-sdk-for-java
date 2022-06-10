@@ -57,13 +57,20 @@ import static com.azure.security.keyvault.administration.implementation.KeyVault
  * method on a {@link KeyVaultBackupClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct an async client</strong></p>
- * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation -->
+ * <pre>
+ * KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = new KeyVaultBackupClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myaccount.managedhsm.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.instantiation -->
  *
  * @see KeyVaultBackupClientBuilder
  */
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class, isAsync = true)
 public final class KeyVaultBackupAsyncClient {
-    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
@@ -141,7 +148,23 @@ public final class KeyVaultBackupAsyncClient {
      * <p>Starts a {@link KeyVaultBackupOperation backup operation}, polls for its status and waits for it to complete.
      * Prints out the details of the operation's final result in case of success or prints out details of an error in
      * case the operation fails.</p>
-     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginBackup#String-String}
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginBackup#String-String -->
+     * <pre>
+     * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
+     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
+     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     *
+     * client.beginBackup&#40;blobStorageUrl, sasToken&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
+     *     .doOnError&#40;e -&gt; System.out.printf&#40;&quot;Backup failed with error: %s.%n&quot;, e.getMessage&#40;&#41;&#41;&#41;
+     *     .doOnNext&#40;pollResponse -&gt;
+     *         System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;&#41;
+     *     .filter&#40;pollResponse -&gt; pollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;folderUrl -&gt;
+     *         System.out.printf&#40;&quot;Backup completed. The storage location of this backup is: %s.%n&quot;, folderUrl&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginBackup#String-String -->
      *
      * @param blobStorageUrl The URL for the Blob Storage resource where the backup will be located.
      * @param sasToken A Shared Access Signature (SAS) token to authorize access to the blob.
@@ -303,7 +326,22 @@ public final class KeyVaultBackupAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Starts a {@link KeyVaultRestoreOperation restore operation}, polls for its status and waits for it to
      * complete. Prints out error details in case the operation fails.</p>
-     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginRestore#String-String}
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginRestore#String-String -->
+     * <pre>
+     * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
+     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
+     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     *
+     * client.beginRestore&#40;folderUrl, sasToken&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
+     *     .doOnError&#40;e -&gt; System.out.printf&#40;&quot;Restore failed with error: %s.%n&quot;, e.getMessage&#40;&#41;&#41;&#41;
+     *     .doOnNext&#40;pollResponse -&gt;
+     *         System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;&#41;
+     *     .filter&#40;pollResponse -&gt; pollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;unused -&gt; System.out.printf&#40;&quot;Backup restored successfully.%n&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginRestore#String-String -->
      *
      * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to
      * the blob container where the backup resides. This would be the exact value that is returned as the result of a
@@ -449,7 +487,23 @@ public final class KeyVaultBackupAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Starts a {@link KeyVaultSelectiveKeyRestoreOperation selective key restore operation}, polls for its status
      * and waits for it to complete. Prints out error details in case the operation fails.</p>
-     * {@codesnippet com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String}
+     * <!-- src_embed com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String -->
+     * <pre>
+     * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
+     * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
+     *     + &quot;&amp;spr=https&amp;sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D&quot;;
+     * String keyName = &quot;myKey&quot;;
+     *
+     * client.beginSelectiveKeyRestore&#40;folderUrl, sasToken, keyName&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;1&#41;&#41; &#47;&#47; You can set a custom polling interval.
+     *     .doOnError&#40;e -&gt; System.out.printf&#40;&quot;Key restoration failed with error: %s.%n&quot;, e.getMessage&#40;&#41;&#41;&#41;
+     *     .doOnNext&#40;pollResponse -&gt;
+     *         System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;&#41;
+     *     .filter&#40;pollResponse -&gt; pollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;unused -&gt; System.out.printf&#40;&quot;Key restored successfully.%n&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.administration.keyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String -->
      *
      * @param keyName The name of the key to be restored.
      * @param folderUrl The URL for the Blob Storage resource where the backup is located, including the path to

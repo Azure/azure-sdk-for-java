@@ -4,11 +4,14 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.RedirectPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,8 @@ import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,7 +31,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
 
 public class RedirectPolicyTests {
     static final String ORIGINAL_LOCATION = "https://localhost.com";
@@ -38,25 +42,24 @@ public class RedirectPolicyTests {
     @Mock
     HttpClient httpClient;
 
-    @Mock
-    HttpResponse response200;
-
-    @Mock
-    HttpResponse response302;
+    MockHttpResponse response200;
+    MockHttpResponse response302;
 
     @BeforeEach
     public void setup() throws MalformedURLException {
-        MockitoAnnotations.openMocks(this);
-        when(response200.getStatusCode()).thenReturn(200);
-        when(response302.getStatusCode()).thenReturn(302);
-        when(response302.getHeaderValue("Location")).thenReturn(REDIRECT_LOCATION);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Location", REDIRECT_LOCATION);
+        HttpHeaders redirectHeaders = new HttpHeaders(headers);
+
+        MockitoAnnotations.openMocks(this);        
+        request = new HttpRequest(HttpMethod.GET, new URL(ORIGINAL_LOCATION));        
+        response200 = new MockHttpResponse(request, 200);
+        response302 = new MockHttpResponse(request, 302, redirectHeaders);                     
 
         pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(REDIRECT_POLICY)
             .build();
-
-        request = new HttpRequest(HttpMethod.GET, new URL(ORIGINAL_LOCATION));
     }
 
     @Test
@@ -81,8 +84,9 @@ public class RedirectPolicyTests {
     }
 
     @Test
-    public void sameLocationUsedInDifferentRequestsSuccessTest() {
+    public void sameLocationUsedInDifferentRequestsSuccessTest() throws MalformedURLException {
         for (int i = 0; i < 3; i++) {
+            request = new HttpRequest(HttpMethod.GET, new URL(ORIGINAL_LOCATION));
             setRedirectSuccessMockResponses();
             verifyCorrectness(response200);
         }

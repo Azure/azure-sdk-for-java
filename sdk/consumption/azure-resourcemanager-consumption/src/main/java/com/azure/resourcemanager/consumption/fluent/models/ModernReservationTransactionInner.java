@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.consumption.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.models.ReservationTransactionResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,134 +14,24 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Modern Reservation transaction resource. */
-@JsonFlatten
-@Immutable
-public class ModernReservationTransactionInner extends ReservationTransactionResource {
+@Fluent
+public final class ModernReservationTransactionInner extends ReservationTransactionResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernReservationTransactionInner.class);
 
     /*
-     * The charge of the transaction.
+     * The properties of a modern reservation transaction.
      */
-    @JsonProperty(value = "properties.amount", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal amount;
+    @JsonProperty(value = "properties", required = true)
+    private ModernReservationTransactionProperties innerProperties = new ModernReservationTransactionProperties();
 
-    /*
-     * This is the ARM Sku name. It can be used to join with the serviceType
-     * field in additional info in usage records.
+    /**
+     * Get the innerProperties property: The properties of a modern reservation transaction.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.armSkuName", access = JsonProperty.Access.WRITE_ONLY)
-    private String armSkuName;
-
-    /*
-     * The billing frequency, which can be either one-time or recurring.
-     */
-    @JsonProperty(value = "properties.billingFrequency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingFrequency;
-
-    /*
-     * Billing profile Id.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * Billing profile name.
-     */
-    @JsonProperty(value = "properties.billingProfileName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileName;
-
-    /*
-     * The ISO currency in which the transaction is charged, for example, USD.
-     */
-    @JsonProperty(value = "properties.currency", access = JsonProperty.Access.WRITE_ONLY)
-    private String currency;
-
-    /*
-     * The description of the transaction.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The date of the transaction
-     */
-    @JsonProperty(value = "properties.eventDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime eventDate;
-
-    /*
-     * The type of the transaction (Purchase, Cancel, etc.)
-     */
-    @JsonProperty(value = "properties.eventType", access = JsonProperty.Access.WRITE_ONLY)
-    private String eventType;
-
-    /*
-     * Invoice Number
-     */
-    @JsonProperty(value = "properties.invoice", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoice;
-
-    /*
-     * Invoice Id as on the invoice where the specific transaction appears.
-     */
-    @JsonProperty(value = "properties.invoiceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceId;
-
-    /*
-     * Invoice Section Id
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * Invoice Section Name.
-     */
-    @JsonProperty(value = "properties.invoiceSectionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionName;
-
-    /*
-     * The subscription guid that makes the transaction.
-     */
-    @JsonProperty(value = "properties.purchasingSubscriptionGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID purchasingSubscriptionGuid;
-
-    /*
-     * The subscription name that makes the transaction.
-     */
-    @JsonProperty(value = "properties.purchasingSubscriptionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String purchasingSubscriptionName;
-
-    /*
-     * The quantity of the transaction.
-     */
-    @JsonProperty(value = "properties.quantity", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal quantity;
-
-    /*
-     * The region of the transaction.
-     */
-    @JsonProperty(value = "properties.region", access = JsonProperty.Access.WRITE_ONLY)
-    private String region;
-
-    /*
-     * The reservation order ID is the identifier for a reservation purchase.
-     * Each reservation order ID represents a single purchase transaction. A
-     * reservation order contains reservations. The reservation order specifies
-     * the VM size and region for the reservations.
-     */
-    @JsonProperty(value = "properties.reservationOrderId", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationOrderId;
-
-    /*
-     * The name of the reservation order.
-     */
-    @JsonProperty(value = "properties.reservationOrderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationOrderName;
-
-    /*
-     * This is the term of the transaction.
-     */
-    @JsonProperty(value = "properties.term", access = JsonProperty.Access.WRITE_ONLY)
-    private String term;
+    private ModernReservationTransactionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the amount property: The charge of the transaction.
@@ -150,7 +39,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the amount value.
      */
     public BigDecimal amount() {
-        return this.amount;
+        return this.innerProperties() == null ? null : this.innerProperties().amount();
     }
 
     /**
@@ -160,7 +49,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the armSkuName value.
      */
     public String armSkuName() {
-        return this.armSkuName;
+        return this.innerProperties() == null ? null : this.innerProperties().armSkuName();
     }
 
     /**
@@ -169,7 +58,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the billingFrequency value.
      */
     public String billingFrequency() {
-        return this.billingFrequency;
+        return this.innerProperties() == null ? null : this.innerProperties().billingFrequency();
     }
 
     /**
@@ -178,7 +67,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -187,7 +76,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the billingProfileName value.
      */
     public String billingProfileName() {
-        return this.billingProfileName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileName();
     }
 
     /**
@@ -196,7 +85,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the currency value.
      */
     public String currency() {
-        return this.currency;
+        return this.innerProperties() == null ? null : this.innerProperties().currency();
     }
 
     /**
@@ -205,7 +94,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -214,7 +103,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the eventDate value.
      */
     public OffsetDateTime eventDate() {
-        return this.eventDate;
+        return this.innerProperties() == null ? null : this.innerProperties().eventDate();
     }
 
     /**
@@ -223,7 +112,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the eventType value.
      */
     public String eventType() {
-        return this.eventType;
+        return this.innerProperties() == null ? null : this.innerProperties().eventType();
     }
 
     /**
@@ -232,7 +121,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the invoice value.
      */
     public String invoice() {
-        return this.invoice;
+        return this.innerProperties() == null ? null : this.innerProperties().invoice();
     }
 
     /**
@@ -241,7 +130,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the invoiceId value.
      */
     public String invoiceId() {
-        return this.invoiceId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceId();
     }
 
     /**
@@ -250,7 +139,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -259,7 +148,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the invoiceSectionName value.
      */
     public String invoiceSectionName() {
-        return this.invoiceSectionName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionName();
     }
 
     /**
@@ -268,7 +157,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the purchasingSubscriptionGuid value.
      */
     public UUID purchasingSubscriptionGuid() {
-        return this.purchasingSubscriptionGuid;
+        return this.innerProperties() == null ? null : this.innerProperties().purchasingSubscriptionGuid();
     }
 
     /**
@@ -277,7 +166,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the purchasingSubscriptionName value.
      */
     public String purchasingSubscriptionName() {
-        return this.purchasingSubscriptionName;
+        return this.innerProperties() == null ? null : this.innerProperties().purchasingSubscriptionName();
     }
 
     /**
@@ -286,7 +175,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the quantity value.
      */
     public BigDecimal quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -295,7 +184,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the region value.
      */
     public String region() {
-        return this.region;
+        return this.innerProperties() == null ? null : this.innerProperties().region();
     }
 
     /**
@@ -306,7 +195,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the reservationOrderId value.
      */
     public String reservationOrderId() {
-        return this.reservationOrderId;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationOrderId();
     }
 
     /**
@@ -315,7 +204,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the reservationOrderName value.
      */
     public String reservationOrderName() {
-        return this.reservationOrderName;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationOrderName();
     }
 
     /**
@@ -324,7 +213,7 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
      * @return the term value.
      */
     public String term() {
-        return this.term;
+        return this.innerProperties() == null ? null : this.innerProperties().term();
     }
 
     /**
@@ -335,5 +224,13 @@ public class ModernReservationTransactionInner extends ReservationTransactionRes
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ModernReservationTransactionInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
 }

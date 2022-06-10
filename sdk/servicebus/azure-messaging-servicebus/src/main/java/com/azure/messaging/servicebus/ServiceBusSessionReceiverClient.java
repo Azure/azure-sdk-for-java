@@ -18,21 +18,54 @@ import java.util.Objects;
  *
  * <p><strong>Receive messages from a specific session</strong></p>
  * <p>Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId -->
+ * <pre>
+ * &#47;&#47; The connectionString&#47;sessionQueueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .queueName&#40;sessionQueueName&#41;
+ *     .buildClient&#40;&#41;;
+ * ServiceBusReceiverClient receiver = sessionReceiver.acceptSession&#40;&quot;&lt;&lt; my-session-id &gt;&gt;&quot;&#41;;
+ *
+ * &#47;&#47; Use the receiver and finally close it along with the sessionReceiver.
+ * receiver.close&#40;&#41;;
+ * sessionReceiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId -->
  *
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session
  * id.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession -->
+ * <pre>
+ * &#47;&#47; The connectionString&#47;sessionQueueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;
+ *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * ServiceBusReceiverClient receiver = sessionReceiver.acceptNextSession&#40;&#41;;
+ *
+ * &#47;&#47; Use the receiver and finally close it along with the sessionReceiver.
+ * receiver.close&#40;&#41;;
+ * sessionReceiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession -->
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
+    private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
 
-    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, Duration operationTimeout) {
+    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, boolean isPrefetchDisabled, Duration operationTimeout) {
         this.sessionAsyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = operationTimeout;
+        this.isPrefetchDisabled = isPrefetchDisabled;
     }
 
     /**
@@ -49,7 +82,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .block(operationTimeout);
     }
 
@@ -72,7 +105,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .block(operationTimeout);
     }
 

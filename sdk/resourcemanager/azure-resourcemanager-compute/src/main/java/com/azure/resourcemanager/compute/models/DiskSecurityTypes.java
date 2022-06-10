@@ -13,6 +13,18 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
     /** Static value TrustedLaunch for DiskSecurityTypes. */
     public static final DiskSecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
+    /** Static value ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey for DiskSecurityTypes. */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_VMGUEST_STATE_ONLY_ENCRYPTED_WITH_PLATFORM_KEY =
+        fromString("ConfidentialVM_VMGuestStateOnlyEncryptedWithPlatformKey");
+
+    /** Static value ConfidentialVM_DiskEncryptedWithPlatformKey for DiskSecurityTypes. */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_PLATFORM_KEY =
+        fromString("ConfidentialVM_DiskEncryptedWithPlatformKey");
+
+    /** Static value ConfidentialVM_DiskEncryptedWithCustomerKey for DiskSecurityTypes. */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_DISK_ENCRYPTED_WITH_CUSTOMER_KEY =
+        fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
+
     /**
      * Creates or finds a DiskSecurityTypes from its string representation.
      *
@@ -24,7 +36,11 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         return fromString(name, DiskSecurityTypes.class);
     }
 
-    /** @return known DiskSecurityTypes values. */
+    /**
+     * Gets known DiskSecurityTypes values.
+     *
+     * @return known DiskSecurityTypes values.
+     */
     public static Collection<DiskSecurityTypes> values() {
         return values(DiskSecurityTypes.class);
     }

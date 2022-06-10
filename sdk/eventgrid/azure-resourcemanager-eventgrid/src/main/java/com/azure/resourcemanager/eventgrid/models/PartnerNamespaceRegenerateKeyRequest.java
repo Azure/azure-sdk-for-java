@@ -6,14 +6,11 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PartnerNamespace regenerate shared access key request. */
 @Fluent
 public final class PartnerNamespaceRegenerateKeyRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceRegenerateKeyRequest.class);
-
     /*
      * Key name to regenerate (key1 or key2).
      */
@@ -47,10 +44,12 @@ public final class PartnerNamespaceRegenerateKeyRequest {
      */
     public void validate() {
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model PartnerNamespaceRegenerateKeyRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerNamespaceRegenerateKeyRequest.class);
 }

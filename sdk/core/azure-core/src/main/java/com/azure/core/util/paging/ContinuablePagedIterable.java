@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
  * @see IterableStream
  * @see ContinuablePagedFlux
  */
-public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
+public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
     private final int batchSize;
 
@@ -172,7 +172,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
             return new ContinuablePagedByPageIterable<>(pagedFluxCore.pageRetrieverProvider.get(), continuationToken,
-                preferredPageSize);
+                pagedFluxCore.getContinuationPredicate(), preferredPageSize);
         } else {
             return nonPagedFluxCoreIterableSupplier.get();
         }
@@ -181,7 +181,8 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
     private Iterable<T> iterableByItemInternal() {
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
-            return new ContinuablePagedByItemIterable<>(pagedFluxCore.pageRetrieverProvider.get(), null, null);
+            return new ContinuablePagedByItemIterable<>(pagedFluxCore.pageRetrieverProvider.get(), null,
+                pagedFluxCore.getContinuationPredicate(), null);
         } else {
             return this.pagedFlux.toIterable(this.batchSize);
         }

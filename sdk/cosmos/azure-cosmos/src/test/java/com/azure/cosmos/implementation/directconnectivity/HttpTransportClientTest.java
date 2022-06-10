@@ -109,7 +109,7 @@ public class HttpTransportClientTest {
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
             public HttpTransportClientUnderTest(ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
-                super(configs, connectionPolicy, userAgent);
+                super(configs, connectionPolicy, userAgent, null);
             }
 
             @Override
@@ -133,7 +133,7 @@ public class HttpTransportClientTest {
         userAgentContainer.setSuffix("i am suffix");
 
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
+        connectionPolicy.setHttpNetworkRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
@@ -452,7 +452,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
+        connectionPolicy.setHttpNetworkRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
                 connectionPolicy,
                 userAgentContainer,
@@ -566,7 +566,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
+        connectionPolicy.setHttpNetworkRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
                 connectionPolicy,
                 userAgentContainer,

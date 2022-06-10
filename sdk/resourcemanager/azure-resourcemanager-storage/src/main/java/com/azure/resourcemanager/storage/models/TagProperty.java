@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A tag of the LegalHold of a blob container. */
 @Immutable
 public final class TagProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperty.class);
-
     /*
      * The tag value.
      */

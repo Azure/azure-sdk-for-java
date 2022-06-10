@@ -30,7 +30,11 @@ public final class VirtualMachinePriorityTypes extends ExpandableStringEnum<Virt
         return fromString(name, VirtualMachinePriorityTypes.class);
     }
 
-    /** @return known VirtualMachinePriorityTypes values. */
+    /**
+     * Gets known VirtualMachinePriorityTypes values.
+     *
+     * @return known VirtualMachinePriorityTypes values.
+     */
     public static Collection<VirtualMachinePriorityTypes> values() {
         return values(VirtualMachinePriorityTypes.class);
     }

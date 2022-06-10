@@ -18,7 +18,7 @@ public interface KeyValues {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values.
+     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyValue> listByConfigurationStore(String resourceGroupName, String configStoreName);
 
@@ -34,7 +34,7 @@ public interface KeyValues {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values.
+     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyValue> listByConfigurationStore(
         String resourceGroupName, String configStoreName, String skipToken, Context context);
@@ -64,7 +64,7 @@ public interface KeyValues {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value.
+     * @return the properties of the specified key-value along with {@link Response}.
      */
     Response<KeyValue> getWithResponse(
         String resourceGroupName, String configStoreName, String keyValueName, Context context);
@@ -103,7 +103,7 @@ public interface KeyValues {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value.
+     * @return the properties of the specified key-value along with {@link Response}.
      */
     KeyValue getById(String id);
 
@@ -115,7 +115,7 @@ public interface KeyValues {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value.
+     * @return the properties of the specified key-value along with {@link Response}.
      */
     Response<KeyValue> getByIdWithResponse(String id, Context context);
 

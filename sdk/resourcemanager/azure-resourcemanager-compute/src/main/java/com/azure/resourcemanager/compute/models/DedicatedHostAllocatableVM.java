@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the dedicated host unutilized capacity in terms of a specific VM size. */
 @Fluent
 public final class DedicatedHostAllocatableVM {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostAllocatableVM.class);
-
     /*
      * VM size in terms of which the unutilized capacity is represented.
      */

@@ -28,6 +28,9 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
     /** Static value StandardSSD_ZRS for DiskStorageAccountTypes. */
     public static final DiskStorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
+    /** Static value PremiumV2_LRS for DiskStorageAccountTypes. */
+    public static final DiskStorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
+
     /**
      * Creates or finds a DiskStorageAccountTypes from its string representation.
      *
@@ -39,7 +42,11 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
         return fromString(name, DiskStorageAccountTypes.class);
     }
 
-    /** @return known DiskStorageAccountTypes values. */
+    /**
+     * Gets known DiskStorageAccountTypes values.
+     *
+     * @return known DiskStorageAccountTypes values.
+     */
     public static Collection<DiskStorageAccountTypes> values() {
         return values(DiskStorageAccountTypes.class);
     }

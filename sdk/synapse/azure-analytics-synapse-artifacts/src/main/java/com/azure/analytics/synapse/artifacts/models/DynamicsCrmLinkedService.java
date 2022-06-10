@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Dynamics CRM linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -22,7 +24,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * Ifd. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private DynamicsDeploymentType deploymentType;
+    private Object deploymentType;
 
     /*
      * The host name of the on-premises Dynamics CRM server. The property is
@@ -64,7 +66,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private DynamicsAuthenticationType authenticationType;
+    private Object authenticationType;
 
     /*
      * User name to access the Dynamics CRM instance. Type: string (or
@@ -119,7 +121,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      *
      * @return the deploymentType value.
      */
-    public DynamicsDeploymentType getDeploymentType() {
+    public Object getDeploymentType() {
         return this.deploymentType;
     }
 
@@ -131,7 +133,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService setDeploymentType(DynamicsDeploymentType deploymentType) {
+    public DynamicsCrmLinkedService setDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -233,7 +235,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public DynamicsAuthenticationType getAuthenticationType() {
+    public Object getAuthenticationType() {
         return this.authenticationType;
     }
 
@@ -245,7 +247,7 @@ public class DynamicsCrmLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService setAuthenticationType(DynamicsAuthenticationType authenticationType) {
+    public DynamicsCrmLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -379,6 +381,34 @@ public class DynamicsCrmLinkedService extends LinkedService {
      */
     public DynamicsCrmLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsCrmLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsCrmLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsCrmLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsCrmLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

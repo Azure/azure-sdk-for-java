@@ -361,14 +361,20 @@ public final class CosmosContainerProperties {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
                 @Override
                 public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
                     return cosmosContainerProperties.getSelfLink();
                 }
+
+                @Override
+                public void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink) {
+                    cosmosContainerProperties.documentCollection.setSelfLink(selfLink);
+                }
             });
     }
+
+    static { initialize(); }
 }

@@ -3,32 +3,21 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
+
+import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -38,8 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.security.auth.x500.X500Principal;
 
 final class TestObject {
     @JsonProperty(value = "alg")
@@ -66,42 +53,32 @@ final class TestObject {
 
     @JsonProperty(value = "exp")
     private long expiration;
-    public TestObject setExpiresOn(LocalDateTime expirationTime) {
-        long exp1 = expirationTime.toEpochSecond(ZoneOffset.UTC);
-        Instant instant = expirationTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.expiration = instant.toEpochMilli() / 1000;
+    public TestObject setExpiresOn(OffsetDateTime expirationTime) {
+        this.expiration = expirationTime.toEpochSecond();
         return this;
     }
-    public LocalDateTime getExpiresOn() {
-        return Instant.EPOCH.plusSeconds(expiration)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime();
+    public OffsetDateTime getExpiresOn() {
+        return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(expiration), ZoneOffset.UTC);
     }
 
     @JsonProperty(value = "iat")
     private long issuedOn;
-    public TestObject setIssuedOn(LocalDateTime issuedOn) {
-        Instant instant = issuedOn.atZone(ZoneId.systemDefault()).toInstant();
-        this.issuedOn = instant.toEpochMilli() / 1000;
+    public TestObject setIssuedOn(OffsetDateTime issuedOn) {
+        this.issuedOn = issuedOn.toEpochSecond();
         return this;
     }
-    public LocalDateTime getIssuedOn() {
-        return Instant.EPOCH.plusSeconds(issuedOn)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime();
+    public OffsetDateTime getIssuedOn() {
+        return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(issuedOn), ZoneOffset.UTC);
     }
 
     @JsonProperty(value = "nbf")
     private long notBefore;
-    public TestObject setNotBefore(LocalDateTime notBefore) {
-        Instant instant = notBefore.atZone(ZoneId.systemDefault()).toInstant();
-        this.notBefore = instant.toEpochMilli() / 1000;
+    public TestObject setNotBefore(OffsetDateTime notBefore) {
+        this.notBefore = notBefore.toEpochSecond();
         return this;
     }
-    public LocalDateTime getNotBefore() {
-        return Instant.EPOCH.plusSeconds(notBefore)
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime();
+    public OffsetDateTime getNotBefore() {
+        return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(notBefore), ZoneOffset.UTC);
     }
 
 
@@ -143,13 +120,12 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate", rsaKey));
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate());
 
         assertDoesNotThrow(() -> signingKey.verify());
 
     }
+
 
     /* Commented out until issue https://github.com/Azure/azure-sdk-for-java/issues/21776 is fixed
     @Test
@@ -189,10 +165,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 */
 
         // And make sure that the wrong key also throws a reasonable exception.
-        AttestationSigningKey signingKey2 = new AttestationSigningKey()
-                .setPrivateKey(rsaKeyWrongKey.getPrivate())
-                .setCertificate(cert)
-                .setAllowWeakKey(true);
+        AttestationSigningKey signingKey2 = new AttestationSigningKey(cert, rsaKeyWrongKey.getPrivate())
+                .setWeakKeyAllowed(true);
         assertThrows(IllegalArgumentException.class, () -> signingKey2.verify());
     }
 
@@ -222,7 +196,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setAlg("Test Algorithm")
             .setInteger(31415926)
             .setIntegerArray(new int[]{123, 456, 789});
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -250,10 +224,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
-            .setAllowWeakKey(true);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
+            .setWeakKeyAllowed(true);
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
 
@@ -276,17 +248,47 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     }
 
     @Test
+    void testVerifySignerWithPredefinedPayload() {
+        PrivateKey key = getIsolatedSigningKey();
+        X509Certificate cert = getIsolatedSigningCertificate();
+
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, key);
+        assertDoesNotThrow(() -> signingKey.verify());
+
+        String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
+
+        AttestationToken newToken = AttestationTokenImpl.createSecuredToken(sourceObject, signingKey);
+
+        // Verify that this is a secured attestation token.
+        assertNotEquals("none", newToken.getAlgorithm());
+        assertNull(newToken.getKeyId());
+        assertNotNull(newToken.getCertificateChain());
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+
+    }
+
+
+    @Test
+    void testVerifySignerWithPredefinedPayloadFail() {
+        PrivateKey key = getIsolatedSigningKey();
+        X509Certificate cert = getPolicySigningCertificate0();
+
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, key);
+
+        assertThrows(RuntimeException.class, () -> signingKey.verify());
+
+    }
+
+    @Test
     void testCreateSecuredAttestationTokenFromObject() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
-            .setAllowWeakKey(true);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
+            .setWeakKeyAllowed(true);
 
 
         JacksonAdapter adapter = new JacksonAdapter();
-        LocalDateTime timeNow = LocalDateTime.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         TestObject testObject = new TestObject()
@@ -297,8 +299,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
-
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(objectString, signingKey);
 
@@ -308,9 +309,10 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
         assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
-        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getIssuedAt().atZone(ZoneId.systemDefault()));
-        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getNotBefore().atZone(ZoneId.systemDefault()));
-        assertEquals(timeNow.atZone(ZoneId.systemDefault()).plusSeconds(30), newToken.getExpiresOn().atZone(ZoneId.systemDefault()));
+        // Times in an attestation token
+        assertTrue(timeNow.isEqual(newToken.getIssuedAt()));
+        assertTrue(timeNow.isEqual(newToken.getNotBefore()));
+        assertTrue(timeNow.plusSeconds(30).isEqual(newToken.getExpiresOn()));
         assertEquals("Fred", newToken.getIssuer());
 
         assertDoesNotThrow(() -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
@@ -319,7 +321,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     @Test
     void verifyAttestationTokenIssuer() {
         JacksonAdapter adapter = new JacksonAdapter();
-        LocalDateTime timeNow = LocalDateTime.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         TestObject testObject = new TestObject()
@@ -331,7 +333,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -355,7 +357,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     @Test
     void verifyAttestationTokenExpireTimeout() {
         JacksonAdapter adapter = new JacksonAdapter();
-        LocalDateTime timeNow = LocalDateTime.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         TestObject testObjectExpired30SecondsAgo = new TestObject()
@@ -367,7 +369,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.minusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -376,14 +378,19 @@ public class AttestationTokenTests extends AttestationClientTestBase {
                 new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("expiration"));
-        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
-        assertTrue(ex.getMessage().contains(timeNow.minusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+        // Because the TestObject round-trips times through Epoch times, they are in UTC time.
+        // Adjust the target time to be in UTC rather than the current time zone, since we're checking to ensure
+        // that the time is reflected in the exception message.
+        OffsetDateTime expTime = timeNow.minusSeconds(30).withOffsetSameInstant(ZoneOffset.UTC);
+        String timeNowS = String.format("%tc", timeNow);
+        assertTrue(ex.getMessage().contains(String.format("%tc", timeNow)));
+        assertTrue(ex.getMessage().contains(String.format("%tc", expTime)));
     }
 
     @Test
     void verifyAttestationTokenNotBeforeTimeout() {
         JacksonAdapter adapter = new JacksonAdapter();
-        LocalDateTime timeNow = LocalDateTime.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         TestObject testObjectExpired30SecondsAgo = new TestObject()
@@ -395,7 +402,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -404,15 +411,20 @@ public class AttestationTokenTests extends AttestationClientTestBase {
                 new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("NotBefore"));
-        String timeNowS = timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString();
-        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
-        assertTrue(ex.getMessage().contains(timeNow.plusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+
+        // Because the TestObject round-trips times through Epoch times, they are in UTC time.
+        // Adjust the target time to be in UTC rather than the current time zone, since we're checking to ensure
+        // that the time is reflected in the exception message.
+        OffsetDateTime iatTime = timeNow.plusSeconds(30).withOffsetSameInstant(ZoneOffset.UTC);
+        String timeNowS = String.format("%tc", timeNow);
+        assertTrue(ex.getMessage().contains(String.format("%tc", timeNow)));
+        assertTrue(ex.getMessage().contains(String.format("%tc", iatTime)));
     }
 
     @Test
     void verifyAttestationTokenVerifyCallback() {
         JacksonAdapter adapter = new JacksonAdapter();
-        LocalDateTime timeNow = LocalDateTime.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         TestObject testObjectExpired30SecondsAgo = new TestObject()
@@ -424,7 +436,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -443,10 +455,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     void testCreateSecuredEmptyAttestationToken() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
-            .setAllowWeakKey(true);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
+            .setWeakKeyAllowed(true);
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(signingKey);
 
@@ -554,40 +564,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     }
 
-
-    KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
-
-        KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
-            keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
-        } else {
-            keyGen = KeyPairGenerator.getInstance(algorithm);
-        }
-        if (algorithm.equals("RSA")) {
-            keyGen.initialize(1024); // Generate a reasonably strong key.
-        }
-        return keyGen.generateKeyPair();
-    }
-
-    X509Certificate createSelfSignedCertificate(String subjectName, KeyPair certificateKey) throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-        final X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
-        generator.setIssuerDN(new X500Principal("CN=" + subjectName));
-        generator.setSubjectDN(new X500Principal("CN=" + subjectName));
-        generator.setPublicKey(certificateKey.getPublic());
-        if (certificateKey.getPublic().getAlgorithm().equals("EC")) {
-            generator.setSignatureAlgorithm("SHA256WITHECDSA");
-        } else {
-            generator.setSignatureAlgorithm("SHA256WITHRSA");
-        }
-        generator.setSerialNumber(BigInteger.valueOf(Math.abs(new Random().nextInt())));
-        // Valid from now to 1 day from now.
-        generator.setNotBefore(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        generator.setNotAfter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
-
-        generator.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
-        return generator.generate(certificateKey.getPrivate());
-
-    }
 
 }
 

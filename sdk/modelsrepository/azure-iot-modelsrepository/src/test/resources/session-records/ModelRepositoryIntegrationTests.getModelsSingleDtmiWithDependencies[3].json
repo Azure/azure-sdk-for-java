@@ -1,0 +1,202 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "944945f9-28df-45ce-95d9-b9a4e0bb757a"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3151",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551638.738065,VS0,VE1",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4425-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "753a5ba57fcb35261a05e41c5c3c56376b90d51a",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fcom%2Fexample%2Ftemperaturecontroller-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "afd14528-37d5-43f5-b17e-bb71455ec7a1"
+    },
+    "Response" : {
+      "content-length" : "1762",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "15",
+      "X-Timer" : "S1633551638.790204,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4430-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n  \"@context\": \"dtmi:dtdl:context;2\",\n  \"@id\": \"dtmi:com:example:TemperatureController;1\",\n  \"@type\": \"Interface\",\n  \"displayName\": \"Temperature Controller\",\n  \"description\": \"Device with two thermostats and remote reboot.\",\n  \"contents\": [\n    {\n      \"@type\": [\n        \"Telemetry\",\n        \"DataSize\"\n      ],\n      \"name\": \"workingSet\",\n      \"displayName\": \"Working Set\",\n      \"description\": \"Current working set of the device memory in KiB.\",\n      \"schema\": \"double\",\n      \"unit\": \"kibibyte\"\n    },\n    {\n      \"@type\": \"Property\",\n      \"name\": \"serialNumber\",\n      \"displayName\": \"Serial Number\",\n      \"description\": \"Serial number of the device.\",\n      \"schema\": \"string\"\n    },\n    {\n      \"@type\": \"Command\",\n      \"name\": \"reboot\",\n      \"displayName\": \"Reboot\",\n      \"description\": \"Reboots the device after waiting the number of seconds specified.\",\n      \"request\": {\n        \"name\": \"delay\",\n        \"displayName\": \"Delay\",\n        \"description\": \"Number of seconds to wait before rebooting the device.\",\n        \"schema\": \"integer\"\n      }\n    },\n    {\n      \"@type\": \"Component\",\n      \"schema\": \"dtmi:com:example:Thermostat;1\",\n      \"name\": \"thermostat1\",\n      \"displayName\": \"Thermostat One\",\n      \"description\": \"Thermostat One of Two.\"\n    },\n    {\n      \"@type\": \"Component\",\n      \"schema\": \"dtmi:com:example:Thermostat;1\",\n      \"name\": \"thermostat2\",\n      \"displayName\": \"Thermostat Two\",\n      \"description\": \"Thermostat Two of Two.\"\n    },\n    {\n      \"@type\": \"Component\",\n      \"schema\": \"dtmi:azure:DeviceManagement:DeviceInformation;1\",\n      \"name\": \"deviceInformation\",\n      \"displayName\": \"Device Information interface\",\n      \"description\": \"Optional interface with basic device hardware information.\"\n    }\n  ]\n}",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "3088:6400:89E1:16994:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"276d790fcfc6c0c7637965a33d2bf9cea2a8583f385ee2d1c5d16823814b3094\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "fbebc8be9c92c71f316deaf54b7377c57ffa3158"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "63cb65f7-5200-4e35-9a7e-427d41c863dd"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3151",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551638.806824,VS0,VE0",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4476-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "2",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "5493b55c016061f5c2732324e8a654246408f1e3",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fcom%2Fexample%2Fthermostat-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "572b80d5-cff5-49c6-bfb7-7432b1155f1c"
+    },
+    "Response" : {
+      "content-length" : "2469",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "15",
+      "X-Timer" : "S1633551638.827640,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4425-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n  \"@context\": \"dtmi:dtdl:context;2\",\n  \"@id\": \"dtmi:com:example:Thermostat;1\",\n  \"@type\": \"Interface\",\n  \"displayName\": \"Thermostat\",\n  \"description\": \"Reports current temperature and provides desired temperature control.\",\n  \"contents\": [\n    {\n      \"@type\": [\n        \"Telemetry\",\n        \"Temperature\"\n      ],\n      \"name\": \"temperature\",\n      \"displayName\": \"Temperature\",\n      \"description\": \"Temperature in degrees Celsius.\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\"\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"targetTemperature\",\n      \"schema\": \"double\",\n      \"displayName\": \"Target Temperature\",\n      \"description\": \"Allows to remotely specify the desired target temperature.\",\n      \"unit\": \"degreeCelsius\",\n      \"writable\": true\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"maxTempSinceLastReboot\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\",\n      \"displayName\": \"Max temperature since last reboot.\",\n      \"description\": \"Returns the max temperature since last device reboot.\"\n    },\n    {\n      \"@type\": \"Command\",\n      \"name\": \"getMaxMinReport\",\n      \"displayName\": \"Get Max-Min report.\",\n      \"description\": \"This command returns the max, min and average temperature from the specified time to the current time.\",\n      \"request\": {\n        \"name\": \"since\",\n        \"displayName\": \"Since\",\n        \"description\": \"Period to return the max-min report.\",\n        \"schema\": \"dateTime\"\n      },\n      \"response\": {\n        \"name\": \"tempReport\",\n        \"displayName\": \"Temperature Report\",\n        \"schema\": {\n          \"@type\": \"Object\",\n          \"fields\": [\n            {\n              \"name\": \"maxTemp\",\n              \"displayName\": \"Max temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"minTemp\",\n              \"displayName\": \"Min temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"avgTemp\",\n              \"displayName\": \"Average Temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"startTime\",\n              \"displayName\": \"Start Time\",\n              \"schema\": \"dateTime\"\n            },\n            {\n              \"name\": \"endTime\",\n              \"displayName\": \"End Time\",\n              \"schema\": \"dateTime\"\n            }\n          ]\n        }\n      }\n    }\n  ]\n}",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "7A10:320C:3A12D:4AC16:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"0d2c122754b690ebb4106d28683b3bc7be1dced98582291e46df6433d31e464d\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "c293bc980713d9739478bdfc73afb537758f0ba5"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "73b90be1-2ca8-4552-ba51-b5a0ed23d254"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3151",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551638.839463,VS0,VE0",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4430-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "c70431723262afd1fdf226a53fe090cb47db2fa8",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fazure%2Fdevicemanagement%2Fdeviceinformation-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0d61b93e-98bd-4a7a-9091-d05701c8a0f8"
+    },
+    "Response" : {
+      "content-length" : "2212",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "16",
+      "X-Timer" : "S1633551639.692640,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4479-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n    \"@context\": \"dtmi:dtdl:context;2\",\n    \"@id\": \"dtmi:azure:DeviceManagement:DeviceInformation;1\",\n    \"@type\": \"Interface\",\n    \"displayName\": \"Device Information\",\n    \"contents\": [\n      {\n        \"@type\": \"Property\",\n        \"name\": \"manufacturer\",\n        \"displayName\": \"Manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Company name of the device manufacturer. This could be the same as the name of the original equipment manufacturer (OEM). Ex. Contoso.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"model\",\n        \"displayName\": \"Device model\",\n        \"schema\": \"string\",\n        \"description\": \"Device model name or ID. Ex. Surface Book 2.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"swVersion\",\n        \"displayName\": \"Software version\",\n        \"schema\": \"string\",\n        \"description\": \"Version of the software on your device. This could be the version of your firmware. Ex. 1.3.45\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"osName\",\n        \"displayName\": \"Operating system name\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the operating system on the device. Ex. Windows 10 IoT Core.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorArchitecture\",\n        \"displayName\": \"Processor architecture\",\n        \"schema\": \"string\",\n        \"description\": \"Architecture of the processor on the device. Ex. x64 or ARM.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorManufacturer\",\n        \"displayName\": \"Processor manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the manufacturer of the processor on the device. Ex. Intel.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalStorage\",\n        \"displayName\": \"Total storage\",\n        \"schema\": \"double\",\n        \"description\": \"Total available storage on the device in kilobytes. Ex. 2048000 kilobytes.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalMemory\",\n        \"displayName\": \"Total memory\",\n        \"schema\": \"double\",\n        \"description\": \"Total available memory on the device in kilobytes. Ex. 256000 kilobytes.\"\n      }\n    ]\n  }",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "956E:278C:249C9:34469:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:38 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"7952e5f1274fe59fa4aa27c6ba55a1aebec0d5b2ac12f5c8124bbfb08eae4eee\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:38 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "fab5c72ec9b38e981c9a9405ccd9db4ef5f0b69e"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

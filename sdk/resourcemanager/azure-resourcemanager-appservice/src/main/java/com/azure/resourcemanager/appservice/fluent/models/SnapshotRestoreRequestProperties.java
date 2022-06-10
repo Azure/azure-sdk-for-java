@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.SnapshotRecoverySource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SnapshotRestoreRequest resource specific properties. */
 @Fluent
 public final class SnapshotRestoreRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotRestoreRequestProperties.class);
-
     /*
      * Point in time in which the app restore should be done, formatted as a
      * DateTime string.

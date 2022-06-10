@@ -1,7 +1,65 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.5 (2022-03-22)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2022-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ResourceUsage` was added
+
+* `models.ResourceUsagesListResult` was added
+
+* `models.ResourceUsageName` was added
+
+* `models.AscUsages` was added
+
+#### `models.StorageTargetOperations` was modified
+
+* `invalidate(java.lang.String,java.lang.String,java.lang.String)` was added
+* `invalidate(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Cache` was modified
+
+* `zones()` was added
+
+#### `models.Cache$Definition` was modified
+
+* `withZones(java.util.List)` was added
+
+#### `StorageCacheManager` was modified
+
+* `ascUsages()` was added
+
+## 1.0.0-beta.4 (2021-10-08)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2021-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.OperationalStateType` was added
+
+#### `models.StorageTarget` was modified
+
+* `state()` was added
+
+#### `models.StorageTarget$Update` was modified
+
+* `withState(models.OperationalStateType)` was added
+
+#### `models.StorageTarget$Definition` was modified
+
+* `withState(models.OperationalStateType)` was added
 
 ## 1.0.0-beta.3 (2021-08-03)
 

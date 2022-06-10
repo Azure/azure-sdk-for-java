@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.PrivateEndpointConnectionsPrivateLinkHubsClient;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
  */
 public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
     implements PrivateEndpointConnectionsPrivateLinkHubsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsPrivateLinkHubsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsPrivateLinkHubsService service;
 
@@ -117,7 +114,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>> listSinglePageAsync(
@@ -177,7 +175,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>> listSinglePageAsync(
@@ -233,7 +232,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionForPrivateLinkHubInner> listAsync(
@@ -252,7 +251,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionForPrivateLinkHubInner> listAsync(
@@ -270,7 +269,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(
@@ -287,7 +286,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(
@@ -304,7 +303,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
@@ -363,7 +363,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
@@ -418,7 +419,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionForPrivateLinkHubInner> getAsync(
@@ -461,7 +462,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionForPrivateLinkHubInner> getWithResponse(
@@ -477,7 +478,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>> listNextSinglePageAsync(
@@ -514,7 +515,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>> listNextSinglePageAsync(

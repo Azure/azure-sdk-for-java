@@ -15,10 +15,9 @@ import com.azure.resourcemanager.botservice.fluent.models.ServiceProviderRespons
 import com.azure.resourcemanager.botservice.models.BotConnections;
 import com.azure.resourcemanager.botservice.models.ConnectionSetting;
 import com.azure.resourcemanager.botservice.models.ServiceProviderResponseList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BotConnectionsImpl implements BotConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BotConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BotConnectionsImpl.class);
 
     private final BotConnectionsClient innerClient;
 
@@ -127,7 +126,7 @@ public final class BotConnectionsImpl implements BotConnections {
     public ConnectionSetting getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,14 +134,14 @@ public final class BotConnectionsImpl implements BotConnections {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -153,7 +152,7 @@ public final class BotConnectionsImpl implements BotConnections {
     public Response<ConnectionSetting> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +160,14 @@ public final class BotConnectionsImpl implements BotConnections {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
@@ -179,7 +178,7 @@ public final class BotConnectionsImpl implements BotConnections {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,25 +186,25 @@ public final class BotConnectionsImpl implements BotConnections {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -213,14 +212,14 @@ public final class BotConnectionsImpl implements BotConnections {
         }
         String resourceName = Utils.getValueFromIdByName(id, "botServices");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'botServices'.", id)));
         }
         String connectionName = Utils.getValueFromIdByName(id, "connections");
         if (connectionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));

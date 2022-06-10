@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationVisibilityState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.UUID;
 
 /** Properties of the partner registration. */
 @Fluent
 public final class PartnerRegistrationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegistrationProperties.class);
-
     /*
      * Provisioning state of the partner registration.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PartnerRegistrationProvisioningState provisioningState;
+
+    /*
+     * The immutableId of the corresponding partner registration.
+     */
+    @JsonProperty(value = "partnerRegistrationImmutableId")
+    private UUID partnerRegistrationImmutableId;
 
     /*
      * Official name of the partner name. For example: "Contoso".
@@ -121,6 +124,26 @@ public final class PartnerRegistrationProperties {
      */
     public PartnerRegistrationProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @return the partnerRegistrationImmutableId value.
+     */
+    public UUID partnerRegistrationImmutableId() {
+        return this.partnerRegistrationImmutableId;
+    }
+
+    /**
+     * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
+     *
+     * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
+     * @return the PartnerRegistrationProperties object itself.
+     */
+    public PartnerRegistrationProperties withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        this.partnerRegistrationImmutableId = partnerRegistrationImmutableId;
+        return this;
     }
 
     /**

@@ -18,11 +18,10 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateRe
 import com.azure.resourcemanager.deviceprovisioningservices.models.DpsCertificates;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeRequest;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 
 public final class DpsCertificatesImpl implements DpsCertificates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DpsCertificatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DpsCertificatesImpl.class);
 
     private final DpsCertificatesClient innerClient;
 
@@ -246,14 +245,14 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     public CertificateResponse getById(String id) {
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -261,7 +260,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -278,14 +277,14 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     public Response<CertificateResponse> getByIdWithResponse(String id, String ifMatch, Context context) {
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -293,7 +292,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -307,7 +306,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -315,7 +314,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -325,7 +324,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -353,8 +352,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
                 localCertificateLastUpdated,
                 localCertificateHasPrivateKey,
                 localCertificateNonce,
-                Context.NONE)
-            .getValue();
+                Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(
@@ -371,7 +369,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -379,7 +377,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String provisioningServiceName = Utils.getValueFromIdByName(id, "provisioningServices");
         if (provisioningServiceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -389,7 +387,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

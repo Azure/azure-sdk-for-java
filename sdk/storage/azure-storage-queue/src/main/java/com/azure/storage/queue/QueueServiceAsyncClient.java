@@ -51,7 +51,14 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client</strong></p>
  *
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation}
+ * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.instantiation -->
+ * <pre>
+ * QueueServiceAsyncClient client = new QueueServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;connectionstring&quot;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.queue.queueServiceAsyncClient.instantiation -->
  *
  * <p>View {@link QueueServiceClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -61,7 +68,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class, isAsync = true)
 public final class QueueServiceAsyncClient {
-    private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
@@ -132,7 +139,16 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.createQueue#string -->
+     * <pre>
+     * client.createQueue&#40;&quot;myqueue&quot;&#41;.subscribe&#40;
+     *     response -&gt; &#123;
+     *     &#125;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the queue!&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.createQueue#string -->
      *
      * @param queueName Name of the queue
      * @return The {@link QueueAsyncClient QueueAsyncClient}
@@ -140,11 +156,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueAsyncClient> createQueue(String queueName) {
-        try {
-            return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -155,7 +167,16 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map -->
+     * <pre>
+     * client.createQueueWithResponse&#40;&quot;myqueue&quot;, Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadata&quot;&#41;&#41;
+     *     .subscribe&#40;
+     *         response -&gt; System.out.printf&#40;&quot;Creating the queue with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;,
+     *         error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the queue!&quot;&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map -->
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
@@ -169,7 +190,7 @@ public final class QueueServiceAsyncClient {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
             return withContext(context -> createQueueWithResponse(queueName, metadata, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -189,7 +210,13 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string -->
+     * <pre>
+     * client.deleteQueue&#40;&quot;myshare&quot;&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Deleting the queue completed.&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string -->
      *
      * @param queueName Name of the queue
      * @return An empty response
@@ -197,11 +224,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueue(String queueName) {
-        try {
-            return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -211,7 +234,13 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string -->
+     * <pre>
+     * client.deleteQueueWithResponse&#40;&quot;myshare&quot;&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Deleting the queue completed with status code: &quot; + response.getStatusCode&#40;&#41;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.deleteQueueWithResponse#string -->
      *
      * @param queueName Name of the queue
      * @return A response that only contains headers and response status code
@@ -222,7 +251,7 @@ public final class QueueServiceAsyncClient {
         try {
             return withContext(context -> deleteQueueWithResponse(queueName, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -239,7 +268,15 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues in the account</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.listQueues -->
+     * <pre>
+     * client.listQueues&#40;&#41;.subscribe&#40;
+     *     queueItem -&gt; System.out.printf&#40;&quot;Queue %s exists in the account&quot;, queueItem.getName&#40;&#41;&#41;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete listing the queues!&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.listQueues -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
@@ -251,7 +288,7 @@ public final class QueueServiceAsyncClient {
         try {
             return listQueuesWithOptionalTimeout(null, null, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -265,7 +302,16 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions -->
+     * <pre>
+     * client.listQueues&#40;new QueuesSegmentOptions&#40;&#41;.setPrefix&#40;&quot;azure&quot;&#41;&#41;.subscribe&#40;
+     *     queueItem -&gt; System.out.printf&#40;&quot;Queue %s exists in the account and has metadata %s&quot;,
+     *         queueItem.getName&#40;&#41;, queueItem.getMetadata&#40;&#41;&#41;,
+     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
+     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete listing the queues!&quot;&#41;
+     * &#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
@@ -278,7 +324,7 @@ public final class QueueServiceAsyncClient {
         try {
             return listQueuesWithOptionalTimeout(null, options, null, Context.NONE);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -324,7 +370,15 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;
+     *     .subscribe&#40;properties -&gt; &#123;
+     *         System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b&quot;,
+     *             properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;, properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.getProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
@@ -334,11 +388,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceProperties> getProperties() {
-        try {
-            return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -349,7 +399,16 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse -->
+     * <pre>
+     * client.getPropertiesWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         QueueServiceProperties properties = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b&quot;,
+     *             properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;, properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.getPropertiesWithResponse -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
@@ -362,7 +421,7 @@ public final class QueueServiceAsyncClient {
         try {
             return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -385,11 +444,25 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setProperties#QueueServiceProperties}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.setProperties#QueueServiceProperties -->
+     * <pre>
+     * QueueServiceProperties properties = client.getProperties&#40;&#41;.block&#40;&#41;;
+     * client.setProperties&#40;properties&#41;
+     *     .doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Setting Queue service properties completed.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.setProperties#QueueServiceProperties -->
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties -->
+     * <pre>
+     * QueueServiceProperties properties = client.getProperties&#40;&#41;.block&#40;&#41;;
+     * properties.getMinuteMetrics&#40;&#41;.setEnabled&#40;true&#41;;
+     * properties.getHourMetrics&#40;&#41;.setEnabled&#40;true&#41;;
+     * client.setProperties&#40;properties&#41;.subscribe&#40;
+     *     response -&gt; System.out.println&#40;&quot;Setting Queue service properties completed.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#QueueServiceProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
@@ -412,11 +485,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(QueueServiceProperties properties) {
-        try {
-            return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -431,11 +500,27 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#QueueServiceProperties}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#QueueServiceProperties -->
+     * <pre>
+     * QueueServiceProperties properties = client.getProperties&#40;&#41;.block&#40;&#41;;
+     * client.setPropertiesWithResponse&#40;properties&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Setting Queue service properties completed with status code %d&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponse#QueueServiceProperties -->
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties -->
+     * <pre>
+     * QueueServiceProperties properties = client.getProperties&#40;&#41;.block&#40;&#41;;
+     * properties.getMinuteMetrics&#40;&#41;.setEnabled&#40;true&#41;;
+     * properties.getHourMetrics&#40;&#41;.setEnabled&#40;true&#41;;
+     * client.setPropertiesWithResponse&#40;properties&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Setting Queue service properties completed with status code %d&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
@@ -461,7 +546,7 @@ public final class QueueServiceAsyncClient {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -479,7 +564,15 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.getStatistics -->
+     * <pre>
+     * client.getStatistics&#40;&#41;
+     *     .subscribe&#40;stats -&gt; &#123;
+     *         System.out.printf&#40;&quot;Geo replication status: %s, Last synced: %s&quot;,
+     *             stats.getGeoReplication&#40;&#41;.getStatus&#40;&#41;, stats.getGeoReplication&#40;&#41;.getLastSyncTime&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.getStatistics -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
@@ -488,11 +581,7 @@ public final class QueueServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceStatistics> getStatistics() {
-        try {
-            return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -502,7 +591,16 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse}
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse -->
+     * <pre>
+     * client.getStatisticsWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         QueueServiceStatistics stats = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Geo replication status: %s, Last synced: %s&quot;,
+     *             stats.getGeoReplication&#40;&#41;.getStatus&#40;&#41;, stats.getGeoReplication&#40;&#41;.getLastSyncTime&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
@@ -514,7 +612,7 @@ public final class QueueServiceAsyncClient {
         try {
             return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -551,7 +649,22 @@ public final class QueueServiceAsyncClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
      * queues and file shares.</p>
-     * {@codesnippet com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues}
+     * <!-- src_embed com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;.setObject&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setQueueAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = queueServiceAsyncClient.generateAccountSas&#40;sasValues&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
@@ -568,7 +681,22 @@ public final class QueueServiceAsyncClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
      * queues and file shares.</p>
-     * {@codesnippet com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context -->
+     * <pre>
+     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
+     *     .setListPermission&#40;true&#41;
+     *     .setReadPermission&#40;true&#41;;
+     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;.setObject&#40;true&#41;;
+     * AccountSasService services = new AccountSasService&#40;&#41;.setQueueAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
+     *
+     * AccountSasSignatureValues sasValues =
+     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * String sas = queueServiceAsyncClient.generateAccountSas&#40;sasValues, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context -->
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -576,7 +704,7 @@ public final class QueueServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return new AccountSasImplUtil(accountSasSignatureValues)
+        return new AccountSasImplUtil(accountSasSignatureValues, null)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 

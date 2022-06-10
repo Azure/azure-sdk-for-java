@@ -44,6 +44,8 @@ stages:
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
+      MatrixReplace:
+        - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
@@ -74,3 +76,7 @@ stages:
         - name: azure-core-jackson-tests
           groupId: com.azure
           safeName: azurecorejacksontests
+  - template: /sdk/storage/tests-template.yml
+    parameters:
+      AdditionalMatrixReplace:
+        - TestFromSource=(.*)/true

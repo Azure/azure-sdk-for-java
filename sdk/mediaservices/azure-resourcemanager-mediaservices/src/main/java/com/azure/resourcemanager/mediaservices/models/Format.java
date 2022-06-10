@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,18 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = Format.class)
 @JsonTypeName("Format")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class)
 })
-@JsonFlatten
 @Fluent
 public class Format {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Format.class);
-
     /*
      * The pattern of the file names for the generated output files. The
      * following macros are supported in the file name: {Basename} - An
@@ -90,9 +85,11 @@ public class Format {
      */
     public void validate() {
         if (filenamePattern() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filenamePattern in model Format"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Format.class);
 }

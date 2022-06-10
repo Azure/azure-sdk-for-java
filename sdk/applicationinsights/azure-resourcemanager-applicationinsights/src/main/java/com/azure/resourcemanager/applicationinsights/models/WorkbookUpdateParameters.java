@@ -5,73 +5,50 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookPropertiesUpdateParameters;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The parameters that can be provided when updating workbook properties properties. */
-@JsonFlatten
 @Fluent
-public class WorkbookUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookUpdateParameters.class);
-
+public final class WorkbookUpdateParameters {
     /*
-     * The kind of workbook. Choices are user and shared.
+     * The kind of workbook. Only valid value is shared.
      */
     @JsonProperty(value = "kind")
-    private SharedTypeKind kind;
+    private WorkbookUpdateSharedTypeKind kind;
 
     /*
-     * Resource tags
+     * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The user-defined name (display name) of the workbook.
+     * Metadata describing a workbook for an Azure resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Configuration of this particular workbook. Configuration data is a
-     * string containing valid JSON
-     */
-    @JsonProperty(value = "properties.serializedData")
-    private String serializedData;
-
-    /*
-     * Workbook category, as defined by the user at creation time.
-     */
-    @JsonProperty(value = "properties.category")
-    private String category;
-
-    /*
-     * A list of 0 or more tags that are associated with this workbook
-     * definition
-     */
-    @JsonProperty(value = "properties.tags")
-    private List<String> tagsPropertiesTags;
+    @JsonProperty(value = "properties")
+    private WorkbookPropertiesUpdateParameters innerProperties;
 
     /**
-     * Get the kind property: The kind of workbook. Choices are user and shared.
+     * Get the kind property: The kind of workbook. Only valid value is shared.
      *
      * @return the kind value.
      */
-    public SharedTypeKind kind() {
+    public WorkbookUpdateSharedTypeKind kind() {
         return this.kind;
     }
 
     /**
-     * Set the kind property: The kind of workbook. Choices are user and shared.
+     * Set the kind property: The kind of workbook. Only valid value is shared.
      *
      * @param kind the kind value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
-    public WorkbookUpdateParameters withKind(SharedTypeKind kind) {
+    public WorkbookUpdateParameters withKind(WorkbookUpdateSharedTypeKind kind) {
         this.kind = kind;
         return this;
     }
@@ -97,12 +74,21 @@ public class WorkbookUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Metadata describing a workbook for an Azure resource.
+     *
+     * @return the innerProperties value.
+     */
+    private WorkbookPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the displayName property: The user-defined name (display name) of the workbook.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -112,7 +98,10 @@ public class WorkbookUpdateParameters {
      * @return the WorkbookUpdateParameters object itself.
      */
     public WorkbookUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -123,7 +112,7 @@ public class WorkbookUpdateParameters {
      * @return the serializedData value.
      */
     public String serializedData() {
-        return this.serializedData;
+        return this.innerProperties() == null ? null : this.innerProperties().serializedData();
     }
 
     /**
@@ -134,7 +123,10 @@ public class WorkbookUpdateParameters {
      * @return the WorkbookUpdateParameters object itself.
      */
     public WorkbookUpdateParameters withSerializedData(String serializedData) {
-        this.serializedData = serializedData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withSerializedData(serializedData);
         return this;
     }
 
@@ -144,7 +136,7 @@ public class WorkbookUpdateParameters {
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -154,27 +146,79 @@ public class WorkbookUpdateParameters {
      * @return the WorkbookUpdateParameters object itself.
      */
     public WorkbookUpdateParameters withCategory(String category) {
-        this.category = category;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCategory(category);
         return this;
     }
 
     /**
-     * Get the tagsPropertiesTags property: A list of 0 or more tags that are associated with this workbook definition.
+     * Get the tags property: A list of 0 or more tags that are associated with this workbook definition.
      *
-     * @return the tagsPropertiesTags value.
+     * @return the tags value.
      */
     public List<String> tagsPropertiesTags() {
-        return this.tagsPropertiesTags;
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
     }
 
     /**
-     * Set the tagsPropertiesTags property: A list of 0 or more tags that are associated with this workbook definition.
+     * Set the tags property: A list of 0 or more tags that are associated with this workbook definition.
      *
-     * @param tagsPropertiesTags the tagsPropertiesTags value to set.
+     * @param tags the tags value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
-    public WorkbookUpdateParameters withTagsPropertiesTags(List<String> tagsPropertiesTags) {
-        this.tagsPropertiesTags = tagsPropertiesTags;
+    public WorkbookUpdateParameters withTagsPropertiesTags(List<String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the description property: The description of the workbook.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the workbook.
+     *
+     * @param description the description value to set.
+     * @return the WorkbookUpdateParameters object itself.
+     */
+    public WorkbookUpdateParameters withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the revision property: The unique revision id for this workbook definition.
+     *
+     * @return the revision value.
+     */
+    public String revision() {
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
+    }
+
+    /**
+     * Set the revision property: The unique revision id for this workbook definition.
+     *
+     * @param revision the revision value to set.
+     * @return the WorkbookUpdateParameters object itself.
+     */
+    public WorkbookUpdateParameters withRevision(String revision) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkbookPropertiesUpdateParameters();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -184,5 +228,8 @@ public class WorkbookUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -162,7 +162,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -222,7 +223,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -279,7 +281,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
@@ -326,7 +328,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
@@ -347,7 +349,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
+     * @return a Kusto cluster principalAssignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(
@@ -403,7 +405,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
+     * @return a Kusto cluster principalAssignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterPrincipalAssignmentInner>> getWithResponseAsync(
@@ -455,7 +457,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
+     * @return a Kusto cluster principalAssignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterPrincipalAssignmentInner> getAsync(
@@ -498,7 +500,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto cluster principalAssignment.
+     * @return a Kusto cluster principalAssignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterPrincipalAssignmentInner> getWithResponse(
@@ -516,7 +518,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -582,7 +585,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -645,9 +649,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return the {@link PollerFlux} for polling of class representing a cluster principal assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -663,7 +667,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
                 this.client.getHttpPipeline(),
                 ClusterPrincipalAssignmentInner.class,
                 ClusterPrincipalAssignmentInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -677,9 +681,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return the {@link PollerFlux} for polling of class representing a cluster principal assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -711,9 +715,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return the {@link SyncPoller} for polling of class representing a cluster principal assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
@@ -734,9 +738,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return the {@link SyncPoller} for polling of class representing a cluster principal assignment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterPrincipalAssignmentInner>, ClusterPrincipalAssignmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
@@ -757,7 +761,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return class representing a cluster principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(
@@ -781,7 +785,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a cluster principal assignment.
+     * @return class representing a cluster principal assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterPrincipalAssignmentInner> createOrUpdateAsync(
@@ -849,7 +853,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -905,7 +909,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -957,16 +961,17 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String principalAssignmentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, clusterName, principalAssignmentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -979,9 +984,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context) {
         context = this.client.mergeContext(context);
@@ -1001,9 +1006,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName) {
         return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName).getSyncPoller();
@@ -1019,9 +1024,9 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String principalAssignmentName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, principalAssignmentName, context).getSyncPoller();
@@ -1036,7 +1041,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String principalAssignmentName) {
@@ -1055,7 +1060,7 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1104,7 +1109,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(
@@ -1157,7 +1163,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(
@@ -1206,7 +1213,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(String resourceGroupName, String clusterName) {
@@ -1222,7 +1230,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(
@@ -1238,7 +1247,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterPrincipalAssignmentInner> list(String resourceGroupName, String clusterName) {
@@ -1254,7 +1264,8 @@ public final class ClusterPrincipalAssignmentsClientImpl implements ClusterPrinc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterPrincipalAssignmentInner> list(

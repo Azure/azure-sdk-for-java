@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,13 +21,13 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
@@ -45,11 +44,8 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -59,7 +55,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    protected boolean isManagedHsmTest = false;
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -69,16 +66,18 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient, ServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+
             credential = new ClientSecretCredentialBuilder()
                 .clientSecret(clientKey)
                 .clientId(clientId)
@@ -89,14 +88,14 @@ public abstract class CryptographyClientTestBase extends TestBase {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
+        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential,
-                isManagedHsmTest ? CryptographyAsyncClient.MHSM_SCOPE : CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new KeyVaultCredentialPolicy(credential));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -127,8 +126,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void encryptDecryptRsaLocal() throws Exception;
 
     void encryptDecryptRsaRunner(Consumer<KeyPair> testRunner) throws Exception {
-        final Map<String, String> tags = new HashMap<>();
-
         testRunner.accept(getWellKnownKey());
     }
 
@@ -174,7 +171,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
         BigInteger primeExponentP = new BigInteger("79745606804504995938838168837578376593737280079895233277372027184693457251170125851946171360348440134236338520742068873132216695552312068793428432338173016914968041076503997528137698610601222912385953171485249299873377130717231063522112968474603281996190849604705284061306758152904594168593526874435238915345");
         BigInteger primeExponentQ = new BigInteger("80619964983821018303966686284189517841976445905569830731617605558094658227540855971763115484608005874540349730961777634427740786642996065386667564038755340092176159839025706183161615488856833433976243963682074011475658804676349317075370362785860401437192843468423594688700132964854367053490737073471709030801");
         BigInteger crtCoefficient = new BigInteger("2157818511040667226980891229484210846757728661751992467240662009652654684725325675037512595031058612950802328971801913498711880111052682274056041470625863586779333188842602381844572406517251106159327934511268610438516820278066686225397795046020275055545005189953702783748235257613991379770525910232674719428");
-
         KeySpec publicKeySpec = new RSAPublicKeySpec(modulus, publicExponent);
         KeySpec privateKeySpec = new RSAPrivateCrtKeySpec(modulus, publicExponent, privateExponent, primeP, primeQ, primeExponentP, primeExponentQ, crtCoefficient);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -186,8 +182,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         CryptographyClient cryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptResult encryptResult =
-            cryptographyClient.encrypt(encryptParameters, Context.NONE);
+        EncryptResult encryptResult = cryptographyClient.encrypt(encryptParameters, Context.NONE);
         EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         DecryptParameters decryptParameters = null;
 
@@ -224,16 +219,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
     }
 
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
-    }
-
     public String getEndpoint() {
-        final String endpoint = isManagedHsmTest
+        final String endpoint = runManagedHsmTest
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
             : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
 
@@ -246,7 +233,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
         assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower,
+                                    Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -258,14 +247,15 @@ public abstract class CryptographyClientTestBase extends TestBase {
     /**
      * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
      *
-     * @param exception Expected error thrown during the test
-     * @param expectedStatusCode Expected HTTP status code contained in the error response
+     * @param exception Expected error thrown during the test.
+     * @param expectedStatusCode Expected HTTP status code contained in the error response.
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
         assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
@@ -288,6 +278,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return;
         }
+
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

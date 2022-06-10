@@ -26,13 +26,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
+import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySetListResult;
 import com.azure.resourcemanager.compute.models.AvailabilitySetUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeListResult;
@@ -47,8 +46,6 @@ public final class AvailabilitySetsClientImpl
         InnerSupportsListing<AvailabilitySetInner>,
         InnerSupportsDelete<Void>,
         AvailabilitySetsClient {
-    private final ClientLogger logger = new ClientLogger(AvailabilitySetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailabilitySetsService service;
 
@@ -78,7 +75,7 @@ public final class AvailabilitySetsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -94,7 +91,7 @@ public final class AvailabilitySetsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -105,18 +102,19 @@ public final class AvailabilitySetsClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("availabilitySetName") String availabilitySetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -124,7 +122,7 @@ public final class AvailabilitySetsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets/{availabilitySetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -137,7 +135,7 @@ public final class AvailabilitySetsClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/availabilitySets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -151,7 +149,7 @@ public final class AvailabilitySetsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -165,7 +163,7 @@ public final class AvailabilitySetsClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/availabilitySets/{availabilitySetName}/vmSizes")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineSizeListResult>> listAvailableSizes(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -178,7 +176,7 @@ public final class AvailabilitySetsClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -188,7 +186,7 @@ public final class AvailabilitySetsClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<AvailabilitySetListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -203,9 +201,10 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> createOrUpdateWithResponseAsync(
@@ -235,7 +234,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -261,9 +260,10 @@ public final class AvailabilitySetsClientImpl
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilitySetInner>> createOrUpdateWithResponseAsync(
@@ -293,7 +293,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -315,22 +315,16 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> createOrUpdateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -340,7 +334,7 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to.
      */
@@ -358,9 +352,10 @@ public final class AvailabilitySetsClientImpl
      * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> createOrUpdateWithResponse(
@@ -375,9 +370,10 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> updateWithResponseAsync(
@@ -407,7 +403,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -433,9 +429,10 @@ public final class AvailabilitySetsClientImpl
      * @param parameters Parameters supplied to the Update Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilitySetInner>> updateWithResponseAsync(
@@ -465,7 +462,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -487,22 +484,16 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> updateAsync(
         String resourceGroupName, String availabilitySetName, AvailabilitySetUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, availabilitySetName, parameters)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -512,7 +503,7 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to.
      */
@@ -530,9 +521,10 @@ public final class AvailabilitySetsClientImpl
      * @param parameters Parameters supplied to the Update Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> updateWithResponse(
@@ -546,9 +538,9 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String availabilitySetName) {
@@ -572,7 +564,8 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -583,6 +576,7 @@ public final class AvailabilitySetsClientImpl
                             availabilitySetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -594,9 +588,9 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -621,7 +615,8 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -630,6 +625,7 @@ public final class AvailabilitySetsClientImpl
                 availabilitySetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -639,14 +635,13 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String availabilitySetName) {
-        return deleteWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, availabilitySetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -655,7 +650,7 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -670,9 +665,9 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String availabilitySetName, Context context) {
@@ -685,9 +680,10 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(
@@ -712,7 +708,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -736,9 +732,10 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilitySetInner>> getByResourceGroupWithResponseAsync(
@@ -763,7 +760,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -783,21 +780,15 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailabilitySetInner> getByResourceGroupAsync(String resourceGroupName, String availabilitySetName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, availabilitySetName)
-            .flatMap(
-                (Response<AvailabilitySetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -806,7 +797,7 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the availability set that the virtual machine should be assigned to.
      */
@@ -822,9 +813,10 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the availability set that the virtual machine should be assigned to.
+     * @return specifies information about the availability set that the virtual machine should be assigned to along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilitySetInner> getByResourceGroupWithResponse(
@@ -837,9 +829,10 @@ public final class AvailabilitySetsClientImpl
      *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listSinglePageAsync(String expand) {
@@ -855,7 +848,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -886,9 +879,10 @@ public final class AvailabilitySetsClientImpl
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listSinglePageAsync(String expand, Context context) {
@@ -904,7 +898,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -925,9 +919,9 @@ public final class AvailabilitySetsClientImpl
      *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync(String expand) {
@@ -938,9 +932,9 @@ public final class AvailabilitySetsClientImpl
     /**
      * Lists all availability sets in a subscription.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listAsync() {
@@ -955,9 +949,9 @@ public final class AvailabilitySetsClientImpl
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilitySetInner> listAsync(String expand, Context context) {
@@ -969,9 +963,9 @@ public final class AvailabilitySetsClientImpl
     /**
      * Lists all availability sets in a subscription.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list() {
@@ -985,9 +979,9 @@ public final class AvailabilitySetsClientImpl
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> list(String expand, Context context) {
@@ -999,9 +993,10 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1021,7 +1016,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1052,9 +1047,10 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listByResourceGroupSinglePageAsync(
@@ -1075,7 +1071,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1102,9 +1098,9 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1118,9 +1114,9 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilitySetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1134,9 +1130,9 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName) {
@@ -1149,9 +1145,9 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilitySetInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1165,9 +1161,10 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineSizeInner>> listAvailableSizesSinglePageAsync(
@@ -1192,7 +1189,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1221,9 +1218,10 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineSizeInner>> listAvailableSizesSinglePageAsync(
@@ -1248,7 +1246,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1273,9 +1271,9 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(
@@ -1291,9 +1289,9 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineSizeInner> listAvailableSizesAsync(
@@ -1309,9 +1307,9 @@ public final class AvailabilitySetsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(
@@ -1327,9 +1325,9 @@ public final class AvailabilitySetsClientImpl
      * @param availabilitySetName The name of the availability set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine operation response.
+     * @return the List Virtual Machine operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineSizeInner> listAvailableSizes(
@@ -1342,9 +1340,10 @@ public final class AvailabilitySetsClientImpl
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1379,9 +1378,10 @@ public final class AvailabilitySetsClientImpl
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listBySubscriptionNextSinglePageAsync(
@@ -1415,9 +1415,10 @@ public final class AvailabilitySetsClientImpl
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listNextSinglePageAsync(String nextLink) {
@@ -1451,9 +1452,10 @@ public final class AvailabilitySetsClientImpl
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
+     * @return the List Availability Set operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilitySetInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -18,10 +18,9 @@ import com.azure.resourcemanager.datafactory.models.TriggerQueryResponse;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
 import com.azure.resourcemanager.datafactory.models.TriggerSubscriptionOperationStatus;
 import com.azure.resourcemanager.datafactory.models.Triggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TriggersImpl implements Triggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TriggersImpl.class);
 
     private final TriggersClient innerClient;
 
@@ -194,7 +193,7 @@ public final class TriggersImpl implements Triggers {
     public TriggerResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -202,14 +201,14 @@ public final class TriggersImpl implements Triggers {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
@@ -223,7 +222,7 @@ public final class TriggersImpl implements Triggers {
     public Response<TriggerResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -231,14 +230,14 @@ public final class TriggersImpl implements Triggers {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
@@ -249,7 +248,7 @@ public final class TriggersImpl implements Triggers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,25 +256,25 @@ public final class TriggersImpl implements Triggers {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -283,14 +282,14 @@ public final class TriggersImpl implements Triggers {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));

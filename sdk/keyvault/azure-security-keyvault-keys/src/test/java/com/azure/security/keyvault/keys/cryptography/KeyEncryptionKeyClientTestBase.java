@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,6 +21,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -35,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -44,16 +46,18 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
             String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
             String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
+
             credential = new ClientSecretCredentialBuilder()
                 .clientSecret(clientKey)
                 .clientId(clientId)
@@ -63,13 +67,17 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(
-            new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
+            new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
+
         policies.add(new RetryPolicy(strategy));
+
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new KeyVaultCredentialPolicy(credential));
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
@@ -96,10 +104,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     @Test
     public abstract void wrapUnwrapSymmetricAK192Local();
 
-
     public String getEndpoint() {
-        final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+        final String endpoint = runManagedHsmTest
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }
@@ -108,7 +116,9 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower,
+                                    Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -120,14 +130,15 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     /**
      * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
      *
-     * @param exception Expected error thrown during the test
-     * @param expectedStatusCode Expected HTTP status code contained in the error response
+     * @param exception Expected error thrown during the test.
+     * @param expectedStatusCode Expected HTTP status code contained in the error response.
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
         assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
@@ -150,6 +161,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             return;
         }
+
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

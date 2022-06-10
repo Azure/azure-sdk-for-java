@@ -33,7 +33,7 @@ public interface TopQueryStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic along with {@link Response}.
      */
     Response<QueryStatistic> getWithResponse(
         String resourceGroupName, String serverName, String queryStatisticId, Context context);

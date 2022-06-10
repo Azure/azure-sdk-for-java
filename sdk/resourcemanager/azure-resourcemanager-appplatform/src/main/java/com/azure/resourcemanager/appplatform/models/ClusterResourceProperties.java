@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Service properties payload. */
 @Fluent
 public final class ClusterResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterResourceProperties.class);
-
     /*
      * Provisioning state of the Service
      */
@@ -37,6 +33,18 @@ public final class ClusterResourceProperties {
      */
     @JsonProperty(value = "serviceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceId;
+
+    /*
+     * The zoneRedundant property.
+     */
+    @JsonProperty(value = "zoneRedundant")
+    private Boolean zoneRedundant;
+
+    /*
+     * Fully qualified dns name of the service instance
+     */
+    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
+    private String fqdn;
 
     /**
      * Get the provisioningState property: Provisioning state of the Service.
@@ -83,6 +91,35 @@ public final class ClusterResourceProperties {
      */
     public String serviceId() {
         return this.serviceId;
+    }
+
+    /**
+     * Get the zoneRedundant property: The zoneRedundant property.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set the zoneRedundant property: The zoneRedundant property.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get the fqdn property: Fully qualified dns name of the service instance.
+     *
+     * @return the fqdn value.
+     */
+    public String fqdn() {
+        return this.fqdn;
     }
 
     /**

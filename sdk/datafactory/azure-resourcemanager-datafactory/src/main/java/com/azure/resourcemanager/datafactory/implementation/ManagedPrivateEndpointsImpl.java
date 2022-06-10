@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datafactory.fluent.ManagedPrivateEndpointsClien
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedPrivateEndpointResourceInner;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpointResource;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointsImpl.class);
 
     private final ManagedPrivateEndpointsClient innerClient;
 
@@ -112,7 +111,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public ManagedPrivateEndpointResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,14 +119,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +160,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,14 +168,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +206,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,14 +214,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -232,7 +231,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -242,14 +241,13 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         this
             .deleteWithResponse(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, Context.NONE)
-            .getValue();
+                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,14 +255,14 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -274,7 +272,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

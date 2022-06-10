@@ -16,8 +16,6 @@ import java.util.Map;
 /** (Deprecated. Please use LogSettings) Log storage settings. */
 @Fluent
 public final class LogStorageSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogStorageSettings.class);
-
     /*
      * Log storage linked service reference.
      */
@@ -172,7 +170,7 @@ public final class LogStorageSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model LogStorageSettings"));
@@ -180,4 +178,6 @@ public final class LogStorageSettings {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogStorageSettings.class);
 }

@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -130,12 +131,20 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.innerModel().disableLocalAuth();
     }
 
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerModel().dataResidencyBoundary();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public TopicInner innerModel() {
@@ -333,6 +342,16 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
             return this;
         } else {
             this.updateTopicUpdateParameters.withDisableLocalAuth(disableLocalAuth);
+            return this;
+        }
+    }
+
+    public TopicImpl withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (isInCreateMode()) {
+            this.innerModel().withDataResidencyBoundary(dataResidencyBoundary);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withDataResidencyBoundary(dataResidencyBoundary);
             return this;
         }
     }

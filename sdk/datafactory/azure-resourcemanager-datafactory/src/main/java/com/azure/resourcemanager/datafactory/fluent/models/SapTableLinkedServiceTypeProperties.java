@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class SapTableLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapTableLinkedServiceTypeProperties.class);
-
     /*
      * Host name of the SAP instance where the table is located. Type: string
      * (or Expression with resultType string).

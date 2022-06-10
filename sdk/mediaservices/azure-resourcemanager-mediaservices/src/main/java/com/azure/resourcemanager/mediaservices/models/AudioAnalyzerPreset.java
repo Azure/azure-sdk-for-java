@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,15 +19,12 @@ import java.util.Map;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata\\.type",
+    property = "@odata.type",
     defaultImpl = AudioAnalyzerPreset.class)
 @JsonTypeName("#Microsoft.Media.AudioAnalyzerPreset")
 @JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.VideoAnalyzerPreset", value = VideoAnalyzerPreset.class)})
-@JsonFlatten
 @Fluent
 public class AudioAnalyzerPreset extends Preset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AudioAnalyzerPreset.class);
-
     /*
      * The language for the audio payload in the input using the BCP-47 format
      * of 'language tag-region' (e.g: 'en-US').  If you know the language of
@@ -61,6 +56,7 @@ public class AudioAnalyzerPreset extends Preset {
      * preset itself
      */
     @JsonProperty(value = "experimentalOptions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> experimentalOptions;
 
     /**

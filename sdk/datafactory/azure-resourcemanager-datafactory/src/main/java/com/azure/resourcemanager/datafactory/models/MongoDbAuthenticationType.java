@@ -27,7 +27,11 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
         return fromString(name, MongoDbAuthenticationType.class);
     }
 
-    /** @return known MongoDbAuthenticationType values. */
+    /**
+     * Gets known MongoDbAuthenticationType values.
+     *
+     * @return known MongoDbAuthenticationType values.
+     */
     public static Collection<MongoDbAuthenticationType> values() {
         return values(MongoDbAuthenticationType.class);
     }

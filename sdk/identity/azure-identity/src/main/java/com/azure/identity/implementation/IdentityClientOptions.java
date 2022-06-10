@@ -7,10 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 
@@ -23,10 +24,13 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    public static final String AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION = "AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION";
+    public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
+    public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
@@ -34,7 +38,6 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
-    private boolean allowMultiTenantAuthentication;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
     private boolean includeX5c;
@@ -43,21 +46,20 @@ public final class IdentityClientOptions {
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
-    private boolean identityLegacyTenantSelection;
+    private boolean multiTenantAuthDisabled;
     private Configuration configuration;
+    private IdentityLogOptionsImpl identityLogOptionsImpl;
+    private boolean accountIdentifierLogging;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        loadFromConfiugration(configuration);
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        loadFromConfiguration(configuration);
+        identityLogOptionsImpl = new IdentityLogOptionsImpl();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
-        identityLegacyTenantSelection = configuration
-            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false);
     }
 
     /**
@@ -75,6 +77,18 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
+    }
+
+    /**
+     * Disables authority validation when required for Azure Active Directory token endpoint.
+     * @return IdentityClientOptions
+     */
+
+    /**
+     * @return the AKS Pod Authority endpoint to acquire tokens.
+     */
+    public String getImdsAuthorityHost() {
+        return imdsAuthorityHost;
     }
 
     /**
@@ -202,30 +216,8 @@ public final class IdentityClientOptions {
         return this;
     }
 
-    /**
-     * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
-     *
-     * @param allowMultiTenantAuthentication the flag to indicate if multi tenant authentication is enabled or not.
-     * @return The updated identity client options.
-     */
-    public IdentityClientOptions setAllowMultiTenantAuthentication(boolean allowMultiTenantAuthentication) {
-        this.allowMultiTenantAuthentication = allowMultiTenantAuthentication;
-        return this;
-    }
-
-
     public boolean getAllowUnencryptedCache() {
         return this.allowUnencryptedCache;
-    }
-
-    /**
-     * Get the flag indicating if multi tenant authentication is enabled or not.
-     *
-     * @return the boolean status indicating if multi tenant authentication is enabled or not.
-     */
-    public boolean isMultiTenantAuthenticationAllowed() {
-        return this.allowMultiTenantAuthentication;
     }
 
     /**
@@ -378,11 +370,20 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Gets the regional authority, or null if regional authority should not be used.
-     * @return the regional authority value if specified
+     * Gets the status whether multi tenant auth is disabled or not.
+     * @return the flag indicating if multi tenant is disabled or not.
      */
-    public boolean isLegacyTenantSelectionEnabled() {
-        return identityLegacyTenantSelection;
+    public boolean isMultiTenantAuthenticationDisabled() {
+        return multiTenantAuthDisabled;
+    }
+
+    /**
+     * Disable the multi tenant authentication.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions disableMultiTenantAuthentication() {
+        this.multiTenantAuthDisabled = true;
+        return this;
     }
 
     /**
@@ -393,7 +394,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;
-        loadFromConfiugration(configuration);
+        loadFromConfiguration(configuration);
         return this;
     }
 
@@ -407,17 +408,33 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Loads the details from the specified Configuration Store.
-     *
-     * @return the regional authority value if specified
+     * Get the configured Identity Log options.
+     * @return the identity log options.
      */
-    private IdentityClientOptions loadFromConfiugration(Configuration configuration) {
+    public IdentityLogOptionsImpl getIdentityLogOptionsImpl() {
+        return identityLogOptionsImpl;
+    }
+
+    /**
+     * Set the Identity Log options.
+     * @return the identity log options.
+     */
+    public IdentityClientOptions setIdentityLogOptionsImpl(IdentityLogOptionsImpl identityLogOptionsImpl) {
+        this.identityLogOptionsImpl = identityLogOptionsImpl;
+        return this;
+    }
+
+    /**
+     * Loads the details from the specified Configuration Store.
+     */
+    private void loadFromConfiguration(Configuration configuration) {
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
-        return  this;
+        multiTenantAuthDisabled = configuration
+            .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
 }

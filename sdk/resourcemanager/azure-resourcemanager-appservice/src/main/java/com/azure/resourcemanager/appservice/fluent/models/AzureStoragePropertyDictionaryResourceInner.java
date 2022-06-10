@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** AzureStorageInfo dictionary resource. */
 @Fluent
 public final class AzureStoragePropertyDictionaryResourceInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStoragePropertyDictionaryResourceInner.class);
-
     /*
      * Azure storage accounts.
      */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoPrivateLinkResourcesList.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoPrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private endpoint connections.
@@ -17,6 +17,6 @@ public final class PrivateLinkResourcesListSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void getsPrivateEndpointConnections(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.privateLinkResources().list("kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager.privateLinkResources().list("kustorptest", "kustoCluster", Context.NONE);
     }
 }

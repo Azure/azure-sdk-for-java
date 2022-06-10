@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to unwrap the encryptionKey. */
 @Fluent
 public final class KeyVaultAndKeyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultAndKeyReference.class);
-
     /*
      * Resource id of the KeyVault containing the key or secret
      */
@@ -73,7 +70,7 @@ public final class KeyVaultAndKeyReference {
      */
     public void validate() {
         if (sourceVault() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceVault in model KeyVaultAndKeyReference"));
@@ -81,9 +78,11 @@ public final class KeyVaultAndKeyReference {
             sourceVault().validate();
         }
         if (keyUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyUrl in model KeyVaultAndKeyReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAndKeyReference.class);
 }

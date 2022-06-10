@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration parameters used while performing a rolling upgrade. */
 @Fluent
 public final class RollingUpgradePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradePolicy.class);
-
     /*
      * The maximum percent of total virtual machine instances that will be
      * upgraded simultaneously by the rolling upgrade in one batch. As this is

@@ -61,7 +61,7 @@ import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -94,7 +94,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
-            .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
+            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
@@ -137,7 +137,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<StoreResponse> exceptionMono = Mono.error(exception);
         Mockito.when(parameterizedCallbackMethod.apply(ArgumentMatchers.any())).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
-            .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
+            .thenReturn(Mono.just(new StoreResponse(200, new HashMap<>(), getUTF8BytesOrNull(responseText))));
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
             parameterizedCallbackMethod,
             retryPolicy,
@@ -469,7 +469,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
+
+                //In CI pipeline, the emulator starts with strong consitency
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);

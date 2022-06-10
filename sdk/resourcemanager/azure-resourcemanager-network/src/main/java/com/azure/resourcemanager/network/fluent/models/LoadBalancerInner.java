@@ -6,12 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +17,6 @@ import java.util.Map;
 /** LoadBalancer resource. */
 @Fluent
 public final class LoadBalancerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerInner.class);
-
     /*
      * The extended location of the load balancer.
      */
@@ -270,7 +266,7 @@ public final class LoadBalancerInner extends Resource {
      * Get the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
      * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
      * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
-     * mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale
+     * mutually exclusive with defining inbound NAT rules. Inbound NAT pools are referenced from virtual machine scale
      * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
      * to reference individual inbound NAT rules.
      *
@@ -284,7 +280,7 @@ public final class LoadBalancerInner extends Resource {
      * Set the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
      * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
      * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
-     * mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale
+     * mutually exclusive with defining inbound NAT rules. Inbound NAT pools are referenced from virtual machine scale
      * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
      * to reference individual inbound NAT rules.
      *

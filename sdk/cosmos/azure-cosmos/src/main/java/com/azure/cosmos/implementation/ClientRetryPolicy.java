@@ -3,11 +3,13 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -15,6 +17,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -38,6 +42,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int failoverRetryCount;
 
     private int sessionTokenRetryCount;
+    private int staleContainerRetryCount;
     private boolean isReadRequest;
     private boolean canUseMultipleWriteLocations;
     private URI locationEndpoint;
@@ -47,16 +52,19 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private int serviceUnavailableRetryCount;
     private int queryPlanAddressRefreshCount;
     private RxDocumentServiceRequest request;
+    private RxCollectionCache rxCollectionCache;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
-                             ThrottlingRetryOptions throttlingRetryOptions) {
+                             ThrottlingRetryOptions throttlingRetryOptions,
+                             RxCollectionCache rxCollectionCache) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
+        this.staleContainerRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
@@ -64,6 +72,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             throttlingRetryOptions.getMaxRetryWaitTime(),
             BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
             false);
+        this.rxCollectionCache = rxCollectionCache;
     }
 
     @Override
@@ -133,6 +142,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(this.shouldRetryOnSessionNotAvailable());
         }
 
+        // This is for gateway mode, collection recreate scenario is not handled there
+        if (clientException != null &&
+            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
+            Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+            return this.shouldRetryOnStaleContainer();
+        }
+
         return this.throttlingRetry.shouldRetry(e);
     }
 
@@ -189,6 +205,27 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 }
             }
         }
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryOnStaleContainer() {
+        this.staleContainerRetryCount++;
+        if (this.rxCollectionCache == null || this.staleContainerRetryCount > 1) {
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        this.request.setForceNameCacheRefresh(true);
+
+        // Refresh the sdk collection cache and throw the exception if intendedCollectionRid was passed by outside sdk, so caller will refresh their own collection cache if they have one
+        // Cosmos encryption is one use case
+        if(request.intendedCollectionRidPassedIntoSDK) {
+            return this.rxCollectionCache.refreshAsync(null, this.request).then( Mono.just(ShouldRetryResult.noRetry()));
+        }
+
+        //remove the previous header and try again
+        if(StringUtils.isNotEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+            request.getHeaders().remove(INTENDED_COLLECTION_RID_HEADER);
+        }
+        return this.rxCollectionCache.refreshAsync(null, this.request).then(Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO)));
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh) {

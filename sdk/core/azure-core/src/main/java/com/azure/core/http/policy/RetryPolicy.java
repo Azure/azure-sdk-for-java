@@ -8,19 +8,17 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
@@ -29,11 +27,8 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
 public class RetryPolicy implements HttpPipelinePolicy {
-    private static final String RETRY_AFTER_HEADER = "Retry-After";
-    private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
-    private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
-
-    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+    // RetryPolicy is a commonly used policy, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
@@ -95,6 +90,30 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
+    /**
+     * Creates a {@link RetryPolicy} with the provided {@link RetryOptions}.
+     *
+     * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
+     * @throws NullPointerException If {@code retryOptions} is null.
+     */
+    public RetryPolicy(RetryOptions retryOptions) {
+        this(
+            getRetryStrategyFromOptions(
+                Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.")),
+            null, null);
+    }
+
+    private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        if (retryOptions.getExponentialBackoffOptions() != null) {
+            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+        } else if (retryOptions.getFixedDelayOptions() != null) {
+            return new FixedDelay(retryOptions.getFixedDelayOptions());
+        } else {
+            // This should never happen.
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+        }
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptAsync(context, next, context.getHttpRequest(), 0);
@@ -109,8 +128,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
-                        delayDuration.getSeconds());
+                    LOGGER.atVerbose()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                        .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+                        .log("Retrying.");
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
                     if (responseBody == null) {
@@ -124,18 +145,24 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                        LOGGER.atInfo()
+                            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                            .log("Retry attempts have been exhausted.");
                     }
                     return Mono.just(httpResponse);
                 }
             })
-            .onErrorResume(err -> {
+            .onErrorResume(Exception.class, err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    LOGGER.atVerbose()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                            .log("Error resume.", err);
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                    LOGGER.atError()
+                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                        .log("Retry attempts have been exhausted.", err);
                     return Mono.error(err);
                 }
             });
@@ -175,61 +202,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
         Supplier<OffsetDateTime> nowSupplier) {
-        // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(responseHeaders, X_MS_RETRY_AFTER_MS_HEADER,
-            RetryPolicy::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
-        }
-
-        // Found 'retry-after-ms' header, use a Duration of milliseconds based on the value.
-        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_MS_HEADER, RetryPolicy::tryGetDelayMillis);
-        if (retryDelay != null) {
-            return retryDelay;
-        }
-
-        // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
-        // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_HEADER,
-            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
+        Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
         }
 
         // None of the well-known headers have been found, return the default delay duration.
         return retryStrategy.calculateRetryDelay(tryCount);
-    }
-
-    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerName,
-        Function<String, Duration> delayParser) {
-        String headerValue = headers.getValue(headerName);
-
-        return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
-    }
-
-    private static Duration tryGetDelayMillis(String value) {
-        long delayMillis = tryParseLong(value);
-        return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
-    }
-
-    private static Duration tryParseLongOrDateTime(String value, Supplier<OffsetDateTime> nowSupplier) {
-        long delaySeconds;
-        try {
-            OffsetDateTime retryAfter = new DateTimeRfc1123(value).getDateTime();
-
-            delaySeconds = nowSupplier.get().until(retryAfter, ChronoUnit.SECONDS);
-        } catch (DateTimeException ex) {
-            delaySeconds = tryParseLong(value);
-        }
-
-        return (delaySeconds >= 0) ? Duration.ofSeconds(delaySeconds) : null;
-    }
-
-    private static long tryParseLong(String value) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException ex) {
-            return -1;
-        }
     }
 }

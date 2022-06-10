@@ -31,7 +31,7 @@ public interface ResourceProviderCommonsClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
+     * @return the number of free and paid iot hubs in the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context);

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cassandra linked service properties. */
 @Fluent
 public final class CassandraLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraLinkedServiceTypeProperties.class);
-
     /*
      * Host name for connection. Type: string (or Expression with resultType
      * string).
@@ -188,7 +185,7 @@ public final class CassandraLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model CassandraLinkedServiceTypeProperties"));
@@ -197,4 +194,6 @@ public final class CassandraLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraLinkedServiceTypeProperties.class);
 }

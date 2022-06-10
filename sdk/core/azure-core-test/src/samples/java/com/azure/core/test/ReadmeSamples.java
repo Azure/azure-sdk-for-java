@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-
+    // BEGIN: readme-sample-createATestClass
     /**
      * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
      * live. By default, tests are run in playback mode.
@@ -37,7 +37,9 @@ public class ReadmeSamples {
             // Do some network calls.
         }
     }
+    // END: readme-sample-createATestClass
 
+    // BEGIN: readme-sample-recordNetworkCalls
     /**
      * Sample code for recording network calls.
      */
@@ -58,7 +60,9 @@ public class ReadmeSamples {
             });
         }
     }
+    // END: readme-sample-recordNetworkCalls
 
+    // BEGIN: readme-sample-playbackSessionRecords
     /**
      * Sample code for using playback to test.
      */
@@ -76,4 +80,5 @@ public class ReadmeSamples {
             Mono<HttpResponse> response = playbackClient.send(new HttpRequest(HttpMethod.GET, "http://bing.com"));
         }
     }
+    // END: readme-sample-playbackSessionRecords
 }

@@ -22,7 +22,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Job items.
+     * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobInner> list(String resourceGroupName, String accountName, String transformName);
@@ -39,7 +39,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Job items.
+     * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<JobInner> list(
@@ -76,7 +76,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
+     * @return a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobInner> getWithResponse(
@@ -111,7 +111,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
+     * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobInner> createWithResponse(
@@ -147,7 +147,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -184,7 +184,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
+     * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobInner> updateWithResponse(
@@ -220,7 +220,7 @@ public interface JobsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> cancelJobWithResponse(

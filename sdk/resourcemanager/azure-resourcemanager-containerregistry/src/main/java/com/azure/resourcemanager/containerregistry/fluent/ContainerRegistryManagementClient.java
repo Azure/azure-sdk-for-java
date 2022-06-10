@@ -52,6 +52,13 @@ public interface ContainerRegistryManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
      * Gets the ReplicationsClient object to access its operations.
      *
      * @return the ReplicationsClient object.
@@ -66,11 +73,25 @@ public interface ContainerRegistryManagementClient {
     WebhooksClient getWebhooks();
 
     /**
+     * Gets the AgentPoolsClient object to access its operations.
+     *
+     * @return the AgentPoolsClient object.
+     */
+    AgentPoolsClient getAgentPools();
+
+    /**
      * Gets the RunsClient object to access its operations.
      *
      * @return the RunsClient object.
      */
     RunsClient getRuns();
+
+    /**
+     * Gets the TaskRunsClient object to access its operations.
+     *
+     * @return the TaskRunsClient object.
+     */
+    TaskRunsClient getTaskRuns();
 
     /**
      * Gets the TasksClient object to access its operations.

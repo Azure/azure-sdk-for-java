@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.models.PartnerTopicUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for PartnerTopics Update. */
 public final class PartnerTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerTopics_Update.json
      */
     /**
      * Sample code: PartnerTopics_Update.
@@ -20,13 +20,12 @@ public final class PartnerTopicsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .partnerTopics()
-            .updateWithResponse(
-                "examplerg",
-                "examplePartnerTopicName1",
-                new PartnerTopicUpdateParameters().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+        PartnerTopic resource =
+            manager
+                .partnerTopics()
+                .getByResourceGroupWithResponse("examplerg", "examplePartnerTopicName1", Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
     @SuppressWarnings("unchecked")

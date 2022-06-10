@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -820,6 +821,20 @@ public class DeserializationTests {
         assertTrue(eventData.isUnexpectedBitrate());
         assertEquals("Running", eventData.getState());
         assertFalse(eventData.isHealthy());
+        assertEquals(0, eventData.getIngestDriftValue());
+        assertEquals(OffsetDateTime.parse("2021-05-14T23:50:00.00Z"), eventData.getLastFragmentArrivalTime());
+
+
+        jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/liveevent-ec9d26a8\",  \"eventType\": \"Microsoft.Media.LiveEventIngestHeartbeat\",  \"eventTime\": \"2018-10-12T15:52:37.3710102\",  \"id\": \"d84727e2-d9c0-4a21-a66b-8d23f06b3e06\",  \"data\": {    \"trackType\": \"video\",    \"trackName\": \"video\",    \"bitrate\": 2500000,    \"incomingBitrate\": 500726,    \"lastTimestamp\": \"11999\",    \"timescale\": \"1000\",    \"overlapCount\": 0,    \"discontinuityCount\": 0,    \"nonincreasingCount\": 0,    \"unexpectedBitrate\": true,    \"state\": \"Running\",    \"healthy\": false,  \"lastFragmentArrivalTime\": \"2021-05-14T23:50:00.00\", \"ingestDriftValue\": \"n/a\"  },  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+
+        events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
+
+        assertNotNull(events);
+
+        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventIngestHeartbeatEventData);
+        eventData = (MediaLiveEventIngestHeartbeatEventData) toSystemEventData(events[0]);
+        // n/a should be translated to null IngestDriftValue
+        assertNull(eventData.getIngestDriftValue());
     }
 
     @Test
@@ -840,6 +855,30 @@ public class DeserializationTests {
         assertEquals("4000", eventData.getDiscontinuityGap());
     }
 
+    @Test
+    public void consumeMediaLiveEventChannelArchiveHeartbeatEvent() throws IOException {
+        String jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"10\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+        EventGridEvent[] events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
+
+        assertNotNull(events);
+        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
+        MediaLiveEventChannelArchiveHeartbeatEventData eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
+
+        assertEquals(Duration.ofMillis(10), eventData.getChannelLatency());
+        assertEquals("S_OK", eventData.getLatencyResultCode());
+
+        jsonData = "[{  \"topic\": \"/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}\",  \"subject\": \"liveEvent/mle1\",  \"eventType\": \"Microsoft.Media.LiveEventChannelArchiveHeartbeat\",  \"eventTime\": \"2021-05-14T23:50:00.324\", \"id\": \"7f450938-491f-41e1-b06f-c6cd3965d786\",  \"data\": {    \"channelLatencyMs\": \"n/a\",    \"latencyResultCode\": \"S_OK\"},  \"dataVersion\": \"1.0\",  \"metadataVersion\": \"1\"}]";
+
+        events = EventGridEvent.fromString(jsonData).toArray(new EventGridEvent[0]);
+
+        assertNotNull(events);
+        assertTrue(toSystemEventData(events[0]) instanceof MediaLiveEventChannelArchiveHeartbeatEventData);
+        eventData = (MediaLiveEventChannelArchiveHeartbeatEventData) toSystemEventData(events[0]);
+
+        // n/a should be translated to null ChannelLatency
+        assertNull(eventData.getChannelLatency());
+        assertEquals("S_OK", eventData.getLatencyResultCode());
+    }
     // Resource Manager (Azure Subscription/Resource Group) events
     @Test
     public void consumeResourceWriteFailureEvent() throws IOException {
@@ -1259,6 +1298,84 @@ public class DeserializationTests {
         assertEquals(planName, eventData.getName());
     }
     //end of web
+
+    // Healthcare FHIR
+    @Test
+    public void consumeFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"eventType\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"eventTime\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"dataVersion\": \"1.0\" }]";
+        List<EventGridEvent> events = EventGridEvent.fromString(requestContent);
+        assertNotNull(events);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceCreatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceCreated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceCreatedEventData eventData = (HealthcareFhirResourceCreatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceUpdatedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceUpdated\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceUpdatedEventData eventData = (HealthcareFhirResourceUpdatedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    @Test
+    public void consumeCloudEventFhirResourceDeletedEvent() {
+        String requestContent = "[ { \"source\": \"/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.HealthcareApis/workspaces/{workspace-name}\", \"subject\":\"{fhir-account}.fhir.azurehealthcareapis.com/Patient/e0a1f743-1a70-451f-830e-e96477163902\", \"type\":\"Microsoft.HealthcareApis.FhirResourceDeleted\", \"time\":\"2017-08-16T03:54:38.2696833Z\", \"id\":\"25b3b0d0-d79b-44d5-9963-440d4e6a9bba\", \"data\": { \"resourceType\": \"Patient\", \"resourceFhirAccount\": \"{fhir-account}.fhir.azurehealthcareapis.com\", \"resourceFhirId\": \"e0a1f743-1a70-451f-830e-e96477163902\", \"resourceVersionId\": 1 }, \"specversion\": \"1.0\" }]";
+
+        List<CloudEvent> events = CloudEvent.fromString(requestContent);
+        HealthcareFhirResourceDeletedEventData eventData = (HealthcareFhirResourceDeletedEventData) toSystemEventData(events.get(0));
+        assertNotNull(events);
+        assertEquals(HealthcareFhirResourceType.PATIENT, eventData.getFhirResourceType());
+        assertEquals("{fhir-account}.fhir.azurehealthcareapis.com", eventData.getFhirServiceHostName());
+        assertEquals("e0a1f743-1a70-451f-830e-e96477163902", eventData.getFhirResourceId());
+        assertEquals(1, eventData.getFhirResourceVersionId());
+    }
+
+    // End of healthcare FHIR
 
     // TODO: When new event types are introduced, add one test here for each event type
     private String getTestPayloadFromFile(String fileName) throws IOException {

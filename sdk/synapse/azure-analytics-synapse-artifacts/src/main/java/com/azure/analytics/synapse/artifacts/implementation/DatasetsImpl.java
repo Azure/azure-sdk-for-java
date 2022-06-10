@@ -57,7 +57,7 @@ public final class DatasetsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientDatas")
-    private interface DatasetsService {
+    public interface DatasetsService {
         @Get("/datasets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -126,15 +126,15 @@ public final class DatasetsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceSinglePageAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getDatasetsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                service.getDatasetsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -153,12 +153,13 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceSinglePageAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getDatasetsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getDatasetsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -175,7 +176,7 @@ public final class DatasetsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatasetResource> getDatasetsByWorkspaceAsync() {
@@ -191,7 +192,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatasetResource> getDatasetsByWorkspaceAsync(Context context) {
@@ -205,7 +206,7 @@ public final class DatasetsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResource> getDatasetsByWorkspace() {
@@ -219,7 +220,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResource> getDatasetsByWorkspace(Context context) {
@@ -236,22 +237,17 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponseAsync(
             String datasetName, DatasetResource dataset, String ifMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDataset(
-                                this.client.getEndpoint(),
-                                datasetName,
-                                this.client.getApiVersion(),
-                                ifMatch,
-                                dataset,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), datasetName, apiVersion, ifMatch, dataset, accept, context));
     }
 
     /**
@@ -265,14 +261,15 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponseAsync(
             String datasetName, DatasetResource dataset, String ifMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.createOrUpdateDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifMatch, dataset, accept, context);
+                this.client.getEndpoint(), datasetName, apiVersion, ifMatch, dataset, accept, context);
     }
 
     /**
@@ -285,7 +282,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> createOrUpdateDatasetAsync(
@@ -309,7 +306,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> createOrUpdateDatasetAsync(String datasetName, DatasetResource dataset) {
@@ -336,7 +333,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> createOrUpdateDatasetAsync(
@@ -396,7 +393,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
+     * @return dataset resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResource> createOrUpdateDatasetWithResponse(
@@ -413,20 +410,16 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> getDatasetWithResponseAsync(String datasetName, String ifNoneMatch) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDataset(
-                                this.client.getEndpoint(),
-                                datasetName,
-                                this.client.getApiVersion(),
-                                ifNoneMatch,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), datasetName, apiVersion, ifNoneMatch, accept, context));
     }
 
     /**
@@ -439,14 +432,14 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> getDatasetWithResponseAsync(
             String datasetName, String ifNoneMatch, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), ifNoneMatch, accept, context);
+        return service.getDataset(this.client.getEndpoint(), datasetName, apiVersion, ifNoneMatch, accept, context);
     }
 
     /**
@@ -458,7 +451,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch) {
@@ -480,7 +473,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName) {
@@ -506,7 +499,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch, Context context) {
@@ -562,7 +555,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResource> getDatasetWithResponse(String datasetName, String ifNoneMatch, Context context) {
@@ -576,15 +569,14 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetWithResponseAsync(String datasetName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.deleteDataset(
-                                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), accept, context));
+                context -> service.deleteDataset(this.client.getEndpoint(), datasetName, apiVersion, accept, context));
     }
 
     /**
@@ -595,13 +587,13 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetWithResponseAsync(String datasetName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.deleteDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), accept, context);
+        return service.deleteDataset(this.client.getEndpoint(), datasetName, apiVersion, accept, context);
     }
 
     /**
@@ -611,7 +603,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatasetAsync(String datasetName) {
@@ -626,7 +618,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatasetAsync(String datasetName, Context context) {
@@ -654,7 +646,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDatasetWithResponse(String datasetName, Context context) {
@@ -669,20 +661,16 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDatasetWithResponseAsync(String datasetName, ArtifactRenameRequest request) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameDataset(
-                                this.client.getEndpoint(),
-                                datasetName,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), datasetName, apiVersion, request, accept, context));
     }
 
     /**
@@ -694,14 +682,14 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDatasetWithResponseAsync(
             String datasetName, ArtifactRenameRequest request, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.renameDataset(
-                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, accept, context);
+        return service.renameDataset(this.client.getEndpoint(), datasetName, apiVersion, request, accept, context);
     }
 
     /**
@@ -712,7 +700,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request) {
@@ -728,7 +716,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request, Context context) {
@@ -759,7 +747,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameDatasetWithResponse(
@@ -774,7 +762,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -802,7 +790,7 @@ public final class DatasetsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(

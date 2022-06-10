@@ -4,16 +4,15 @@
 
 package com.azure.communication.networktraversal.models;
 
-import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The CommunicationRelayConfiguration model. */
-@Fluent
+/** A relay configuration containing the STUN/TURN URLs and credentials. */
 public final class CommunicationRelayConfiguration {
     /*
      * The date for which the username and credentials are not longer valid.
+     * Will be 48 hours from request time.
      */
     @JsonProperty(value = "expiresOn", required = true)
     private OffsetDateTime expiresOn;
@@ -26,7 +25,8 @@ public final class CommunicationRelayConfiguration {
     private List<CommunicationIceServer> iceServers;
 
     /**
-     * Get the expiresOn property: The date for which the username and credentials are not longer valid.
+     * Get the expiresOn property: The date for which the username and credentials are not longer valid. Will be 48
+     * hours from request time.
      *
      * @return the expiresOn value.
      */
@@ -35,12 +35,13 @@ public final class CommunicationRelayConfiguration {
     }
 
     /**
-     * Set the expiresOn property: The date for which the username and credentials are not longer valid.
+     * Set the expiresOn property: The date for which the username and credentials are not longer valid. Will be 48
+     * hours from request time.
      *
      * @param expiresOn the expiresOn value to set.
      * @return the CommunicationRelayConfiguration object itself.
      */
-    public CommunicationRelayConfiguration setExpiresOn(OffsetDateTime expiresOn) {
+    CommunicationRelayConfiguration setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
     }
@@ -62,7 +63,7 @@ public final class CommunicationRelayConfiguration {
      * @param iceServers the iceServers value to set.
      * @return the CommunicationRelayConfiguration object itself.
      */
-    public CommunicationRelayConfiguration setIceServers(List<CommunicationIceServer> iceServers) {
+    CommunicationRelayConfiguration setIceServers(List<CommunicationIceServer> iceServers) {
         this.iceServers = iceServers;
         return this;
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PartnerRegistrations List. */
 public final class PartnerRegistrationsListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerRegistrations_ListBySubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerRegistrations_ListBySubscription.json
      */
     /**
      * Sample code: PartnerRegistrations_ListBySubscription.

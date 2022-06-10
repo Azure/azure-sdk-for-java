@@ -3,9 +3,11 @@
 package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
 import com.azure.resourcemanager.containerregistry.models.OS;
+import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskStep;
@@ -13,6 +15,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
 import com.azure.resourcemanager.containerregistry.models.RegistryTask;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
 import com.azure.resourcemanager.containerregistry.models.RunStatus;
+import com.azure.resourcemanager.containerregistry.models.SkuTier;
 import com.azure.resourcemanager.containerregistry.models.SourceControlType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerEvent;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
@@ -1355,6 +1358,29 @@ public class RegistryTaskTests extends RegistryTest {
             .assertEquals(
                 BaseImageTriggerType.ALL.toString(),
                 registryTask.trigger().baseImageTrigger().baseImageTriggerType().toString());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testRegistryPublicNetworkAccess() {
+        final String acrName = generateRandomResourceName("acr", 10);
+
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .disablePublicNetworkAccess()
+            .create();
+
+        Assertions.assertEquals(SkuTier.PREMIUM, registry.sku().tier());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, registry.publicNetworkAccess());
+
+        registry.update()
+            .enablePublicNetworkAccess()
+            .apply();
+
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
     }
 
     @Override

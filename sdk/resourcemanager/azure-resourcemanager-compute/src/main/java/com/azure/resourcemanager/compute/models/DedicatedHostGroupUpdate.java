@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
  */
 @Fluent
 public final class DedicatedHostGroupUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupUpdate.class);
-
     /*
      * Dedicated Host Group Properties.
      */
@@ -143,6 +139,32 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
             this.innerProperties = new DedicatedHostGroupProperties();
         }
         this.innerProperties().withSupportAutomaticPlacement(supportAutomaticPlacement);
+        return this;
+    }
+
+    /**
+     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @return the additionalCapabilities value.
+     */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalCapabilities();
+    }
+
+    /**
+     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host
+     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     *
+     * @param additionalCapabilities the additionalCapabilities value to set.
+     * @return the DedicatedHostGroupUpdate object itself.
+     */
+    public DedicatedHostGroupUpdate withAdditionalCapabilities(
+        DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostGroupProperties();
+        }
+        this.innerProperties().withAdditionalCapabilities(additionalCapabilities);
         return this;
     }
 

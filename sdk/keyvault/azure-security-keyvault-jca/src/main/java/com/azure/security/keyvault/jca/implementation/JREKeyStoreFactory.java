@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.AccessController;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -83,8 +82,9 @@ public final class JREKeyStoreFactory {
             .orElse(null);
     }
 
+    @SuppressWarnings("removal")
     private static String  privilegedGetProperty(String theProp, String defaultVal) {
-        return AccessController.doPrivileged(
+        return java.security.AccessController.doPrivileged(
             (PrivilegedAction<String>) () -> {
                 String value = System.getProperty(theProp, "");
                 return (value.isEmpty()) ? defaultVal : value;

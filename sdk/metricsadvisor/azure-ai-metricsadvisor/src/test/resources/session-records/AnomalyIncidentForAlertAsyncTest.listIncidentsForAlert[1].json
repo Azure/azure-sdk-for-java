@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/204a211a-c5f4-45f3-a30e-512fb25d1d2c/alerts/175434e3400/incidents?$maxpagesize=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/126d1470-b500-4ef0-b5c0-47f9ca914a75/alerts/17f9f794800/incidents?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "59335534-ceed-43ca-95f2-0323cd3b9337"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "99d99250-cbb1-4a10-acb6-c30ccf9f4bc0"
     },
     "Response" : {
-      "x-request-id" : "baf7d888-6c87-46e7-93be-e3ede1a1f502",
-      "content-length" : "1020",
-      "x-envoy-upstream-service-time" : "497",
+      "x-request-id" : "f27475ae-6e5d-460e-bf9e-452cce3a4913",
+      "content-length" : "498",
+      "x-envoy-upstream-service-time" : "402",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "baf7d888-6c87-46e7-93be-e3ede1a1f502",
+      "apim-request-id" : "f27475ae-6e5d-460e-bf9e-452cce3a4913",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"51d849d03277901eadfa9a0e7665b4ad-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Delhi\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"property\":{\"incidentStatus\":\"Resolved\",\"valueOfRootNode\":5079001.4,\"expectedValueOfRootNode\":5142673.035323909}},{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"daceb039d9ec34d28f04654dd61aee57-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Karachi\",\"category\":\"Handmade\"}},\"property\":{\"maxSeverity\":\"Medium\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":3724747.4,\"expectedValueOfRootNode\":3579278.2792707016}}]}",
-      "Date" : "Tue, 06 Jul 2021 19:51:20 GMT",
+      "Body" : "{\"value\":[{\"dataFeedId\":\"6e48e476-33e6-4113-a299-a5740bc0db47\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"anomalyDetectionConfigurationId\":\"78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7\",\"incidentId\":\"88ecf25a0e6bd330ef9e7b49b7c5b92b-17f9f794800\",\"startTime\":\"2022-03-19T00:00:00Z\",\"lastTime\":\"2022-03-19T00:00:00Z\",\"rootNode\":{\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":97249.0,\"expectedValueOfRootNode\":80000.0}}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:18 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

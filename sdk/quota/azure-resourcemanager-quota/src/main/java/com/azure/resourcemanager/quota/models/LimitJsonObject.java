@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "limitObjectType",
     defaultImpl = LimitJsonObject.class)
 @JsonTypeName("LimitJsonObject")
-@JsonSubTypes({@JsonSubTypes.Type(name = "LimitValue", value = LimitValue.class)})
+@JsonSubTypes({@JsonSubTypes.Type(name = "LimitValue", value = LimitObject.class)})
 @Immutable
 public class LimitJsonObject {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LimitJsonObject.class);

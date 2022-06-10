@@ -25,9 +25,9 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockRespon
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsSealResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import java.nio.ByteBuffer;
@@ -64,7 +64,7 @@ public final class AppendBlobsImpl {
     public interface AppendBlobsService {
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<AppendBlobsCreateResponse> create(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -100,7 +100,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<AppendBlobsAppendBlockResponse> appendBlock(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -130,7 +130,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -167,7 +167,7 @@ public final class AppendBlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<AppendBlobsSealResponse> seal(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
@@ -217,12 +217,12 @@ public final class AppendBlobsImpl {
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobsCreateResponse> createWithResponseAsync(
@@ -244,7 +244,7 @@ public final class AppendBlobsImpl {
             Boolean legalHold,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String blobType = "AppendBlob";
         final String accept = "application/xml";
@@ -294,10 +294,10 @@ public final class AppendBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         DateTimeRfc1123 ifModifiedSinceConverted =
                 ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
@@ -323,7 +323,7 @@ public final class AppendBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -372,12 +372,12 @@ public final class AppendBlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobsAppendBlockResponse> appendBlockWithResponseAsync(
@@ -398,7 +398,7 @@ public final class AppendBlobsImpl {
             String ifTags,
             String requestId,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "appendblock";
         final String accept = "application/xml";
@@ -418,10 +418,10 @@ public final class AppendBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         DateTimeRfc1123 ifModifiedSinceConverted =
@@ -443,7 +443,7 @@ public final class AppendBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted,
                 ifMatch,
@@ -500,12 +500,12 @@ public final class AppendBlobsImpl {
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      *     copy source.
      * @param cpkInfo Parameter group.
-     * @param encryptionScope Parameter group.
+     * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrlWithResponseAsync(
@@ -533,7 +533,7 @@ public final class AppendBlobsImpl {
             String requestId,
             String copySourceAuthorization,
             CpkInfo cpkInfo,
-            EncryptionScope encryptionScope,
+            EncryptionScope encryptionScopeParam,
             Context context) {
         final String comp = "appendblock";
         final String accept = "application/xml";
@@ -553,10 +553,10 @@ public final class AppendBlobsImpl {
         }
         EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
         String encryptionScopeInternal = null;
-        if (encryptionScope != null) {
-            encryptionScopeInternal = encryptionScope.getEncryptionScope();
+        if (encryptionScopeParam != null) {
+            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
         }
-        String encryptionScopeLocal = encryptionScopeInternal;
+        String encryptionScope = encryptionScopeInternal;
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
@@ -583,7 +583,7 @@ public final class AppendBlobsImpl {
                 encryptionKey,
                 encryptionKeySha256,
                 encryptionAlgorithm,
-                encryptionScopeLocal,
+                encryptionScope,
                 leaseId,
                 maxSize,
                 appendPosition,
@@ -627,9 +627,9 @@ public final class AppendBlobsImpl {
      *     Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobsSealResponse> sealWithResponseAsync(

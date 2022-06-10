@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** Properties of the redis cache. */
 @Fluent
 public final class RedisPropertiesInner extends RedisCreateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisPropertiesInner.class);
-
     /*
      * Redis instance provisioning status.
      */
@@ -169,7 +166,7 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /** {@inheritDoc} */
     @Override
-    public RedisPropertiesInner withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisPropertiesInner withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }

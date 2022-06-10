@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** TriggeredJobHistory resource specific properties. */
 @Fluent
 public final class TriggeredJobHistoryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobHistoryProperties.class);
-
     /*
      * List of triggered web job runs.
      */

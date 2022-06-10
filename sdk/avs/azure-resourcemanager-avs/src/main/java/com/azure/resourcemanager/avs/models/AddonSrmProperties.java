@@ -21,7 +21,7 @@ public final class AddonSrmProperties extends AddonProperties {
     /*
      * The Site Recovery Manager (SRM) license
      */
-    @JsonProperty(value = "licenseKey", required = true)
+    @JsonProperty(value = "licenseKey")
     private String licenseKey;
 
     /**
@@ -52,10 +52,5 @@ public final class AddonSrmProperties extends AddonProperties {
     @Override
     public void validate() {
         super.validate();
-        if (licenseKey() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property licenseKey in model AddonSrmProperties"));
-        }
     }
 }

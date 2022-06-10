@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.RollingUpgradePolicy;
 import com.azure.resourcemanager.compute.models.RollingUpgradeProgressInfo;
 import com.azure.resourcemanager.compute.models.RollingUpgradeRunningStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The status of the latest virtual machine scale set rolling upgrade. */
 @Immutable
 public final class RollingUpgradeStatusInfoProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeStatusInfoProperties.class);
-
     /*
      * The rolling upgrade policies applied for this upgrade.
      */

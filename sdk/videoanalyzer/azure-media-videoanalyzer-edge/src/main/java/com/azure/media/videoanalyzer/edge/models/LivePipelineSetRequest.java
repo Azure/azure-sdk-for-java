@@ -57,9 +57,9 @@ public final class LivePipelineSetRequest extends MethodRequest {
 
     /**
      * Get the payload as JSON: the serialized form of the request body
-
-     * @throws UnsupportedEncodingException UnsupportedEncodingException
+     *
      * @return the payload as JSON
+     * @throws UnsupportedEncodingException UnsupportedEncodingException UnsupportedEncodingException
      */
     public String getPayloadAsJson() throws UnsupportedEncodingException {
         LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody(this.livePipeline.getName());

@@ -8,15 +8,16 @@
       "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" },
       "macOS-10.15": { "OSVmImage": "macOS-10.15", "Pool": "Azure Pipelines" }
     },
-    "JavaTestVersion": [ "1.8", "1.11" ],
+    "JavaTestVersion": [ "1.8", "1.17" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestFromSource": false,
     "TestGoals": "surefire:test",
     "TestOptions": ""
   },
   "exclude": [
     {
       "Pool": "azsdk-pool-mms-win-2019-general",
-      "JavaTestVersion": "1.11"
+      "JavaTestVersion": "1.17"
     }
   ],
   "include": [
@@ -24,20 +25,30 @@
       "Agent": {
           "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
-      "JavaTestVersion": "1.11",
+      "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
     {
       "Agent": {
         "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" }
       },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "AdditionalOptions": "-am",
-      "TestGoals": "verify",
+      "TestFromSource": false,
+      "TestGoals": "surefire:test",
       "TestOptions": ""
     }
   ]

@@ -31,6 +31,14 @@ public final class PolicyMetadataImpl implements PolicyMetadata {
         return this.innerModel().name();
     }
 
+    public String description() {
+        return this.innerModel().description();
+    }
+
+    public String requirements() {
+        return this.innerModel().requirements();
+    }
+
     public String metadataId() {
         return this.innerModel().metadataId();
     }
@@ -53,14 +61,6 @@ public final class PolicyMetadataImpl implements PolicyMetadata {
 
     public Object metadata() {
         return this.innerModel().metadata();
-    }
-
-    public String description() {
-        return this.innerModel().description();
-    }
-
-    public String requirements() {
-        return this.innerModel().requirements();
     }
 
     public PolicyMetadataInner innerModel() {

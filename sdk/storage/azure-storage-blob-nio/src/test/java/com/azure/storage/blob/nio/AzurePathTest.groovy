@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio
 import spock.lang.ResourceLock
 import spock.lang.Unroll
 
+import java.nio.file.FileSystemNotFoundException
 import java.nio.file.FileSystems
 
 @ResourceLock("AzurePathTest")
@@ -15,9 +16,11 @@ class AzurePathTest extends APISpec {
     // Just need one fs instance for creating the paths.
     def setup() {
         def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = "jtcazurepath1,jtcazurepath2"
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
+        def provider = new AzureFileSystemProvider()
+        fs = (AzureFileSystem) provider.newFileSystem(
+            new URI("azb://?endpoint=" + environment.primaryAccount.blobEndpoint), config)
     }
 
     def "GetFileSystem"() {
@@ -422,5 +425,40 @@ class AzurePathTest extends APISpec {
 
         then:
         thrown(IOException)
+    }
+
+    @Unroll
+    def "FromBlobUrl"() {
+        setup:
+        // Adjust the parameterized urls to point at real resources
+        def scheme = environment.primaryAccount.blobEndpoint.startsWith("https") ? "https" : "http"
+        url = scheme + url
+        url = url.replace("myaccount", environment.primaryAccount.name)
+        url = url.replace("containername", "jtcazurepath1")
+
+        path = path.replace("myaccount", environment.primaryAccount.name)
+        path = path.replace("containername", "jtcazurepath1")
+
+        when:
+        def resultPath = AzurePath.fromBlobUrl((AzureFileSystemProvider) fs.provider(), url)
+
+        then:
+        resultPath.getFileSystem() == fs
+        resultPath.toString() == path
+
+        where:
+        url                                                                     | path
+        "://myaccount.blob.core.windows.net/containername/blobname"         | "containername:/blobname"
+        "://myaccount.blob.core.windows.net/containername/dirname/blobname" | "containername:/dirname/blobname"
+        "://myaccount.blob.core.windows.net/containername"                  | "containername:"
+        "://myaccount.blob.core.windows.net/"                               | ""
+    }
+
+    def "FromBlobUrl no open file system"() {
+        when:
+        AzurePath.fromBlobUrl(new AzureFileSystemProvider(), "http://myaccount.blob.core.windows.net/container/blob")
+
+        then:
+        thrown(FileSystemNotFoundException)
     }
 }

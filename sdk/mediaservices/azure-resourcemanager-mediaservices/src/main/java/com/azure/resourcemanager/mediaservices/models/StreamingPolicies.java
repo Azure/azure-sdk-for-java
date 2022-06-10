@@ -18,7 +18,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName);
 
@@ -35,7 +35,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items.
+     * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingPolicy> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
@@ -63,7 +63,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     Response<StreamingPolicy> getWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
@@ -90,7 +90,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String streamingPolicyName, Context context);
@@ -102,7 +102,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     StreamingPolicy getById(String id);
 
@@ -114,7 +114,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Policy in the Media Services account.
+     * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     Response<StreamingPolicy> getByIdWithResponse(String id, Context context);
 
@@ -136,7 +136,7 @@ public interface StreamingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -66,4 +66,25 @@ public final class SnowflakeSource extends CopySource {
         this.exportSettings = exportSettings;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
+        return this;
+    }
 }

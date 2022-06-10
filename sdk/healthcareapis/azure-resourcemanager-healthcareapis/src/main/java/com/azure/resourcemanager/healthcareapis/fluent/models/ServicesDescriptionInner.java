@@ -6,20 +6,16 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthcareapis.models.Kind;
 import com.azure.resourcemanager.healthcareapis.models.ServicesProperties;
 import com.azure.resourcemanager.healthcareapis.models.ServicesResource;
 import com.azure.resourcemanager.healthcareapis.models.ServicesResourceIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The description of the service. */
 @Fluent
 public final class ServicesDescriptionInner extends ServicesResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesDescriptionInner.class);
-
     /*
      * The common properties of a service.
      */

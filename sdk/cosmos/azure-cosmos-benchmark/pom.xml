@@ -35,7 +35,15 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <jacoco.skip>true</jacoco.skip>
+
+    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -43,19 +51,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.19.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.32.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.6</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -101,37 +109,37 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-azure-monitor</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+      <version>1.8.5</version> <!-- {x-version-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-registry-graphite</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+      <version>1.8.5</version> <!-- {x-version-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.14.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -143,7 +151,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -158,6 +166,13 @@ Licensed under the MIT License.
       <groupId>org.mpierce.metrics.reservoir</groupId>
       <artifactId>hdrhistogram-metrics-reservoir</artifactId>
       <version>1.1.0</version><!-- {x-version-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-keys</artifactId>
+      <version>4.4.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <scope>compile</scope>
     </dependency>
   </dependencies>
 
@@ -224,16 +239,6 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -244,18 +249,18 @@ Licensed under the MIT License.
               <includes>
                 <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
 
                 <!-- The benchmarking tool is allowed additional dependencies as it is not a library -->
                 <include>com.google.guava:guava:[25.0-jre]</include> <!-- {x-include-update;cosmos_com.google.guava:guava;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-jvm:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-jvm;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-azure-monitor:[1.7.3]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
-                <include>io.micrometer:micrometer-registry-graphite:[1.7.3]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-azure-monitor:[1.8.5]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
+                <include>io.micrometer:micrometer-registry-graphite:[1.8.5]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-api:[2.14.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-core:[2.14.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.14.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-api:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-core:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.17.2]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
                 <include>org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir:[1.1.0]</include> <!-- {x-include-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
               </includes>
             </bannedDependencies>

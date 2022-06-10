@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.DataConnectionCheckNameRequest;
 /** Samples for DataConnections CheckNameAvailability. */
 public final class DataConnectionsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDataConnectionsCheckNameAvailability.
@@ -22,7 +22,7 @@ public final class DataConnectionsCheckNameAvailabilitySamples {
             .dataConnections()
             .checkNameAvailabilityWithResponse(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 "KustoDatabase8",
                 new DataConnectionCheckNameRequest().withName("DataConnections8"),
                 Context.NONE);

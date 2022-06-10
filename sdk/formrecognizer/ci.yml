@@ -14,14 +14,13 @@ trigger:
       - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
       - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
-
 pr:
   branches:
     include:
       - main
       - feature/*
-      - hotfix/*
-      - release/*
+       - hotfix/*
+       - release/*
   paths:
     include:
       - sdk/formrecognizer/
@@ -34,7 +33,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: formrecognizer
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-formrecognizer
         groupId: com.azure
         safeName: azureaiformrecognizer
+    AdditionalModules:
+      - name: azure-ai-formrecognizer-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

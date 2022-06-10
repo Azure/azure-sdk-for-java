@@ -34,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
     @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForSqlServerSource", value = AmazonRdsForSqlServerSource.class),
     @JsonSubTypes.Type(name = "AzureSqlSource", value = AzureSqlSource.class),
     @JsonSubTypes.Type(name = "SqlMISource", value = SqlMISource.class),
     @JsonSubTypes.Type(name = "SqlDWSource", value = SqlDWSource.class),
@@ -134,6 +135,27 @@ public class TabularSource extends CopySource {
      */
     public TabularSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TabularSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

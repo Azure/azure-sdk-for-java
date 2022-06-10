@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set operating system disk. */
 @Fluent
 public final class VirtualMachineScaleSetOSDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetOSDisk.class);
-
     /*
      * The disk name.
      */
@@ -89,6 +86,19 @@ public final class VirtualMachineScaleSetOSDisk {
      */
     @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
+
+    /*
+     * Specifies whether OS Disk should be deleted or detached upon VMSS Flex
+     * deletion (This feature is available for VMSS with Flexible
+     * OrchestrationMode only). <br><br> Possible values: <br><br> **Delete**
+     * If this value is used, the OS disk is deleted when VMSS Flex VM is
+     * deleted.<br><br> **Detach** If this value is used, the OS disk is
+     * retained after VMSS Flex VM is deleted. <br><br> The default value is
+     * set to **Delete**. For an Ephemeral OS Disk, the default value is set to
+     * **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     */
+    @JsonProperty(value = "deleteOption")
+    private DiskDeleteOptionTypes deleteOption;
 
     /**
      * Get the name property: The disk name.
@@ -317,13 +327,43 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     /**
+     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     *
+     * @return the deleteOption value.
+     */
+    public DiskDeleteOptionTypes deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion
+     * (This feature is available for VMSS with Flexible OrchestrationMode only). &lt;br&gt;&lt;br&gt; Possible values:
+     * &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the OS disk is deleted when VMSS Flex VM is
+     * deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the OS disk is retained after VMSS Flex VM is
+     * deleted. &lt;br&gt;&lt;br&gt; The default value is set to **Delete**. For an Ephemeral OS Disk, the default value
+     * is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetOSDisk object itself.
+     */
+    public VirtualMachineScaleSetOSDisk withDeleteOption(DiskDeleteOptionTypes deleteOption) {
+        this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property createOption in model VirtualMachineScaleSetOSDisk"));
@@ -338,4 +378,6 @@ public final class VirtualMachineScaleSetOSDisk {
             managedDisk().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetOSDisk.class);
 }

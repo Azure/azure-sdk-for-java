@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.PowerQueryTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("WranglingDataFlow")
 @Fluent
 public final class WranglingDataFlow extends DataFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WranglingDataFlow.class);
-
     /*
      * PowerQuery data flow type properties.
      */
@@ -99,6 +95,29 @@ public final class WranglingDataFlow extends DataFlow {
             this.innerTypeProperties = new PowerQueryTypeProperties();
         }
         this.innerTypeProperties().withScript(script);
+        return this;
+    }
+
+    /**
+     * Get the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @return the documentLocale value.
+     */
+    public String documentLocale() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().documentLocale();
+    }
+
+    /**
+     * Set the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @param documentLocale the documentLocale value to set.
+     * @return the WranglingDataFlow object itself.
+     */
+    public WranglingDataFlow withDocumentLocale(String documentLocale) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PowerQueryTypeProperties();
+        }
+        this.innerTypeProperties().withDocumentLocale(documentLocale);
         return this;
     }
 

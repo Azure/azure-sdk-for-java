@@ -29,7 +29,7 @@ public interface InboundSecurityRuleOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -49,9 +49,9 @@ public interface InboundSecurityRuleOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link PollerFlux} for polling of nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -69,9 +69,9 @@ public interface InboundSecurityRuleOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -90,9 +90,9 @@ public interface InboundSecurityRuleOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return the {@link SyncPoller} for polling of nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -111,7 +111,7 @@ public interface InboundSecurityRuleOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nVA Inbound Security Rule resource.
+     * @return nVA Inbound Security Rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InboundSecurityRuleInner> createOrUpdateAsync(

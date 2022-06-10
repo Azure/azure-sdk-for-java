@@ -536,7 +536,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -984,7 +984,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

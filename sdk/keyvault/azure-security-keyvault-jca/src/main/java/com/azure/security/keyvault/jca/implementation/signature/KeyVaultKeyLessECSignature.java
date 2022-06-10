@@ -35,8 +35,11 @@ public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLess
     protected byte[] engineSign() {
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
-        byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(keyVaultDigestName, encode, keyId);
-        return encodeByte(encrypted);
+        if (keyVaultClient != null) {
+            byte[] encrypted = keyVaultClient.getSignedWithPrivateKey(keyVaultDigestName, encode, keyId);
+            return encodeByte(encrypted);
+        }
+        return new byte[0];
     }
 
 }

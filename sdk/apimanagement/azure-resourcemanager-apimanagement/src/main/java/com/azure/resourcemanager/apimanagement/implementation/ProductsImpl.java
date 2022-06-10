@@ -17,10 +17,9 @@ import com.azure.resourcemanager.apimanagement.models.Products;
 import com.azure.resourcemanager.apimanagement.models.ProductsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ProductsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagResourceContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductsImpl implements Products {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductsImpl.class);
 
     private final ProductsClient innerClient;
 
@@ -125,7 +124,7 @@ public final class ProductsImpl implements Products {
     public ProductContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,14 +132,14 @@ public final class ProductsImpl implements Products {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String productId = Utils.getValueFromIdByName(id, "products");
         if (productId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
@@ -151,7 +150,7 @@ public final class ProductsImpl implements Products {
     public Response<ProductContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,14 +158,14 @@ public final class ProductsImpl implements Products {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String productId = Utils.getValueFromIdByName(id, "products");
         if (productId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
@@ -177,7 +176,7 @@ public final class ProductsImpl implements Products {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -185,14 +184,14 @@ public final class ProductsImpl implements Products {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String productId = Utils.getValueFromIdByName(id, "products");
         if (productId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));
@@ -201,15 +200,14 @@ public final class ProductsImpl implements Products {
         Boolean localDeleteSubscriptions = null;
         this
             .deleteWithResponse(
-                resourceGroupName, serviceName, productId, localIfMatch, localDeleteSubscriptions, Context.NONE)
-            .getValue();
+                resourceGroupName, serviceName, productId, localIfMatch, localDeleteSubscriptions, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(
         String id, String ifMatch, Boolean deleteSubscriptions, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -217,14 +215,14 @@ public final class ProductsImpl implements Products {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String productId = Utils.getValueFromIdByName(id, "products");
         if (productId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'products'.", id)));

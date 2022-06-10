@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for Sql source partitioning. */
 @Fluent
 public final class SqlPartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPartitionSettings.class);
-
     /*
      * The name of the column in integer or datetime type that will be used for
      * proceeding partitioning. If not specified, the primary key of the table

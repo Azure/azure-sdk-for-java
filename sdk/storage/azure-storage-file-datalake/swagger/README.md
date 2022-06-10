@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-06-12/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e515b6251fdc21015282d2e84b85beec7c091763/specification/storage/data-plane/Azure.Storage.Files.DataLake/preview/2021-06-08/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -28,11 +28,13 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 optional-constant-as-enum: true
+default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
 models-subpackage: implementation.models
-custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders
+custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType
 custom-types-subpackage: models
-customization-jar-path: target/azure-storage-file-datalake-customization-1.0.0-beta.1.jar
-customization-class: com.azure.storage.file.datalake.customization.DataLakeStorageCustomization
+customization-class: src/main/java/DataLakeStorageCustomization.java
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
 ```
 
 ### Make the body of append octet-stream /{filesystem}/{path}?action=append
@@ -50,7 +52,6 @@ directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{filesystem}/{path}"]["head"]["responses"]["200"]
   transform: >
-      delete $.headers["x-ms-acl"]["x-ms-client-name"];
       $.headers["x-ms-acl"]["x-ms-client-name"] = "acl";
 ```
 
@@ -70,16 +71,7 @@ directive:
     $.TransactionalContentMD5["x-ms-parameter-grouping"].name = "path-http-headers";
 ```
 
-### Make eTag in Path JsonProperty to etag
-``` yaml
-directive:
-- from: Path.java
-  where: $
-  transform: >
-    return $.replace('@JsonProperty(value = "eTag")\n    private String eTag;', '@JsonProperty(value = "etag")\n    private String eTag;');
-```
-
-### Delete FileSystem_ListPaths x-ms-pageable as autorest doesnt allow you to set the nextLinkName to be a header.
+### Delete FileSystem_ListPaths x-ms-pageable as autorest doesn't allow you to set the nextLinkName to be a header.
 ``` yaml
 directive:
 - from: swagger-document
@@ -110,6 +102,17 @@ directive:
       $.required.push("Delimiter");
       $.required.push("NextMarker");
     }
+```
+
+### Turn Path eTag into etag
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Path
+  transform: >
+    $.properties.etag = $.properties.eTag;
+    delete $.properties.eTag;
+    $.properties.etag["x-ms-client-name"] = "eTag";
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)

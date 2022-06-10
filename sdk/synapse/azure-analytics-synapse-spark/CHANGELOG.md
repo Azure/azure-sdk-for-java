@@ -1,7 +1,23 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.5 (2021-10-14)
+
+### New Features
+- Added `ClientOptions` to `SparkClientBuilder`
+- Added `LivyStatementStates` and `LivyStates` enum classes.
+
+### Other Changes
+- Re-generate with latest release tag `package-spark-2020-12-01`
 
 ## 1.0.0-beta.4 (2021-08-10)
 - Update to 2020-12-01 API version

@@ -5,20 +5,18 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Vault Job for CMK - has CMK specific info. */
 @Fluent
 public final class VaultJobExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultJobExtendedInfo.class);
-
     /*
      * Job properties.
      */
     @JsonProperty(value = "propertyBag")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
     /**

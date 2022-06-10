@@ -22,7 +22,7 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
     public void getModelsSingleDtmiNoDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
-        final String dtmi = "dtmi:com:example:Thermostat;1";
+        String dtmi = "dtmi:com:example:Thermostat;1";
 
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 

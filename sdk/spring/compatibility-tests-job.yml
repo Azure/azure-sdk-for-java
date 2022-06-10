@@ -1,0 +1,47 @@
+parameters:
+  Matrix: ''
+  MaxParallel: 10
+  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
+  BuildParallelization: '2C'
+
+jobs:
+  - job: 'compatibility_test'
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
+    variables:
+      - template: ../../eng/pipelines/templates/variables/globals.yml
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/spring'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
+      - script: |
+          pip install termcolor
+        displayName: 'python module install'
+      - bash: |
+          echo "##vso[task.setVariable variable=SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION]$(python ./sdk/spring/scripts/compatibility_get_spring_cloud_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION))"
+        displayName: 'set env'
+      - script: |
+          python ./sdk/spring/scripts/compatibility_insert_dependencymanagement.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION) -c $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)
+        displayName: 'insert dependency management'
+      - script: |
+          python ./sdk/spring/scripts/compatibility_delete_version.py
+        displayName: 'remove unused version'
+      - bash: |
+          echo "$(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_CLOUD_VERSION)"
+        displayName: 'print spring cloud version'
+      - task: Maven@3
+        displayName: 'Run tests'
+        inputs:
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
+          mavenPomFile: sdk/spring/pom.xml
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: 'clean test -Pdev '
+

@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.netty.transport.ProxyProvider;
 
@@ -81,5 +82,22 @@ public class NettyAsyncHttpClientProviderTests {
         assertEquals(expectedTimeout, httpClient.writeTimeout);
         assertEquals(expectedTimeout, httpClient.responseTimeout);
         assertEquals(expectedTimeout, httpClient.readTimeout);
+    }
+
+    @Test
+    @Disabled("Due to a bug in reactor-netty that doesn't read maxConnections value from implementation."
+            + "Bug fix will be available in reactor-netty version 1.0.15. See https://github.com/reactor/reactor-netty/issues/1941#issuecomment-997846176")
+    public void testDefaultMaxConnections() {
+        NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
+                .createInstance(null);
+        int actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
+        // There's a bug in reactor-netty that doesn't read the `maxConnections from the implementation of
+        // ConnectionProvider. It reads from the default implementation in the interface which always returns -1.
+        // assertEquals(500, actualMaxConnections);
+
+        httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
+                .createInstance(new HttpClientOptions());
+        actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
+        // assertEquals(500, actualMaxConnections);
     }
 }

@@ -8,8 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** A SQL Analytics pool. */
+/** SQL pool A SQL Analytics pool. */
 @JsonFlatten
 @Fluent
 public class SqlPool extends TrackedResource {
@@ -62,10 +63,25 @@ public class SqlPool extends TrackedResource {
     private String restorePointInTime;
 
     /*
-     * What is this?
+     * Specifies the mode of sql pool creation.
+     *
+     * Default: regular sql pool creation.
+     *
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time
+     * backup of an existing sql pool. sourceDatabaseId must be specified as
+     * the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * Recovery: Creates a sql pool by a geo-replicated backup.
+     * sourceDatabaseId  must be specified as the recoverableDatabaseId to
+     * restore.
+     *
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql
+     * pool. SourceDatabaseId should be the sql pool's original resource ID.
+     * SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     @JsonProperty(value = "properties.createMode")
-    private String createMode;
+    private CreateMode createMode;
 
     /*
      * Date the SQL pool was created
@@ -234,21 +250,45 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
-     * Get the createMode property: What is this?.
+     * Get the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @return the createMode value.
      */
-    public String getCreateMode() {
+    public CreateMode getCreateMode() {
         return this.createMode;
     }
 
     /**
-     * Set the createMode property: What is this?.
+     * Set the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @param createMode the createMode value to set.
      * @return the SqlPool object itself.
      */
-    public SqlPool setCreateMode(String createMode) {
+    public SqlPool setCreateMode(CreateMode createMode) {
         this.createMode = createMode;
         return this;
     }
@@ -270,6 +310,20 @@ public class SqlPool extends TrackedResource {
      */
     public SqlPool setCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setTags(Map<String, String> tags) {
+        super.setTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlPool setLocation(String location) {
+        super.setLocation(location);
         return this;
     }
 }

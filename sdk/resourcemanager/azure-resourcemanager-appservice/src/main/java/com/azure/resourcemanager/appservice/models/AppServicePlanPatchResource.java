@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanPatchResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** ARM resource for a app service plan. */
 @Fluent
 public final class AppServicePlanPatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanPatchResource.class);
-
     /*
      * AppServicePlanPatchResource resource specific properties
      */

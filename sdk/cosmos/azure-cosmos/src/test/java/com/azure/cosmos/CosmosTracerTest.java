@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
@@ -17,7 +18,6 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -41,6 +41,7 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -423,7 +424,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any());
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(),
@@ -482,7 +484,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
+        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class),
+            ArgumentMatchers.any(StartSpanOptions.class),
+            ArgumentMatchers.any(Context.class)))
+        .thenReturn(Context.NONE);
         return mockTracer;
     }
 
@@ -490,24 +495,27 @@ public class CosmosTracerTest extends TestSuiteBase {
                                         Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
                                         CosmosDiagnostics cosmosDiagnostics,
-                                        Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
+                                        Map<String, Map<String, Object>> eventAttributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
 
+        ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
+        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest))
+            .start(Mockito.any(), optionsCaptor.capture(), Mockito.any());
+
+        Map<String, Object> startAttributes = optionsCaptor.getValue().getAttributes();
         if (databaseName != null) {
-            Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_INSTANCE,
-                databaseName, context);
+            assertThat(startAttributes.get(TracerProvider.DB_INSTANCE)).isEqualTo(databaseName);
         }
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_TYPE,
-            TracerProvider.DB_TYPE_VALUE, context);
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_URL,
-            TestConfigurations.HOST,
-            context);
-        Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(TracerProvider.DB_STATEMENT, methodName, context);
+
+        assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
+        assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
+        assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
+        assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(TracerProvider.RESOURCE_PROVIDER_NAME);
 
         //verifying diagnostics as events
-        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, attributesMap);
+        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
     }
 
     private void verifyTracerDiagnostics(TracerProvider tracerProvider,
@@ -528,14 +536,14 @@ public class CosmosTracerTest extends TestSuiteBase {
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
                     ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
 
             //verifying add event call for clientCfgs
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("ClientCfgs")
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
                     ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            assertThat(attributesMap.get("ClientCfgs").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
 
 
             //verifying add event call for serializationDiagnostics
@@ -564,8 +572,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 clientSideRequestStatistics.getResponseStatisticsList()) {
                 Iterator<RequestTimeline.Event> eventIterator = null;
                 try {
-                    eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
+                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 } catch (CosmosException ex) {
                     eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
                 }
@@ -593,8 +600,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
                 Iterator<RequestTimeline.Event> eventIterator = null;
                 try {
-                    eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
+                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 } catch (CosmosException ex) {
                     eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
                 }
@@ -637,7 +643,8 @@ public class CosmosTracerTest extends TestSuiteBase {
                     , ArgumentMatchers.any(),
                     Mockito.eq(OffsetDateTime.ofInstant(feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
                         ZoneOffset.UTC)), ArgumentMatchers.any());
-                assertThat(attributesMap.get("Query Plan Statistics").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
+                assertThat(attributesMap.get("Query Plan Statistics").get("JSON"))
+                    .isEqualTo(OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
             }
 
             counter = 1;
@@ -645,12 +652,14 @@ public class CosmosTracerTest extends TestSuiteBase {
                 feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
                 if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
                     && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
-                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId)
+                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange "
+                            + clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId())
                         , ArgumentMatchers.any(),
                         Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
                             ZoneOffset.UTC)), ArgumentMatchers.any());
                 } else if (clientSideStatistics.getGatewayStatistics() != null) {
-                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId())
+                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange "
+                            + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId())
                         , ArgumentMatchers.any(),
                         Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
                             ZoneOffset.UTC)), ArgumentMatchers.any());
@@ -675,7 +684,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private class TracerProviderCapture implements Answer<Context> {
-        private Context result = null;
+        private Context result = Context.NONE;
 
         public Context getResult() {
             return result;

@@ -569,7 +569,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             refreshHubSchemaWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2003,7 +2004,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         return this
             .client
             .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SyncGroupInner.class,
+                SyncGroupInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2330,7 +2335,8 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
             deleteWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2639,7 +2645,11 @@ public final class SyncGroupsClientImpl implements SyncGroupsClient {
         return this
             .client
             .<SyncGroupInner, SyncGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncGroupInner.class, SyncGroupInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SyncGroupInner.class,
+                SyncGroupInner.class,
+                this.client.getContext());
     }
 
     /**

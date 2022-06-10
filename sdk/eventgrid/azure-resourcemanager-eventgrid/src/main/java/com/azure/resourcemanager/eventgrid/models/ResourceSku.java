@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes an EventGrid Resource Sku. */
 @Fluent
 public final class ResourceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSku.class);
-
     /*
      * The Sku name of the resource. The possible values are: Basic or Premium.
      */

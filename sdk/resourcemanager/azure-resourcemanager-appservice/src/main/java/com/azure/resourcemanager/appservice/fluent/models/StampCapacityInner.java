@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.WorkerSizeOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Stamp capacity information. */
 @Fluent
 public final class StampCapacityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StampCapacityInner.class);
-
     /*
      * Name of the stamp.
      */

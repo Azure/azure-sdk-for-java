@@ -24,8 +24,14 @@ public final class SqlScriptContent {
     /*
      * The connection used to execute the SQL script.
      */
-    @JsonProperty(value = "currentConnection", required = true)
+    @JsonProperty(value = "currentConnection")
     private SqlConnection currentConnection;
+
+    /*
+     * Limit of results, '-1' for no limit.
+     */
+    @JsonProperty(value = "resultLimit")
+    private Integer resultLimit;
 
     /*
      * The metadata of the SQL script.
@@ -75,6 +81,26 @@ public final class SqlScriptContent {
      */
     public SqlScriptContent setCurrentConnection(SqlConnection currentConnection) {
         this.currentConnection = currentConnection;
+        return this;
+    }
+
+    /**
+     * Get the resultLimit property: Limit of results, '-1' for no limit.
+     *
+     * @return the resultLimit value.
+     */
+    public Integer getResultLimit() {
+        return this.resultLimit;
+    }
+
+    /**
+     * Set the resultLimit property: Limit of results, '-1' for no limit.
+     *
+     * @param resultLimit the resultLimit value to set.
+     * @return the SqlScriptContent object itself.
+     */
+    public SqlScriptContent setResultLimit(Integer resultLimit) {
+        this.resultLimit = resultLimit;
         return this;
     }
 

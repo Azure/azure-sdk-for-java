@@ -3,8 +3,8 @@
 
 package com.azure.messaging.webpubsub;
 
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -23,26 +23,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link WebPubSubAsyncServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)
+ * Unit tests for {@link WebPubSubServiceAsyncClient#getClientAccessToken(GetClientAccessTokenOptions)
  * getAuthenticationToken} method.
  */
 public class TokenGenerationTest {
 
     @ParameterizedTest
     @MethodSource("getTokenOptions")
-    public void testTokenGeneration(GetAuthenticationTokenOptions tokenOptions, String connectionString,
+    public void testTokenGeneration(GetClientAccessTokenOptions tokenOptions, String connectionString,
                                     String expectedUrlPrefix, String expectedSubject,
                                     List<String> expectedRoles) throws ParseException {
-        WebPubSubServiceClient client = new WebPubSubClientBuilder()
+        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
             .hub("test")
             .connectionString(connectionString)
             .buildClient();
-        WebPubSubAuthenticationToken authenticationToken = client.getAuthenticationToken(tokenOptions);
+        WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
 
-        assertNotNull(authenticationToken.getAuthToken());
+        assertNotNull(authenticationToken.getToken());
         assertTrue(authenticationToken.getUrl().startsWith(expectedUrlPrefix));
-        assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getAuthToken()));
-        JWT parse = JWTParser.parse(authenticationToken.getAuthToken());
+        assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getToken()));
+        JWT parse = JWTParser.parse(authenticationToken.getToken());
         JWTClaimsSet jwtClaimsSet = parse.getJWTClaimsSet();
         assertEquals(expectedSubject, jwtClaimsSet.getSubject());
         assertEquals(expectedRoles, jwtClaimsSet.getClaim("role"));
@@ -58,14 +58,14 @@ public class TokenGenerationTest {
 
             // HTTP
             Arguments.of(
-                new GetAuthenticationTokenOptions(),
+                new GetClientAccessTokenOptions(),
                 "Endpoint=http://http.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
                 "ws://http.webpubsubdev.azure.com/", null, null),
 
             // HTTP with port
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1)),
                 "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
@@ -74,7 +74,7 @@ public class TokenGenerationTest {
 
             // HTTP with "http" in domain name
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo"),
                 "Endpoint=http://http.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
@@ -82,7 +82,7 @@ public class TokenGenerationTest {
 
             // HTTPS
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .addRole("admin"),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com;"
@@ -91,7 +91,7 @@ public class TokenGenerationTest {
 
             // HTTPS with port
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .addRole("admin"),
@@ -101,7 +101,7 @@ public class TokenGenerationTest {
 
             // HTTPS with "https" in domain name
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner")),
@@ -111,7 +111,7 @@ public class TokenGenerationTest {
 
             // Endpoint with path fragments
             Arguments.of(
-                new GetAuthenticationTokenOptions()
+                new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner")),

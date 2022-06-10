@@ -1,7 +1,166 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.5 (2021-10-09)
+
+- Azure Resource Manager HDInsight client library for Java. This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ClusterIdentityUserAssignedIdentities` was removed
+
+* `models.VmSizeCompatibilityFilter` was removed
+
+* `models.VmSizesCapability` was removed
+
+#### `models.ResourceIdentityType` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.ResourceIdentityType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.AsyncOperationState` was modified
+
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
+* `models.AsyncOperationState[] values()` -> `java.util.Collection values()`
+
+#### `models.CapabilitiesResult` was modified
+
+* `vmsizes()` was removed
+* `vmsizeFilters()` was removed
+
+#### `models.OSType` was modified
+
+* `toString()` was removed
+* `models.OSType[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+#### `models.DaysOfWeek` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.DaysOfWeek[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.Tier` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.Tier[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.DirectoryType` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.DirectoryType[] values()` -> `java.util.Collection values()`
+
+#### `models.HDInsightClusterProvisioningState` was modified
+
+* `toString()` was removed
+* `models.HDInsightClusterProvisioningState[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+* `models.ResourceId` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.PrivateIpAllocationMethod` was added
+
+* `models.PrivateLinkConfiguration` was added
+
+* `models.IpConfiguration` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.PrivateLinkConfigurationProvisioningState` was added
+
+* `models.PrivateLinkServiceConnectionStatus` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withZones(java.util.List)` was added
+
+#### `models.ApplicationProperties` was modified
+
+* `withPrivateLinkConfigurations(java.util.List)` was added
+* `privateLinkConfigurations()` was added
+
+#### `models.ClusterCreateParametersExtended` was modified
+
+* `zones()` was added
+* `withZones(java.util.List)` was added
+
+#### `models.Cluster` was modified
+
+* `systemData()` was added
+* `zones()` was added
+
+#### `models.ClusterCreateProperties` was modified
+
+* `privateLinkConfigurations()` was added
+* `withPrivateLinkConfigurations(java.util.List)` was added
+
+#### `models.Application` was modified
+
+* `systemData()` was added
+
+#### `models.VmSizeCompatibilityFilterV2` was modified
+
+* `espApplied()` was added
+* `withEspApplied(java.lang.String)` was added
+* `withComputeIsolationSupported(java.lang.String)` was added
+* `computeIsolationSupported()` was added
+
+#### `models.ClusterCreateRequestValidationParameters` was modified
+
+* `withZones(java.util.List)` was added
+* `withZones(java.util.List)` was added
+
+#### `HDInsightManager` was modified
+
+* `privateLinkResources()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.ClusterGetProperties` was modified
+
+* `withPrivateLinkConfigurations(java.util.List)` was added
+* `privateLinkConfigurations()` was added
+* `privateEndpointConnections()` was added
 
 ## 1.0.0-beta.4 (2021-08-12)
 

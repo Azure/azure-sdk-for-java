@@ -3,10 +3,17 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link SchemaRegistryClientBuilder}.
@@ -14,7 +21,7 @@ import org.junit.jupiter.api.Test;
 public class SchemaRegistryClientBuilderTest {
     @Test
     public void testNullCredentials() {
-        Assertions.assertThrows(NullPointerException.class,
+        assertThrows(NullPointerException.class,
             () -> new SchemaRegistryClientBuilder().buildAsyncClient());
     }
 
@@ -25,7 +32,7 @@ public class SchemaRegistryClientBuilderTest {
             .clientId("client-id")
             .clientSecret("client-secret")
             .build();
-        Assertions.assertThrows(NullPointerException.class,
+        assertThrows(NullPointerException.class,
             () -> new SchemaRegistryClientBuilder()
                 .credential(credential)
                 .buildAsyncClient());
@@ -33,9 +40,14 @@ public class SchemaRegistryClientBuilderTest {
 
     @Test
     public void testInvalidEndpoint() {
-        Assertions.assertThrows(IllegalArgumentException.class,
+        // Arrange
+        final TokenCredential credential = mock(TokenCredential.class);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class,
             () -> new SchemaRegistryClientBuilder()
-                .endpoint("invalidEndpoint")
+                .credential(credential)
+                .fullyQualifiedNamespace("")
                 .buildAsyncClient());
     }
 
@@ -50,7 +62,23 @@ public class SchemaRegistryClientBuilderTest {
 
         Assertions.assertNotNull(new SchemaRegistryClientBuilder()
             .credential(credential)
-            .endpoint("https://localhost")
+            .fullyQualifiedNamespace("https://localhost")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId("tenant-id")
+            .clientId("client-id")
+            .clientSecret("client-secret")
+            .build();
+
+        assertThrows(IllegalStateException.class, () -> new SchemaRegistryClientBuilder()
+            .credential(credential)
+            .fullyQualifiedNamespace("https://localhost")
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
             .buildAsyncClient());
     }
 }

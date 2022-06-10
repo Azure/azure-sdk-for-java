@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters to be applied to the cluster-autoscaler when enabled. */
 @Fluent
 public final class ManagedClusterPropertiesAutoScalerProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPropertiesAutoScalerProfile.class);
-
     /*
      * Detects similar node pools and balances the number of nodes between
      * them. Valid values are 'true' and 'false'

@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -21,21 +22,21 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
-import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -68,7 +69,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
-    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -147,17 +148,18 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.create -->
+     * <pre>
+     * client.create&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.create -->
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create() {
-        try {
-            return create(false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return create(false);
     }
 
     /**
@@ -165,23 +167,25 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.create&#40;overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean -->
      *
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create(boolean overwrite) {
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -191,7 +195,19 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.createWithResponse&#40;headers, metadata, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions -->
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
@@ -214,7 +230,21 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.createWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *     .setTags&#40;tags&#41;.setRequestConditions&#40;requestConditions&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions -->
      *
      * @param options {@link AppendBlobCreateOptions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
@@ -225,7 +255,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -255,27 +285,78 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
+     * <pre>
+     * client.createIfNotExists&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists -->
      *
-     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
-     * @return {@link Mono} containing the information of the append blob operation.
+     * @return A reactive response {@link Mono} signaling completion. {@link AppendBlobItem} contains the information of
+     * the created appended blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
+    public Mono<AppendBlobItem> createIfNotExists() {
+        return this.createIfNotExistsWithResponse(new AppendBlobCreateOptions()).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a 0-length append blob if it does not exist. Call appendBlock to append data to an append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     *
+     * client.createIfNotExistsWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;&#41;.subscribe&#40;response -&gt; &#123;
+     *         if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *             System.out.println&#40;&quot;Already exists.&quot;&#41;;
+     *         &#125; else &#123;
+     *             System.out.println&#40;&quot;successfully created.&quot;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions -->
+     *
+     * @param options {@link AppendBlobCreateOptions}
+     * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
+     * contains a {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status code
+     * is 201, a new page blob was successfully created. If status code is 409, an append blob already existed at this
+     * location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
         try {
-            return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
+            return withContext(context -> createIfNotExistsWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        try {
+            options = options == null ? new AppendBlobCreateOptions() : options;
+            options.setRequestConditions(new AppendBlobRequestConditions()
+                .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+            return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException
+                && ((BlobStorageException) t).getStatusCode() == 409,
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -287,7 +368,43 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
+     * <pre>
+     * client.appendBlock&#40;data, length&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
+     *
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the {@code Flux}.
+     * @return {@link Mono} containing the information of the append blob operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length) {
+        return appendBlockWithResponse(data, length, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions -->
+     * <pre>
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * client.appendBlockWithResponse&#40;data, length, md5, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -308,7 +425,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return withContext(context ->
                 appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -339,7 +456,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange -->
+     * <pre>
+     * client.appendBlockFromUrl&#40;sourceUrl, new BlobRange&#40;offset, count&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -350,11 +472,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
-        try {
-            return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -362,7 +480,20 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.appendBlockFromUrlWithResponse&#40;sourceUrl, new BlobRange&#40;offset, count&#41;, null,
+     *     appendBlobRequestConditions, modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -380,14 +511,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
-        try {
-            return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
-                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
-                .setDestinationRequestConditions(destRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
+            .setDestinationRequestConditions(destRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
@@ -395,7 +522,22 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.appendBlockFromUrlWithResponse&#40;new AppendBlobAppendBlockFromUrlOptions&#40;sourceUrl&#41;
+     *     .setSourceRange&#40;new BlobRange&#40;offset, count&#41;&#41;
+     *     .setDestinationRequestConditions&#40;appendBlobRequestConditions&#41;
+     *     .setSourceRequestConditions&#40;modifiedRequestConditions&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions -->
      *
      * @param options Parameters for the operation.
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
@@ -404,10 +546,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options) {
         try {
-            return withContext(context ->
-                appendBlockFromUrlWithResponse(options, context));
+            return withContext(context -> appendBlockFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -421,7 +562,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
         String sourceAuth = options.getSourceAuthorization() == null
@@ -450,18 +591,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal -->
+     * <pre>
+     * client.seal&#40;&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal -->
      *
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> seal() {
-        try {
-            return sealWithResponse(new AppendBlobSealOptions())
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return sealWithResponse(new AppendBlobSealOptions()).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -469,7 +609,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions -->
+     * <pre>
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.sealWithResponse&#40;new AppendBlobSealOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions -->
      *
      * @param options {@link AppendBlobSealOptions}
      * @return A reactive response signalling completion.
@@ -479,7 +627,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> sealWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

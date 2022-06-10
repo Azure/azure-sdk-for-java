@@ -258,7 +258,7 @@ public class StoreReader {
                         }
 
                     } catch (Exception e) {
-                        // TODO: what to do on exception?
+                        logger.error("Error occurred while adding store results to resultCollector", e);
                     }
                 }
 
@@ -485,6 +485,9 @@ public class StoreReader {
                             SessionTokenHelper.setOriginalSessionToken(entity, originalSessionToken);
                         } catch (Throwable throwable) {
                             logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                            if (throwable instanceof Error) {
+                                throw (Error) throwable;
+                            }
                         }
                     }
         );
@@ -664,7 +667,7 @@ public class StoreReader {
         StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
 
         try {
-            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult, transportClient.getGlobalEndpointManager());
             if (request.requestContext.requestChargeTracker != null) {
                 request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
             }
@@ -712,6 +715,18 @@ public class StoreReader {
                 requestCharge = Double.parseDouble(headerValue);
             }
 
+            String activityId = "";
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID)) != null) {
+                activityId = headerValue;
+            }
+
+            String correlatedActivityId = "";
+            if ((headerValue =
+                storeResponse.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID)) != null) {
+
+                correlatedActivityId = headerValue;
+            }
+
             if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
@@ -753,6 +768,8 @@ public class StoreReader {
                     /* lsn: */ lsn,
                     /* quorumAckedLsn: */ quorumAckedLSN,
                     /* getRequestCharge: */ requestCharge,
+                                            activityId,
+                                            correlatedActivityId,
                     /* currentReplicaSetSize: */ currentReplicaSetSize,
                     /* currentWriteQuorum: */ currentWriteQuorum,
                     /* isValid: */true,
@@ -765,6 +782,8 @@ public class StoreReader {
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
+            String activityId = "";
+            String correlatedActivityId = "";
             if (cosmosException != null) {
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
@@ -772,6 +791,7 @@ public class StoreReader {
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
+
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -791,6 +811,18 @@ public class StoreReader {
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     requestCharge = Double.parseDouble(headerValue);
+                }
+
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    activityId = headerValue;
+                }
+
+                headerValue = cosmosException
+                    .getResponseHeaders()
+                    .get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    correlatedActivityId = headerValue;
                 }
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
@@ -834,6 +866,8 @@ public class StoreReader {
                         /* lsn: */ lsn,
                         /* quorumAckedLsn: */ quorumAckedLSN,
                         /* getRequestCharge: */ requestCharge,
+                                                activityId,
+                                                correlatedActivityId,
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
@@ -850,11 +884,13 @@ public class StoreReader {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
                         /* storeResponse: */ null,
-                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError),
+                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError, responseException),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
+                         activityId,
+                         correlatedActivityId,
                         /* currentReplicaSetSize: */ 0,
                         /* currentWriteQuorum: */ 0,
                         /* isValid: */ false,

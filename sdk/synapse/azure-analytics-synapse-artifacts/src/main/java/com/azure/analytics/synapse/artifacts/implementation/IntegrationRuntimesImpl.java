@@ -50,7 +50,7 @@ public final class IntegrationRuntimesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientInteg")
-    private interface IntegrationRuntimesService {
+    public interface IntegrationRuntimesService {
         @Get("/integrationRuntimes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -76,13 +76,14 @@ public final class IntegrationRuntimesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
     }
 
     /**
@@ -92,12 +93,14 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -105,7 +108,7 @@ public final class IntegrationRuntimesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync() {
@@ -127,7 +130,7 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> listAsync(Context context) {
@@ -161,7 +164,7 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeListResponse> listWithResponse(Context context) {
@@ -175,19 +178,14 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(String integrationRuntimeName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                integrationRuntimeName,
-                                accept,
-                                context));
+                context -> service.get(this.client.getEndpoint(), apiVersion, integrationRuntimeName, accept, context));
     }
 
     /**
@@ -198,14 +196,14 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(
             String integrationRuntimeName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(
-                this.client.getEndpoint(), this.client.getApiVersion(), integrationRuntimeName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, integrationRuntimeName, accept, context);
     }
 
     /**
@@ -215,7 +213,7 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName) {
@@ -238,7 +236,7 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> getAsync(String integrationRuntimeName, Context context) {
@@ -275,7 +273,7 @@ public final class IntegrationRuntimesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationRuntimeResource> getWithResponse(String integrationRuntimeName, Context context) {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about the connection between the Batch service and the endpoint. */
 @Immutable
 public final class EndpointDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);
-
     /*
      * The port an endpoint is connected to.
      */

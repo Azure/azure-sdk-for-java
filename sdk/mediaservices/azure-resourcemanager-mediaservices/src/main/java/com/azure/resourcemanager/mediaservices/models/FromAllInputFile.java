@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -17,13 +14,10 @@ import java.util.List;
  * property. Generally used with the AudioTrackByAttribute and VideoTrackByAttribute to allow selection of a single
  * track across a set of input files.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.FromAllInputFile")
-@JsonFlatten
 @Fluent
-public class FromAllInputFile extends InputDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FromAllInputFile.class);
-
+public final class FromAllInputFile extends InputDefinition {
     /** {@inheritDoc} */
     @Override
     public FromAllInputFile withIncludedTracks(List<TrackDescriptor> includedTracks) {

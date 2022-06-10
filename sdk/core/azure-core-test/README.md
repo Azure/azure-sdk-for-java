@@ -5,7 +5,7 @@ Library containing core classes used to test Azure SDK client libraries.
 * Create live or playback JUnit tests using [TestBase][TestBase.java] and
   leveraging [InterceptorManager][InterceptorManager.java] to keep track of
   network calls.
-* Record network calls using using pipeline policy,
+* Record network calls using pipeline policy,
   [RecordNetworkCallPolicy][RecordNetworkCallPolicy.java].
 * Playback test session records with [PlaybackClient][PlaybackClient.java].
 
@@ -18,7 +18,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.7.1</version>
+  <version>1.9.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,8 +36,7 @@ To use this package, add the following to your _pom.xml_.
 Use [TestBase][TestBase.java] to easily create live and playback test cases. Extending from `TestBase` provides an
 `interceptorManager` that keeps track of all network calls.
 
-<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L27-L39 -->
-```java
+```java readme-sample-createATestClass
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
  * live. By default, tests are run in playback mode.
@@ -58,8 +57,7 @@ public class SessionTests extends TestBase {
 Record network calls using [RecordNetworkCallPolicy][RecordNetworkCallPolicy.java]. Each HTTP request sent from the test
 client, is persisted to [RecordedData][RecordedData.java].
 
-<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L41-L60 -->
-```java
+```java readme-sample-recordNetworkCalls
 /**
  * Sample code for recording network calls.
  */
@@ -86,8 +84,7 @@ public class Foo {
 
 Playback test session records by creating a [RecordedData][RecordedData.java].
 
-<!-- embedme ./src/samples/java/com/azure/core/test/ReadmeSamples.java#L62-L78 -->
-```java
+```java readme-sample-playbackSessionRecords
 /**
  * Sample code for using playback to test.
  */

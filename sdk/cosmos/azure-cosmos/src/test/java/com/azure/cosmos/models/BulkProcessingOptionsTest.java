@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import org.testng.annotations.Test;
@@ -21,12 +20,12 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRateMustNotBeNegative() {
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(-0.001, 0))
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(-0.001, 0))
             .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(0.3, 0.29999))
-            .isInstanceOf(IllegalArgumentException.class);;
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(0.3, 0.29999))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "unit" })
@@ -54,7 +53,7 @@ public class BulkProcessingOptionsTest {
                 .getBulkExecutionThresholdsAccessor()
                 .getPartitionScopeThresholds(thresholds);
         CosmosBulkExecutionOptions optionsWithThresholds =
-            new CosmosBulkExecutionOptions(null, thresholds);
+            new CosmosBulkExecutionOptions(null, thresholds, null);
 
         assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholdsState());
         assertThat(partitionScopeThresholdsMap)

@@ -15,6 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureCo
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.cdn.models.CdnProfiles;
 
+import java.util.Objects;
+
 /**
  * Entry point to Azure CDN management.
  */
@@ -40,17 +42,21 @@ public final class CdnManager extends Manager<CdnManagementClient> {
      * @return the CDN Manager
      */
     public static CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of CDN Manager that exposes CDN manager management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the CDN Manager
      */
-    private static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static CdnManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new CdnManager(httpPipeline, profile);
     }
 
@@ -71,10 +77,7 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     /**
      * The implementation for Configurable interface.
      */
-    private static class ConfigurableImpl
-            extends AzureConfigurableImpl<Configurable>
-            implements Configurable {
-
+    private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
             return CdnManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }

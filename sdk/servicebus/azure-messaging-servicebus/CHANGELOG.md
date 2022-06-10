@@ -1,30 +1,122 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Removed the thread hopping overhead with default max-concurrent-calls; this saves allocations incurred by the parallel operator and addresses the undesired prefetching when prefetch is disabled and max-concurrent-calls is set to default. ([#29011](https://github.com/Azure/azure-sdk-for-java/pull/29011))
 
 ### Other Changes
+
+## 7.9.0 (2022-05-18)
+
+### Features Added
+- Replaced creating single thread executor with `Schedulers.boundedElastic()`. ([#27805](https://github.com/Azure/azure-sdk-for-java/issues/27805))
+- Added new method `getSessionId()` in `ServiceBusReceiverAsyncClient` . ([#28338](https://github.com/Azure/azure-sdk-for-java/issues/28338))
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+- Upgraded `azure-core-amqp` from `2.4.2` to `2.5.0`.
+
+## 7.8.0 (2022-04-11)
+
+### Features Added
+- Implemented equals and hashCode methods for CorrelationRuleFilter and SqlRuleFilter objects
+### Bugs Fixed
+- Entity Name is handled properly when passed in as part of connection string in `ServiceBusClientBuilder`. ([#27509](https://github.com/azure/azure-sdk-for-java/issues/27509))
+- Fixed a bug that when the current `SynchronousReceiveWork` is completed, the queued `SynchronousReceiveWork` is not updated. ([#27578](https://github.com/Azure/azure-sdk-for-java/issues/27578))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+- Upgraded `azure-core-amqp` from `2.4.1` to `2.4.2`.
+
+## 7.7.0 (2022-03-17)
+### Features Added
+- Added support for sending/receiving messages with `Duration`, `OffsetDateTime` and `URI` in `applicationProperties`.
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
+- Added getter methods to `ServiceBusProcessorClient` to get the queue, topic and subscription names associated with
+  the processor.
+
+### Bugs Fixed
+- Removed the incorrect use of lock primitives from `ServiceBusMessageBatch.tryAddMessage()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
+- Fixed incorrect ordering of message when sent as a batch. ([#25112](https://github.com/Azure/azure-sdk-for-java/issues/25112), [#25599](https://github.com/Azure/azure-sdk-for-java/issues/25599))
+- Fixed a bug that messages come from azure-sdk-for-net with `DescribedType` cannot be deserialized. ([#26065](https://github.com/Azure/azure-sdk-for-java/issues/26065))
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded `azure-core-amqp` from `2.4.0` to `2.4.1`.
+
+## 7.6.0 (2022-02-14)
+
+### Features Added
+- Added `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- `ServiceBusReceiverClient` if the prefetch is disabled and there is no active receive call, release any messages received. ([#26632](https://github.com/Azure/azure-sdk-for-java/issues/26632))
+
+### Bugs Fixed
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-amqp` from `2.3.7` to `2.4.0`.
+
+## 7.5.2 (2022-01-14)
+
+### Bugs Fixed
+- Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.23.1` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.5` to `2.3.7`.
+
+## 7.5.1 (2021-12-08)
+### Bugs Fixed
+- Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063](https://github.com/Azure/azure-sdk-for-java/issues/25063).
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+- Upgraded `azure-core-amqp` from `2.3.4` to `2.3.5`.
+
+## 7.5.0 (2021-11-16)
+### Features Added
+- Moved to service API version `2021-05`
+- Added support for specifying the `MaxMessageSizeInKilobytes` for entities in Premium namespaces.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
+## 7.4.2 (2021-10-15)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
 
 ## 7.4.1 (2021-09-13)
 ### Bugs Fixed
 - Fixed a bug that was causing leaking of boundedElastic-evictor threads associated with the `ServiceBusSessionManager` objects. Issue [23539](https://github.com/Azure/azure-sdk-for-java/issues/23539).
 
+### Other Changes
 #### Dependency Updates
- - Update `azure-core` dependency to `1.20.0`.
- - Update `azure-core-amqp` dependency to `2.3.2`.
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-amqp` dependency to `2.3.2`.
 
 ## 7.4.0 (2021-08-20)
 ### Features Added
- - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
+- Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
 
+### Other Changes
 #### Dependency Updates
- - Update `azure-core` dependency to `1.19.0`.
- - Update `azure-core-amqp` dependency to `2.3.1`.
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
 
 ## 7.3.0 (2021-07-08)
 ### Features Added
@@ -38,7 +130,8 @@
 - Fixed a bug that does not create respect properties when creating Subscription Rule with CorrelationFilter. Issue [21299](https://github.com/Azure/azure-sdk-for-java/issues/21299).
 - Fixed a but that causes the settlement API not to return or throw error if retry timeout is long enough. Issue [22299](https://github.com/Azure/azure-sdk-for-java/issues/22299).
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.18.0`.
 - Upgraded `azure-core-amqp` dependency to `2.3.0`.
 - Upgraded `azure-core-http-netty` to `1.10.1`.
@@ -47,7 +140,8 @@
 ### Fixed
 Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.17.0`.
 - Upgraded `azure-core-amqp` dependency to `2.2.0`.
 - Upgraded `azure-core-http-netty` to `1.10.0`.
@@ -57,7 +151,8 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Fixed some connection retry issues when network errors happen.
 - Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core-amqp` dependency to `2.0.6`.
 
 ## 7.2.1 (2021-05-12)
@@ -65,8 +160,9 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
   messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
   the message lock might expire.
-  
-### Dependency Updates
+
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.16.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.5`.
 
@@ -82,7 +178,8 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
   error 'java.lang.ArithmeticException: long overflow' by not starting 'LockRenewOperation' for each received message.
 - Upgrade to `azure-core-amqp:2.0.4` improves recovery of connection to Service Bus.
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.4`.
 
@@ -96,12 +193,14 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Update to end the trace span regardless of the scope instance type for process operation tracing spans.
 - Removed logs that leaked secrets when connection string is invalid. [#19249](https://github.com/Azure/azure-sdk-for-java/issues/19249)
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.14.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.3`.
 
 ## 7.0.2 (2021-02-10)
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Upgraded `azure-core` dependency to `1.13.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.2`.
 
@@ -120,7 +219,8 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 - Fix issue [18536](https://github.com/Azure/azure-sdk-for-java/issues/18536): The 'ServiceBusAdministrationClient.deleteSubscription()'
   is not synchronous.
 
-### Dependency Updates   
+### Other Changes
+#### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.12.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.1`.
 
@@ -146,11 +246,12 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
   value in builder.
 
 ### Known issues
-### Can not resolve `BinaryData` or `NoClassDefFoundError` 
+- Can not resolve `BinaryData` or `NoClassDefFoundError` 
   NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azure SDKs in the same pom.xml file.
   Check [here][known-issue-binarydata-notfound] for more details.
-   
-### Dependency Updates   
+
+### Other Changes
+#### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
   
@@ -190,7 +291,8 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 ### Bug Fixes
 - `ServiceBusAdministrationClient`: Fixes serialization bug for creating and deserializing rules.
 
-### Dependency Updates
+### Other Changes
+#### Dependency Updates
 - Added new `azure-core-experimental` dependency with version `1.0.0-beta.8`.
 - Upgraded `azure-core` dependency to `1.10.0`.
 - Upgraded `azure-core-amqp` dependency to `1.7.0-beta.1`.
@@ -256,8 +358,6 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Send messages to an Azure Service Bus Topic or Queue.
 - Receive messages from an Azure Service Bus Queue or Subscriber.
-
-### Known issues
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 

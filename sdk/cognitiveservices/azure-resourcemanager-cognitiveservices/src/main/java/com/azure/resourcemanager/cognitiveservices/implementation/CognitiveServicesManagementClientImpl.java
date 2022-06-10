@@ -23,7 +23,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
@@ -42,8 +45,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the CognitiveServicesManagementClientImpl type. */
 @ServiceClient(builder = CognitiveServicesManagementClientBuilder.class)
 public final class CognitiveServicesManagementClientImpl implements CognitiveServicesManagementClient {
-    private final ClientLogger logger = new ClientLogger(CognitiveServicesManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -176,6 +177,18 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.resourceProviders;
     }
 
+    /** The CommitmentTiersClient object to access its operations. */
+    private final CommitmentTiersClient commitmentTiers;
+
+    /**
+     * Gets the CommitmentTiersClient object to access its operations.
+     *
+     * @return the CommitmentTiersClient object.
+     */
+    public CommitmentTiersClient getCommitmentTiers() {
+        return this.commitmentTiers;
+    }
+
     /** The PrivateEndpointConnectionsClient object to access its operations. */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
@@ -200,6 +213,30 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         return this.privateLinkResources;
     }
 
+    /** The DeploymentsClient object to access its operations. */
+    private final DeploymentsClient deployments;
+
+    /**
+     * Gets the DeploymentsClient object to access its operations.
+     *
+     * @return the DeploymentsClient object.
+     */
+    public DeploymentsClient getDeployments() {
+        return this.deployments;
+    }
+
+    /** The CommitmentPlansClient object to access its operations. */
+    private final CommitmentPlansClient commitmentPlans;
+
+    /**
+     * Gets the CommitmentPlansClient object to access its operations.
+     *
+     * @return the CommitmentPlansClient object.
+     */
+    public CommitmentPlansClient getCommitmentPlans() {
+        return this.commitmentPlans;
+    }
+
     /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      *
@@ -222,14 +259,17 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-30";
+        this.apiVersion = "2022-03-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.commitmentTiers = new CommitmentTiersClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.deployments = new DeploymentsClientImpl(this);
+        this.commitmentPlans = new CommitmentPlansClientImpl(this);
     }
 
     /**
@@ -315,7 +355,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -374,4 +414,6 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CognitiveServicesManagementClientImpl.class);
 }

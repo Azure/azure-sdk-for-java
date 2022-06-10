@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** The implementation for {@link VirtualMachineSize}. */
@@ -42,5 +43,14 @@ class VirtualMachineSizeImpl implements VirtualMachineSize {
     @Override
     public int maxDataDiskCount() {
         return ResourceManagerUtils.toPrimitiveInt(innerModel.maxDataDiskCount());
+    }
+
+    @Override
+    public VirtualMachineSizeTypes virtualMachineSizeType() {
+        if (this.innerModel.name() != null) {
+            return VirtualMachineSizeTypes.fromString(this.innerModel.name());
+        } else {
+            return null;
+        }
     }
 }

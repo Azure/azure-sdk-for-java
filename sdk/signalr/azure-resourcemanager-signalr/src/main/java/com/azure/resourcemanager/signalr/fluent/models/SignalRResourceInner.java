@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.signalr.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
+import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
@@ -18,32 +18,33 @@ import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import com.azure.resourcemanager.signalr.models.SignalRFeature;
 import com.azure.resourcemanager.signalr.models.SignalRNetworkACLs;
 import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** A class represent a resource. */
-@JsonFlatten
 @Fluent
-public class SignalRResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRResourceInner.class);
-
+public final class SignalRResourceInner extends Resource {
     /*
-     * The billing information of the resource.(e.g. Free, Standard)
+     * The billing information of the resource.
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
-     * The kind of the service - e.g. "SignalR" for
-     * "Microsoft.SignalRService/SignalR"
+     * A class that describes the properties of the resource
+     */
+    @JsonProperty(value = "properties")
+    private SignalRProperties innerProperties;
+
+    /*
+     * The kind of the service, it can be SignalR or RawWebSockets
      */
     @JsonProperty(value = "kind")
     private ServiceKind kind;
 
     /*
-     * The managed identity response
+     * A class represent managed identities used for request and response
      */
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
@@ -54,122 +55,8 @@ public class SignalRResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The publicly accessible IP of the resource.
-     */
-    @JsonProperty(value = "properties.externalIP", access = JsonProperty.Access.WRITE_ONLY)
-    private String externalIp;
-
-    /*
-     * FQDN of the service instance.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostname;
-
-    /*
-     * The publicly accessible port of the resource which is designed for
-     * browser/client side usage.
-     */
-    @JsonProperty(value = "properties.publicPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer publicPort;
-
-    /*
-     * The publicly accessible port of the resource which is designed for
-     * customer server side usage.
-     */
-    @JsonProperty(value = "properties.serverPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer serverPort;
-
-    /*
-     * Version of the resource. Probably you need the same or higher version of
-     * client SDKs.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Private endpoint connections to the resource.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * The list of shared private link resources.
-     */
-    @JsonProperty(value = "properties.sharedPrivateLinkResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
-
-    /*
-     * TLS settings.
-     */
-    @JsonProperty(value = "properties.tls")
-    private SignalRTlsSettings tls;
-
-    /*
-     * List of the featureFlags.
-     *
-     * FeatureFlags that are not included in the parameters for the update
-     * operation will not be modified.
-     * And the response will only include featureFlags that are explicitly set.
-     * When a featureFlag is not explicitly set, its globally default value
-     * will be used
-     * But keep in mind, the default value doesn't mean "false". It varies in
-     * terms of different FeatureFlags.
-     */
-    @JsonProperty(value = "properties.features")
-    private List<SignalRFeature> features;
-
-    /*
-     * Cross-Origin Resource Sharing (CORS) settings.
-     */
-    @JsonProperty(value = "properties.cors")
-    private SignalRCorsSettings cors;
-
-    /*
-     * Upstream settings when the service is in server-less mode.
-     */
-    @JsonProperty(value = "properties.upstream")
-    private ServerlessUpstreamSettings upstream;
-
-    /*
-     * Network ACLs
-     */
-    @JsonProperty(value = "properties.networkACLs")
-    private SignalRNetworkACLs networkACLs;
-
-    /*
-     * Enable or disable public network access. Default to "Enabled".
-     * When it's Enabled, network ACLs still apply.
-     * When it's Disabled, public network access is always disabled no matter
-     * what you set in network ACLs.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private String publicNetworkAccess;
-
-    /*
-     * DisableLocalAuth
-     * Enable or disable local auth with AccessKey
-     * When set as true, connection with AccessKey=xxx won't work.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * disableAadAuth
-     * Enable or disable aad auth
-     * When set as true, connection with AuthType=aad won't work.
-     */
-    @JsonProperty(value = "properties.disableAadAuth")
-    private Boolean disableAadAuth;
-
     /**
-     * Get the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Get the sku property: The billing information of the resource.
      *
      * @return the sku value.
      */
@@ -178,7 +65,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The billing information of the resource.(e.g. Free, Standard).
+     * Set the sku property: The billing information of the resource.
      *
      * @param sku the sku value to set.
      * @return the SignalRResourceInner object itself.
@@ -189,7 +76,16 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Get the innerProperties property: A class that describes the properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private SignalRProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      *
      * @return the kind value.
      */
@@ -198,7 +94,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR".
+     * Set the kind property: The kind of the service, it can be SignalR or RawWebSockets.
      *
      * @param kind the kind value to set.
      * @return the SignalRResourceInner object itself.
@@ -209,7 +105,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the identity property: The managed identity response.
+     * Get the identity property: A class represent managed identities used for request and response.
      *
      * @return the identity value.
      */
@@ -218,7 +114,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Set the identity property: The managed identity response.
+     * Set the identity property: A class represent managed identities used for request and response.
      *
      * @param identity the identity value to set.
      * @return the SignalRResourceInner object itself.
@@ -237,258 +133,6 @@ public class SignalRResourceInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the externalIp property: The publicly accessible IP of the resource.
-     *
-     * @return the externalIp value.
-     */
-    public String externalIp() {
-        return this.externalIp;
-    }
-
-    /**
-     * Get the hostname property: FQDN of the service instance.
-     *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
-     * side usage.
-     *
-     * @return the publicPort value.
-     */
-    public Integer publicPort() {
-        return this.publicPort;
-    }
-
-    /**
-     * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
-     * side usage.
-     *
-     * @return the serverPort value.
-     */
-    public Integer serverPort() {
-        return this.serverPort;
-    }
-
-    /**
-     * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
-     *
-     * @return the version value.
-     */
-    public String version() {
-        return this.version;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources.
-     *
-     * @return the sharedPrivateLinkResources value.
-     */
-    public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
-        return this.sharedPrivateLinkResources;
-    }
-
-    /**
-     * Get the tls property: TLS settings.
-     *
-     * @return the tls value.
-     */
-    public SignalRTlsSettings tls() {
-        return this.tls;
-    }
-
-    /**
-     * Set the tls property: TLS settings.
-     *
-     * @param tls the tls value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withTls(SignalRTlsSettings tls) {
-        this.tls = tls;
-        return this;
-    }
-
-    /**
-     * Get the features property: List of the featureFlags.
-     *
-     * <p>FeatureFlags that are not included in the parameters for the update operation will not be modified. And the
-     * response will only include featureFlags that are explicitly set. When a featureFlag is not explicitly set, its
-     * globally default value will be used But keep in mind, the default value doesn't mean "false". It varies in terms
-     * of different FeatureFlags.
-     *
-     * @return the features value.
-     */
-    public List<SignalRFeature> features() {
-        return this.features;
-    }
-
-    /**
-     * Set the features property: List of the featureFlags.
-     *
-     * <p>FeatureFlags that are not included in the parameters for the update operation will not be modified. And the
-     * response will only include featureFlags that are explicitly set. When a featureFlag is not explicitly set, its
-     * globally default value will be used But keep in mind, the default value doesn't mean "false". It varies in terms
-     * of different FeatureFlags.
-     *
-     * @param features the features value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withFeatures(List<SignalRFeature> features) {
-        this.features = features;
-        return this;
-    }
-
-    /**
-     * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
-     * @return the cors value.
-     */
-    public SignalRCorsSettings cors() {
-        return this.cors;
-    }
-
-    /**
-     * Set the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
-     * @param cors the cors value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withCors(SignalRCorsSettings cors) {
-        this.cors = cors;
-        return this;
-    }
-
-    /**
-     * Get the upstream property: Upstream settings when the service is in server-less mode.
-     *
-     * @return the upstream value.
-     */
-    public ServerlessUpstreamSettings upstream() {
-        return this.upstream;
-    }
-
-    /**
-     * Set the upstream property: Upstream settings when the service is in server-less mode.
-     *
-     * @param upstream the upstream value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withUpstream(ServerlessUpstreamSettings upstream) {
-        this.upstream = upstream;
-        return this;
-    }
-
-    /**
-     * Get the networkACLs property: Network ACLs.
-     *
-     * @return the networkACLs value.
-     */
-    public SignalRNetworkACLs networkACLs() {
-        return this.networkACLs;
-    }
-
-    /**
-     * Set the networkACLs property: Network ACLs.
-     *
-     * @param networkACLs the networkACLs value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withNetworkACLs(SignalRNetworkACLs networkACLs) {
-        this.networkACLs = networkACLs;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public String publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
-     * @return the disableLocalAuth value.
-     */
-    public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
-    }
-
-    /**
-     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
-     * @param disableLocalAuth the disableLocalAuth value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
-        return this;
-    }
-
-    /**
-     * Get the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
-     * @return the disableAadAuth value.
-     */
-    public Boolean disableAadAuth() {
-        return this.disableAadAuth;
-    }
-
-    /**
-     * Set the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
-     * @param disableAadAuth the disableAadAuth value to set.
-     * @return the SignalRResourceInner object itself.
-     */
-    public SignalRResourceInner withDisableAadAuth(Boolean disableAadAuth) {
-        this.disableAadAuth = disableAadAuth;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public SignalRResourceInner withLocation(String location) {
@@ -504,6 +148,337 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the externalIp property: The publicly accessible IP of the resource.
+     *
+     * @return the externalIp value.
+     */
+    public String externalIp() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalIp();
+    }
+
+    /**
+     * Get the hostname property: FQDN of the service instance.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
+     * side usage.
+     *
+     * @return the publicPort value.
+     */
+    public Integer publicPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicPort();
+    }
+
+    /**
+     * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
+     * side usage.
+     *
+     * @return the serverPort value.
+     */
+    public Integer serverPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverPort();
+    }
+
+    /**
+     * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources.
+     *
+     * @return the sharedPrivateLinkResources value.
+     */
+    public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResources();
+    }
+
+    /**
+     * Get the tls property: TLS settings for the resource.
+     *
+     * @return the tls value.
+     */
+    public SignalRTlsSettings tls() {
+        return this.innerProperties() == null ? null : this.innerProperties().tls();
+    }
+
+    /**
+     * Set the tls property: TLS settings for the resource.
+     *
+     * @param tls the tls value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withTls(SignalRTlsSettings tls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withTls(tls);
+        return this;
+    }
+
+    /**
+     * Get the hostnamePrefix property: Deprecated.
+     *
+     * @return the hostnamePrefix value.
+     */
+    public String hostnamePrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostnamePrefix();
+    }
+
+    /**
+     * Get the features property: List of the featureFlags.
+     *
+     * <p>FeatureFlags that are not included in the parameters for the update operation will not be modified. And the
+     * response will only include featureFlags that are explicitly set. When a featureFlag is not explicitly set, its
+     * globally default value will be used But keep in mind, the default value doesn't mean "false". It varies in terms
+     * of different FeatureFlags.
+     *
+     * @return the features value.
+     */
+    public List<SignalRFeature> features() {
+        return this.innerProperties() == null ? null : this.innerProperties().features();
+    }
+
+    /**
+     * Set the features property: List of the featureFlags.
+     *
+     * <p>FeatureFlags that are not included in the parameters for the update operation will not be modified. And the
+     * response will only include featureFlags that are explicitly set. When a featureFlag is not explicitly set, its
+     * globally default value will be used But keep in mind, the default value doesn't mean "false". It varies in terms
+     * of different FeatureFlags.
+     *
+     * @param features the features value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withFeatures(List<SignalRFeature> features) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withFeatures(features);
+        return this;
+    }
+
+    /**
+     * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().liveTraceConfiguration();
+    }
+
+    /**
+     * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @param liveTraceConfiguration the liveTraceConfiguration value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withLiveTraceConfiguration(liveTraceConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the resourceLogConfiguration value.
+     */
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceLogConfiguration();
+    }
+
+    /**
+     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource.
+     *
+     * @param resourceLogConfiguration the resourceLogConfiguration value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withResourceLogConfiguration(resourceLogConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
+     *
+     * @return the cors value.
+     */
+    public SignalRCorsSettings cors() {
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
+    }
+
+    /**
+     * Set the cors property: Cross-Origin Resource Sharing (CORS) settings.
+     *
+     * @param cors the cors value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withCors(SignalRCorsSettings cors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withCors(cors);
+        return this;
+    }
+
+    /**
+     * Get the upstream property: The settings for the Upstream when the service is in server-less mode.
+     *
+     * @return the upstream value.
+     */
+    public ServerlessUpstreamSettings upstream() {
+        return this.innerProperties() == null ? null : this.innerProperties().upstream();
+    }
+
+    /**
+     * Set the upstream property: The settings for the Upstream when the service is in server-less mode.
+     *
+     * @param upstream the upstream value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withUpstream(ServerlessUpstreamSettings upstream) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withUpstream(upstream);
+        return this;
+    }
+
+    /**
+     * Get the networkACLs property: Network ACLs for the resource.
+     *
+     * @return the networkACLs value.
+     */
+    public SignalRNetworkACLs networkACLs() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkACLs();
+    }
+
+    /**
+     * Set the networkACLs property: Network ACLs for the resource.
+     *
+     * @param networkACLs the networkACLs value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withNetworkACLs(SignalRNetworkACLs networkACLs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withNetworkACLs(networkACLs);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @return the disableAadAuth value.
+     */
+    public Boolean disableAadAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableAadAuth();
+    }
+
+    /**
+     * Set the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @param disableAadAuth the disableAadAuth value to set.
+     * @return the SignalRResourceInner object itself.
+     */
+    public SignalRResourceInner withDisableAadAuth(Boolean disableAadAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SignalRProperties();
+        }
+        this.innerProperties().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -512,29 +487,11 @@ public class SignalRResourceInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (sharedPrivateLinkResources() != null) {
-            sharedPrivateLinkResources().forEach(e -> e.validate());
-        }
-        if (tls() != null) {
-            tls().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
-        }
-        if (cors() != null) {
-            cors().validate();
-        }
-        if (upstream() != null) {
-            upstream().validate();
-        }
-        if (networkACLs() != null) {
-            networkACLs().validate();
         }
     }
 }

@@ -41,6 +41,7 @@ namespace: com.azure.communication.callingserver
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
+service-interface-as-public: true
 models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
@@ -94,5 +95,32 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                        
+    to: ToneInfoInternal                                            
+```
+
+### Rename RecordingChannelType to RecordingChannel
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingChannelType
+    transform: >
+      $["x-ms-enum"].name = "RecordingChannel";
+```
+
+### Rename RecordingContentType to RecordingContent
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingContentType
+    transform: >
+      $["x-ms-enum"].name = "RecordingContent";
+```
+
+### Rename RecordingFormatType to RecordingFormat
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingFormatType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingFormat";
 ```

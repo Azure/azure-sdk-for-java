@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response body returned for a request to Bot Service Management to check per subscription hostSettings. */
 @Fluent
 public final class HostSettingsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostSettingsResponseInner.class);
-
     /*
      * For in-conversation bot user authentication
      */
@@ -57,7 +53,7 @@ public final class HostSettingsResponseInner {
     private Boolean validateAuthority;
 
     /*
-     * Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
+     * Same as toBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
      */
     @JsonProperty(value = "BotOpenIdMetadata")
     private String botOpenIdMetadata;
@@ -203,7 +199,7 @@ public final class HostSettingsResponseInner {
     }
 
     /**
-     * Get the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * Get the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
      *
      * @return the botOpenIdMetadata value.
      */
@@ -212,7 +208,7 @@ public final class HostSettingsResponseInner {
     }
 
     /**
-     * Set the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * Set the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
      *
      * @param botOpenIdMetadata the botOpenIdMetadata value to set.
      * @return the HostSettingsResponseInner object itself.

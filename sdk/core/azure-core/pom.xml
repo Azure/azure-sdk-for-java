@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.30.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -47,9 +47,9 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
-    <boring-ssl-classifier></boring-ssl-classifier>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.http.rest=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
 
@@ -64,6 +64,8 @@
       --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.logging=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
@@ -72,6 +74,9 @@
 
       --add-reads com.azure.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
   </properties>
 
   <developers>
@@ -85,32 +90,32 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.13.2.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.13.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -126,36 +131,30 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.40.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-      <classifier>${boring-ssl-classifier}</classifier>
+      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -167,7 +166,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -233,14 +232,13 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.40.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.4.9]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.17]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.2.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -277,7 +275,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>META-INF/**</exclude>
@@ -289,6 +287,14 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <!-- This configures failsafe to use the compiled JAR in the build directory. -->
+          <!-- This was added as running the failsafe goals directly used the class files in the build directory and they don't support MR JARs, as they don't have a MANIFEST. -->
+          <classesDirectory>${project.build.directory}</classesDirectory>
+          <additionalClasspathElements>
+            <additionalClasspathElement>${project.build.directory}${file.separator}${project.artifactId}-${project.version}.jar</additionalClasspathElement>
+          </additionalClasspathElements>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -327,42 +333,37 @@
     </profile>
 
     <profile>
-      <id>native-linux</id>
+      <id>jmh-benchmark</id>
       <activation>
         <property>
-          <name>native-linux</name>
+          <name>jmh-benchmark</name>
         </property>
       </activation>
 
       <properties>
-        <boring-ssl-classifier>linux-x86_64</boring-ssl-classifier>
+        <!-- JMH needs annotation processing on, so disable proc == none -->
+        <compiler.proc></compiler.proc>
       </properties>
-    </profile>
 
-    <profile>
-      <id>native-macos</id>
-      <activation>
-        <property>
-          <name>native-macos</name>
-        </property>
-      </activation>
-
-      <properties>
-        <boring-ssl-classifier>osx-x86_64</boring-ssl-classifier>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>native-windows</id>
-      <activation>
-        <property>
-          <name>native-windows</name>
-        </property>
-      </activation>
-
-      <properties>
-        <boring-ssl-classifier>windows-x86_64</boring-ssl-classifier>
-      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <!-- Add the JMH annotation processor to the classpath. -->
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.openjdk.jmh</groupId>
+                  <artifactId>jmh-generator-annprocess</artifactId>
+                  <version>1.22</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>

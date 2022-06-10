@@ -11,6 +11,8 @@ import java.util.function.Predicate;
  * @param <C> The type of the continuation token.
  */
 class ContinuationState<C> {
+    private final Predicate<C> continuationPredicate;
+
     // The last seen continuation token
     private C lastContinuationToken;
     // Indicate whether to call the PageRetrieval Function
@@ -20,31 +22,22 @@ class ContinuationState<C> {
      * Creates ContinuationState.
      *
      * @param token An optional continuation token for the beginning state.
+     * @param continuationPredicate The predicate that tests if paging should continue.
      */
-    ContinuationState(C token) {
+    ContinuationState(C token, Predicate<C> continuationPredicate) {
         this.lastContinuationToken = token;
+        this.continuationPredicate = continuationPredicate;
     }
 
     /**
      * Store the last seen continuation token.
      * <p>
-     * Determination for continuation being done is checking if the continuation token is null.
+     * Determining if paging should continue is done by checking the token against the continuation predicate.
      *
      * @param token The continuation token.
      */
     void setLastContinuationToken(C token) {
-        this.isDone = (token == null);
-        this.lastContinuationToken = token;
-    }
-
-    /**
-     * Store the last seen continuation token and apply the predicate to determine if continuation is done.
-     *
-     * @param token The continuation token.
-     * @param isDonePredicate The predicate that tests if continuation is done.
-     */
-    void setLastContinuationToken(C token, Predicate<C> isDonePredicate) {
-        this.isDone = isDonePredicate.test(token);
+        this.isDone = !continuationPredicate.test(token);
         this.lastContinuationToken = token;
     }
 

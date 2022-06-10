@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PremierAddOnPatchResource resource specific properties. */
 @Fluent
 public final class PremierAddOnPatchResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnPatchResourceProperties.class);
-
     /*
      * Premier add on SKU.
      */

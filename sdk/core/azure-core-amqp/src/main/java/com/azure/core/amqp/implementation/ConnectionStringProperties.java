@@ -15,7 +15,7 @@ import java.util.Objects;
  * The set of properties that comprise a connection string from the Azure portal.
  */
 public class ConnectionStringProperties {
-    private final ClientLogger logger = new ClientLogger(ConnectionStringProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionStringProperties.class);
 
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String ENDPOINT_SCHEME_SB_PREFIX = "sb://";
@@ -105,7 +105,7 @@ public class ConnectionStringProperties {
         if (endpoint == null
             || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
-            throw logger.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }
 
         this.endpoint = endpoint;
@@ -163,7 +163,7 @@ public class ConnectionStringProperties {
     private String validateAndUpdateDefaultScheme(final String endpoint) {
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'Endpoint' must be provided in 'connectionString'."));
         }
 

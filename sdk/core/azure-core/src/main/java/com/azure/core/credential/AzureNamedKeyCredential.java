@@ -16,11 +16,17 @@ import java.util.Objects;
  *
  * <p>Create a named credential for a service specific sas key.</p>
  *
- * {@codesnippet com.azure.core.credential.azureNamedKeyCredenialSasKey}
+ * <!-- src_embed com.azure.core.credential.azureNamedKeyCredenialSasKey -->
+ * <pre>
+ * AzureNamedKeyCredential azureNamedKeyCredential =
+ *     new AzureNamedKeyCredential&#40;&quot;AZURE-SERVICE-SAS-KEY-NAME&quot;, &quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.azureNamedKeyCredenialSasKey -->
  *
  */
 public final class AzureNamedKeyCredential {
-    private final ClientLogger logger = new ClientLogger(AzureNamedKeyCredential.class);
+    // AzureNamedKeyCredential is a commonly used credential type, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AzureNamedKeyCredential.class);
 
     private volatile AzureNamedKey credentials;
 
@@ -65,10 +71,10 @@ public final class AzureNamedKeyCredential {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(key, "'key' cannot be null.");
         if (name.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
         if (key.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
     }
 }

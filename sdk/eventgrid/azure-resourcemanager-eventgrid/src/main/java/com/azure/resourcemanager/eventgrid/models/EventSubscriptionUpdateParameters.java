@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Properties of the Event Subscription update. */
 @Fluent
 public final class EventSubscriptionUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionUpdateParameters.class);
-
     /*
      * Information about the destination where events have to be delivered for
      * the event subscription.

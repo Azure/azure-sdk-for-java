@@ -13,10 +13,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.AccessPoliciesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.AccessPolicyEntityInner;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicies;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicyEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccessPoliciesImpl implements AccessPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPoliciesImpl.class);
 
     private final AccessPoliciesClient innerClient;
 
@@ -76,7 +75,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     public AccessPolicyEntity getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -84,7 +83,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +103,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     public Response<AccessPolicyEntity> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +119,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,19 +147,19 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, accessPolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, accessPolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class AccessPoliciesImpl implements AccessPolicies {
         }
         String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

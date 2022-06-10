@@ -3,38 +3,57 @@
 
 package com.azure.data.schemaregistry.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
-
-import java.util.Arrays;
+import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 
 /**
- * Stores all relevant information returned from {@link SchemaRegistryClient}/{@link SchemaRegistryAsyncClient} layer.
+ * Stores properties of a schema stored in Schema Registry.
+ *
+ * @see SchemaRegistryAsyncClient
+ * @see SchemaRegistryClient
  */
+@Immutable
 public final class SchemaProperties {
 
-    private final String schemaId;
-    private final SerializationType serializationType;
-    private final byte[] schemaBytes;
-    private final String schemaName;
+    private final String id;
+    private final SchemaFormat format;
+    private final String groupName;
+    private final String name;
+
+    static {
+        SchemaRegistryHelper.setAccessor(new SchemaRegistryHelper.SchemaRegistryModelsAccessor() {
+            @Override
+            public SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name) {
+                return new SchemaProperties(id, format, groupName, name);
+            }
+        });
+    }
 
     /**
-     * Initializes SchemaRegistryObject instance.
+     * Initializes a new instance.
      *
-     * @param schemaId the schema id
-     * @param serializationType type of schema, e.g. avro, json
-     * @param schemaName name of the schema.
-     * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
+     * @param id The schema id.
+     * @param format The type of schema, e.g. avro, json.
      */
-    public SchemaProperties(
-        String schemaId,
-        SerializationType serializationType,
-        String schemaName,
-        byte[] schemaByteArray) {
-        this.schemaId = schemaId;
-        this.serializationType = serializationType;
-        this.schemaBytes = schemaByteArray.clone();
-        this.schemaName = schemaName;
+    public SchemaProperties(String id, SchemaFormat format) {
+        this(id, format, null, null);
+    }
+
+    /**
+     * Initializes a new instance.
+     *
+     * @param id The schema id.
+     * @param format The type of schema, e.g. avro, json.
+     * @param groupName The schema group for this schema.
+     * @param name The name of the schema.
+     */
+    SchemaProperties(String id, SchemaFormat format, String groupName, String name) {
+        this.id = id;
+        this.format = format;
+        this.groupName = groupName;
+        this.name = name;
     }
 
     /**
@@ -42,37 +61,33 @@ public final class SchemaProperties {
      *
      * @return the unique identifier for this schema.
      */
-    public String getSchemaId() {
-        return schemaId;
+    public String getId() {
+        return id;
     }
 
     /**
-     * The serialization type of this schema.
+     * The schema format of this schema.
      * @return schema type associated with the schema payload
      */
-    public SerializationType getSerializationType() {
-        return serializationType;
-    }
-
-
-    /**
-     * The name of the schema.
-     * @return the schema name.
-     */
-    public String getSchemaName() {
-        return this.schemaName;
+    public SchemaFormat getFormat() {
+        return format;
     }
 
     /**
-     *  Schema bytes returned from Schema Registry.
+     * Gets the schema group of this schema.
      *
-     *  @return The byte content of this schema.
+     * @return The schema group of this schema.
      */
-    public byte[] getSchema() {
-        if (schemaBytes == null) {
-            return new byte[0];
-        }
-        return Arrays.copyOf(this.schemaBytes, this.schemaBytes.length);
+    public String getGroupName() {
+        return groupName;
     }
 
+    /**
+     * Gets the name of the schema.
+     *
+     * @return The name of the schema.
+     */
+    public String getName() {
+        return name;
+    }
 }

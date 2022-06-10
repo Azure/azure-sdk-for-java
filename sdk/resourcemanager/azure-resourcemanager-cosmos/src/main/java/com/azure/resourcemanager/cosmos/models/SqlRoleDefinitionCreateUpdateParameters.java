@@ -5,47 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters to create and update an Azure Cosmos DB SQL Role Definition. */
-@JsonFlatten
 @Fluent
-public class SqlRoleDefinitionCreateUpdateParameters {
+public final class SqlRoleDefinitionCreateUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionCreateUpdateParameters.class);
 
     /*
-     * A user-friendly name for the Role Definition. Must be unique for the
-     * database account.
+     * Properties to create and update an Azure Cosmos DB SQL Role Definition.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
+    @JsonProperty(value = "properties")
+    private SqlRoleDefinitionResource innerProperties;
 
-    /*
-     * Indicates whether the Role Definition was built-in or user created.
+    /**
+     * Get the innerProperties property: Properties to create and update an Azure Cosmos DB SQL Role Definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.type")
-    private RoleDefinitionType type;
-
-    /*
-     * A set of fully qualified Scopes at or below which Role Assignments may
-     * be created using this Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying
-     * Database / Collection. Must have at least one element. Scopes higher
-     * than Database account are not enforceable as assignable Scopes. Note
-     * that resources referenced in assignable Scopes need not exist.
-     */
-    @JsonProperty(value = "properties.assignableScopes")
-    private List<String> assignableScopes;
-
-    /*
-     * The set of operations allowed through this Role Definition.
-     */
-    @JsonProperty(value = "properties.permissions")
-    private List<Permission> permissions;
+    private SqlRoleDefinitionResource innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
@@ -53,7 +37,7 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
@@ -63,7 +47,10 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.
      */
     public SqlRoleDefinitionCreateUpdateParameters withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
@@ -73,7 +60,7 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the type value.
      */
     public RoleDefinitionType type() {
-        return this.type;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
@@ -83,7 +70,10 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.
      */
     public SqlRoleDefinitionCreateUpdateParameters withType(RoleDefinitionType type) {
-        this.type = type;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -97,7 +87,7 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
-        return this.assignableScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().assignableScopes();
     }
 
     /**
@@ -111,7 +101,10 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.
      */
     public SqlRoleDefinitionCreateUpdateParameters withAssignableScopes(List<String> assignableScopes) {
-        this.assignableScopes = assignableScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withAssignableScopes(assignableScopes);
         return this;
     }
 
@@ -121,7 +114,7 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the permissions value.
      */
     public List<Permission> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
@@ -131,7 +124,10 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.
      */
     public SqlRoleDefinitionCreateUpdateParameters withPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
@@ -141,8 +137,8 @@ public class SqlRoleDefinitionCreateUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (permissions() != null) {
-            permissions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

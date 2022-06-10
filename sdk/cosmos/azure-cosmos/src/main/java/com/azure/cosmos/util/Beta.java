@@ -15,18 +15,24 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 
-@Documented
-@Retention(RetentionPolicy.CLASS)
-@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
-@Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in future releases,
  * including removal, regardless of any compatibility expectations set by the containing library version.
  */
+@Documented
+@Retention(RetentionPolicy.CLASS)
+@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
+@Inherited
 public @interface Beta {
 
+    /**
+     * Default warning text.
+     */
     String PREVIEW_SUBJECT_TO_CHANGE_WARNING = "Preview API - subject to change in non-backwards compatible way";
 
+    /**
+     * @return the warning text
+     */
     String warningText() default PREVIEW_SUBJECT_TO_CHANGE_WARNING;
 
     /**
@@ -71,6 +77,20 @@ public @interface Beta {
         /** v4.18.0 */
         V4_18_0,
         /** v4.19.0 */
-        V4_19_0
+        V4_19_0,
+        /** v4.22.0 */
+        V4_22_0,
+        /** v4.23.0 */
+        V4_23_0,
+        /** v4.24.0 */
+        V4_24_0,
+        /** v4.25.0 */
+        V4_25_0,
+        /** v4.26.0 */
+        V4_26_0,
+        /** v4.27.0 */
+        V4_27_0,
+        /** v4.28.0 */
+        V4_28_0
     }
 }

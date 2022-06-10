@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response from the check name availability request. */
 @Fluent
 public final class EntityNameAvailabilityCheckOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityNameAvailabilityCheckOutputInner.class);
-
     /*
      * Specifies if the name is available.
      */

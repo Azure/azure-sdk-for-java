@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list Azure Workbooks operations. It contains a list of operations and a URL link to get the
- * next set of results.
+ * Result of the request to list CDN operations. It contains a list of operations and a URL link to get the next set of
+ * results.
  */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * List of Workbook operations supported by the Microsoft.Insights resource
-     * provider.
+     * List of CDN operations supported by the CDN resource provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
@@ -33,7 +28,7 @@ public final class OperationListResult {
     private String nextLink;
 
     /**
-     * Get the value property: List of Workbook operations supported by the Microsoft.Insights resource provider.
+     * Get the value property: List of CDN operations supported by the CDN resource provider.
      *
      * @return the value value.
      */
@@ -42,7 +37,7 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the value property: List of Workbook operations supported by the Microsoft.Insights resource provider.
+     * Set the value property: List of CDN operations supported by the CDN resource provider.
      *
      * @param value the value value to set.
      * @return the OperationListResult object itself.

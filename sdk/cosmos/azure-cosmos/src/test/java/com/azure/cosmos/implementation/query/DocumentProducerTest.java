@@ -182,7 +182,8 @@ public class DocumentProducerTest {
                     initialPageSize,
                     initialContinuationToken,
                     top,
-                    range1);
+                    range1,
+                    () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -281,12 +282,12 @@ public class DocumentProducerTest {
             IDocumentQueryClient queryCl = mockQueryClient(ImmutableList.of(leftChildPartitionKeyRange,
                                                                             rightChildPartitionKeyRange));
 
-            OrderByDocumentProducer<Document> documentProducer =
-                    new OrderByDocumentProducer<>(new OrderbyRowComparer<>(ImmutableList.of(SortOrder.Ascending)),
+            OrderByDocumentProducer documentProducer =
+                    new OrderByDocumentProducer(new OrderbyRowComparer<>(ImmutableList.of(SortOrder.Ascending)),
                                                   queryCl, collectionRid, null, requestCreator, requestExecutor,
                                                   parentPartitionKeyRange, range1, collectionLink, null, Document.class,
                                                   null, initialPageSize, initialContinuationToken, top,
-                                                  new HashMap<>());
+                                                  new HashMap<>(), () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -348,7 +349,7 @@ public class DocumentProducerTest {
                                                                                  null,
                                                                                  initialPageSize,
                                                                                  initialContinuationToken,
-                                                                                 top, range1);
+                                                                                 top, range1, () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -422,7 +423,7 @@ public class DocumentProducerTest {
                                                                                  null,
                                                                                  initialPageSize,
                                                                                  initialContinuationToken,
-                                                                                 top, feedRangeEpk);
+                                                                                 top, feedRangeEpk, () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -502,7 +503,9 @@ public class DocumentProducerTest {
                                                                                          null,
                                                                                          initialPageSize,
                                                                                          initialContinuationToken,
-                                                                                         top, feedRangeEpk);
+                                                                                         top,
+                                                                                         feedRangeEpk,
+                                                                                         () -> "n/a");
 
             TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
@@ -554,13 +557,13 @@ public class DocumentProducerTest {
                     BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
                     QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
-                                                         " }");
+                        " }");
                     String json =
-                            "{\"" + OrderByPayloadFieldName + "\" : " + d.toJson() + ", \"" + OrderByItemsFieldName + "\" : [ " + qi.toJson() + " ] }";
+                        "{\"" + OrderByPayloadFieldName + "\" : " + d.toJson() + ", \"" + OrderByItemsFieldName + "\" : [ " + qi.toJson() + " ] }";
 
-                    OrderByRowResult<Document> row = new OrderByRowResult<>(Document.class, json,
-                                                                            feedRangeEpk,
-                                                                            "backend continuation token");
+                    OrderByRowResult<Document> row = new OrderByRowResult<>(json,
+                        feedRangeEpk,
+                        "backend continuation token");
                     res.add(row);
                 } else {
                     res.add(d);

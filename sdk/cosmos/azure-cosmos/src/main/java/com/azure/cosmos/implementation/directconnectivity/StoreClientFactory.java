@@ -6,9 +6,11 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -28,7 +30,9 @@ public class StoreClientFactory implements AutoCloseable {
         Configs configs,
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
-        boolean enableTransportClientSharing) {
+        boolean enableTransportClientSharing,
+        ClientTelemetry clientTelemetry,
+        GlobalEndpointManager globalEndpointManager) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -39,16 +43,19 @@ public class StoreClientFactory implements AutoCloseable {
                 connectionPolicy,
                 userAgent,
                 diagnosticsClientConfig,
-                addressResolver);
+                addressResolver,
+                clientTelemetry,
+                globalEndpointManager);
         } else {
             if (protocol == Protocol.HTTPS) {
-                this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
+                this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent, globalEndpointManager);
             } else if (protocol == Protocol.TCP) {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
-                diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
+                    clientTelemetry, globalEndpointManager);
+                diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", protocol));

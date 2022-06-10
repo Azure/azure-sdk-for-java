@@ -7,7 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -17,7 +17,6 @@ import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceKind;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +24,6 @@ import java.util.Map;
 /** EventGrid Topic. */
 @Fluent
 public final class TopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicInner.class);
-
     /*
      * Properties of the topic.
      */
@@ -339,6 +336,29 @@ public final class TopicInner extends Resource {
             this.innerProperties = new TopicProperties();
         }
         this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
         return this;
     }
 

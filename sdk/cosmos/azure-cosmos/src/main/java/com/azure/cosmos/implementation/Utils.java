@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -68,6 +69,7 @@ public class Utils {
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+    private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
@@ -83,7 +85,34 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-        Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
+        int javaVersion = getJavaVersion();
+        // We will not register after burner for java 16+, due to its breaking changes
+        // https://github.com/Azure/azure-sdk-for-java/issues/23005
+        if (javaVersion != -1 && javaVersion < 16) {
+            Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
+        }
+    }
+
+    private static int getJavaVersion() {
+        int version = -1;
+        try {
+            String completeJavaVersion = System.getProperty("java.version");
+            String[] versionElements = completeJavaVersion.split("\\.");
+            int versionFirstPart = Integer.parseInt(versionElements[0]);
+            // Java 8 or lower format is 1.6.0, 1.7.0, 1.7.0, 1.8.0
+            // Java 9 or higher format is 9.0, 10.0, 11.0
+            if (versionFirstPart == 1) {
+                version = Integer.parseInt(versionElements[1]);
+            } else {
+                version = versionFirstPart;
+            }
+            return version;
+        } catch (Exception ex) {
+            // Consumed the exception we got during parsing
+            // For unknown version we wil mark it as -1
+            logger.warn("Error while fetching java version", ex);
+            return version;
+        }
     }
 
     public static byte[] getUTF8BytesOrNull(String str) {
@@ -422,7 +451,7 @@ public class Utils {
     }
 
     public static String getUserAgent() {
-        return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.SDK_VERSION);
+        return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.getSdkVersion());
     }
 
     public static String getUserAgent(String sdkName, String sdkVersion) {
@@ -430,7 +459,7 @@ public class Utils {
         if (osName == null) {
             osName = "Unknown";
         }
-        osName = osName.replaceAll("\\s", "");
+        osName = SPACE_PATTERN.matcher(osName).replaceAll("");
         String userAgent = String.format("%s%s/%s %s/%s JRE/%s",
                 UserAgentContainer.AZSDK_USERAGENT_PREFIX,
                 sdkName,

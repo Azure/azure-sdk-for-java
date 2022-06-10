@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
  * on behalf of a user principal.
  */
 public class OnBehalfOfCredential implements TokenCredential {
-    private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(OnBehalfOfCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OnBehalfOfCredential.class);
 
+    private final IdentityClient identityClient;
 
     /**
      * Creates OnBehalfOfCredential with the specified AAD application details and client options.
@@ -32,7 +32,7 @@ public class OnBehalfOfCredential implements TokenCredential {
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options for configuring the identity client
      */
-    public OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
+    OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
                                 String certificatePassword, IdentityClientOptions identityClientOptions) {
         this.identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
@@ -49,7 +49,8 @@ public class OnBehalfOfCredential implements TokenCredential {
         return Mono.deferContextual(ctx -> identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error)));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error)));
     }
 }

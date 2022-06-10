@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Virtual Network gateway contract. This is used to give the Virtual Network gateway access to the VPN package. */
 @Fluent
 public final class VnetGatewayInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetGatewayInner.class);
-
     /*
      * VnetGateway resource specific properties
      */

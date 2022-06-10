@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
@@ -21,15 +22,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecurityPINsClient. */
 public final class SecurityPINsClientImpl implements SecurityPINsClient {
-    private final ClientLogger logger = new ClientLogger(SecurityPINsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecurityPINsService service;
 
@@ -66,6 +65,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
             @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") SecurityPinBase parameters,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -75,13 +75,15 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters security pin request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TokenInformationInner>> getWithResponseAsync(String vaultName, String resourceGroupName) {
+    private Mono<Response<TokenInformationInner>> getWithResponseAsync(
+        String vaultName, String resourceGroupName, SecurityPinBase parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -101,7 +103,9 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -109,10 +113,11 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
+                            parameters,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -123,15 +128,16 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TokenInformationInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, Context context) {
+        String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -151,18 +157,39 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
+                parameters,
                 accept,
                 context);
+    }
+
+    /**
+     * Get the security PIN.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters security pin request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the security PIN on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TokenInformationInner> getAsync(
+        String vaultName, String resourceGroupName, SecurityPinBase parameters) {
+        return getWithResponseAsync(vaultName, resourceGroupName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -173,19 +200,13 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TokenInformationInner> getAsync(String vaultName, String resourceGroupName) {
-        return getWithResponseAsync(vaultName, resourceGroupName)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        final SecurityPinBase parameters = null;
+        return getWithResponseAsync(vaultName, resourceGroupName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -200,7 +221,8 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TokenInformationInner get(String vaultName, String resourceGroupName) {
-        return getAsync(vaultName, resourceGroupName).block();
+        final SecurityPinBase parameters = null;
+        return getAsync(vaultName, resourceGroupName, parameters).block();
     }
 
     /**
@@ -208,15 +230,16 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TokenInformationInner> getWithResponse(
-        String vaultName, String resourceGroupName, Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, context).block();
+        String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 }

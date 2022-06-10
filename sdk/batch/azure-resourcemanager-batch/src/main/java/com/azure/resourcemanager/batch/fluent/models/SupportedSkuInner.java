@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.SkuCapability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a Batch supported SKU. */
 @Immutable
 public final class SupportedSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedSkuInner.class);
-
     /*
      * The name of the SKU.
      */

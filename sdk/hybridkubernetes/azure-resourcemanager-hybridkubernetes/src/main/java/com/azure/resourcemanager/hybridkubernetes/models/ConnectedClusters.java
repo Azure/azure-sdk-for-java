@@ -62,6 +62,35 @@ public interface ConnectedClusters {
     void delete(String resourceGroupName, String clusterName, Context context);
 
     /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    CredentialResults listClusterUserCredential(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    Response<CredentialResults> listClusterUserCredentialWithResponse(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
+
+    /**
      * API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

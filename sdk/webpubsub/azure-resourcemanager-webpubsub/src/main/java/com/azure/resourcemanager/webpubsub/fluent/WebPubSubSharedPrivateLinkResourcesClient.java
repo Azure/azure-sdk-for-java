@@ -92,7 +92,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String sharedPrivateLinkResourceName,
         String resourceGroupName,
@@ -113,7 +113,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String sharedPrivateLinkResourceName,
         String resourceGroupName,
@@ -175,7 +175,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
 
@@ -192,7 +192,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
 

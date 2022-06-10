@@ -50,6 +50,9 @@ public class PartitionKey {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
+    /**
+     * Partition key that represents no partition key.
+     */
     public static final PartitionKey NONE = new PartitionKey(PartitionKeyInternal.None);
 
     /**
@@ -95,14 +98,10 @@ public class PartitionKey {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
-            new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
-                @Override
-                public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
-                    return new PartitionKey(partitionKeyInternal);
-                }
-            });
+            partitionKeyInternal -> new PartitionKey(partitionKeyInternal));
     }
+
+    static { initialize(); }
 }

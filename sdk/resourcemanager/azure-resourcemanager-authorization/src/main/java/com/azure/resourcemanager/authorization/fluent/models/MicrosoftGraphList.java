@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -18,8 +18,6 @@ import java.util.Map;
 /** list. */
 @Fluent
 public final class MicrosoftGraphList extends MicrosoftGraphBaseItemInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphList.class);
-
     /*
      * The displayable title of the list.
      */
@@ -42,6 +40,7 @@ public final class MicrosoftGraphList extends MicrosoftGraphBaseItemInner {
      * systemFacet
      */
     @JsonProperty(value = "system")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> system;
 
     /*

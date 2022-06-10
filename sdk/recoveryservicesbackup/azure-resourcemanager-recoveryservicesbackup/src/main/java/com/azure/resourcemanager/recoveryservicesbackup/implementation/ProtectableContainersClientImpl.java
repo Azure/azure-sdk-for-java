@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectableContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectableContainerResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectableContainerResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProtectableContainersClient. */
 public final class ProtectableContainersClientImpl implements ProtectableContainersClient {
-    private final ClientLogger logger = new ClientLogger(ProtectableContainersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectableContainersService service;
 
@@ -98,7 +95,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listSinglePageAsync(
@@ -125,7 +123,6 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -133,7 +130,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
                     service
                         .list(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -164,7 +161,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listSinglePageAsync(
@@ -191,13 +189,12 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -226,7 +223,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -245,7 +242,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -267,7 +264,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -286,7 +283,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(
@@ -306,7 +303,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(
@@ -321,7 +318,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -357,7 +355,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listNextSinglePageAsync(

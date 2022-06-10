@@ -102,7 +102,8 @@ public class Samples {
         if (testMode == null) {
             testMode = PLAYBACK_MODE;
         }
-        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
+        Assume.assumeTrue("The test only runs in Live mode.",
+            testMode.equalsIgnoreCase("RECORD") || testMode.equalsIgnoreCase("LIVE"));
     }
 
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {

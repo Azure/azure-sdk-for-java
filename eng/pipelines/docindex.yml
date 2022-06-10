@@ -1,5 +1,6 @@
 trigger: none
-
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
   - template: /eng/common/pipelines/templates/jobs/docindex.yml
 
@@ -8,8 +9,10 @@ jobs:
       vmImage: ubuntu-20.04
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
+      DailyDocRepoLocation: $(Pipeline.Workspace)/daily
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
+      DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
     steps:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -18,18 +21,33 @@ jobs:
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
-
+      # Pull and build the docker image.
+      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
+        parameters:
+          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
+          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
+          ImageId: "$(DocValidationImageId)"
       # Call update docs ci script to onboard packages
       - task: Powershell@2
         inputs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
-          arguments: -DocRepoLocation $(DocRepoLocation)
+          arguments: -DocRepoLocation $(DocRepoLocation) -ImageId '$(DocValidationImageId)'
         displayName: Update Docs Onboarding
-
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
       # Push changes to docs repo
       - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
         parameters:
@@ -43,3 +61,68 @@ jobs:
           TargetRepoName: $(DocRepoName)
           TargetRepoOwner: $(DocRepoOwner)
           WorkingDirectory: $(DocRepoLocation)
+
+      # Prepare daily docs CI
+      - template: /eng/common/pipelines/templates/steps/set-daily-docs-branch-name.yml
+        parameters:
+          DailyBranchVariableName: DailyDocsBranchName
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          SkipDefaultCheckout: true
+          Paths:
+            - package.json
+            - metadata/
+            - docs-ref-mapping/reference-unified.yml
+          Repositories:
+            - Name: azure-sdk/$(DocRepoName)
+              WorkingDirectory: $(DailyDocRepoLocation)
+        
+      # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
+      # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
+      - powershell: |
+          # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
+          Get-Command mvn
+          if (!(Test-Path '~/.m2/')) {
+            mkdir ~/.m2/
+          }
+          if (Test-Path '~/.m2/setting.xml') {
+            Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+          }
+          Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
+        displayName: 'Configure mvn'
+        workingDirectory: $(Build.SourcesDirectory)
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsPackages.ps1
+          arguments: -DocRepoLocation $(DailyDocRepoLocation)
+        displayName: Update Docs Onboarding for Daily branch
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for Daily branch
+      - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
+        parameters:
+          BaseRepoBranch: $(DailyDocsBranchName)
+          BaseRepoOwner: $(DocRepoOwner)
+          CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
+          TargetRepoName: $(DocRepoName)
+          TargetRepoOwner: azure-sdk
+          WorkingDirectory: $(DailyDocRepoLocation)
+          ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
+
+      - task: PowerShell@2
+        displayName: Queue Docs CI build
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Queue-Pipeline.ps1
+          arguments: >
+            -Organization "apidrop"
+            -Project "Content%20CI"
+            -DefinitionId 3188
+            -Base64EncodedAuthToken "$(azuresdk-apidrop-devops-queue-build-pat)"
+            -BuildParametersJson (@{ params = (Get-Content ./eng/dailydocsconfig.json -Raw) -replace '%%DailyDocsBranchName%%', "$(DailyDocsBranchName)" } | ConvertTo-Json)

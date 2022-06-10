@@ -7,15 +7,11 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Database. */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
-
     /*
      * The properties of a database.
      */

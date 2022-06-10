@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,28 +13,24 @@ import java.time.LocalDate;
 import java.util.List;
 
 /** A billing period resource. */
-@JsonFlatten
-@Immutable
-public class BillingPeriodInner extends ProxyResource {
+@Fluent
+public final class BillingPeriodInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPeriodInner.class);
 
     /*
-     * The start of the date range covered by the billing period.
+     * A billing period.
      */
-    @JsonProperty(value = "properties.billingPeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private LocalDate billingPeriodStartDate;
+    @JsonProperty(value = "properties")
+    private BillingPeriodProperties innerProperties;
 
-    /*
-     * The end of the date range covered by the billing period.
+    /**
+     * Get the innerProperties property: A billing period.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.billingPeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
-    private LocalDate billingPeriodEndDate;
-
-    /*
-     * Array of invoice ids that associated with.
-     */
-    @JsonProperty(value = "properties.invoiceIds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> invoiceIds;
+    private BillingPeriodProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the billingPeriodStartDate property: The start of the date range covered by the billing period.
@@ -43,7 +38,7 @@ public class BillingPeriodInner extends ProxyResource {
      * @return the billingPeriodStartDate value.
      */
     public LocalDate billingPeriodStartDate() {
-        return this.billingPeriodStartDate;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodStartDate();
     }
 
     /**
@@ -52,7 +47,7 @@ public class BillingPeriodInner extends ProxyResource {
      * @return the billingPeriodEndDate value.
      */
     public LocalDate billingPeriodEndDate() {
-        return this.billingPeriodEndDate;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodEndDate();
     }
 
     /**
@@ -61,7 +56,7 @@ public class BillingPeriodInner extends ProxyResource {
      * @return the invoiceIds value.
      */
     public List<String> invoiceIds() {
-        return this.invoiceIds;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceIds();
     }
 
     /**
@@ -70,5 +65,8 @@ public class BillingPeriodInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

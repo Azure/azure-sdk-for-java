@@ -849,6 +849,51 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values());
     }
 
+    public static <T> void validateQuerySuccessWithContinuationTokenAndSizes(
+        String query,
+        CosmosAsyncContainer container,
+        int[] pageSizes,
+        FeedResponseListValidator<T> validator,
+        Class<T> classType) {
+
+        for (int pageSize : pageSizes) {
+            List<FeedResponse<T>> receivedDocuments = queryWithContinuationTokens(query, container, pageSize, classType);
+            validator.validate(receivedDocuments);
+        }
+    }
+
+    public static <T> List<FeedResponse<T>> queryWithContinuationTokens(
+        String query,
+        CosmosAsyncContainer container,
+        int pageSize,
+        Class<T> classType) {
+
+        String requestContinuation = null;
+        List<String> continuationTokens = new ArrayList<String>();
+        List<FeedResponse<T>> responseList = new ArrayList<>();
+        do {
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+            options.setMaxDegreeOfParallelism(2);
+            CosmosPagedFlux<T> queryObservable = container.queryItems(query, options, classType);
+
+            TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
+            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.assertNoErrors();
+            testSubscriber.assertComplete();
+
+            @SuppressWarnings("unchecked")
+            FeedResponse<T> firstPage = (FeedResponse<T>) testSubscriber.getEvents().get(0).get(0);
+            requestContinuation = firstPage.getContinuationToken();
+            responseList.add(firstPage);
+
+            continuationTokens.add(requestContinuation);
+        } while (requestContinuation != null);
+
+        return responseList;
+    }
+
     public <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
         validateQueryFailure(flowable, validator, subscriberValidationTimeout);
     }
@@ -1056,6 +1101,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithDirectTcpSession() {
+        return clientBuildersWithDirectSession(true, true, Protocol.TCP);
+    }
+
+    @DataProvider
     public static Object[][] simpleClientBuilderGatewaySession() {
         return clientBuildersWithDirectSession(true, true);
     }
@@ -1232,6 +1282,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             {true},
             {false},
             {null}
+        };
+    }
+
+    @DataProvider(name = "queryWithOrderByProvider")
+    public Object[][] queryWithOrderBy() {
+        return new Object[][]{
+            // query wit orderby, matchedOrderByQuery
+            { "SELECT DISTINCT VALUE c.id from c ORDER BY c.id DESC", true },
+            { "SELECT DISTINCT VALUE c.id from c ORDER BY c._ts DESC", false }
         };
     }
 

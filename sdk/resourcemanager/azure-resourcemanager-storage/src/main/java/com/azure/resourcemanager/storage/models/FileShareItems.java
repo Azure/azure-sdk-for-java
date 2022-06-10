@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Immutable
 public final class FileShareItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareItems.class);
-
     /*
      * List of file shares returned.
      */

@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
@@ -29,17 +30,31 @@ public final class CosmosDiagnostics {
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
-    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
+    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
 
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
+    }
+
+    CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
+        if (toBeCloned.feedResponseDiagnostics != null) {
+            this.feedResponseDiagnostics = new FeedResponseDiagnostics(toBeCloned.feedResponseDiagnostics);
+        }
+
+        if (toBeCloned.clientSideRequestStatistics != null) {
+            this.clientSideRequestStatistics = new ClientSideRequestStatistics(toBeCloned.clientSideRequestStatistics);
+        }
+
+        this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(toBeCloned.diagnosticsCapturedInPagedFlux.get());
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
@@ -84,11 +99,25 @@ public final class CosmosDiagnostics {
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated
     public Set<URI> getRegionsContacted() {
         if (this.feedResponseDiagnostics != null) {
             return null;
         }
-        return this.clientSideRequestStatistics.getRegionsContacted();
+        return this.clientSideRequestStatistics.getLocationEndpointsContacted();
+    }
+
+    /**
+     * Regions contacted for this request
+     *
+     * @return set of regions contacted for this request
+     */
+    @Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Set<String> getContactedRegionNames() {
+        if (this.feedResponseDiagnostics != null) {
+            return null;
+        }
+        return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {
@@ -132,23 +161,28 @@ public final class CosmosDiagnostics {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
                 public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-                    if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    if (cosmosDiagnostics == null) {
+                        return null;
                     }
 
-                    return null;
+                    return cosmosDiagnostics.getFeedResponseDiagnostics();
                 }
 
                 @Override
                 public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
                     return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
                 }
             });
     }
+
+    static { initialize(); }
 }

@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -147,6 +148,21 @@ public class AnnotatedQueryIT {
                                                           .stream()
                                                           .map(jsonNode -> jsonNode.get("postalCode").asText())
                                                           .collect(Collectors.toList());
+        assertAddressPostalCodes(actualPostalCodes, addresses);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithJsonNodeAsSlice() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final PageRequest cosmosPageRequest = CosmosPageRequest.of(0, 10);
+        final Slice<JsonNode> postalCodes = addressRepository.annotatedFindPostalCodesByCityAsSlice(TestConstants.CITY,
+            cosmosPageRequest);
+        final List<String> actualPostalCodes = postalCodes.getContent()
+            .stream()
+            .map(jsonNode -> jsonNode.get("postalCode").asText())
+            .collect(Collectors.toList());
         assertAddressPostalCodes(actualPostalCodes, addresses);
     }
 

@@ -40,7 +40,7 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
-    private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubMessageSerializer.class);
     private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
         Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
     private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
@@ -102,8 +102,8 @@ class EventHubMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
         if (!(object instanceof EventData)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Cannot serialize object that is not EventData. Class: " + object.getClass()));
         }
 
         final EventData eventData = (EventData) object;
@@ -134,7 +134,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (clazz == LastEnqueuedEventProperties.class) {
             return (T) deserializeEnqueuedEventProperties(message);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
     }
@@ -147,13 +147,13 @@ class EventHubMessageSerializer implements MessageSerializer {
     @SuppressWarnings("unchecked")
     private <T> T deserializeManagementResponse(Message message, Class<T> deserializedType) {
         if (!(message.getBody() instanceof AmqpValue)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Expected message.getBody() to be AmqpValue, but is: " + message.getBody()));
         }
 
         final AmqpValue body = (AmqpValue) message.getBody();
         if (!(body.getValue() instanceof Map)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Expected message.getBody().getValue() to be of type Map"));
         }
 
@@ -164,7 +164,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (deserializedType == EventHubProperties.class) {
             return (T) toEventHubProperties(amqpBody);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 Messages.CLASS_NOT_A_SUPPORTED_TYPE, deserializedType)));
         }
     }
@@ -200,13 +200,13 @@ class EventHubMessageSerializer implements MessageSerializer {
         final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
 
         if (!messageAnnotations.containsKey(OFFSET_ANNOTATION_NAME.getValue())) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
+            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
                 "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue())));
         } else if (!messageAnnotations.containsKey(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
+            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
                 "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
         } else if (!messageAnnotations.containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
+            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(Locale.US,
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
@@ -217,7 +217,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (enqueuedTimeObject instanceof Instant) {
             enqueuedTime = (Instant) enqueuedTimeObject;
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
                 String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
                     enqueuedTimeObject, enqueuedTimeObject.getClass()))));
         }
@@ -274,13 +274,13 @@ class EventHubMessageSerializer implements MessageSerializer {
             try {
                 value = Long.parseLong((String) object);
             } catch (NumberFormatException e) {
-                throw logger.logExceptionAsError(new IllegalStateException("'" + key
+                throw LOGGER.logExceptionAsError(new IllegalStateException("'" + key
                     + "' could not be parsed into a Long. Value: " + object, e));
             }
         } else if (object instanceof Long) {
             value = (Long) object;
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
                 String.format(Locale.US, "'" + key + "' value is not a known type. Value: %s. Type: %s",
                     object, object.getClass()))));
         }
@@ -290,7 +290,7 @@ class EventHubMessageSerializer implements MessageSerializer {
 
     private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
-            throw logger.logExceptionAsError(new AzureException(
+            throw LOGGER.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
@@ -299,7 +299,7 @@ class EventHubMessageSerializer implements MessageSerializer {
 
     private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
         if (!amqpBody.containsKey(key)) {
-            throw logger.logExceptionAsError(new AzureException(
+            throw LOGGER.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
@@ -309,10 +309,10 @@ class EventHubMessageSerializer implements MessageSerializer {
     @SuppressWarnings("unchecked")
     private <T> T getValue(Object value, Object key, Class<T> clazz) {
         if (value == null) {
-            throw logger.logExceptionAsError(new AzureException(
+            throw LOGGER.logExceptionAsError(new AzureException(
                 String.format("AMQP body did not contain a value for key '%s'.", key)));
         } else if (value.getClass() != clazz) {
-            throw logger.logExceptionAsError(new AzureException(String.format(
+            throw LOGGER.logExceptionAsError(new AzureException(String.format(
                 "AMQP body did not contain correct value for key '%s'. Expected class: '%s'. Actual: '%s'",
                 key, clazz, value.getClass())));
         }

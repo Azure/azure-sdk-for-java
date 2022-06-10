@@ -72,7 +72,14 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * on a {@link TableServiceClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct an async client</strong></p>
- * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.instantiation -->
+ * <pre>
+ * TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
  *
  * @see TableServiceClientBuilder
  */
@@ -184,7 +191,9 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Gets a {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}.
+     * Gets a {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}. The
+     * resulting {@link TableAsyncClient} will use the same {@link HttpPipeline pipeline} and
+     * {@link TableServiceVersion service version} as this {@link TableServiceAsyncClient}.
      *
      * @param tableName The name of the table.
      *
@@ -206,7 +215,14 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTable#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
+     * <pre>
+     * tableServiceAsyncClient.createTable&#40;&quot;myTable&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableAsyncClient -&gt;
+     *         System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableAsyncClient.getTableName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -225,7 +241,15 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String -->
+     * <pre>
+     * tableServiceAsyncClient.createTableWithResponse&#40;&quot;myTable&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getTableName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -259,7 +283,14 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExists#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExists#String -->
+     * <pre>
+     * tableServiceAsyncClient.createTableIfNotExists&#40;&quot;myTable&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableAsyncClient -&gt;
+     *         System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableAsyncClient.getTableName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExists#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -277,7 +308,15 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExistsWithResponse#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExistsWithResponse#String -->
+     * <pre>
+     * tableServiceAsyncClient.createTableIfNotExistsWithResponse&#40;&quot;myTable&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getTableName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTableIfNotExistsWithResponse#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -307,7 +346,16 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.deleteTable#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
+     * <pre>
+     * String tableName = &quot;myTable&quot;;
+     *
+     * tableServiceAsyncClient.deleteTable&#40;tableName&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, tableName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
      *
      * @param tableName The name of the table to delete.
      *
@@ -326,7 +374,17 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String -->
+     * <pre>
+     * String myTableName = &quot;myTable&quot;;
+     *
+     * tableServiceAsyncClient.deleteTableWithResponse&#40;myTableName&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was deleted.&quot;,
+     *             response.getStatusCode&#40;&#41;, myTableName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String -->
      *
      * @param tableName The name of the table to delete.
      *
@@ -358,7 +416,12 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all tables. Prints out the details of the retrieved tables.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.listTables}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables -->
+     * <pre>
+     * tableServiceAsyncClient.listTables&#40;&#41;.subscribe&#40;tableItem -&gt;
+     *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables -->
      *
      * @return A {@link PagedFlux} containing all tables within the account.
      *
@@ -377,7 +440,14 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
+     * <pre>
+     * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
+     *
+     * tableServiceAsyncClient.listTables&#40;options&#41;.subscribe&#40;tableItem -&gt;
+     *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
      *
      * @param options The {@code filter} and {@code top} OData query options to apply to this operation.
      *
@@ -501,7 +571,13 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getProperties}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getProperties -->
+     * <pre>
+     * tableServiceAsyncClient.getProperties&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;properties -&gt; System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.getProperties -->
      *
      * @return A {@link Mono} containing the {@link TableServiceProperties properties} of the account's Table service.
      *
@@ -521,7 +597,15 @@ public final class TableServiceAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getPropertiesWithResponse}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getPropertiesWithResponse -->
+     * <pre>
+     * tableServiceAsyncClient.getPropertiesWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Retrieved service properties successfully with status code: %d.&quot;,
+     *             response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.getPropertiesWithResponse -->
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains the
      * {@link TableServiceProperties properties} of the account's Table service.
@@ -618,7 +702,24 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
+     * <pre>
+     * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
+     *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setEnabled&#40;true&#41;&#41;
+     *     .setLogging&#40;new TableServiceLogging&#40;&#41;
+     *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
+     *         .setReadLogged&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;;
+     *
+     * tableServiceAsyncClient.setProperties&#40;properties&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt; System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
@@ -640,7 +741,26 @@ public final class TableServiceAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties -->
+     * <pre>
+     * TableServiceProperties myProperties = new TableServiceProperties&#40;&#41;
+     *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setEnabled&#40;true&#41;&#41;
+     *     .setLogging&#40;new TableServiceLogging&#40;&#41;
+     *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
+     *         .setReadLogged&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;;
+     *
+     * tableServiceAsyncClient.setPropertiesWithResponse&#40;myProperties&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Retrieved service properties successfully with status code: %d.&quot;,
+     *             response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.setPropertiesWithResponse#TableServiceProperties -->
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
@@ -737,7 +857,13 @@ public final class TableServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getStatistics}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
+     * <pre>
+     * tableServiceAsyncClient.getStatistics&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;statistics -&gt; System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
      *
      * @return A {@link Mono} containing {@link TableServiceStatistics statistics} for the account's Table service.
      *
@@ -757,7 +883,15 @@ public final class TableServiceAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.getStatisticsWithResponse}
+     * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getStatisticsWithResponse -->
+     * <pre>
+     * tableServiceAsyncClient.getStatisticsWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Retrieved service statistics successfully with status code: %d.&quot;,
+     *             response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceAsyncClient.getStatisticsWithResponse -->
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains
      * {@link TableServiceStatistics statistics} for the account's Table service.

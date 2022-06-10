@@ -5,6 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -15,9 +17,9 @@ import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.rx.pojos.City;
-import com.azure.cosmos.rx.pojos.Person;
-import com.azure.cosmos.rx.pojos.Pet;
+import com.azure.cosmos.implementation.City;
+import com.azure.cosmos.implementation.Person;
+import com.azure.cosmos.implementation.Pet;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -294,7 +296,32 @@ public class DistinctQueryTests extends TestSuiteBase {
                                    .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
+    }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryWithOrderByProvider")
+    public void queryDocumentsWithOrderBy(String query, boolean matchedOrderBy) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxBufferedItemCount(1);
+
+        CosmosPagedFlux<String> queryObservable = createdCollection.queryItems(query, options,
+            String.class);
+
+        FeedResponse<String> response = queryObservable.byPage(1).blockFirst();
+        assertThat(response.getResults().size()).isEqualTo(1);
+        assertThat(response.getContinuationToken()).isNotNull();
+        assertThat(response.getContinuationToken()).doesNotContain("\"lastHash\":\"\"");
+
+        // now using the continuationToken to fetch the next page
+        if (matchedOrderBy) {
+            response = queryObservable.byPage(response.getContinuationToken(), 1).blockFirst();
+            assertThat(response.getResults().size()).isEqualTo(1);
+        } else {
+            FailureValidator validator = new FailureValidator.Builder()
+                .instanceOf(CosmosException.class)
+                .statusCode(400)
+                .build();
+            validateQueryFailure(queryObservable.byPage(response.getContinuationToken(), 1), validator);
+        }
     }
 
     public void bulkInsert() {

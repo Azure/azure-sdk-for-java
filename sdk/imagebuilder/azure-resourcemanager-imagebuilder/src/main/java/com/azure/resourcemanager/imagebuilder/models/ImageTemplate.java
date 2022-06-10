@@ -70,6 +70,14 @@ public interface ImageTemplate {
     List<ImageTemplateCustomizer> customize();
 
     /**
+     * Gets the validation property: Configuration options and list of validations to be performed on the resulting
+     * image.
+     *
+     * @return the validation value.
+     */
+    ImageTemplatePropertiesValidate validation();
+
+    /**
      * Gets the distribute property: The distribution targets where the image output needs to go to.
      *
      * @return the distribute value.
@@ -98,8 +106,8 @@ public interface ImageTemplate {
     ImageTemplateLastRunStatus lastRunStatus();
 
     /**
-     * Gets the buildTimeoutInMinutes property: Maximum duration to wait while building the image template. Omit or
-     * specify 0 to use the default (4 hours).
+     * Gets the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
+     * customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
      *
      * @return the buildTimeoutInMinutes value.
      */
@@ -111,6 +119,28 @@ public interface ImageTemplate {
      * @return the vmProfile value.
      */
     ImageTemplateVmProfile vmProfile();
+
+    /**
+     * Gets the stagingResourceGroup property: The staging resource group id in the same subscription as the image
+     * template that will be used to build the image. If this field is empty, a resource group with a random name will
+     * be created. If the resource group specified in this field doesn't exist, it will be created with the same name.
+     * If the resource group specified exists, it must be empty and in the same region as the image template. The
+     * resource group created will be deleted during template deletion if this field is empty or the resource group
+     * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
+     * will be deleted during template deletion and the resource group itself will remain.
+     *
+     * @return the stagingResourceGroup value.
+     */
+    String stagingResourceGroup();
+
+    /**
+     * Gets the exactStagingResourceGroup property: The staging resource group id in the same subscription as the image
+     * template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if
+     * the value specified in the 'stagingResourceGroup' field is empty.
+     *
+     * @return the exactStagingResourceGroup value.
+     */
+    String exactStagingResourceGroup();
 
     /**
      * Gets the region of the resource.
@@ -125,6 +155,13 @@ public interface ImageTemplate {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner object.
@@ -192,9 +229,11 @@ public interface ImageTemplate {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithSource,
                 DefinitionStages.WithCustomize,
+                DefinitionStages.WithValidation,
                 DefinitionStages.WithDistribute,
                 DefinitionStages.WithBuildTimeoutInMinutes,
-                DefinitionStages.WithVmProfile {
+                DefinitionStages.WithVmProfile,
+                DefinitionStages.WithStagingResourceGroup {
             /**
              * Executes the create request.
              *
@@ -242,6 +281,17 @@ public interface ImageTemplate {
              */
             WithCreate withCustomize(List<ImageTemplateCustomizer> customize);
         }
+        /** The stage of the ImageTemplate definition allowing to specify validation. */
+        interface WithValidation {
+            /**
+             * Specifies the validation property: Configuration options and list of validations to be performed on the
+             * resulting image..
+             *
+             * @param validation Configuration options and list of validations to be performed on the resulting image.
+             * @return the next definition stage.
+             */
+            WithCreate withValidation(ImageTemplatePropertiesValidate validation);
+        }
         /** The stage of the ImageTemplate definition allowing to specify distribute. */
         interface WithDistribute {
             /**
@@ -255,11 +305,12 @@ public interface ImageTemplate {
         /** The stage of the ImageTemplate definition allowing to specify buildTimeoutInMinutes. */
         interface WithBuildTimeoutInMinutes {
             /**
-             * Specifies the buildTimeoutInMinutes property: Maximum duration to wait while building the image template.
-             * Omit or specify 0 to use the default (4 hours)..
+             * Specifies the buildTimeoutInMinutes property: Maximum duration to wait while building the image template
+             * (includes all customizations, validations, and distributions). Omit or specify 0 to use the default (4
+             * hours)..
              *
-             * @param buildTimeoutInMinutes Maximum duration to wait while building the image template. Omit or specify
-             *     0 to use the default (4 hours).
+             * @param buildTimeoutInMinutes Maximum duration to wait while building the image template (includes all
+             *     customizations, validations, and distributions). Omit or specify 0 to use the default (4 hours).
              * @return the next definition stage.
              */
             WithCreate withBuildTimeoutInMinutes(Integer buildTimeoutInMinutes);
@@ -273,6 +324,30 @@ public interface ImageTemplate {
              * @return the next definition stage.
              */
             WithCreate withVmProfile(ImageTemplateVmProfile vmProfile);
+        }
+        /** The stage of the ImageTemplate definition allowing to specify stagingResourceGroup. */
+        interface WithStagingResourceGroup {
+            /**
+             * Specifies the stagingResourceGroup property: The staging resource group id in the same subscription as
+             * the image template that will be used to build the image. If this field is empty, a resource group with a
+             * random name will be created. If the resource group specified in this field doesn't exist, it will be
+             * created with the same name. If the resource group specified exists, it must be empty and in the same
+             * region as the image template. The resource group created will be deleted during template deletion if this
+             * field is empty or the resource group specified doesn't exist, but if the resource group specified exists
+             * the resources created in the resource group will be deleted during template deletion and the resource
+             * group itself will remain..
+             *
+             * @param stagingResourceGroup The staging resource group id in the same subscription as the image template
+             *     that will be used to build the image. If this field is empty, a resource group with a random name
+             *     will be created. If the resource group specified in this field doesn't exist, it will be created with
+             *     the same name. If the resource group specified exists, it must be empty and in the same region as the
+             *     image template. The resource group created will be deleted during template deletion if this field is
+             *     empty or the resource group specified doesn't exist, but if the resource group specified exists the
+             *     resources created in the resource group will be deleted during template deletion and the resource
+             *     group itself will remain.
+             * @return the next definition stage.
+             */
+            WithCreate withStagingResourceGroup(String stagingResourceGroup);
         }
     }
     /**
@@ -340,8 +415,7 @@ public interface ImageTemplate {
     /**
      * Create artifacts from a existing image template.
      *
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run();
@@ -351,8 +425,7 @@ public interface ImageTemplate {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void run(Context context);
@@ -360,8 +433,7 @@ public interface ImageTemplate {
     /**
      * Cancel the long running image build based on the image template.
      *
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel();
@@ -371,8 +443,7 @@ public interface ImageTemplate {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.imagebuilder.models.ApiErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(Context context);

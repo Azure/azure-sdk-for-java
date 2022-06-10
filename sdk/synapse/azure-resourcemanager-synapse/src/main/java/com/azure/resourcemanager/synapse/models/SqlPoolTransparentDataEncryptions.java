@@ -39,7 +39,7 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     Response<TransparentDataEncryption> getWithResponse(
         String resourceGroupName,
@@ -57,7 +57,8 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TransparentDataEncryption> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -71,7 +72,8 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TransparentDataEncryption> list(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
@@ -83,7 +85,7 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     TransparentDataEncryption getById(String id);
 
@@ -95,7 +97,7 @@ public interface SqlPoolTransparentDataEncryptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     Response<TransparentDataEncryption> getByIdWithResponse(String id, Context context);
 

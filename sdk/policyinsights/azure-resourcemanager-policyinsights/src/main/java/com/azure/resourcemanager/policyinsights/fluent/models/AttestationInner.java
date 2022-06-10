@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,10 +16,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** An attestation resource. */
-@JsonFlatten
 @Fluent
-public class AttestationInner extends ProxyResource {
+public final class AttestationInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationInner.class);
+
+    /*
+     * Properties for the attestation.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private AttestationProperties innerProperties = new AttestationProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy
@@ -29,65 +33,14 @@ public class AttestationInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The resource ID of the policy assignment that the attestation is setting
-     * the state for.
+    /**
+     * Get the innerProperties property: Properties for the attestation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.policyAssignmentId", required = true)
-    private String policyAssignmentId;
-
-    /*
-     * The policy definition reference ID from a policy set definition that the
-     * attestation is setting the state for. If the policy assignment assigns a
-     * policy set definition the attestation can choose a definition within the
-     * set definition with this property or omit this and set the state for the
-     * entire set definition.
-     */
-    @JsonProperty(value = "properties.policyDefinitionReferenceId")
-    private String policyDefinitionReferenceId;
-
-    /*
-     * The compliance state that should be set on the resource.
-     */
-    @JsonProperty(value = "properties.complianceState")
-    private ComplianceState complianceState;
-
-    /*
-     * The time the compliance state should expire.
-     */
-    @JsonProperty(value = "properties.expiresOn")
-    private OffsetDateTime expiresOn;
-
-    /*
-     * The person responsible for setting the state of the resource. This value
-     * is typically an Azure Active Directory object ID.
-     */
-    @JsonProperty(value = "properties.owner")
-    private String owner;
-
-    /*
-     * Comments describing why this attestation was created.
-     */
-    @JsonProperty(value = "properties.comments")
-    private String comments;
-
-    /*
-     * The evidence supporting the compliance state set in this attestation.
-     */
-    @JsonProperty(value = "properties.evidence")
-    private List<AttestationEvidence> evidence;
-
-    /*
-     * The status of the attestation.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The time the compliance state was last changed in this attestation.
-     */
-    @JsonProperty(value = "properties.lastComplianceStateChangeAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastComplianceStateChangeAt;
+    private AttestationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -105,7 +58,7 @@ public class AttestationInner extends ProxyResource {
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
-        return this.policyAssignmentId;
+        return this.innerProperties() == null ? null : this.innerProperties().policyAssignmentId();
     }
 
     /**
@@ -116,7 +69,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withPolicyAssignmentId(String policyAssignmentId) {
-        this.policyAssignmentId = policyAssignmentId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withPolicyAssignmentId(policyAssignmentId);
         return this;
     }
 
@@ -129,7 +85,7 @@ public class AttestationInner extends ProxyResource {
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
-        return this.policyDefinitionReferenceId;
+        return this.innerProperties() == null ? null : this.innerProperties().policyDefinitionReferenceId();
     }
 
     /**
@@ -142,7 +98,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withPolicyDefinitionReferenceId(String policyDefinitionReferenceId) {
-        this.policyDefinitionReferenceId = policyDefinitionReferenceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withPolicyDefinitionReferenceId(policyDefinitionReferenceId);
         return this;
     }
 
@@ -152,7 +111,7 @@ public class AttestationInner extends ProxyResource {
      * @return the complianceState value.
      */
     public ComplianceState complianceState() {
-        return this.complianceState;
+        return this.innerProperties() == null ? null : this.innerProperties().complianceState();
     }
 
     /**
@@ -162,7 +121,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withComplianceState(ComplianceState complianceState) {
-        this.complianceState = complianceState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withComplianceState(complianceState);
         return this;
     }
 
@@ -172,7 +134,7 @@ public class AttestationInner extends ProxyResource {
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
-        return this.expiresOn;
+        return this.innerProperties() == null ? null : this.innerProperties().expiresOn();
     }
 
     /**
@@ -182,7 +144,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withExpiresOn(expiresOn);
         return this;
     }
 
@@ -193,7 +158,7 @@ public class AttestationInner extends ProxyResource {
      * @return the owner value.
      */
     public String owner() {
-        return this.owner;
+        return this.innerProperties() == null ? null : this.innerProperties().owner();
     }
 
     /**
@@ -204,7 +169,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withOwner(String owner) {
-        this.owner = owner;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withOwner(owner);
         return this;
     }
 
@@ -214,7 +182,7 @@ public class AttestationInner extends ProxyResource {
      * @return the comments value.
      */
     public String comments() {
-        return this.comments;
+        return this.innerProperties() == null ? null : this.innerProperties().comments();
     }
 
     /**
@@ -224,7 +192,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withComments(String comments) {
-        this.comments = comments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withComments(comments);
         return this;
     }
 
@@ -234,7 +205,7 @@ public class AttestationInner extends ProxyResource {
      * @return the evidence value.
      */
     public List<AttestationEvidence> evidence() {
-        return this.evidence;
+        return this.innerProperties() == null ? null : this.innerProperties().evidence();
     }
 
     /**
@@ -244,7 +215,10 @@ public class AttestationInner extends ProxyResource {
      * @return the AttestationInner object itself.
      */
     public AttestationInner withEvidence(List<AttestationEvidence> evidence) {
-        this.evidence = evidence;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttestationProperties();
+        }
+        this.innerProperties().withEvidence(evidence);
         return this;
     }
 
@@ -254,7 +228,7 @@ public class AttestationInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -263,7 +237,7 @@ public class AttestationInner extends ProxyResource {
      * @return the lastComplianceStateChangeAt value.
      */
     public OffsetDateTime lastComplianceStateChangeAt() {
-        return this.lastComplianceStateChangeAt;
+        return this.innerProperties() == null ? null : this.innerProperties().lastComplianceStateChangeAt();
     }
 
     /**
@@ -272,14 +246,13 @@ public class AttestationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policyAssignmentId() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property policyAssignmentId in model AttestationInner"));
-        }
-        if (evidence() != null) {
-            evidence().forEach(e -> e.validate());
+                        "Missing required property innerProperties in model AttestationInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

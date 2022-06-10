@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     include = JsonTypeInfo.As.PROPERTY,
     property = "containerType",
     defaultImpl = IaaSvmContainer.class)
-@JsonTypeName("IaaSVMContainer")
+@JsonTypeName("IaasVMContainer")
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "Microsoft.ClassicCompute/virtualMachines",
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class IaaSvmContainer extends ProtectionContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IaaSvmContainer.class);
-
     /*
      * Fully qualified ARM url of the virtual machine represented by this Azure
      * IaaS VM container.
@@ -138,6 +134,13 @@ public class IaaSvmContainer extends ProtectionContainer {
     @Override
     public IaaSvmContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IaaSvmContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
         return this;
     }
 

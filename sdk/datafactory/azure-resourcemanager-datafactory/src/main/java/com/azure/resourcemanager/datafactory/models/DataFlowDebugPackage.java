@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Request body structure for starting data flow debug session. */
 @Fluent
 public final class DataFlowDebugPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugPackage.class);
-
     /*
      * The ID of data flow debug session.
      */
@@ -30,6 +27,12 @@ public final class DataFlowDebugPackage {
      */
     @JsonProperty(value = "dataFlow")
     private DataFlowDebugResource dataFlow;
+
+    /*
+     * List of Data flows
+     */
+    @JsonProperty(value = "dataFlows")
+    private List<DataFlowDebugResource> dataFlows;
 
     /*
      * List of datasets.
@@ -97,6 +100,26 @@ public final class DataFlowDebugPackage {
      */
     public DataFlowDebugPackage withDataFlow(DataFlowDebugResource dataFlow) {
         this.dataFlow = dataFlow;
+        return this;
+    }
+
+    /**
+     * Get the dataFlows property: List of Data flows.
+     *
+     * @return the dataFlows value.
+     */
+    public List<DataFlowDebugResource> dataFlows() {
+        return this.dataFlows;
+    }
+
+    /**
+     * Set the dataFlows property: List of Data flows.
+     *
+     * @param dataFlows the dataFlows value to set.
+     * @return the DataFlowDebugPackage object itself.
+     */
+    public DataFlowDebugPackage withDataFlows(List<DataFlowDebugResource> dataFlows) {
+        this.dataFlows = dataFlows;
         return this;
     }
 
@@ -217,6 +240,9 @@ public final class DataFlowDebugPackage {
     public void validate() {
         if (dataFlow() != null) {
             dataFlow().validate();
+        }
+        if (dataFlows() != null) {
+            dataFlows().forEach(e -> e.validate());
         }
         if (datasets() != null) {
             datasets().forEach(e -> e.validate());

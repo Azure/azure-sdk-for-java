@@ -15,10 +15,10 @@ public final class OriginGroupOverrideActionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupOverrideActionParameters.class);
 
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleOriginGroupOverrideActionParameters";
 
     /*
      * defines the OriginGroup that would override the DefaultOriginGroup.
@@ -28,26 +28,26 @@ public final class OriginGroupOverrideActionParameters {
 
     /** Creates an instance of OriginGroupOverrideActionParameters class. */
     public OriginGroupOverrideActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleOriginGroupOverrideActionParameters";
+        typeName = "DeliveryRuleOriginGroupOverrideActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the OriginGroupOverrideActionParameters object itself.
      */
-    public OriginGroupOverrideActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public OriginGroupOverrideActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 

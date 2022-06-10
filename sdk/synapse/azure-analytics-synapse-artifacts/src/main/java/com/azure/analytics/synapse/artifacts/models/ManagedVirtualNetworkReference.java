@@ -14,7 +14,7 @@ public final class ManagedVirtualNetworkReference {
      * Managed Virtual Network reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "ManagedVirtualNetworkReference";
 
     /*
      * Reference ManagedVirtualNetwork name.

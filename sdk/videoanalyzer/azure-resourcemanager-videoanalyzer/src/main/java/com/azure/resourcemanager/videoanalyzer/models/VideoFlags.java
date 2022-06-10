@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VideoFlags {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoFlags.class);
-
     /*
      * Value indicating whether or not the video can be streamed. Only
      * "archive" type videos can be streamed.
@@ -34,13 +30,13 @@ public final class VideoFlags {
 
     /*
      * Value indicating whether or not the video is currently being referenced
-     * be an active live pipeline. The fact that is being referenced, doesn't
+     * be an active pipeline. The fact that is being referenced, doesn't
      * necessarily indicate that data is being received. For example, video
      * recording may be gated on events or camera may not be accessible at the
      * time.
      */
-    @JsonProperty(value = "isRecording", required = true)
-    private boolean isRecording;
+    @JsonProperty(value = "isInUse", required = true)
+    private boolean isInUse;
 
     /**
      * Get the canStream property: Value indicating whether or not the video can be streamed. Only "archive" type videos
@@ -87,26 +83,26 @@ public final class VideoFlags {
     }
 
     /**
-     * Get the isRecording property: Value indicating whether or not the video is currently being referenced be an
-     * active live pipeline. The fact that is being referenced, doesn't necessarily indicate that data is being
-     * received. For example, video recording may be gated on events or camera may not be accessible at the time.
+     * Get the isInUse property: Value indicating whether or not the video is currently being referenced be an active
+     * pipeline. The fact that is being referenced, doesn't necessarily indicate that data is being received. For
+     * example, video recording may be gated on events or camera may not be accessible at the time.
      *
-     * @return the isRecording value.
+     * @return the isInUse value.
      */
-    public boolean isRecording() {
-        return this.isRecording;
+    public boolean isInUse() {
+        return this.isInUse;
     }
 
     /**
-     * Set the isRecording property: Value indicating whether or not the video is currently being referenced be an
-     * active live pipeline. The fact that is being referenced, doesn't necessarily indicate that data is being
-     * received. For example, video recording may be gated on events or camera may not be accessible at the time.
+     * Set the isInUse property: Value indicating whether or not the video is currently being referenced be an active
+     * pipeline. The fact that is being referenced, doesn't necessarily indicate that data is being received. For
+     * example, video recording may be gated on events or camera may not be accessible at the time.
      *
-     * @param isRecording the isRecording value to set.
+     * @param isInUse the isInUse value to set.
      * @return the VideoFlags object itself.
      */
-    public VideoFlags withIsRecording(boolean isRecording) {
-        this.isRecording = isRecording;
+    public VideoFlags withIsInUse(boolean isInUse) {
+        this.isInUse = isInUse;
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
@@ -16,242 +15,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A transaction. */
-@JsonFlatten
 @Fluent
-public class TransactionInner extends ProxyResource {
+public final class TransactionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TransactionInner.class);
 
     /*
-     * The kind of transaction. Options are all or reservation.
+     * The properties of a transaction.
      */
-    @JsonProperty(value = "properties.kind")
-    private TransactionTypeKind kind;
+    @JsonProperty(value = "properties")
+    private TransactionProperties innerProperties;
 
-    /*
-     * The date of transaction.
+    /**
+     * Get the innerProperties property: The properties of a transaction.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.date", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime date;
-
-    /*
-     * Invoice on which the transaction was billed or 'pending' if the
-     * transaction is not billed.
-     */
-    @JsonProperty(value = "properties.invoice", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoice;
-
-    /*
-     * The ID of the invoice on which the transaction was billed. This field is
-     * only applicable for transactions which are billed.
-     */
-    @JsonProperty(value = "properties.invoiceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceId;
-
-    /*
-     * The order ID of the reservation. The field is only applicable for
-     * transaction of kind reservation.
-     */
-    @JsonProperty(value = "properties.orderId", access = JsonProperty.Access.WRITE_ONLY)
-    private String orderId;
-
-    /*
-     * The name of the reservation order. The field is only applicable for
-     * transactions of kind reservation.
-     */
-    @JsonProperty(value = "properties.orderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String orderName;
-
-    /*
-     * The family of the product for which the transaction took place.
-     */
-    @JsonProperty(value = "properties.productFamily", access = JsonProperty.Access.WRITE_ONLY)
-    private String productFamily;
-
-    /*
-     * The ID of the product type for which the transaction took place.
-     */
-    @JsonProperty(value = "properties.productTypeId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productTypeId;
-
-    /*
-     * The type of the product for which the transaction took place.
-     */
-    @JsonProperty(value = "properties.productType", access = JsonProperty.Access.WRITE_ONLY)
-    private String productType;
-
-    /*
-     * The description of the product for which the transaction took place.
-     */
-    @JsonProperty(value = "properties.productDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String productDescription;
-
-    /*
-     * The type of transaction.
-     */
-    @JsonProperty(value = "properties.transactionType")
-    private ReservationType transactionType;
-
-    /*
-     * The charge associated with the transaction.
-     */
-    @JsonProperty(value = "properties.transactionAmount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount transactionAmount;
-
-    /*
-     * The quantity purchased in the transaction.
-     */
-    @JsonProperty(value = "properties.quantity", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer quantity;
-
-    /*
-     * The ID of the invoice section which will be billed for the transaction.
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * The name of the invoice section which will be billed for the
-     * transaction.
-     */
-    @JsonProperty(value = "properties.invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * The ID of the billing profile which will be billed for the transaction.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile which will be billed for the
-     * transaction.
-     */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The ID of the customer for which the transaction took place. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     */
-    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * The name of the customer for which the transaction took place. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
-     */
-    @JsonProperty(value = "properties.customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerDisplayName;
-
-    /*
-     * The ID of the subscription that was used for the transaction. The field
-     * is only applicable for transaction of kind reservation.
-     */
-    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionId;
-
-    /*
-     * The name of the subscription that was used for the transaction. The
-     * field is only applicable for transaction of kind reservation.
-     */
-    @JsonProperty(value = "properties.subscriptionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionName;
-
-    /*
-     * The type of azure plan of the subscription that was used for the
-     * transaction.
-     */
-    @JsonProperty(value = "properties.azurePlan", access = JsonProperty.Access.WRITE_ONLY)
-    private String azurePlan;
-
-    /*
-     * The amount of any Azure credits automatically applied to this
-     * transaction.
-     */
-    @JsonProperty(value = "properties.azureCreditApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount azureCreditApplied;
-
-    /*
-     * The ISO 4217 code for the currency in which this transaction is billed.
-     */
-    @JsonProperty(value = "properties.billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingCurrency;
-
-    /*
-     * The percentage discount, if any, applied to this transaction.
-     */
-    @JsonProperty(value = "properties.discount", access = JsonProperty.Access.WRITE_ONLY)
-    private Float discount;
-
-    /*
-     * The price of the product after applying any discounts.
-     */
-    @JsonProperty(value = "properties.effectivePrice", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount effectivePrice;
-
-    /*
-     * The exchange rate used to convert charged amount to billing currency, if
-     * applicable.
-     */
-    @JsonProperty(value = "properties.exchangeRate", access = JsonProperty.Access.WRITE_ONLY)
-    private Float exchangeRate;
-
-    /*
-     * The retail price of the product.
-     */
-    @JsonProperty(value = "properties.marketPrice", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount marketPrice;
-
-    /*
-     * The ISO 4217 code for the currency in which the product is priced.
-     */
-    @JsonProperty(value = "properties.pricingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private String pricingCurrency;
-
-    /*
-     * The date of the purchase of the product, or the start date of the month
-     * in which usage started.
-     */
-    @JsonProperty(value = "properties.servicePeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime servicePeriodStartDate;
-
-    /*
-     * The end date of the product term, or the end date of the month in which
-     * usage ended.
-     */
-    @JsonProperty(value = "properties.servicePeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime servicePeriodEndDate;
-
-    /*
-     * The pre-tax charged amount for the transaction.
-     */
-    @JsonProperty(value = "properties.subTotal", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount subTotal;
-
-    /*
-     * The tax amount applied to the transaction.
-     */
-    @JsonProperty(value = "properties.tax", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount tax;
-
-    /*
-     * The unit of measure used to bill for the product. For example, compute
-     * services are billed per hour.
-     */
-    @JsonProperty(value = "properties.unitOfMeasure", access = JsonProperty.Access.WRITE_ONLY)
-    private String unitOfMeasure;
-
-    /*
-     * The number of units used for a given product.
-     */
-    @JsonProperty(value = "properties.units", access = JsonProperty.Access.WRITE_ONLY)
-    private Float units;
-
-    /*
-     * The description for the unit of measure for a given product.
-     */
-    @JsonProperty(value = "properties.unitType", access = JsonProperty.Access.WRITE_ONLY)
-    private String unitType;
+    private TransactionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the kind property: The kind of transaction. Options are all or reservation.
@@ -259,7 +40,7 @@ public class TransactionInner extends ProxyResource {
      * @return the kind value.
      */
     public TransactionTypeKind kind() {
-        return this.kind;
+        return this.innerProperties() == null ? null : this.innerProperties().kind();
     }
 
     /**
@@ -269,7 +50,10 @@ public class TransactionInner extends ProxyResource {
      * @return the TransactionInner object itself.
      */
     public TransactionInner withKind(TransactionTypeKind kind) {
-        this.kind = kind;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TransactionProperties();
+        }
+        this.innerProperties().withKind(kind);
         return this;
     }
 
@@ -279,7 +63,7 @@ public class TransactionInner extends ProxyResource {
      * @return the date value.
      */
     public OffsetDateTime date() {
-        return this.date;
+        return this.innerProperties() == null ? null : this.innerProperties().date();
     }
 
     /**
@@ -289,7 +73,7 @@ public class TransactionInner extends ProxyResource {
      * @return the invoice value.
      */
     public String invoice() {
-        return this.invoice;
+        return this.innerProperties() == null ? null : this.innerProperties().invoice();
     }
 
     /**
@@ -299,7 +83,7 @@ public class TransactionInner extends ProxyResource {
      * @return the invoiceId value.
      */
     public String invoiceId() {
-        return this.invoiceId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceId();
     }
 
     /**
@@ -309,7 +93,7 @@ public class TransactionInner extends ProxyResource {
      * @return the orderId value.
      */
     public String orderId() {
-        return this.orderId;
+        return this.innerProperties() == null ? null : this.innerProperties().orderId();
     }
 
     /**
@@ -319,7 +103,7 @@ public class TransactionInner extends ProxyResource {
      * @return the orderName value.
      */
     public String orderName() {
-        return this.orderName;
+        return this.innerProperties() == null ? null : this.innerProperties().orderName();
     }
 
     /**
@@ -328,7 +112,7 @@ public class TransactionInner extends ProxyResource {
      * @return the productFamily value.
      */
     public String productFamily() {
-        return this.productFamily;
+        return this.innerProperties() == null ? null : this.innerProperties().productFamily();
     }
 
     /**
@@ -337,7 +121,7 @@ public class TransactionInner extends ProxyResource {
      * @return the productTypeId value.
      */
     public String productTypeId() {
-        return this.productTypeId;
+        return this.innerProperties() == null ? null : this.innerProperties().productTypeId();
     }
 
     /**
@@ -346,7 +130,7 @@ public class TransactionInner extends ProxyResource {
      * @return the productType value.
      */
     public String productType() {
-        return this.productType;
+        return this.innerProperties() == null ? null : this.innerProperties().productType();
     }
 
     /**
@@ -355,7 +139,7 @@ public class TransactionInner extends ProxyResource {
      * @return the productDescription value.
      */
     public String productDescription() {
-        return this.productDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().productDescription();
     }
 
     /**
@@ -364,7 +148,7 @@ public class TransactionInner extends ProxyResource {
      * @return the transactionType value.
      */
     public ReservationType transactionType() {
-        return this.transactionType;
+        return this.innerProperties() == null ? null : this.innerProperties().transactionType();
     }
 
     /**
@@ -374,7 +158,10 @@ public class TransactionInner extends ProxyResource {
      * @return the TransactionInner object itself.
      */
     public TransactionInner withTransactionType(ReservationType transactionType) {
-        this.transactionType = transactionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TransactionProperties();
+        }
+        this.innerProperties().withTransactionType(transactionType);
         return this;
     }
 
@@ -384,7 +171,7 @@ public class TransactionInner extends ProxyResource {
      * @return the transactionAmount value.
      */
     public Amount transactionAmount() {
-        return this.transactionAmount;
+        return this.innerProperties() == null ? null : this.innerProperties().transactionAmount();
     }
 
     /**
@@ -393,7 +180,7 @@ public class TransactionInner extends ProxyResource {
      * @return the quantity value.
      */
     public Integer quantity() {
-        return this.quantity;
+        return this.innerProperties() == null ? null : this.innerProperties().quantity();
     }
 
     /**
@@ -402,7 +189,7 @@ public class TransactionInner extends ProxyResource {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -412,7 +199,7 @@ public class TransactionInner extends ProxyResource {
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
-        return this.invoiceSectionDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionDisplayName();
     }
 
     /**
@@ -421,7 +208,7 @@ public class TransactionInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -431,7 +218,7 @@ public class TransactionInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -441,7 +228,7 @@ public class TransactionInner extends ProxyResource {
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -451,7 +238,7 @@ public class TransactionInner extends ProxyResource {
      * @return the customerDisplayName value.
      */
     public String customerDisplayName() {
-        return this.customerDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().customerDisplayName();
     }
 
     /**
@@ -461,7 +248,7 @@ public class TransactionInner extends ProxyResource {
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
-        return this.subscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
     }
 
     /**
@@ -471,7 +258,7 @@ public class TransactionInner extends ProxyResource {
      * @return the subscriptionName value.
      */
     public String subscriptionName() {
-        return this.subscriptionName;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionName();
     }
 
     /**
@@ -480,7 +267,7 @@ public class TransactionInner extends ProxyResource {
      * @return the azurePlan value.
      */
     public String azurePlan() {
-        return this.azurePlan;
+        return this.innerProperties() == null ? null : this.innerProperties().azurePlan();
     }
 
     /**
@@ -489,7 +276,7 @@ public class TransactionInner extends ProxyResource {
      * @return the azureCreditApplied value.
      */
     public Amount azureCreditApplied() {
-        return this.azureCreditApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().azureCreditApplied();
     }
 
     /**
@@ -498,7 +285,7 @@ public class TransactionInner extends ProxyResource {
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
-        return this.billingCurrency;
+        return this.innerProperties() == null ? null : this.innerProperties().billingCurrency();
     }
 
     /**
@@ -507,7 +294,7 @@ public class TransactionInner extends ProxyResource {
      * @return the discount value.
      */
     public Float discount() {
-        return this.discount;
+        return this.innerProperties() == null ? null : this.innerProperties().discount();
     }
 
     /**
@@ -516,7 +303,7 @@ public class TransactionInner extends ProxyResource {
      * @return the effectivePrice value.
      */
     public Amount effectivePrice() {
-        return this.effectivePrice;
+        return this.innerProperties() == null ? null : this.innerProperties().effectivePrice();
     }
 
     /**
@@ -526,7 +313,7 @@ public class TransactionInner extends ProxyResource {
      * @return the exchangeRate value.
      */
     public Float exchangeRate() {
-        return this.exchangeRate;
+        return this.innerProperties() == null ? null : this.innerProperties().exchangeRate();
     }
 
     /**
@@ -535,7 +322,7 @@ public class TransactionInner extends ProxyResource {
      * @return the marketPrice value.
      */
     public Amount marketPrice() {
-        return this.marketPrice;
+        return this.innerProperties() == null ? null : this.innerProperties().marketPrice();
     }
 
     /**
@@ -544,7 +331,7 @@ public class TransactionInner extends ProxyResource {
      * @return the pricingCurrency value.
      */
     public String pricingCurrency() {
-        return this.pricingCurrency;
+        return this.innerProperties() == null ? null : this.innerProperties().pricingCurrency();
     }
 
     /**
@@ -554,7 +341,7 @@ public class TransactionInner extends ProxyResource {
      * @return the servicePeriodStartDate value.
      */
     public OffsetDateTime servicePeriodStartDate() {
-        return this.servicePeriodStartDate;
+        return this.innerProperties() == null ? null : this.innerProperties().servicePeriodStartDate();
     }
 
     /**
@@ -564,7 +351,7 @@ public class TransactionInner extends ProxyResource {
      * @return the servicePeriodEndDate value.
      */
     public OffsetDateTime servicePeriodEndDate() {
-        return this.servicePeriodEndDate;
+        return this.innerProperties() == null ? null : this.innerProperties().servicePeriodEndDate();
     }
 
     /**
@@ -573,7 +360,7 @@ public class TransactionInner extends ProxyResource {
      * @return the subTotal value.
      */
     public Amount subTotal() {
-        return this.subTotal;
+        return this.innerProperties() == null ? null : this.innerProperties().subTotal();
     }
 
     /**
@@ -582,7 +369,7 @@ public class TransactionInner extends ProxyResource {
      * @return the tax value.
      */
     public Amount tax() {
-        return this.tax;
+        return this.innerProperties() == null ? null : this.innerProperties().tax();
     }
 
     /**
@@ -592,7 +379,7 @@ public class TransactionInner extends ProxyResource {
      * @return the unitOfMeasure value.
      */
     public String unitOfMeasure() {
-        return this.unitOfMeasure;
+        return this.innerProperties() == null ? null : this.innerProperties().unitOfMeasure();
     }
 
     /**
@@ -601,7 +388,7 @@ public class TransactionInner extends ProxyResource {
      * @return the units value.
      */
     public Float units() {
-        return this.units;
+        return this.innerProperties() == null ? null : this.innerProperties().units();
     }
 
     /**
@@ -610,7 +397,7 @@ public class TransactionInner extends ProxyResource {
      * @return the unitType value.
      */
     public String unitType() {
-        return this.unitType;
+        return this.innerProperties() == null ? null : this.innerProperties().unitType();
     }
 
     /**
@@ -619,23 +406,8 @@ public class TransactionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (transactionAmount() != null) {
-            transactionAmount().validate();
-        }
-        if (azureCreditApplied() != null) {
-            azureCreditApplied().validate();
-        }
-        if (effectivePrice() != null) {
-            effectivePrice().validate();
-        }
-        if (marketPrice() != null) {
-            marketPrice().validate();
-        }
-        if (subTotal() != null) {
-            subTotal().validate();
-        }
-        if (tax() != null) {
-            tax().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

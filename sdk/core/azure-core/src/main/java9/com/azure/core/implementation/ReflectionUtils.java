@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import java.lang.invoke.MethodHandles;
+import java.security.PrivilegedExceptionAction;
 
 /**
  * Utility methods that aid in performing reflective operations.
@@ -29,39 +30,49 @@ final class ReflectionUtils implements ReflectionUtilsApi {
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
      * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
      * reflectively.
-     * @throws Throwable If the underlying reflective calls throw an exception.
+     * @throws Exception If the underlying reflective calls throw an exception.
      */
-    public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
+    public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Exception {
         Module responseModule = targetClass.getModule();
 
-        /*
-         * First check if the response class's module is exported to all unnamed modules. If it is we will use
-         * MethodHandles.publicLookup() which is meant for creating MethodHandle instances for publicly accessible
-         * classes.
-         */
-        if (responseModule.isExported("")) {
-            return MethodHandles.publicLookup();
-        }
-
-        /*
-         * Otherwise, we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and more
-         * specifically, is tied to this class (ReflectionUtils). But, in order to use this lookup we need to ensure
-         * that the com.azure.core module reads the response class's module as the lookup won't have permissions
-         * necessary to create the MethodHandle instance without it.
-         *
-         * This logic is safe due to the fact that any SDK module calling into this code path will already need to open
-         * to com.azure.core as it needs to perform other reflective operations on classes in the module. Adding the
-         * com.azure.core reads is handling specifically required by MethodHandle.
-         */
-        if (!CORE_MODULE.canRead(responseModule)) {
+        // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to enable all
+        // lookup scenarios.
+        if (!responseModule.isNamed()) {
             CORE_MODULE.addReads(responseModule);
+            return performSafePrivateLookupIn(targetClass);
         }
 
-        return LOOKUP;
+
+        // If the response module is the Core module return the Core private lookup.
+        if (responseModule == CORE_MODULE) {
+            return LOOKUP;
+        }
+
+        // Next check if the target class module is opened either unconditionally or to Core's module. If so, also use
+        // a private proxy lookup to enable all lookup scenarios.
+        if (responseModule.isOpen(targetClass.getPackageName())
+            || responseModule.isOpen(targetClass.getPackageName(), CORE_MODULE)) {
+            CORE_MODULE.addReads(responseModule);
+            return performSafePrivateLookupIn(targetClass);
+        }
+
+        // Otherwise, return the public lookup as there are no specialty ways to access the other module.
+        return MethodHandles.publicLookup();
     }
 
     public int getJavaImplementationMajorVersion() {
         return 9;
+    }
+
+    @SuppressWarnings("removal")
+    private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Exception {
+        // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
+        if (System.getSecurityManager() == null) {
+            return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+        } else {
+            return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () ->
+                MethodHandles.privateLookupIn(targetClass, LOOKUP));
+        }
     }
 
     ReflectionUtils() {

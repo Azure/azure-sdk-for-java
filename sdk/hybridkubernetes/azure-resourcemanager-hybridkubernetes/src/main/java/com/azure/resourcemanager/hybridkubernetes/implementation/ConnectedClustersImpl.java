@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager;
 import com.azure.resourcemanager.hybridkubernetes.fluent.ConnectedClustersClient;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
+import com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResultsInner;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusters;
+import com.azure.resourcemanager.hybridkubernetes.models.CredentialResults;
+import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectedClustersImpl implements ConnectedClusters {
@@ -21,9 +23,11 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
 
     private final ConnectedClustersClient innerClient;
 
-    private final HybridKubernetesManager serviceManager;
+    private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
-    public ConnectedClustersImpl(ConnectedClustersClient innerClient, HybridKubernetesManager serviceManager) {
+    public ConnectedClustersImpl(
+        ConnectedClustersClient innerClient,
+        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -58,6 +62,34 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
 
     public void delete(String resourceGroupName, String clusterName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, context);
+    }
+
+    public CredentialResults listClusterUserCredential(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
+        CredentialResultsInner inner =
+            this.serviceClient().listClusterUserCredential(resourceGroupName, clusterName, properties);
+        if (inner != null) {
+            return new CredentialResultsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CredentialResults> listClusterUserCredentialWithResponse(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context) {
+        Response<CredentialResultsInner> inner =
+            this
+                .serviceClient()
+                .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CredentialResultsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<ConnectedCluster> listByResourceGroup(String resourceGroupName) {
@@ -169,7 +201,7 @@ public final class ConnectedClustersImpl implements ConnectedClusters {
         return this.innerClient;
     }
 
-    private HybridKubernetesManager manager() {
+    private com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager() {
         return this.serviceManager;
     }
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BillingMeter resource specific properties. */
 @Fluent
 public final class BillingMeterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingMeterProperties.class);
-
     /*
      * Meter GUID onboarded in Commerce
      */

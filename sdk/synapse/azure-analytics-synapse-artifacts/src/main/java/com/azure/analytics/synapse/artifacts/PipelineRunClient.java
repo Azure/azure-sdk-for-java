@@ -10,6 +10,7 @@ import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.PipelineRun;
 import com.azure.analytics.synapse.artifacts.models.PipelineRunsQueryResponse;
 import com.azure.analytics.synapse.artifacts.models.RunFilterParameters;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,13 +20,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class PipelineRunClient {
-    private final PipelineRunsImpl serviceClient;
+    @Generated private final PipelineRunsImpl serviceClient;
 
     /**
-     * Initializes an instance of PipelineRuns client.
+     * Initializes an instance of PipelineRunClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     PipelineRunClient(PipelineRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -39,6 +41,7 @@ public final class PipelineRunClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list pipeline runs.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineRunsQueryResponse queryPipelineRunsByWorkspace(RunFilterParameters filterParameters) {
         return this.serviceClient.queryPipelineRunsByWorkspace(filterParameters);
@@ -52,8 +55,9 @@ public final class PipelineRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
+     * @return a list pipeline runs along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineRunsQueryResponse> queryPipelineRunsByWorkspaceWithResponse(
             RunFilterParameters filterParameters, Context context) {
@@ -69,6 +73,7 @@ public final class PipelineRunClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pipeline run by its run ID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PipelineRun getPipelineRun(String runId) {
         return this.serviceClient.getPipelineRun(runId);
@@ -82,8 +87,9 @@ public final class PipelineRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
+     * @return a pipeline run by its run ID along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineRun> getPipelineRunWithResponse(String runId, Context context) {
         return this.serviceClient.getPipelineRunWithResponse(runId, context);
@@ -100,6 +106,7 @@ public final class PipelineRunClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list activity runs.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivityRunsQueryResponse queryActivityRuns(
             String pipelineName, String runId, RunFilterParameters filterParameters) {
@@ -116,8 +123,9 @@ public final class PipelineRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityRunsQueryResponse> queryActivityRunsWithResponse(
             String pipelineName, String runId, RunFilterParameters filterParameters, Context context) {
@@ -133,6 +141,7 @@ public final class PipelineRunClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelPipelineRun(String runId, Boolean isRecursive) {
         this.serviceClient.cancelPipelineRun(runId, isRecursive);
@@ -146,6 +155,7 @@ public final class PipelineRunClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelPipelineRun(String runId) {
         this.serviceClient.cancelPipelineRun(runId);
@@ -160,8 +170,9 @@ public final class PipelineRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelPipelineRunWithResponse(String runId, Boolean isRecursive, Context context) {
         return this.serviceClient.cancelPipelineRunWithResponse(runId, isRecursive, context);

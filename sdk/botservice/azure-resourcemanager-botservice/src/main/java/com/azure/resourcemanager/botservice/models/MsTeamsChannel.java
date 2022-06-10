@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MsTeamsChannel")
 @Fluent
 public final class MsTeamsChannel extends Channel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MsTeamsChannel.class);
-
     /*
      * The set of properties specific to Microsoft Teams channel resource
      */
@@ -41,6 +37,20 @@ public final class MsTeamsChannel extends Channel {
      */
     public MsTeamsChannel withProperties(MsTeamsChannelProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MsTeamsChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MsTeamsChannel withLocation(String location) {
+        super.withLocation(location);
         return this;
     }
 

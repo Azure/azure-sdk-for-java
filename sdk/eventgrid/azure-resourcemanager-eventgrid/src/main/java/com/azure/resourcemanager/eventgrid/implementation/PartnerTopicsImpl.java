@@ -12,12 +12,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
-import com.azure.resourcemanager.eventgrid.models.PartnerTopicUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopics;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PartnerTopicsImpl implements PartnerTopics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerTopicsImpl.class);
 
     private final PartnerTopicsClient innerClient;
 
@@ -59,37 +57,6 @@ public final class PartnerTopicsImpl implements PartnerTopics {
 
     public void delete(String resourceGroupName, String partnerTopicName, Context context) {
         this.serviceClient().delete(resourceGroupName, partnerTopicName, context);
-    }
-
-    public PartnerTopic update(
-        String resourceGroupName, String partnerTopicName, PartnerTopicUpdateParameters partnerTopicUpdateParameters) {
-        PartnerTopicInner inner =
-            this.serviceClient().update(resourceGroupName, partnerTopicName, partnerTopicUpdateParameters);
-        if (inner != null) {
-            return new PartnerTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PartnerTopic> updateWithResponse(
-        String resourceGroupName,
-        String partnerTopicName,
-        PartnerTopicUpdateParameters partnerTopicUpdateParameters,
-        Context context) {
-        Response<PartnerTopicInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, partnerTopicName, partnerTopicUpdateParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PartnerTopicImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
     }
 
     public PagedIterable<PartnerTopic> list() {
@@ -162,11 +129,91 @@ public final class PartnerTopicsImpl implements PartnerTopics {
         }
     }
 
+    public PartnerTopic getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String partnerTopicName = Utils.getValueFromIdByName(id, "partnerTopics");
+        if (partnerTopicName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'partnerTopics'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE).getValue();
+    }
+
+    public Response<PartnerTopic> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String partnerTopicName = Utils.getValueFromIdByName(id, "partnerTopics");
+        if (partnerTopicName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'partnerTopics'.", id)));
+        }
+        return this.getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String partnerTopicName = Utils.getValueFromIdByName(id, "partnerTopics");
+        if (partnerTopicName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'partnerTopics'.", id)));
+        }
+        this.delete(resourceGroupName, partnerTopicName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String partnerTopicName = Utils.getValueFromIdByName(id, "partnerTopics");
+        if (partnerTopicName == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'partnerTopics'.", id)));
+        }
+        this.delete(resourceGroupName, partnerTopicName, context);
+    }
+
     private PartnerTopicsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
+    }
+
+    public PartnerTopicImpl define(String name) {
+        return new PartnerTopicImpl(name, this.manager());
     }
 }

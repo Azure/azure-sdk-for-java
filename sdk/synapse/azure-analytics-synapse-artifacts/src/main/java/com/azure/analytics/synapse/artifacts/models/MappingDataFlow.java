@@ -41,6 +41,12 @@ public class MappingDataFlow extends DataFlow {
     @JsonProperty(value = "typeProperties.script")
     private String script;
 
+    /*
+     * Data flow script lines.
+     */
+    @JsonProperty(value = "typeProperties.scriptLines")
+    private List<String> scriptLines;
+
     /**
      * Get the sources property: List of sources in data flow.
      *
@@ -118,6 +124,47 @@ public class MappingDataFlow extends DataFlow {
      */
     public MappingDataFlow setScript(String script) {
         this.script = script;
+        return this;
+    }
+
+    /**
+     * Get the scriptLines property: Data flow script lines.
+     *
+     * @return the scriptLines value.
+     */
+    public List<String> getScriptLines() {
+        return this.scriptLines;
+    }
+
+    /**
+     * Set the scriptLines property: Data flow script lines.
+     *
+     * @param scriptLines the scriptLines value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow setScriptLines(List<String> scriptLines) {
+        this.scriptLines = scriptLines;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setFolder(DataFlowFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

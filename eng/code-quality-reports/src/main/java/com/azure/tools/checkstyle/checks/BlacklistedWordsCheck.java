@@ -10,11 +10,9 @@ import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Ensure that code is not using words or abbreviations that are blacklisted by this Checkstyle.
@@ -25,7 +23,8 @@ import java.util.stream.Collectors;
  */
 public class BlacklistedWordsCheck extends AbstractCheck {
     private final Set<String> blacklistedWords = new HashSet<>();
-    private static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
+
+    static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
         + "Camelcase standards for the following words: %s.";
 
     /**

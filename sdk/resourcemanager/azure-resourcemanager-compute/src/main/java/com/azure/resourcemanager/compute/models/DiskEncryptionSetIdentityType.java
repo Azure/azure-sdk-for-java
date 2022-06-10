@@ -13,6 +13,13 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
     /** Static value SystemAssigned for DiskEncryptionSetIdentityType. */
     public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
+    /** Static value UserAssigned for DiskEncryptionSetIdentityType. */
+    public static final DiskEncryptionSetIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /** Static value SystemAssigned, UserAssigned for DiskEncryptionSetIdentityType. */
+    public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED =
+        fromString("SystemAssigned, UserAssigned");
+
     /** Static value None for DiskEncryptionSetIdentityType. */
     public static final DiskEncryptionSetIdentityType NONE = fromString("None");
 
@@ -27,7 +34,11 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
         return fromString(name, DiskEncryptionSetIdentityType.class);
     }
 
-    /** @return known DiskEncryptionSetIdentityType values. */
+    /**
+     * Gets known DiskEncryptionSetIdentityType values.
+     *
+     * @return known DiskEncryptionSetIdentityType values.
+     */
     public static Collection<DiskEncryptionSetIdentityType> values() {
         return values(DiskEncryptionSetIdentityType.class);
     }

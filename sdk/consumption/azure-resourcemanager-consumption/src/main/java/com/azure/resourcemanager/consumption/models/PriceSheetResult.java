@@ -32,6 +32,20 @@ public interface PriceSheetResult {
     String type();
 
     /**
+     * Gets the etag property: The etag for the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the pricesheets property: Price sheet.
      *
      * @return the pricesheets value.
@@ -51,20 +65,6 @@ public interface PriceSheetResult {
      * @return the download value.
      */
     MeterDetails download();
-
-    /**
-     * Gets the etag property: Resource etag.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.PriceSheetResultInner object.

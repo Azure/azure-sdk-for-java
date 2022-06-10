@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The input to the check name availability request. */
 @Fluent
 public final class CheckNameAvailabilityInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);
-
     /*
      * The account name.
      */

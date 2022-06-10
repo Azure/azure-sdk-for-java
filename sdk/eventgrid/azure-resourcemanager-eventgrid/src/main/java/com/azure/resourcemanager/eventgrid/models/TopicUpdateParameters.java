@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Properties of the Topic update. */
 @Fluent
 public final class TopicUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
-
     /*
      * Tags of the Topic resource.
      */
@@ -190,6 +186,29 @@ public final class TopicUpdateParameters {
             this.innerProperties = new TopicUpdateParameterProperties();
         }
         this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    public DataResidencyBoundary dataResidencyBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataResidencyBoundary();
+    }
+
+    /**
+     * Set the dataResidencyBoundary property: The data residency boundary for the topic.
+     *
+     * @param dataResidencyBoundary the dataResidencyBoundary value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withDataResidencyBoundary(dataResidencyBoundary);
         return this;
     }
 

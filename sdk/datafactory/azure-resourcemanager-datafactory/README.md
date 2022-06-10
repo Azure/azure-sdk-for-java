@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datafactory</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.15</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -78,7 +78,7 @@ See [API design][design] for general introduction on design and key concepts on 
 // storage account
 StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
     .withRegion(REGION)
-    .withExistingResourceGroup(RESOURCE_GROUP)
+    .withExistingResourceGroup(resourceGroup)
     .create();
 final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
 final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
@@ -86,7 +86,7 @@ final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, stor
 // container
 final String containerName = "adf";
 storageManager.blobContainers().defineContainer(containerName)
-    .withExistingBlobService(RESOURCE_GROUP, STORAGE_ACCOUNT)
+    .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
     .withPublicAccess(PublicAccess.NONE)
     .create();
 
@@ -99,9 +99,9 @@ BlobClient blobClient = new BlobClientBuilder()
 blobClient.upload(BinaryData.fromString("data"));
 
 // data factory
-manager.factories().define(DATA_FACTORY)
+Factory dataFactory = manager.factories().define(DATA_FACTORY)
     .withRegion(REGION)
-    .withExistingResourceGroup(RESOURCE_GROUP)
+    .withExistingResourceGroup(resourceGroup)
     .create();
 
 // linked service
@@ -111,7 +111,7 @@ connectionStringProperty.put("value", connectionString);
 
 final String linkedServiceName = "LinkedService";
 manager.linkedServices().define(linkedServiceName)
-    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withProperties(new AzureStorageLinkedService()
         .withConnectionString(connectionStringProperty))
     .create();
@@ -119,7 +119,7 @@ manager.linkedServices().define(linkedServiceName)
 // input dataset
 final String inputDatasetName = "InputDataset";
 manager.datasets().define(inputDatasetName)
-    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withProperties(new AzureBlobDataset()
         .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
         .withFolderPath(containerName)
@@ -130,7 +130,7 @@ manager.datasets().define(inputDatasetName)
 // output dataset
 final String outputDatasetName = "OutputDataset";
 manager.datasets().define(outputDatasetName)
-    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withProperties(new AzureBlobDataset()
         .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
         .withFolderPath(containerName)
@@ -140,7 +140,7 @@ manager.datasets().define(outputDatasetName)
 
 // pipeline
 PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
-    .withExistingFactory(RESOURCE_GROUP, DATA_FACTORY)
+    .withExistingFactory(resourceGroup, DATA_FACTORY)
     .withActivities(Collections.singletonList(new CopyActivity()
         .withName("CopyBlob")
         .withSource(new BlobSource())
@@ -153,11 +153,11 @@ PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
 CreateRunResponse createRun = pipeline.createRun();
 
 // wait for completion
-PipelineRun pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+PipelineRun pipelineRun = manager.pipelineRuns().get(resourceGroup, DATA_FACTORY, createRun.runId());
 String runStatus = pipelineRun.status();
 while ("InProgress".equals(runStatus)) {
     sleepIfRunningAgainstService(10 * 1000);    // wait 10 seconds
-    pipelineRun = manager.pipelineRuns().get(RESOURCE_GROUP, DATA_FACTORY, createRun.runId());
+    pipelineRun = manager.pipelineRuns().get(resourceGroup, DATA_FACTORY, createRun.runId());
     runStatus = pipelineRun.status();
 }
 ```

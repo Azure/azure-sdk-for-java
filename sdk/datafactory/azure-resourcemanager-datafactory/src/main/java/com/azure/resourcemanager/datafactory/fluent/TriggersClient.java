@@ -26,7 +26,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName);
@@ -40,7 +40,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName, Context context);
@@ -70,7 +70,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
+     * @return a query of triggers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TriggerQueryResponseInner> queryByFactoryWithResponse(
@@ -105,7 +105,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
+     * @return trigger resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TriggerResourceInner> createOrUpdateWithResponse(
@@ -142,7 +142,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
+     * @return a trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TriggerResourceInner> getWithResponse(
@@ -171,7 +171,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -186,9 +186,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName);
 
@@ -202,9 +202,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -264,7 +264,7 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
+     * @return a trigger's event subscription status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusWithResponse(
@@ -279,9 +279,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName);
 
@@ -295,9 +295,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -341,9 +341,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName, String triggerName);
 
     /**
@@ -356,9 +356,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -398,9 +398,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName, String triggerName);
 
     /**
@@ -413,9 +413,9 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName, Context context);
 

@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 /** Resource collection API of ScriptCmdlets. */
 public interface ScriptCmdlets {
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -25,8 +25,8 @@ public interface ScriptCmdlets {
     PagedIterable<ScriptCmdlet> list(String resourceGroupName, String privateCloudName, String scriptPackageName);
 
     /**
-     * Return script cmdlet resources available for a private cloud to create a script execution resource on their
-     * Private Cloud.
+     * List script cmdlet resources available for a private cloud to create a script execution resource on a private
+     * cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.

@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.consumption.fluent.models.ModernChargeSummaryProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,76 +15,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Modern charge summary. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("modern")
-@JsonFlatten
-@Immutable
-public class ModernChargeSummary extends ChargeSummary {
+@Fluent
+public final class ModernChargeSummary extends ChargeSummary {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernChargeSummary.class);
 
     /*
-     * The id of the billing period resource that the charge belongs to.
+     * Properties for modern charge summary
      */
-    @JsonProperty(value = "properties.billingPeriodId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingPeriodId;
+    @JsonProperty(value = "properties", required = true)
+    private ModernChargeSummaryProperties innerProperties = new ModernChargeSummaryProperties();
 
-    /*
-     * Usage start date.
+    /**
+     * Get the innerProperties property: Properties for modern charge summary.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.usageStart", access = JsonProperty.Access.WRITE_ONLY)
-    private String usageStart;
+    private ModernChargeSummaryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Usage end date.
-     */
-    @JsonProperty(value = "properties.usageEnd", access = JsonProperty.Access.WRITE_ONLY)
-    private String usageEnd;
-
-    /*
-     * Azure Charges.
-     */
-    @JsonProperty(value = "properties.azureCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount azureCharges;
-
-    /*
-     * Charges Billed separately.
-     */
-    @JsonProperty(value = "properties.chargesBilledSeparately", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount chargesBilledSeparately;
-
-    /*
-     * Marketplace Charges.
-     */
-    @JsonProperty(value = "properties.marketplaceCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount marketplaceCharges;
-
-    /*
-     * Billing Account Id
-     */
-    @JsonProperty(value = "properties.billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAccountId;
-
-    /*
-     * Billing Profile Id
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * Invoice Section Id
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * Customer Id
-     */
-    @JsonProperty(value = "properties.customerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String customerId;
-
-    /*
-     * Is charge Invoiced
-     */
-    @JsonProperty(value = "properties.isInvoiced", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isInvoiced;
+    /** {@inheritDoc} */
+    @Override
+    public ModernChargeSummary withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
 
     /**
      * Get the billingPeriodId property: The id of the billing period resource that the charge belongs to.
@@ -92,7 +47,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the billingPeriodId value.
      */
     public String billingPeriodId() {
-        return this.billingPeriodId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingPeriodId();
     }
 
     /**
@@ -101,7 +56,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the usageStart value.
      */
     public String usageStart() {
-        return this.usageStart;
+        return this.innerProperties() == null ? null : this.innerProperties().usageStart();
     }
 
     /**
@@ -110,7 +65,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the usageEnd value.
      */
     public String usageEnd() {
-        return this.usageEnd;
+        return this.innerProperties() == null ? null : this.innerProperties().usageEnd();
     }
 
     /**
@@ -119,7 +74,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the azureCharges value.
      */
     public Amount azureCharges() {
-        return this.azureCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().azureCharges();
     }
 
     /**
@@ -128,7 +83,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the chargesBilledSeparately value.
      */
     public Amount chargesBilledSeparately() {
-        return this.chargesBilledSeparately;
+        return this.innerProperties() == null ? null : this.innerProperties().chargesBilledSeparately();
     }
 
     /**
@@ -137,7 +92,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the marketplaceCharges value.
      */
     public Amount marketplaceCharges() {
-        return this.marketplaceCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceCharges();
     }
 
     /**
@@ -146,7 +101,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
-        return this.billingAccountId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingAccountId();
     }
 
     /**
@@ -155,7 +110,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -164,7 +119,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -173,7 +128,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the customerId value.
      */
     public String customerId() {
-        return this.customerId;
+        return this.innerProperties() == null ? null : this.innerProperties().customerId();
     }
 
     /**
@@ -182,7 +137,7 @@ public class ModernChargeSummary extends ChargeSummary {
      * @return the isInvoiced value.
      */
     public Boolean isInvoiced() {
-        return this.isInvoiced;
+        return this.innerProperties() == null ? null : this.innerProperties().isInvoiced();
     }
 
     /**
@@ -193,14 +148,13 @@ public class ModernChargeSummary extends ChargeSummary {
     @Override
     public void validate() {
         super.validate();
-        if (azureCharges() != null) {
-            azureCharges().validate();
-        }
-        if (chargesBilledSeparately() != null) {
-            chargesBilledSeparately().validate();
-        }
-        if (marketplaceCharges() != null) {
-            marketplaceCharges().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ModernChargeSummary"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

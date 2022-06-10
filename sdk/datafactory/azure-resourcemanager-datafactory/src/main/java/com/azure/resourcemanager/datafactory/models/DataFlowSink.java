@@ -5,72 +5,22 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow sink. */
 @Fluent
 public class DataFlowSink extends Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSink.class);
-
-    /*
-     * Dataset reference.
-     */
-    @JsonProperty(value = "dataset")
-    private DatasetReference dataset;
-
-    /*
-     * Linked service reference.
-     */
-    @JsonProperty(value = "linkedService")
-    private LinkedServiceReference linkedService;
-
     /*
      * Schema linked service reference.
      */
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
-    /**
-     * Get the dataset property: Dataset reference.
-     *
-     * @return the dataset value.
+    /*
+     * Rejected data linked service reference.
      */
-    public DatasetReference dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: Dataset reference.
-     *
-     * @param dataset the dataset value to set.
-     * @return the DataFlowSink object itself.
-     */
-    public DataFlowSink withDataset(DatasetReference dataset) {
-        this.dataset = dataset;
-        return this;
-    }
-
-    /**
-     * Get the linkedService property: Linked service reference.
-     *
-     * @return the linkedService value.
-     */
-    public LinkedServiceReference linkedService() {
-        return this.linkedService;
-    }
-
-    /**
-     * Set the linkedService property: Linked service reference.
-     *
-     * @param linkedService the linkedService value to set.
-     * @return the DataFlowSink object itself.
-     */
-    public DataFlowSink withLinkedService(LinkedServiceReference linkedService) {
-        this.linkedService = linkedService;
-        return this;
-    }
+    @JsonProperty(value = "rejectedDataLinkedService")
+    private LinkedServiceReference rejectedDataLinkedService;
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
@@ -92,6 +42,26 @@ public class DataFlowSink extends Transformation {
         return this;
     }
 
+    /**
+     * Get the rejectedDataLinkedService property: Rejected data linked service reference.
+     *
+     * @return the rejectedDataLinkedService value.
+     */
+    public LinkedServiceReference rejectedDataLinkedService() {
+        return this.rejectedDataLinkedService;
+    }
+
+    /**
+     * Set the rejectedDataLinkedService property: Rejected data linked service reference.
+     *
+     * @param rejectedDataLinkedService the rejectedDataLinkedService value to set.
+     * @return the DataFlowSink object itself.
+     */
+    public DataFlowSink withRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
+        this.rejectedDataLinkedService = rejectedDataLinkedService;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataFlowSink withName(String name) {
@@ -106,6 +76,27 @@ public class DataFlowSink extends Transformation {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink withDataset(DatasetReference dataset) {
+        super.withDataset(dataset);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink withLinkedService(LinkedServiceReference linkedService) {
+        super.withLinkedService(linkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSink withFlowlet(DataFlowReference flowlet) {
+        super.withFlowlet(flowlet);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -114,14 +105,11 @@ public class DataFlowSink extends Transformation {
     @Override
     public void validate() {
         super.validate();
-        if (dataset() != null) {
-            dataset().validate();
-        }
-        if (linkedService() != null) {
-            linkedService().validate();
-        }
         if (schemaLinkedService() != null) {
             schemaLinkedService().validate();
+        }
+        if (rejectedDataLinkedService() != null) {
+            rejectedDataLinkedService().validate();
         }
     }
 }

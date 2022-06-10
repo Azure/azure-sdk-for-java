@@ -2,6 +2,30 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toMap;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.IntStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
+
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -22,30 +46,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.IntStream;
-
-import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toMap;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -72,11 +73,11 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
-    private static final ObjectMapper FEATURE_MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+    private static final ObjectMapper FEATURE_MAPPER = JsonMapper.builder()
+            .propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE).build();
 
     private final AppConfigurationStoreSelects selectedKeys;
 
@@ -100,20 +101,20 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private final ConfigStore configStore;
 
-    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
-        List<String> profiles,
-        AppConfigurationProperties appConfigurationProperties, ClientStore clients,
-        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+    AppConfigurationPropertySource(ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
+            List<String> profiles, AppConfigurationProperties appConfigurationProperties, ClientStore clients,
+            AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+            SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
+        super(
+            selectedKeys.getKeyFilter() + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
         this.configStore = configStore;
         this.selectedKeys = selectedKeys;
         this.profiles = profiles;
         this.appConfigurationProperties = appConfigurationProperties;
         this.appProperties = appProperties;
-        this.keyVaultClients = new HashMap<String, KeyVaultClient>();
+        this.keyVaultClients = new HashMap<>();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
@@ -121,10 +122,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
-            parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
+                new TypeReference<List<Object>>() {
+                });
         return listObjects == null ? emptyList() : listObjects;
     }
 
@@ -145,8 +145,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * </p>
      *
      * <p>
-     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call {@code initFeatures} to update
-     * Feature Management, but make sure its done in the last {@code
+     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache.
+     * Call {@code initFeatures} to update Feature Management, but make sure its
+     * done in the last {@code AppConfigurationPropertySource}
      * AppConfigurationPropertySource}
      * </p>
      *
@@ -156,7 +157,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
-        Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
 
         PagedIterable<ConfigurationSetting> features = null;
@@ -166,9 +166,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             features = clients.listSettings(settingSelector, storeName);
 
-            if (features == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
         }
 
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
@@ -181,10 +178,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             // * for wildcard match
             PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
 
-            if (settings == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
-
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
@@ -195,7 +188,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                         properties.put(key, entry);
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
-                    && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                        && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                     HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(selectedKeys.getKeyFilter().length());
@@ -206,7 +199,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 }
             }
         }
-        return addToFeatureSet(featureSet, features, date);
+        return addToFeatureSet(featureSet, features);
     }
 
     /**
@@ -232,7 +225,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
                 KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                    keyVaultClientProvider, keyVaultSecretProvider);
+                        keyVaultClientProvider, keyVaultSecretProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
             KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
@@ -258,7 +251,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features)
         throws IOException {
         if (features == null) {
             return featureSet;
@@ -267,9 +260,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
-                if (feature != null) {
-                    featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
-                }
+                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
             }
         }
         return featureSet;

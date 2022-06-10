@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
             name = "#Microsoft.VideoAnalyzer.UsernamePasswordCredentials",
             value = UsernamePasswordCredentials.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.HttpHeaderCredentials", value = HttpHeaderCredentials.class)
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.HttpHeaderCredentials", value = HttpHeaderCredentials.class),
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SymmetricKeyCredentials", value = SymmetricKeyCredentials.class)
 })
 @Immutable
 public class CredentialsBase {}

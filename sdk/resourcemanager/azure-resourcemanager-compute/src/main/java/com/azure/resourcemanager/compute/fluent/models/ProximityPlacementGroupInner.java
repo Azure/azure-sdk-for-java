@@ -6,11 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,19 @@ import java.util.Map;
 /** Specifies information about the proximity placement group. */
 @Fluent
 public final class ProximityPlacementGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupInner.class);
-
     /*
      * Describes the properties of a Proximity Placement Group.
      */
     @JsonProperty(value = "properties")
     private ProximityPlacementGroupProperties innerProperties;
+
+    /*
+     * Specifies the Availability Zone where virtual machine, virtual machine
+     * scale set or availability set associated with the  proximity placement
+     * group can be created.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the innerProperties property: Describes the properties of a Proximity Placement Group.
@@ -33,6 +38,28 @@ public final class ProximityPlacementGroupInner extends Resource {
      */
     private ProximityPlacementGroupProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the zones property: Specifies the Availability Zone where virtual machine, virtual machine scale set or
+     * availability set associated with the proximity placement group can be created.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Specifies the Availability Zone where virtual machine, virtual machine scale set or
+     * availability set associated with the proximity placement group can be created.
+     *
+     * @param zones the zones value to set.
+     * @return the ProximityPlacementGroupInner object itself.
+     */
+    public ProximityPlacementGroupInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -126,6 +153,29 @@ public final class ProximityPlacementGroupInner extends Resource {
             this.innerProperties = new ProximityPlacementGroupProperties();
         }
         this.innerProperties().withColocationStatus(colocationStatus);
+        return this;
+    }
+
+    /**
+     * Get the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @return the intent value.
+     */
+    public ProximityPlacementGroupPropertiesIntent intent() {
+        return this.innerProperties() == null ? null : this.innerProperties().intent();
+    }
+
+    /**
+     * Set the intent property: Specifies the user intent of the proximity placement group.
+     *
+     * @param intent the intent value to set.
+     * @return the ProximityPlacementGroupInner object itself.
+     */
+    public ProximityPlacementGroupInner withIntent(ProximityPlacementGroupPropertiesIntent intent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProximityPlacementGroupProperties();
+        }
+        this.innerProperties().withIntent(intent);
         return this;
     }
 

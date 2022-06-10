@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.containerinstance.fluent.models.InitContainerPropertiesDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The init container definition. */
-@JsonFlatten
 @Fluent
-public class InitContainerDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InitContainerDefinition.class);
-
+public final class InitContainerDefinition {
     /*
      * The name for the init container.
      */
@@ -24,34 +20,10 @@ public class InitContainerDefinition {
     private String name;
 
     /*
-     * The image of the init container.
+     * The properties for the init container.
      */
-    @JsonProperty(value = "properties.image")
-    private String image;
-
-    /*
-     * The command to execute within the init container in exec form.
-     */
-    @JsonProperty(value = "properties.command")
-    private List<String> command;
-
-    /*
-     * The environment variables to set in the init container.
-     */
-    @JsonProperty(value = "properties.environmentVariables")
-    private List<EnvironmentVariable> environmentVariables;
-
-    /*
-     * The instance view of the init container. Only valid in response.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private InitContainerPropertiesDefinitionInstanceView instanceView;
-
-    /*
-     * The volume mounts available to the init container.
-     */
-    @JsonProperty(value = "properties.volumeMounts")
-    private List<VolumeMount> volumeMounts;
+    @JsonProperty(value = "properties", required = true)
+    private InitContainerPropertiesDefinition innerProperties = new InitContainerPropertiesDefinition();
 
     /**
      * Get the name property: The name for the init container.
@@ -74,12 +46,21 @@ public class InitContainerDefinition {
     }
 
     /**
+     * Get the innerProperties property: The properties for the init container.
+     *
+     * @return the innerProperties value.
+     */
+    private InitContainerPropertiesDefinition innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the image property: The image of the init container.
      *
      * @return the image value.
      */
     public String image() {
-        return this.image;
+        return this.innerProperties() == null ? null : this.innerProperties().image();
     }
 
     /**
@@ -89,7 +70,10 @@ public class InitContainerDefinition {
      * @return the InitContainerDefinition object itself.
      */
     public InitContainerDefinition withImage(String image) {
-        this.image = image;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withImage(image);
         return this;
     }
 
@@ -99,7 +83,7 @@ public class InitContainerDefinition {
      * @return the command value.
      */
     public List<String> command() {
-        return this.command;
+        return this.innerProperties() == null ? null : this.innerProperties().command();
     }
 
     /**
@@ -109,7 +93,10 @@ public class InitContainerDefinition {
      * @return the InitContainerDefinition object itself.
      */
     public InitContainerDefinition withCommand(List<String> command) {
-        this.command = command;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withCommand(command);
         return this;
     }
 
@@ -119,7 +106,7 @@ public class InitContainerDefinition {
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
-        return this.environmentVariables;
+        return this.innerProperties() == null ? null : this.innerProperties().environmentVariables();
     }
 
     /**
@@ -129,7 +116,10 @@ public class InitContainerDefinition {
      * @return the InitContainerDefinition object itself.
      */
     public InitContainerDefinition withEnvironmentVariables(List<EnvironmentVariable> environmentVariables) {
-        this.environmentVariables = environmentVariables;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withEnvironmentVariables(environmentVariables);
         return this;
     }
 
@@ -139,7 +129,7 @@ public class InitContainerDefinition {
      * @return the instanceView value.
      */
     public InitContainerPropertiesDefinitionInstanceView instanceView() {
-        return this.instanceView;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -148,7 +138,7 @@ public class InitContainerDefinition {
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
-        return this.volumeMounts;
+        return this.innerProperties() == null ? null : this.innerProperties().volumeMounts();
     }
 
     /**
@@ -158,7 +148,10 @@ public class InitContainerDefinition {
      * @return the InitContainerDefinition object itself.
      */
     public InitContainerDefinition withVolumeMounts(List<VolumeMount> volumeMounts) {
-        this.volumeMounts = volumeMounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withVolumeMounts(volumeMounts);
         return this;
     }
 
@@ -169,18 +162,19 @@ public class InitContainerDefinition {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model InitContainerDefinition"));
         }
-        if (environmentVariables() != null) {
-            environmentVariables().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
-        }
-        if (volumeMounts() != null) {
-            volumeMounts().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model InitContainerDefinition"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InitContainerDefinition.class);
 }

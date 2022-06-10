@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureStorageJob")
 @Fluent
 public final class AzureStorageJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageJob.class);
-
     /*
      * Time elapsed during the execution of this job.
      */
@@ -57,6 +53,12 @@ public final class AzureStorageJob extends Job {
      */
     @JsonProperty(value = "extendedInfo")
     private AzureStorageJobExtendedInfo extendedInfo;
+
+    /*
+     * Indicated that whether the job is adhoc(true) or scheduled(false)
+     */
+    @JsonProperty(value = "isUserTriggered")
+    private Boolean isUserTriggered;
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
@@ -177,6 +179,26 @@ public final class AzureStorageJob extends Job {
      */
     public AzureStorageJob withExtendedInfo(AzureStorageJobExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
+        return this;
+    }
+
+    /**
+     * Get the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @return the isUserTriggered value.
+     */
+    public Boolean isUserTriggered() {
+        return this.isUserTriggered;
+    }
+
+    /**
+     * Set the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @param isUserTriggered the isUserTriggered value to set.
+     * @return the AzureStorageJob object itself.
+     */
+    public AzureStorageJob withIsUserTriggered(Boolean isUserTriggered) {
+        this.isUserTriggered = isUserTriggered;
         return this;
     }
 

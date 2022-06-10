@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes each OS upgrade on the Virtual Machine Scale Set. */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UpgradeOperationHistoricalStatusInfoProperties.class);
-
     /*
      * Information about the overall status of the upgrade operation.
      */

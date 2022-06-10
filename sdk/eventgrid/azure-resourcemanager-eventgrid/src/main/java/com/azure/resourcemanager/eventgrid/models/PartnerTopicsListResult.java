@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the List Partner Topics operation. */
 @Fluent
 public final class PartnerTopicsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicsListResult.class);
-
     /*
      * A collection of partner topics.
      */

@@ -40,7 +40,15 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  * {@link TableClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct a sync client</strong></p>
- * {@codesnippet com.azure.data.tables.tableClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableClient.instantiation -->
+ * <pre>
+ * TableClient tableClient = new TableClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .tableName&#40;&quot;myTable&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableClient.instantiation -->
  *
  * @see TableClientBuilder
  */
@@ -110,7 +118,13 @@ public final class TableClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.createTable}
+     * <!-- src_embed com.azure.data.tables.tableClient.createTable -->
+     * <pre>
+     * TableItem tableItem = tableClient.createTable&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableItem.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.createTable -->
      *
      * @return A {@link TableItem} that represents the table.
      *
@@ -126,7 +140,15 @@ public final class TableClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.createTableWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.createTableWithResponse#Duration-Context -->
+     * <pre>
+     * Response&lt;TableItem&gt; response = tableClient.createTableWithResponse&#40;Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.createTableWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
@@ -146,7 +168,13 @@ public final class TableClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.deleteTable}
+     * <!-- src_embed com.azure.data.tables.tableClient.deleteTable -->
+     * <pre>
+     * tableClient.deleteTable&#40;&#41;;
+     *
+     * System.out.print&#40;&quot;Table was deleted.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.deleteTable -->
      *
      * @throws TableServiceException If the request is rejected by the service.
      */
@@ -160,7 +188,14 @@ public final class TableClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.deleteTableWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.deleteTableWithResponse#Duration-Context -->
+     * <pre>
+     * Response&lt;Void&gt; response = tableClient.deleteTableWithResponse&#40;Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Table was deleted successfully with status code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.deleteTableWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
@@ -181,7 +216,19 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the created
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.createEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableClient.createEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableClient.createEntity&#40;tableEntity&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, partitionKey, rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.createEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to insert.
      *
@@ -200,7 +247,21 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the
      * {@link Response HTTP response} and the created {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableClient.createEntityWithResponse&#40;myTableEntity, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
+     *     + &quot; '%s' was created.&quot;, response.getStatusCode&#40;&#41;, myPartitionKey, myRowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context -->
      *
      * @param entity The {@link TableEntity entity} to insert.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -225,7 +286,20 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Upserts an {@link TableEntity entity} into the table. Prints out the details of the upserted
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.upsertEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableClient.upsertEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableClient.upsertEntity&#40;tableEntity&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.upsertEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to upsert.
      *
@@ -252,7 +326,21 @@ public final class TableClient {
      * <p>Upserts an {@link TableEntity entity} into the table with the specified
      * {@link TableEntityUpdateMode update mode} if said {@link TableEntity entity} already exists. Prints out the
      * details of the {@link Response HTTP response} and the upserted {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableClient.upsertEntityWithResponse&#40;myTableEntity, TableEntityUpdateMode.REPLACE,
+     *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
+     *     + &quot; '%s' was updated&#47;created.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context -->
      *
      * @param entity The {@link TableEntity entity} to upsert.
      * @param updateMode The type of update to perform if the {@link TableEntity entity} already exits.
@@ -278,7 +366,20 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table. Prints out the details of the updated
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.updateEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableClient.updateEntity&#40;tableEntity&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to update.
      *
@@ -304,7 +405,20 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table with the specified
      * {@link TableEntityUpdateMode update mode}. Prints out the details of the updated {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode}
+     * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was updated&#47;created.&quot;, partitionKey,
+     *     rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      *
      * @param entity The {@link TableEntity entity} to update.
      * @param updateMode The type of update to perform.
@@ -333,7 +447,21 @@ public final class TableClient {
      * mode}
      * if the {@code ETags} on both {@link TableEntity entities} match. Prints out the details of the
      * {@link Response HTTP response} updated {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context -->
+     * <pre>
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableClient.updateEntityWithResponse&#40;someTableEntity, TableEntityUpdateMode.REPLACE,
+     *     true, Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
+     *     + &quot; '%s' was updated.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context -->
      *
      * @param entity The {@link TableEntity entity} to update.
      * @param updateMode The type of update to perform.
@@ -364,7 +492,16 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes an {@link TableEntity entity} on the table. Prints out the entity's {@code partitionKey} and
      * {@code rowKey}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.deleteEntity#String-String}
+     * <!-- src_embed com.azure.data.tables.tableClient.deleteEntity#String-String -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * tableClient.deleteEntity&#40;partitionKey, rowKey&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was deleted.&quot;, partitionKey, rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.deleteEntity#String-String -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The row key of the {@link TableEntity entity}.
@@ -384,7 +521,19 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the deleted
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.deleteEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableClient.deleteEntity#TableEntity -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableClient.deleteEntity&#40;myTableEntity&#41;;
+     *
+     * System.out.printf&#40;&quot;Table entity with partition key '%s' and row key: '%s' was created.&quot;, partitionKey, rowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.deleteEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to delete.
      *
@@ -401,7 +550,21 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the
      * {@link Response HTTP response} and the deleted {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context -->
+     * <pre>
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableClient.deleteEntityWithResponse&#40;someTableEntity, true, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and row key&quot;
+     *     + &quot; '%s' was deleted.&quot;, response.getStatusCode&#40;&#41;, somePartitionKey, someRowKey&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context -->
      *
      * @param entity The table {@link TableEntity entity} to delete.
      * @param ifUnchanged When true, the ETag of the provided {@link TableEntity entity} must match the ETag of the
@@ -428,7 +591,15 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
      * retrieved {@link TableEntity entities}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.listEntities}
+     * <!-- src_embed com.azure.data.tables.tableClient.listEntities -->
+     * <pre>
+     * PagedIterable&lt;TableEntity&gt; tableEntities = tableClient.listEntities&#40;&#41;;
+     *
+     * tableEntities.forEach&#40;tableEntity -&gt;
+     *     System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.%n&quot;,
+     *         tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.listEntities -->
      *
      * @return A {@link PagedIterable} containing all {@link TableEntity entities} within the table.
      *
@@ -450,7 +621,30 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
      * {@link Response HTTP response} and all the retrieved {@link TableEntity entities}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context -->
+     * <pre>
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * ListEntitiesOptions listEntitiesOptions = new ListEntitiesOptions&#40;&#41;
+     *     .setTop&#40;15&#41;
+     *     .setFilter&#40;&quot;PartitionKey eq 'MyPartitionKey' and RowKey eq 'MyRowKey'&quot;&#41;
+     *     .setSelect&#40;propertiesToSelect&#41;;
+     *
+     * PagedIterable&lt;TableEntity&gt; myTableEntities = tableClient.listEntities&#40;listEntitiesOptions,
+     *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * myTableEntities.forEach&#40;tableEntity -&gt; &#123;
+     *     System.out.printf&#40;&quot;Retrieved entity with partition key '%s', row key '%s' and properties:%n&quot;,
+     *         tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;;
+     *
+     *     tableEntity.getProperties&#40;&#41;.forEach&#40;&#40;key, value&#41; -&gt;
+     *         System.out.printf&#40;&quot;Name: '%s'. Value: '%s'.%n&quot;, key, value&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context -->
      *
      * @param options The {@code filter}, {@code select}, and {@code top} OData query options to apply to this
      * operation.
@@ -474,7 +668,17 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the retrieved
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.getEntity#String-String}
+     * <!-- src_embed com.azure.data.tables.tableClient.getEntity#String-String -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = tableClient.getEntity&#40;partitionKey, rowKey&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.&quot;, tableEntity.getPartitionKey&#40;&#41;,
+     *     tableEntity.getRowKey&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.getEntity#String-String -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The partition key of the {@link TableEntity entity}.
@@ -497,7 +701,29 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the {@link Response HTTP response}
      * retrieved {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * Response&lt;TableEntity&gt; response = tableClient.getEntityWithResponse&#40;myPartitionKey, myRowKey, propertiesToSelect,
+     *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * TableEntity myTableEntity = response.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved entity with partition key '%s', row key&quot;
+     *         + &quot; '%s' and properties:&quot;, response.getStatusCode&#40;&#41;, myTableEntity.getPartitionKey&#40;&#41;,
+     *     myTableEntity.getRowKey&#40;&#41;&#41;;
+     *
+     * myTableEntity.getProperties&#40;&#41;.forEach&#40;&#40;key, value&#41; -&gt;
+     *     System.out.printf&#40;&quot;%nName: '%s'. Value: '%s'.&quot;, key, value&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The partition key of the {@link TableEntity entity}.
@@ -529,7 +755,14 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the retrieved
      * {@link TableAccessPolicies access policies}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.getAccessPolicies}
+     * <!-- src_embed com.azure.data.tables.tableClient.getAccessPolicies -->
+     * <pre>
+     * TableAccessPolicies accessPolicies = tableClient.getAccessPolicies&#40;&#41;;
+     *
+     * accessPolicies.getIdentifiers&#40;&#41;.forEach&#40;signedIdentifier -&gt;
+     *     System.out.printf&#40;&quot;Retrieved table access policy with id '%s'.&quot;, signedIdentifier.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.getAccessPolicies -->
      *
      * @return The table's {@link TableAccessPolicies access policies}.
      *
@@ -549,7 +782,23 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the
      * {@link Response HTTP response} and the retrieved {@link TableAccessPolicies access policies}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.getAccessPoliciesWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.getAccessPoliciesWithResponse#Duration-Context -->
+     * <pre>
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * Response&lt;TableAccessPolicies&gt; response = tableClient.getAccessPoliciesWithResponse&#40;Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved table access policies with the following&quot;
+     *     + &quot; IDs:&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     * response.getValue&#40;&#41;.getIdentifiers&#40;&#41;.forEach&#40;signedIdentifier -&gt;
+     *     System.out.printf&#40;&quot;%n%s&quot;, signedIdentifier.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.getAccessPoliciesWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
@@ -572,7 +821,26 @@ public final class TableClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.setAccessPolicies#List}
+     * <!-- src_embed com.azure.data.tables.tableClient.setAccessPolicies#List -->
+     * <pre>
+     * List&lt;TableSignedIdentifier&gt; signedIdentifiers = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * signedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id1&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2022, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;r&quot;&#41;&#41;&#41;;
+     * signedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id2&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;raud&quot;&#41;&#41;&#41;;
+     *
+     * tableClient.setAccessPolicies&#40;signedIdentifiers&#41;;
+     *
+     * System.out.print&#40;&quot;Set table access policies.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.setAccessPolicies#List -->
      *
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      *
@@ -592,7 +860,27 @@ public final class TableClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table. Prints out details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.setAccessPoliciesWithResponse#List-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.setAccessPoliciesWithResponse#List-Duration-Context -->
+     * <pre>
+     * List&lt;TableSignedIdentifier&gt; mySignedIdentifiers = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * mySignedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id1&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2022, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;r&quot;&#41;&#41;&#41;;
+     * mySignedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id2&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;raud&quot;&#41;&#41;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableClient.setAccessPoliciesWithResponse&#40;mySignedIdentifiers, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Set table access policies successfully with status code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.setAccessPoliciesWithResponse#List-Duration-Context -->
      *
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -621,11 +909,64 @@ public final class TableClient {
      * <p>Submits a transaction that contains multiple {@link TableTransactionAction actions} to be applied to
      * {@link TableEntity entities} on a table. Prints out details of each {@link TableTransactionAction action}'s
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.submitTransaction#List}
+     * <!-- src_embed com.azure.data.tables.tableClient.submitTransaction#List -->
+     * <pre>
+     * List&lt;TableTransactionAction&gt; transactionActions = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * String partitionKey = &quot;markers&quot;;
+     * String firstEntityRowKey = &quot;m001&quot;;
+     * String secondEntityRowKey = &quot;m002&quot;;
+     *
+     * TableEntity firstEntity = new TableEntity&#40;partitionKey, firstEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Dry&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Red&quot;&#41;;
+     *
+     * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, firstEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
+     *     firstEntityRowKey&#41;;
+     *
+     * TableEntity secondEntity = new TableEntity&#40;partitionKey, secondEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Wet&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Blue&quot;&#41;;
+     *
+     * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, secondEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
+     *     secondEntityRowKey&#41;;
+     *
+     * TableTransactionResult tableTransactionResult = tableClient.submitTransaction&#40;transactionActions&#41;;
+     *
+     * System.out.print&#40;&quot;Submitted transaction. The ordered response status codes for the actions are:&quot;&#41;;
+     *
+     * tableTransactionResult.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *     System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.submitTransaction#List -->
      * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
      * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
      * transaction.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List -->
+     * <pre>
+     *
+     * tableAsyncClient.submitTransaction&#40;transactionActions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .doOnError&#40;TableTransactionFailedException.class, e -&gt; &#123;
+     *         &#47;&#47; If the transaction fails, the resulting exception contains the index of the first action that failed.
+     *         int failedActionIndex = e.getFailedTransactionActionIndex&#40;&#41;;
+     *         &#47;&#47; You can use this index to modify the offending action or remove it from the list of actions to send
+     *         &#47;&#47; in the transaction, for example.
+     *         transactionActions.remove&#40;failedActionIndex&#41;;
+     *         &#47;&#47; And then retry submitting the transaction.
+     *     &#125;&#41;
+     *     .subscribe&#40;tableTransactionResult -&gt; &#123;
+     *         System.out.print&#40;&quot;Submitted transaction. The ordered response status codes for the actions are:&quot;&#41;;
+     *
+     *         tableTransactionResult.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *             System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List -->
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction actions} to perform on
      * {@link TableEntity entities} in a table.
@@ -657,11 +998,68 @@ public final class TableClient {
      * {@link TableEntity entities} on a table. Prints out details of the {@link Response HTTP response} for the
      * operation, as well as each {@link TableTransactionAction action}'s corresponding {@link Response HTTP
      * response}.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context -->
+     * <pre>
+     * List&lt;TableTransactionAction&gt; myTransactionActions = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * String myPartitionKey = &quot;markers&quot;;
+     * String myFirstEntityRowKey = &quot;m001&quot;;
+     * String mySecondEntityRowKey = &quot;m002&quot;;
+     *
+     * TableEntity myFirstEntity = new TableEntity&#40;myPartitionKey, myFirstEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Dry&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Red&quot;&#41;;
+     *
+     * myTransactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, myFirstEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, myPartitionKey,
+     *     myFirstEntityRowKey&#41;;
+     *
+     * TableEntity mySecondEntity = new TableEntity&#40;myPartitionKey, mySecondEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Wet&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Blue&quot;&#41;;
+     *
+     * myTransactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, mySecondEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, myPartitionKey,
+     *     mySecondEntityRowKey&#41;;
+     *
+     * Response&lt;TableTransactionResult&gt; response = tableClient.submitTransactionWithResponse&#40;myTransactionActions,
+     *     Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. The ordered response status codes of the submitted&quot;
+     *     + &quot; actions are:&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     * response.getValue&#40;&#41;.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *     System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context -->
      * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
      * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
      * transaction.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context -->
+     * <pre>
+     * try &#123;
+     *     Response&lt;TableTransactionResult&gt; transactionResultResponse =
+     *         tableClient.submitTransactionWithResponse&#40;myTransactionActions, Duration.ofSeconds&#40;5&#41;,
+     *             new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Response successful with status code: %d. The ordered response status codes of the&quot;
+     *         + &quot; submitted actions are:&quot;, transactionResultResponse.getStatusCode&#40;&#41;&#41;;
+     *
+     *     transactionResultResponse.getValue&#40;&#41;.getTransactionActionResponses&#40;&#41;
+     *         .forEach&#40;tableTransactionActionResponse -&gt;
+     *             System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;TableTransactionFailedException e&#41; &#123;
+     *     &#47;&#47; If the transaction fails, the resulting exception contains the index of the first action that failed.
+     *     int failedActionIndex = e.getFailedTransactionActionIndex&#40;&#41;;
+     *     &#47;&#47; You can use this index to modify the offending action or remove it from the list of actions to send in
+     *     &#47;&#47; the transaction, for example.
+     *     myTransactionActions.remove&#40;failedActionIndex&#41;;
+     *     &#47;&#47; And then retry submitting the transaction.
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context -->
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction transaction actions} to perform on
      * {@link TableEntity entities} in a table.

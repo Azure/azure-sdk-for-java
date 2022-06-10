@@ -9,10 +9,12 @@ parameters:
     type: string
   - name: SparkVersion
     type: string
+  - name: ClusterName
+    type: string
 
 stages:
   - stage:
-    displayName: Spark Databricks integration
+    displayName: 'Spark Databricks integration ${{ parameters.SparkVersion }}'
     dependsOn: []
     jobs:
     - job:
@@ -27,9 +29,9 @@ stages:
         inputs:
           mavenPOMFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
+          options: '$(DefaultOptions) -T 1 -DsparkShading -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
       - task: UsePythonVersion@0
@@ -59,10 +61,10 @@ stages:
       - task: Bash@3
         displayName: Importing Jars
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/test-databricks/databricks-jar-install.sh
-          arguments: 'oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target'
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-jar-install.sh
+          arguments: '${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/target'
       - task: Bash@3
         displayName: Importing and executing notebooks
         inputs:
-          filePath: $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/test-databricks/databricks-notebooks-install.sh
-          arguments: oltp-ci-2workers-ds3v2 $(build.sourcesdirectory)/sdk/cosmos/${{ parameters.SparkVersion }}/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}
+          filePath: $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-notebooks-install.sh
+          arguments: ${{ parameters.ClusterName }} $(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/notebooks ${{ parameters.CosmosEndpoint }} ${{ parameters.CosmosKey }}

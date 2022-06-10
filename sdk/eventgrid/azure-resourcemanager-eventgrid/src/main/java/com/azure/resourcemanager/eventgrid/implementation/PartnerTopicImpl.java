@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.PartnerTopicUpdateParameters;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
-public final class PartnerTopicImpl implements PartnerTopic {
+public final class PartnerTopicImpl implements PartnerTopic, PartnerTopic.Definition, PartnerTopic.Update {
     private PartnerTopicInner innerObject;
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
-
-    PartnerTopicImpl(
-        PartnerTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -58,8 +58,16 @@ public final class PartnerTopicImpl implements PartnerTopic {
         return this.innerModel().identity();
     }
 
+    public UUID partnerRegistrationImmutableId() {
+        return this.innerModel().partnerRegistrationImmutableId();
+    }
+
     public String source() {
         return this.innerModel().source();
+    }
+
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerModel().eventTypeInfo();
     }
 
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -78,11 +86,203 @@ public final class PartnerTopicImpl implements PartnerTopic {
         return this.innerModel().partnerTopicFriendlyDescription();
     }
 
+    public String messageForActivation() {
+        return this.innerModel().messageForActivation();
+    }
+
+    public Region region() {
+        return Region.fromName(this.regionName());
+    }
+
+    public String regionName() {
+        return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PartnerTopicInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String partnerTopicName;
+
+    private PartnerTopicUpdateParameters updatePartnerTopicUpdateParameters;
+
+    public PartnerTopicImpl withExistingResourceGroup(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    public PartnerTopic create() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public PartnerTopic create(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .createOrUpdateWithResponse(resourceGroupName, partnerTopicName, this.innerModel(), context)
+                .getValue();
+        return this;
+    }
+
+    PartnerTopicImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+        this.innerObject = new PartnerTopicInner();
+        this.serviceManager = serviceManager;
+        this.partnerTopicName = name;
+    }
+
+    public PartnerTopicImpl update() {
+        this.updatePartnerTopicUpdateParameters = new PartnerTopicUpdateParameters();
+        return this;
+    }
+
+    public PartnerTopic apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .updateWithResponse(
+                    resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public PartnerTopic apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .updateWithResponse(resourceGroupName, partnerTopicName, updatePartnerTopicUpdateParameters, context)
+                .getValue();
+        return this;
+    }
+
+    PartnerTopicImpl(
+        PartnerTopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.partnerTopicName = Utils.getValueFromIdByName(innerObject.id(), "partnerTopics");
+    }
+
+    public PartnerTopic refresh() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public PartnerTopic refresh(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getPartnerTopics()
+                .getByResourceGroupWithResponse(resourceGroupName, partnerTopicName, context)
+                .getValue();
+        return this;
+    }
+
+    public PartnerTopic activate() {
+        return serviceManager.partnerTopics().activate(resourceGroupName, partnerTopicName);
+    }
+
+    public Response<PartnerTopic> activateWithResponse(Context context) {
+        return serviceManager.partnerTopics().activateWithResponse(resourceGroupName, partnerTopicName, context);
+    }
+
+    public PartnerTopic deactivate() {
+        return serviceManager.partnerTopics().deactivate(resourceGroupName, partnerTopicName);
+    }
+
+    public Response<PartnerTopic> deactivateWithResponse(Context context) {
+        return serviceManager.partnerTopics().deactivateWithResponse(resourceGroupName, partnerTopicName, context);
+    }
+
+    public PartnerTopicImpl withRegion(Region location) {
+        this.innerModel().withLocation(location.toString());
+        return this;
+    }
+
+    public PartnerTopicImpl withRegion(String location) {
+        this.innerModel().withLocation(location);
+        return this;
+    }
+
+    public PartnerTopicImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updatePartnerTopicUpdateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public PartnerTopicImpl withIdentity(IdentityInfo identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updatePartnerTopicUpdateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public PartnerTopicImpl withPartnerRegistrationImmutableId(UUID partnerRegistrationImmutableId) {
+        this.innerModel().withPartnerRegistrationImmutableId(partnerRegistrationImmutableId);
+        return this;
+    }
+
+    public PartnerTopicImpl withSource(String source) {
+        this.innerModel().withSource(source);
+        return this;
+    }
+
+    public PartnerTopicImpl withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        this.innerModel().withEventTypeInfo(eventTypeInfo);
+        return this;
+    }
+
+    public PartnerTopicImpl withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
+        this.innerModel().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
+        return this;
+    }
+
+    public PartnerTopicImpl withActivationState(PartnerTopicActivationState activationState) {
+        this.innerModel().withActivationState(activationState);
+        return this;
+    }
+
+    public PartnerTopicImpl withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
+        this.innerModel().withPartnerTopicFriendlyDescription(partnerTopicFriendlyDescription);
+        return this;
+    }
+
+    public PartnerTopicImpl withMessageForActivation(String messageForActivation) {
+        this.innerModel().withMessageForActivation(messageForActivation);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

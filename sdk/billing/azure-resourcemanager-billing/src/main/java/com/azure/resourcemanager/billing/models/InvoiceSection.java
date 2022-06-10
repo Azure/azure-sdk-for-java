@@ -59,6 +59,15 @@ public interface InvoiceSection {
     String systemId();
 
     /**
+     * Gets the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
+     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
+     * ? /.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the targetCloud property: Identifies the cloud environments that are associated with an invoice section.
      * This is a system managed optional field and gets updated as the invoice section gets associated with accounts in
      * various clouds.

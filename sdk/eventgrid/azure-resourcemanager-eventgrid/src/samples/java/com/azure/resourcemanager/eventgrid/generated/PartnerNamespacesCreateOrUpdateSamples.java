@@ -10,7 +10,7 @@ import java.util.Map;
 /** Samples for PartnerNamespaces CreateOrUpdate. */
 public final class PartnerNamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PartnerNamespaces_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PartnerNamespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerNamespaces_CreateOrUpdate.

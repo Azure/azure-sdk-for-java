@@ -3,8 +3,8 @@
 
 package com.azure.identity;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.concurrent.ExecutorService;
@@ -16,6 +16,8 @@ import java.util.concurrent.ForkJoinPool;
  * @see EnvironmentCredential
  */
 public class EnvironmentCredentialBuilder extends CredentialBuilderBase<EnvironmentCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredentialBuilder.class);
+
     private String authorityHost;
 
     /**
@@ -24,7 +26,7 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * @return An updated instance of this builder with the authority host set as specified.
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         this.authorityHost = authorityHost;
         return this;
     }
@@ -47,21 +49,6 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      */
     public EnvironmentCredentialBuilder executorService(ExecutorService executorService) {
         this.identityClientOptions.setExecutorService(executorService);
-        return this;
-    }
-
-    /**
-     * Sets the configuration store that is used during construction of the credential.
-     *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}.
-     *
-     * @param configuration The configuration store used to load Env variables and/or properties from.
-     *
-     * @return An updated instance of this builder with the configuration store set as specified.
-     */
-    public EnvironmentCredentialBuilder configuration(Configuration configuration) {
-        identityClientOptions.setConfiguration(configuration);
         return this;
     }
 

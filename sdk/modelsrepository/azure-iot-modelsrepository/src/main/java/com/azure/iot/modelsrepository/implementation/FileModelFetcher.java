@@ -7,8 +7,8 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
-import com.azure.iot.modelsrepository.implementation.models.FetchResult;
+import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
+import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -39,15 +39,15 @@ class FileModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchResult> fetchAsync(String dtmi, URI repositoryUri, ModelDependencyResolution resolutionOption, Context context) {
+    public Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded, Context context) {
         return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
 
             try {
-                if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
-                    work.add(getPath(dtmi, repositoryUri, true));
+                if (tryFromExpanded) {
+                    work.add(getModelPath(dtmi, repositoryUri, true));
                 }
-                work.add(getPath(dtmi, repositoryUri, false));
+                work.add(getModelPath(dtmi, repositoryUri, false));
             } catch (MalformedURLException | URISyntaxException e) {
                 return Mono.error(new AzureException(e));
             }
@@ -63,7 +63,7 @@ class FileModelFetcher implements ModelFetcher {
                 if (Files.exists(path)) {
                     try {
                         return Mono.just(
-                            new FetchResult()
+                            new FetchModelResult()
                                 .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
                                 .setPath(tryContentPath));
                     } catch (IOException e) {
@@ -80,8 +80,41 @@ class FileModelFetcher implements ModelFetcher {
         });
     }
 
-    private String getPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
+    @Override
+    public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
+        try {
+            String tryContentPath = getMetadataPath(repositoryUri);
+            Path path = Paths.get(new File(tryContentPath).getPath());
+
+            logger.info(StatusStrings.FETCHING_METADATA_CONTENT, path);
+
+            if (Files.exists(path)) {
+                try {
+                    return Mono.just(
+                        new FetchMetadataResult()
+                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
+                            .setPath(tryContentPath));
+                } catch (IOException e) {
+                    logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
+                        path.toString(), e.getMessage()));
+                    return Mono.error(new AzureException(e));
+                }
+            }
+
+            logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, path.toString()));
+            return Mono.just(new FetchMetadataResult());
+        } catch (MalformedURLException | URISyntaxException e) {
+            return Mono.error(new AzureException(e));
+        }
+    }
+
+    private String getModelPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
         return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded)
+            .getPath();
+    }
+
+    private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException  {
+        return DtmiConventions.getMetadataUri(repositoryUri)
             .getPath();
     }
 }

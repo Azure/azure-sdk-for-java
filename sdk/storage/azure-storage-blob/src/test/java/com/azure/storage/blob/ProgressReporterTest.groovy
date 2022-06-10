@@ -6,7 +6,6 @@ package com.azure.storage.blob
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
-import spock.lang.Requires
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
@@ -45,7 +44,7 @@ class ProgressReporterTest extends APISpec {
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
-        BlockBlobAsyncClient bu = getBlobAsyncClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), generateBlobName())
+        BlockBlobAsyncClient bu = getBlobAsyncClient(environment.primaryAccount.credential, cc.getBlobContainerUrl(), generateBlobName())
             .getBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()

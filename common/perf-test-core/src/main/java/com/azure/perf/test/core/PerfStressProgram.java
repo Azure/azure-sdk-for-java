@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
@@ -29,16 +30,13 @@ import java.util.stream.IntStream;
 public class PerfStressProgram {
     private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
 
-    private static int[] completedOperations;
-    private static long[] lastCompletionNanoTimes;
-
-    private static int getCompletedOperations() {
-        return IntStream.of(completedOperations).sum();
+    private static int getCompletedOperations(PerfTestBase<?>[] tests) {
+        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.getCompletedOperations()).intValue()).sum();
     }
 
-    private static double getOperationsPerSecond() {
-        return IntStream.range(0, completedOperations.length)
-            .mapToDouble(i -> completedOperations[i] / (((double) lastCompletionNanoTimes[i]) / NANOSECONDS_PER_SECOND))
+    private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
+        return IntStream.range(0, tests.length)
+            .mapToDouble(i -> tests[i].getCompletedOperations() / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
             .sum();
     }
 
@@ -55,9 +53,11 @@ public class PerfStressProgram {
 
         try {
             classList.add(Class.forName("com.azure.perf.test.core.NoOpTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.MockEventProcessorTest"));
             classList.add(Class.forName("com.azure.perf.test.core.ExceptionTest"));
             classList.add(Class.forName("com.azure.perf.test.core.SleepTest"));
             classList.add(Class.forName("com.azure.perf.test.core.HttpPipelineTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.MockBatchReceiverTest"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -121,11 +121,11 @@ public class PerfStressProgram {
         Disposable setupStatus = printStatus("=== Setup ===", () -> ".", false, false);
         Disposable cleanupStatus = null;
 
-        PerfStressTest<?>[] tests = new PerfStressTest<?>[options.getParallel()];
+        PerfTestBase<?>[] tests = new PerfTestBase<?>[options.getParallel()];
 
         for (int i = 0; i < options.getParallel(); i++) {
             try {
-                tests[i] = (PerfStressTest<?>) testClass.getConstructor(options.getClass()).newInstance(options);
+                tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
@@ -138,12 +138,23 @@ public class PerfStressProgram {
             boolean startedPlayback = false;
 
             try {
-                Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
+                Flux.just(tests).flatMap(PerfTestBase::setupAsync).blockLast();
                 setupStatus.dispose();
 
-                if (options.getTestProxy() != null) {
+                if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
-                    Flux.just(tests).flatMap(PerfStressTest::recordAndStartPlaybackAsync).blockLast();
+
+                    try {
+                        ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
+                        forkJoinPool.submit(() -> {
+                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetupAsync().block());
+                        }).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+                        e.printStackTrace(System.err);
+                        throw new RuntimeException(e);
+                    }
+
                     startedPlayback = true;
                     recordStatus.dispose();
                 }
@@ -163,15 +174,21 @@ public class PerfStressProgram {
                 try {
                     if (startedPlayback) {
                         Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
-                        Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
+                        Flux.just(tests).flatMap(perfTestBase -> {
+                            if (perfTestBase instanceof ApiPerfTestBase) {
+                                return ((ApiPerfTestBase<?>) perfTestBase).stopPlaybackAsync();
+                            } else {
+                                return Mono.error(new IllegalStateException("Test Proxy not supported."));
+                            }
+                        }).blockLast();
                         playbackStatus.dispose();
-                    }    
+                    }
                 } finally {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
-    
+
                         Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
-                    }    
+                    }
                 }
             }
         } finally {
@@ -201,18 +218,16 @@ public class PerfStressProgram {
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
-    public static void runTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
-        completedOperations = new int[parallel];
-        lastCompletionNanoTimes = new long[parallel];
+    public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
         int[] lastCompleted = new int[]{0};
         Disposable progressStatus = printStatus(
             "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
-                int totalCompleted = getCompletedOperations();
+                int totalCompleted = getCompletedOperations(tests);
                 int currentCompleted = totalCompleted - lastCompleted[0];
-                double averageCompleted = getOperationsPerSecond();
+                double averageCompleted = getOperationsPerSecond(tests);
 
                 lastCompleted[0] = totalCompleted;
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
@@ -222,7 +237,7 @@ public class PerfStressProgram {
             if (sync) {
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
                 forkJoinPool.submit(() -> {
-                    IntStream.range(0, parallel).parallel().forEach(i -> runLoop(tests[i], i, endNanoTime));
+                    IntStream.range(0, parallel).parallel().forEach(i -> tests[i].runAll(endNanoTime));
                 }).get();
 
             } else {
@@ -238,7 +253,7 @@ public class PerfStressProgram {
                 Flux.range(0, parallel)
                     .parallel()
                     .runOn(Schedulers.boundedElastic())
-                    .flatMap(i -> runLoopAsync(tests[i], i, endNanoTime))
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
                     .then()
                     .block();
             }
@@ -255,40 +270,17 @@ public class PerfStressProgram {
 
         System.out.println("=== Results ===");
 
-        int totalOperations = getCompletedOperations();
+        int totalOperations = getCompletedOperations(tests);
         if (totalOperations == 0) {
             throw new IllegalStateException("Zero operations has been completed");
         }
-        double operationsPerSecond = getOperationsPerSecond();
+        double operationsPerSecond = getOperationsPerSecond(tests);
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
         System.out.printf("Completed %,d operations in a weighted-average of %,.2fs (%,.2f ops/s, %,.3f s/op)%n",
             totalOperations, weightedAverageSeconds, operationsPerSecond, secondsPerOperation);
         System.out.println();
-    }
-
-    private static void runLoop(PerfStressTest<?> test, int index, long endNanoTime) {
-        long startNanoTime = System.nanoTime();
-        while (System.nanoTime() < endNanoTime) {
-            test.run();
-            completedOperations[index]++;
-            lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
-        }
-    }
-
-    private static Mono<Void> runLoopAsync(PerfStressTest<?> test, int index, long endNanoTime) {
-        long startNanoTime = System.nanoTime();
-
-        return Flux.just(1)
-            .repeat()
-            .flatMap(i -> test.runAsync().then(Mono.just(1)), 1)
-            .doOnNext(v -> {
-                completedOperations[index]++;
-                lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
-            })
-            .takeWhile(i -> System.nanoTime() < endNanoTime)
-            .then();
     }
 
     private static Disposable printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {

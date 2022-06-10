@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Azure VM workload-specific protectable item representing SAP HANA Database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
 @JsonTypeName("SAPHanaDatabase")
-@Immutable
+@Fluent
 public final class AzureVmWorkloadSapHanaDatabaseProtectableItem extends AzureVmWorkloadProtectableItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSapHanaDatabaseProtectableItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSapHanaDatabaseProtectableItem withParentName(String parentName) {

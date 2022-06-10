@@ -4,9 +4,17 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.implementation.http.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
@@ -18,6 +26,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -53,7 +62,7 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple", "multi-master" }, timeOut = SETUP_TIMEOUT)
     public void before_SessionTest() {
         createdDatabase = SHARED_DATABASE;
 
@@ -65,22 +74,27 @@ public class SessionTest extends TestSuiteBase {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(collectionId);
         collection.setPartitionKey(partitionKeyDef);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
         createdCollection = createCollection(createGatewayHouseKeepingDocumentClient().build(), createdDatabase.getId(),
-                collection, null);
+                collection, requestOptions);
         houseKeepingClient = clientBuilder().build();
         connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
         if (connectionMode == ConnectionMode.DIRECT) {
             spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
         } else {
-            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder());
+            // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
+            ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
+            connectionPolicy.setMultipleWriteRegionsEnabled(true);
+            spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
         }
         options = new RequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(houseKeepingClient, createdCollection);
         safeClose(houseKeepingClient);
@@ -94,10 +108,11 @@ public class SessionTest extends TestSuiteBase {
 
     private List<String> getSessionTokensInRequests() {
         return spyClient.getCapturedRequests().stream()
-                .map(r -> r.headers()
-                           .value(HttpConstants.HttpHeaders.SESSION_TOKEN))
-                           .distinct()
-                           .collect(Collectors.toList());
+            .map(r -> r.headers()
+                .value(HttpConstants.HttpHeaders.SESSION_TOKEN))
+            .filter(s -> s != null)
+            .distinct()
+            .collect(Collectors.toList());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
@@ -125,6 +140,208 @@ public class SessionTest extends TestSuiteBase {
             assertThat(getSessionTokensInRequests()).hasSize(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void partitionedSessionToken(boolean isNameBased) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        spyClient.readCollection(getCollectionLink(isNameBased), null).block();
+        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
+
+        spyClient.clearCapturedRequests();
+        Document documentCreated = null;
+        RequestOptions requestOptions = new RequestOptions();
+        for (int i = 0; i < 10; i++) {
+            Document document = newDocument();
+            document.set("mypk", document.getId());
+            requestOptions.setPartitionKey(new PartitionKey(document.getId()));
+            documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
+                .block().getResource();
+        }
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(spyClient);
+        if(!globalEndpointManager.getLatestDatabaseAccount().getEnableMultipleWriteLocations()) {
+            // No session token set for write call
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        } else {
+            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        }
+        spyClient.clearCapturedRequests();
+
+        // Session token set for default session consistency
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token set for request session consistency
+        spyClient.clearCapturedRequests();
+        requestOptions.setConsistencyLevel(ConsistencyLevel.SESSION);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for single partition query
+        spyClient.clearCapturedRequests();
+        String query = "select * from c";
+        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setPartitionKey(new PartitionKey(documentCreated.getId()));
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests()).hasSize(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for cross partition query
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for feed ranges query
+        spyClient.clearCapturedRequests();
+        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased)).block();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        queryRequestOptions.setFeedRange(feedRanges.get(0));
+        spyClient.queryDocuments(getCollectionLink(isNameBased), query, queryRequestOptions, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readAll with partition query
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        spyClient.readAllDocuments(
+            getCollectionLink(isNameBased),
+            new PartitionKey(documentCreated.getId()),
+            queryRequestOptions,
+            Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readAll with cross partition
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        spyClient.readDocuments(getCollectionLink(isNameBased), queryRequestOptions, Document.class).blockFirst();
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+
+        // Session token validation for readMany with cross partition
+        spyClient.clearCapturedRequests();
+        queryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(documentCreated.getId()), documentCreated.getId());
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        cosmosItemIdentities.add(cosmosItemIdentity);
+        spyClient.readMany(cosmosItemIdentities, getCollectionLink(isNameBased), queryRequestOptions, Document.class).block();
+        assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        // session token
+
+        // Session token validation for create in Batch
+        if(isNameBased) { // Batch only work with name based url
+            spyClient.clearCapturedRequests();
+            Document document = newDocument();
+            document.set("mypk", document.getId());
+            ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
+                documentCreated.getId(), new PartitionKey(documentCreated.getId()), new RequestOptions(), document);
+            List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
+            itemBatchOperations.add(itemBatchOperation);
+
+            Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
+                PartitionKey.class,
+                List.class);
+            method.setAccessible(true);
+            SinglePartitionKeyServerBatchRequest serverBatchRequest =
+                (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(document.getId()),
+                    itemBatchOperations);
+            spyClient.executeBatchRequest(getCollectionLink(isNameBased), serverBatchRequest,
+                new RequestOptions(), false).block();
+            assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void sessionTokenNotRequired(boolean isNameBased) {
+        spyClient.readCollection(getCollectionLink(isNameBased), null).block();
+        // No session token set for the master resource related request
+        assertThat(getSessionTokensInRequests()).hasSize(0);
+        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
+
+        spyClient.clearCapturedRequests();
+        Document documentCreated = null;
+        RequestOptions requestOptions = new RequestOptions();
+        for (int i = 0; i < 10; i++) {
+            Document document = newDocument();
+            document.set("mypk", document.getId());
+            requestOptions.setPartitionKey(new PartitionKey(document.getId()));
+            documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
+                .block().getResource();
+        }
+        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(spyClient);
+        if(!globalEndpointManager.getLatestDatabaseAccount().getEnableMultipleWriteLocations()) {
+            // No session token set for write call
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        } else {
+            assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+            assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+            assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
+        }
+        spyClient.clearCapturedRequests();
+
+        // No session token set for EVENTUAL consistency
+        spyClient.clearCapturedRequests();
+        requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(0);
+
+        // No session token set for CONSISTENT_PREFIX consistency
+        spyClient.clearCapturedRequests();
+        requestOptions.setConsistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        assertThat(getSessionTokensInRequests()).hasSize(0);
+
+        if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG) ||
+            globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.BOUNDED_STALENESS)) {
+            // No session token set for BOUNDED_STALENESS consistency
+            spyClient.clearCapturedRequests();
+            requestOptions.setConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
+
+        if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG)) {
+            // No session token set for STRONG consistency
+            spyClient.clearCapturedRequests();
+            requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
+    }
+
+    @Test(groups = { "multi-master" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    public void sessionTokenForCreateOnMultiMaster(boolean isNameBased) {
+        spyClient.readCollection(getCollectionLink(isNameBased), null).block();
+        spyClient.createDocument(getCollectionLink(isNameBased), newDocument(), null, false).block();
+
+        spyClient.clearCapturedRequests();
+        RequestOptions requestOptions = new RequestOptions();
+        for (int i = 0; i < 10; i++) {
+            Document document = newDocument();
+            document.set("mypk", document.getId());
+            requestOptions.setPartitionKey(new PartitionKey(document.getId()));
+            spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
+                .block().getResource();
+        }
+        // Session token validation set for create request
+        assertThat(getSessionTokensInRequests().size()).isGreaterThanOrEqualTo(1);
+        assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
+        assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")

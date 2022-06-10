@@ -4,8 +4,6 @@
 package com.azure.spring.data.cosmos.core.mapping;
 
 import com.azure.spring.data.cosmos.Constants;
-import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.auditing.config.AuditingBeanDefinitionRegistrarSupport;
 import org.springframework.data.auditing.config.AuditingConfiguration;
-import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.util.Assert;
 
 import java.lang.annotation.Annotation;
@@ -55,7 +52,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
             BeanDefinitionBuilder.rootBeanDefinition(IsNewAwareAuditingHandler.class);
 
         final BeanDefinitionBuilder definition =
-            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContextLookup.class);
+            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 
         builder.addConstructorArgValue(definition.getBeanDefinition());
@@ -74,42 +71,5 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
         // TODO: consider moving to event listener for auditing rather than injecting the
         // IsNewAwareAuditingHandler directly - this would require integrating CosmosTemplate with
         // the spring eventing system which would be a chunk of work beyond the scope of this PR
-    }
-
-    static class CosmosMappingContextLookup implements
-        FactoryBean<MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty>> {
-
-        private final MappingCosmosConverter converter;
-
-        CosmosMappingContextLookup(MappingCosmosConverter converter) {
-            this.converter = converter;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#getObject()
-         */
-        @Override
-        public MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> getObject() {
-            return converter.getMappingContext();
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#getObjectType()
-         */
-        @Override
-        public Class<?> getObjectType() {
-            return MappingContext.class;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see org.springframework.beans.factory.FactoryBean#isSingleton()
-         */
-        @Override
-        public boolean isSingleton() {
-            return true;
-        }
     }
 }

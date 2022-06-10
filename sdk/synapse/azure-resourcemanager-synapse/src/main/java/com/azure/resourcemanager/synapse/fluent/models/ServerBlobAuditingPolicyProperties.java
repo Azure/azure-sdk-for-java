@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -15,8 +14,6 @@ import java.util.UUID;
 /** Properties of a server blob auditing policy. */
 @Fluent
 public final class ServerBlobAuditingPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBlobAuditingPolicyProperties.class);
-
     /*
      * Specifies the state of the policy. If state is Enabled, storageEndpoint
      * or isAzureMonitorTargetEnabled are required.
@@ -176,6 +173,30 @@ public final class ServerBlobAuditingPolicyProperties {
      */
     @JsonProperty(value = "queueDelayMs")
     private Integer queueDelayMs;
+
+    /*
+     * Specifies the state of devops audit. If state is Enabled, devops logs
+     * will be sent to Azure Monitor.
+     * In order to send the events to Azure Monitor, specify 'State' as
+     * 'Enabled', 'IsAzureMonitorTargetEnabled' as true and
+     * 'IsDevopsAuditEnabled' as true
+     *
+     * When using REST API to configure auditing, Diagnostic Settings with
+     * 'DevOpsOperationsAudit' diagnostic logs category on the master database
+     * should also be created.
+     *
+     * Diagnostic Settings URI format:
+     * PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * For more information, see [Diagnostic Settings REST
+     * API](https://go.microsoft.com/fwlink/?linkid=2033207)
+     * or [Diagnostic Settings
+     * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+     *
+     */
+    @JsonProperty(value = "isDevopsAuditEnabled")
+    private Boolean isDevopsAuditEnabled;
 
     /**
      * Get the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint or
@@ -482,16 +503,60 @@ public final class ServerBlobAuditingPolicyProperties {
     }
 
     /**
+     * Get the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs will
+     * be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+     * 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+     *
+     * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
+     *
+     * <p>Diagnostic Settings URI format: PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
+     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     *
+     * @return the isDevopsAuditEnabled value.
+     */
+    public Boolean isDevopsAuditEnabled() {
+        return this.isDevopsAuditEnabled;
+    }
+
+    /**
+     * Set the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs will
+     * be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+     * 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+     *
+     * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
+     *
+     * <p>Diagnostic Settings URI format: PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
+     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     *
+     * @param isDevopsAuditEnabled the isDevopsAuditEnabled value to set.
+     * @return the ServerBlobAuditingPolicyProperties object itself.
+     */
+    public ServerBlobAuditingPolicyProperties withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled) {
+        this.isDevopsAuditEnabled = isDevopsAuditEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property state in model ServerBlobAuditingPolicyProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerBlobAuditingPolicyProperties.class);
 }

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import reactor.core.publisher.Mono;
 
 /** Implementation for VirtualMachineScaleSetNetworkInterfaces. */
 class VirtualMachineScaleSetNetworkInterfacesImpl
@@ -56,6 +57,14 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
             return null;
         }
         return this.wrapModel(networkInterfaceInner);
+    }
+
+    @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineInstanceIdAsync(
+        String instanceId, String name) {
+        return this.inner()
+            .getVirtualMachineScaleSetNetworkInterfaceAsync(this.resourceGroupName, this.scaleSetName, instanceId, name)
+            .map(this::wrapModel);
     }
 
     @Override

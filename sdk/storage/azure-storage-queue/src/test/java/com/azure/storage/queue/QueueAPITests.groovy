@@ -37,7 +37,7 @@ class QueueAPITests extends APISpec {
 
     def "Get queue URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -50,7 +50,7 @@ class QueueAPITests extends APISpec {
     def "IP based endpoint"() {
         when:
         def queueClient = new QueueClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
             .buildClient()
 
@@ -62,6 +62,55 @@ class QueueAPITests extends APISpec {
     def "Create queue with shared key"() {
         expect:
         QueueTestHelper.assertResponseStatusCode(queueClient.createWithResponse(null, null, null), 201)
+    }
+
+    def "Create if not exists queue with shared key"() {
+        expect:
+        QueueTestHelper.assertResponseStatusCode(queueClient.createIfNotExistsWithResponse(null, null, null), 201)
+    }
+
+    def "Create if not exists min"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        def result = client.createIfNotExists()
+
+        then:
+        client.getQueueName() == queueName
+        client.getProperties() != null
+        result
+    }
+
+    def "Create if not exists with same metadata on a queue client that already exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+        def initialResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 204
+    }
+
+    def "Create if not exists with conflicting metadata on a queue client that already exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+        def initialResponse = client.createIfNotExistsWithResponse(testMetadata, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+        initialResponse.getValue()
+        !secondResponse.getValue()
     }
 
     def "Delete exist queue"() {
@@ -80,6 +129,42 @@ class QueueAPITests extends APISpec {
         then:
         def e = thrown(QueueStorageException)
         QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 404, QueueErrorCode.QUEUE_NOT_FOUND)
+    }
+
+    def "Delete if exists min"() {
+        setup:
+        queueClient.create()
+
+        when:
+        def result = queueClient.deleteIfExists()
+
+        then:
+        result
+    }
+
+    def "Delete if exists queue"() {
+        given:
+        queueClient.create()
+        when:
+        def deleteQueueResponse = queueClient.deleteIfExistsWithResponse(null, null)
+        then:
+        QueueTestHelper.assertResponseStatusCode(deleteQueueResponse, 204)
+
+    }
+
+    def "Delete if exists with response on a queue client that does not exist"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null)
+        client.getProperties()
+
+        then:
+        thrown(QueueStorageException)
+        response.getStatusCode() == 404
+        !response.getValue()
     }
 
     def "Get properties"() {
@@ -806,4 +891,5 @@ class QueueAPITests extends APISpec {
         notThrown(QueueStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
 }

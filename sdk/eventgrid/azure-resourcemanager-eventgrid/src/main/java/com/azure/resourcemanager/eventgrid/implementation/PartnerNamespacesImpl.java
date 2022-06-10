@@ -16,10 +16,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespace;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaces;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PartnerNamespacesImpl implements PartnerNamespaces {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespacesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PartnerNamespacesImpl.class);
 
     private final PartnerNamespacesClient innerClient;
 
@@ -147,7 +146,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
     public PartnerNamespace getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +167,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
     public Response<PartnerNamespace> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -176,7 +175,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +188,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +209,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,7 +217,7 @@ public final class PartnerNamespacesImpl implements PartnerNamespaces {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

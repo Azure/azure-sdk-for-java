@@ -55,6 +55,13 @@ public final class SpatialAnalysisPersonCountOperation extends SpatialAnalysisTy
 
     /** {@inheritDoc} */
     @Override
+    public SpatialAnalysisPersonCountOperation setCalibrationConfiguration(String calibrationConfiguration) {
+        super.setCalibrationConfiguration(calibrationConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SpatialAnalysisPersonCountOperation setCameraConfiguration(String cameraConfiguration) {
         super.setCameraConfiguration(cameraConfiguration);
         return this;
@@ -62,8 +69,23 @@ public final class SpatialAnalysisPersonCountOperation extends SpatialAnalysisTy
 
     /** {@inheritDoc} */
     @Override
+    public SpatialAnalysisPersonCountOperation setCameraCalibratorNodeConfiguration(
+            String cameraCalibratorNodeConfiguration) {
+        super.setCameraCalibratorNodeConfiguration(cameraCalibratorNodeConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SpatialAnalysisPersonCountOperation setDetectorNodeConfiguration(String detectorNodeConfiguration) {
         super.setDetectorNodeConfiguration(detectorNodeConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SpatialAnalysisPersonCountOperation setTrackerNodeConfiguration(String trackerNodeConfiguration) {
+        super.setTrackerNodeConfiguration(trackerNodeConfiguration);
         return this;
     }
 

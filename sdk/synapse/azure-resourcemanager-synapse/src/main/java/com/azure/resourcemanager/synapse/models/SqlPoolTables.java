@@ -20,7 +20,7 @@ public interface SqlPoolTables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tables of a given schema in a SQL pool.
+     * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolTable> listBySchema(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
@@ -37,7 +37,7 @@ public interface SqlPoolTables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tables of a given schema in a SQL pool.
+     * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlPoolTable> listBySchema(
         String resourceGroupName,
@@ -75,7 +75,7 @@ public interface SqlPoolTables {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool table.
+     * @return sql pool table along with {@link Response}.
      */
     Response<SqlPoolTable> getWithResponse(
         String resourceGroupName,

@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The azure blob storage linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -80,6 +82,14 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.azureCloudType")
     private Object azureCloudType;
+
+    /*
+     * Specify the kind of your storage account. Allowed values are: Storage
+     * (general purpose v1), StorageV2 (general purpose v2), BlobStorage, or
+     * BlockBlobStorage. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.accountKind")
+    private String accountKind;
 
     /*
      * The encrypted credential used for authentication. Credentials are
@@ -286,6 +296,30 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
+     * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the accountKind value.
+     */
+    public String getAccountKind() {
+        return this.accountKind;
+    }
+
+    /**
+     * Set the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
+     * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param accountKind the accountKind value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setAccountKind(String accountKind) {
+        this.accountKind = accountKind;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
      *
@@ -304,6 +338,34 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      */
     public AzureBlobStorageLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

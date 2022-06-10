@@ -25,7 +25,7 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP firewall rules.
+     * @return list of IP firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpFirewallRuleInfoInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -39,7 +39,7 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IP firewall rules.
+     * @return list of IP firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IpFirewallRuleInfoInner> listByWorkspace(
@@ -55,9 +55,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String ruleName, IpFirewallRuleInfoInner ipFirewallRuleInfo);
 
@@ -72,9 +72,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -128,9 +128,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link SyncPoller} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
@@ -143,9 +143,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link SyncPoller} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
 
@@ -202,7 +202,7 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpFirewallRuleInfoInner> getWithResponse(
@@ -217,9 +217,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing operation for replacing the firewall rules.
+     * @return the {@link SyncPoller} for polling of an existing operation for replacing the firewall rules.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplaceAllFirewallRulesOperationResponseInner>, ReplaceAllFirewallRulesOperationResponseInner>
         beginReplaceAll(String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request);
 
@@ -233,9 +233,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing operation for replacing the firewall rules.
+     * @return the {@link SyncPoller} for polling of an existing operation for replacing the firewall rules.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplaceAllFirewallRulesOperationResponseInner>, ReplaceAllFirewallRulesOperationResponseInner>
         beginReplaceAll(
             String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);

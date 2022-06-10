@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container settings for a task. */
 @Fluent
 public final class TaskContainerSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskContainerSettings.class);
-
     /*
      * Additional options to the container create command. These additional
      * options are supplied as arguments to the "docker create" command, in
@@ -144,7 +141,7 @@ public final class TaskContainerSettings {
      */
     public void validate() {
         if (imageName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property imageName in model TaskContainerSettings"));
         }
@@ -152,4 +149,6 @@ public final class TaskContainerSettings {
             registry().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TaskContainerSettings.class);
 }

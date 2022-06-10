@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import java.time.Duration;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class EventProcessorClientBuilderTest {
 
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
+    private static final String DEFAULT_DOMAIN_NAME = Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net").substring(1).substring(1) + "/";
 
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";

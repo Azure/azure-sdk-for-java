@@ -35,7 +35,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -49,9 +49,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String securityPartnerProviderName);
 
     /**
@@ -62,9 +62,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String securityPartnerProviderName);
 
     /**
@@ -76,9 +76,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String securityPartnerProviderName, Context context);
 
@@ -90,7 +90,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String securityPartnerProviderName);
@@ -128,7 +128,8 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Security Partner Provider.
+     * @return the specified Security Partner Provider along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SecurityPartnerProviderInner>> getByResourceGroupWithResponseAsync(
@@ -142,7 +143,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Security Partner Provider.
+     * @return the specified Security Partner Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SecurityPartnerProviderInner> getByResourceGroupAsync(
@@ -170,7 +171,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Security Partner Provider.
+     * @return the specified Security Partner Provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityPartnerProviderInner> getByResourceGroupWithResponse(
@@ -185,7 +186,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return security Partner Provider resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -200,9 +201,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return the {@link PollerFlux} for polling of security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
 
@@ -215,9 +216,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return the {@link SyncPoller} for polling of security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
         String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
 
@@ -231,9 +232,9 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return the {@link SyncPoller} for polling of security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String securityPartnerProviderName,
@@ -249,7 +250,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return security Partner Provider resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SecurityPartnerProviderInner> createOrUpdateAsync(
@@ -298,7 +299,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return security Partner Provider resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SecurityPartnerProviderInner>> updateTagsWithResponseAsync(
@@ -313,7 +314,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return security Partner Provider resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SecurityPartnerProviderInner> updateTagsAsync(
@@ -344,7 +345,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Partner Provider resource.
+     * @return security Partner Provider resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SecurityPartnerProviderInner> updateTagsWithResponse(
@@ -357,7 +358,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListSecurityPartnerProviders API service call.
+     * @return response for ListSecurityPartnerProviders API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SecurityPartnerProviderInner> listByResourceGroupAsync(String resourceGroupName);
@@ -369,7 +370,8 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListSecurityPartnerProviders API service call.
+     * @return response for ListSecurityPartnerProviders API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> listByResourceGroup(String resourceGroupName);
@@ -382,7 +384,8 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListSecurityPartnerProviders API service call.
+     * @return response for ListSecurityPartnerProviders API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -392,7 +395,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Security Partner Providers in a subscription.
+     * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SecurityPartnerProviderInner> listAsync();
@@ -402,7 +405,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Security Partner Providers in a subscription.
+     * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> list();
@@ -414,7 +417,7 @@ public interface SecurityPartnerProvidersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Security Partner Providers in a subscription.
+     * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> list(Context context);

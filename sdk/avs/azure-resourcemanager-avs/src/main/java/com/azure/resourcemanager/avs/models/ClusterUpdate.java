@@ -5,22 +5,31 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.avs.fluent.models.ClusterUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** An update of a cluster resource. */
-@JsonFlatten
 @Fluent
-public class ClusterUpdate {
+public final class ClusterUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdate.class);
 
     /*
-     * The cluster size
+     * The properties of a cluster resource that may be updated
      */
-    @JsonProperty(value = "properties.clusterSize")
-    private Integer clusterSize;
+    @JsonProperty(value = "properties")
+    private ClusterUpdateProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: The properties of a cluster resource that may be updated.
+     *
+     * @return the innerProperties value.
+     */
+    private ClusterUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the clusterSize property: The cluster size.
@@ -28,7 +37,7 @@ public class ClusterUpdate {
      * @return the clusterSize value.
      */
     public Integer clusterSize() {
-        return this.clusterSize;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterSize();
     }
 
     /**
@@ -38,7 +47,33 @@ public class ClusterUpdate {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withClusterSize(Integer clusterSize) {
-        this.clusterSize = clusterSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterUpdateProperties();
+        }
+        this.innerProperties().withClusterSize(clusterSize);
+        return this;
+    }
+
+    /**
+     * Get the hosts property: The hosts.
+     *
+     * @return the hosts value.
+     */
+    public List<String> hosts() {
+        return this.innerProperties() == null ? null : this.innerProperties().hosts();
+    }
+
+    /**
+     * Set the hosts property: The hosts.
+     *
+     * @param hosts the hosts value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withHosts(List<String> hosts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterUpdateProperties();
+        }
+        this.innerProperties().withHosts(hosts);
         return this;
     }
 
@@ -48,5 +83,8 @@ public class ClusterUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

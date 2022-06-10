@@ -46,7 +46,7 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransparentDataEncryptionInner> getWithResponse(
@@ -89,7 +89,7 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool transparent data encryption configuration.
+     * @return represents a Sql pool transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(
@@ -109,7 +109,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransparentDataEncryptionInner> list(
@@ -125,7 +126,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransparentDataEncryptionInner> list(

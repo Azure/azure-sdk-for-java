@@ -24,7 +24,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SensitivityLabelInner> listCurrent(
@@ -41,7 +41,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SensitivityLabelInner> listCurrent(
@@ -73,7 +73,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateWithResponse(
@@ -92,7 +92,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SensitivityLabelInner> listRecommended(
@@ -111,7 +111,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SensitivityLabelInner> listRecommended(
@@ -162,7 +162,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SensitivityLabelInner> createOrUpdateWithResponse(
@@ -210,7 +210,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -261,7 +261,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SensitivityLabelInner> getWithResponse(
@@ -309,7 +309,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> enableRecommendationWithResponse(
@@ -356,7 +356,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> disableRecommendationWithResponse(

@@ -37,9 +37,23 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
                                      AzureKeyCredential credential,
-                                     boolean contentResponseOnWriteEnabled) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
-              false, contentResponseOnWriteEnabled, null);
+                                     boolean contentResponseOnWriteEnabled,
+                                     ApiType apiType,
+                                     ClientTelemetryConfig clientTelemetryConfig) {
+        super(
+                serviceEndpoint,
+                masterKey,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                null,
+                false,
+                false,
+                contentResponseOnWriteEnabled,
+                null,
+                apiType,
+                clientTelemetryConfig);
         init(null, null);
     }
 
@@ -49,7 +63,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient rxOrigClient) {
+            HttpClient rxOrigClient,
+            ApiType apiType) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
@@ -66,6 +81,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 queryCompatibilityMode,
                 userAgentContainer,
                 globalEndpointManager,
-                spyHttpClient);
+                spyHttpClient,
+                apiType);
     }
 }

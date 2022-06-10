@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroupsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineGroupInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup;
@@ -21,10 +20,11 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
 
     private final SqlVirtualMachineGroupsClient innerClient;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
     public SqlVirtualMachineGroupsImpl(
-        SqlVirtualMachineGroupsClient innerClient, SqlVirtualMachineManager serviceManager) {
+        SqlVirtualMachineGroupsClient innerClient,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -64,23 +64,23 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
 
     public PagedIterable<SqlVirtualMachineGroup> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SqlVirtualMachineGroupInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> list() {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> list(Context context) {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public SqlVirtualMachineGroup getById(String id) {
@@ -177,7 +177,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         return this.innerClient;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 

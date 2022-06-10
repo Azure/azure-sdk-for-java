@@ -4,9 +4,16 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.Constants;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImpl;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceImplBuilder;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -25,11 +32,14 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
@@ -52,11 +62,25 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  *
- * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation -->
+ * <pre>
+ * TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
  *
- * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
+ * <pre>
+ * TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
@@ -65,13 +89,30 @@ import java.util.Objects;
  * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation -->
  *
  * @see TextAnalyticsAsyncClient
  * @see TextAnalyticsClient
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
-public final class TextAnalyticsClientBuilder {
+public final class TextAnalyticsClientBuilder implements
+    AzureKeyCredentialTrait<TextAnalyticsClientBuilder>,
+    ConfigurationTrait<TextAnalyticsClientBuilder>,
+    EndpointTrait<TextAnalyticsClientBuilder>,
+    HttpTrait<TextAnalyticsClientBuilder>,
+    TokenCredentialTrait<TextAnalyticsClientBuilder> {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -98,6 +139,7 @@ public final class TextAnalyticsClientBuilder {
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private TokenCredential tokenCredential;
     private TextAnalyticsServiceVersion version;
 
@@ -122,6 +164,8 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public TextAnalyticsClient buildClient() {
         return new TextAnalyticsClient(buildAsyncClient());
@@ -140,6 +184,8 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
         // Global Env configuration store
@@ -171,7 +217,7 @@ public final class TextAnalyticsClientBuilder {
 
             policies.addAll(perCallPolicies);
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+            policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
 
             policies.add(new AddDatePolicy());
 
@@ -207,13 +253,25 @@ public final class TextAnalyticsClientBuilder {
                 .build();
         }
 
-        final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
-            .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
-            .pipeline(pipeline)
-            .buildClient();
+        if (!isConsolidatedServiceVersion(version)) {
+            final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
+                                                                 .endpoint(endpoint)
+                                                                 .apiVersion(serviceVersion.getVersion())
+                                                                 .pipeline(pipeline)
+                                                                 .buildClient();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+            return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
+        } else {
+            final MicrosoftCognitiveLanguageServiceImpl batchApiTextAnalyticsClient =
+                new MicrosoftCognitiveLanguageServiceImplBuilder()
+                    .endpoint(endpoint)
+                    .apiVersion(serviceVersion.getVersion())
+                    .pipeline(pipeline)
+                    .buildClient();
+
+            return new TextAnalyticsAsyncClient(batchApiTextAnalyticsClient, serviceVersion,
+                defaultCountryHint, defaultLanguage);
+        }
     }
 
     /**
@@ -246,6 +304,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
+    @Override
     public TextAnalyticsClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
@@ -272,18 +331,22 @@ public final class TextAnalyticsClientBuilder {
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null
      */
+    @Override
     public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
@@ -291,11 +354,18 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
@@ -313,20 +383,40 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * @param clientOptions The client options.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated TextAnalyticsClientBuilder object.
+     * @see HttpClientOptions
      */
+    @Override
     public TextAnalyticsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param policy The retry policy for service requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code policy} is null.
      */
@@ -343,11 +433,19 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param client The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param client The {@link HttpClient} to use for requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -358,15 +456,23 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link
      * TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or {@link
      * TextAnalyticsClient}.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -385,6 +491,7 @@ public final class TextAnalyticsClientBuilder {
      * @param configuration The configuration store used to
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -395,12 +502,36 @@ public final class TextAnalyticsClientBuilder {
      * <p>
      * The default retry policy will be used if not provided {@link TextAnalyticsClientBuilder#buildAsyncClient()} to
      * build {@link TextAnalyticsAsyncClient} or {@link TextAnalyticsClient}.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
+     */
+    @Override
+    public TextAnalyticsClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
@@ -417,5 +548,13 @@ public final class TextAnalyticsClientBuilder {
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
+        if (serviceVersion == null) {
+            serviceVersion = TextAnalyticsServiceVersion.V2022_04_01_PREVIEW;
+        }
+        return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
+                     || TextAnalyticsServiceVersion.V3_1 == serviceVersion);
     }
 }

@@ -32,7 +32,13 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  *
  * <p><strong>Instantiating a ShareLeaseAsyncClient</strong></p>
  *
- * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.asyncInstantiation}
+ * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.asyncInstantiation -->
+ * <pre>
+ * ShareLeaseAsyncClient fileLeaseAsyncClient = new ShareLeaseClientBuilder&#40;&#41;
+ *     .fileAsyncClient&#40;shareFileAsyncClient&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.asyncInstantiation -->
  *
  * <p>View {@link ShareLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -43,7 +49,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareLeaseClientBuilder.class, isAsync = true)
 public final class ShareLeaseAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ShareLeaseAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareLeaseAsyncClient.class);
 
     private final String shareName;
     private final String shareSnapshot;
@@ -110,17 +116,17 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLease}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLease -->
+     * <pre>
+     * client.acquireLease&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Lease ID is %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLease -->
      *
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> acquireLease() {
-        try {
-            return acquireLeaseWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return acquireLeaseWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -128,17 +134,18 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse -->
+     * <pre>
+     * client.acquireLeaseWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse -->
      *
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse() {
-        try {
-            return acquireLeaseWithResponse(new ShareAcquireLeaseOptions());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return acquireLeaseWithResponse(new ShareAcquireLeaseOptions());
     }
 
     /**
@@ -146,7 +153,12 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions -->
+     * <pre>
+     * client.acquireLeaseWithResponse&#40;new ShareAcquireLeaseOptions&#40;&#41;.setDuration&#40;10&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions -->
      *
      * @param options {@link ShareAcquireLeaseOptions}
      * @return A reactive response containing the lease ID.
@@ -156,7 +168,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> acquireLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -186,17 +198,17 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLease}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLease -->
+     * <pre>
+     * client.releaseLease&#40;&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed release lease&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLease -->
      *
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releaseLease() {
-        try {
-            return releaseLeaseWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return releaseLeaseWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -204,7 +216,12 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLeaseWithResponse}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLeaseWithResponse -->
+     * <pre>
+     * client.releaseLeaseWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.releaseLeaseWithResponse -->
      *
      * @return A reactive response signalling completion.
      */
@@ -213,7 +230,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(this::releaseLeaseWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -235,17 +252,18 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease -->
+     * <pre>
+     * client.breakLease&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLease -->
      *
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> breakLease() {
-        try {
-            return breakLeaseWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return breakLeaseWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -255,17 +273,18 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse -->
+     * <pre>
+     * client.breakLeaseWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse -->
      *
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponse() {
-        try {
-            return breakLeaseWithResponse(new ShareBreakLeaseOptions());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return breakLeaseWithResponse(new ShareBreakLeaseOptions());
     }
 
     /**
@@ -275,7 +294,12 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions -->
+     * <pre>
+     * client.breakLeaseWithResponse&#40;new ShareBreakLeaseOptions&#40;&#41;.setBreakPeriod&#40;Duration.ofSeconds&#40;25&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.breakLeaseWithResponse#ShareBreakLeaseOptions -->
      *
      * @param options {@link ShareBreakLeaseOptions}
      * @return A reactive response signalling completion.
@@ -285,7 +309,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> breakLeaseWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -311,18 +335,18 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLease#String}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLease#String -->
+     * <pre>
+     * client.changeLease&#40;&quot;proposedId&quot;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLease#String -->
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return A reactive response containing the new lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> changeLease(String proposedId) {
-        try {
-            return changeLeaseWithResponse(proposedId).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return changeLeaseWithResponse(proposedId).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -330,7 +354,12 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLeaseWithResponse#String}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLeaseWithResponse#String -->
+     * <pre>
+     * client.changeLeaseWithResponse&#40;&quot;proposedId&quot;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.changeLeaseWithResponse#String -->
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return A reactive response containing the new lease ID.
@@ -340,7 +369,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(context -> changeLeaseWithResponse(proposedId, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -367,17 +396,17 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLease}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLease -->
+     * <pre>
+     * client.renewLease&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLease -->
      *
      * @return A reactive response containing the renewed lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> renewLease() {
-        try {
-            return renewLeaseWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renewLeaseWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -385,7 +414,12 @@ public final class ShareLeaseAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLeaseWithResponse}
+     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLeaseWithResponse -->
+     * <pre>
+     * client.renewLeaseWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.renewLeaseWithResponse -->
      *
      * @return A reactive response containing the renewed lease ID.
      */
@@ -394,7 +428,7 @@ public final class ShareLeaseAsyncClient {
         try {
             return withContext(this::renewLeaseWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -403,7 +437,7 @@ public final class ShareLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isShareFile) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 "Cannot renew a lease on a share file."));
         } else {
             response = this.client.getShares().renewLeaseWithResponseAsync(shareName, this.leaseId, null,

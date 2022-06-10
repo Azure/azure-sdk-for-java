@@ -7,7 +7,6 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import spock.lang.Ignore
 import reactor.test.StepVerifier
-import spock.lang.Requires
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -92,7 +91,7 @@ class ChangefeedNetworkTest extends APISpec {
         /* Update and uncomment after recording. */
         OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 3, 10, 987532200, ZoneOffset.UTC)
 
-        Long pollInterval = env.testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
+        Long pollInterval = environment.testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
 
         Set<String> eventIds1 = new HashSet<>()
         Set<String> eventIds2 = new HashSet<>()

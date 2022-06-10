@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Signal;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -164,77 +163,100 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return cosmosPagedFluxOptions;
     }
 
+    private <T> Flux<T> wrapWithTracingIfEnabled(CosmosPagedFluxOptions pagedFluxOptions, Flux<T> publisher, Context context) {
+        TracerProvider tracerProvider = pagedFluxOptions.getTracerProvider();
+        if (!isTracerEnabled(pagedFluxOptions)) {
+            return publisher;
+        }
+
+        return tracerProvider.runUnderSpanInContext(publisher);
+    }
+
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
-        final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         AtomicReference<Instant> startTime = new AtomicReference<>();
-        return this.optionsFluxFunction.apply(pagedFluxOptions).doOnSubscribe(ignoredValue -> {
-            if (pagedFluxOptions.getTracerProvider() != null && pagedFluxOptions.getTracerProvider().isEnabled()) {
-                parentContext.set(pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
-                    pagedFluxOptions.getDatabaseId(), pagedFluxOptions.getServiceEndpoint(),
-                    context));
-            }
-            startTime.set(Instant.now());
-        }).doOnComplete(() -> {
-            if (pagedFluxOptions.getTracerProvider() != null && pagedFluxOptions.getTracerProvider().isEnabled()) {
-                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
-                    HttpConstants.StatusCodes.OK);
-            }
-        }).doOnError(throwable -> {
-            if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) &&
-                throwable instanceof CosmosException) {
-                CosmosException cosmosException = (CosmosException) throwable;
-                // not adding diagnostics on trace event for exception as this information is already there as
-                // part of exception message
-                if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
-                    fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
-                        pagedFluxOptions.getDatabaseId(),
-                        pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
-                        BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                        (float) cosmosException.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
-                }
-            }
 
-            if (isTracerEnabled(pagedFluxOptions)) {
-                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
-                    TracerProvider.ERROR_CODE);
-            }
-            startTime.set(Instant.now());
-        }).doOnNext(feedResponse -> {
-            if (isTracerEnabled(pagedFluxOptions) &&
-                this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
-                try {
-                    Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
-                    if (threshold == null) {
-                        threshold = pagedFluxOptions.getTracerProvider().QUERY_THRESHOLD_FOR_DIAGNOSTICS;
-                    }
+        Flux<FeedResponse<T>> result =
+            wrapWithTracingIfEnabled(pagedFluxOptions, this.optionsFluxFunction.apply(pagedFluxOptions), context)
+            .doOnSubscribe(ignoredValue -> startTime.set(Instant.now()))
+            .doOnEach(signal -> {
+                switch (signal.getType()) {
+                    case ON_COMPLETE:
+                        if (isTracerEnabled(pagedFluxOptions)) {
+                            pagedFluxOptions.getTracerProvider().endSpan(signal, HttpConstants.StatusCodes.OK);
+                        }
+                        break;
+                    case ON_ERROR:
+                        Throwable throwable = signal.getThrowable();
+                        if (pagedFluxOptions.getCosmosAsyncClient() != null &&
+                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()) &&
+                            throwable instanceof CosmosException) {
+                            CosmosException cosmosException = (CosmosException) throwable;
+                            // not adding diagnostics on trace event for exception as this information is already there as
+                            // part of exception message
+                            if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
+                                fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
+                                    pagedFluxOptions.getDatabaseId(),
+                                    pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
+                                    BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
+                                    (float) cosmosException.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
+                            }
+                        }
 
-                    if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
-                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                            feedResponse.getCosmosDiagnostics(), parentContext.get());
-                    }
-                } catch (JsonProcessingException ex) {
-                    LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                }
-            }
-            //  If the user has passed feedResponseConsumer, then call it with each feedResponse
-            if (feedResponseConsumer != null) {
-                feedResponseConsumer.accept(feedResponse);
-            }
+                        if (isTracerEnabled(pagedFluxOptions)) {
+                            pagedFluxOptions.getTracerProvider().endSpan(signal, TracerProvider.ERROR_CODE);
+                        }
+                        startTime.set(Instant.now());
+                        break;
+                    case ON_NEXT:
+                        FeedResponse<T> feedResponse = signal.get();
+                        if (isTracerEnabled(pagedFluxOptions) &&
+                            this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
+                            try {
+                                Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
+                                if (threshold == null) {
+                                    threshold = pagedFluxOptions.getTracerProvider().QUERY_THRESHOLD_FOR_DIAGNOSTICS;
+                                }
 
-            if (pagedFluxOptions.getCosmosAsyncClient() != null &&
-                Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient()))) {
-                if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
-                    fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
-                        pagedFluxOptions.getContainerId(),
-                        pagedFluxOptions.getDatabaseId(),
-                        pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
-                        BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
-                        (float) feedResponse.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
-                    startTime.set(Instant.now());
-                };
-            }
-        });
+                                if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
+                                    addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                                        feedResponse.getCosmosDiagnostics(),
+                                        TracerProvider.getContextFromReactorOrNull(signal.getContextView()));
+                                }
+                            } catch (JsonProcessingException ex) {
+                                LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
+                            }
+                        }
+                        //  If the user has passed feedResponseConsumer, then call it with each feedResponse
+                        if (feedResponseConsumer != null) {
+                            feedResponseConsumer.accept(feedResponse);
+                        }
+
+                        if (pagedFluxOptions.getCosmosAsyncClient() != null &&
+                            BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) {
+                            if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
+                                fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), HttpConstants.StatusCodes.OK,
+                                    pagedFluxOptions.getContainerId(),
+                                    pagedFluxOptions.getDatabaseId(),
+                                    pagedFluxOptions.getOperationType(), pagedFluxOptions.getResourceType(),
+                                    BridgeInternal.getContextClient(pagedFluxOptions.getCosmosAsyncClient()).getConsistencyLevel(),
+                                    (float) feedResponse.getRequestCharge(), Duration.between(startTime.get(), Instant.now()));
+                                startTime.set(Instant.now());
+                            };
+                        }
+                        break;
+                    default:
+                        break;
+            }});
+
+        if (isTracerEnabled(pagedFluxOptions)) {
+            return result.contextWrite(TracerProvider.setContextInReactor(
+                pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
+                    pagedFluxOptions.getDatabaseId(),
+                    pagedFluxOptions.getServiceEndpoint(),
+                    context)));
+        }
+
+        return result;
     }
 
     private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
@@ -253,18 +275,18 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             ClientTelemetry.REQUEST_LATENCY_UNIT);
         ConcurrentDoubleHistogram latencyHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency);
         if (latencyHistogram != null) {
-            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
         } else {
             if (statusCode == HttpConstants.StatusCodes.OK) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
                     ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
                     ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
 
             latencyHistogram.setAutoResize(true);
-            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 
@@ -287,17 +309,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosPageFluxHelper.setCosmosPageFluxAccessor(
-            new ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor() {
-
-                @Override
-                public <T> CosmosPagedFlux<T> getCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
-                    return new CosmosPagedFlux<>(optionsFluxFunction);
-                }
-            });
+            (ImplementationBridgeHelpers.CosmosPageFluxHelper.CosmosPageFluxAccessor) CosmosPagedFlux::new);
     }
+
+    static { initialize(); }
 
     private ReportPayload createReportPayload(CosmosAsyncClient cosmosAsyncClient,
                                               int statusCode,
@@ -322,7 +339,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     }
 
     private void addDiagnosticsOnTracerEvent(TracerProvider tracerProvider, CosmosDiagnostics cosmosDiagnostics, Context parentContext) throws JsonProcessingException {
-        if (cosmosDiagnostics == null) {
+        if (cosmosDiagnostics == null || parentContext == null) {
             return;
         }
 
@@ -400,7 +417,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
             //adding systemInformation
             attributes.put("RegionContacted",
-                mapper.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
 
 
             //adding systemInformation
@@ -409,12 +426,13 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
             //adding clientCfgs
             attributes.put("ClientCfgs",
-                mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+                mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
 
             if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
                 && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
                 String eventName =
-                    "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId;
+                    "Diagnostics for PKRange "
+                        + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
                 tracerProvider.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), parentContext);
             } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {

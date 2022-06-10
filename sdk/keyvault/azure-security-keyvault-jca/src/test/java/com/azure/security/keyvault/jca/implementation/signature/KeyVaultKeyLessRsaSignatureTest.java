@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ public class KeyVaultKeyLessRsaSignatureTest {
     static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
+
+    private final KeyVaultPrivateKey keyVaultPrivateKey = mock(KeyVaultPrivateKey.class);
 
     @BeforeEach
     public void before() {
@@ -97,7 +100,8 @@ public class KeyVaultKeyLessRsaSignatureTest {
     @Test
     public void setDigestNameAndEngineSignTest() throws InvalidAlgorithmParameterException {
         keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
-        keyVaultKeyLessRsaSignature.setKeyVaultClient(keyVaultClient);
+        when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
+        keyVaultKeyLessRsaSignature.engineInitSign(keyVaultPrivateKey, null);
         keyVaultKeyLessRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(), ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());

@@ -67,24 +67,24 @@
     },
     "keyVaultSku": {
       "type": "string",
-      "defaultValue": "Premium",
+      "defaultValue": "premium",
       "allowedValues": [
-        "Standard",
-        "Premium"
+        "standard",
+        "premium"
       ],
       "metadata": {
         "description": "Key Vault SKU to deploy. The default is 'Premium'"
       }
     },
-    "endpointSuffix": {
-      "type": "String",
-      "defaultValue": "vault.azure.net"
+    "keyVaultEndpointSuffix": {
+      "type": "string",
+      "defaultValue": ".vault.azure.net"
     },
     "testApplicationId": {
-      "type": "String"
+      "type": "string"
     },
     "testApplicationSecret": {
-      "type": "String"
+      "type": "string"
     },
     "enabledForDeployment": {
       "type": "bool",
@@ -126,16 +126,26 @@
       "type": "string",
       "defaultValue": "[utcNow()]"
     },
-    "attestationUrl": {
+    "attestationImage": {
       "type": "string",
-      "defaultValue": "https://skrattestation.azurewebsites.net/",
+      "defaultValue": "keyvault-mock-attestation:latest",
       "metadata": {
-        "description": "Test attestation service for Secure Key Release"
+        "description": "The attestation image to use. The default is 'keyvault-mock-attestation:latest'."
+      }
+    },
+    "storageEndpointSuffix": {
+      "type": "string",
+      "defaultValue": "core.windows.net",
+      "metadata": {
+          "description": "The url suffix to use when accessing the storage data plane."
       }
     }
   },
   "variables": {
     "kvApiVersion": "2019-09-01",
+    "attestationFarm": "[concat(parameters('baseName'), 'farm')]",
+    "attestationSite": "[concat(parameters('baseName'), 'site')]",
+    "attestationImageUri": "[concat('DOCKER|azsdkengsys.azurecr.io/', parameters('attestationImage'))]",
     "kvName": "[parameters('baseName')]",
     "hsmApiVersion": "2021-04-01-preview",
     "hsmName": "[concat(parameters('baseName'), 'hsm')]",
@@ -152,10 +162,8 @@
     },
     "networkAcls": {
       "bypass": "AzureServices",
-      "virtualNetworkRules": [
-      ],
-      "ipRules": [
-      ],
+      "virtualNetworkRules": [],
+      "ipRules": [],
       "defaultAction": "Allow"
     },
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
@@ -199,102 +207,108 @@
             "objectId": "[parameters('testApplicationOid')]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "sign",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           },
           {
-            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "tenantId": "[parameters('tenantId')]",
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "sign",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           }
@@ -324,14 +338,7 @@
         "enableSoftDelete": true,
         "softDeleteRetentionInDays": 7,
         "publicNetworkAccess": "Enabled",
-        "networkAcls": {
-          "bypass": "None",
-          "virtualNetworkRules": [
-          ],
-          "ipRules": [
-          ],
-          "defaultAction": "Allow"
-        }
+        "networkAcls": "[variables('networkAcls')]"
       }
     },
     {
@@ -381,6 +388,43 @@
       ],
       "properties": {
         "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-12-01",
+      "name": "[variables('attestationFarm')]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "sku": {
+        "name": "B1"
+      },
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-12-01",
+      "name": "[variables('attestationSite')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('attestationFarm'))]"
+      ],
+      "location": "[parameters('location')]",
+      "properties": {
+        "httpsOnly": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('attestationFarm'))]",
+        "siteConfig": {
+          "name": "[variables('attestationSite')]",
+          "alwaysOn": true,
+          "linuxFxVersion": "[variables('attestationImageUri')]",
+          "appSettings": [
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
+            }
+          ]
+        }
       }
     },
     {
@@ -483,6 +527,10 @@
       "type": "string",
       "value": "[parameters('testApplicationOid')]"
     },
+    "KEYVAULT_STORAGE_ENDPOINT_SUFFIX": {
+        "type": "string",
+        "value": "[parameters('storageEndpointSuffix')]"
+    },
     "BLOB_STORAGE_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('primaryAccountName')]"
@@ -497,7 +545,11 @@
     },
     "AZURE_KEYVAULT_ATTESTATION_URL": {
       "type": "string",
-      "value": "[parameters('attestationUrl')]"
+      "value": "[format('https://{0}/', reference(variables('attestationSite')).defaultHostName)]"
+    },
+    "KEY_VAULT_ENDPOINT_SUFFIX": {
+      "type": "string",
+      "value": "[parameters('keyVaultEndpointSuffix')]"
     }
   }
 }

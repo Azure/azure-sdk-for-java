@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStatusResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BackupStatusClient. */
 public final class BackupStatusClientImpl implements BackupStatusClient {
-    private final ClientLogger logger = new ClientLogger(BackupStatusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BackupStatusService service;
 
@@ -79,7 +76,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
+     * @return the container backup status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(
@@ -104,7 +101,6 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -112,7 +108,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             azureRegion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -130,7 +126,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
+     * @return the container backup status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupStatusResponseInner>> getWithResponseAsync(
@@ -155,13 +151,12 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 azureRegion,
                 this.client.getSubscriptionId(),
                 parameters,
@@ -177,19 +172,11 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
+     * @return the container backup status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupStatusResponseInner> getAsync(String azureRegion, BackupStatusRequest parameters) {
-        return getWithResponseAsync(azureRegion, parameters)
-            .flatMap(
-                (Response<BackupStatusResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -216,7 +203,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container backup status.
+     * @return the container backup status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupStatusResponseInner> getWithResponse(

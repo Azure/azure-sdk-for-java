@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.azure.tools</groupId>
+    <artifactId>azure-sdk-archetype</artifactId>
+    <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.tools:azure-sdk-archetype;current} -->
+    <name>Azure SDK Maven archetype</name>
+    <description>Azure SDK archetype to generate a new Maven project with
+        recommended Azure SDK tools and configuration.</description>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    </properties>
+
+    <url>https://github.com/azure/azure-sdk-for-java</url>
+    <organization>
+        <name>Microsoft Corporation</name>
+        <url>http://microsoft.com</url>
+    </organization>
+
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>microsoft</id>
+            <name>Microsoft Corporation</name>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/Azure/azure-sdk-for-java</url>
+        <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+        <developerConnection/>
+        <tag>HEAD</tag>
+    </scm>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.archetype</groupId>
+                <artifactId>archetype-packaging</artifactId>
+                <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.archetype:archetype-packaging;external_dependency} -->
+            </extension>
+        </extensions>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.archetype</groupId>
+                    <artifactId>maven-archetype-plugin</artifactId>
+                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.archetype:maven-archetype-plugin;external_dependency} -->
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- generate sources jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${packageOutputDirectory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Copy the pom file to output -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- START: Empty Java Doc -->
+            <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+                 to pass the required checks on Maven. The way this works is by setting the classesDirectory
+                 to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+                 is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+                 will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+                 and recreated with the README.md being copied every time to guarantee that, when building locally,
+                 it'll have the latest copy of the README.md file.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>empty-javadoc-jar-with-readme</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>javadoc</classifier>
+                            <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <executions>
+                    <execution>
+                        <id>copy-readme-to-javadocTemp</id>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <target>
+                                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                                <delete includeEmptyDirs="true" quiet="true">
+                                    <fileset dir="${project.basedir}/javadocTemp"/>
+                                </delete>
+                                <echo>Copying ${project.basedir}/README.md to
+                                    ${project.basedir}/javadocTemp/README.md
+                                </echo>
+                                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- END: Empty Java Doc -->
+        </plugins>
+    </build>
+</project>

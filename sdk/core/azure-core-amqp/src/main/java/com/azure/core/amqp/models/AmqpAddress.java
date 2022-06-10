@@ -9,7 +9,14 @@ import java.util.Objects;
  * This represents amqp address information. This will be used in populating information like 'To', 'ReplyTo' etc.
  *
  * <p><strong>Create and retrieve address</strong></p>
- * {@codesnippet com.azure.core.amqp.models.AmqpAddress.createAndGet}
+ * <!-- src_embed com.azure.core.amqp.models.AmqpAddress.createAndGet -->
+ * <pre>
+ * AmqpAddress amqpAddress = new AmqpAddress&#40;&quot;my-address&quot;&#41;;
+ * &#47;&#47; Retrieve Adderss
+ * String address = amqpAddress.toString&#40;&#41;;
+ * System.out.println&#40;&quot;Address &quot; + address&#41;;
+ * </pre>
+ * <!-- end com.azure.core.amqp.models.AmqpAddress.createAndGet -->
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-address-string">
  *     Address type Format.</a>

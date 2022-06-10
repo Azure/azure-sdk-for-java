@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.3</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
 
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
@@ -43,66 +43,66 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.1.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.10.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.22</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.17</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -111,7 +111,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <includes>
             <include>com/azure/communication/sms/*.class</include>
@@ -139,22 +139,6 @@
               </includes>
             </bannedDependencies>
           </rules>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfiguration>
-            <revapi.ignore>
-              <item>
-                <code>java.method.added</code>
-                <class>com.azure.core.util.HttpClientOptions</class>
-                <justification>Transitive from Core. Not our problem</justification>
-              </item>
-            </revapi.ignore>
-          </analysisConfiguration>
         </configuration>
       </plugin>
     </plugins>

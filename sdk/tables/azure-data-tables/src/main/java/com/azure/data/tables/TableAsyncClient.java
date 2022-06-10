@@ -85,7 +85,15 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * {@link TableClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct an async client</strong></p>
- * {@codesnippet com.azure.data.tables.tableAsyncClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableAsyncClient.instantiation -->
+ * <pre>
+ * TableAsyncClient tableAsyncClient = new TableClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .tableName&#40;&quot;myTable&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableAsyncClient.instantiation -->
  *
  * @see TableClientBuilder
  */
@@ -234,7 +242,14 @@ public final class TableAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.createTable}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.createTable -->
+     * <pre>
+     * tableAsyncClient.createTable&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableItem -&gt;
+     *         System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.createTable -->
      *
      * @return A {@link Mono} containing a {@link TableItem} that represents the table.
      *
@@ -250,7 +265,15 @@ public final class TableAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.createTableWithResponse}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.createTableWithResponse -->
+     * <pre>
+     * tableAsyncClient.createTableWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.createTableWithResponse -->
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains a {@link TableItem}
      * that represents the table.
@@ -268,7 +291,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().createWithResponseAsync(properties, null,
-                ResponseFormat.RETURN_NO_CONTENT, null, context)
+                    ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
                     new SimpleResponse<>(response,
@@ -283,7 +306,13 @@ public final class TableAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.deleteTable}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.deleteTable -->
+     * <pre>
+     * tableAsyncClient.deleteTable&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt; System.out.print&#40;&quot;Table was deleted.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.deleteTable -->
      *
      * @return An empty {@link Mono}.
      *
@@ -299,7 +328,15 @@ public final class TableAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.deleteTableWithResponse}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.deleteTableWithResponse -->
+     * <pre>
+     * tableAsyncClient.deleteTableWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Table was deleted successfully with status code: %d.&quot;,
+     *             response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.deleteTableWithResponse -->
      *
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
@@ -329,7 +366,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the created
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.createEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.createEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.createEntity&#40;tableEntity&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was created.&quot;, partitionKey,
+     *             rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.createEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to insert.
      *
@@ -350,7 +401,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the
      * {@link Response HTTP response} and the created {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.createEntityWithResponse#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.createEntityWithResponse#TableEntity -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.createEntityWithResponse&#40;myTableEntity&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and&quot;
+     *             + &quot; row key '%s' was created.&quot;, response.getStatusCode&#40;&#41;, myPartitionKey, myRowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.createEntityWithResponse#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to insert.
      *
@@ -376,7 +441,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
-                ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
+                    ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
                     new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
@@ -392,7 +457,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Upserts an {@link TableEntity entity} into the table. Prints out the details of the upserted
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.upsertEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.upsertEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.upsertEntity&#40;tableEntity&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was updated&#47;created.&quot;,
+     *             partitionKey, rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.upsertEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to upsert.
      *
@@ -421,7 +500,21 @@ public final class TableAsyncClient {
      * <p>Upserts an {@link TableEntity entity} into the table with the specified
      * {@link TableEntityUpdateMode update mode} if said {@link TableEntity entity} already exists. Prints out the
      * details of the {@link Response HTTP response} and the upserted {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.upsertEntityWithResponse&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and&quot;
+     *             + &quot; row key '%s' was updated&#47;created.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode -->
      *
      * @param entity The {@link TableEntity entity} to upsert.
      * @param updateMode The type of update to perform if the {@link TableEntity entity} already exits.
@@ -444,21 +537,24 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = escapeSingleQuotes(entity.getRowKey());
+
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, null, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        null, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -476,7 +572,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table. Prints out the details of the updated
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity tableEntity = new TableEntity&#40;partitionKey, rowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.updateEntity&#40;tableEntity&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was updated&#47;created.&quot;,
+     *             partitionKey, rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to update.
      *
@@ -504,7 +614,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table with the specified
      * {@link TableEntityUpdateMode update mode}. Prints out the details of the updated {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity-TableEntityUpdateMode}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity-TableEntityUpdateMode -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was updated&#47;created.&quot;,
+     *             partitionKey, rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      *
      * @param entity The {@link TableEntity entity} to update.
      * @param updateMode The type of update to perform.
@@ -528,7 +652,8 @@ public final class TableAsyncClient {
      * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
      * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
-     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * {@link TableEntity entity}'s properties will completely replace those in the existing
+     * {@link TableEntity entity}.
      * </p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -536,7 +661,21 @@ public final class TableAsyncClient {
      * mode}
      * if the {@code ETags} on both {@link TableEntity entities} match. Prints out the details of the
      * {@link Response HTTP response} updated {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean -->
+     * <pre>
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.updateEntityWithResponse&#40;someTableEntity, TableEntityUpdateMode.REPLACE, true&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and&quot;
+     *             + &quot; row key '%s' was updated.&quot;, response.getStatusCode&#40;&#41;, partitionKey, rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean -->
      *
      * @param entity The {@link TableEntity entity} to update.
      * @param updateMode The type of update to perform.
@@ -565,22 +704,25 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        String partitionKey = escapeSingleQuotes(entity.getPartitionKey());
+        String rowKey = escapeSingleQuotes(entity.getRowKey());
         String eTag = ifUnchanged ? entity.getETag() : "*";
+
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, eTag, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        eTag, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -597,7 +739,18 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes an {@link TableEntity entity} on the table. Prints out the entity's {@code partitionKey} and
      * {@code rowKey}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.deleteEntity#String-String}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.deleteEntity#String-String -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * tableAsyncClient.deleteEntity&#40;partitionKey, rowKey&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was deleted.&quot;, partitionKey,
+     *             rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.deleteEntity#String-String -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The row key of the {@link TableEntity entity}.
@@ -619,7 +772,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the deleted
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.deleteEntity#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.deleteEntity#TableEntity -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity myTableEntity = new TableEntity&#40;myPartitionKey, myRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.deleteEntity&#40;myTableEntity&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt;
+     *         System.out.printf&#40;&quot;Table entity with partition key '%s' and row key '%s' was created.&quot;, partitionKey,
+     *             rowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.deleteEntity#TableEntity -->
      *
      * @param entity The {@link TableEntity entity} to delete.
      *
@@ -638,7 +805,21 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the
      * {@link Response HTTP response} and the deleted {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.deleteEntityWithResponse#TableEntity}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.deleteEntityWithResponse#TableEntity -->
+     * <pre>
+     * String somePartitionKey = &quot;partitionKey&quot;;
+     * String someRowKey = &quot;rowKey&quot;;
+     *
+     * TableEntity someTableEntity = new TableEntity&#40;somePartitionKey, someRowKey&#41;
+     *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
+     *
+     * tableAsyncClient.deleteEntityWithResponse&#40;someTableEntity, true&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Table entity with partition key '%s' and&quot;
+     *             + &quot; row key '%s' was deleted.&quot;, response.getStatusCode&#40;&#41;, somePartitionKey, someRowKey&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.deleteEntityWithResponse#TableEntity -->
      *
      * @param entity The table {@link TableEntity entity} to delete.
      * @param ifUnchanged When true, the ETag of the provided {@link TableEntity entity} must match the ETag of the
@@ -665,8 +846,8 @@ public final class TableAsyncClient {
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, eTag,
-                null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName,
+                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), eTag, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -681,7 +862,15 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
      * retrieved {@link TableEntity entities}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.listEntities}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.listEntities -->
+     * <pre>
+     * tableAsyncClient.listEntities&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableEntity -&gt;
+     *         System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.%n&quot;,
+     *             tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.listEntities -->
      *
      * @return A {@link PagedFlux} containing all {@link TableEntity entities} within the table.
      *
@@ -703,7 +892,29 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
      * {@link Response HTTP response} and all the retrieved {@link TableEntity entities}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions -->
+     * <pre>
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * ListEntitiesOptions listEntitiesOptions = new ListEntitiesOptions&#40;&#41;
+     *     .setTop&#40;15&#41;
+     *     .setFilter&#40;&quot;PartitionKey eq 'MyPartitionKey' and RowKey eq 'MyRowKey'&quot;&#41;
+     *     .setSelect&#40;propertiesToSelect&#41;;
+     *
+     * tableAsyncClient.listEntities&#40;listEntitiesOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableEntity -&gt; &#123;
+     *         System.out.printf&#40;&quot;Retrieved entity with partition key '%s', row key '%s' and properties:%n&quot;,
+     *             tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;;
+     *
+     *         tableEntity.getProperties&#40;&#41;.forEach&#40;&#40;key, value&#41; -&gt;
+     *             System.out.printf&#40;&quot;Name: '%s'. Value: '%s'.%n&quot;, key, value&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions -->
      *
      * @param options The {@code filter}, {@code select}, and {@code top} OData query options to apply to this
      * operation.
@@ -770,7 +981,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
-                nextPartitionKey, nextRowKey, queryOptions, context)
+                    nextPartitionKey, nextRowKey, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
@@ -852,7 +1063,18 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the retrieved
      * {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.getEntity#String-String}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.getEntity#String-String -->
+     * <pre>
+     * String partitionKey = &quot;partitionKey&quot;;
+     * String rowKey = &quot;rowKey&quot;;
+     *
+     * tableAsyncClient.getEntity&#40;partitionKey, rowKey&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableEntity -&gt;
+     *         System.out.printf&#40;&quot;Retrieved entity with partition key '%s' and row key '%s'.&quot;,
+     *             tableEntity.getPartitionKey&#40;&#41;, tableEntity.getRowKey&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.getEntity#String-String -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The partition key of the {@link TableEntity entity}.
@@ -875,7 +1097,30 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the {@link Response HTTP response}
      * retrieved {@link TableEntity entity}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.getEntityWithResponse#String-String-ListEntitiesOptions}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.getEntityWithResponse#String-String-ListEntitiesOptions -->
+     * <pre>
+     * String myPartitionKey = &quot;partitionKey&quot;;
+     * String myRowKey = &quot;rowKey&quot;;
+     *
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * tableAsyncClient.getEntityWithResponse&#40;myPartitionKey, myRowKey, propertiesToSelect&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         TableEntity tableEntity = response.getValue&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved entity with partition key '%s',&quot;
+     *                 + &quot; row key '%s' and properties:&quot;, response.getStatusCode&#40;&#41;, tableEntity.getPartitionKey&#40;&#41;,
+     *             tableEntity.getRowKey&#40;&#41;&#41;;
+     *
+     *         tableEntity.getProperties&#40;&#41;.forEach&#40;&#40;key, value&#41; -&gt;
+     *             System.out.printf&#40;&quot;%nName: '%s'. Value: '%s'.&quot;, key, value&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.getEntityWithResponse#String-String-ListEntitiesOptions -->
      *
      * @param partitionKey The partition key of the {@link TableEntity entity}.
      * @param rowKey The partition key of the {@link TableEntity entity}.
@@ -910,7 +1155,7 @@ public final class TableAsyncClient {
 
         try {
             return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
-                partitionKey, rowKey, null, null, queryOptions, context)
+                    escapeSingleQuotes(partitionKey), escapeSingleQuotes(rowKey), null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();
@@ -943,7 +1188,15 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the retrieved
      * {@link TableAccessPolicies access policies}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.getAccessPolicies}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.getAccessPolicies -->
+     * <pre>
+     * tableAsyncClient.getAccessPolicies&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;accessPolicies -&gt;
+     *         accessPolicies.getIdentifiers&#40;&#41;.forEach&#40;signedIdentifier -&gt;
+     *             System.out.printf&#40;&quot;Retrieved table access policy with id '%s'.&quot;, signedIdentifier.getId&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.getAccessPolicies -->
      *
      * @return A {@link Mono} containing the table's {@link TableAccessPolicies access policies}.
      *
@@ -964,7 +1217,24 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the
      * {@link Response HTTP response} and the retrieved {@link TableAccessPolicies access policies}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.getAccessPoliciesWithResponse}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.getAccessPoliciesWithResponse -->
+     * <pre>
+     * List&lt;String&gt; propertiesToSelect = new ArrayList&lt;&gt;&#40;&#41;;
+     * propertiesToSelect.add&#40;&quot;name&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;lastname&quot;&#41;;
+     * propertiesToSelect.add&#40;&quot;age&quot;&#41;;
+     *
+     * tableAsyncClient.getAccessPoliciesWithResponse&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved table access policies with the&quot;
+     *             + &quot; following IDs:&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     *         response.getValue&#40;&#41;.getIdentifiers&#40;&#41;.forEach&#40;signedIdentifier -&gt;
+     *             System.out.printf&#40;&quot;%n%s&quot;, signedIdentifier.getId&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.getAccessPoliciesWithResponse -->
      *
      * @return A {@link Mono} containing an {@link Response HTTP response} that in turn contains the table's
      * {@link TableAccessPolicies access policies}.
@@ -1020,7 +1290,26 @@ public final class TableAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.setAccessPolicies#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.setAccessPolicies#List -->
+     * <pre>
+     * List&lt;TableSignedIdentifier&gt; signedIdentifiers = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * signedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id1&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2022, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;r&quot;&#41;&#41;&#41;;
+     * signedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id2&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;raud&quot;&#41;&#41;&#41;;
+     *
+     * tableAsyncClient.setAccessPolicies&#40;signedIdentifiers&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;unused -&gt; System.out.print&#40;&quot;Set table access policies.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.setAccessPolicies#List -->
      *
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      *
@@ -1042,7 +1331,28 @@ public final class TableAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Sets stored {@link TableAccessPolicies access policies} on a table. Prints out details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.setAccessPoliciesWithResponse#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.setAccessPoliciesWithResponse#List -->
+     * <pre>
+     * List&lt;TableSignedIdentifier&gt; mySignedIdentifiers = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * mySignedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id1&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2022, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;r&quot;&#41;&#41;&#41;;
+     * mySignedIdentifiers.add&#40;new TableSignedIdentifier&#40;&quot;id2&quot;&#41;
+     *     .setAccessPolicy&#40;new TableAccessPolicy&#40;&#41;
+     *         .setStartsOn&#40;OffsetDateTime.of&#40;2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setExpiresOn&#40;OffsetDateTime.of&#40;2021, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC&#41;&#41;
+     *         .setPermissions&#40;&quot;raud&quot;&#41;&#41;&#41;;
+     *
+     * tableAsyncClient.setAccessPoliciesWithResponse&#40;mySignedIdentifiers&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Set table access policies successfully with status code: %d.&quot;,
+     *             response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.setAccessPoliciesWithResponse#List -->
      *
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      *
@@ -1136,11 +1446,64 @@ public final class TableAsyncClient {
      * <p>Submits a transaction that contains multiple {@link TableTransactionAction actions} to be applied to
      * {@link TableEntity entities} on a table. Prints out details of each {@link TableTransactionAction action}'s
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransaction#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.submitTransaction#List -->
+     * <pre>
+     * List&lt;TableTransactionAction&gt; transactionActions = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * String partitionKey = &quot;markers&quot;;
+     * String firstEntityRowKey = &quot;m001&quot;;
+     * String secondEntityRowKey = &quot;m002&quot;;
+     *
+     * TableEntity firstEntity = new TableEntity&#40;partitionKey, firstEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Dry&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Red&quot;&#41;;
+     *
+     * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, firstEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
+     *     firstEntityRowKey&#41;;
+     *
+     * TableEntity secondEntity = new TableEntity&#40;partitionKey, secondEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Wet&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Blue&quot;&#41;;
+     *
+     * transactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, secondEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, partitionKey,
+     *     secondEntityRowKey&#41;;
+     *
+     * tableAsyncClient.submitTransaction&#40;transactionActions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;tableTransactionResult -&gt; &#123;
+     *         System.out.print&#40;&quot;Submitted transaction. The ordered response status codes for the actions are:&quot;&#41;;
+     *
+     *         tableTransactionResult.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *             System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.submitTransaction#List -->
      * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
      * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
      * transaction.</p>
-     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithError#List}
+     * <!-- src_embed com.azure.data.tables.tableClient.submitTransactionWithError#List -->
+     * <pre>
+     * try &#123;
+     *     TableTransactionResult transactionResult = tableClient.submitTransaction&#40;transactionActions&#41;;
+     *
+     *     System.out.print&#40;&quot;Submitted transaction. The ordered response status codes for the actions are:&quot;&#41;;
+     *
+     *     transactionResult.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *         System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;TableTransactionFailedException e&#41; &#123;
+     *     &#47;&#47; If the transaction fails, the resulting exception contains the index of the first action that failed.
+     *     int failedActionIndex = e.getFailedTransactionActionIndex&#40;&#41;;
+     *     &#47;&#47; You can use this index to modify the offending action or remove it from the list of actions to send in
+     *     &#47;&#47; the transaction, for example.
+     *     transactionActions.remove&#40;failedActionIndex&#41;;
+     *     &#47;&#47; And then retry submitting the transaction.
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableClient.submitTransactionWithError#List -->
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction actions} to perform on
      * {@link TableEntity entities} in a table.
@@ -1172,11 +1535,67 @@ public final class TableAsyncClient {
      * {@link TableEntity entities} on a table. Prints out details of the {@link Response HTTP response} for the
      * operation, as well as each {@link TableTransactionAction action}'s corresponding {@link Response HTTP
      * response}.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List -->
+     * <pre>
+     * List&lt;TableTransactionAction&gt; myTransactionActions = new ArrayList&lt;&gt;&#40;&#41;;
+     *
+     * String myPartitionKey = &quot;markers&quot;;
+     * String myFirstEntityRowKey = &quot;m001&quot;;
+     * String mySecondEntityRowKey = &quot;m002&quot;;
+     *
+     * TableEntity myFirstEntity = new TableEntity&#40;myPartitionKey, myFirstEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Dry&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Red&quot;&#41;;
+     *
+     * myTransactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, myFirstEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, myPartitionKey,
+     *     myFirstEntityRowKey&#41;;
+     *
+     * TableEntity mySecondEntity = new TableEntity&#40;myPartitionKey, mySecondEntityRowKey&#41;
+     *     .addProperty&#40;&quot;Type&quot;, &quot;Wet&quot;&#41;
+     *     .addProperty&#40;&quot;Color&quot;, &quot;Blue&quot;&#41;;
+     *
+     * myTransactionActions.add&#40;new TableTransactionAction&#40;TableTransactionActionType.CREATE, mySecondEntity&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Added create action for entity with partition key '%s', and row key '%s'.%n&quot;, myPartitionKey,
+     *     mySecondEntityRowKey&#41;;
+     *
+     * tableAsyncClient.submitTransactionWithResponse&#40;myTransactionActions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. The ordered response status codes of the&quot;
+     *             + &quot; submitted actions are:&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     *         response.getValue&#40;&#41;.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *             System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List -->
      * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
      * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
      * transaction.</p>
-     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithResponseWithError#List}
+     * <!-- src_embed com.azure.data.tables.tableAsyncClient.submitTransactionWithResponseWithError#List -->
+     * <pre>
+     * tableAsyncClient.submitTransactionWithResponse&#40;myTransactionActions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .doOnError&#40;TableTransactionFailedException.class, e -&gt; &#123;
+     *         &#47;&#47; If the transaction fails, the resulting exception contains the index of the first action that failed.
+     *         int failedActionIndex = e.getFailedTransactionActionIndex&#40;&#41;;
+     *         &#47;&#47; You can use this index to modify the offending action or remove it from the list of actions to send
+     *         &#47;&#47; in the transaction, for example.
+     *         transactionActions.remove&#40;failedActionIndex&#41;;
+     *         &#47;&#47; And then retry submitting the transaction.
+     *     &#125;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response successful with status code: %d. The ordered response status codes of the&quot;
+     *             + &quot; submitted actions are:&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *
+     *         response.getValue&#40;&#41;.getTransactionActionResponses&#40;&#41;.forEach&#40;tableTransactionActionResponse -&gt;
+     *             System.out.printf&#40;&quot;%n%d&quot;, tableTransactionActionResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableAsyncClient.submitTransactionWithResponseWithError#List -->
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction transaction actions} to perform on
      * {@link TableEntity entities} in a table.
@@ -1329,5 +1748,15 @@ public final class TableAsyncClient {
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
+    }
+
+    // Single quotes in OData queries should be escaped by using two consecutive single quotes characters.
+    // Source: http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html#sec_URLSyntax.
+    private String escapeSingleQuotes(String input) {
+        if (input == null) {
+            return null;
+        }
+
+        return input.replace("'", "''");
     }
 }

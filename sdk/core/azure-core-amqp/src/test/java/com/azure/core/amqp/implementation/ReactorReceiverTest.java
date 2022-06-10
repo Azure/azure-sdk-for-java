@@ -26,10 +26,8 @@ import org.apache.qpid.proton.engine.Record;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -37,14 +35,19 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,6 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -60,6 +64,8 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class ReactorReceiverTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
+
     @Mock
     private Receiver receiver;
     @Mock
@@ -88,16 +94,6 @@ class ReactorReceiverTest {
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
     private AutoCloseable mocksCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -149,7 +145,8 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         StepVerifier.create(reactorReceiver.addCredits(credits))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(receiver).flow(credits);
@@ -170,7 +167,7 @@ class ReactorReceiverTest {
 
         StepVerifier.create(reactorReceiver.addCredits(credits))
             .expectError(RuntimeException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verifyNoInteractions(receiver);
@@ -196,7 +193,8 @@ class ReactorReceiverTest {
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
 
@@ -227,7 +225,7 @@ class ReactorReceiverTest {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(condition, ((AmqpException) error).getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         verify(closeReceiver).close();
         verify(closeReceiver).setCondition(errorCondition);
@@ -256,7 +254,8 @@ class ReactorReceiverTest {
         // Act
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link, times(1)).close();
@@ -284,7 +283,7 @@ class ReactorReceiverTest {
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
             .expectComplete()
-            .verify(Duration.ofSeconds(10));
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -343,7 +342,7 @@ class ReactorReceiverTest {
                 assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
             })
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         verify(creditSupplier).get();
 
@@ -420,7 +419,7 @@ class ReactorReceiverTest {
             .then(() -> shutdownSignals.next(shutdownSignal))
             .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         assertTrue(reactorReceiver.isDisposed());
@@ -429,7 +428,7 @@ class ReactorReceiverTest {
     }
 
     /**
-     * An error in the handler will also close the sender.
+     * An error in the handler will also close the receiver.
      */
     @Test
     void disposesOnHandlerError() {
@@ -453,13 +452,13 @@ class ReactorReceiverTest {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(((AmqpException) error).getErrorCondition(), amqpErrorCondition);
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
     }
 
     /**
-     * A complete in the handler will also close the sender.
+     * A complete in the handler will also close the receiver.
      */
     @Test
     void disposesOnHandlerComplete() {
@@ -476,11 +475,12 @@ class ReactorReceiverTest {
             .then(() -> receiverHandler.onLinkFinal(event))
             .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
     }
@@ -505,7 +505,7 @@ class ReactorReceiverTest {
         // Act and Assert
         StepVerifier.create(reactorReceiver.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -524,10 +524,155 @@ class ReactorReceiverTest {
 
         when(event.getLink()).thenReturn(receiver);
 
+        doAnswer(invocation -> {
+            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
         doAnswer(invocationOnMock -> {
+            // The localClose() initiated local-close via receiver.close(), here we mock scenario where
+            // broker responded with remote-close ack for the local-close.
             receiverHandler.onLinkRemoteClose(event);
             return null;
         }).when(receiver).close();
+
+        // Act
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Expect the same outcome.
+        StepVerifier.create(reactorReceiver.closeAsync("something", null))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        StepVerifier.create(reactorReceiver.closeAsync())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Assert
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+                .expectNext(AmqpEndpointState.CLOSED)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+
+        assertTrue(reactorReceiver.isDisposed());
+
+        verify(receiver).setCondition(condition);
+        verify(receiver).close();
+
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Tests the completion of {@link ReactorReceiver#getEndpointStates()}
+     * when there is no link remote-close frame.
+     */
+    @Test
+    void endpointStateCompletesOnNoRemoteCloseAck() throws IOException {
+        // Arrange
+        final String message = "some-message";
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
+        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
+            "Test-users");
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        doAnswer(invocation -> {
+            // The ReactorDispatcher running localClose() work scheduled by beginClose(...).
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // The localClose() initiated local-close via receiver.close(), here we mock scenario where
+        // there is no remote-close ack from the broker for the local-close, hence do nothing i.e. no
+        // call to receiverHandler.onLinkRemoteClose(event)
+        doNothing().when(receiver).close();
+
+        // Act
+        StepVerifier.withVirtualTime(() -> reactorReceiver.closeAsync(message, condition))
+            // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
+            // completion timeout kicks in.
+            .thenAwait(Duration.ofSeconds(100))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Assert
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            // Assert endpoint state completes (via timeout) when there is no broker remote-close ack.
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        assertTrue(reactorReceiver.isDisposed());
+
+        verify(receiver).setCondition(condition);
+        verify(receiver).close();
+
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Tests the completion of {@link ReactorReceiver#getEndpointStates()}
+     * when {@link ReactorDispatcher} reject client initiated local-close.
+     */
+    @Test
+    void endpointStatesCompleteOnScheduleLocalCloseRejection() throws IOException {
+        // Arrange
+        final String message = "some-message";
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
+        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
+            "Test-users");
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            // The localClose() work from beginClose(), but dispatcher rejected it.
+            throw new RejectedExecutionException("local-close scheduling rejected");
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        // Assert
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            // Assert endpoint state completes if localClose() scheduling was rejected.
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        assertTrue(reactorReceiver.isDisposed());
+
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Tests the completion of {@link ReactorReceiver#getEndpointStates()} if closeAsync.subscribe happen
+     * from (ProtonJ) EventLoop single-thread, where the same EventLoop single-thread is responsible
+     * for remote-close ack notification.
+     */
+    @Test
+    void endpointStatesCompleteWhenCloseFromEventLoopThread() throws IOException, InterruptedException {
+        // Arrange
+
+        /* A single threaded scheduler mimicking ProtonJ Reactor EventLoop Thread. */
+        final Scheduler eventLoopScheduler = Schedulers.newSingle("mock-reactor-executor");
+
+        final AtomicReference<StepVerifier> closeAsyncVerifier = new AtomicReference<>();
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        final String message = "some-message";
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
+        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
+            "Test-users");
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE, EndpointState.CLOSED);
+
+        // Act
 
         doAnswer(invocation -> {
             final Runnable work = invocation.getArgument(0);
@@ -535,27 +680,37 @@ class ReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
-        // Act
-        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
-            .expectComplete()
-            .verify();
+        doAnswer(invocationOnMock -> {
+            eventLoopScheduler.schedule(() -> {
+                // mimicking broker's remote-close ack from event-loop single-thread.
+                receiverHandler.onLinkRemoteClose(event);
+            });
+            return null;
+        }).when(receiver).close();
 
-        // Expect the same outcome.
-        StepVerifier.create(reactorReceiver.closeAsync("something", null))
-            .expectComplete()
-            .verify();
+        eventLoopScheduler.schedule(() -> {
+            // mimicking closeAsync.subscribe() from event-loop single-thread.
+            StepVerifier stepVerifier = StepVerifier.create(reactorReceiver.closeAsync(message, condition))
+                .expectComplete()
+                .verifyLater();
 
-        StepVerifier.create(reactorReceiver.closeAsync())
-            .expectComplete()
-            .verify();
+            closeAsyncVerifier.set(stepVerifier);
+            latch.countDown();
+        });
 
-        // Assert
-        assertTrue(reactorReceiver.isDisposed());
+        try {
+            latch.await(VERIFY_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
 
-        verify(receiver).setCondition(condition);
-        verify(receiver).close();
+            // Assert
+            closeAsyncVerifier.get().verify(VERIFY_TIMEOUT);
 
-        shutdownSignals.assertNoSubscribers();
+            StepVerifier.create(reactorReceiver.getEndpointStates())
+                .expectNext(AmqpEndpointState.CLOSED)
+                .expectComplete()
+                .verify(VERIFY_TIMEOUT);
+        } finally {
+            eventLoopScheduler.dispose();
+        }
     }
 
     /**
@@ -588,7 +743,7 @@ class ReactorReceiverTest {
         // Assert
         StepVerifier.create(reactorReceiver.closeAsync())
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
 
@@ -619,7 +774,8 @@ class ReactorReceiverTest {
         // Assert and Act
         StepVerifier.create(reactorReceiver.receive())
             .then(() -> authorizationResults.error(error))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -645,6 +801,7 @@ class ReactorReceiverTest {
         // Assert and Act
         StepVerifier.create(reactorReceiver.receive())
             .then(authorizationResults::complete)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 }

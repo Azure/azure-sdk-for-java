@@ -9,7 +9,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 /** Samples for Volumes CreateOrUpdate. */
 public final class VolumesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-06-01/examples/Volumes_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Volumes_CreateOrUpdate.json
      */
     /**
      * Sample code: Volumes_CreateOrUpdate.

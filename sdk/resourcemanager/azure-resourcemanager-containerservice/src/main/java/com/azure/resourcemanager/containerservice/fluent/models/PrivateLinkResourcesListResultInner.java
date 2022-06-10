@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private link resources. */
 @Fluent
 public final class PrivateLinkResourcesListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesListResultInner.class);
-
     /*
      * The collection value.
      */

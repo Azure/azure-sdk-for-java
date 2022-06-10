@@ -23,6 +23,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubManagementClient;
 import com.azure.resourcemanager.webpubsub.implementation.OperationsImpl;
 import com.azure.resourcemanager.webpubsub.implementation.UsagesImpl;
+import com.azure.resourcemanager.webpubsub.implementation.WebPubSubHubsImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubManagementClientBuilder;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubPrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubPrivateLinkResourcesImpl;
@@ -30,6 +31,7 @@ import com.azure.resourcemanager.webpubsub.implementation.WebPubSubSharedPrivate
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.resourcemanager.webpubsub.models.Operations;
 import com.azure.resourcemanager.webpubsub.models.Usages;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubHubs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateEndpointConnections;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateLinkResources;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSharedPrivateLinkResources;
@@ -47,6 +49,8 @@ public final class WebPubSubManager {
     private WebPubSubs webPubSubs;
 
     private Usages usages;
+
+    private WebPubSubHubs webPubSubHubs;
 
     private WebPubSubPrivateEndpointConnections webPubSubPrivateEndpointConnections;
 
@@ -190,7 +194,7 @@ public final class WebPubSubManager {
                 .append("-")
                 .append("com.azure.resourcemanager.webpubsub")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -251,6 +255,14 @@ public final class WebPubSubManager {
             this.usages = new UsagesImpl(clientObject.getUsages(), this);
         }
         return usages;
+    }
+
+    /** @return Resource collection API of WebPubSubHubs. */
+    public WebPubSubHubs webPubSubHubs() {
+        if (this.webPubSubHubs == null) {
+            this.webPubSubHubs = new WebPubSubHubsImpl(clientObject.getWebPubSubHubs(), this);
+        }
+        return webPubSubHubs;
     }
 
     /** @return Resource collection API of WebPubSubPrivateEndpointConnections. */

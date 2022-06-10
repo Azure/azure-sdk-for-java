@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -46,7 +47,6 @@ import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLock;
@@ -117,9 +117,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Configurable configurable = AzureResourceManager.configure();
-        ((AzureConfigurableImpl) configurable).withHttpPipeline(httpPipeline);
-        azureResourceManager = configurable.authenticate(null, profile).withDefaultSubscription();
+        azureResourceManager = AzureResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         setInternalContext(internalContext, azureResourceManager);
     }
 
@@ -518,6 +516,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws IOException
      * @throws ManagementException
      */
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
@@ -1276,16 +1275,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager.containerGroups().listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
         Assertions.assertTrue(containerGroupOperations.size() > 0);
-    }
-
-    @Disabled("Cannot run test due to unknown parameter")
-    @Test
-    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-        if (!isPlaybackMode()) {
-            new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-        }
     }
 
     @Test

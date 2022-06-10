@@ -22,7 +22,7 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component.
+     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationInsightsComponentApiKeyInner> list(String resourceGroupName, String resourceName);
@@ -36,7 +36,7 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of API keys of an Application Insights component.
+     * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationInsightsComponentApiKeyInner> list(
@@ -69,7 +69,7 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
+     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(
@@ -99,7 +99,7 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
+     * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(
@@ -129,7 +129,7 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Key for this key id.
+     * @return the API Key for this key id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(

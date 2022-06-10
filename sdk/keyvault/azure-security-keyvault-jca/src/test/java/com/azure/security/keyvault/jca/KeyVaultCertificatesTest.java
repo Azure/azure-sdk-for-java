@@ -55,7 +55,7 @@ public class KeyVaultCertificatesTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
+        certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
@@ -84,7 +84,7 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testCertificatesRefreshInterval() throws Exception {
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "1000");
+        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keyStore.getCertificate(certificateName));
         keyStore.deleteEntry(certificateName);

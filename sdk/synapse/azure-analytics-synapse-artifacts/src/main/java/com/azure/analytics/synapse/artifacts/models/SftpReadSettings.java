@@ -78,6 +78,13 @@ public final class SftpReadSettings extends StoreReadSettings {
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
+    /*
+     * If true, disable parallel reading within each file. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableChunking")
+    private Object disableChunking;
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
@@ -269,6 +276,35 @@ public final class SftpReadSettings extends StoreReadSettings {
      */
     public SftpReadSettings setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
+        return this;
+    }
+
+    /**
+     * Get the disableChunking property: If true, disable parallel reading within each file. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     *
+     * @return the disableChunking value.
+     */
+    public Object getDisableChunking() {
+        return this.disableChunking;
+    }
+
+    /**
+     * Set the disableChunking property: If true, disable parallel reading within each file. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     *
+     * @param disableChunking the disableChunking value to set.
+     * @return the SftpReadSettings object itself.
+     */
+    public SftpReadSettings setDisableChunking(Object disableChunking) {
+        this.disableChunking = disableChunking;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SftpReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

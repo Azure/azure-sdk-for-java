@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Outstanding conditions that will need to be resolved. */
 @Immutable
 public final class Condition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Condition.class);
-
     /*
      * The time when the condition was raised.
      */

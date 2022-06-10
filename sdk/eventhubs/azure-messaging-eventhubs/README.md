@@ -17,27 +17,32 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
   the transformed events to a new stream for consumers to observe.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
-documentation][event_hubs_product_docs] | [Samples][sample_examples]
+documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubleshooting][troubleshooting]
 
 ## Table of contents
 
-- [Azure Event Hubs client library for Java](#azure-event-hubs-client-library-for-java)
-  - [Table of contents](#table-of-contents)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Include the package](#include-the-package)
-    - [Authenticate the client](#authenticate-the-client)
-  - [Key concepts](#key-concepts)
-  - [Examples](#examples)
-    - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
-    - [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
-    - [Consume events using an EventProcessorClient](#consume-events-using-an-eventprocessorclient)
-  - [Troubleshooting](#troubleshooting)
-    - [Enable client logging](#enable-client-logging)
-    - [Enable AMQP transport logging](#enable-amqp-transport-logging)
-    - [Exceptions](#exceptions)
-  - [Next steps](#next-steps)
-  - [Contributing](#contributing)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Include the package](#include-the-package)
+    - [Include the BOM file](#include-the-bom-file)
+    - [Include direct dependency](#include-direct-dependency)
+  - [Authenticate the client](#authenticate-the-client)
+    - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
+    - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+    - [Authorizing with DefaultAzureCredential](#authorizing-with-defaultazurecredential)
+- [Key concepts](#key-concepts)
+- [Examples](#examples)
+  - [Publish events to an Event Hub](#publish-events-to-an-event-hub)
+    - [Create an Event Hub producer and publish events](#create-an-event-hub-producer-and-publish-events)
+    - [Publish events using partition identifier](#publish-events-using-partition-identifier)
+    - [Publish events using partition key](#publish-events-using-partition-key)
+  - [Consume events from an Event Hub partition](#consume-events-from-an-event-hub-partition)
+    - [Consume events with EventHubConsumerAsyncClient](#consume-events-with-eventhubconsumerasyncclient)
+    - [Consume events with EventHubConsumerClient](#consume-events-with-eventhubconsumerclient)
+  - [Consume events using an EventProcessorClient](#consume-events-using-an-eventprocessorclient)
+- [Troubleshooting][troubleshooting]
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
 
 ## Getting started
 
@@ -51,13 +56,45 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
   - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 
 ### Include the package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-messaging-eventhubs</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.10.1</version>
+    <version>5.12.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -79,8 +116,7 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L31-L35 -->
-```java
+```java readme-sample-createSynchronousEventHubProducer
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient producer = new EventHubClientBuilder()
@@ -98,7 +134,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.6</version>
+    <version>1.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,8 +149,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Event Hubs, please refer
 to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L42-L51 -->
-```java
+```java readme-sample-useAadAuthorization
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 
@@ -146,7 +181,7 @@ EventHubProducerClient client = new EventHubClientBuilder()
 - A **consumer group** is a view of an entire Event Hub. Consumer groups enable multiple consuming applications to each
   have a separate view of the event stream, and to read the stream independently at their own pace and from their own
   position. There can be at most 5 concurrent readers on a partition per consumer group; however it is recommended that
-  there is only one active consumer for a given partition and consumer group pairing. Each active reader receives all of
+  there is only one active consumer for a given partition and consumer group pairing. Each active reader receives
   the events from its partition; if there are multiple readers on the same partition, then they will receive duplicate
   events.
 
@@ -173,8 +208,7 @@ Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L59-L81 -->
-```java
+```java readme-sample-publishEvents
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -199,6 +233,8 @@ if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
 }
 ```
+Note that `EventDataBatch.tryAdd(EventData)` is not thread-safe. Please make sure to synchronize the method access
+when using multiple threads to add events.
 
 #### Publish events using partition identifier
 
@@ -206,8 +242,7 @@ Many Event Hub operations take place within the scope of a specific partition. A
 `getPartitionIds()` or `getEventHubProperties()` to get the partition ids and metadata about in their Event Hub
 instance.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L88-L96 -->
-```java
+```java readme-sample-publishEventsToPartition
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -225,8 +260,7 @@ When a set of events are not associated with any specific partition, it may be d
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
 setting a `partition key` when publishing the events.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L103-L111 -->
-```java
+```java readme-sample-publishEventsWithPartitionKey
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -247,12 +281,11 @@ specify where in the event stream to begin receiving events.
 #### Consume events with EventHubConsumerAsyncClient
 
 In the snippet below, we create an asynchronous consumer that receives events from `partitionId` and only listens
-to newest events that get pushed to the partition. Developers can begin receiving events from multiple partitions using
+to the newest events that get pushed to the partition. Developers can begin receiving events from multiple partitions using
 the same `EventHubConsumerAsyncClient` by calling `receiveFromPartition(String, EventPosition)` with another partition
 id.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L118-L128 -->
-```java
+```java readme-sample-consumeEventsFromPartition
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -271,8 +304,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
-```java
+```java readme-sample-consumeEventsFromPartitionUsingSyncClient
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -302,9 +334,7 @@ In our example, we will focus on building the [`EventProcessorClient`][EventProc
 received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
-
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
-```java
+```java readme-sample-consumeEventsUsingEventProcessor
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
     .connectionString("<< EVENT HUB CONNECTION STRING >>")
@@ -331,56 +361,7 @@ eventProcessorClient.stop();
 
 ## Troubleshooting
 
-### Enable client logging
-
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
-
-### Enable AMQP transport logging
-
-If enabling client logging is not enough to diagnose your issues. You can enable logging to a file in the underlying
-AMQP library, [Qpid Proton-J][qpid_proton_j_apache]. Qpid Proton-J uses `java.util.logging`. You can enable logging by
-create a configuration file with the contents below. Or set `proton.trace.level=ALL` and whichever configuration options
-you want for the `java.util.logging.Handler` implementation. Implementation classes and their options can be found in
-[Java 8 SDK javadoc][java_8_sdk_javadocs].
-
-To trace the AMQP transport frames, set the environment variable: `PN_TRACE_FRM=1`.
-
-#### Sample "logging.properties" file
-
-The configuration file below logs trace output from proton-j to the file "proton-trace.log".
-
-```
-handlers=java.util.logging.FileHandler
-.level=OFF
-proton.trace.level=ALL
-java.util.logging.FileHandler.level=ALL
-java.util.logging.FileHandler.pattern=proton-trace.log
-java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
-java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
-```
-
-### Exceptions
-
-#### AMQP exception
-
-This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
-context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
-transient error or not. If true, then the request can be retried according to [retry options][AmqpRetryOptions] set;
-otherwise not.
-
-[`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure
-services. When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP
-exception occurred and if possible, how to mitigate this exception. A list of all the AMQP exceptions can be found in
-[OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
-
-The [`AmqpErrorContext`][AmqpErrorContext] in the [`AmqpException`][AmqpException] provides information about the AMQP
-session, link, or connection that the exception occurred in. This is useful to diagnose which level in the transport
-this exception occurred at and whether it was an issue in one of the producers or consumers.
-
-The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
+See [TROUBLESHOOTING.md][troubleshooting].
 
 ## Next steps
 
@@ -419,7 +400,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [SampleCheckpointStore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [maven]: https://maven.apache.org/
 [oasis_amqp_v1_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
@@ -429,5 +410,6 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/TROUBLESHOOTING.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

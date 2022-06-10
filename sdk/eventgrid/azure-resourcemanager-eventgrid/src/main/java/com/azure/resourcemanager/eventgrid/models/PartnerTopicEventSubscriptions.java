@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
 /** Resource collection API of PartnerTopicEventSubscriptions. */
 public interface PartnerTopicEventSubscriptions {
     /**
-     * Get an event subscription of a partner topic.
+     * Get properties of an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -21,12 +21,12 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a partner topic.
+     * @return properties of an event subscription of a partner topic.
      */
     EventSubscription get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Get an event subscription of a partner topic.
+     * Get properties of an event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -36,7 +36,7 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an event subscription of a partner topic.
+     * @return properties of an event subscription of a partner topic along with {@link Response}.
      */
     Response<EventSubscription> getWithResponse(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
@@ -84,7 +84,7 @@ public interface PartnerTopicEventSubscriptions {
         Context context);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -97,7 +97,7 @@ public interface PartnerTopicEventSubscriptions {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName);
 
     /**
-     * Delete an event subscription of a partner topic.
+     * Delete an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -111,7 +111,7 @@ public interface PartnerTopicEventSubscriptions {
     void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -130,7 +130,7 @@ public interface PartnerTopicEventSubscriptions {
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters);
 
     /**
-     * Update event subscription of a partner topic.
+     * Update an existing event subscription of a partner topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
@@ -176,7 +176,7 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a partner topic.
+     * @return the full endpoint URL for an event subscription of a partner topic along with {@link Response}.
      */
     Response<EventSubscriptionFullUrl> getFullUrlWithResponse(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);
@@ -189,7 +189,7 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByPartnerTopic(String resourceGroupName, String partnerTopicName);
 
@@ -210,7 +210,7 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EventSubscription> listByPartnerTopic(
         String resourceGroupName, String partnerTopicName, String filter, Integer top, Context context);
@@ -241,7 +241,7 @@ public interface PartnerTopicEventSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription of a partner topic.
+     * @return all delivery attributes for an event subscription of a partner topic along with {@link Response}.
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context);

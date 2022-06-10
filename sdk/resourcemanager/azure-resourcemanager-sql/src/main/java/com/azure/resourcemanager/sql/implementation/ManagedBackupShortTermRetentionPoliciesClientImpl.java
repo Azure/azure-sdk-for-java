@@ -519,7 +519,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -950,7 +950,7 @@ public final class ManagedBackupShortTermRetentionPoliciesClientImpl
                 this.client.getHttpPipeline(),
                 ManagedBackupShortTermRetentionPolicyInner.class,
                 ManagedBackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

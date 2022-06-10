@@ -6,17 +6,11 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of VIP swap request's frontend IP configuration object. */
 @Fluent
 public final class LoadBalancerVipSwapRequestFrontendIpConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(LoadBalancerVipSwapRequestFrontendIpConfigurationProperties.class);
-
     /*
      * A reference to public IP address resource.
      */

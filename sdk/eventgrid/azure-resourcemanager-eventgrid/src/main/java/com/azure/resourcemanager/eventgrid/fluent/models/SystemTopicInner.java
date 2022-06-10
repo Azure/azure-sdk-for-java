@@ -7,18 +7,14 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** EventGrid System Topic. */
 @Fluent
 public final class SystemTopicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemTopicInner.class);
-
     /*
      * Properties of the system topic.
      */

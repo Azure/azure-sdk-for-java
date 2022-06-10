@@ -6,19 +6,16 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Factory expression definition. */
 @Fluent
 public final class Expression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Expression.class);
-
     /*
      * Expression type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Expression";
 
     /*
      * Expression value.
@@ -78,9 +75,11 @@ public final class Expression {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model Expression"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Expression.class);
 }

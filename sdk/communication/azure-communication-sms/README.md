@@ -1,4 +1,4 @@
-## Azure Communications SMS Service client library for Java
+# Azure Communications SMS Service client library for Java
 
 Azure Communication SMS is used to send simple text messages.
 
@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.4</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 
@@ -65,8 +65,7 @@ A `DefaultAzureCredential` object must be passed to the `SmsClientBuilder` via t
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L56-L62 -->
-```java
+```java readme-sample-createSmsClientWithAAD
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -80,8 +79,7 @@ SmsClient smsClient = new SmsClientBuilder()
 SMS uses HMAC authentication with the resource access key.
 The access key must be provided to the `SmsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L19-L26 -->
-```java
+```java readme-sample-createSmsClientUsingAzureKeyCredential
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<resource-name>.communication.azure.com";
 AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
@@ -93,8 +91,8 @@ SmsClient smsClient = new SmsClientBuilder()
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L45-L50 -->
-```java
+
+```java readme-sample-createSmsClientWithConnectionString
 // You can find your connection string from your resource in the Azure Portal
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
@@ -110,10 +108,9 @@ There are two different forms of authentication to use the Azure Communication S
 ## Examples
 
 ### Send a 1:1 SMS Message
-Use the `send` or `sendWithResponse` function to send a SMS message to a single phone number.
+Use the `send` or `sendWithResponse` function to send an SMS message to a single phone number.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L82-L89 -->
-```java
+```java readme-sample-sendMessageToOneRecipient
 SmsSendResult sendResult = smsClient.send(
     "<from-phone-number>",
     "<to-phone-number>",
@@ -124,10 +121,9 @@ System.out.println("Recipient Number: " + sendResult.getTo());
 System.out.println("Send Result Successful:" + sendResult.isSuccessful());
 ```
 ### Send a 1:N SMS Message
-To send a SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
+To send an SMS message to a list of recipients, call the `send` or `sendWithResponse` function with a list of recipient phone numbers. You may also add pass in an options object to specify whether the delivery report should be enabled and set custom tags.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L95-L110 -->
-```java
+```java readme-sample-sendMessageToGroupWithOptions
 SmsSendOptions options = new SmsSendOptions();
 options.setDeliveryReportEnabled(true);
 options.setTag("Marketing");
@@ -151,8 +147,8 @@ for (SmsSendResult result : sendResults) {
 SMS operations will throw an exception if the request to the server fails.
 Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 Please use the `isSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L132-L155 -->
-```java
+
+```java readme-sample-sendMessageTroubleShooting
 try {
     SmsSendOptions options = new SmsSendOptions();
     options.setDeliveryReportEnabled(true);

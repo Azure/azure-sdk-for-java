@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition and properties of virtual network to which Azure-SSIS integration runtime will join. */
 @Fluent
 public final class IntegrationRuntimeCustomerVirtualNetwork {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeCustomerVirtualNetwork.class);
-
     /*
      * The ID of subnet to which Azure-SSIS integration runtime will join.
      */

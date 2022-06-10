@@ -35,7 +35,7 @@ public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClien
 
     protected static class ListAnomalyDimensionValuesOutput {
         static final ListAnomalyDimensionValuesOutput INSTANCE = new ListAnomalyDimensionValuesOutput();
-        final int expectedValues = 21;
+        final int expectedValues = 2;
     }
 
     protected void assertListAnomalyDimensionValuesOutput(String value) {

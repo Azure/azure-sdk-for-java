@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response to the list models operation. */
+/** Response of listing models. */
 @Fluent
 public final class ModelList {
     /*
@@ -30,7 +30,7 @@ public final class ModelList {
     private int maxCount;
 
     /*
-     * next link to fetch more models
+     * The link to fetch more models.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -96,7 +96,7 @@ public final class ModelList {
     }
 
     /**
-     * Get the nextLink property: next link to fetch more models.
+     * Get the nextLink property: The link to fetch more models.
      *
      * @return the nextLink value.
      */
@@ -105,7 +105,7 @@ public final class ModelList {
     }
 
     /**
-     * Set the nextLink property: next link to fetch more models.
+     * Set the nextLink property: The link to fetch more models.
      *
      * @param nextLink the nextLink value to set.
      * @return the ModelList object itself.

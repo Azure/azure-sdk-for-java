@@ -6,6 +6,7 @@ package com.azure.monitor.query;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -13,6 +14,7 @@ import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
+import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.Metric;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
 import com.azure.monitor.query.implementation.metrics.models.MetadataValue;
@@ -44,7 +46,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The asynchronous client for querying Azure Monitor metrics.
  * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.MetricsQueryAsyncClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
+ * <pre>
+ * MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class, isAsync = true)
 public final class MetricsQueryAsyncClient {
@@ -65,15 +73,31 @@ public final class MetricsQueryAsyncClient {
      *
      * <p><strong>Query metrics for an Azure resource</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.MetricsQueryAsyncClient.query#String-List}
+     * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.query#String-List -->
+     * <pre>
+     * Mono&lt;MetricsQueryResult&gt; response = metricsQueryAsyncClient
+     *         .queryResource&#40;&quot;&#123;resource-id&#125;&quot;, Arrays.asList&#40;&quot;&#123;metric-1&#125;&quot;, &quot;&#123;metric-2&#125;&quot;&#41;&#41;;
+     *
+     * response.subscribe&#40;result -&gt; &#123;
+     *     for &#40;MetricResult metricResult : result.getMetrics&#40;&#41;&#41; &#123;
+     *         System.out.println&#40;&quot;Metric name &quot; + metricResult.getMetricName&#40;&#41;&#41;;
+     *         metricResult.getTimeSeries&#40;&#41;.stream&#40;&#41;
+     *                 .flatMap&#40;timeSeriesElement -&gt; timeSeriesElement.getValues&#40;&#41;.stream&#40;&#41;&#41;
+     *                 .forEach&#40;metricValue -&gt;
+     *                         System.out.println&#40;&quot;Time stamp: &quot; + metricValue.getTimeStamp&#40;&#41; + &quot;; Total:  &quot;
+     *                                 + metricValue.getTotal&#40;&#41;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.query#String-List -->
      *
      * @param resourceUri The resource URI for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsQueryResult> query(String resourceUri, List<String> metricsNames) {
-        return queryWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
+    public Mono<MetricsQueryResult> queryResource(String resourceUri, List<String> metricsNames) {
+        return queryResourceWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
     }
 
     /**
@@ -84,9 +108,9 @@ public final class MetricsQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
-                                                                MetricsQueryOptions options) {
-        return withContext(context -> queryWithResponse(resourceUri, metricsNames, options, context));
+    public Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
+                                                                        MetricsQueryOptions options) {
+        return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
     }
 
     /**
@@ -160,7 +184,7 @@ public final class MetricsQueryAsyncClient {
     PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
-                .listAsync(resourceUri, startTime.toString(), context)
+                .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
                 .mapPage(this::mapMetricNamespace);
     }
 
@@ -181,13 +205,13 @@ public final class MetricsQueryAsyncClient {
                 .mapPage(this::mapToMetricDefinition);
     }
 
-    Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
-                                                         MetricsQueryOptions options, Context context) {
+    Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
+                                                                 MetricsQueryOptions options, Context context) {
         String aggregation = null;
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
                     .stream()
-                    .map(type -> String.valueOf(type.ordinal()))
+                    .map(type -> type.toString())
                     .collect(Collectors.joining(","));
         }
         String timespan = options.getTimeInterval() == null ? null
@@ -197,7 +221,11 @@ public final class MetricsQueryAsyncClient {
                 .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
                         String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
                         options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
-                .map(response -> convertToMetricsQueryResult(response));
+                .map(response -> convertToMetricsQueryResult(response))
+                .onErrorMap(ErrorResponseException.class, ex -> {
+                    return new HttpResponseException(ex.getMessage(), ex.getResponse(),
+                            new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
+                });
     }
 
     private Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {

@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-appplatform</artifactId>
-    <version>2.8.0</version>
+    <version>2.15.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -41,8 +41,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
-<!-- embedme ./src/samples/java/com/azure/resourcemanager/appplatform/ReadmeSamples.java#L21-L26 -->
-```java
+```java readme-sample-authenticate
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())

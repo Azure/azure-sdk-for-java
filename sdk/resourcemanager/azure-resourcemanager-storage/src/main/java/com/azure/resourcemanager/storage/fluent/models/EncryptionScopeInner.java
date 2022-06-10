@@ -6,19 +6,15 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultProperties;
 import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
 import com.azure.resourcemanager.storage.models.EncryptionScopeState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Encryption Scope resource. */
 @Fluent
 public final class EncryptionScopeInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeInner.class);
-
     /*
      * Properties of the encryption scope.
      */

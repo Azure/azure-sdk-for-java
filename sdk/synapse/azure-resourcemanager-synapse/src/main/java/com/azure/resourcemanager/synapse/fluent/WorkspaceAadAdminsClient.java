@@ -36,7 +36,7 @@ public interface WorkspaceAadAdminsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
+     * @return a workspace active directory admin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkspaceAadAdminInfoInner> getWithResponse(
@@ -51,9 +51,9 @@ public interface WorkspaceAadAdminsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return the {@link SyncPoller} for polling of workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
 
@@ -67,9 +67,9 @@ public interface WorkspaceAadAdminsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return the {@link SyncPoller} for polling of workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
 
@@ -112,9 +112,9 @@ public interface WorkspaceAadAdminsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName);
 
     /**
@@ -126,9 +126,9 @@ public interface WorkspaceAadAdminsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, Context context);
 
     /**

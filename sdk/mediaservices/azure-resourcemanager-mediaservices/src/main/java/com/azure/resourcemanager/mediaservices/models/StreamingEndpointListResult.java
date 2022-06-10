@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The streaming endpoint list result. */
+/** StreamingEndpointListResult The streaming endpoint list result. */
 @Fluent
 public final class StreamingEndpointListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingEndpointListResult.class);
-
     /*
      * The result of the List StreamingEndpoint operation.
      */

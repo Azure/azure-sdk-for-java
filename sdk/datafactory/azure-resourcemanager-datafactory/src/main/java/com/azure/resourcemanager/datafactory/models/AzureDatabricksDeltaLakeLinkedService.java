@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDetltaLakeLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("AzureDatabricksDeltaLake")
 @Fluent
 public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeLinkedService.class);
-
     /*
      * Azure Databricks Delta Lake linked service properties.
      */
@@ -168,6 +165,54 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Object workspaceResourceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().workspaceResourceId();
+    }
+
+    /**
+     * Set the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withWorkspaceResourceId(Object workspaceResourceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withWorkspaceResourceId(workspaceResourceId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -176,7 +221,7 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model"
@@ -185,4 +230,6 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksDeltaLakeLinkedService.class);
 }

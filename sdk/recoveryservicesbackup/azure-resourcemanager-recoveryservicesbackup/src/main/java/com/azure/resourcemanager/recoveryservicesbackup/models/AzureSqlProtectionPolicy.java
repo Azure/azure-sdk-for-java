@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Azure SQL workload-specific backup policy. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("AzureSql")
 @Fluent
 public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlProtectionPolicy.class);
-
     /*
      * Retention policy details.
      */
@@ -48,6 +45,13 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
     @Override
     public AzureSqlProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

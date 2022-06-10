@@ -11,11 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TokenInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecurityPINsImpl implements SecurityPINs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPINsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPINsImpl.class);
 
     private final SecurityPINsClient innerClient;
 
@@ -37,9 +37,10 @@ public final class SecurityPINsImpl implements SecurityPINs {
         }
     }
 
-    public Response<TokenInformation> getWithResponse(String vaultName, String resourceGroupName, Context context) {
+    public Response<TokenInformation> getWithResponse(
+        String vaultName, String resourceGroupName, SecurityPinBase parameters, Context context) {
         Response<TokenInformationInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, context);
+            this.serviceClient().getWithResponse(vaultName, resourceGroupName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

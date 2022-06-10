@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -108,7 +109,7 @@ class ServiceBusReceiverAsyncClientTest {
     private static final Duration CLEANUP_INTERVAL = Duration.ofSeconds(10);
     private static final String SESSION_ID = "my-session-id";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
@@ -118,6 +119,7 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient sessionReceiver;
+    private AutoCloseable mocksCloseable;
 
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
@@ -152,9 +154,9 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
@@ -192,16 +194,17 @@ class ServiceBusReceiverAsyncClientTest {
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, "Some-Session",
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
                 null),
             connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+    void teardown(TestInfo testInfo) throws Exception {
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         receiver.close();
+        mocksCloseable.close();
         Mockito.framework().clearInlineMock(this);
     }
 
@@ -312,7 +315,7 @@ class ServiceBusReceiverAsyncClientTest {
         final Duration maxLockRenewDuration = Duration.ofMinutes(1);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
-                false, "Some-Session", null), connectionProcessor,
+                false, SESSION_ID, null), connectionProcessor,
             CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
@@ -341,11 +344,19 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    public static Stream<DispositionStatus> settleWithNullTransactionId() {
+        return Stream.of(DispositionStatus.DEFERRED, DispositionStatus.ABANDONED, DispositionStatus.COMPLETED,
+            DispositionStatus.SUSPENDED);
+    }
+
     /**
      * Verifies that we error if we try to settle a message with null transaction-id.
+     *
+     * Transactions are not used in {@link ServiceBusReceiverAsyncClient#release(ServiceBusReceivedMessage)} since this
+     * is package-private, so we skip this case.
      */
     @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
+    @MethodSource
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
@@ -557,7 +568,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AzureException("some error occurred.")));
 
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, "Some-Session",
+        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider, messageSerializer, onClientClose);
@@ -764,6 +775,9 @@ class ServiceBusReceiverAsyncClientTest {
                 break;
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedMessage);
+                break;
+            case RELEASED:
+                operation = receiver.release(receivedMessage);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
@@ -1022,6 +1036,16 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Get null session id for non-session receiver and gets valid session id for a session receiver.
+     */
+    @Test
+    void getSessionIdTests() {
+        // Act & Assert
+        Assertions.assertNull(receiver.getSessionId(), "Non-null session Id for a non-session receiver");
+        Assertions.assertEquals(SESSION_ID, sessionReceiver.getSessionId());
+    }
+
+    /**
      * Verifies that we can renew a session state.
      */
     @Test
@@ -1061,20 +1085,23 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final Duration maxDuration = Duration.ofSeconds(8);
         final Duration renewalPeriod = Duration.ofSeconds(3);
-        final String lockToken = "some-token";
+
+        final UUID lockTokenUUID = UUID.randomUUID();
+        final String lockToken = lockTokenUUID.toString();
+        final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(BinaryData.fromString("foo"));
+        message.setLockToken(lockTokenUUID);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(managementNode.renewMessageLock(lockToken, null))
             .thenReturn(Mono.fromCallable(() -> OffsetDateTime.now().plus(renewalPeriod)));
 
         // Act & Assert
-        StepVerifier.create(receiver.renewMessageLock(receivedMessage, maxDuration))
+        StepVerifier.create(receiver.renewMessageLock(message, maxDuration))
             .thenAwait(totalSleepPeriod)
-            .then(() -> logger.info("Finished renewals for first sleep."))
+            .then(() -> LOGGER.info("Finished renewals for first sleep."))
             .expectComplete()
             .verify(Duration.ofSeconds(5));
 
@@ -1135,7 +1162,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "some-token";
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))
@@ -1144,7 +1171,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(sessionReceiver.renewSessionLock(sessionId, maxDuration))
             .thenAwait(totalSleepPeriod)
-            .then(() -> logger.info("Finished renewals for first sleep."))
+            .then(() -> LOGGER.info("Finished renewals for first sleep."))
             .expectComplete()
             .verify(Duration.ofSeconds(5));
 
@@ -1232,7 +1259,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken3 = "token3";
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
-            true, "Some-Session", null);
+            true, SESSION_ID, null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);

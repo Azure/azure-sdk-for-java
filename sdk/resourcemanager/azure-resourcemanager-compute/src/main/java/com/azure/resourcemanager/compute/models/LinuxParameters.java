@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for InstallPatches on a Linux VM, as directly received by the API. */
 @Fluent
 public final class LinuxParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxParameters.class);
-
     /*
      * The update classifications to select when installing patches for Linux.
      */

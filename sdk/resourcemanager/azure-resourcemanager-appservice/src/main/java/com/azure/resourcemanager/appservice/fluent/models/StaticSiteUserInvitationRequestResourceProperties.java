@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** StaticSiteUserInvitationRequestResource resource specific properties. */
 @Fluent
 public final class StaticSiteUserInvitationRequestResourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StaticSiteUserInvitationRequestResourceProperties.class);
-
     /*
      * The domain name for the static site custom domain.
      */

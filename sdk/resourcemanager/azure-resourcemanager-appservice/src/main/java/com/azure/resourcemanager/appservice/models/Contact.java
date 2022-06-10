@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Contact {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Contact.class);
-
     /*
      * Mailing address.
      */
@@ -261,22 +258,24 @@ public final class Contact {
             addressMailing().validate();
         }
         if (email() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property email in model Contact"));
         }
         if (nameFirst() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nameFirst in model Contact"));
         }
         if (nameLast() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nameLast in model Contact"));
         }
         if (phone() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property phone in model Contact"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Contact.class);
 }

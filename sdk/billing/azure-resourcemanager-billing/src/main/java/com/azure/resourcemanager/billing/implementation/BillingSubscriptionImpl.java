@@ -9,6 +9,8 @@ import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.BillingSubscription;
 import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public final class BillingSubscriptionImpl implements BillingSubscription {
@@ -92,6 +94,15 @@ public final class BillingSubscriptionImpl implements BillingSubscription {
 
     public String skuDescription() {
         return this.innerModel().skuDescription();
+    }
+
+    public List<String> suspensionReasons() {
+        List<String> inner = this.innerModel().suspensionReasons();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public BillingSubscriptionInner innerModel() {

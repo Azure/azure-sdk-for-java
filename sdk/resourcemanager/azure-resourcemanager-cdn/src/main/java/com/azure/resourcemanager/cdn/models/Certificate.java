@@ -15,22 +15,42 @@ public class Certificate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Certificate.class);
 
     /*
+     * The type of the secret resource.
+     */
+    @JsonProperty(value = "type")
+    private SecretType type;
+
+    /*
      * Subject name in the certificate.
      */
-    @JsonProperty(value = "subject")
+    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * Certificate expiration date.
      */
-    @JsonProperty(value = "expirationDate")
+    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String expirationDate;
 
-    /*
-     * Certificate thumbprint.
+    /**
+     * Get the type property: The type of the secret resource.
+     *
+     * @return the type value.
      */
-    @JsonProperty(value = "thumbprint")
-    private String thumbprint;
+    public SecretType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of the secret resource.
+     *
+     * @param type the type value to set.
+     * @return the Certificate object itself.
+     */
+    public Certificate withType(SecretType type) {
+        this.type = type;
+        return this;
+    }
 
     /**
      * Get the subject property: Subject name in the certificate.
@@ -42,54 +62,12 @@ public class Certificate {
     }
 
     /**
-     * Set the subject property: Subject name in the certificate.
-     *
-     * @param subject the subject value to set.
-     * @return the Certificate object itself.
-     */
-    public Certificate withSubject(String subject) {
-        this.subject = subject;
-        return this;
-    }
-
-    /**
      * Get the expirationDate property: Certificate expiration date.
      *
      * @return the expirationDate value.
      */
     public String expirationDate() {
         return this.expirationDate;
-    }
-
-    /**
-     * Set the expirationDate property: Certificate expiration date.
-     *
-     * @param expirationDate the expirationDate value to set.
-     * @return the Certificate object itself.
-     */
-    public Certificate withExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
-        return this;
-    }
-
-    /**
-     * Get the thumbprint property: Certificate thumbprint.
-     *
-     * @return the thumbprint value.
-     */
-    public String thumbprint() {
-        return this.thumbprint;
-    }
-
-    /**
-     * Set the thumbprint property: Certificate thumbprint.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the Certificate object itself.
-     */
-    public Certificate withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
     }
 
     /**

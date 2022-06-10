@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the hardware settings for the virtual machine. */
 @Fluent
 public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
     /*
      * Specifies the size of the virtual machine. <br><br> The enum data type
      * is currently deprecated and will be removed by December 23rd 2023.

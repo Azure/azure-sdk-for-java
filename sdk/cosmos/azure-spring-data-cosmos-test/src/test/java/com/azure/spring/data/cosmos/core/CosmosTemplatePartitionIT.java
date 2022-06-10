@@ -13,6 +13,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -42,8 +43,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
@@ -61,6 +62,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NA
 import static com.azure.spring.data.cosmos.common.TestConstants.ZIP_CODE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -85,12 +87,13 @@ public class CosmosTemplatePartitionIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private CosmosClientBuilder cosmosClientBuilder;
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
-            //  Enable Query plan caching for testing
-            System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
+            //  Query plan caching is enabled by default
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
@@ -144,7 +147,7 @@ public class CosmosTemplatePartitionIT {
 
         CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
         AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         int initialSize = initialCache.size();
 
@@ -158,7 +161,7 @@ public class CosmosTemplatePartitionIT {
         result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName()));
 
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
         assertThat(result.size()).isEqualTo(1);
@@ -194,6 +197,16 @@ public class CosmosTemplatePartitionIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
 
         assertEquals(TEST_PERSON, partitionPersonById);
+    }
+
+    @Test
+    public void testFindByIdWithPartitionNotExists() {
+        final PartitionPerson partitionPersonById = cosmosTemplate.findById(NOT_EXIST_ID,
+            PartitionPerson.class,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+
+        assertNull(partitionPersonById);
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test

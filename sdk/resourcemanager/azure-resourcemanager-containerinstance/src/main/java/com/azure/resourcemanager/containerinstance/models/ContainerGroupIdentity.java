@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Identity for the container group. */
 @Fluent
 public class ContainerGroupIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupIdentity.class);
-
     /*
      * The principal id of the container group identity. This property will
      * only be provided for a system assigned identity.
@@ -45,6 +42,7 @@ public class ContainerGroupIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**

@@ -1,14 +1,80 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.13.0 (2022-06-10)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.1`.
+- Update `azure-storage-blob` dependency to `12.17.1`.
+
+## 1.12.2 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.12.0`.
+- Update `azure-storage-blob` dependency to `12.16.1`.
+
+## 1.12.1 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.11.2`.
+- Update `azure-storage-blob` dependency to `12.16.0`.
+
+## 1.12.0 (2022-03-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.11.1`.
+- Update `azure-storage-blob` dependency to `12.15.0`.
+
+## 1.11.0 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.11.0`.
+- Update `azure-storage-blob` dependency to `12.14.3`.
+
+## 1.10.3 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.4`.
+- Update `azure-storage-blob` dependency to `12.14.3`.
+
+## 1.10.2 (2021-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.3`.
+- Update `azure-storage-blob` dependency to `12.14.2`.
+
+## 1.10.1 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.2`.
+- Update `azure-storage-blob` dependency to `12.14.1`.
 
 ## 1.10.0 (2021-09-20)
 
@@ -114,7 +180,7 @@
 - Updated version of `azure-messaging-eventhubs` to `5.1.0-beta.1` that supports receiving events in batches.
 
 ## 1.0.3 (2020-04-08)
-- Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
+- Fix bug where processor would not respond after a reconnect due to being unable to load balance partitions.
 
 ## 1.0.2 (2020-02-12)
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.

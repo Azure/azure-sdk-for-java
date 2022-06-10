@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Common Data Service for Apps linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,7 +25,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private DynamicsDeploymentType deploymentType;
+    private Object deploymentType;
 
     /*
      * The host name of the on-premises Common Data Service for Apps server.
@@ -65,7 +67,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * online scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private DynamicsAuthenticationType authenticationType;
+    private Object authenticationType;
 
     /*
      * User name to access the Common Data Service for Apps instance. Type:
@@ -120,7 +122,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the deploymentType value.
      */
-    public DynamicsDeploymentType getDeploymentType() {
+    public Object getDeploymentType() {
         return this.deploymentType;
     }
 
@@ -132,7 +134,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService setDeploymentType(DynamicsDeploymentType deploymentType) {
+    public CommonDataServiceForAppsLinkedService setDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -236,7 +238,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public DynamicsAuthenticationType getAuthenticationType() {
+    public Object getAuthenticationType() {
         return this.authenticationType;
     }
 
@@ -248,7 +250,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService setAuthenticationType(DynamicsAuthenticationType authenticationType) {
+    public CommonDataServiceForAppsLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -383,6 +385,34 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      */
     public CommonDataServiceForAppsLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CommonDataServiceForAppsLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

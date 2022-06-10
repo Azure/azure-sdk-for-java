@@ -17,7 +17,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items.
+     * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MediaService> listByResourceGroup(String resourceGroupName);
 
@@ -29,7 +29,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items.
+     * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MediaService> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -54,7 +54,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Media Services account.
+     * @return the details of a Media Services account along with {@link Response}.
      */
     Response<MediaService> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -79,7 +79,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
 
@@ -105,7 +105,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> syncStorageKeysWithResponse(
         String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
@@ -133,7 +133,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<EdgePolicies> listEdgePoliciesWithResponse(
         String resourceGroupName, String accountName, ListEdgePoliciesInput parameters, Context context);
@@ -143,7 +143,7 @@ public interface Mediaservices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items.
+     * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MediaService> list();
 
@@ -154,7 +154,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items.
+     * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MediaService> list(Context context);
 
@@ -165,7 +165,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Media Services account.
+     * @return the details of a Media Services account along with {@link Response}.
      */
     MediaService getById(String id);
 
@@ -177,7 +177,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Media Services account.
+     * @return the details of a Media Services account along with {@link Response}.
      */
     Response<MediaService> getByIdWithResponse(String id, Context context);
 
@@ -199,7 +199,7 @@ public interface Mediaservices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

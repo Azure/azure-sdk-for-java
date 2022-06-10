@@ -46,6 +46,20 @@ public interface EventHubManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     *
+     * @return the ConfigurationsClient object.
+     */
+    ConfigurationsClient getConfigurations();
+
+    /**
      * Gets the NamespacesClient object to access its operations.
      *
      * @return the NamespacesClient object.
@@ -53,25 +67,18 @@ public interface EventHubManagementClient {
     NamespacesClient getNamespaces();
 
     /**
-     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the DisasterRecoveryConfigsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    DisasterRecoveryConfigsClient getDisasterRecoveryConfigs();
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
-     * Gets the EventHubsClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      *
-     * @return the EventHubsClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    EventHubsClient getEventHubs();
-
-    /**
-     * Gets the ConsumerGroupsClient object to access its operations.
-     *
-     * @return the ConsumerGroupsClient object.
-     */
-    ConsumerGroupsClient getConsumerGroups();
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -81,9 +88,30 @@ public interface EventHubManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the RegionsClient object to access its operations.
+     * Gets the EventHubsClient object to access its operations.
      *
-     * @return the RegionsClient object.
+     * @return the EventHubsClient object.
      */
-    RegionsClient getRegions();
+    EventHubsClient getEventHubs();
+
+    /**
+     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     *
+     * @return the DisasterRecoveryConfigsClient object.
+     */
+    DisasterRecoveryConfigsClient getDisasterRecoveryConfigs();
+
+    /**
+     * Gets the ConsumerGroupsClient object to access its operations.
+     *
+     * @return the ConsumerGroupsClient object.
+     */
+    ConsumerGroupsClient getConsumerGroups();
+
+    /**
+     * Gets the SchemaRegistriesClient object to access its operations.
+     *
+     * @return the SchemaRegistriesClient object.
+     */
+    SchemaRegistriesClient getSchemaRegistries();
 }

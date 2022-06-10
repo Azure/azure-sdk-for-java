@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
 import com.azure.resourcemanager.storage.models.EncryptionScopeListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EncryptionScopesClient. */
 public final class EncryptionScopesClientImpl implements EncryptionScopesClient {
-    private final ClientLogger logger = new ClientLogger(EncryptionScopesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EncryptionScopesService service;
 
@@ -154,7 +151,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EncryptionScopeInner>> putWithResponseAsync(
@@ -226,7 +223,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EncryptionScopeInner>> putWithResponseAsync(
@@ -295,7 +292,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptionScopeInner> putAsync(
@@ -304,14 +301,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
         return putWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -358,7 +348,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionScopeInner> putWithResponse(
@@ -386,7 +376,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EncryptionScopeInner>> patchWithResponseAsync(
@@ -457,7 +447,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EncryptionScopeInner>> patchWithResponseAsync(
@@ -525,7 +515,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptionScopeInner> patchAsync(
@@ -534,14 +524,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
         String encryptionScopeName,
         EncryptionScopeInner encryptionScope) {
         return patchWithResponseAsync(resourceGroupName, accountName, encryptionScopeName, encryptionScope)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -586,7 +569,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionScopeInner> patchWithResponse(
@@ -612,7 +595,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EncryptionScopeInner>> getWithResponseAsync(
@@ -671,7 +654,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EncryptionScopeInner>> getWithResponseAsync(
@@ -726,20 +709,13 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptionScopeInner> getAsync(
         String resourceGroupName, String accountName, String encryptionScopeName) {
         return getWithResponseAsync(resourceGroupName, accountName, encryptionScopeName)
-            .flatMap(
-                (Response<EncryptionScopeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -776,7 +752,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Encryption Scope resource.
+     * @return the Encryption Scope resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EncryptionScopeInner> getWithResponse(
@@ -795,7 +771,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(
@@ -856,7 +832,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listSinglePageAsync(
@@ -913,7 +889,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName) {
@@ -933,7 +909,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EncryptionScopeInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -953,7 +929,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName) {
@@ -972,7 +948,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EncryptionScopeInner> list(String resourceGroupName, String accountName, Context context) {
@@ -987,7 +963,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listNextSinglePageAsync(String nextLink) {
@@ -1024,7 +1000,7 @@ public final class EncryptionScopesClientImpl implements EncryptionScopesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of encryption scopes requested, and if paging is required, a URL to the next page of encryption
-     *     scopes.
+     *     scopes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EncryptionScopeInner>> listNextSinglePageAsync(String nextLink, Context context) {

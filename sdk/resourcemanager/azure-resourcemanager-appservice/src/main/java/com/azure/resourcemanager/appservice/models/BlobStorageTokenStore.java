@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the storage of the tokens if blob storage is used. */
 @Fluent
 public final class BlobStorageTokenStore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobStorageTokenStore.class);
-
     /*
      * The name of the app setting containing the SAS URL of the blob storage
      * containing the tokens.

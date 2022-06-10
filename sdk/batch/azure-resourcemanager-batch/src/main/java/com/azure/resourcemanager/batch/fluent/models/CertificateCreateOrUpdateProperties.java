@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.CertificateBaseProperties;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Certificate properties for create operations. */
 @Fluent
 public final class CertificateCreateOrUpdateProperties extends CertificateBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateCreateOrUpdateProperties.class);
-
     /*
      * The base64-encoded contents of the certificate. The maximum size is
      * 10KB.
@@ -102,10 +99,12 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     public void validate() {
         super.validate();
         if (data() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property data in model CertificateCreateOrUpdateProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateCreateOrUpdateProperties.class);
 }

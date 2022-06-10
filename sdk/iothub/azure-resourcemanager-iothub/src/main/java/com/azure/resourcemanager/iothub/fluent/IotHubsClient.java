@@ -6,10 +6,12 @@ package com.azure.resourcemanager.iothub.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotHubsClient. */
 public interface IotHubsClient {
@@ -25,9 +27,9 @@ public interface IotHubsClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginManualFailover(
         String iotHubName, String resourceGroupName, FailoverInput failoverInput);
 
@@ -44,9 +46,9 @@ public interface IotHubsClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginManualFailover(
         String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context);
 

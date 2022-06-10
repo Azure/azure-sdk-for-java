@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Terms of service contract properties. */
 @Fluent
 public final class TermsOfServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TermsOfServiceProperties.class);
-
     /*
      * A terms of service text.
      */

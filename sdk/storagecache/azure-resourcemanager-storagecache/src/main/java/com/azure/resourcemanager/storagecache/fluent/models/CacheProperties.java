@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.CacheHealth;
@@ -13,15 +12,12 @@ import com.azure.resourcemanager.storagecache.models.CacheNetworkSettings;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the Cache. */
 @Fluent
 public final class CacheProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheProperties.class);
-
     /*
      * The size of this Cache, in GB.
      */
@@ -82,6 +78,13 @@ public final class CacheProperties {
      */
     @JsonProperty(value = "directoryServicesSettings")
     private CacheDirectorySettings directoryServicesSettings;
+
+    /*
+     * Availability zones for resources. This field should only contain a
+     * single element in the array.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the cacheSizeGB property: The size of this Cache, in GB.
@@ -237,6 +240,28 @@ public final class CacheProperties {
      */
     public CacheProperties withDirectoryServicesSettings(CacheDirectorySettings directoryServicesSettings) {
         this.directoryServicesSettings = directoryServicesSettings;
+        return this;
+    }
+
+    /**
+     * Get the zones property: Availability zones for resources. This field should only contain a single element in the
+     * array.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Availability zones for resources. This field should only contain a single element in the
+     * array.
+     *
+     * @param zones the zones value to set.
+     * @return the CacheProperties object itself.
+     */
+    public CacheProperties withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

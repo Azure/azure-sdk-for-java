@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** ORC dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -23,10 +25,11 @@ public class OrcDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The orcCompressionCodec property.
+     * The data orcCompressionCodec. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.orcCompressionCodec")
-    private OrcCompressionCodec orcCompressionCodec;
+    private Object orcCompressionCodec;
 
     /**
      * Get the location property: The location of the ORC data storage.
@@ -49,22 +52,73 @@ public class OrcDataset extends Dataset {
     }
 
     /**
-     * Get the orcCompressionCodec property: The orcCompressionCodec property.
+     * Get the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @return the orcCompressionCodec value.
      */
-    public OrcCompressionCodec getOrcCompressionCodec() {
+    public Object getOrcCompressionCodec() {
         return this.orcCompressionCodec;
     }
 
     /**
-     * Set the orcCompressionCodec property: The orcCompressionCodec property.
+     * Set the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @param orcCompressionCodec the orcCompressionCodec value to set.
      * @return the OrcDataset object itself.
      */
-    public OrcDataset setOrcCompressionCodec(OrcCompressionCodec orcCompressionCodec) {
+    public OrcDataset setOrcCompressionCodec(Object orcCompressionCodec) {
         this.orcCompressionCodec = orcCompressionCodec;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcDataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

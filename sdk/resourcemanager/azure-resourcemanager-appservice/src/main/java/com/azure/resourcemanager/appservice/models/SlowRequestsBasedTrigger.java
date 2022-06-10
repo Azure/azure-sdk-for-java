@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trigger based on request execution time. */
 @Fluent
 public final class SlowRequestsBasedTrigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlowRequestsBasedTrigger.class);
-
     /*
      * Time taken.
      */

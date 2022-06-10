@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,8 +27,6 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSqlPointInTimeRestoreRequest extends AzureWorkloadSqlRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlPointInTimeRestoreRequest.class);
-
     /*
      * PointInTime value
      */
@@ -112,6 +108,13 @@ public class AzureWorkloadSqlPointInTimeRestoreRequest extends AzureWorkloadSqlR
     @Override
     public AzureWorkloadSqlPointInTimeRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 

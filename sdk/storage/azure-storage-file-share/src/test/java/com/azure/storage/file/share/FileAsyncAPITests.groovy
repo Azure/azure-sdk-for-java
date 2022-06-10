@@ -10,6 +10,7 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
@@ -18,12 +19,12 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 import com.azure.storage.file.share.models.ShareRequestConditions
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareFileCopyOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -61,7 +62,7 @@ class FileAsyncAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -178,7 +179,7 @@ class FileAsyncAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceAsyncClient = new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildAsyncClient()
 
         def fileClient = shareServiceAsyncClient.getShareAsyncClient(shareName)
@@ -621,7 +622,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -657,7 +658,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -689,7 +690,7 @@ class FileAsyncAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block()
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))
@@ -821,6 +822,294 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @Unroll
+    def "Start copy with options"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties.setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+        if (setFilePermissionKey) {
+            smbProperties.setFilePermissionKey(filePermissionKey)
+        }
+        def options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(setFilePermission ? filePermission : null)
+            .setIgnoreReadOnly(ignoreReadOnly)
+            .setSetArchiveAttribute(setArchiveAttribute)
+            .setPermissionCopyModeType(permissionType)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        where:
+        setFilePermissionKey | setFilePermission | ignoreReadOnly | setArchiveAttribute | permissionType
+        true                 | false             | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | true              | false          | false               | PermissionCopyModeType.OVERRIDE
+        false                | false             | true           | false               | PermissionCopyModeType.SOURCE
+        false                | false             | false          | true                | PermissionCopyModeType.SOURCE
+    }
+
+    def "Start copy with options IgnoreReadOnly and SetArchive"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def options = new ShareFileCopyOptions()
+            .setIgnoreReadOnly(true)
+            .setSetArchiveAttribute(true)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+    }
+
+    def "Start copy with options file permission"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
+
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties
+            .setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setNtfsFileAttributes(ntfs)
+
+        def options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
+
+        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
+        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
+    }
+
+    def "Start copy with options change time"() {
+        given:
+        def client = primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties.setFileChangeTime(namer.getUtcNow())
+
+        def options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        smbProperties.getFileChangeTime() == primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime()
+    }
+
+    def "Start copy with options copy smbFileProperties permission key"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
+        // We recreate file properties for each test since we need to store the times for the test with namer.getUtcNow()
+        smbProperties
+            .setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setNtfsFileAttributes(ntfs)
+            .setFilePermissionKey(filePermissionKey)
+
+        def options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
+
+        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
+        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
+    }
+
+    def "Start copy with options lease"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+        def conditions = new ShareRequestConditions().setLeaseId(leaseId)
+
+        def options = new ShareFileCopyOptions()
+            .setDestinationRequestConditions(conditions)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+    }
+
+    def "Start copy with options invalid lease"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def leaseId = namer.getRandomUuid()
+        def conditions = new ShareRequestConditions().setLeaseId(leaseId)
+
+        def options = new ShareFileCopyOptions()
+            .setDestinationRequestConditions(conditions)
+
+
+        when:
+        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options).blockFirst()
+
+        then:
+        // exception: LeaseNotPresentWithFileOperation
+        thrown(ShareStorageException)
+    }
+
+    def "Start copy with options metadata"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def options = new ShareFileCopyOptions()
+            .setMetadata(testMetadata)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+    }
+
+    def "Start copy with options with original smb properties"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def initialProperties = primaryFileAsyncClient.getProperties().block()
+        def creationTime = initialProperties.getSmbProperties().getFileCreationTime()
+        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime()
+        def changedTime = initialProperties.getSmbProperties().getFileChangeTime()
+        def fileAttributes = initialProperties.getSmbProperties().getNtfsFileAttributes()
+
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+        def conditions = new ShareRequestConditions().setLeaseId(leaseId)
+        def list = new CopyableFileSmbPropertiesList()
+            .setCreatedOn(true)
+            .setLastWrittenOn(true)
+            .setChangedOn(true)
+            .setFileAttributes(true)
+
+        def options = new ShareFileCopyOptions()
+            .setDestinationRequestConditions(conditions)
+            .setSmbPropertiesToCopy(list)
+
+        when:
+        PollerFlux<ShareFileCopyInfo, Void> poller = primaryFileAsyncClient.beginCopy(sourceURL,
+            getPollingDuration(1000), options)
+        def copyInfoVerifier = StepVerifier.create(poller)
+
+        then:
+        copyInfoVerifier.assertNext {
+            assert it.getValue().getCopyId() != null
+        }.expectComplete().verify(Duration.ofMinutes(1))
+
+        def resultProperties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
+
+        creationTime == resultProperties.getFileCreationTime()
+        lastWrittenTime == resultProperties.getFileLastWriteTime()
+        changedTime == resultProperties.getFileChangeTime()
+        fileAttributes == resultProperties.getNtfsFileAttributes()
+    }
+
+    def "Start copy with options copy source file error"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def sourceURL = primaryFileAsyncClient.getFileUrl()
+        def ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE)
+        def list = new CopyableFileSmbPropertiesList()
+            .setCreatedOn(createdOn)
+            .setLastWrittenOn(lastWrittenOn)
+            .setChangedOn(changedOn)
+            .setFileAttributes(fileAttributes)
+
+
+        smbProperties
+            .setFileCreationTime(namer.getUtcNow())
+            .setFileLastWriteTime(namer.getUtcNow())
+            .setFileChangeTime(namer.getUtcNow())
+            .setNtfsFileAttributes(ntfs)
+
+        def options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
+            .setSmbPropertiesToCopy(list)
+
+        when:
+        primaryFileAsyncClient.beginCopy(sourceURL, getPollingDuration(1000), options)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        createdOn    | lastWrittenOn | changedOn | fileAttributes
+        true         | false         | false     | false
+        false        | true          | false     | false
+        false        | false         | true      | false
+        false        | false         | false     | true
+    }
+
     @Ignore
     def "Abort copy"() {
         //TODO: Need to find a way of mocking pending copy status
@@ -866,6 +1155,64 @@ class FileAsyncAPITests extends APISpec {
 
         expect:
         StepVerifier.create(primaryFileAsyncClient.deleteWithResponse(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
+            .verifyError(ShareStorageException)
+    }
+
+    def "Delete if exists file"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(null))
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete file that does not exist"() {
+        def client = primaryFileAsyncClient.getFileAsyncClient(generateShareName())
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null).block()
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+        !client.exists().block()
+    }
+
+    def "Delete if exists file that was already deleted"() {
+        setup:
+        primaryFileAsyncClient.createWithResponse(1024, null, null, null, null, null, null).block()
+
+        when:
+        def result1 = primaryFileAsyncClient.deleteIfExists().block()
+        def result2 = primaryFileAsyncClient.deleteIfExists().block()
+
+        then:
+        result1
+        !result2
+    }
+
+    def "Delete if exists file lease"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        def leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(leaseId)))
+            .assertNext {
+                assert assertResponseStatusCode(it, 202)
+            }.verifyComplete()
+    }
+
+    def "Delete if exists file lease fail"() {
+        given:
+        primaryFileAsyncClient.create(1024).block()
+        createLeaseClient(primaryFileAsyncClient).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryFileAsyncClient.deleteIfExistsWithResponse(new ShareRequestConditions().setLeaseId(namer.getRandomUuid())))
             .verifyError(ShareStorageException)
     }
 
@@ -1266,4 +1613,5 @@ class FileAsyncAPITests extends APISpec {
         expect:
         filePath == primaryFileAsyncClient.getFilePath()
     }
+
 }

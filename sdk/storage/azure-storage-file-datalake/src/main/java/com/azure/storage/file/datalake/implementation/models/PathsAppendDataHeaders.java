@@ -5,11 +5,13 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /** The PathsAppendDataHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -32,6 +34,12 @@ public final class PathsAppendDataHeaders {
      */
     @JsonProperty(value = "x-ms-content-crc64")
     private byte[] xMsContentCrc64;
+
+    /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @JsonProperty(value = "x-ms-encryption-key-sha256")
+    private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-request-id property.
@@ -62,6 +70,32 @@ public final class PathsAppendDataHeaders {
      */
     @JsonProperty(value = "Content-MD5")
     private byte[] contentMD5;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsAppendDataHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsAppendDataHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("x-ms-content-crc64") != null) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(rawHeaders.getValue("x-ms-content-crc64"));
+        }
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        if (rawHeaders.getValue("Content-MD5") != null) {
+            this.contentMD5 = Base64.getDecoder().decode(rawHeaders.getValue("Content-MD5"));
+        }
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -120,6 +154,26 @@ public final class PathsAppendDataHeaders {
      */
     public PathsAppendDataHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     *
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
+     * @return the PathsAppendDataHeaders object itself.
+     */
+    public PathsAppendDataHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
         return this;
     }
 

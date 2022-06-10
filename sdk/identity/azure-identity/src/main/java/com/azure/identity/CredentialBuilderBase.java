@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
@@ -91,14 +92,38 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
+     * Sets the configuration store that is used during construction of the credential.
+     *
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}.
+     *
+     * @param configuration The configuration store used to load Env variables and/or properties from.
+     *
+     * @return An updated instance of this builder with the configuration store set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public T configuration(Configuration configuration) {
+        identityClientOptions.setConfiguration(configuration);
+        return (T) this;
+    }
+
+    /**
+     * Enables account identifiers to be logged on client side for debugging/monitoring purposes.
+     * By default, it is disabled.
+     * <p>
+     * The Account Identifier logs can contain sensitive information and should be enabled on protected machines only.
+     * Enabling this logs Application ID, Object ID, Tenant ID and User Principal Name at INFO level when an
+     * access token is successfully retrieved. Ensure that INFO level logs are enabled to
+     * see the account identifier logs.
+     * </p>
      *
      * @return An updated instance of this builder.
      */
     @SuppressWarnings("unchecked")
-    public T allowMultiTenantAuthentication() {
-        this.identityClientOptions.setAllowMultiTenantAuthentication(true);
+    public T enableAccountIdentifierLogging() {
+        identityClientOptions
+            .getIdentityLogOptionsImpl()
+            .setLoggingAccountIdentifiersAllowed(true);
         return (T) this;
     }
 }

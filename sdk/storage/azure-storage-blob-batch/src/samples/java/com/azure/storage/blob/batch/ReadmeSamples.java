@@ -22,14 +22,22 @@ import java.util.List;
  *
  * Code samples for the README.md
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
-    private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().endpoint("<YOUR_END_POINT>").sasToken("<YOUR_SAS_TOKEN>").buildClient();
-    private BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
-    private String blobUrl = String.format("https://%s.blob.core.windows.net/containerName/blobName", "<YOUR_STORAGE_ACCOUNT>");
-    private String blobUrl2 = String.format("https://%s.blob.core.windows.net/containerName/blobName2", "<YOUR_STORAGE_ACCOUNT>");
-    private String blobUrlWithSnapshot = String.format("https://%s.blob.core.windows.net/containerName/blobName?snapshot=<DateTime>", "<YOUR_STORAGE_ACCOUNT>");
-    private String blobUrlWithLease = String.format("https://%s.blob.core.windows.net/containerName/blobNameWithLease", "<YOUR_STORAGE_ACCOUNT>");
-    private List<String> blobUrls = Arrays.asList(blobUrl, blobUrl2, blobUrlWithSnapshot, blobUrlWithLease);
+    private final BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+        .endpoint("<YOUR_END_POINT>")
+        .sasToken("<YOUR_SAS_TOKEN>")
+        .buildClient();
+    private final BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
+    private final String blobUrl = String.format(
+        "https://%s.blob.core.windows.net/containerName/blobName", "<YOUR_STORAGE_ACCOUNT>");
+    private final String blobUrl2 = String.format(
+        "https://%s.blob.core.windows.net/containerName/blobName2", "<YOUR_STORAGE_ACCOUNT>");
+    private final String blobUrlWithSnapshot = String.format(
+        "https://%s.blob.core.windows.net/containerName/blobName?snapshot=<DateTime>", "<YOUR_STORAGE_ACCOUNT>");
+    private final String blobUrlWithLease = String.format(
+        "https://%s.blob.core.windows.net/containerName/blobNameWithLease", "<YOUR_STORAGE_ACCOUNT>");
+    private final List<String> blobUrls = Arrays.asList(blobUrl, blobUrl2, blobUrlWithSnapshot, blobUrlWithLease);
 
     public void createHttpClient() {
         HttpClient client = new NettyAsyncHttpClientBuilder()
@@ -39,22 +47,29 @@ public class ReadmeSamples {
     }
 
     public void creatingBlobBatchClient() {
+        // BEGIN: readme-sample-creatingBlobBatchClient
         BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
+        // END: readme-sample-creatingBlobBatchClient
     }
 
     public void bulkDeletingBlobs() {
+        // BEGIN: readme-sample-bulkDeletingBlobs
         blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
             System.out.printf("Deleting blob with URL %s completed with status code %d%n",
                 response.getRequest().getUrl(), response.getStatusCode()));
+        // END: readme-sample-bulkDeletingBlobs
     }
 
     public void bulkSettingAccessTier() {
+        // BEGIN: readme-sample-bulkSettingAccessTier
         blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
             System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
                 response.getRequest().getUrl(), response.getStatusCode()));
+        // END: readme-sample-bulkSettingAccessTier
     }
 
     public void advancedBatchingDelete() {
+        // BEGIN: readme-sample-advancedBatchingDelete
         BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
         // Delete a blob.
@@ -75,9 +90,11 @@ public class ReadmeSamples {
             deleteSnapshotResponse.getStatusCode());
         System.out.printf("Deleting blob with lease completed with status code %d%n",
             deleteWithLeaseResponse.getStatusCode());
+        // END: readme-sample-advancedBatchingDelete
     }
 
     public void advancedBatchingSetTier() {
+        // BEGIN: readme-sample-advancedBatchingSetTier
         BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
         // Set AccessTier on a blob.
@@ -95,12 +112,15 @@ public class ReadmeSamples {
         System.out.printf("Set AccessTier on blob completed with status code %d%n", setTierResponse2.getStatusCode());
         System.out.printf("Set AccessTier on  blob with lease completed with status code %d%n",
             setTierWithLeaseResponse.getStatusCode());
+        // END: readme-sample-advancedBatchingSetTier
     }
 
     public void deleteBlobWithLease() {
+        // BEGIN: readme-sample-deleteBlobWithLease
         BlobBatch blobBatch = blobBatchClient.getBlobBatch();
         Response<Void> deleteWithLeaseResponse =
             blobBatch.deleteBlob(blobUrlWithLease, DeleteSnapshotsOptionType.INCLUDE, new BlobRequestConditions()
                 .setLeaseId("leaseId"));
+        // END: readme-sample-deleteBlobWithLease
     }
 }

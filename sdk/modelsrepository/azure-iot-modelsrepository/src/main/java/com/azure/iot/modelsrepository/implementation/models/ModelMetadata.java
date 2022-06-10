@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * ModelMetadata is designated to store KPIs from model parsing.
+ * {@link ModelMetadata} is designated to store KPIs from model parsing.
  */
 public class ModelMetadata {
     private final String id;

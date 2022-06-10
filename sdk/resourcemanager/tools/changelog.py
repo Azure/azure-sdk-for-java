@@ -53,7 +53,16 @@ def main():
             current_changelog = left if left.strip() else '\n\n- Migrated from previous sdk\n'
         else:
             left = left[:second_version.start()]
-            current_changelog = left if left.strip() else '\n\n### Dependency Updates\n\n- Updated core dependency from resources\n'
+            exist_lastest_changelog = False
+            for line in left.split('\n'):
+                line = line.strip()
+                if line and not line.startswith('###'):
+                    exist_lastest_changelog = True
+                    break
+            if exist_lastest_changelog:
+                current_changelog = left
+            else:
+                current_changelog = '\n\n### Other Changes\n\n#### Dependency Updates\n\n- Updated core dependency from resources.\n'
 
         version: str = first_version.group().replace(
             first_version.group(2), str(date)).replace(

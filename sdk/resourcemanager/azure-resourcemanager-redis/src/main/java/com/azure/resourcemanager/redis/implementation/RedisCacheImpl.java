@@ -20,6 +20,7 @@ import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
@@ -153,7 +154,8 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
 
     @Override
     public Map<String, String> redisConfiguration() {
-        return Collections.unmodifiableMap(this.innerModel().redisConfiguration());
+        return Collections.unmodifiableMap(
+            ConfigurationUtils.toMap(this.innerModel().redisConfiguration()));
     }
 
     @Override
@@ -251,9 +253,9 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisCacheImpl withRedisConfiguration(Map<String, String> redisConfiguration) {
         if (isInCreateMode()) {
-            createParameters.withRedisConfiguration(redisConfiguration);
+            createParameters.withRedisConfiguration(ConfigurationUtils.toConfiguration(redisConfiguration));
         } else {
-            updateParameters.withRedisConfiguration(redisConfiguration);
+            updateParameters.withRedisConfiguration(ConfigurationUtils.toConfiguration(redisConfiguration));
         }
         return this;
     }
@@ -262,14 +264,24 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     public RedisCacheImpl withRedisConfiguration(String key, String value) {
         if (isInCreateMode()) {
             if (createParameters.redisConfiguration() == null) {
-                createParameters.withRedisConfiguration(new TreeMap<>());
+                createParameters.withRedisConfiguration(new RedisConfiguration());
             }
-            createParameters.redisConfiguration().put(key, value);
+            ConfigurationUtils.putConfiguration(createParameters.redisConfiguration(), key, value);
         } else {
             if (updateParameters.redisConfiguration() == null) {
-                updateParameters.withRedisConfiguration(new TreeMap<>());
+                updateParameters.withRedisConfiguration(new RedisConfiguration());
             }
-            updateParameters.redisConfiguration().put(key, value);
+            ConfigurationUtils.putConfiguration(updateParameters.redisConfiguration(), key, value);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withRedisConfiguration(RedisConfiguration redisConfiguration) {
+        if (isInCreateMode()) {
+            createParameters.withRedisConfiguration(redisConfiguration);
+        } else {
+            updateParameters.withRedisConfiguration(redisConfiguration);
         }
         return this;
     }
@@ -313,16 +325,14 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisCacheImpl withoutRedisConfiguration() {
         if (updateParameters.redisConfiguration() != null) {
-            updateParameters.redisConfiguration().clear();
+            updateParameters.withRedisConfiguration(new RedisConfiguration());
         }
         return this;
     }
 
     @Override
     public RedisCacheImpl withoutRedisConfiguration(String key) {
-        if (updateParameters.redisConfiguration() != null) {
-            updateParameters.redisConfiguration().remove(key);
-        }
+        ConfigurationUtils.removeConfiguration(updateParameters.redisConfiguration(), (key));
         return this;
     }
 
@@ -485,6 +495,17 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             return this;
         } else {
             this.patchSchedules.deleteInlinePatchSchedule();
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl withRedisVersion(RedisVersion redisVersion) {
+        String version = redisVersion == null ? null : redisVersion.getValue();
+        if (isInCreateMode()) {
+            this.createParameters.withRedisVersion(version);
+        } else {
+            this.updateParameters.withRedisVersion(version);
         }
         return this;
     }

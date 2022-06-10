@@ -156,6 +156,13 @@ public interface Topic {
     Boolean disableLocalAuth();
 
     /**
+     * Gets the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    DataResidencyBoundary dataResidencyBoundary();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -168,6 +175,13 @@ public interface Topic {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.TopicInner object.
@@ -230,7 +244,8 @@ public interface Topic {
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithInboundIpRules,
-                DefinitionStages.WithDisableLocalAuth {
+                DefinitionStages.WithDisableLocalAuth,
+                DefinitionStages.WithDataResidencyBoundary {
             /**
              * Executes the create request.
              *
@@ -363,6 +378,16 @@ public interface Topic {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+        /** The stage of the Topic definition allowing to specify dataResidencyBoundary. */
+        interface WithDataResidencyBoundary {
+            /**
+             * Specifies the dataResidencyBoundary property: Data Residency Boundary of the resource..
+             *
+             * @param dataResidencyBoundary Data Residency Boundary of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
+        }
     }
     /**
      * Begins update for the Topic resource.
@@ -378,7 +403,8 @@ public interface Topic {
             UpdateStages.WithSku,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
-            UpdateStages.WithDisableLocalAuth {
+            UpdateStages.WithDisableLocalAuth,
+            UpdateStages.WithDataResidencyBoundary {
         /**
          * Executes the update request.
          *
@@ -470,6 +496,16 @@ public interface Topic {
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+        /** The stage of the Topic update allowing to specify dataResidencyBoundary. */
+        interface WithDataResidencyBoundary {
+            /**
+             * Specifies the dataResidencyBoundary property: The data residency boundary for the topic..
+             *
+             * @param dataResidencyBoundary The data residency boundary for the topic.
+             * @return the next definition stage.
+             */
+            Update withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -502,7 +538,7 @@ public interface Topic {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
+     * @return shared access keys of the Topic along with {@link Response}.
      */
     Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 

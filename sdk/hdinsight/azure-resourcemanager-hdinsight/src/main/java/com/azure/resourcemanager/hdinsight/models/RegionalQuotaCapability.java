@@ -17,19 +17,19 @@ public final class RegionalQuotaCapability {
     /*
      * The region name.
      */
-    @JsonProperty(value = "region_name")
+    @JsonProperty(value = "regionName")
     private String regionName;
 
     /*
      * The number of cores used in the region.
      */
-    @JsonProperty(value = "cores_used")
+    @JsonProperty(value = "coresUsed")
     private Long coresUsed;
 
     /*
      * The number of cores available in the region.
      */
-    @JsonProperty(value = "cores_available")
+    @JsonProperty(value = "coresAvailable")
     private Long coresAvailable;
 
     /**

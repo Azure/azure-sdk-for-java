@@ -9,10 +9,25 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Key Vault Cryptography supported by this client library.
  */
 public enum CryptographyServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 7.0}.
+     */
     V7_0("7.0"),
+
+    /**
+     * Service version {@code 7.1}.
+     */
     V7_1("7.1"),
+
+    /**
+     * Service version {@code 7.2}.
+     */
     V7_2("7.2"),
-    V7_3_PREVIEW("7.3-preview");
+
+    /**
+     * Service version {@code 7.3}.
+     */
+    V7_3("7.3");
 
     private final String version;
 
@@ -34,6 +49,6 @@ public enum CryptographyServiceVersion implements ServiceVersion {
      * @return the latest {@link CryptographyServiceVersion}
      */
     public static CryptographyServiceVersion getLatest() {
-        return V7_3_PREVIEW;
+        return V7_3;
     }
 }

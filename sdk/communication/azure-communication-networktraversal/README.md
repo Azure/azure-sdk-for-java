@@ -6,7 +6,7 @@ It will provide TURN credentials to a user.
 
 [Source code](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication)
 
-# Getting started
+## Getting started
 
 ### Prerequisites
 
@@ -17,12 +17,45 @@ It will provide TURN credentials to a user.
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-attestation</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-communication-networktraversal;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.1.0-beta.2</version>
 </dependency>
 ```
 
@@ -36,8 +69,7 @@ A `DefaultAzureCredential` object can be passed to the `CommunicationRelayClient
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L55-L61 -->
-```java
+```java readme-sample-createCommunicationRelayClientWithAAD
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -51,8 +83,7 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
 Network Traversal uses HMAC authentication with the resource access key.
 The access key can be used to create an AzureKeyCredential and provided to the `CommunicationRelayClientBuilder` via the credential() function. Endpoint must also be set via the endpoint() function.
 
-<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L21-L28 -->
-```java
+```java readme-sample-createCommunicationNetworkTraversalClient
 // You can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
@@ -63,10 +94,21 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
     .buildClient();
 ```
 
+```java readme-sample-createCommunicationNetworkTraversalAsyncClient
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder()
+    .endpoint(endpoint)
+    .credential(keyCredential)
+    .buildAsyncClient();
+```
+
 ### Connection String Authentication
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L39-L44 -->
-```java
+
+```java readme-sample-createCommunicationRelayClientWithConnectionString
 // You can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
@@ -82,44 +124,88 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
 ## Examples
 
 ### Getting a new Relay Configuration
+
+```java readme-sample-getRelayConfigurationWithoutIdentity
+CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration();
+
+System.out.println("Expires on:" + config.getExpiresOn());
+List<CommunicationIceServer> iceServers = config.getIceServers();
+
+for (CommunicationIceServer iceS : iceServers) {
+    System.out.println("URLS: " + iceS.getUrls());
+    System.out.println("Username: " + iceS.getUsername());
+    System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
+}
+```
+
+### Getting a new Relay Configuration providing a user
+
 Use the `createUser` function to create a new user from CommunicationIdentityClient
 Use the `getRelayConfiguration` function to get a Relay Configuration
 
-<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L73-L74 -->
-```java
-CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+```java readme-sample-getRelayConfiguration
+CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
 
 CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 
-CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
-        
-        System.out.println("Expires on:" + config.getExpiresOn());
-        List<CommunicationIceServer> iceServers = config.getIceServers();
+GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+options.setCommunicationUserIdentifier(user);
 
-        for (CommunicationIceServer iceS : iceServers) {
-            System.out.println("URLS: " + iceS.getUrls());
-            System.out.println("Username: " + iceS.getUsername());
-            System.out.println("Credential: " + iceS.getCredential());
-        } 
+CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
+
+System.out.println("Expires on:" + config.getExpiresOn());
+List<CommunicationIceServer> iceServers = config.getIceServers();
+
+for (CommunicationIceServer iceS : iceServers) {
+    System.out.println("URLS: " + iceS.getUrls());
+    System.out.println("Username: " + iceS.getUsername());
+    System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
+}
+```
+
+### Getting a new Relay Configuration providing a Route Type
+
+```java readme-sample-getRelayConfigurationWithRouteType
+
+GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+options.setRouteType(RouteType.ANY);
+
+CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
+
+System.out.println("Expires on:" + config.getExpiresOn());
+List<CommunicationIceServer> iceServers = config.getIceServers();
+
+for (CommunicationIceServer iceS : iceServers) {
+    System.out.println("URLS: " + iceS.getUrls());
+    System.out.println("Username: " + iceS.getUsername());
+    System.out.println("Credential: " + iceS.getCredential());
+    System.out.println("RouteType: " + iceS.getRouteType());
+}
 ```
 
 ## Troubleshooting
 
 All user token service operations will throw an exception on failure.
-<!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L139-L143 -->
-```java
+
+```java readme-sample-createUserTroubleshooting
 try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+    GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+    options.setCommunicationUserIdentifier(user);
+
     CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-    CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
-} catch (CommunicationErrorResponseException ex) {
+    CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
+} catch (RuntimeException ex) {
     System.out.println(ex.getMessage());
 }
 ```
-Refer to the offical documentation for more details and error codes (to be added).
+Refer to the official documentation for more details and error codes (to be added).
 
 ## Next steps
 

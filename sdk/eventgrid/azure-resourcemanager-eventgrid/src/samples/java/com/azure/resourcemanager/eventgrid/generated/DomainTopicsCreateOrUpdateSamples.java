@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DomainTopics CreateOrUpdate. */
 public final class DomainTopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/DomainTopics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/DomainTopics_CreateOrUpdate.json
      */
     /**
      * Sample code: DomainTopics_CreateOrUpdate.

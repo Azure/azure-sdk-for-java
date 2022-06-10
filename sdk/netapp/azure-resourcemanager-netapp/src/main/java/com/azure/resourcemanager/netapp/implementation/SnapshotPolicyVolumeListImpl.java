@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner;
+import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicyVolumeList;
+import com.azure.resourcemanager.netapp.models.Volume;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeList {
     private SnapshotPolicyVolumeListInner innerObject;
@@ -20,10 +23,12 @@ public final class SnapshotPolicyVolumeListImpl implements SnapshotPolicyVolumeL
         this.serviceManager = serviceManager;
     }
 
-    public List<Object> value() {
-        List<Object> inner = this.innerModel().value();
+    public List<Volume> value() {
+        List<VolumeInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections
+                .unmodifiableList(
+                    inner.stream().map(inner1 -> new VolumeImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

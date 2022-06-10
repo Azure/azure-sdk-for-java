@@ -27,7 +27,11 @@ public final class Sku extends ExpandableStringEnum<Sku> {
         return fromString(name, Sku.class);
     }
 
-    /** @return known Sku values. */
+    /**
+     * Gets known Sku values.
+     *
+     * @return known Sku values.
+     */
     public static Collection<Sku> values() {
         return values(Sku.class);
     }

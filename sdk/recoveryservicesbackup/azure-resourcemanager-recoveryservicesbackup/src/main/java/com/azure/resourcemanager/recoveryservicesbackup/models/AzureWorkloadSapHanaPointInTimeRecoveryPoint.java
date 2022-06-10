@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -16,11 +14,8 @@ import java.util.Map;
 /** Recovery point specific to PointInTime in SAPHana. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadSAPHanaPointInTimeRecoveryPoint")
-@Immutable
+@Fluent
 public final class AzureWorkloadSapHanaPointInTimeRecoveryPoint extends AzureWorkloadPointInTimeRecoveryPoint {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureWorkloadSapHanaPointInTimeRecoveryPoint.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withTimeRanges(List<PointInTimeRange> timeRanges) {
@@ -46,7 +41,7 @@ public final class AzureWorkloadSapHanaPointInTimeRecoveryPoint extends AzureWor
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }

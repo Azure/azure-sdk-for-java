@@ -6,7 +6,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
 import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** Big Data pool A Big Data pool. */
 @Fluent
 public final class BigDataPoolResourceInfoInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolResourceInfoInner.class);
-
     /*
      * Spark pool properties Big Data pool properties
      */
@@ -107,20 +103,6 @@ public final class BigDataPoolResourceInfoInner extends Resource {
      */
     public OffsetDateTime creationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().creationDate();
-    }
-
-    /**
-     * Set the creationDate property: The time when the Big Data pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withCreationDate(OffsetDateTime creationDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BigDataPoolResourceProperties();
-        }
-        this.innerProperties().withCreationDate(creationDate);
-        return this;
     }
 
     /**

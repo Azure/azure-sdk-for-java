@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure File Storage linked service properties. */
 @Fluent
 public final class AzureFileStorageLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileStorageLinkedServiceTypeProperties.class);
-
     /*
      * Host name of the server. Type: string (or Expression with resultType
      * string).

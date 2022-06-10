@@ -39,7 +39,14 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  * {@link TableServiceClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct a sync client</strong></p>
- * {@codesnippet com.azure.data.tables.tableServiceClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.instantiation -->
+ * <pre>
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.instantiation -->
  *
  * @see TableServiceClientBuilder
  */
@@ -106,7 +113,9 @@ public final class TableServiceClient {
     }
 
     /**
-     * Gets a {@link TableClient} instance for the table in the account with the provided {@code tableName}.
+     * Gets a {@link TableClient} instance for the table in the account with the provided {@code tableName}. The
+     * resulting {@link TableClient} will use the same {@link HttpPipeline pipeline} and
+     * {@link TableServiceVersion service version} as this {@link TableServiceClient}.
      *
      * @param tableName The name of the table.
      *
@@ -123,7 +132,13 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.createTable#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.createTable#String -->
+     * <pre>
+     * TableClient tableClient = tableServiceClient.createTable&#40;&quot;myTable&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableClient.getTableName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.createTable#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -142,7 +157,15 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableWithResponse#String-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.createTableWithResponse#String-Duration-Context -->
+     * <pre>
+     * Response&lt;TableClient&gt; response = tableServiceClient.createTableWithResponse&#40;&quot;myTable&quot;, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getTableName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.createTableWithResponse#String-Duration-Context -->
      *
      * @param tableName The name of the table to create.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -178,7 +201,13 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableIfNotExists#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.createTableIfNotExists#String -->
+     * <pre>
+     * TableClient tableClient = tableServiceClient.createTableIfNotExists&#40;&quot;myTable&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableClient.getTableName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.createTableIfNotExists#String -->
      *
      * @param tableName The name of the table to create.
      *
@@ -197,7 +226,16 @@ public final class TableServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the {@link Response HTTP response}
      * and the created table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.createTableIfNotExistsWithResponse#String-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.createTableIfNotExistsWithResponse#String-Duration-Context -->
+     * <pre>
+     * Response&lt;TableClient&gt; response =
+     *     tableServiceClient.createTableIfNotExistsWithResponse&#40;&quot;myTable&quot;, Duration.ofSeconds&#40;5&#41;,
+     *         new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was created.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getTableName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.createTableIfNotExistsWithResponse#String-Duration-Context -->
      *
      * @param tableName The name of the table to create.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -230,7 +268,15 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.deleteTable#String}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
+     * <pre>
+     * String tableName = &quot;myTable&quot;;
+     *
+     * tableServiceClient.deleteTable&#40;tableName&#41;;
+     *
+     * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, tableName&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.deleteTable#String -->
      *
      * @param tableName The name of the table to delete.
      *
@@ -247,7 +293,17 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context -->
+     * <pre>
+     * String myTableName = &quot;myTable&quot;;
+     *
+     * Response&lt;Void&gt; response = tableServiceClient.deleteTableWithResponse&#40;myTableName, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was deleted.&quot;,
+     *     response.getStatusCode&#40;&#41;, myTableName&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context -->
      *
      * @param tableName The name of the table to delete.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -269,7 +325,14 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all tables. Prints out the details of the retrieved tables.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.listTables}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables -->
+     * <pre>
+     * PagedIterable&lt;TableItem&gt; tableItems = tableServiceClient.listTables&#40;&#41;;
+     *
+     * tableItems.forEach&#40;tableItem -&gt;
+     *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.listTables -->
      *
      * @return A {@link PagedIterable} containing all tables within the account.
      *
@@ -286,7 +349,17 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
+     * <pre>
+     * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
+     *
+     * PagedIterable&lt;TableItem&gt; retrievedTableItems = tableServiceClient.listTables&#40;options, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * retrievedTableItems.forEach&#40;tableItem -&gt;
+     *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
      *
      * @param options The {@code filter} and {@code top} OData query options to apply to this operation.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -311,7 +384,13 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.getProperties}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.getProperties -->
+     * <pre>
+     * TableServiceProperties properties = tableServiceClient.getProperties&#40;&#41;;
+     *
+     * System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.getProperties -->
      *
      * @return The {@link TableServiceProperties properties} of the account's Table service.
      *
@@ -331,7 +410,14 @@ public final class TableServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the properties of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.getPropertiesWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.getPropertiesWithResponse#Duration-Context -->
+     * <pre>
+     * Response&lt;TableServiceProperties&gt; response =
+     *     tableServiceClient.getPropertiesWithResponse&#40;Duration.ofSeconds&#40;5&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved service properties successfully with status code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.getPropertiesWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
@@ -355,7 +441,24 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
+     * <pre>
+     * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
+     *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setEnabled&#40;true&#41;&#41;
+     *     .setLogging&#40;new TableServiceLogging&#40;&#41;
+     *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
+     *         .setReadLogged&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;;
+     *
+     * tableServiceClient.setProperties&#40;properties&#41;;
+     *
+     * System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      *
@@ -375,7 +478,25 @@ public final class TableServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the properties of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context -->
+     * <pre>
+     * TableServiceProperties myProperties = new TableServiceProperties&#40;&#41;
+     *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setEnabled&#40;true&#41;&#41;
+     *     .setLogging&#40;new TableServiceLogging&#40;&#41;
+     *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
+     *         .setReadLogged&#40;true&#41;
+     *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+     *             .setEnabled&#40;true&#41;
+     *             .setDaysToRetain&#40;5&#41;&#41;&#41;;
+     *
+     * Response&lt;Void&gt; response = tableServiceClient.setPropertiesWithResponse&#40;myProperties, Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved service properties successfully with status code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.setPropertiesWithResponse#TableServiceProperties-Duration-Context -->
      *
      * @param tableServiceProperties The {@link TableServiceProperties} to set.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -400,7 +521,13 @@ public final class TableServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.getStatistics}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.getStatistics -->
+     * <pre>
+     * TableServiceStatistics statistics = tableServiceClient.getStatistics&#40;&#41;;
+     *
+     * System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.getStatistics -->
      *
      * @return {@link TableServiceStatistics Statistics} for the account's Table service.
      *
@@ -420,7 +547,15 @@ public final class TableServiceClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the replication statistics of the account's Table service. Prints out the details of the
      * {@link Response HTTP response}.</p>
-     * {@codesnippet com.azure.data.tables.tableServiceClient.getStatisticsWithResponse#Duration-Context}
+     * <!-- src_embed com.azure.data.tables.tableServiceClient.getStatisticsWithResponse#Duration-Context -->
+     * <pre>
+     * Response&lt;TableServiceStatistics&gt; response = tableServiceClient.getStatisticsWithResponse&#40;Duration.ofSeconds&#40;5&#41;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved service statistics successfully with status code: %d.&quot;,
+     *     response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.tables.tableServiceClient.getStatisticsWithResponse#Duration-Context -->
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during

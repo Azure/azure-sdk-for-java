@@ -31,6 +31,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.PortPolicy;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
@@ -40,6 +41,7 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.test.implementation.entities.HttpBinHeaders;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,6 +49,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
@@ -445,6 +448,13 @@ public abstract class RestProxyTests {
             @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Mono<HttpBinJSON> putAsyncBodyAndContentLength(
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) BinaryData body,
+            @HeaderParam("Content-Length") long contentLength);
+
+        @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -537,7 +547,7 @@ public abstract class RestProxyTests {
     @Test
     public void syncPutRequestWithBodyLessThanContentLength() {
         ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        UnexpectedLengthException unexpectedLengthException = assertThrows(UnexpectedLengthException.class, () -> {
+        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
             createService(Service9.class).putBodyAndContentLength(body, 5L);
             body.clear();
         });
@@ -547,7 +557,7 @@ public abstract class RestProxyTests {
     @Test
     public void syncPutRequestWithBodyMoreThanContentLength() {
         ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        UnexpectedLengthException unexpectedLengthException = assertThrows(UnexpectedLengthException.class, () -> {
+        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
             createService(Service9.class).putBodyAndContentLength(body, 3L);
             body.clear();
         });
@@ -571,7 +581,9 @@ public abstract class RestProxyTests {
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 5L))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException);
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("less than"));
             });
     }
@@ -581,7 +593,91 @@ public abstract class RestProxyTests {
         Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8)));
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 3L))
             .verifyErrorSatisfies(exception -> {
-                assertTrue(exception instanceof UnexpectedLengthException);
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("more than"));
+            });
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndEqualContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 4L)))
+            .assertNext(json -> {
+                assertEquals("test", json.data());
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
+                assertEquals("4", json.getHeaderValue("Content-Length"));
+            }).verifyComplete();
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndLessThanContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 5L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("less than"));
+            });
+    }
+
+    /**
+     * LengthValidatingInputStream in rest proxy relies on reader
+     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     */
+    @Test
+    public void asyncPutRequestWithStreamBinaryDataBodyAndLessThanContentLength() {
+        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
+            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 5L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("less than"));
+            });
+    }
+
+    @Test
+    public void asyncPutRequestWithBinaryDataBodyAndMoreThanContentLength() {
+        Mono<BinaryData> bodyMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                assertTrue(exception.getMessage().contains("more than"));
+            });
+    }
+
+    /**
+     * LengthValidatingInputStream in rest proxy relies on reader
+     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     */
+    @Test
+    public void asyncPutRequestWithStreamBinaryDataBodyAndMoreThanContentLength() {
+        Mono<BinaryData> bodyMono = Mono.just(BinaryData.fromStream(
+            new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8))));
+        StepVerifier.create(
+                bodyMono.flatMap(body ->
+                    createService(Service9.class).putAsyncBodyAndContentLength(body, 3L)))
+            .verifyErrorSatisfies(exception -> {
+                assertTrue(exception instanceof UnexpectedLengthException
+                    || (exception.getSuppressed().length > 0
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1587,6 +1683,36 @@ public abstract class RestProxyTests {
         assertEquals("quick brown fox", response.getValue().data());
     }
 
+    @Host("http://localhost")
+    @ServiceInterface(name = "FluxUploadService")
+    interface BinaryDataUploadService {
+        @Put("/put")
+        Response<HttpBinJSON> put(@BodyParam("text/plain") BinaryData content,
+                                  @HeaderParam("Content-Length") long contentLength);
+    }
+
+    @Test
+    public void binaryDataUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        BinaryData data = BinaryData.fromFile(filePath);
+
+        final HttpClient httpClient = createHttpClient();
+        // Scenario: Log the body so that body buffering/replay behavior is exercised.
+        //
+        // Order in which policies applied will be the order in which they added to builder
+        //
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new PortPolicy(getWireMockPort(), true),
+                new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .build();
+        //
+        Response<HttpBinJSON> response = RestProxy
+            .create(BinaryDataUploadService.class, httpPipeline).put(data, Files.size(filePath));
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
+    }
+
     @Host("{url}")
     @ServiceInterface(name = "Service22")
     interface Service22 {
@@ -1682,6 +1808,69 @@ public abstract class RestProxyTests {
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
+    }
+
+    @Host("http://localhost")
+    @ServiceInterface(name = "Service27")
+    interface Service27 {
+        @Put("put")
+        @ExpectedResponses({200})
+        HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions requestOptions);
+
+        @Put("put")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        HttpBinJSON putBodyAndContentLength(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
+            @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions);
+    }
+
+    @Test
+    public void requestOptionsChangesBody() {
+        Service27 service = createService(Service27.class);
+
+        HttpBinJSON response = service.put(42, new RequestOptions().setBody(BinaryData.fromString("24")));
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertTrue(response.data() instanceof String);
+        assertEquals("24", response.data());
+    }
+
+    @Test
+    public void requestOptionsChangesBodyAndContentLength() {
+        Service27 service = createService(Service27.class);
+
+        HttpBinJSON response = service.put(42, new RequestOptions().setBody(BinaryData.fromString("4242"))
+            .setHeader("Content-Length", "4"));
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertTrue(response.data() instanceof String);
+        assertEquals("4242", response.data());
+        assertEquals("4", response.getHeaderValue("Content-Length"));
+    }
+
+    @Test
+    public void requestOptionsAddAHeader() {
+        Service27 service = createService(Service27.class);
+
+        HttpBinJSON response = service.put(42, new RequestOptions().addHeader("randomHeader", "randomValue"));
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertTrue(response.data() instanceof String);
+        assertEquals("42", response.data());
+        assertEquals("randomValue", response.getHeaderValue("randomHeader"));
+    }
+
+    @Test
+    public void requestOptionsSetsAHeader() {
+        Service27 service = createService(Service27.class);
+
+        HttpBinJSON response = service.put(42, new RequestOptions().addHeader("randomHeader", "randomValue")
+            .setHeader("randomHeader", "randomValue2"));
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertTrue(response.data() instanceof String);
+        assertEquals("42", response.data());
+        assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
     }
 
     // Helpers

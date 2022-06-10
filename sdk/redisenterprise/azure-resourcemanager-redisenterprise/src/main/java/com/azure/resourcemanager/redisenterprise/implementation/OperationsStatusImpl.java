@@ -12,10 +12,9 @@ import com.azure.resourcemanager.redisenterprise.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
 import com.azure.resourcemanager.redisenterprise.models.OperationsStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsStatusImpl implements OperationsStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsStatusImpl.class);
 
     private final OperationsStatusClient innerClient;
 

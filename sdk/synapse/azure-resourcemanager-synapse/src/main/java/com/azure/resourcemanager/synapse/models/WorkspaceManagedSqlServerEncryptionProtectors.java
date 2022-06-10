@@ -34,7 +34,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's encryption protector.
+     * @return workspace managed sql server's encryption protector along with {@link Response}.
      */
     Response<EncryptionProtector> getWithResponse(
         String resourceGroupName,
@@ -50,7 +50,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<EncryptionProtector> list(String resourceGroupName, String workspaceName);
 
@@ -63,7 +64,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of encryption protectors for workspace managed sql server.
+     * @return list of encryption protectors for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<EncryptionProtector> list(String resourceGroupName, String workspaceName, Context context);
 
@@ -103,7 +105,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's encryption protector.
+     * @return workspace managed sql server's encryption protector along with {@link Response}.
      */
     EncryptionProtector getById(String id);
 
@@ -115,7 +117,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's encryption protector.
+     * @return workspace managed sql server's encryption protector along with {@link Response}.
      */
     Response<EncryptionProtector> getByIdWithResponse(String id, Context context);
 

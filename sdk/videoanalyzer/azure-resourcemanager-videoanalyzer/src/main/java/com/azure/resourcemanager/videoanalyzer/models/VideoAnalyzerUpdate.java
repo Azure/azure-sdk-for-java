@@ -5,48 +5,34 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerPropertiesUpdate;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The update operation for a Video Analyzer account. */
-@JsonFlatten
 @Fluent
-public class VideoAnalyzerUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzerUpdate.class);
-
+public final class VideoAnalyzerUpdate {
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private VideoAnalyzerPropertiesUpdate innerProperties;
 
     /*
      * The identities associated to the Video Analyzer resource.
      */
     @JsonProperty(value = "identity")
     private VideoAnalyzerIdentity identity;
-
-    /*
-     * The storage accounts for this resource.
-     */
-    @JsonProperty(value = "properties.storageAccounts")
-    private List<StorageAccount> storageAccounts;
-
-    /*
-     * The list of endpoints associated with this resource.
-     */
-    @JsonProperty(value = "properties.endpoints", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Endpoint> endpoints;
-
-    /*
-     * The account encryption properties.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private AccountEncryption encryption;
 
     /**
      * Get the tags property: Resource tags.
@@ -66,6 +52,15 @@ public class VideoAnalyzerUpdate {
     public VideoAnalyzerUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: The resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private VideoAnalyzerPropertiesUpdate innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -94,7 +89,7 @@ public class VideoAnalyzerUpdate {
      * @return the storageAccounts value.
      */
     public List<StorageAccount> storageAccounts() {
-        return this.storageAccounts;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccounts();
     }
 
     /**
@@ -104,17 +99,20 @@ public class VideoAnalyzerUpdate {
      * @return the VideoAnalyzerUpdate object itself.
      */
     public VideoAnalyzerUpdate withStorageAccounts(List<StorageAccount> storageAccounts) {
-        this.storageAccounts = storageAccounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoAnalyzerPropertiesUpdate();
+        }
+        this.innerProperties().withStorageAccounts(storageAccounts);
         return this;
     }
 
     /**
-     * Get the endpoints property: The list of endpoints associated with this resource.
+     * Get the endpoints property: The endpoints associated with this resource.
      *
      * @return the endpoints value.
      */
     public List<Endpoint> endpoints() {
-        return this.endpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
     }
 
     /**
@@ -123,7 +121,7 @@ public class VideoAnalyzerUpdate {
      * @return the encryption value.
      */
     public AccountEncryption encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -133,8 +131,100 @@ public class VideoAnalyzerUpdate {
      * @return the VideoAnalyzerUpdate object itself.
      */
     public VideoAnalyzerUpdate withEncryption(AccountEncryption encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoAnalyzerPropertiesUpdate();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
+    }
+
+    /**
+     * Get the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @return the iotHubs value.
+     */
+    public List<IotHub> iotHubs() {
+        return this.innerProperties() == null ? null : this.innerProperties().iotHubs();
+    }
+
+    /**
+     * Set the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @param iotHubs the iotHubs value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withIotHubs(List<IotHub> iotHubs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoAnalyzerPropertiesUpdate();
+        }
+        this.innerProperties().withIotHubs(iotHubs);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoAnalyzerPropertiesUpdate();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @return the networkAccessControl value.
+     */
+    public NetworkAccessControl networkAccessControl() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessControl();
+    }
+
+    /**
+     * Set the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @param networkAccessControl the networkAccessControl value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withNetworkAccessControl(NetworkAccessControl networkAccessControl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoAnalyzerPropertiesUpdate();
+        }
+        this.innerProperties().withNetworkAccessControl(networkAccessControl);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Video Analyzer account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint Connections created under Video Analyzer account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -143,17 +233,11 @@ public class VideoAnalyzerUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (storageAccounts() != null) {
-            storageAccounts().forEach(e -> e.validate());
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
-        if (encryption() != null) {
-            encryption().validate();
         }
     }
 }

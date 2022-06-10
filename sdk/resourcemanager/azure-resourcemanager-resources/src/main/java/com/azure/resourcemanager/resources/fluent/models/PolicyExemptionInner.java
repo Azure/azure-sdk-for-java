@@ -9,7 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ExemptionCategory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 /** The policy exemption. */
 @Fluent
 public final class PolicyExemptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyExemptionInner.class);
-
     /*
      * Properties for the policy exemption.
      */
@@ -224,7 +221,7 @@ public final class PolicyExemptionInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model PolicyExemptionInner"));
@@ -232,4 +229,6 @@ public final class PolicyExemptionInner extends ProxyResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyExemptionInner.class);
 }

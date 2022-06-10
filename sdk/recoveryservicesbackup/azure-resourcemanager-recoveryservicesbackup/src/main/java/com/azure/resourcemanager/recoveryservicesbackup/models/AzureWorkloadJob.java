@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureWorkloadJob")
 @Fluent
 public final class AzureWorkloadJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadJob.class);
-
     /*
      * Workload type of the job
      */

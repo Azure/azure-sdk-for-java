@@ -131,6 +131,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
+    <module name="EqualsAvoidNullCheck"/>
+
     <module name="MethodNameCheck">
       <!-- Validates identifiers for method names. -->
       <metadata name="altname" value="MethodName"/>
@@ -204,7 +206,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="error"/>
     </module>
 
-
     <!-- WHITESPACE CHECKS -->
     <module name="Indentation">
       <property name="basicOffset" value="4"/>
@@ -262,7 +263,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="packageAllowed" value="true"/>
     </module>
 
-
     <!-- Miscellaneous other checks.                   -->
     <!-- See http://checkstyle.sf.net/config_misc.html -->
     <module name="ArrayTypeStyle"/>
@@ -283,7 +283,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="MissingJavadocMethod"/>
     <module name="MissingJavadocType"/>
     <module name="MissingJavadocPackage"/>
-
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
@@ -399,5 +398,9 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- <module name="com.azure.tools.checkstyle.checks.FluentMethodNameCheck">-->
     <!--    <property name="avoidStartWords" value="with,set"/>-->
     <!-- </module>-->
+
+    <!-- CUSTOM CHECKS -->
+    <!-- Ensures caught exceptions are included as exception cause in subsequently thrown exception -->
+    <module name="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck"/>
   </module>
 </module>

@@ -6,18 +6,14 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.PrivateEndpoint;
 import com.azure.resourcemanager.compute.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Private Endpoint Connection resource. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
      * Resource properties.
      */

@@ -33,7 +33,7 @@ public final class FeatureSet {
      */
     public void addFeature(String key, Object feature) {
         if (featureManagement == null) {
-            featureManagement = new HashMap<String, Object>();
+            featureManagement = new HashMap<>();
         }
         if (feature != null) {
             featureManagement.put(key, feature);

@@ -3,12 +3,14 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.implementation.BinaryDataContent;
-import com.azure.core.util.implementation.ByteArrayContent;
-import com.azure.core.util.implementation.FileContent;
-import com.azure.core.util.implementation.InputStreamContent;
-import com.azure.core.util.implementation.SerializableContent;
-import com.azure.core.util.implementation.StringContent;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProvider;
@@ -28,7 +30,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
+import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
  *
@@ -73,27 +75,95 @@ import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_S
  *
  * <p><strong>Create an instance from a byte array</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+ * <pre>
+ * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+ * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+ * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
  *
  * <p><strong>Create an instance from a String</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+ * <pre>
+ * final String data = &quot;Some Data&quot;;
+ * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
+ * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
+ * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromString#String -->
  *
  * <p><strong>Create an instance from an InputStream</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+ * <pre>
+ * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+ * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
+ * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
  *
  * <p><strong>Create an instance from an Object</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+ * <pre>
+ * class Person &#123;
+ *     &#64;JsonProperty
+ *     private String name;
+ *
+ *     &#64;JsonSetter
+ *     public Person setName&#40;String name&#41; &#123;
+ *         this.name = name;
+ *         return this;
+ *     &#125;
+ *
+ *     &#64;JsonGetter
+ *     public String getName&#40;&#41; &#123;
+ *         return name;
+ *     &#125;
+ * &#125;
+ * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+ *
+ * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+ * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+ * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+ * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+ *
+ * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
  *
  * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+ * <pre>
+ * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+ * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+ *
+ * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux&#41;;
+ *
+ * Disposable subscriber = binaryDataMono
+ *     .map&#40;binaryData -&gt; &#123;
+ *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+ *         return true;
+ *     &#125;&#41;
+ *     .subscribe&#40;&#41;;
+ *
+ * &#47;&#47; So that your program wait for above subscribe to complete.
+ * TimeUnit.SECONDS.sleep&#40;5&#41;;
+ * subscriber.dispose&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
  *
  * <p><strong>Create an instance from a file</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromFile}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+ * <pre>
+ * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
+ * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.BinaryData.fromFile -->
  *
  * @see ObjectSerializer
  * @see JsonSerializer
@@ -102,10 +172,25 @@ import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_S
 public final class BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
     static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
     BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    }
+
+    static {
+        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+            @Override
+            public BinaryData createBinaryData(BinaryDataContent content) {
+                return new BinaryData(content);
+            }
+
+            @Override
+            public BinaryDataContent getContent(BinaryData binaryData) {
+                return binaryData.content;
+            }
+        });
     }
 
     /**
@@ -119,7 +204,13 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+     * <pre>
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;;
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link InputStream}.
@@ -136,7 +227,24 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromStreamAsync#InputStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
+     * <pre>
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromStreamAsync&#40;inputStream&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
@@ -152,18 +260,34 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+     * <p>This method aggregates data into single byte array.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
      * @throws NullPointerException If {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
-        if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
-        }
-        return FluxUtil.collectBytesInByteBufferStream(data)
-                .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        return fromFlux(data, null);
     }
 
     /**
@@ -171,7 +295,28 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+     * <p>This method aggregates data into single byte array.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
+     * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -180,18 +325,66 @@ public final class BinaryData {
      * @throws NullPointerException if {@code data} is null.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length) {
+        return fromFlux(data, length, true);
+    }
+
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     *
+     * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * final long length = data.length;
+     * final boolean shouldAggregateData = false;
+     * final Flux&lt;ByteBuffer&gt; dataFlux = Flux.just&#40;ByteBuffer.wrap&#40;data&#41;&#41;;
+     *
+     * Mono&lt;BinaryData&gt; binaryDataMono = BinaryData.fromFlux&#40;dataFlux, length, shouldAggregateData&#41;;
+     *
+     * Disposable subscriber = binaryDataMono
+     *     .map&#40;binaryData -&gt; &#123;
+     *         System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     *         return true;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux-Long-boolean -->
+     *
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @param bufferContent A flag indicating whether {@link Flux} should be buffered eagerly or
+     *                  consumption deferred.
+     * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
+     * @throws IllegalArgumentException if the length is less than zero.
+     * @throws NullPointerException if {@code data} is null.
+     */
+    public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
-            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
         if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        if (length != null) {
-            return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
-                    .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        if (bufferContent && length != null && length > MAX_ARRAY_SIZE) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                String.format("'length' cannot be greater than %d when content buffering is enabled.",
+                    MAX_ARRAY_SIZE)));
         }
-        return FluxUtil.collectBytesInByteBufferStream(data)
+        if (bufferContent) {
+            if (length != null) {
+                return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
+                    .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+            }
+            return FluxUtil.collectBytesInByteBufferStream(data)
                 .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        } else {
+            return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
+        }
     }
 
     /**
@@ -202,7 +395,14 @@ public final class BinaryData {
      * </p>
      * <p><strong>Create an instance from a String</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+     * <pre>
+     * final String data = &quot;Some Data&quot;;
+     * &#47;&#47; Following will use default character set as StandardCharsets.UTF_8
+     * BinaryData binaryData = BinaryData.fromString&#40;data&#41;;
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromString#String -->
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link String}.
@@ -223,7 +423,13 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
      *
      * @param data The byte array that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the byte array.
@@ -243,7 +449,33 @@ public final class BinaryData {
      *</p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
@@ -264,7 +496,36 @@ public final class BinaryData {
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * Disposable subscriber = BinaryData.fromObjectAsync&#40;data&#41;
+     *     .subscribe&#40;binaryData -&gt; System.out.println&#40;binaryData.toString&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
@@ -290,7 +551,35 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -322,7 +611,38 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * Disposable subscriber = BinaryData.fromObjectAsync&#40;data, serializer&#41;
+     *     .subscribe&#40;binaryData -&gt; System.out.println&#40;binaryData.toString&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -344,7 +664,14 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFile}
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @return A new {@link BinaryData}.
@@ -361,7 +688,12 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFile#Path-int}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-int -->
+     * <pre>
+     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
@@ -372,7 +704,71 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize));
+        return new BinaryData(new FileContent(file, chunkSize, null, null));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <p>The {@link BinaryData} returned from this method uses 8KB chunk size when reading file content.</p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length) {
+        return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     * <pre>
+     * long position = 1024;
+     * long length = 100 * 1048;
+     * int chunkSize = 8092;
+     * BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param length Maximum number of bytes to be read from the path.
+     * @param chunkSize The requested size for each read of the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
+        return new BinaryData(new FileContent(file, chunkSize, position, length));
     }
 
     /**
@@ -412,7 +808,37 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class&#41;;
+     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#Class -->
      *
      * @param <T> Type of the deserialized Object.
      * @param clazz The {@link Class} representing the Object's type.
@@ -439,11 +865,62 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;&#41;;
+     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
+     *
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;&#41;;
+     * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -475,7 +952,37 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -511,11 +1018,59 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
+     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
+     *
+     * &#47;&#47; Retains the type of the list when deserializing
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41;;
+     * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -547,7 +1102,41 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Disposable subscriber = binaryData.toObjectAsync&#40;Person.class&#41;
+     *     .subscribe&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -574,11 +1163,63 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Disposable subscriber = binaryData.toObjectAsync&#40;TypeReference.createInstance&#40;Person.class&#41;&#41;
+     *     .subscribe&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
+     *
+     * Disposable subscriber = binaryData.toObjectAsync&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;&#41;
+     *     .subscribe&#40;persons -&gt; persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -610,7 +1251,41 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Disposable subscriber = binaryData.toObjectAsync&#40;Person.class, serializer&#41;
+     *     .subscribe&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -646,11 +1321,67 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
+     * <pre>
+     * class Person &#123;
+     *     &#64;JsonProperty
+     *     private String name;
+     *
+     *     &#64;JsonSetter
+     *     public Person setName&#40;String name&#41; &#123;
+     *         this.name = name;
+     *         return this;
+     *     &#125;
+     *
+     *     &#64;JsonGetter
+     *     public String getName&#40;&#41; &#123;
+     *         return name;
+     *     &#125;
+     * &#125;
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
+     *
+     * Disposable subscriber = binaryData
+     *     .toObjectAsync&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;
+     *     .subscribe&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
+     * <pre>
+     * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
+     *
+     * List&lt;Person&gt; personList = new ArrayList&lt;&gt;&#40;&#41;;
+     * personList.add&#40;person1&#41;;
+     * personList.add&#40;person2&#41;;
+     *
+     * final ObjectSerializer serializer =
+     *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
+     * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
+     *
+     * Disposable subscriber = binaryData
+     *     .toObjectAsync&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41; &#47;&#47; retains the generic type information
+     *     .subscribe&#40;persons -&gt; persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;&#41;;
+     *
+     * &#47;&#47; So that your program wait for above subscribe to complete.
+     * TimeUnit.SECONDS.sleep&#40;5&#41;;
+     * subscriber.dispose&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -670,7 +1401,15 @@ public final class BinaryData {
      *
      * <p><strong>Get an InputStream from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.toStream -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;&#41;;
+     * final byte[] bytes = new byte[data.length];
+     * binaryData.toStream&#40;&#41;.read&#40;bytes, 0, data.length&#41;;
+     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.toStream -->
      *
      * @return An {@link InputStream} representing the {@link BinaryData}.
      */
@@ -685,7 +1424,15 @@ public final class BinaryData {
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.util.BinaryData.toByteBuffer}
+     * <!-- src_embed com.azure.util.BinaryData.toByteBuffer -->
+     * <pre>
+     * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
+     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
+     * final byte[] bytes = new byte[data.length];
+     * binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
+     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.util.BinaryData.toByteBuffer -->
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */

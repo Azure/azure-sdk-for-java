@@ -9,13 +9,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+import static com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck.THROW_LOGGER_EXCEPTION_MESSAGE;
+
 public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
-
-    private static final String DIRRECT_THROW_ERROR_MESSAGE = "Directly throwing an exception is disallowed. Must "
-        + "throw through 'ClientLogger' API, either of 'logger.logExceptionAsError', 'logger.logThrowableAsError', "
-        + "'logger.logExceptionAsWarning', or 'logger.logThrowableAsWarning' where 'logger' is type of ClientLogger "
-        + "from Azure Core package.";
-
     private Checker checker;
 
     @Before
@@ -36,12 +33,13 @@ public class ThrowFromClientLoggerCheckTest extends AbstractModuleTestSupport {
     @Test
     public void directThrowExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(12, 9, String.format(DIRRECT_THROW_ERROR_MESSAGE))
+            expectedErrorMessage(12, 9),
+            expectedErrorMessage(60, 9)
         };
         verify(checker, getPath("DirectThrowExceptionTestData.java"), expected);
     }
 
-    private String expectedErrorMessage(int line, int column, String errorMessage) {
-        return String.format("%d:%d: %s", line, column, errorMessage);
+    private String expectedErrorMessage(int line, int column) {
+        return String.format("%d:%d: %s", line, column, THROW_LOGGER_EXCEPTION_MESSAGE);
     }
 }

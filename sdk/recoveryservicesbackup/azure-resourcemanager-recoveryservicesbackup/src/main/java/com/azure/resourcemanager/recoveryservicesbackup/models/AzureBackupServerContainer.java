@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +12,8 @@ import java.util.List;
 /** AzureBackupServer (DPMVenus) workload-specific protection container. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("AzureBackupServerContainer")
-@Immutable
+@Fluent
 public final class AzureBackupServerContainer extends DpmContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupServerContainer.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureBackupServerContainer withCanReRegister(Boolean canReRegister) {
@@ -99,6 +95,13 @@ public final class AzureBackupServerContainer extends DpmContainer {
     @Override
     public AzureBackupServerContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupServerContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
         return this;
     }
 

@@ -32,11 +32,23 @@ public final class ProvisioningErrorCode extends ExpandableStringEnum<Provisioni
     /** Static value NoCustomizerScript for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode NO_CUSTOMIZER_SCRIPT = fromString("NoCustomizerScript");
 
+    /** Static value BadValidatorType for ProvisioningErrorCode. */
+    public static final ProvisioningErrorCode BAD_VALIDATOR_TYPE = fromString("BadValidatorType");
+
+    /** Static value UnsupportedValidatorType for ProvisioningErrorCode. */
+    public static final ProvisioningErrorCode UNSUPPORTED_VALIDATOR_TYPE = fromString("UnsupportedValidatorType");
+
+    /** Static value NoValidatorScript for ProvisioningErrorCode. */
+    public static final ProvisioningErrorCode NO_VALIDATOR_SCRIPT = fromString("NoValidatorScript");
+
     /** Static value BadDistributeType for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode BAD_DISTRIBUTE_TYPE = fromString("BadDistributeType");
 
     /** Static value BadSharedImageDistribute for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode BAD_SHARED_IMAGE_DISTRIBUTE = fromString("BadSharedImageDistribute");
+
+    /** Static value BadStagingResourceGroup for ProvisioningErrorCode. */
+    public static final ProvisioningErrorCode BAD_STAGING_RESOURCE_GROUP = fromString("BadStagingResourceGroup");
 
     /** Static value ServerError for ProvisioningErrorCode. */
     public static final ProvisioningErrorCode SERVER_ERROR = fromString("ServerError");
@@ -55,7 +67,11 @@ public final class ProvisioningErrorCode extends ExpandableStringEnum<Provisioni
         return fromString(name, ProvisioningErrorCode.class);
     }
 
-    /** @return known ProvisioningErrorCode values. */
+    /**
+     * Gets known ProvisioningErrorCode values.
+     *
+     * @return known ProvisioningErrorCode values.
+     */
     public static Collection<ProvisioningErrorCode> values() {
         return values(ProvisioningErrorCode.class);
     }

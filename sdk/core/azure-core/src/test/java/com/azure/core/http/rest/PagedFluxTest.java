@@ -379,7 +379,7 @@ public class PagedFluxTest {
     }
 
     @SuppressWarnings("deprecation")
-    private static Stream<Arguments> pagingTerminatesOnSupplier() {
+    public static Stream<Arguments> pagingTerminatesOnSupplier() {
         PageRetriever<String, PagedResponse<String>> pfEndsWithNullPageRetriever = new GetPagesUntil(null);
         PagedFlux<String> pfEndsWithNull = PagedFlux.create(() -> pfEndsWithNullPageRetriever);
 
@@ -465,7 +465,7 @@ public class PagedFluxTest {
 
         @Override
         public Flux<PagedResponse<String>> get(String token, Integer pageSize) {
-            return Flux.defer(() -> {
+            return Mono.fromSupplier(() -> {
                 String nextContinuationToken;
                 if (token == null) {
                     nextContinuationToken = "1";
@@ -477,8 +477,8 @@ public class PagedFluxTest {
 
                 PagedResponse<String> page = PAGE_CREATOR.apply(nextContinuationToken, pageValue[0]);
                 pageValue[0] = NEXT_PAGE_VALUE.apply(pageValue[0]);
-                return Flux.just(page);
-            });
+                return page;
+            }).flux();
         }
     }
 
@@ -521,7 +521,7 @@ public class PagedFluxTest {
 
         @Override
         public Flux<ContinuablePage<C, String>> get(C token, Integer pageSize) {
-            return Flux.defer(() -> {
+            return Mono.fromSupplier(() -> {
                 C nextContinuationToken;
                 if (token == null) {
                     nextContinuationToken = initialToken;
@@ -533,8 +533,8 @@ public class PagedFluxTest {
 
                 ContinuablePage<C, String> page = pageCreator.apply(nextContinuationToken, pageValue[0]);
                 pageValue[0] = NEXT_PAGE_VALUE.apply(pageValue[0]);
-                return Flux.just(page);
-            });
+                return page;
+            }).flux();
         }
     }
 

@@ -5,71 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.fluent.models.SqlTriggerCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to create and update Cosmos DB trigger. */
-@JsonFlatten
 @Fluent
-public class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {
+public final class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerCreateUpdateParameters.class);
 
     /*
-     * The standard JSON format of a trigger
+     * Properties to create and update Azure Cosmos DB trigger.
      */
-    @JsonProperty(value = "properties.resource", required = true)
-    private SqlTriggerResource resource;
-
-    /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
-     */
-    @JsonProperty(value = "properties.options")
-    private CreateUpdateOptions options;
+    @JsonProperty(value = "properties", required = true)
+    private SqlTriggerCreateUpdateProperties innerProperties = new SqlTriggerCreateUpdateProperties();
 
     /**
-     * Get the resource property: The standard JSON format of a trigger.
+     * Get the innerProperties property: Properties to create and update Azure Cosmos DB trigger.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public SqlTriggerResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The standard JSON format of a trigger.
-     *
-     * @param resource the resource value to set.
-     * @return the SqlTriggerCreateUpdateParameters object itself.
-     */
-    public SqlTriggerCreateUpdateParameters withResource(SqlTriggerResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @return the options value.
-     */
-    public CreateUpdateOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
-     * headers sent with the request.
-     *
-     * @param options the options value to set.
-     * @return the SqlTriggerCreateUpdateParameters object itself.
-     */
-    public SqlTriggerCreateUpdateParameters withOptions(CreateUpdateOptions options) {
-        this.options = options;
-        return this;
+    private SqlTriggerCreateUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +46,54 @@ public class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {
     }
 
     /**
+     * Get the resource property: The standard JSON format of a trigger.
+     *
+     * @return the resource value.
+     */
+    public SqlTriggerResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The standard JSON format of a trigger.
+     *
+     * @param resource the resource value to set.
+     * @return the SqlTriggerCreateUpdateParameters object itself.
+     */
+    public SqlTriggerCreateUpdateParameters withResource(SqlTriggerResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlTriggerCreateUpdateProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @return the options value.
+     */
+    public CreateUpdateOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
+     * headers sent with the request.
+     *
+     * @param options the options value to set.
+     * @return the SqlTriggerCreateUpdateParameters object itself.
+     */
+    public SqlTriggerCreateUpdateParameters withOptions(CreateUpdateOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlTriggerCreateUpdateProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,16 +101,13 @@ public class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
-        if (resource() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property resource in model SqlTriggerCreateUpdateParameters"));
+                        "Missing required property innerProperties in model SqlTriggerCreateUpdateParameters"));
         } else {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+            innerProperties().validate();
         }
     }
 }

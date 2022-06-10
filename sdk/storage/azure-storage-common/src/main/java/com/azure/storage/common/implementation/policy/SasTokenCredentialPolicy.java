@@ -21,7 +21,7 @@ import java.net.URL;
  */
 @Deprecated
 public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
-    private final ClientLogger logger = new ClientLogger(SasTokenCredentialPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SasTokenCredentialPolicy.class);
 
     private final SasTokenCredential credential;
 
@@ -40,10 +40,10 @@ public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
             URL requestURL = context.getHttpRequest().getUrl();
             String delimiter = !CoreUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
 
-            String newURL = requestURL.toString() + delimiter + credential.getSasToken();
+            String newURL = requestURL + delimiter + credential.getSasToken();
             context.getHttpRequest().setUrl(new URL(newURL));
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException(ex));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
         }
 
         return next.process();

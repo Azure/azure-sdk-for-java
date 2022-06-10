@@ -9,13 +9,13 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Repository attributes. */
+/** Properties of this repository. */
 @JsonFlatten
 @Fluent
 public final class ContainerRepositoryProperties {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -73,13 +73,6 @@ public final class ContainerRepositoryProperties {
      */
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
-
-    /*
-     * Enables Teleport functionality on new images in the repository improving
-     * Container startup performance
-     */
-    @JsonProperty(value = "changeableAttributes.teleportEnabled")
-    private Boolean teleportEnabled;
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -149,7 +142,7 @@ public final class ContainerRepositoryProperties {
      * Set the deleteEnabled property: Delete enabled.
      *
      * @param deleteEnabled the deleteEnabled value to set.
-     * @return the RepositoryProperties object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
     public ContainerRepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
@@ -169,7 +162,7 @@ public final class ContainerRepositoryProperties {
      * Set the writeEnabled property: Write enabled.
      *
      * @param writeEnabled the writeEnabled value to set.
-     * @return the RepositoryProperties object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
     public ContainerRepositoryProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
@@ -189,7 +182,7 @@ public final class ContainerRepositoryProperties {
      * Set the listEnabled property: List enabled.
      *
      * @param listEnabled the listEnabled value to set.
-     * @return the RepositoryProperties object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
     public ContainerRepositoryProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
@@ -209,32 +202,10 @@ public final class ContainerRepositoryProperties {
      * Set the readEnabled property: Read enabled.
      *
      * @param readEnabled the readEnabled value to set.
-     * @return the RepositoryProperties object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
     public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
-        return this;
-    }
-
-    /**
-     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @return the teleportEnabled value.
-     */
-    public Boolean isTeleportEnabled() {
-        return this.teleportEnabled;
-    }
-
-    /**
-     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @param teleportEnabled the teleportEnabled value to set.
-     * @return the RepositoryProperties object itself.
-     */
-    public ContainerRepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
-        this.teleportEnabled = teleportEnabled;
         return this;
     }
 }

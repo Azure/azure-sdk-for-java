@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.storage
 
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
 import com.microsoft.azure.storage.blob.*
@@ -15,6 +16,8 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
+import org.spockframework.runtime.model.parallel.ExecutionMode
+import spock.lang.Execution
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -22,15 +25,16 @@ import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
+@Execution(ExecutionMode.SAME_THREAD)
+@LiveOnly
 class APISpec extends Specification {
     static final String RECORD_MODE = "RECORD"
+    static final String LIVE_MODE = "LIVE"
 
-    @Shared
     Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
-    @Shared
     ContainerURL cu
 
     // Fields used for conveniently creating blobs with data.
@@ -296,12 +300,14 @@ class APISpec extends Specification {
     }
 
     def cleanupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+        Assume.assumeTrue("The test only runs in Live mode.",
+            getTestMode().equalsIgnoreCase(RECORD_MODE) || getTestMode().equalsIgnoreCase(LIVE_MODE))
         cleanupContainers()
     }
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+        Assume.assumeTrue("The test only runs in Live mode.",
+            getTestMode().equalsIgnoreCase(RECORD_MODE) || getTestMode().equalsIgnoreCase(LIVE_MODE))
         cu = primaryServiceURL.createContainerURL(generateContainerName())
         cu.create(null, null, null).blockingGet()
     }

@@ -7,13 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** Defines web application firewall policy. */
 @Fluent
 public final class WebApplicationFirewallPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPolicyInner.class);
-
     /*
      * Properties of the web application firewall policy.
      */

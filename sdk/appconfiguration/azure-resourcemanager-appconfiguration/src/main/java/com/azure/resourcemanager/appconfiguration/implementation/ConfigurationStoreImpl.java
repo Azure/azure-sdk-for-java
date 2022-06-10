@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationSto
 import com.azure.resourcemanager.appconfiguration.models.ApiKey;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStoreUpdateParameters;
+import com.azure.resourcemanager.appconfiguration.models.CreateMode;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
@@ -101,12 +102,28 @@ public final class ConfigurationStoreImpl
         return this.innerModel().disableLocalAuth();
     }
 
+    public Integer softDeleteRetentionInDays() {
+        return this.innerModel().softDeleteRetentionInDays();
+    }
+
+    public Boolean enablePurgeProtection() {
+        return this.innerModel().enablePurgeProtection();
+    }
+
+    public CreateMode createMode() {
+        return this.innerModel().createMode();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ConfigurationStoreInner innerModel() {
@@ -294,6 +311,26 @@ public final class ConfigurationStoreImpl
             this.updateConfigStoreUpdateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
+    }
+
+    public ConfigurationStoreImpl withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays) {
+        this.innerModel().withSoftDeleteRetentionInDays(softDeleteRetentionInDays);
+        return this;
+    }
+
+    public ConfigurationStoreImpl withEnablePurgeProtection(Boolean enablePurgeProtection) {
+        if (isInCreateMode()) {
+            this.innerModel().withEnablePurgeProtection(enablePurgeProtection);
+            return this;
+        } else {
+            this.updateConfigStoreUpdateParameters.withEnablePurgeProtection(enablePurgeProtection);
+            return this;
+        }
+    }
+
+    public ConfigurationStoreImpl withCreateMode(CreateMode createMode) {
+        this.innerModel().withCreateMode(createMode);
+        return this;
     }
 
     private boolean isInCreateMode() {

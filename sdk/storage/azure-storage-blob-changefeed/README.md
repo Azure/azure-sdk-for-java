@@ -20,7 +20,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.9</version>
+    <version>12.0.0-beta.18</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -35,8 +35,8 @@ az storage account create \
     --location <location>
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
-http(s)://<storage-account-name>.blob.core.windows.net
+Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows
+`http(s)://<storage-account-name>.blob.core.windows.net`
 
 ### Authenticate the client
 
@@ -116,29 +116,26 @@ tasks, including:
 
 - [Create a `BlobChangefeedClient`](#create-a-blobchangefeedclient)
 - [Get events](#get-events)
-- [Get events between a start and end time](#get-events-start-end)
-- [Resume with a cursor](#get-events-cursor)
-- [Poll for events with a cursor](#poll-events-cursor)
+- [Get events between a start and end time](#get-events-between-a-start-and-end-time)
+- [Resume with a cursor](#resume-with-a-cursor)
+- [Poll for events with a cursor](#poll-for-events-with-a-cursor)
 
 ### Create a `BlobChangefeedClient`
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L26-L26 -->
-```java
+```java readme-sample-getClient
 client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Get events
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L30-L31 -->
-```java
+```java readme-sample-changefeed
 client.getEvents().forEach(event ->
     System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
 ```
 
 ### Get events between a start and end time
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L35-L39 -->
-```java
+```java readme-sample-changefeedBetweenDates
 OffsetDateTime startTime = OffsetDateTime.MIN;
 OffsetDateTime endTime = OffsetDateTime.now();
 
@@ -148,8 +145,7 @@ client.getEvents(startTime, endTime).forEach(event ->
 
 ### Resume with a cursor
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L43-L59 -->
-```java
+```java readme-sample-changefeedResumeWithCursor
 BlobChangefeedPagedIterable iterable = client.getEvents();
 Iterable<BlobChangefeedPagedResponse> pages = iterable.iterableByPage();
 
@@ -171,9 +167,8 @@ client.getEvents(cursor).forEach(event ->
 
 ### Poll for events with a cursor
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L63-L96 -->
-```java
-List<BlobChangefeedEvent> changefeedEvents = new ArrayList<BlobChangefeedEvent>();
+```java readme-sample-changefeedPollForEventsWithCursor
+List<BlobChangefeedEvent> changefeedEvents = new ArrayList<>();
 
 /* Get the start time.  The change feed client will round start time down to the nearest hour if you provide
    an OffsetDateTime with minutes and seconds. */

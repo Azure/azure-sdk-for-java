@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Azure VM workload-specific protected item. */
@@ -32,8 +32,6 @@ import java.util.Map;
 })
 @Fluent
 public class AzureVmWorkloadProtectedItem extends ProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadProtectedItem.class);
-
     /*
      * Friendly name of the DB represented by this backup item.
      */
@@ -112,6 +110,7 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
      * Health details of different KPIs
      */
     @JsonProperty(value = "kpisHealths")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KpiResourceHealthDetails> kpisHealths;
 
     /**
@@ -465,6 +464,28 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
     @Override
     public AzureVmWorkloadProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectedItem withResourceGuardOperationRequests(
+        List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

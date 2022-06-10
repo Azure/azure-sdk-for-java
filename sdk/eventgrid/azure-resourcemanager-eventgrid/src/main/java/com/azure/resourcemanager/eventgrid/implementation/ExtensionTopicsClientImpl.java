@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExtensionTopicsClient. */
 public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
-    private final ClientLogger logger = new ClientLogger(ExtensionTopicsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExtensionTopicsService service;
 
@@ -78,7 +75,8 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
+     * @return the properties of an extension topic along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtensionTopicInner>> getWithResponseAsync(String scope) {
@@ -111,7 +109,8 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
+     * @return the properties of an extension topic along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtensionTopicInner>> getWithResponseAsync(String scope, Context context) {
@@ -141,19 +140,11 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
+     * @return the properties of an extension topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtensionTopicInner> getAsync(String scope) {
-        return getWithResponseAsync(scope)
-            .flatMap(
-                (Response<ExtensionTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -188,7 +179,7 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic.
+     * @return the properties of an extension topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionTopicInner> getWithResponse(String scope, Context context) {

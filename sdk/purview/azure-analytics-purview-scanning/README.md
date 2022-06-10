@@ -6,7 +6,7 @@ Azure Purview Scanning is a fully managed cloud service whose users can scan you
 - Examine your data
 - Extract schemas from your data
 
-**Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and our [data-plane client docs][protocol_method] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -27,7 +27,7 @@ For more information about creating the account see [here][create_azure_purview_
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-scanning</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,7 +39,7 @@ In order to interact with the Azure Purview service, your client must present an
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 
-#### Create SystemScanRulesetsBaseClient with Azure Active Directory Credential
+#### Create SystemScanRulesetsClient with Azure Active Directory Credential
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
@@ -50,19 +50,19 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.3.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L22-L25 -->
-```java
-SystemScanRulesetsBaseClient client = new PurviewScanningClientBuilder()
-    .endpoint("<account-name>.scan.purview.azure.com")
+```java readme-sample-createSystemScanRulesetsClient
+SystemScanRulesetsClient client = new PurviewScanningClientBuilder()
+    .endpoint(System.getenv("SCANNING_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildSystemScanRulesetsBaseClient();
+    .buildSystemScanRulesetsClient();
 ```
 
 ## Key concepts
@@ -100,7 +100,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-scanning
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-scanning/src/samples/README.md
-[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
+[protocol_method]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
 [create_azure_purview_account]: https://docs.microsoft.com/azure/purview/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.opensource.microsoft.com/

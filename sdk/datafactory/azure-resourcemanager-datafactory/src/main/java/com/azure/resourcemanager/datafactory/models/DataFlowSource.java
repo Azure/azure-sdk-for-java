@@ -5,72 +5,16 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow source. */
 @Fluent
 public class DataFlowSource extends Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSource.class);
-
-    /*
-     * Dataset reference.
-     */
-    @JsonProperty(value = "dataset")
-    private DatasetReference dataset;
-
-    /*
-     * Linked service reference.
-     */
-    @JsonProperty(value = "linkedService")
-    private LinkedServiceReference linkedService;
-
     /*
      * Schema linked service reference.
      */
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
-
-    /**
-     * Get the dataset property: Dataset reference.
-     *
-     * @return the dataset value.
-     */
-    public DatasetReference dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: Dataset reference.
-     *
-     * @param dataset the dataset value to set.
-     * @return the DataFlowSource object itself.
-     */
-    public DataFlowSource withDataset(DatasetReference dataset) {
-        this.dataset = dataset;
-        return this;
-    }
-
-    /**
-     * Get the linkedService property: Linked service reference.
-     *
-     * @return the linkedService value.
-     */
-    public LinkedServiceReference linkedService() {
-        return this.linkedService;
-    }
-
-    /**
-     * Set the linkedService property: Linked service reference.
-     *
-     * @param linkedService the linkedService value to set.
-     * @return the DataFlowSource object itself.
-     */
-    public DataFlowSource withLinkedService(LinkedServiceReference linkedService) {
-        this.linkedService = linkedService;
-        return this;
-    }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
@@ -106,6 +50,27 @@ public class DataFlowSource extends Transformation {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource withDataset(DatasetReference dataset) {
+        super.withDataset(dataset);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource withLinkedService(LinkedServiceReference linkedService) {
+        super.withLinkedService(linkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DataFlowSource withFlowlet(DataFlowReference flowlet) {
+        super.withFlowlet(flowlet);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -114,12 +79,6 @@ public class DataFlowSource extends Transformation {
     @Override
     public void validate() {
         super.validate();
-        if (dataset() != null) {
-            dataset().validate();
-        }
-        if (linkedService() != null) {
-            linkedService().validate();
-        }
         if (schemaLinkedService() != null) {
             schemaLinkedService().validate();
         }

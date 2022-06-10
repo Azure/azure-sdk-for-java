@@ -31,12 +31,6 @@ public final class Path {
     private String lastModified;
 
     /*
-     * The eTag property.
-     */
-    @JsonProperty(value = "etag")
-    private String eTag;
-
-    /*
      * The contentLength property.
      */
     @JsonProperty(value = "contentLength")
@@ -59,6 +53,30 @@ public final class Path {
      */
     @JsonProperty(value = "permissions")
     private String permissions;
+
+    /*
+     * The name of the encryption scope under which the blob is encrypted.
+     */
+    @JsonProperty(value = "EncryptionScope")
+    private String encryptionScope;
+
+    /*
+     * The creationTime property.
+     */
+    @JsonProperty(value = "creationTime")
+    private String creationTime;
+
+    /*
+     * The expiryTime property.
+     */
+    @JsonProperty(value = "expiryTime")
+    private String expiryTime;
+
+    /*
+     * The etag property.
+     */
+    @JsonProperty(value = "etag")
+    private String eTag;
 
     /**
      * Get the name property: The name property.
@@ -117,26 +135,6 @@ public final class Path {
      */
     public Path setLastModified(String lastModified) {
         this.lastModified = lastModified;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The eTag property.
-     *
-     * @return the eTag value.
-     */
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The eTag property.
-     *
-     * @param eTag the eTag value to set.
-     * @return the Path object itself.
-     */
-    public Path setETag(String eTag) {
-        this.eTag = eTag;
         return this;
     }
 
@@ -217,6 +215,86 @@ public final class Path {
      */
     public Path setPermissions(String permissions) {
         this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the Path object itself.
+     */
+    public Path setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The creationTime property.
+     *
+     * @return the creationTime value.
+     */
+    public String getCreationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: The creationTime property.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the Path object itself.
+     */
+    public Path setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
+     * Get the expiryTime property: The expiryTime property.
+     *
+     * @return the expiryTime value.
+     */
+    public String getExpiryTime() {
+        return this.expiryTime;
+    }
+
+    /**
+     * Set the expiryTime property: The expiryTime property.
+     *
+     * @param expiryTime the expiryTime value to set.
+     * @return the Path object itself.
+     */
+    public Path setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
+
+    /**
+     * Get the eTag property: The etag property.
+     *
+     * @return the eTag value.
+     */
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The etag property.
+     *
+     * @param eTag the eTag value to set.
+     * @return the Path object itself.
+     */
+    public Path setETag(String eTag) {
+        this.eTag = eTag;
         return this;
     }
 }

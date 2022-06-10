@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/d25378fd977c41a/providers/Microsoft.Network/dnsZones/www.contosoz14814660.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/d25378fd977c41a/providers/Microsoft.Network/dnsZones/www.contosoz14814660.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -74,7 +74,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/d25378fd977c41a/providers/Microsoft.Network/dnsZones/www.contosoz14814660.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/d25378fd977c41a/providers/Microsoft.Network/dnsZones/www.contosoz14814660.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"

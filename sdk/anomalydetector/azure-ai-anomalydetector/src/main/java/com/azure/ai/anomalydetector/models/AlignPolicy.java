@@ -11,29 +11,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AlignPolicy {
     /*
-     * An optional field, indicates how we align different variables into the
-     * same time-range which is required by the model.{Inner, Outer}
+     * An optional field, indicating how we align different variables to the
+     * same time-range. Either Inner or Outer.
      */
     @JsonProperty(value = "alignMode")
     private AlignMode alignMode;
 
     /*
-     * An optional field, indicates how missed values will be filled with. Can
-     * not be set to NotFill, when alignMode is Outer.{Previous, Subsequent,
-     * Linear, Zero, Fix, NotFill}
+     * An optional field, indicating how missing values will be filled. One of
+     * Previous, Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to
+     * NotFill, when the alignMode is Outer.
      */
     @JsonProperty(value = "fillNAMethod")
-    private FillNAMethod fillNAMethod;
+    private FillNaMethod fillNaMethod;
 
     /*
-     * optional field, only be useful if FillNAMethod is set to Pad.
+     * An optional field. Required when fillNAMethod is Fixed.
      */
     @JsonProperty(value = "paddingValue")
-    private Integer paddingValue;
+    private Float paddingValue;
 
     /**
-     * Get the alignMode property: An optional field, indicates how we align different variables into the same
-     * time-range which is required by the model.{Inner, Outer}.
+     * Get the alignMode property: An optional field, indicating how we align different variables to the same
+     * time-range. Either Inner or Outer.
      *
      * @return the alignMode value.
      */
@@ -42,8 +42,8 @@ public final class AlignPolicy {
     }
 
     /**
-     * Set the alignMode property: An optional field, indicates how we align different variables into the same
-     * time-range which is required by the model.{Inner, Outer}.
+     * Set the alignMode property: An optional field, indicating how we align different variables to the same
+     * time-range. Either Inner or Outer.
      *
      * @param alignMode the alignMode value to set.
      * @return the AlignPolicy object itself.
@@ -54,43 +54,43 @@ public final class AlignPolicy {
     }
 
     /**
-     * Get the fillNAMethod property: An optional field, indicates how missed values will be filled with. Can not be set
-     * to NotFill, when alignMode is Outer.{Previous, Subsequent, Linear, Zero, Fix, NotFill}.
+     * Get the fillNaMethod property: An optional field, indicating how missing values will be filled. One of Previous,
+     * Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
      *
-     * @return the fillNAMethod value.
+     * @return the fillNaMethod value.
      */
-    public FillNAMethod getFillNAMethod() {
-        return this.fillNAMethod;
+    public FillNaMethod getFillNaMethod() {
+        return this.fillNaMethod;
     }
 
     /**
-     * Set the fillNAMethod property: An optional field, indicates how missed values will be filled with. Can not be set
-     * to NotFill, when alignMode is Outer.{Previous, Subsequent, Linear, Zero, Fix, NotFill}.
+     * Set the fillNaMethod property: An optional field, indicating how missing values will be filled. One of Previous,
+     * Subsequent, Linear, Zero, Fixed, and NotFill. Cannot be set to NotFill, when the alignMode is Outer.
      *
-     * @param fillNAMethod the fillNAMethod value to set.
+     * @param fillNaMethod the fillNaMethod value to set.
      * @return the AlignPolicy object itself.
      */
-    public AlignPolicy setFillNAMethod(FillNAMethod fillNAMethod) {
-        this.fillNAMethod = fillNAMethod;
+    public AlignPolicy setFillNaMethod(FillNaMethod fillNaMethod) {
+        this.fillNaMethod = fillNaMethod;
         return this;
     }
 
     /**
-     * Get the paddingValue property: optional field, only be useful if FillNAMethod is set to Pad.
+     * Get the paddingValue property: An optional field. Required when fillNAMethod is Fixed.
      *
      * @return the paddingValue value.
      */
-    public Integer getPaddingValue() {
+    public Float getPaddingValue() {
         return this.paddingValue;
     }
 
     /**
-     * Set the paddingValue property: optional field, only be useful if FillNAMethod is set to Pad.
+     * Set the paddingValue property: An optional field. Required when fillNAMethod is Fixed.
      *
      * @param paddingValue the paddingValue value to set.
      * @return the AlignPolicy object itself.
      */
-    public AlignPolicy setPaddingValue(Integer paddingValue) {
+    public AlignPolicy setPaddingValue(Float paddingValue) {
         this.paddingValue = paddingValue;
         return this;
     }

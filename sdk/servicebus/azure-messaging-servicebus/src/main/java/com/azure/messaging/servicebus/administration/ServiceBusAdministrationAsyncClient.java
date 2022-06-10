@@ -13,14 +13,16 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -34,8 +36,8 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionProperti
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
-import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.RulesImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
@@ -85,33 +87,83 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
  * {@link ServiceBusAdministrationClientBuilder}.
  *
  * <p><strong>Create a queue</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
+ * <pre>
+ * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
+ * &#47;&#47; instruction after setting up the `consumer` and `errorConsumer` callbacks.
+ * client.createQueue&#40;&quot;my-new-queue&quot;&#41;.subscribe&#40;queue -&gt; &#123;
+ *     System.out.printf&#40;&quot;Queue created. Name: %s. Lock Duration: %s.%n&quot;,
+ *         queue.getName&#40;&#41;, queue.getLockDuration&#40;&#41;&#41;;
+ * &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error creating queue: &quot; + error&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string -->
  *
  * <p><strong>Edit an existing subscription</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
+ * <pre>
+ * &#47;&#47; To update the subscription we have to:
+ * &#47;&#47; 1. Get the subscription info from the service.
+ * &#47;&#47; 2. Update the SubscriptionProperties we want to change.
+ * &#47;&#47; 3. Call the updateSubscription&#40;&#41; with the updated object.
+ *
+ * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
+ * &#47;&#47; instruction after setting up the `consumer` and `errorConsumer` callbacks.
+ * client.getSubscription&#40;&quot;my-topic&quot;, &quot;my-subscription&quot;&#41;
+ *     .flatMap&#40;subscription -&gt; &#123;
+ *         System.out.println&#40;&quot;Original delivery count: &quot; + subscription.getMaxDeliveryCount&#40;&#41;&#41;;
+ *
+ *         &#47;&#47; Updating it to a new value.
+ *         subscription.setMaxDeliveryCount&#40;5&#41;;
+ *
+ *         &#47;&#47; Persisting the updates to the subscription object.
+ *         return client.updateSubscription&#40;subscription&#41;;
+ *     &#125;&#41;
+ *     .subscribe&#40;subscription -&gt; &#123;
+ *         System.out.printf&#40;&quot;Subscription updated. Name: %s. Delivery count: %s.%n&quot;,
+ *             subscription.getSubscriptionName&#40;&#41;, subscription.getMaxDeliveryCount&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *             System.err.println&#40;&quot;Error updating subscription: &quot; + error&#41;;
+ *         &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties -->
  *
  * <p><strong>List all queues</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues}
+ * <!-- src_embed com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues -->
+ * <pre>
+ * &#47;&#47; `.subscribe&#40;&#41;` is a non-blocking call. It'll move onto the next
+ * &#47;&#47; instruction after setting up the `consumer` and `errorConsumer` callbacks.
+ * client.listQueues&#40;&#41;.subscribe&#40;queue -&gt; &#123;
+ *     System.out.printf&#40;&quot;Queue [%s]. Lock Duration: %s.%n&quot;,
+ *         queue.getName&#40;&#41;, queue.getLockDuration&#40;&#41;&#41;;
+ * &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error fetching queues: &quot; + error&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues -->
  *
  * @see ServiceBusAdministrationClientBuilder
  * @see ServiceBusAdministrationClient ServiceBusAdministrationClient for a synchronous client.
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
 public final class ServiceBusAdministrationAsyncClient {
-    // See https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
-    // for more information on Azure resource provider namespaces.
-    private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     private static final String CONTENT_TYPE = "application/xml";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
 
     // Name of the entity type when listing queues and topics.
     private static final String QUEUES_ENTITY_TYPE = "queues";
@@ -121,7 +173,6 @@ public final class ServiceBusAdministrationAsyncClient {
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
 
@@ -130,6 +181,8 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @param managementClient Client to make management calls.
      * @param serializer Serializer to deserialize ATOM XML responses.
+     *
+     * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
         ServiceBusManagementSerializer serializer) {
@@ -159,7 +212,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return createQueue(queueName, new CreateQueueOptions());
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -226,7 +279,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return createRule(topicName, subscriptionName, ruleName, new CreateRuleOptions());
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -302,7 +355,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return createSubscription(topicName, subscriptionName, new CreateSubscriptionOptions());
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -377,7 +430,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return createTopic(topicName, new CreateTopicOptions());
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1017,9 +1070,9 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleProperties> listRules(String topicName, String subscriptionName) {
         if (topicName == null) {
-            return pagedFluxError(logger, new NullPointerException("'topicName' cannot be null."));
+            return pagedFluxError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return pagedFluxError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return pagedFluxError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         }
 
         return new PagedFlux<>(
@@ -1043,9 +1096,9 @@ public final class ServiceBusAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionProperties> listSubscriptions(String topicName) {
         if (topicName == null) {
-            return pagedFluxError(logger, new NullPointerException("'topicName' cannot be null."));
+            return pagedFluxError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return pagedFluxError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return pagedFluxError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         }
 
         return new PagedFlux<>(
@@ -1371,15 +1424,31 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<QueueProperties>> createQueueWithResponse(String queueName, CreateQueueOptions createQueueOptions,
         Context context) {
         if (queueName == null) {
-            return monoError(logger, new NullPointerException("'queueName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'queueName' cannot be null."));
         } else if (queueName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be empty."));
         }
 
         if (createQueueOptions == null) {
-            return monoError(logger, new NullPointerException("'createQueueOptions' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'createQueueOptions' cannot be null."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
+        }
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+
+        final String forwardToEntity = createQueueOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            createQueueOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
+        }
+
+        final String forwardDlqToEntity = createQueueOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            createQueueOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
@@ -1389,14 +1458,12 @@ public final class ServiceBusAdministrationAsyncClient {
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-
         try {
-            return entityClient.putWithResponseAsync(queueName, createEntity, null, withTracing)
+            return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1406,30 +1473,31 @@ public final class ServiceBusAdministrationAsyncClient {
      * @param ruleOptions Rule to create.
      * @param context Context to pass into request.
      *
+     *
      * @return A Mono that completes with the created {@link RuleProperties}.
      */
     Mono<Response<RuleProperties>> createRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         CreateRuleOptions ruleOptions, Context context) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be empty."));
         }
 
         if (subscriptionName == null) {
-            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null."));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be empty."));
         }
 
         if (ruleName == null) {
-            return monoError(logger, new NullPointerException("'ruleName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null."));
         } else if (ruleName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'ruleName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be empty."));
         }
 
         if (ruleOptions == null) {
-            return monoError(logger, new NullPointerException("'rule' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'rule' cannot be null."));
         }
 
         final RuleActionImpl action = ruleOptions.getAction() != null
@@ -1448,7 +1516,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setRuleDescription(rule);
         final CreateRuleBody createEntity = new CreateRuleBody().setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
@@ -1456,7 +1524,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeRule(response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1471,19 +1539,35 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<SubscriptionProperties>> createSubscriptionWithResponse(String topicName, String subscriptionName,
         CreateSubscriptionOptions subscriptionOptions, Context context) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be empty."));
         }
 
         if (subscriptionName == null) {
-            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null."));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be empty."));
         }
 
         if (subscriptionOptions == null) {
-            return monoError(logger, new NullPointerException("'subscription' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'subscription' cannot be null."));
+        }
+
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscriptionOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
+        }
+
+        final String forwardDlqToEntity = subscriptionOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
@@ -1492,15 +1576,13 @@ public final class ServiceBusAdministrationAsyncClient {
             .setSubscriptionDescription(subscription);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody().setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-
         try {
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
-                null, withTracing)
+                null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1515,15 +1597,15 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<TopicProperties>> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
         Context context) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be empty."));
         }
 
         if (topicOptions == null) {
-            return monoError(logger, new NullPointerException("'topicOptions' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topicOptions' cannot be null"));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
         final TopicDescription topic = EntityHelper.getTopicDescription(topicOptions);
@@ -1533,14 +1615,14 @@ public final class ServiceBusAdministrationAsyncClient {
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.putWithResponseAsync(topicName, createEntity, null, withTracing)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeTopic);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1554,14 +1636,14 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         if (queueName == null) {
-            return monoError(logger, new NullPointerException("'queueName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'queueName' cannot be null"));
         } else if (queueName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queueName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be an empty string."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.deleteWithResponseAsync(queueName, withTracing)
@@ -1571,7 +1653,7 @@ public final class ServiceBusAdministrationAsyncClient {
                         response.getHeaders(), null);
                 });
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1588,22 +1670,22 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<Void>> deleteRuleWithResponse(String topicName, String subscriptionName, String ruleName,
         Context context) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (subscriptionName == null) {
-            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null"));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (ruleName == null) {
-            return monoError(logger, new NullPointerException("'ruleName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'ruleName' cannot be null"));
         } else if (ruleName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'ruleName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, withTracing)
@@ -1611,7 +1693,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1626,18 +1708,18 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         if (subscriptionName == null) {
-            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null"));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
@@ -1646,7 +1728,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1660,14 +1742,14 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<Void>> deleteTopicWithResponse(String topicName, Context context) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.deleteWithResponseAsync(topicName, withTracing)
@@ -1675,7 +1757,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), null));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1715,14 +1797,14 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getQueueWithResponse(String queueName, Context context,
         Function<QueueProperties, T> mapper) {
         if (queueName == null) {
-            return monoError(logger, new NullPointerException("'queueName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'queueName' cannot be null"));
         } else if (queueName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'queueName' cannot be empty."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
@@ -1742,20 +1824,20 @@ public final class ServiceBusAdministrationAsyncClient {
                     }
                 });
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<RuleProperties>> getRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, withTracing)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeRule);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1771,18 +1853,18 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getSubscriptionWithResponse(String topicName, String subscriptionName, Context context,
         Function<SubscriptionProperties, T> mapper) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null."));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be an empty string."));
         } else if (subscriptionName == null) {
-            return monoError(logger, new NullPointerException("'subscriptionName' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'subscriptionName' cannot be null."));
         } else if (subscriptionName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
+            return monoError(LOGGER, new IllegalArgumentException("'subscriptionName' cannot be an empty string."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
@@ -1804,7 +1886,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     }
                 });
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1843,14 +1925,14 @@ public final class ServiceBusAdministrationAsyncClient {
     <T> Mono<Response<T>> getTopicWithResponse(String topicName, Context context,
         Function<TopicProperties, T> mapper) {
         if (topicName == null) {
-            return monoError(logger, new NullPointerException("'topicName' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topicName' cannot be null"));
         } else if (topicName.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'topicName' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'topicName' cannot be empty."));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.getWithResponseAsync(topicName, true, withTracing)
@@ -1870,7 +1952,7 @@ public final class ServiceBusAdministrationAsyncClient {
                     }
                 });
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1882,12 +1964,12 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of queues.
      */
     Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listQueues(0, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1905,12 +1987,12 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listQueues(skip, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1922,12 +2004,12 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of rules.
      */
     Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listRules(topicName, subscriptionName, 0, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1946,12 +2028,12 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listRules(topicName, subscriptionName, skip, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1963,12 +2045,12 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of subscriptions.
      */
     Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsFirstPage(String topicName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listSubscriptions(topicName, 0, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1987,12 +2069,12 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listSubscriptions(topicName, skip, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -2004,12 +2086,12 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of topics.
      */
     Mono<PagedResponse<TopicProperties>> listTopicsFirstPage(Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listTopics(0, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -2027,12 +2109,12 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listTopics(skip, withTracing);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -2047,9 +2129,25 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<QueueProperties>> updateQueueWithResponse(QueueProperties queue, Context context) {
         if (queue == null) {
-            return monoError(logger, new NullPointerException("'queue' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'queue' cannot be null"));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
+        }
+
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = queue.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            queue.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
+        }
+
+        final String forwardDlqToEntity = queue.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            queue.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
@@ -2058,15 +2156,14 @@ public final class ServiceBusAdministrationAsyncClient {
             .setQueueDescription(queueDescription);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-            return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
+            return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2082,9 +2179,9 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<RuleProperties>> updateRuleWithResponse(String topicName, String subscriptionName,
         RuleProperties rule, Context context) {
         if (rule == null) {
-            return monoError(logger, new NullPointerException("'rule' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'rule' cannot be null"));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
         final RuleDescription implementation = EntityHelper.toImplementation(rule);
@@ -2093,7 +2190,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setRuleDescription(implementation);
         final CreateRuleBody ruleBody = new CreateRuleBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
@@ -2102,7 +2199,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeRule(response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2118,9 +2215,24 @@ public final class ServiceBusAdministrationAsyncClient {
     Mono<Response<SubscriptionProperties>> updateSubscriptionWithResponse(SubscriptionProperties subscription,
         Context context) {
         if (subscription == null) {
-            return monoError(logger, new NullPointerException("'subscription' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'subscription' cannot be null"));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
+        }
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscription.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscription.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
+        }
+
+        final String forwardDlqToEntity = subscription.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscription.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final String topicName = subscription.getTopicName();
@@ -2131,16 +2243,15 @@ public final class ServiceBusAdministrationAsyncClient {
             .setSubscriptionDescription(implementation);
         final CreateSubscriptionBody createEntity = new CreateSubscriptionBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
-                "*", withTracing)
+                "*", contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2155,9 +2266,9 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     Mono<Response<TopicProperties>> updateTopicWithResponse(TopicProperties topic, Context context) {
         if (topic == null) {
-            return monoError(logger, new NullPointerException("'topic' cannot be null"));
+            return monoError(LOGGER, new NullPointerException("'topic' cannot be null"));
         } else if (context == null) {
-            return monoError(logger, new NullPointerException("'context' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'context' cannot be null."));
         }
 
         final TopicDescription implementation = EntityHelper.toImplementation(topic);
@@ -2166,7 +2277,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setTopicDescription(implementation);
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
@@ -2174,7 +2285,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeTopic(response));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -2191,7 +2302,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return serializer.deserialize(contents, clazz);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
+            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                 "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
     }
@@ -2227,12 +2338,12 @@ public final class ServiceBusAdministrationAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getQueueDescription() == null) {
             final TopicDescriptionEntry entryTopic = deserialize(response.getValue(), TopicDescriptionEntry.class);
             if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
-                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
@@ -2258,7 +2369,7 @@ public final class ServiceBusAdministrationAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
@@ -2283,7 +2394,7 @@ public final class ServiceBusAdministrationAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
@@ -2312,12 +2423,12 @@ public final class ServiceBusAdministrationAsyncClient {
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent() == null) {
-            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
             final QueueDescriptionEntry entryQueue = deserialize(response.getValue(), QueueDescriptionEntry.class);
             if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
-                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
@@ -2362,7 +2473,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities,
                 skipParameter.get());
         } else {
-            logger.warning("There should have been a skip parameter for the next page.");
+            LOGGER.warning("There should have been a skip parameter for the next page.");
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
     }
@@ -2382,7 +2493,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
+                    LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
@@ -2428,7 +2539,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
                 final RuleDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
+                    LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
@@ -2466,7 +2577,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
                 final SubscriptionDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
+                    LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
@@ -2508,7 +2619,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 final Response<TopicDescriptionFeed> feedResponse = deserialize(response, TopicDescriptionFeed.class);
                 final TopicDescriptionFeed feed = feedResponse.getValue();
                 if (feed == null) {
-                    logger.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
+                    LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
                     return Mono.empty();
                 }
@@ -2534,6 +2645,57 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
+     * Check that the additional headers field is present and add the additional auth header
+     *
+     * @param headerName name of the header to be added
+     * @param context current request context
+     *
+     * @return boolean representing the outcome of adding header operation
+     */
+    private void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+        context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
+            .ifPresent(headers -> {
+                if (headers instanceof HttpHeaders) {
+                    HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+                    customHttpHeaders.add(headerName, entity);
+                }
+            });
+    }
+
+    /**
+     * Checks if the given entity is an absolute URL, if so return it.
+     * Otherwise, construct the URL from the given entity and return that.
+     *
+     * @param entity : entity to forward messages to.
+     *
+     * @return Forward to Entity represented as an absolute URL
+     */
+    private String getAbsoluteUrlFromEntity(String entity) {
+        // Check if passed entity is an absolute URL
+        try {
+            URL url = new URL(entity);
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // Entity is not a URL, continue.
+        }
+        UrlBuilder urlBuilder = new UrlBuilder();
+        urlBuilder.setScheme("https");
+        urlBuilder.setHost(managementClient.getEndpoint());
+        urlBuilder.setPath(entity);
+
+        try {
+            URL url = urlBuilder.toUrl();
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // This is not expected.
+            LOGGER.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
+                managementClient.getEndpoint(), entity);
+            LOGGER.logThrowableAsError(ex);
+        }
+        return null;
+    }
+
+    /**
      * Given an XML title element, returns the XML text inside. Jackson deserializes Objects as LinkedHashMaps. XML text
      * is represented as an entry with an empty string as the key.
      *
@@ -2554,7 +2716,7 @@ public final class ServiceBusAdministrationAsyncClient {
             map = (Map<String, String>) responseTitle;
             return map.get("");
         } catch (ClassCastException error) {
-            logger.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
+            LOGGER.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
             return null;
         }
     }

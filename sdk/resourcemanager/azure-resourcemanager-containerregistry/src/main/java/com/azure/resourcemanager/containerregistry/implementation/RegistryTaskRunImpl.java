@@ -12,6 +12,7 @@ import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
 import com.azure.resourcemanager.containerregistry.models.EncodedTaskRunRequest;
 import com.azure.resourcemanager.containerregistry.models.FileTaskRunRequest;
 import com.azure.resourcemanager.containerregistry.models.OS;
+import com.azure.resourcemanager.containerregistry.models.OverrideTaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.OverridingValue;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
@@ -140,7 +141,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     @Override
     public RegistryTaskRunImpl withTaskRunRequest(String taskName) {
         this.taskRunRequest = new TaskRunRequest();
-        this.taskRunRequest.withTaskName(taskName);
+        this.taskRunRequest.withTaskId(taskName);
         this.inner.withTask(taskName);
         return this;
     }
@@ -195,7 +196,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         if (overridingValues.size() == 0) {
             return this;
         }
-        List<SetValue> overridingValuesList = new ArrayList<SetValue>();
+        List<SetValue> overridingValuesList = new ArrayList<>();
         for (Map.Entry<String, OverridingValue> entry : overridingValues.entrySet()) {
             SetValue value = new SetValue();
             value.withName(entry.getKey());
@@ -203,20 +204,26 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
         }
-        this.taskRunRequest.withValues(overridingValuesList);
+        if (this.taskRunRequest.overrideTaskStepProperties() == null) {
+            this.taskRunRequest.withOverrideTaskStepProperties(new OverrideTaskStepProperties());
+        }
+        this.taskRunRequest.overrideTaskStepProperties().withValues(overridingValuesList);
         return this;
     }
 
     @Override
     public RegistryTaskRunImpl withOverridingValue(String name, OverridingValue overridingValue) {
-        if (this.taskRunRequest.values() == null) {
-            this.taskRunRequest.withValues(new ArrayList<SetValue>());
+        if (this.taskRunRequest.overrideTaskStepProperties() == null) {
+            this.taskRunRequest.withOverrideTaskStepProperties(new OverrideTaskStepProperties());
+        }
+        if (this.taskRunRequest.overrideTaskStepProperties().values() == null) {
+            this.taskRunRequest.overrideTaskStepProperties().withValues(new ArrayList<>());
         }
         SetValue value = new SetValue();
         value.withName(name);
         value.withValue(overridingValue.value());
         value.withIsSecret(overridingValue.isSecret());
-        this.taskRunRequest.values().add(value);
+        this.taskRunRequest.overrideTaskStepProperties().values().add(value);
         return this;
     }
 

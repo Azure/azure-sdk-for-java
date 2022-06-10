@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerinstance.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
@@ -21,8 +20,6 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerInstanceManagementClientBuilder.class)
 public final class ContainerInstanceManagementClientImpl extends AzureServiceClient
     implements ContainerInstanceManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerInstanceManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -171,7 +168,7 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2021-10-01";
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);

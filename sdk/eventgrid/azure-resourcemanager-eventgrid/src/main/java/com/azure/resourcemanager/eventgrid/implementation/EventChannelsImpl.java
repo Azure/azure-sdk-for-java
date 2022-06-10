@@ -13,10 +13,9 @@ import com.azure.resourcemanager.eventgrid.fluent.EventChannelsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventChannelInner;
 import com.azure.resourcemanager.eventgrid.models.EventChannel;
 import com.azure.resourcemanager.eventgrid.models.EventChannels;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EventChannelsImpl implements EventChannels {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventChannelsImpl.class);
 
     private final EventChannelsClient innerClient;
 
@@ -77,7 +76,7 @@ public final class EventChannelsImpl implements EventChannels {
     public EventChannel getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String eventChannelName = Utils.getValueFromIdByName(id, "eventChannels");
         if (eventChannelName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'eventChannels'.", id)));
@@ -105,7 +104,7 @@ public final class EventChannelsImpl implements EventChannels {
     public Response<EventChannel> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -113,7 +112,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String eventChannelName = Utils.getValueFromIdByName(id, "eventChannels");
         if (eventChannelName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'eventChannels'.", id)));
@@ -133,7 +132,7 @@ public final class EventChannelsImpl implements EventChannels {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String eventChannelName = Utils.getValueFromIdByName(id, "eventChannels");
         if (eventChannelName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'eventChannels'.", id)));
@@ -161,7 +160,7 @@ public final class EventChannelsImpl implements EventChannels {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -169,7 +168,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String partnerNamespaceName = Utils.getValueFromIdByName(id, "partnerNamespaces");
         if (partnerNamespaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class EventChannelsImpl implements EventChannels {
         }
         String eventChannelName = Utils.getValueFromIdByName(id, "eventChannels");
         if (eventChannelName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'eventChannels'.", id)));

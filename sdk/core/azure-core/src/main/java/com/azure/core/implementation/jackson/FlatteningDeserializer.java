@@ -188,7 +188,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 String[] jsonNodeKeys = Arrays.stream(SPLIT_KEY_PATTERN.split(jsonPropValue))
                     .map(FlatteningDeserializer::unescapeEscapedDots)
                     .toArray(String[]::new);
-
+                int depth = 0;
                 // Keep track of the JsonNodes which lead to the flattened property being deserialized.
                 //
                 // This will be used later to clean up the parent JsonNode so that there aren't additional dangling
@@ -196,22 +196,26 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 // @JsonAnySetter containing errant values.
                 List<JsonNode> nodePath = new ArrayList<>();
                 nodePath.add(jsonNode);
+                depth++;
                 JsonNode nodeToAdd = jsonNode;
                 for (String jsonNodeKey : jsonNodeKeys) {
                     nodeToAdd = nodeToAdd.get(jsonNodeKey);
+                    depth++;
                     if (nodeToAdd == null) {
                         break;
                     }
                     nodePath.add(nodeToAdd);
                 }
 
-                // No sub-properties leading to the flattened property exists. Set the un-flattened property to null and
-                // return early.
-                if (nodePath.size() == 1) {
+                // No sub-properties leading to the flattened property exists is determined if the number of JSON nodes
+                // equals the 'depth' traversed for reaching the un-flattened property.
+                // Set the un-flattened property to null and return early.
+                if (nodePath.size() == depth - 1) {
                     ((ObjectNode) jsonNode).set(jsonPropValue, null);
                     return;
                 }
 
+                // nodePath.get(nodePath.size() - 2) == nodePath.get(nodePath.size() - (depth - (jsonNodeKeys.length - 1)
                 if (!nodePath.get(nodePath.size() - 2).has(jsonNodeKeys[jsonNodeKeys.length - 1])) {
                     // If some properties leading to the flattened property exists, but not all of them, set the
                     // un-flattened property to null.

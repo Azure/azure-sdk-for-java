@@ -6,16 +6,12 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.CertificateCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about a certificate. */
 @Fluent
 public final class CertificateCreateOrUpdateParameters extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateCreateOrUpdateParameters.class);
-
     /*
      * The properties associated with the certificate.
      */

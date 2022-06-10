@@ -10,16 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AadPropertiesResourceInner;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.CrrAccessTokenResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
-import com.azure.resourcemanager.recoveryservicesbackup.models.CrrAccessTokenResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoveryPointsImpl implements RecoveryPoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsImpl.class);
 
     private final RecoveryPointsClient innerClient;
 
@@ -97,64 +93,6 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CrrAccessTokenResource getAccessToken(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters) {
-        CrrAccessTokenResourceInner inner =
-            this
-                .serviceClient()
-                .getAccessToken(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    recoveryPointId,
-                    parameters);
-        if (inner != null) {
-            return new CrrAccessTokenResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CrrAccessTokenResource> getAccessTokenWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters,
-        Context context) {
-        Response<CrrAccessTokenResourceInner> inner =
-            this
-                .serviceClient()
-                .getAccessTokenWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    recoveryPointId,
-                    parameters,
-                    context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CrrAccessTokenResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

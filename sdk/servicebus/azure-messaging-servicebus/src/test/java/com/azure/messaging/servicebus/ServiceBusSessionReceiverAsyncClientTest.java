@@ -67,7 +67,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
@@ -101,7 +101,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
-        logger.info("===== [{}] Setting up. =====", testInfo.getDisplayName());
+        LOGGER.info("===== [{}] Setting up. =====", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -136,7 +136,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
     @AfterEach
     void afterEach(TestInfo testInfo) {
-        logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
+        LOGGER.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
         if (sessionManager != null) {
             sessionManager.close();

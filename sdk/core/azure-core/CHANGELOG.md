@@ -1,6 +1,6 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
+## 1.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,214 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
+## 1.29.0 (2022-06-03)
+
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
+
+## 1.28.0 (2022-05-06)
+
+### Features Added
+
+- Add `com.azure.core.models.MessageContent`.
+- Added support for custom configuration sources and rich configuration properties:
+  - `ConfigurationSource` supplies properties from the give source
+  - `ConfigurationBuilder` allows to build immutable `Configuration` per-client instances with shared properties sections.
+  - `ConfigurationProperty<T>` describes how configuration property is retrieved. `ConfigurationPropertyBuilder` allows
+    to conveniently build properties.
+  - `Configuration.get(ConfigurationProperty<T>)` allows to retrieve new properties and 
+    `Configuration.contains(ConfigurationProperty<T>)` checks if 
+
+### Breaking Changes
+
+- Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`.
+- Moved Netty TC Native dependency to `azure-core-http-netty`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.14` to `3.4.17`.
+- Upgraded Jackson from `2.13.2.1` to `2.13.2.2`.
+
+## 1.27.0 (2022-04-01)
+
+### Features Added
+
+- Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
+  at once during construction.
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
+
+### Other Changes
+
+- Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
+- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.2` to `2.13.2.1`.
+
+## 1.26.0 (2022-03-04)
+
+### Features Added
+
+- Added `FluxUtil.writeToOutputStream` which provides an optimized way to write a stream of `Flux<ByteBuffer>` to an
+  `OutputStream` with minimal overhead. ([#26821](https://github.com/Azure/azure-sdk-for-java/pull/26821))
+
+### Bugs Fixed
+
+- Fixed `com.azure.core.implementation.ReflectionUtils.getLookupToUse` which fails with `java.lang.SecurityException` 
+  under `SecurityManager`. ([#27182](https://github.com/Azure/azure-sdk-for-java/pull/27182), thank you @reta!)
+- Fixed an issue where converting Azure `Context` to Reactor `Context` could result in an `IndexOutOfBoundsException`. ([#27197](https://github.com/Azure/azure-sdk-for-java/pull/27197))
+
+### Other Changes
+
+- Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
+  query parameter. ([#26973](https://github.com/Azure/azure-sdk-for-java/pull/26973))
+- Updated how `Response` types are constructed in `RestProxy` to reduce the usage of reflection. ([#27207](https://github.com/Azure/azure-sdk-for-java/pull/27207))
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+- Updated the usage of `AZURE_LOG_LEVEL` to be constant. ([#27193](https://github.com/Azure/azure-sdk-for-java/pull/27193))
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.13` to `3.4.14`.
+
+## 1.25.0 (2022-02-04)
+
+### Features Added
+
+- Added `AzureKeyCredentialTrait`, `AzureNamedKeyCredentialTrait`, `AzureSasCredentialTrait`, `ConfigurationTrait`,
+  `ConnectionStringTrait`, `EndpointTrait`, `HttpTrait`, and `TokenCredentialTrait` interfaces that represent common 
+  cross-cutting aspects of functionality offered by libraries in the Azure SDK for Java.
+- Added a static method `toRfc1123String` which converts an `OffsetDateTime` to an RFC1123 datetime string.
+
+## 1.24.1 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
+
+## 1.24.0 (2022-01-06)
+
+### Features Added
+
+- Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log 
+  entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger 
+  instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
+
+### Bugs Fixed
+
+- Fixed a bug where the wrong full class name was being used in reflections. ([#25840](https://github.com/Azure/azure-sdk-for-java/pull/25840))
+- Fixed a bug where flattened deserialization wouldn't find the correct JSON node. ([#25164](https://github.com/Azure/azure-sdk-for-java/pull/25621))
+- Changed how non-proxy hosts was being handled as a regex. ([#25841](https://github.com/Azure/azure-sdk-for-java/pull/25841))
+- Fixed a bug where an errant log message would happen when using a newer version of Jackson. ([#26129](https://github.com/Azure/azure-sdk-for-java/pull/26129))
+- Fixed a bug where `PagedIterable` wouldn't terminate the same as `PagedFlux`. ([#26139](https://github.com/Azure/azure-sdk-for-java/pull/26139))
+- Fixed a bug where `MethodHandle.Lookup` retrieval didn't handle the unnamed module properly. ([#26268](https://github.com/Azure/azure-sdk-for-java/pull/26268))
+
+### Other Changes
+
+- Improved performance of logging.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.0` to `2.13.1`.
+
+## 1.23.1 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.5` to `2.13.0`.
+- Upgraded Reactor from `3.4.10` to `3.4.12`.
+
+## 1.23.0 (2021-11-22)
+
+### Breaking Changes
+- Removed `ErrorOptions`
+- Removed `setErrorOptions()` from `RequestOptions`
+
+## 1.22.0 (2021-11-05)
+
+### Features Added
+
+- Added `ReferenceManager` which is capable of performing `Cleaner`-like functionality by allowing a `Runnable` callback
+  to be triggered when an object reference is eligible for garbage collection.
+- Added `RequestOptions` which allows for a chained set of operations to be applied to an `HttpRequest` before being
+  sent through the `HttpPipeline`.
+- Added an `ETag` class which represents an HTTP ETag.
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+- Added support for HTTP method OPTIONS by adding an `Options` annotation.
+- Added a function to `CoreUtils` which merges two `Context`s together.
+- Added a new feature flag `AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER` which indicates to `JacksonAdapter` to wrap 
+  serialization calls in `AccessController.doPrivileged` to prevent `SecurityManager` exceptions when `JacksonAdapter`
+  has the prerequisite permissions.
+
+### Bugs Fixed
+
+- Fixed a bug where an initial length of 0 wasn't permitted when creating a `ByteBuffer` collector.
+- Fixed a bug where an exception type would be instantiated and never used in a hot path, reducing memory usage.
+- Fixed a bug where the content length of a serializable request body may return null when it is known (already serialized).
+
+### Other Changes
+
+- Improved performance of operations that merge or retrieve all values of `Context`.
+
+## 1.22.0-beta.1 (2021-10-12)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+### Other Changes
+
+- Fixed a bug where `BinaryData.getLength` returns `null` when it should return valid length.
+
+## 1.21.0 (2021-10-01)
+
+### Features Added
+
+- Added `ResponseError` which represents a general error response.
+- Added `HttpResponse.getBodyAsInputStream` to retrieve the `HttpResponse` body as an `InputStream`.
+- Added `HttpHeaders.add` to add an individual header to the `HttpHeaders`.
+- Added `setTenantId` and `getTenantId` methods to `TokenRequestContext` class that allows to configure TenantId Challenges.
+- Added additional logging when an `HttpClientProvider` is loaded from the classpath.
+
+### Breaking Changes
+
+- Deprecated annotation `ResumeOperation` as it was no longer used.
+- Deprecated `JacksonAdapter.simpleMapper` and `JacksonAdapter.serializer` as they should no longer be used.
+- Deprecated `CoreUtils.extractAndFetch` as it was no longer used.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
+- Upgraded Reactor from `3.4.9` to `3.4.10`.
+
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
 
 ## 1.20.0 (2021-09-07)
 
@@ -69,8 +277,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import com.azure.resourcemanager.appservice.models.ResourceScopeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.UUID;
 /** Recommendation resource specific properties. */
 @Fluent
 public final class RecommendationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationProperties.class);
-
     /*
      * Timestamp when this instance was created.
      */

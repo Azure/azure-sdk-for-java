@@ -8,24 +8,25 @@ import com.azure.analytics.synapse.artifacts.implementation.LinkedServicesImpl;
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LinkedServiceResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class LinkedServiceAsyncClient {
-    private final LinkedServicesImpl serviceClient;
+    @Generated private final LinkedServicesImpl serviceClient;
 
     /**
-     * Initializes an instance of LinkedServices client.
+     * Initializes an instance of LinkedServiceAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     LinkedServiceAsyncClient(LinkedServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -35,20 +36,9 @@ public final class LinkedServiceAsyncClient {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
+     * @return a list of linked service resources as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceSinglePage() {
-        return this.serviceClient.getLinkedServicesByWorkspaceSinglePageAsync();
-    }
-
-    /**
-     * Lists linked services.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LinkedServiceResource> getLinkedServicesByWorkspace() {
         return this.serviceClient.getLinkedServicesByWorkspaceAsync();
@@ -64,8 +54,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
+     * @return linked service resource type along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponse(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
@@ -83,8 +74,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
+     * @return linked service resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> createOrUpdateLinkedService(
             String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
@@ -99,8 +91,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
+     * @return linked service resource type on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> createOrUpdateLinkedService(
             String linkedServiceName, LinkedServiceResource linkedService) {
@@ -116,8 +109,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
+     * @return a linked service along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkedServiceResource>> getLinkedServiceWithResponse(
             String linkedServiceName, String ifNoneMatch) {
@@ -133,8 +127,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
+     * @return a linked service on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> getLinkedService(String linkedServiceName, String ifNoneMatch) {
         return this.serviceClient.getLinkedServiceAsync(linkedServiceName, ifNoneMatch);
@@ -147,8 +142,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
+     * @return a linked service on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedServiceResource> getLinkedService(String linkedServiceName) {
         return this.serviceClient.getLinkedServiceAsync(linkedServiceName);
@@ -161,8 +157,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteLinkedServiceWithResponse(String linkedServiceName) {
         return this.serviceClient.deleteLinkedServiceWithResponseAsync(linkedServiceName);
@@ -175,8 +172,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteLinkedService(String linkedServiceName) {
         return this.serviceClient.deleteLinkedServiceAsync(linkedServiceName);
@@ -190,8 +188,9 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameLinkedServiceWithResponse(
             String linkedServiceName, ArtifactRenameRequest request) {
@@ -206,24 +205,11 @@ public final class LinkedServiceAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameLinkedService(String linkedServiceName, ArtifactRenameRequest request) {
         return this.serviceClient.renameLinkedServiceAsync(linkedServiceName, request);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceNextSinglePage(String nextLink) {
-        return this.serviceClient.getLinkedServicesByWorkspaceNextSinglePageAsync(nextLink);
     }
 }

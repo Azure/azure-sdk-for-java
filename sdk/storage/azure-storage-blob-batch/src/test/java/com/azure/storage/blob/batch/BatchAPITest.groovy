@@ -245,7 +245,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -280,7 +280,7 @@ class BatchAPITest extends APISpec {
             .verify(Duration.ofSeconds(30))
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -313,7 +313,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
@@ -435,7 +435,7 @@ class BatchAPITest extends APISpec {
         thrown(BlobBatchStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
@@ -468,7 +468,7 @@ class BatchAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         // In PLAYBACK check responses in an order invariant fashion.
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202

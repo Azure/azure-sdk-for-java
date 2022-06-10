@@ -6,20 +6,17 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The details about the associated storage account. */
 @Fluent
 public final class StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccount.class);
-
     /*
      * The ID of the storage account resource. Video Analyzer relies on tables,
      * queues, and blobs. The primary storage account must be a Standard
      * Storage account (either Microsoft.ClassicStorage or Microsoft.Storage).
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
@@ -94,8 +91,15 @@ public final class StorageAccount {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (id() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model StorageAccount"));
+        }
         if (identity() != null) {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccount.class);
 }

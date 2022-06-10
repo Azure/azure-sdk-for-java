@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerBlobAuditingPoliciesClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
     implements WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkspaceManagedSqlServerBlobAuditingPoliciesService service;
 
@@ -143,7 +140,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's blob auditing policy.
+     * @return a workspace managed sql server's blob auditing policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(
@@ -200,7 +198,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's blob auditing policy.
+     * @return a workspace managed sql server's blob auditing policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerBlobAuditingPolicyInner>> getWithResponseAsync(
@@ -256,7 +255,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's blob auditing policy.
+     * @return a workspace managed sql server's blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerBlobAuditingPolicyInner> getAsync(
@@ -299,7 +298,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace managed sql server's blob auditing policy.
+     * @return a workspace managed sql server's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerBlobAuditingPolicyInner> getWithResponse(
@@ -320,7 +319,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return a server blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -387,7 +386,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return a server blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -451,9 +450,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return the {@link PollerFlux} for polling of a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -469,7 +468,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
                 this.client.getHttpPipeline(),
                 ServerBlobAuditingPolicyInner.class,
                 ServerBlobAuditingPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -483,9 +482,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return the {@link PollerFlux} for polling of a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -517,9 +516,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return the {@link SyncPoller} for polling of a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -540,9 +539,9 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return the {@link SyncPoller} for polling of a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -563,7 +562,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return a server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(
@@ -587,7 +586,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server blob auditing policy.
+     * @return a server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerBlobAuditingPolicyInner> createOrUpdateAsync(
@@ -654,7 +653,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
@@ -713,7 +713,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
@@ -768,7 +769,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(
@@ -787,7 +788,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerBlobAuditingPolicyInner> listByWorkspaceAsync(
@@ -805,7 +806,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(
@@ -822,7 +823,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(
@@ -837,7 +838,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -873,7 +875,8 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server auditing settings.
+     * @return a list of server auditing settings along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(

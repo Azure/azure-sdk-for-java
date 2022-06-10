@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.TriggerRunsImpl;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.RunFilterParameters;
 import com.azure.analytics.synapse.artifacts.models.TriggerRunsQueryResponse;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class TriggerRunClient {
-    private final TriggerRunsImpl serviceClient;
+    @Generated private final TriggerRunsImpl serviceClient;
 
     /**
-     * Initializes an instance of TriggerRuns client.
+     * Initializes an instance of TriggerRunClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TriggerRunClient(TriggerRunsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -37,6 +39,7 @@ public final class TriggerRunClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rerunTriggerInstance(String triggerName, String runId) {
         this.serviceClient.rerunTriggerInstance(triggerName, runId);
@@ -51,8 +54,9 @@ public final class TriggerRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rerunTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
         return this.serviceClient.rerunTriggerInstanceWithResponse(triggerName, runId, context);
@@ -67,6 +71,7 @@ public final class TriggerRunClient {
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelTriggerInstance(String triggerName, String runId) {
         this.serviceClient.cancelTriggerInstance(triggerName, runId);
@@ -81,8 +86,9 @@ public final class TriggerRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelTriggerInstanceWithResponse(String triggerName, String runId, Context context) {
         return this.serviceClient.cancelTriggerInstanceWithResponse(triggerName, runId, context);
@@ -97,6 +103,7 @@ public final class TriggerRunClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger runs.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerRunsQueryResponse queryTriggerRunsByWorkspace(RunFilterParameters filterParameters) {
         return this.serviceClient.queryTriggerRunsByWorkspace(filterParameters);
@@ -110,8 +117,9 @@ public final class TriggerRunClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs.
+     * @return a list of trigger runs along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerRunsQueryResponse> queryTriggerRunsByWorkspaceWithResponse(
             RunFilterParameters filterParameters, Context context) {

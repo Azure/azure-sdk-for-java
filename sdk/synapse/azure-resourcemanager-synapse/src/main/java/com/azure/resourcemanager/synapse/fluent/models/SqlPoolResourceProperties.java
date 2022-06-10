@@ -5,17 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** SQL pool properties Properties of a SQL Analytics pool. */
 @Fluent
 public final class SqlPoolResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolResourceProperties.class);
-
     /*
      * Maximum size in bytes
      */
@@ -49,7 +46,7 @@ public final class SqlPoolResourceProperties {
     /*
      * Resource status
      */
-    @JsonProperty(value = "status")
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
@@ -59,15 +56,30 @@ public final class SqlPoolResourceProperties {
     private OffsetDateTime restorePointInTime;
 
     /*
-     * What is this?
+     * Specifies the mode of sql pool creation.
+     *
+     * Default: regular sql pool creation.
+     *
+     * PointInTimeRestore: Creates a sql pool by restoring a point in time
+     * backup of an existing sql pool. sourceDatabaseId must be specified as
+     * the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * Recovery: Creates a sql pool by a geo-replicated backup.
+     * sourceDatabaseId  must be specified as the recoverableDatabaseId to
+     * restore.
+     *
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql
+     * pool. SourceDatabaseId should be the sql pool's original resource ID.
+     * SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     @JsonProperty(value = "createMode")
-    private String createMode;
+    private CreateMode createMode;
 
     /*
      * Date the SQL pool was created
      */
-    @JsonProperty(value = "creationDate")
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
@@ -192,17 +204,6 @@ public final class SqlPoolResourceProperties {
     }
 
     /**
-     * Set the status property: Resource status.
-     *
-     * @param status the status value to set.
-     * @return the SqlPoolResourceProperties object itself.
-     */
-    public SqlPoolResourceProperties withStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      *
      * @return the restorePointInTime value.
@@ -223,21 +224,45 @@ public final class SqlPoolResourceProperties {
     }
 
     /**
-     * Get the createMode property: What is this?.
+     * Get the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @return the createMode value.
      */
-    public String createMode() {
+    public CreateMode createMode() {
         return this.createMode;
     }
 
     /**
-     * Set the createMode property: What is this?.
+     * Set the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @param createMode the createMode value to set.
      * @return the SqlPoolResourceProperties object itself.
      */
-    public SqlPoolResourceProperties withCreateMode(String createMode) {
+    public SqlPoolResourceProperties withCreateMode(CreateMode createMode) {
         this.createMode = createMode;
         return this;
     }
@@ -249,17 +274,6 @@ public final class SqlPoolResourceProperties {
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate property: Date the SQL pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the SqlPoolResourceProperties object itself.
-     */
-    public SqlPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
     }
 
     /**

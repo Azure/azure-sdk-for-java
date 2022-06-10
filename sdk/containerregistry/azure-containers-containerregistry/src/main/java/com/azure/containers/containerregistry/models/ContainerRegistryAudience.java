@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ContainerRegistryAudience. */
-public class ContainerRegistryAudience extends ExpandableStringEnum<ContainerRegistryAudience> {
+public final class ContainerRegistryAudience extends ExpandableStringEnum<ContainerRegistryAudience> {
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for ContainerRegistryAudience. */
     public static final ContainerRegistryAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://management.chinacloudapi.cn");
 

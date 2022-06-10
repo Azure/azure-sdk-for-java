@@ -10,6 +10,11 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
  */
 public interface ConfigurationClientBuilderSetup {
 
+    /**
+     * Updates the ConfigurationClientBuilder for connecting to the given App Configuration.
+     * @param builder ConfigurationClientBuilder
+     * @param endpoint String
+     */
     void setup(ConfigurationClientBuilder builder, String endpoint);
 
 }

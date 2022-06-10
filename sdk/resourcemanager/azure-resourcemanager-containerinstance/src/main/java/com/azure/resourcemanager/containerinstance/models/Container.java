@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A container instance. */
-@JsonFlatten
 @Fluent
-public class Container {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
-
+public final class Container {
     /*
      * The user-provided name of the container instance.
      */
@@ -24,58 +20,10 @@ public class Container {
     private String name;
 
     /*
-     * The name of the image used to create the container instance.
+     * The properties of the container instance.
      */
-    @JsonProperty(value = "properties.image", required = true)
-    private String image;
-
-    /*
-     * The commands to execute within the container instance in exec form.
-     */
-    @JsonProperty(value = "properties.command")
-    private List<String> command;
-
-    /*
-     * The exposed ports on the container instance.
-     */
-    @JsonProperty(value = "properties.ports")
-    private List<ContainerPort> ports;
-
-    /*
-     * The environment variables to set in the container instance.
-     */
-    @JsonProperty(value = "properties.environmentVariables")
-    private List<EnvironmentVariable> environmentVariables;
-
-    /*
-     * The instance view of the container instance. Only valid in response.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private ContainerPropertiesInstanceView instanceView;
-
-    /*
-     * The resource requirements of the container instance.
-     */
-    @JsonProperty(value = "properties.resources", required = true)
-    private ResourceRequirements resources;
-
-    /*
-     * The volume mounts available to the container instance.
-     */
-    @JsonProperty(value = "properties.volumeMounts")
-    private List<VolumeMount> volumeMounts;
-
-    /*
-     * The liveness probe.
-     */
-    @JsonProperty(value = "properties.livenessProbe")
-    private ContainerProbe livenessProbe;
-
-    /*
-     * The readiness probe.
-     */
-    @JsonProperty(value = "properties.readinessProbe")
-    private ContainerProbe readinessProbe;
+    @JsonProperty(value = "properties", required = true)
+    private ContainerProperties innerProperties = new ContainerProperties();
 
     /**
      * Get the name property: The user-provided name of the container instance.
@@ -98,12 +46,21 @@ public class Container {
     }
 
     /**
+     * Get the innerProperties property: The properties of the container instance.
+     *
+     * @return the innerProperties value.
+     */
+    private ContainerProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the image property: The name of the image used to create the container instance.
      *
      * @return the image value.
      */
     public String image() {
-        return this.image;
+        return this.innerProperties() == null ? null : this.innerProperties().image();
     }
 
     /**
@@ -113,7 +70,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withImage(String image) {
-        this.image = image;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withImage(image);
         return this;
     }
 
@@ -123,7 +83,7 @@ public class Container {
      * @return the command value.
      */
     public List<String> command() {
-        return this.command;
+        return this.innerProperties() == null ? null : this.innerProperties().command();
     }
 
     /**
@@ -133,7 +93,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withCommand(List<String> command) {
-        this.command = command;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withCommand(command);
         return this;
     }
 
@@ -143,7 +106,7 @@ public class Container {
      * @return the ports value.
      */
     public List<ContainerPort> ports() {
-        return this.ports;
+        return this.innerProperties() == null ? null : this.innerProperties().ports();
     }
 
     /**
@@ -153,7 +116,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withPorts(List<ContainerPort> ports) {
-        this.ports = ports;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withPorts(ports);
         return this;
     }
 
@@ -163,7 +129,7 @@ public class Container {
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
-        return this.environmentVariables;
+        return this.innerProperties() == null ? null : this.innerProperties().environmentVariables();
     }
 
     /**
@@ -173,7 +139,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withEnvironmentVariables(List<EnvironmentVariable> environmentVariables) {
-        this.environmentVariables = environmentVariables;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withEnvironmentVariables(environmentVariables);
         return this;
     }
 
@@ -183,7 +152,7 @@ public class Container {
      * @return the instanceView value.
      */
     public ContainerPropertiesInstanceView instanceView() {
-        return this.instanceView;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -192,7 +161,7 @@ public class Container {
      * @return the resources value.
      */
     public ResourceRequirements resources() {
-        return this.resources;
+        return this.innerProperties() == null ? null : this.innerProperties().resources();
     }
 
     /**
@@ -202,7 +171,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withResources(ResourceRequirements resources) {
-        this.resources = resources;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withResources(resources);
         return this;
     }
 
@@ -212,7 +184,7 @@ public class Container {
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
-        return this.volumeMounts;
+        return this.innerProperties() == null ? null : this.innerProperties().volumeMounts();
     }
 
     /**
@@ -222,7 +194,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withVolumeMounts(List<VolumeMount> volumeMounts) {
-        this.volumeMounts = volumeMounts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withVolumeMounts(volumeMounts);
         return this;
     }
 
@@ -232,7 +207,7 @@ public class Container {
      * @return the livenessProbe value.
      */
     public ContainerProbe livenessProbe() {
-        return this.livenessProbe;
+        return this.innerProperties() == null ? null : this.innerProperties().livenessProbe();
     }
 
     /**
@@ -242,7 +217,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withLivenessProbe(ContainerProbe livenessProbe) {
-        this.livenessProbe = livenessProbe;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withLivenessProbe(livenessProbe);
         return this;
     }
 
@@ -252,7 +230,7 @@ public class Container {
      * @return the readinessProbe value.
      */
     public ContainerProbe readinessProbe() {
-        return this.readinessProbe;
+        return this.innerProperties() == null ? null : this.innerProperties().readinessProbe();
     }
 
     /**
@@ -262,7 +240,10 @@ public class Container {
      * @return the Container object itself.
      */
     public Container withReadinessProbe(ContainerProbe readinessProbe) {
-        this.readinessProbe = readinessProbe;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withReadinessProbe(readinessProbe);
         return this;
     }
 
@@ -273,38 +254,17 @@ public class Container {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Container"));
         }
-        if (image() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property image in model Container"));
-        }
-        if (ports() != null) {
-            ports().forEach(e -> e.validate());
-        }
-        if (environmentVariables() != null) {
-            environmentVariables().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
-        }
-        if (resources() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resources in model Container"));
+                    new IllegalArgumentException("Missing required property innerProperties in model Container"));
         } else {
-            resources().validate();
-        }
-        if (volumeMounts() != null) {
-            volumeMounts().forEach(e -> e.validate());
-        }
-        if (livenessProbe() != null) {
-            livenessProbe().validate();
-        }
-        if (readinessProbe() != null) {
-            readinessProbe().validate();
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Container.class);
 }

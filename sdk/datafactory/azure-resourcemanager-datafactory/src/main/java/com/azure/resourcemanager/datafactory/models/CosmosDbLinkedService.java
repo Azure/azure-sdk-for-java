@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +18,6 @@ import java.util.Map;
 @JsonTypeName("CosmosDb")
 @Fluent
 public final class CosmosDbLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbLinkedService.class);
-
     /*
      * CosmosDB linked service properties.
      */
@@ -347,6 +344,29 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the CosmosDbLinkedService object itself.
+     */
+    public CosmosDbLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CosmosDbLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -355,7 +375,7 @@ public final class CosmosDbLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model CosmosDbLinkedService"));
@@ -363,4 +383,6 @@ public final class CosmosDbLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CosmosDbLinkedService.class);
 }

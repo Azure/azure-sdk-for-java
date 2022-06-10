@@ -6,15 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An traffic selector policy for a virtual network gateway connection. */
 @Fluent
 public final class TrafficSelectorPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficSelectorPolicy.class);
-
     /*
      * A collection of local address spaces in CIDR format.
      */
@@ -74,16 +71,18 @@ public final class TrafficSelectorPolicy {
      */
     public void validate() {
         if (localAddressRanges() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
         }
         if (remoteAddressRanges() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TrafficSelectorPolicy.class);
 }

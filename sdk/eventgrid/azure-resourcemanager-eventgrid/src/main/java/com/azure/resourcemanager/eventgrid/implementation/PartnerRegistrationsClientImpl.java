@@ -27,19 +27,21 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerRegistrationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationsListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PartnerRegistrationsClient. */
 public final class PartnerRegistrationsClientImpl implements PartnerRegistrationsClient {
-    private final ClientLogger logger = new ClientLogger(PartnerRegistrationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PartnerRegistrationsService service;
 
@@ -86,7 +88,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                 + "/partnerRegistrations/{partnerRegistrationName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationInner>> createOrUpdate(
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -102,7 +104,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                 + "/partnerRegistrations/{partnerRegistrationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -116,7 +118,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
                 + "/partnerRegistrations/{partnerRegistrationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartnerRegistrationInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -184,7 +186,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
+     * @return a partner registration with the specified parameters along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(
@@ -235,7 +238,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
+     * @return a partner registration with the specified parameters along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PartnerRegistrationInner>> getByResourceGroupWithResponseAsync(
@@ -282,20 +286,13 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
+     * @return a partner registration with the specified parameters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerRegistrationInner> getByResourceGroupAsync(
         String resourceGroupName, String partnerRegistrationName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, partnerRegistrationName)
-            .flatMap(
-                (Response<PartnerRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -322,7 +319,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters.
+     * @return a partner registration with the specified parameters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PartnerRegistrationInner> getByResourceGroupWithResponse(
@@ -339,10 +336,11 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration.
+     * @return information about a partner registration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -399,10 +397,11 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration.
+     * @return information about a partner registration along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> createOrUpdateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo,
@@ -458,20 +457,135 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a partner registration.
+     * @return the {@link PollerFlux} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                context);
+    }
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of information about a partner registration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a partner registration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerRegistrationInner> createOrUpdateAsync(
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
-            .flatMap(
-                (Response<PartnerRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationInfo PartnerRegistration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a partner registration on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PartnerRegistrationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -504,13 +618,12 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerRegistrationInner> createOrUpdateWithResponse(
+    public PartnerRegistrationInner createOrUpdate(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
+        return createOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
             .block();
     }
 
@@ -522,10 +635,11 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String partnerRegistrationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String partnerRegistrationName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -570,10 +684,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String partnerRegistrationName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -615,12 +729,105 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String partnerRegistrationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, partnerRegistrationName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, partnerRegistrationName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName) {
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String partnerRegistrationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerRegistrationName) {
-        return deleteWithResponseAsync(resourceGroupName, partnerRegistrationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String partnerRegistrationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, partnerRegistrationName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -646,12 +853,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String partnerRegistrationName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, partnerRegistrationName, context).block();
+    public void delete(String resourceGroupName, String partnerRegistrationName, Context context) {
+        deleteAsync(resourceGroupName, partnerRegistrationName, context).block();
     }
 
     /**
@@ -663,10 +868,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
@@ -726,10 +931,10 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PartnerRegistrationInner>> updateWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
@@ -786,22 +991,143 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context);
+        return this
+            .client
+            .<PartnerRegistrationInner, PartnerRegistrationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PartnerRegistrationInner.class,
+                PartnerRegistrationInner.class,
+                context);
+    }
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
+        return beginUpdateAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PartnerRegistrationInner> updateAsync(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters) {
-        return updateWithResponseAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
-            .flatMap(
-                (Response<PartnerRegistrationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a partner registration with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param partnerRegistrationUpdateParameters Partner registration update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PartnerRegistrationInner> updateAsync(
+        String resourceGroupName,
+        String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+        Context context) {
+        return beginUpdateAsync(
+                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -836,13 +1162,12 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PartnerRegistrationInner> updateWithResponse(
+    public PartnerRegistrationInner update(
         String resourceGroupName,
         String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
+        return updateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationUpdateParameters, context)
             .block();
     }
 
@@ -860,7 +1185,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(String filter, Integer top) {
@@ -916,7 +1242,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listSinglePageAsync(
@@ -969,7 +1296,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top) {
@@ -982,7 +1309,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listAsync() {
@@ -1007,7 +1334,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listAsync(String filter, Integer top, Context context) {
@@ -1021,7 +1348,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> list() {
@@ -1045,7 +1372,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context) {
@@ -1067,7 +1394,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(
@@ -1130,7 +1458,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupSinglePageAsync(
@@ -1189,7 +1518,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(
@@ -1206,7 +1535,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1233,7 +1562,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartnerRegistrationInner> listByResourceGroupAsync(
@@ -1250,7 +1579,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName) {
@@ -1275,7 +1604,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartnerRegistrationInner> listByResourceGroup(
@@ -1290,7 +1619,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1327,7 +1657,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listBySubscriptionNextSinglePageAsync(
@@ -1363,7 +1694,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1400,7 +1732,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Partner Registrations operation.
+     * @return result of the List Partner Registrations operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartnerRegistrationInner>> listByResourceGroupNextSinglePageAsync(

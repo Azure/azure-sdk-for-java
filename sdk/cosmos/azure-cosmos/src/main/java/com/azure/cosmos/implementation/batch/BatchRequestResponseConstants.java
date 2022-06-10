@@ -14,6 +14,7 @@ public final class BatchRequestResponseConstants {
     public static final int MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST = 100;
 
     public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS = 1000;
+    public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_AFTER_DRAINING_INCOMING_FLUX_IN_MILLISECONDS = 100;
     public static final int DEFAULT_MAX_MICRO_BATCH_CONCURRENCY = 1;
     public static final double DEFAULT_MIN_MICRO_BATCH_RETRY_RATE = 0.1;
     public static final double DEFAULT_MAX_MICRO_BATCH_RETRY_RATE = 0.2;
@@ -44,4 +45,7 @@ public final class BatchRequestResponseConstants {
     public static final String OPERATION_UPSERT = "Upsert";
     public static final String OPERATION_DELETE = "Delete";
     public static final String OPERATION_REPLACE = "Replace";
+
+    public static final int MAX_COLLECTION_RECREATION_RETRY_COUNT = 10;
+    public static final int MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS = 1;
 }

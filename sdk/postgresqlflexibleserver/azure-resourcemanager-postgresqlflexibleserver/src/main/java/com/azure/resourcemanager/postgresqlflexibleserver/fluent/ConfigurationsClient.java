@@ -84,7 +84,7 @@ public interface ConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
 
@@ -101,7 +101,7 @@ public interface ConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
         String resourceGroupName,
         String serverName,
@@ -158,7 +158,7 @@ public interface ConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(
         String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
 
@@ -175,7 +175,7 @@ public interface ConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(
         String resourceGroupName,
         String serverName,

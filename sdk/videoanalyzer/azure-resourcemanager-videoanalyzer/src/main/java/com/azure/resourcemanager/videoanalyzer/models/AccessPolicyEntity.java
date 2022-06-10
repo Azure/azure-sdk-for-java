@@ -32,7 +32,7 @@ public interface AccessPolicyEntity {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -51,6 +51,13 @@ public interface AccessPolicyEntity {
      * @return the authentication value.
      */
     AuthenticationBase authentication();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.videoanalyzer.fluent.models.AccessPolicyEntityInner object.

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/475ed505-5835-48ce-b257-cdb8fa153e67?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/9ad7e787-4dc0-4248-a0bd-9a5a1bfd82e5?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
@@ -14,12 +14,12 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "404",
-      "x-ms-request-id" : "ae14f644-aec0-11eb-b929-000d3a31c437",
-      "Body" : "{\"error\":{\"code\":\"RoleDefinitionNotFound\",\"message\":\"Requested role definition not found (Activity ID: ae14f644-aec0-11eb-b929-000d3a31c437)\"}}",
-      "x-ms-server-latency" : "0",
+      "x-ms-request-id" : "b6c1f6a2-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"error\":{\"code\":\"RoleDefinitionNotFound\",\"message\":\"Requested role definition not found (Activity ID: b6c1f6a2-af00-11ec-99c9-002248787e69)\"}}",
+      "x-ms-server-latency" : "1",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     },
     "Exception" : null
   } ],
-  "variables" : [ "475ed505-5835-48ce-b257-cdb8fa153e67" ]
+  "variables" : [ "9ad7e787-4dc0-4248-a0bd-9a5a1bfd82e5" ]
 }
