@@ -182,14 +182,14 @@ public class FullFidelityChangeFeedSample {
                             StandardCharsets.UTF_8),
                         results.size()));
 
+                for (ItemWithMetaData doc : results) {
+                    logger.info("doc id:" + doc.getId());
+                }
+
                 totalRetrievedEventCount += results.size();
                 if (totalRetrievedEventCount >= expectedTotalEventCount) {
                     isFinished = true;
                     break;
-                }
-
-                for (ItemWithMetaData doc : results) {
-                    logger.info("doc id:" + doc.getId());
                 }
 
                 if (results.size() == 0) {
