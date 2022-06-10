@@ -928,6 +928,7 @@
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
+        <module>sdk/managednetwork</module>
         <module>sdk/maps</module>
         <module>sdk/mariadb</module>
         <module>sdk/marketplaceordering</module>
