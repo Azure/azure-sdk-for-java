@@ -51,6 +51,17 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void disableKeyVaultShouldNotConfigure(String endpointProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.enabled=false",
+                endpointProperty + "=" + String.format(ENDPOINT, "mykv")
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
+    }
+
     @Test
     void withoutVaultEndpointShouldNotConfigure() {
         this.contextRunner
