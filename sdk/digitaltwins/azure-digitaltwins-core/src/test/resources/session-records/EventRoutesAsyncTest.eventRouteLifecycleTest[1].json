@@ -1,91 +1,96 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2021-06-30-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes?api-version=2022-05-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "636cb313-2413-4b8c-9f6f-0754085dc789"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/2.0.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96ec14f5-f507-4d5d-8874-6a10dff22edb"
     },
     "Response" : {
       "content-length" : "28",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-c07ddc320f39d246a97093a8cdfa0a00-7d64d73378f04c47-01",
+      "traceresponse" : "00-0df05e8ec9f02348a9bee1d40320e3ca-663a34f8d89fd244-01",
+      "mise-correlation-id" : "cfbb052a-3bde-4dfc-8353-66070f140993",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Sat, 19 Mar 2022 02:03:53 GMT",
+      "Date" : "Fri, 10 Jun 2022 18:41:04 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/d42351d1-1a57-44c6-bbc9-1231ed61b067?api-version=2021-06-30-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes/557393fb-ec60-4cab-96a7-d5d88e5566e9?api-version=2022-05-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "62b722e9-271f-4679-b235-4135776d25cc",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/2.0.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b39746f-a227-4b11-b631-3401755f66d4",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-8a4e60ffd2987f4d9dc0530fc758b81b-c07da88e5b779a4d-01",
+      "traceresponse" : "00-82735bc1e2b9784695b52cefddac87fb-2928086be62c1442-01",
+      "mise-correlation-id" : "a636e0ff-66cb-4763-86cd-9d0cc078053d",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Sat, 19 Mar 2022 02:03:53 GMT"
+      "Date" : "Fri, 10 Jun 2022 18:41:04 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/d42351d1-1a57-44c6-bbc9-1231ed61b067?api-version=2021-06-30-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes/557393fb-ec60-4cab-96a7-d5d88e5566e9?api-version=2022-05-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a5d90d1b-ae00-4287-b95e-b1af4fcd1ba9"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/2.0.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "234db9cc-3033-440e-bc83-191aaa6f85a4"
     },
     "Response" : {
       "content-length" : "189",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-1f2c0db1da9bb34aa44a9ed27fcb977a-584a52b7bdb47b44-01",
+      "traceresponse" : "00-f43a104164212a4a8ee71cb7464b662e-a940dff9d2970d4d-01",
+      "mise-correlation-id" : "285d3826-78f0-438f-b085-f7ec58072ffc",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"d42351d1-1a57-44c6-bbc9-1231ed61b067\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}",
-      "Date" : "Sat, 19 Mar 2022 02:03:58 GMT",
+      "Body" : "{\"id\":\"557393fb-ec60-4cab-96a7-d5d88e5566e9\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}",
+      "Date" : "Fri, 10 Jun 2022 18:41:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2021-06-30-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes?api-version=2022-05-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "07ca6d5a-0204-433c-84fc-c08a58f060a3"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/2.0.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cfc28c83-4f24-40a5-8850-626a840242d5"
     },
     "Response" : {
       "content-length" : "217",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-93db081e65fccb4c9d3169784260f5ce-75f5aa548737be48-01",
+      "traceresponse" : "00-adf4ee7bda5f8c45965058c0a740f683-a4c279d37ce7cf46-01",
+      "mise-correlation-id" : "dcc7fc0a-dbcb-4177-be83-4486404197f6",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":\"d42351d1-1a57-44c6-bbc9-1231ed61b067\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}],\"nextLink\":null}",
-      "Date" : "Sat, 19 Mar 2022 02:03:59 GMT",
+      "Body" : "{\"value\":[{\"id\":\"557393fb-ec60-4cab-96a7-d5d88e5566e9\",\"endpointName\":\"someEventHubEndpoint\",\"filter\":\"$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'\"}],\"nextLink\":null}",
+      "Date" : "Fri, 10 Jun 2022 18:41:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/d42351d1-1a57-44c6-bbc9-1231ed61b067?api-version=2021-06-30-preview",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/eventroutes/557393fb-ec60-4cab-96a7-d5d88e5566e9?api-version=2022-05-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0-beta.1 (12.0.2; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a183b78f-049d-4234-80c6-72a56e5e9436"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/2.0.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cfb9896e-3cea-4abd-83ee-fd2fe47a5857"
     },
     "Response" : {
       "content-length" : "0",
       "Strict-Transport-Security" : "max-age=2592000",
-      "traceresponse" : "00-3e744a97c2070246809f3ce4b98ad70f-3502ea1a6988c240-01",
+      "traceresponse" : "00-ef43d9418fdd124c96ab139ba14a6343-1fab646219f9e04b-01",
+      "mise-correlation-id" : "655edd9a-59cf-429b-9d07-536f81ffb863",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Sat, 19 Mar 2022 02:03:58 GMT"
+      "Date" : "Fri, 10 Jun 2022 18:41:09 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "d42351d1-1a57-44c6-bbc9-1231ed61b067" ]
+  "variables" : [ "557393fb-ec60-4cab-96a7-d5d88e5566e9" ]
 }
