@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Communication Services error. */
+/** The CommunicationError model. */
 @Fluent
 public final class CommunicationError {
     /*
@@ -36,9 +36,9 @@ public final class CommunicationError {
     private List<CommunicationError> details;
 
     /*
-     * The inner error if any.
+     * The Communication Services error.
      */
-    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "innerError")
     private CommunicationError innerError;
 
     /**
@@ -100,11 +100,22 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the innerError property: The inner error if any.
+     * Get the innerError property: The Communication Services error.
      *
      * @return the innerError value.
      */
     public CommunicationError getInnerError() {
         return this.innerError;
+    }
+
+    /**
+     * Set the innerError property: The Communication Services error.
+     *
+     * @param innerError the innerError value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CommunicationError setInnerError(CommunicationError innerError) {
+        this.innerError = innerError;
+        return this;
     }
 }

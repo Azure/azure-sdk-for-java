@@ -27,11 +27,7 @@ public final class CommunicationTokenScope extends ExpandableStringEnum<Communic
         return fromString(name, CommunicationTokenScope.class);
     }
 
-    /**
-     * Gets known CommunicationTokenScope values.
-     *
-     * @return known CommunicationTokenScope values.
-     */
+    /** @return known CommunicationTokenScope values. */
     public static Collection<CommunicationTokenScope> values() {
         return values(CommunicationTokenScope.class);
     }

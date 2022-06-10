@@ -13,49 +13,34 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.models.NetworkCallRecord;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 public class CommunicationIdentityClientTestBase extends TestBase {
+    protected static final TestMode TEST_MODE = initializeTestMode();
 
-    private static final String REDACTED = "REDACTED";
-    private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-            = new StringJoiner("\":\"|\"", "\"", "\":\"")
-            .add("token")
-            .add("id");
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("token");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-            = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-            Pattern.CASE_INSENSITIVE);
-
-    protected HttpClient httpClient;
-
-    @BeforeEach
-    public void setup() {
-        getHttpClients().forEach(client -> {
-            this.httpClient = client;
-            return;
-        });
-    }
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
 
     protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
@@ -65,12 +50,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         builder.endpoint(communicationEndpoint)
-                .credential(new AzureKeyCredential(communicationAccessKey))
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .credential(new AzureKeyCredential(communicationAccessKey))
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
@@ -84,8 +69,8 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         String communicationEndpoint = communicationConnectionString.getEndpoint();
 
         builder
-                .endpoint(communicationEndpoint)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .endpoint(communicationEndpoint)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -95,7 +80,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
@@ -105,40 +90,49 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder createClientBuilderUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
-                .connectionString(CONNECTION_STRING)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
     }
 
-    protected CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildClient();
+    private static TestMode initializeTestMode() {
+        ClientLogger logger = new ClientLogger(CommunicationIdentityClientTestBase.class);
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            System.out.println("azureTestMode: " + azureTestMode);
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
+        }
     }
 
-    protected CommunicationIdentityAsyncClient setupAsyncClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildAsyncClient();
-    }
-
-    private CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
-                .flatMap(httpResponse -> {
-                    final HttpResponse bufferedResponse = httpResponse.buffer();
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                    // Should sanitize printed reponse url
-                    System.out.println("MS-CV header for " + testName + " request "
-                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                    return Mono.just(bufferedResponse);
-                });
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -158,45 +152,4 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         return content;
     }
-
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-        if (getTestMode() == TestMode.RECORD) {
-            List<NetworkCallRecord> networkCallRecords = collectNetworkCallsWithIdentityUri();
-            sanitizeIdentityInUri(networkCallRecords);
-        }
-    }
-
-    private List<NetworkCallRecord> collectNetworkCallsWithIdentityUri() {
-        List<NetworkCallRecord> networkCallRecords = new ArrayList<>();
-        NetworkCallRecord networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-            return Pattern.compile(URI_IDENTITY_REPLACER_REGEX).matcher(record.getUri()).find();
-        });
-        do {
-            if (networkCallRecord != null) {
-                networkCallRecords.add(networkCallRecord);
-            }
-            networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-                return Pattern.compile(URI_IDENTITY_REPLACER_REGEX).matcher(record.getUri()).find();
-            });
-        } while (networkCallRecord != null);
-        return networkCallRecords;
-    }
-
-    private void sanitizeIdentityInUri(List<NetworkCallRecord> networkCallRecords) {
-        for (NetworkCallRecord networkCallRecord: networkCallRecords) {
-            String sanitizedUri = networkCallRecord.getUri().replaceAll(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED);
-            networkCallRecord.setUri(sanitizedUri);
-            interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
-        }
-    }
-
-    protected void verifyTokenNotEmpty(AccessToken issuedToken) {
-        assertNotNull(issuedToken.getToken());
-        assertFalse(issuedToken.getToken().isEmpty());
-        assertNotNull(issuedToken.getExpiresAt());
-        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
-    }
-
 }
