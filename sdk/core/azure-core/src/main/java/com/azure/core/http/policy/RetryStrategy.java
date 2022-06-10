@@ -60,14 +60,12 @@ public interface RetryStrategy {
      * @return Whether a retry should be attempted.
      */
     default boolean shouldRetryException(Throwable throwable) {
-        boolean shouldRetryOnHttpResponseException = false;
-
-        if (throwable instanceof HttpResponseException) {
+        if ((throwable instanceof HttpResponseException)) {
             int statusCode = (((HttpResponseException) throwable).getResponse().getStatusCode());
-            shouldRetryOnHttpResponseException = statusCode != 401 && statusCode != 403;
+
+            return statusCode != 401 && statusCode != 403;
         }
 
-        return (throwable instanceof IOException || throwable instanceof AzureException)
-            && shouldRetryOnHttpResponseException;
+        return throwable instanceof IOException || throwable instanceof AzureException;
     }
 }
