@@ -104,6 +104,7 @@ public final class TableClientBuilder implements
     private TableServiceVersion version;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private boolean enableTenantDiscovery;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableClient} and
@@ -197,7 +198,7 @@ public final class TableClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
             tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger);
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -570,6 +571,24 @@ public final class TableClientBuilder implements
         }
 
         this.tableName = tableName;
+
+        return this;
+    }
+
+    /**
+     * Enable tenant discovery when authenticating with the Table Service. <strong>This functionality is disabled by
+     * default and only available for Storage endpoints using service version
+     * {@link TableServiceVersion#V2020_12_06 2020_12_06}.</strong>
+     * <p>
+     * Enable this if there is a chance for your application and the Storage account it communicates with to reside in
+     * different tenants. If this is enabled, clients created using this builder will make an unauthorized initial
+     * service request that will be met with a {@code 401} response containing an authentication challenge, which
+     * will be subsequently used to retrieve an access token to authorize all further requests with.
+     *
+     * @return The updated {@link TableClientBuilder}.
+     */
+    public TableClientBuilder enableTenantDiscovery() {
+        this.enableTenantDiscovery = true;
 
         return this;
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.10.0-beta.2 (Unreleased)
+## 12.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,31 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.10.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-blob` from `12.17.0` to version `12.17.1`.
+
+## 12.10.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.9.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
 
 ## 12.10.0-beta.1 (2022-05-06)
 

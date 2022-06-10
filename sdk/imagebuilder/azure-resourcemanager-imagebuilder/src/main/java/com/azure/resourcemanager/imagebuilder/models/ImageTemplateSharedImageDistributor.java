@@ -6,7 +6,6 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.Map;
 @JsonTypeName("SharedImage")
 @Fluent
 public final class ImageTemplateSharedImageDistributor extends ImageTemplateDistributor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateSharedImageDistributor.class);
-
     /*
      * Resource Id of the Shared Image Gallery image
      */
@@ -154,16 +151,18 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     public void validate() {
         super.validate();
         if (galleryImageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
         }
         if (replicationRegions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property replicationRegions in model ImageTemplateSharedImageDistributor"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateSharedImageDistributor.class);
 }

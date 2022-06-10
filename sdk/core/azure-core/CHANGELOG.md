@@ -1,6 +1,6 @@
 # Release History
 
-## 1.29.0-beta.1 (Unreleased)
+## 1.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
+## 1.29.0 (2022-06-03)
+
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
 
 ## 1.28.0 (2022-05-06)
 

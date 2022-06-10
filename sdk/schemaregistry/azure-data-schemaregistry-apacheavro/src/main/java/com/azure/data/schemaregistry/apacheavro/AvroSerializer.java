@@ -26,16 +26,12 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerBuilder.MAX_CACHE_SIZE;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -50,7 +46,6 @@ class AvroSerializer {
     private final boolean avroSpecificReader;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
-    private final Map<String, Schema> parsedSchemas = new ConcurrentHashMap<>();
 
     static {
         final HashMap<Class<?>, Schema> schemas = new HashMap<>();
@@ -107,29 +102,6 @@ class AvroSerializer {
     }
 
     /**
-     * @param schemaString string representation of schema
-     *
-     * @return avro schema
-     */
-    Schema parseSchemaString(String schemaString) {
-        // Schema.Parser "remembers" all the named schemas previously parsed and throws
-        // SchemaParseException if an attempt to parse the same schema is made.
-        // So, we create a new instance of Schema.Parser each time since this method can
-        // be called multiple times for the same schema and there's no reliable way to know from the schema string
-        // that the named schema has not already been parsed.
-
-        // We'll cache the entire schema string to minimize the need to parse the same string multiple times but we
-        // should switch to LRU cache as we don't want to store unlimited schemas and some schema strings can be very
-        // large and they should not be kept in memory if it's not actively used.
-
-        // TODO(srnagar): change to LRU cache after this PR is merged - https://github.com/Azure/azure-sdk-for-java/pull/27408
-        if (parsedSchemas.size() > MAX_CACHE_SIZE) {
-            parsedSchemas.clear();
-        }
-        return parsedSchemas.computeIfAbsent(schemaString, schema -> new Schema.Parser().parse(schema));
-    }
-
-    /**
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
@@ -169,16 +141,12 @@ class AvroSerializer {
 
     /**
      * @param contents byte array containing encoded bytes
-     * @param schemaBytes schema content for Avro reader to read - fetched from Azure Schema Registry
+     * @param schemaObject Schema to deserialize object.
      *
      * @return deserialized object
      */
-    <T> T deserialize(ByteBuffer contents, byte[] schemaBytes, TypeReference<T> typeReference) {
+    <T> T deserialize(ByteBuffer contents, Schema schemaObject, TypeReference<T> typeReference) {
         Objects.requireNonNull(contents, "'bytes' must not be null.");
-        Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
-
-        final String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
-        final Schema schemaObject = parseSchemaString(schemaString);
 
         if (isSingleObjectEncoded(contents)) {
             final BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);

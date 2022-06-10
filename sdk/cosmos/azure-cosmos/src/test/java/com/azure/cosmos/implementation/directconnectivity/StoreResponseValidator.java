@@ -6,8 +6,8 @@ import com.azure.cosmos.implementation.HttpConstants;
 import org.assertj.core.api.Condition;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +38,7 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
+                    assertThat(resp.getResponseHeaders().containsKey(headerKey)).isTrue();
                 }
             });
             return this;
@@ -48,9 +48,9 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
-                    int index = Arrays.asList(resp.getResponseHeaderNames()).indexOf(headerKey);
-                    assertThat(resp.getResponseHeaderValues()[index]).isEqualTo(headerValue);
+                    Map<String, String> responseHeaders = resp.getResponseHeaders();
+                    assertThat(responseHeaders.containsKey(headerKey)).isTrue();
+                    assertThat(responseHeaders.get(headerKey)).isEqualTo(headerValue);
                 }
             });
             return this;
@@ -61,10 +61,9 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
-                    int index = Arrays.asList(resp.getResponseHeaderNames()).indexOf(headerKey);
-                    String value = resp.getResponseHeaderValues()[index];
-                    condition.matches(value);
+                    Map<String, String> responseHeaders = resp.getResponseHeaders();
+                    assertThat(responseHeaders.containsKey(headerKey)).isTrue();
+                    condition.matches(responseHeaders.get(headerKey));
                 }
             });
             return this;

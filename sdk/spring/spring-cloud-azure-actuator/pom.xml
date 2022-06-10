@@ -17,7 +17,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-actuator</artifactId>
-  <version>4.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
 
   <name>Spring Cloud Azure Actuator</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -46,22 +46,30 @@
     </dependency>
 
     <!-- Azure SDKs-->
+    <!-- Explicitly referencing azure-core.  It's possible that the dependent versions below conflict with our
+    currently released version and a lower version is resolved. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.29.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.31.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.3.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.11.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.12.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -79,19 +87,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.16.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.17.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.12.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.12.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- For Testing -->

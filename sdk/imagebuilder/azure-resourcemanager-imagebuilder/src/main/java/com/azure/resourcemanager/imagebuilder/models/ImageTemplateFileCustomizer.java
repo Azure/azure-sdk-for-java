@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("File")
 @Fluent
 public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateFileCustomizer.class);
-
     /*
      * The URI of the file to be uploaded for customizing the VM. It can be a
      * github link, SAS URI for Azure Storage, etc

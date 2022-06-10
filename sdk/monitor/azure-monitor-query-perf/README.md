@@ -24,22 +24,22 @@ AZURE_MONITOR_METRICS_RESOURCE_ID=<Resource ID of an Azure Resource>
 ## Key concepts
 
 ## Examples
-#### Executing the performance test
+### Executing the performance test
 1. Compile the performance project into a standalone jar using the command from the root of the perf project folder
 ```
-   mvn clean package -f sdk/monitor/azure-monitor-query-perf/pom.xml
+mvn clean package -f sdk/monitor/azure-monitor-query-perf/pom.xml
 ```
 
 2. Execute the corresponding perf test in the project using the command.
 ```
-   java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
-   java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
-   java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsbatchquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
-   java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsqueryasmodel --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
-   java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar metricsquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
+java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
+java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
+java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsbatchquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
+java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar logsqueryasmodel --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
+java -jar sdk/monitor/azure-monitor-query-perf/target/azure-monitor-query-perf-1.0.0-beta.1-jar-with-dependencies.jar metricsquery --warmup 1 --iterations 1 --parallel 50 --duration 15 --count 1000
 ```   
 
-#### Common perf test command line options for Azure Monitor Query
+### Common perf test command line options for Azure Monitor Query
 - `--duration` - Number of seconds to run the main test for. Default is 10.
 - `--iterations` - Number of iterations of main test loop.
 - `--parallel` - Number of operations to execute in parallel,

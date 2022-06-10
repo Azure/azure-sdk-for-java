@@ -6,7 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
-import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
@@ -29,11 +29,11 @@ public final class GalleryProperties {
     private GalleryIdentifier identifier;
 
     /*
-     * The current state of the gallery. The provisioning state, which only
-     * appears in the response.
+     * The current state of the gallery or gallery artifact. The provisioning
+     * state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryPropertiesProvisioningState provisioningState;
+    private GalleryProvisioningState provisioningState;
 
     /*
      * Profile for gallery sharing to subscription or tenant
@@ -94,12 +94,12 @@ public final class GalleryProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery. The provisioning state, which only appears
-     * in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact. The provisioning state,
+     * which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryPropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

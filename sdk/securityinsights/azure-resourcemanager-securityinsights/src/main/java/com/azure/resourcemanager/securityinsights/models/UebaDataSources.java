@@ -33,7 +33,11 @@ public final class UebaDataSources extends ExpandableStringEnum<UebaDataSources>
         return fromString(name, UebaDataSources.class);
     }
 
-    /** @return known UebaDataSources values. */
+    /**
+     * Gets known UebaDataSources values.
+     *
+     * @return known UebaDataSources values.
+     */
     public static Collection<UebaDataSources> values() {
         return values(UebaDataSources.class);
     }

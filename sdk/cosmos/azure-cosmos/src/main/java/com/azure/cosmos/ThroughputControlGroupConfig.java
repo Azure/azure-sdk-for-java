@@ -22,7 +22,7 @@ public final class ThroughputControlGroupConfig {
             Double targetThroughputThreshold,
             boolean isDefault,
             boolean continueOnInitError) {
-       this.groupName= groupName;
+       this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;

@@ -99,7 +99,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -150,7 +150,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter publicGalleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -176,15 +176,7 @@ public final class CommunityGalleriesClientImpl implements CommunityGalleriesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryInner> getAsync(String location, String publicGalleryName) {
-        return getWithResponseAsync(location, publicGalleryName)
-            .flatMap(
-                (Response<CommunityGalleryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, publicGalleryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

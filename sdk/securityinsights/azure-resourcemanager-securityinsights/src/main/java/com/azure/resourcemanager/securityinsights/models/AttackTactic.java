@@ -72,7 +72,11 @@ public final class AttackTactic extends ExpandableStringEnum<AttackTactic> {
         return fromString(name, AttackTactic.class);
     }
 
-    /** @return known AttackTactic values. */
+    /**
+     * Gets known AttackTactic values.
+     *
+     * @return known AttackTactic values.
+     */
     public static Collection<AttackTactic> values() {
         return values(AttackTactic.class);
     }

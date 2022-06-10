@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-05-25)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-2022-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.Certificate` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.SourceControl` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ContainerApp` was modified
+
+* `resourceGroupName()` was added
+* `listCustomHostnameAnalysisWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listCustomHostnameAnalysis()` was added
+
+#### `models.AuthConfig` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DaprComponent` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedEnvironmentStorage` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `resourceGroupName()` was added
 
 ## 1.0.0-beta.2 (2022-05-10)
 

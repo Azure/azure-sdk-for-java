@@ -195,14 +195,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
     private Mono<VaultStorageConfigOperationResultResponseInner> getAsync(
         String vaultName, String resourceGroupName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap(
-                (Response<VaultStorageConfigOperationResultResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

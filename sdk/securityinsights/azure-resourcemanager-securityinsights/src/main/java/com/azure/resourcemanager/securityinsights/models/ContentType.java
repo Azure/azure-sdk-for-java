@@ -27,7 +27,11 @@ public final class ContentType extends ExpandableStringEnum<ContentType> {
         return fromString(name, ContentType.class);
     }
 
-    /** @return known ContentType values. */
+    /**
+     * Gets known ContentType values.
+     *
+     * @return known ContentType values.
+     */
     public static Collection<ContentType> values() {
         return values(ContentType.class);
     }

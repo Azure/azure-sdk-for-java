@@ -14,6 +14,8 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
@@ -123,28 +125,30 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
-        return httpPipeline.send(request, this.context).flatMap(response -> {
-            HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
-            if (locationHeader != null) {
-                pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
-            }
+        return FluxUtil.withContext(context1 -> httpPipeline.send(request,
+                CoreUtils.mergeContexts(context1, this.context)))
+            .flatMap(response -> {
+                HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
+                if (locationHeader != null) {
+                    pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
+                }
 
-            LongRunningOperationStatus status;
-            if (response.getStatusCode() == 202) {
-                status = LongRunningOperationStatus.IN_PROGRESS;
-            } else if (response.getStatusCode() >= 200 && response.getStatusCode() <= 204) {
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-            } else {
-                status = LongRunningOperationStatus.FAILED;
-            }
+                LongRunningOperationStatus status;
+                if (response.getStatusCode() == 202) {
+                    status = LongRunningOperationStatus.IN_PROGRESS;
+                } else if (response.getStatusCode() >= 200 && response.getStatusCode() <= 204) {
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                } else {
+                    status = LongRunningOperationStatus.FAILED;
+                }
 
-            return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
-                pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-                return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
-                    .map(value -> new PollResponse<>(status, value, retryAfter));
+                return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
+                    pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
+                    Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+                    return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
+                        .map(value -> new PollResponse<>(status, value, retryAfter));
+                });
             });
-        });
     }
 
     @Override
@@ -172,7 +176,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return httpPipeline.send(request, this.context)
+            return FluxUtil.withContext(context1 -> httpPipeline.send(request,
+                    CoreUtils.mergeContexts(context1, this.context)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));

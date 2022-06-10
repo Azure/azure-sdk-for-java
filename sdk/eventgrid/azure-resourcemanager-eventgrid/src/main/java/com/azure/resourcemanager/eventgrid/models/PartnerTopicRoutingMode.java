@@ -27,7 +27,11 @@ public final class PartnerTopicRoutingMode extends ExpandableStringEnum<PartnerT
         return fromString(name, PartnerTopicRoutingMode.class);
     }
 
-    /** @return known PartnerTopicRoutingMode values. */
+    /**
+     * Gets known PartnerTopicRoutingMode values.
+     *
+     * @return known PartnerTopicRoutingMode values.
+     */
     public static Collection<PartnerTopicRoutingMode> values() {
         return values(PartnerTopicRoutingMode.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DedicatedHostGroups Delete. */
 public final class DedicatedHostGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroups_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_Delete_MinimumSet_Gen.
@@ -26,7 +26,7 @@ public final class DedicatedHostGroupsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostGroups_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/dedicatedHostExamples/DedicatedHostGroups_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroups_Delete_MaximumSet_Gen.

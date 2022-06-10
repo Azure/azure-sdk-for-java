@@ -246,15 +246,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OSVersionInner> getOSVersionAsync(String location, String osVersionName) {
-        return getOSVersionWithResponseAsync(location, osVersionName)
-            .flatMap(
-                (Response<OSVersionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getOSVersionWithResponseAsync(location, osVersionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -577,15 +569,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OSFamilyInner> getOSFamilyAsync(String location, String osFamilyName) {
-        return getOSFamilyWithResponseAsync(location, osFamilyName)
-            .flatMap(
-                (Response<OSFamilyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getOSFamilyWithResponseAsync(location, osFamilyName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -41,7 +41,7 @@ public class AnalyzeIdentityDocumentsAsync {
             .buildAsyncClient();
 
         File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
-            + "sample-forms/identityDocuments/license.jpg");
+            + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeIdentityDocumentPoller

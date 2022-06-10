@@ -214,15 +214,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileServiceItemsInner> listAsync(String resourceGroupName, String accountName) {
-        return listWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<FileServiceItemsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, accountName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -399,14 +391,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
     public Mono<FileServicePropertiesInner> setServicePropertiesAsync(
         String resourceGroupName, String accountName, FileServicePropertiesInner parameters) {
         return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<FileServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -570,14 +555,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<FileServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

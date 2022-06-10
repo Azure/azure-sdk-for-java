@@ -24,7 +24,11 @@ public final class InputSchemaMappingType extends ExpandableStringEnum<InputSche
         return fromString(name, InputSchemaMappingType.class);
     }
 
-    /** @return known InputSchemaMappingType values. */
+    /**
+     * Gets known InputSchemaMappingType values.
+     *
+     * @return known InputSchemaMappingType values.
+     */
     public static Collection<InputSchemaMappingType> values() {
         return values(InputSchemaMappingType.class);
     }

@@ -28,7 +28,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     Response<VideoAnalyzerCollection> listWithResponse(String resourceGroupName, Context context);
 
@@ -53,7 +53,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     Response<VideoAnalyzer> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -78,7 +78,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
 
@@ -98,7 +98,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of VideoAnalyzer items.
+     * @return a collection of VideoAnalyzer items along with {@link Response}.
      */
     Response<VideoAnalyzerCollection> listBySubscriptionWithResponse(Context context);
 
@@ -109,7 +109,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     VideoAnalyzer getById(String id);
 
@@ -121,7 +121,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified Video Analyzer account.
+     * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     Response<VideoAnalyzer> getByIdWithResponse(String id, Context context);
 
@@ -143,7 +143,7 @@ public interface VideoAnalyzers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

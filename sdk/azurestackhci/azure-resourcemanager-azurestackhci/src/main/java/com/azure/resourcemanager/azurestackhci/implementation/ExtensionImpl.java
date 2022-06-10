@@ -80,6 +80,10 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         return this.innerModel().protectedSettings();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ExtensionInner innerModel() {
         return this.innerObject;
     }

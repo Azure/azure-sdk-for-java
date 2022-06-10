@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "6f677c75-159b-4972-a612-e0867eb4a81a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "101",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Tue, 19 Apr 2022 09:05:24 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "28ms",
+      "MS-CV" : "bkPEmdMz4UidlszhjmAmKQ.0",
+      "X-Azure-Ref" : "0VHteYgAAAAAe3JycUipuRaTxOZnWq75dUFJHMDFFREdFMDcwOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
+      "x-ms-client-request-id" : "6f677c75-159b-4972-a612-e0867eb4a81a",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/identities/REDACTED?api-version=2022-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.2 (11.0.12; Mac OS X; 12.3.1)",
+      "x-ms-client-request-id" : "4722c61f-339e-4c2f-826b-78e59bfd8a1a"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01",
+      "X-Processing-Time" : "92ms",
+      "MS-CV" : "CSG5sKkq80WXN1Iu8YELaw.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0VHteYgAAAAAhOTpruZJVRLYwWf8nEWs0UFJHMDFFREdFMDkwNgBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "4722c61f-339e-4c2f-826b-78e59bfd8a1a",
+      "Date" : "Tue, 19 Apr 2022 09:05:24 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

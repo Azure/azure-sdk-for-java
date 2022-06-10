@@ -134,7 +134,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -196,7 +196,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -350,7 +350,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -408,7 +408,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -438,14 +438,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryImageInner> getAsync(String location, String galleryUniqueName, String galleryImageName) {
         return getWithResponseAsync(location, galleryUniqueName, galleryImageName)
-            .flatMap(
-                (Response<SharedGalleryImageInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

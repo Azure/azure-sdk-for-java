@@ -5,11 +5,8 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
 import com.azure.spring.cloud.autoconfigure.aad.filter.TestConstants;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipal;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
 
@@ -27,21 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class UserPrincipalAzureADGraphTests {
-
-    private WireMockRule wireMockRule;
-
-    @BeforeEach
-    void setup() {
-        wireMockRule = new WireMockRule(9519);
-        wireMockRule.start();
-    }
-
-    @AfterEach
-    void close() {
-        if (wireMockRule.isRunning()) {
-            wireMockRule.stop();
-        }
-    }
 
     @Test
     void userPrincipalIsSerializable() throws ParseException, IOException, ClassNotFoundException {

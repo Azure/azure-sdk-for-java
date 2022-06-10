@@ -354,15 +354,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionInner> getAsync(String subscriptionId) {
-        return getWithResponseAsync(subscriptionId)
-            .flatMap(
-                (Response<SubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -603,14 +595,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     public Mono<CheckZonePeersResultInner> checkZonePeersAsync(
         String subscriptionId, CheckZonePeersRequest parameters) {
         return checkZonePeersWithResponseAsync(subscriptionId, parameters)
-            .flatMap(
-                (Response<CheckZonePeersResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

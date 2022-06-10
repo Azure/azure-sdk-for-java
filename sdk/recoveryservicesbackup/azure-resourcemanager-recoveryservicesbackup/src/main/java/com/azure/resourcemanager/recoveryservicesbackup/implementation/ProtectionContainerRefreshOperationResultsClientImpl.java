@@ -206,7 +206,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String fabricName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -27,7 +27,11 @@ public final class PublicIpAllocationMethod extends ExpandableStringEnum<PublicI
         return fromString(name, PublicIpAllocationMethod.class);
     }
 
-    /** @return known PublicIpAllocationMethod values. */
+    /**
+     * Gets known PublicIpAllocationMethod values.
+     *
+     * @return known PublicIpAllocationMethod values.
+     */
     public static Collection<PublicIpAllocationMethod> values() {
         return values(PublicIpAllocationMethod.class);
     }

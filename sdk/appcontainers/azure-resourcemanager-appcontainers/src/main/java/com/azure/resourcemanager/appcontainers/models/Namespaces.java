@@ -13,7 +13,7 @@ public interface Namespaces {
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -22,15 +22,13 @@ public interface Namespaces {
      * @return the check availability result.
      */
     CheckNameAvailabilityResponse checkNameAvailability(
-        String resourceGroupName,
-        String managedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest);
+        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 
     /**
      * Checks if resource name is available.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedEnvironmentName Name of the Managed Environment.
+     * @param environmentName Name of the Managed Environment.
      * @param checkNameAvailabilityRequest The check name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +39,7 @@ public interface Namespaces {
      */
     Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         String resourceGroupName,
-        String managedEnvironmentName,
+        String environmentName,
         CheckNameAvailabilityRequest checkNameAvailabilityRequest,
         Context context);
 }

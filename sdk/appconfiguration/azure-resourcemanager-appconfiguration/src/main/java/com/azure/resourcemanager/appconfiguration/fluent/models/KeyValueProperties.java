@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** All key-value properties. */
 @Fluent
 public final class KeyValueProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyValueProperties.class);
-
     /*
      * The primary identifier of a key-value.
      * The key is used in unison with the label to uniquely identify a

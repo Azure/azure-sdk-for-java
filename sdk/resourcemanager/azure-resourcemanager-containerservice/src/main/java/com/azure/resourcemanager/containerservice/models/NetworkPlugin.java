@@ -27,7 +27,11 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
         return fromString(name, NetworkPlugin.class);
     }
 
-    /** @return known NetworkPlugin values. */
+    /**
+     * Gets known NetworkPlugin values.
+     *
+     * @return known NetworkPlugin values.
+     */
     public static Collection<NetworkPlugin> values() {
         return values(NetworkPlugin.class);
     }

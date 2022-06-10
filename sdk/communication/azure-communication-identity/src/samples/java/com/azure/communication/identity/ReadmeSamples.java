@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -42,6 +43,26 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for creating an async Communication Identity Client.
+     *
+     * @return the Communication Identity Async Client.
+     */
+    public CommunicationIdentityAsyncClient createCommunicationIdentityAsyncClient() {
+        // BEGIN: readme-sample-createCommunicationIdentityAsyncClient
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+        CommunicationIdentityAsyncClient communicationIdentityAsyncClient = new CommunicationIdentityClientBuilder()
+                .endpoint(endpoint)
+                .credential(keyCredential)
+                .buildAsyncClient();
+        // END: readme-sample-createCommunicationIdentityAsyncClient
+
+        return communicationIdentityAsyncClient;
+    }
+
+    /**
      * Sample code for creating a sync Communication Identity Client using connection string.
      *
      * @return the Communication Identity Client.
@@ -60,7 +81,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for creating a sync Communication Identity Client using AAD authentication.
+     * Sample code for creating a sync Communication Identity Client using Azure AD authentication.
      *
      * @return the Communication Identity Client.
      */
@@ -165,15 +186,17 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
+     * Sample code for exchanging an Azure AD access token of a Teams User for a new Communication Identity access token.
      */
     public void getTokenForTeamsUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-
             // BEGIN: readme-sample-getTokenForTeamsUser
-            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+            String clientId = "<Client ID of an Azure AD application>";
+            String userObjectId = "<Object ID of an Azure AD user (Teams User)>";
+            GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions(teamsUserAadToken, clientId, userObjectId);
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(options);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
             // END: readme-sample-getTokenForTeamsUser
@@ -183,7 +206,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for generating an AAD access token of a Teams User
+     * Sample code for generating an Azure AD access token of a Teams User
      */
     private static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
         String teamsUserAadToken = "";
