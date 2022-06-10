@@ -11,11 +11,15 @@ import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +43,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AnnotatedQueryIT {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnnotatedQueryIT.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
@@ -129,10 +135,20 @@ public class AnnotatedQueryIT {
     @Test
     public void testAnnotatedQueryWithValueAsList() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
-        addressRepository.saveAll(addresses);
+        addressRepository.saveAllWithLogging(addresses);
 
-        final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
+        final List<JsonNode> fetchedAddresses = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
 
+        assertThat(fetchedAddresses.size()).isEqualTo(2);
+        try {
+            LOGGER.info("First address is: " + OBJECT_MAPPER.writeValueAsString(fetchedAddresses.get(0)));
+            LOGGER.info("Second address is: " + OBJECT_MAPPER.writeValueAsString(fetchedAddresses.get(1)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        LOGGER.info("Trying to get distinct value");
+        final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCityByDistinct(TestConstants.CITY);
         assertAddressPostalCodes(postalCodes, addresses);
     }
 

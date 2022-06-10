@@ -37,9 +37,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -72,7 +70,6 @@ import java.util.stream.Collectors;
 public class CosmosTemplate implements CosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTemplate.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
@@ -858,13 +855,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
-                .doOnNext(jsonNode -> {
-                    try {
-                        LOGGER.info(OBJECT_MAPPER.writeValueAsString(jsonNode));
-                    } catch (JsonProcessingException e) {
-                        e.printStackTrace();
-                    }
-                })
                    .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
                    .collectList()
                    .block();
@@ -950,19 +940,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
-                       LOGGER.info("getJsonNodeFluxFromQuerySpec page response {}", cosmosItemFeedResponse.getResults());
                        CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                                                      cosmosItemFeedResponse.getCosmosDiagnostics(),
                                                                      cosmosItemFeedResponse);
                        return Flux.fromIterable(cosmosItemFeedResponse.getResults());
                    })
-                    .doOnNext(jsonNode -> {
-                        try {
-                            LOGGER.info("getJsonNodeFluxFromQuerySpec " + OBJECT_MAPPER.writeValueAsString(jsonNode));
-                        } catch (JsonProcessingException e) {
-                            e.printStackTrace();
-                        }
-                    })
                    .onErrorResume(throwable ->
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                                           this.responseDiagnosticsProcessor));

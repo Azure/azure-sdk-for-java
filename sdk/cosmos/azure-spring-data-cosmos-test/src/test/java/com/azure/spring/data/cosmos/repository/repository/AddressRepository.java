@@ -51,6 +51,9 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     @Query("select DISTINCT a.postalCode from a where a.city = @city")
     Slice<JsonNode> annotatedFindPostalCodesByCityAsSlice(@Param("city") String city, Pageable pageable);
 
+    @Query("select * from a where a.city = @city")
+    List<JsonNode> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
+
     @Query("select DISTINCT value a.postalCode from a where a.city = @city")
-    List<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
+    List<String> annotatedFindPostalCodeValuesByCityByDistinct(@Param("city") String city);
 }
