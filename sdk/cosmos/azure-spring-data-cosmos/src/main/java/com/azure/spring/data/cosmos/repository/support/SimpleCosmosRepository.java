@@ -293,6 +293,13 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         return operation.findAll(partitionKey, information.getJavaType());
     }
 
+    /**
+     * batch save entities with logging
+     *
+     * @param entities Batch entities
+     * @param <S> type of entities
+     * @return return the saved entities
+     */
     @Override
     public <S extends T> Iterable<S> saveAllWithLogging(Iterable<S> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
@@ -300,7 +307,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         final List<S> savedEntities = new ArrayList<>();
         entities.forEach(entity -> {
             try {
-                LOGGER.info("SaveAllWithLogging: " + OBJECT_MAPPER.writeValueAsString(entities));
+                LOGGER.info("SaveAllWithLogging - entity: {}", OBJECT_MAPPER.writeValueAsString(entity));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
