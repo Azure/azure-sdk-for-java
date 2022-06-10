@@ -3,7 +3,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.core.credential.AccessToken;
