@@ -29,29 +29,29 @@ You need to use `DeviceUpdateClientBuilder`, resp. `DeviceManagementClientBuilde
 `DeviceUpdateAsyncClient`, resp. `DeviceManagementAsyncClient`.
 
 Create new instance of `DeviceUpdateAsyncClient`:
-```java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.instantiate
-DeviceUpdateAsyncClient client = new DeviceUpdateClientBuilder()
+```java com.azure.iot.deviceupdate.DeviceUpdateClient.instantiate
+DeviceUpdateClient client = new DeviceUpdateClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
     .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildAsyncClient();
+    .buildClient();
 ```
 
 To create new instance of `DeviceManagementAsyncClient` use the following code:
-```java com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
-DeviceManagementAsyncClient client = new DeviceManagementClientBuilder()
+```java com.azure.iot.deviceupdate.DeviceManagementClient.instantiate
+DeviceManagementClient client = new DeviceManagementClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
     .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildAsyncClient();
+    .buildClient();
 ```
 
 ## List device updates
 
 In the sample `ListUpdatesSample`, it uses `DeviceUpdateAsyncClient` to call `listVersions` method.
-It returns a `PagedFlux`, you can call `response.toStream().count()` to get the device count.
+It returns a `PagedIterable`, you can call `response.toStream().count()` to get the device count.
 
 ## Get device update
 

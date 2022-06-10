@@ -12,19 +12,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetDeviceSample {
     public static void main(String[] args) {
-        // BEGIN: com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
-        DeviceManagementAsyncClient client = new DeviceManagementClientBuilder()
+        // BEGIN: com.azure.iot.deviceupdate.DeviceManagementClient.instantiate
+        DeviceManagementClient client = new DeviceManagementClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
             .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildAsyncClient();
-        // END: com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
+            .buildClient();
+        // END: com.azure.iot.deviceupdate.DeviceManagementClient.instantiate
 
         try {
             Response<BinaryData> response = client.getDeviceWithResponse(
                 Configuration.getGlobalConfiguration().get("DEVICEUPDATE_DEVICE"),
-                null).block();
+                null);
 
             System.out.println(response.getValue());
         } catch (HttpResponseException e) {
