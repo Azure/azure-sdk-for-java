@@ -949,6 +949,7 @@
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
         <module>sdk/powerbidedicated</module>
+        <module>sdk/powerplatform</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/quota</module>
