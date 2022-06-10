@@ -46,7 +46,6 @@ public class CosmosQueryRequestOptions {
     private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
-
     /**
      * Instantiates a new query request options.
      */

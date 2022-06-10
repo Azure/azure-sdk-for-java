@@ -854,11 +854,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
-
-        if (querySpec.getQueryText().equals("select DISTINCT value a.postalCode from a where a.city = @city")) {
-            LOGGER.info("runQuery {}",  querySpec.getQueryText());
-        }
-
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
                    .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
                    .collectList()

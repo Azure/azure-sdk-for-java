@@ -11,10 +11,6 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -37,8 +33,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
     private final CosmosOperations operation;
     private final CosmosEntityInformation<T, ID> information;
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleCosmosRepository.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     /**
      * Initialization
@@ -291,30 +285,5 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     @Override
     public Iterable<T> findAll(PartitionKey partitionKey) {
         return operation.findAll(partitionKey, information.getJavaType());
-    }
-
-    /**
-     * batch save entities with logging
-     *
-     * @param entities Batch entities
-     * @param <S> type of entities
-     * @return return the saved entities
-     */
-    @Override
-    public <S extends T> Iterable<S> saveAllWithLogging(Iterable<S> entities) {
-        Assert.notNull(entities, "Iterable entities should not be null");
-
-        final List<S> savedEntities = new ArrayList<>();
-        entities.forEach(entity -> {
-            try {
-                LOGGER.info("SaveAllWithLogging - entity: {}", OBJECT_MAPPER.writeValueAsString(entity));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            final S savedEntity = this.save(entity);
-            savedEntities.add(savedEntity);
-        });
-
-        return savedEntities;
     }
 }

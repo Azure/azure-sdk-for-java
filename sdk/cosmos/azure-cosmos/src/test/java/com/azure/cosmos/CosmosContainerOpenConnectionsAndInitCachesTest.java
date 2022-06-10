@@ -54,10 +54,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
-        // Enable the channel acquisition context,
-        // so that we can validate that a real request will reuse the channel established in openConnectionsAndInitCaches
-        System.setProperty("azure.cosmos.directTcp.defaultOptions", "{\"channelAcquisitionContextEnabled\":\"true\"}");
-
         directCosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
@@ -135,21 +131,13 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         assertThat(routingMap.size()).isEqualTo(0);
         assertThat(ReflectionUtils.isInitialized(asyncContainer).get()).isFalse();
 
-        String diagnostics = "";
         // Calling it twice to make sure no side effect of second time no-op call
         if (useAsync) {
             directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
             directCosmosAsyncContainer.openConnectionsAndInitCaches().block();
-
-            TestObject newItem = TestObject.create();
-            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
-
         } else {
             directCosmosContainer.openConnectionsAndInitCaches();
             directCosmosContainer.openConnectionsAndInitCaches();
-
-            TestObject newItem = TestObject.create();
-            diagnostics = directCosmosAsyncContainer.createItem(newItem).block().getDiagnostics().toString();
         }
 
         assertThat(collectionInfoByNameMap.size()).isEqualTo(1);
@@ -190,9 +178,19 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .blockLast();
 
         assertThat(provider.count()).isEqualTo(endpoints.size());
-        assertThat(diagnostics).contains("transportRequestChannelAcquisitionContext");
-        assertThat(diagnostics).doesNotContain("startNew");
-        assertThat(diagnostics).contains("poll");
+
+        // Validate for each RntbdServiceEndpoint, one channel is being opened
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+
+        // Test for real document requests, it will not open new channels
+        for (int i = 0; i < 5; i++) {
+            if (useAsync) {
+                directCosmosAsyncContainer.createItem(TestObject.create()).block();
+            } else {
+                directCosmosContainer.createItem(TestObject.create());
+            }
+        }
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

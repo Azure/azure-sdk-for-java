@@ -44,7 +44,5 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      */
     Iterable<T> findAll(PartitionKey partitionKey);
 
-    <S extends T> Iterable<S> saveAllWithLogging(Iterable<S> entities);
-
 }
 
