@@ -1,15 +1,9 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.13.0 (2022-06-10)
 
 ### Features Added
 - Updated return error when claim ownership occurs an error. Changed the behavior of `claimOwnership` method from __return empty when error__ to __return error when error__
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.12.2 (2022-05-16)
 
