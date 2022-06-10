@@ -2,6 +2,26 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 
+### Breaking Changes
+
+#### `models.Queries` was modified
+
+* `usage(java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition)` was removed
+
+* `usageWithResponse(java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition, com.azure.core.util.Context)` was removed
+
+* `usageByExternalCloudProviderType(com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition)` was removed
+
+* `usageByExternalCloudProviderTypeWithResponse(com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition,com.azure.core.util.Context)` was removed
+
+* `usage(java.lang.String, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition)` was added
+
+* `usageWithResponse(java.lang.String, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition, com.azure.core.util.Context)` was added
+
+* `usageByExternalCloudProviderType(com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType, java.lang.String, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition)` was added
+
+* `usageByExternalCloudProviderTypeWithResponse(com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType, java.lang.String, java.lang.String, com.azure.resourcemanager.costmanagement.models.QueryDefinition,com.azure.core.util.Context)` was added
+
 
 ## 1.0.0-beta.3 (2021-07-29)
 
