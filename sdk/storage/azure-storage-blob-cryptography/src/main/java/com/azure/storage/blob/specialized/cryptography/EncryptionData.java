@@ -14,7 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 
 /**
  * Represents the encryption data that is stored on the service.
@@ -216,7 +217,7 @@ final class EncryptionData {
         return this;
     }
 
-    public String toJsonString() throws JsonProcessingException {
+    String toJsonString() throws JsonProcessingException {
         return MAPPER.writeValueAsString(this);
     }
 

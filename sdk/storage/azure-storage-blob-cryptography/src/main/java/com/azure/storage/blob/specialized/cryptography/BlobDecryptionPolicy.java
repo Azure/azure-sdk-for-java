@@ -303,13 +303,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Flux<ByteBuffer> decryptV2(Flux<ByteBuffer> encryptedFlux, EncryptionData encryptionData,
         byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
-        final int gcmEncryptionRegionLength = Integer.parseInt(encryptionData
-            .getEncryptedRegionInfo()
-            .getEncryptionRegionLength());
-        final int nonceLength =
-            Integer.parseInt(encryptionData
-                .getEncryptedRegionInfo()
-                .getNonceLength());
+        final int gcmEncryptionRegionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
+        final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
         BufferStagingArea stagingArea =
             new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
             gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);

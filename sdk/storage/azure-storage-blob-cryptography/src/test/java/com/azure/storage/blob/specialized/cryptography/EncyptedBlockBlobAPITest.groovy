@@ -381,19 +381,22 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
+    @Ignore
     def "Temp test for cross plat"() {
         setup:
         def kek = new NoOpKey()
 
         def downloadClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
             .blobName("python_plaintext_1")
             .key(kek, "None")
             .credential(environment.getPrimaryAccount().getCredential())
             .buildEncryptedBlobClient()
 
         def decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
             .blobName("python_encrypted_1")
             .key(kek, "None")
             .credential(environment.getPrimaryAccount().getCredential())
@@ -408,23 +411,28 @@ class EncyptedBlockBlobAPITest extends APISpec {
         then:
         outStream.toByteArray() == decryptStream.toByteArray()
 
-        when:
+        and:
         def data = getRandomByteArray(20 * Constants.MB)
         def uploadClient = new BlobClientBuilder()
-            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
             .blobName("java_plaintext_1")
             .credential(environment.getPrimaryAccount().getCredential())
             .buildClient()
         def encryptClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .endpoint("https://xclientdev3.blob.core.windows.net/clientsideencryptionv2crossplat")
+            .endpoint(environment.getPrimaryAccount().blobEndpoint)
+            .containerName("clientsideencryptionv2crossplat")
             .blobName("java_encrypted_1")
             .key(kek, "None")
             .credential(environment.getPrimaryAccount().getCredential())
             .buildEncryptedBlobClient()
 
+        when:
+        uploadClient.upload(BinaryData.fromBytes(data), true)
+        encryptClient.upload(BinaryData.fromBytes(data), true)
+
         then:
-        uploadClient.upload(BinaryData.fromBytes(data))
-        encryptClient.upload(BinaryData.fromBytes(data))
+        notThrown(Exception)
     }
 
     class NoOpKey implements AsyncKeyEncryptionKey {

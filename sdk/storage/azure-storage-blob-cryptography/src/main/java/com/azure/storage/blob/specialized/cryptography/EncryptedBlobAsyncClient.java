@@ -634,7 +634,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                     EncryptionAlgorithm.AES_GCM_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                                    GCM_ENCRYPTION_REGION_LENGTH + "", NONCE_LENGTH + "", TAG_LENGTH + ""))
+                                    GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH, TAG_LENGTH))
                                 .setWrappedContentKey(wrappedKey);
 
                             encryptedTextFlux = encryptV2(plainTextFlux, aesKey);
