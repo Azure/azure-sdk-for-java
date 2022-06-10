@@ -34,7 +34,7 @@ public class JobRouterClientTests extends JobRouterClientTestBase {
 
         // Action
         String id = "Contoso_Jobs_Distribution_policy";
-        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicyWithResponse(id, distributionPolicy);
+        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(id, distributionPolicy);
 
         // Verify
         assertEquals(200, response.getStatusCode());
