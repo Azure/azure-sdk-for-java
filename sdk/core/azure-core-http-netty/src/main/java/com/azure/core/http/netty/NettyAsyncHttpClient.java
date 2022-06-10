@@ -24,6 +24,7 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
@@ -115,8 +116,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
 
-        ProgressReporter progressReporter = (ProgressReporter) context.getData("azure-progress-reporter")
-            .orElse(null);
+        ProgressReporter progressReporter = Contexts.getProgressReporter(context);
 
         return nettyClient
             .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout, progressReporter))

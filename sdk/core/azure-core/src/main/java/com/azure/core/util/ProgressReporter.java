@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * TODO (kasobol-msft) add docs.
  */
-public class ProgressReporter {
+public final class ProgressReporter {
     private final AtomicLong progress = new AtomicLong();
 
     private final Consumer<Long> listener;
@@ -18,7 +18,7 @@ public class ProgressReporter {
     /**
      * TODO (kasobol-msft) add docs.
      */
-    public ProgressReporter() {
+    private ProgressReporter() {
         listener = null;
         parent = null;
     }
@@ -27,7 +27,7 @@ public class ProgressReporter {
      * TODO (kasobol-msft) add docs.
      * @param listener The listener.
      */
-    public ProgressReporter(Consumer<Long> listener) {
+    private ProgressReporter(Consumer<Long> listener) {
         this.listener = listener;
         parent = null;
     }
@@ -75,5 +75,22 @@ public class ProgressReporter {
      */
     public ProgressReporter subProgress() {
         return new ProgressReporter(this);
+    }
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     * @return The progress reporter.
+     */
+    public static ProgressReporter getInstance() {
+        return new ProgressReporter();
+    }
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     * @param listener The listener.
+     * @return The progress reporter.
+     */
+    public static ProgressReporter getInstance(Consumer<Long> listener) {
+        return new ProgressReporter(listener);
     }
 }

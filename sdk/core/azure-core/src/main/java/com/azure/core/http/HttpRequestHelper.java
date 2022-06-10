@@ -48,6 +48,14 @@ public final class HttpRequestHelper {
             || content instanceof FileContent) {
             return requestBody;
         } else {
+            /*
+             Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
+             simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
+             stream, the buffers that were emitted will have already been consumed (their position set to their limit),
+             so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+             ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
+             duplicates the ByteBuffer object, not the underlying data.
+             */
             Flux<ByteBuffer> bufferedBody = requestBody.toFluxByteBuffer().map(ByteBuffer::duplicate);
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(bufferedBody, requestBody.getLength()));
         }

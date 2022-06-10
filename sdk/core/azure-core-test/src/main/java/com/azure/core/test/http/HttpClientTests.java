@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -236,8 +237,8 @@ public abstract class HttpClientTests {
             new HttpHeaders(),
             requestBody);
 
-        ProgressReporter progressReporter = new ProgressReporter();
-        Context context = Context.NONE.addData("azure-progress-reporter", progressReporter);
+        ProgressReporter progressReporter = ProgressReporter.getInstance();
+        Context context = Contexts.setProgressReporter(Context.NONE, progressReporter);
 
         StepVerifier.create(createHttpClient()
                 .send(request, context)

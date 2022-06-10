@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -956,22 +957,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // But, this is configurable by the user passing options with max single upload size configured.
             if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
                 finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
-                    BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
-                    // By default, if the file is larger than 256MB chunk it and stage it as blocks.
-                    // But, this is configurable by the user passing options with max single
-                    // upload size configured.
-                    return uploadFileChunks(
-                        finalParallelTransferOptions, originalBlockSize,
-                        options.getHeaders(), options.getMetadata(), options.getTags(),
-                        options.getTier(), options.getRequestConditions(), Paths.get(options.getFilePath()),
-                        blockBlobAsyncClient);
+                BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
+                // By default, if the file is larger than 256MB chunk it and stage it as blocks.
+                // But, this is configurable by the user passing options with max single
+                // upload size configured.
+                return uploadFileChunks(
+                    finalParallelTransferOptions, originalBlockSize,
+                    options.getHeaders(), options.getMetadata(), options.getTags(),
+                    options.getTier(), options.getRequestConditions(), Paths.get(options.getFilePath()),
+                    blockBlobAsyncClient);
             } else {
                 Context context = Context.NONE;
                 ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
                 if (progressReceiver != null) {
-                    com.azure.core.util.ProgressReporter progressReporter = new com.azure.core.util.ProgressReporter(
-                        progressReceiver::reportProgress);
-                    context = context.addData("azure-progress-reporter", progressReporter);
+                    com.azure.core.util.ProgressReporter progressReporter = com.azure.core.util.ProgressReporter
+                        .getInstance(progressReceiver::reportProgress);
+                    context = Contexts.setProgressReporter(context, progressReporter);
                 }
                 BinaryData data = BinaryData.fromFile(Paths.get(options.getFilePath()));
                 BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
@@ -997,7 +998,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         ProgressReceiver progressReceiver = parallelTransferOptions.getProgressReceiver();
         com.azure.core.util.ProgressReporter progressReporter = null;
         if (progressReceiver != null) {
-            progressReporter = new com.azure.core.util.ProgressReporter(progressReceiver::reportProgress);
+            progressReporter = com.azure.core.util.ProgressReporter.getInstance(progressReceiver::reportProgress);
         }
         com.azure.core.util.ProgressReporter progressReporterFinal = progressReporter;
         final SortedMap<Long, String> blockIds = new TreeMap<>();
@@ -1008,48 +1009,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 blockIds.put(chunk.getOffset(), blockId);
                 Context context = Context.NONE;
                 if (progressReporterFinal != null) {
-                    context = context.addData("azure-progress-reporter", progressReporterFinal.subProgress());
+                    context = Contexts.setProgressReporter(context, progressReporterFinal.subProgress());
                 }
                 BinaryData data = BinaryData.fromFile(filePath, chunk.getOffset(), chunk.getCount());
                 return client.stageBlockWithResponse(blockId, data, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId())
                     .contextWrite(FluxUtil.toReactorContext(context));
-            }, parallelTransferOptions.getMaxConcurrency())
-            .then(Mono.defer(() -> client.commitBlockListWithResponse(
-                new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))
-                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
-                    .setRequestConditions(finalRequestConditions))));
-    }
-
-    private Mono<Response<BlockBlobItem>> uploadFileChunksWithProgress(
-        long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
-        AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
-        BlockBlobAsyncClient client) {
-        final BlobRequestConditions finalRequestConditions = (requestConditions == null)
-            ? new BlobRequestConditions() : requestConditions;
-        // parallelTransferOptions are finalized in the calling method.
-
-        if (parallelTransferOptions.getProgressReceiver() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("ProgressReceiver must be not null"));
-        }
-
-        // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
-        AtomicLong totalProgress = new AtomicLong();
-        Lock progressLock = new ReentrantLock();
-
-        final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
-            .flatMap(chunk -> {
-                String blockId = getBlockID();
-                blockIds.put(chunk.getOffset(), blockId);
-
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
-                    parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
-
-                return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
-                    finalRequestConditions.getLeaseId());
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))

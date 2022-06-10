@@ -12,6 +12,8 @@ import com.azure.core.http.HttpRequestHelper;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -47,7 +49,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
             || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
-
         return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
     }
 
@@ -86,15 +87,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             delayMs = (long) ((ThreadLocalRandom.current().nextFloat() / 2 + 0.8) * 1000); // Add jitter
         }
 
-        /*
-         Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
-         simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
-         stream, the buffers that were emitted will have already been consumed (their position set to their limit),
-         so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-         ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-         duplicates the ByteBuffer object, not the underlying data.
-         */
         context.setHttpRequest(HttpRequestHelper.prepareForRetransmission(originalRequest));
+        ProgressReporter progressReporter = Contexts.getProgressReporter(context);
+        if (progressReporter != null) {
+            progressReporter.reset();
+        }
+
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.getSecondaryHost());

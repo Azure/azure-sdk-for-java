@@ -24,6 +24,7 @@ import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -58,8 +59,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        ProgressReporter progressReporter = (ProgressReporter) context.getData("azure-progress-reporter")
-            .orElse(null);
+        ProgressReporter progressReporter = Contexts.getProgressReporter(context);
 
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
