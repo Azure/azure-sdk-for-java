@@ -1,10 +1,11 @@
 # Release History
 
-## 1.0.7 (2022-06-07)
+## 1.0.7 (2022-06-09)
 
 ### Bugs Fixed
 
 - Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+- [Fixed bug that causes `NullPointerException` when batch queries have server timeout configured.](https://github.com/Azure/azure-sdk-for-java/issues/29339) 
 
 ### Other Changes
 

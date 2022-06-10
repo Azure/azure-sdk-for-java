@@ -2444,17 +2444,17 @@ public final class WorkbookTemplatesUpdateSamples {
 ### Workbooks_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.applicationinsights.models.Kind;
 import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.applicationinsights.models.UserAssignedIdentity;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookResourceIdentity;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Workbooks CreateOrUpdate. */
 public final class WorkbooksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedAdd.json
      */
     /**
      * Sample code: WorkbookManagedAdd.
@@ -2475,7 +2475,7 @@ public final class WorkbooksCreateOrUpdateSamples {
                         mapOf(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myid",
                             new UserAssignedIdentity())))
-            .withKind(Kind.SHARED)
+            .withKind(WorkbookSharedTypeKind.SHARED)
             .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":{\"json\":\"test\"},\"name\":\"text -"
@@ -2491,7 +2491,7 @@ public final class WorkbooksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookAdd.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookAdd.json
      */
     /**
      * Sample code: WorkbookAdd.
@@ -2505,7 +2505,7 @@ public final class WorkbooksCreateOrUpdateSamples {
             .withRegion("westus")
             .withExistingResourceGroup("my-resource-group")
             .withTags(mapOf("TagSample01", "sample01", "TagSample02", "sample02"))
-            .withKind(Kind.SHARED)
+            .withKind(WorkbookSharedTypeKind.SHARED)
             .withDisplayName("Sample workbook")
             .withSerializedData(
                 "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r"
@@ -2555,7 +2555,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks Delete. */
 public final class WorkbooksDeleteSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookDelete.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookDelete.json
      */
     /**
      * Sample code: WorkbookDelete.
@@ -2579,7 +2579,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks GetByResourceGroup. */
 public final class WorkbooksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet1.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet1.json
      */
     /**
      * Sample code: WorkbookGet1.
@@ -2594,7 +2594,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedGet.json
      */
     /**
      * Sample code: WorkbookManagedGet.
@@ -2610,7 +2610,7 @@ public final class WorkbooksGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.
@@ -2635,7 +2635,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks List. */
 public final class WorkbooksListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksListSub.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksListSub.json
      */
     /**
      * Sample code: WorkbooksListSub.
@@ -2648,7 +2648,7 @@ public final class WorkbooksListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList2.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList2.json
      */
     /**
      * Sample code: WorkbooksList2.
@@ -2671,7 +2671,7 @@ import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 /** Samples for Workbooks ListByResourceGroup. */
 public final class WorkbooksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksManagedList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksManagedList.json
      */
     /**
      * Sample code: WorkbooksManagedList.
@@ -2692,7 +2692,7 @@ public final class WorkbooksListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbooksList.json
      */
     /**
      * Sample code: WorkbooksList.
@@ -2721,7 +2721,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks RevisionGet. */
 public final class WorkbooksRevisionGetSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookRevisionGet.json
      */
     /**
      * Sample code: WorkbookRevisionGet.
@@ -2749,7 +2749,7 @@ import com.azure.core.util.Context;
 /** Samples for Workbooks RevisionsList. */
 public final class WorkbooksRevisionsListSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionsList.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookRevisionsList.json
      */
     /**
      * Sample code: WorkbookRevisionsList.
@@ -2772,7 +2772,7 @@ import com.azure.resourcemanager.applicationinsights.models.Workbook;
 /** Samples for Workbooks Update. */
 public final class WorkbooksUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookUpdate.json
      */
     /**
      * Sample code: WorkbookUpdate.
@@ -2795,7 +2795,7 @@ public final class WorkbooksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookManagedUpdate.json
      */
     /**
      * Sample code: WorkbookManagedUpdate.

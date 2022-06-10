@@ -155,6 +155,35 @@ public class LogsQueryClientTest extends TestBase {
     }
 
     @Test
+    public void testLogsQueryBatchWithServerTimeout() {
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take 2", null);
+        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + " | take 5", null,
+                new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(20)));
+        logsBatchQuery.addWorkspaceQuery(WORKSPACE_ID, QUERY_STRING + "| take 3", null,
+                new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(10)));
+
+        LogsBatchQueryResultCollection batchResultCollection = client
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+
+        List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
+
+        assertEquals(3, responses.size());
+
+        assertEquals(1, responses.get(0).getAllTables().size());
+        assertEquals(24, responses.get(0).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(2, responses.get(0).getAllTables().get(0).getRows().size());
+
+        assertEquals(1, responses.get(1).getAllTables().size());
+        assertEquals(60, responses.get(1).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(5, responses.get(1).getAllTables().get(0).getRows().size());
+
+        assertEquals(1, responses.get(2).getAllTables().size());
+        assertEquals(36, responses.get(2).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(3, responses.get(2).getAllTables().get(0).getRows().size());
+    }
+
+    @Test
     @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "multi-workspace "
             + "queries require sending logs to Azure Monitor first. So, run this test in playback or record mode only.")
     public void testMultipleWorkspaces() {

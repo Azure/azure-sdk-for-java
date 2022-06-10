@@ -54,7 +54,7 @@ public class AzureStorageBlobAutoConfiguration {
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
     AzureStorageBlobProperties azureStorageBlobProperties(AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadStorageProperties(azureStorageProperties, new AzureStorageBlobProperties());
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
     }
 
     @Bean

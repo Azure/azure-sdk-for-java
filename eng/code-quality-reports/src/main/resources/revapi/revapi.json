@@ -240,26 +240,32 @@
         {
           "regex": true,
           "code": "java.class.noLongerInheritsFromClass",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
-          "justification": "To support for storage services to share values of common properties."
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.added",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
-          "justification": "To support for storage services to share values of common properties."
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.attributeRemoved",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
-          "justification": "To support for storage services to share values of common properties."
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.attributeAdded",
-          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.storage\\..*",
-          "justification": "To support for storage services to share values of common properties."
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.(storage|keyvault)\\..*",
+          "justification": "To support for storage services and keyvault services to share values of common properties."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "class com\\.azure\\.spring\\.cloud\\.autoconfigure\\.keyvault\\..*",
+          "justification": "To support for keyvault services to share values of common properties."
         },
         {
           "code": "java.method.visibilityReduced",
