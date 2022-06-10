@@ -55,13 +55,19 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
-```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-    .build();
-RouteManager manager = RouteManager
-    .authenticate(credential, profile);
+```java com.azure.maps.route.async.builder.ad.instantiation
+// Authenticates using Azure AD building a default credential
+// This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
+DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+// Creates a builder
+RouteClientBuilder builder = new RouteClientBuilder();
+builder.credential(tokenCredential);
+builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+// Builds a client
+RouteAsyncClient client = builder.buildAsyncClient();
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.

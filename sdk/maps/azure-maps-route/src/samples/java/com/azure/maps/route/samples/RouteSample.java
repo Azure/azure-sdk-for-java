@@ -5,18 +5,24 @@ package com.azure.maps.route.samples;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPointCollection;
+import com.azure.core.models.GeoPosition;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.maps.route.RouteAsyncClient;
 import com.azure.maps.route.RouteClient;
 import com.azure.maps.route.RouteClientBuilder;
+import com.azure.maps.route.models.RouteDirections;
+import com.azure.maps.route.models.RouteDirectionsOptions;
 import com.azure.maps.route.models.RouteMatrixOptions;
 import com.azure.maps.route.models.RouteMatrixQuery;
+import com.azure.maps.route.models.RouteReport;
 
 public class RouteSample {
 
@@ -56,34 +62,76 @@ public class RouteSample {
         return client;
     }
 
+    public RouteAsyncClient createRouteAsyncClientUsingAzureKeyCredential() {
+        // BEGIN: com.azure.maps.route.async.builder.key.instantiation
+        // Authenticates using subscription key
+        AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+
+        // Creates a builder
+        RouteClientBuilder builder = new RouteClientBuilder();
+        builder.credential(keyCredential);
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        // Builds the client
+        RouteAsyncClient client = builder.buildAsyncClient();
+        // END: com.azure.maps.route.async.builder.key.instantiation
+
+        return client;
+    }
+
+    public RouteAsyncClient createRouteAsyncClientUsingAzureADCredential() {
+        // BEGIN: com.azure.maps.route.async.builder.ad.instantiation
+        // Authenticates using Azure AD building a default credential
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Creates a builder
+        RouteClientBuilder builder = new RouteClientBuilder();
+        builder.credential(tokenCredential);
+        builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        // Builds a client
+        RouteAsyncClient client = builder.buildAsyncClient();
+        // END: com.azure.maps.route.async.builder.ad.instantiation
+
+        return client;
+    }
+
     public static void main(String[] args) throws IOException {
         // authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
 
         // authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // build client
         RouteClientBuilder builder = new RouteClientBuilder();
 
         // use this for key authentication
-        // builder.credential(keyCredential);
+        builder.credential(keyCredential);
 
         // use the next 2 lines for Azure AD authentication
-        builder.credential(tokenCredential);
-        builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        // builder.credential(tokenCredential);
+        // builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         RouteClient client = builder.buildClient();
 
-        /* One-shot operations
+        /* One-shot operations */
 
-        System.out.println("Get route directions");
-        List<LatLong> routePoints = Arrays.asList(
-            new LatLong(52.50931, 13.42936),
-            new LatLong(52.50274, 13.43872));
+        // Get Route Directions
+        // BEGIN: com.azure.maps.route.sync.get_route_directions
+        List<GeoPosition> routePoints = Arrays.asList(
+            new GeoPosition(13.42936, 52.50931),
+            new GeoPosition(13.43872, 52.50274));
         RouteDirectionsOptions routeOptions = new RouteDirectionsOptions(routePoints);
         RouteDirections directions = client.getRouteDirections(routeOptions);
+        RouteReport report = directions.getReport(); // get the report and use it
+        // END: com.azure.maps.route.sync.get_route_directions
+
+        /*
         MapsCommon.print(directions);
 
         System.out.println("Get route range");
