@@ -39,14 +39,6 @@ public final class DeviceManagementAsyncClient {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -96,14 +88,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -147,14 +131,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Update device class details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -210,14 +186,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -234,14 +202,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -286,7 +246,6 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -349,14 +308,6 @@ public final class DeviceManagementAsyncClient {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -381,14 +332,6 @@ public final class DeviceManagementAsyncClient {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -411,14 +354,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -476,14 +411,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -544,14 +471,6 @@ public final class DeviceManagementAsyncClient {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -586,7 +505,6 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -627,14 +545,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -669,14 +579,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a device group.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -694,14 +596,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -740,7 +634,6 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -790,7 +683,6 @@ public final class DeviceManagementAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -801,7 +693,7 @@ public final class DeviceManagementAsyncClient {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -848,20 +740,12 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -907,20 +791,12 @@ public final class DeviceManagementAsyncClient {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -952,7 +828,7 @@ public final class DeviceManagementAsyncClient {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1000,14 +876,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1028,14 +896,6 @@ public final class DeviceManagementAsyncClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1055,7 +915,7 @@ public final class DeviceManagementAsyncClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     subgroupStatus: [
      *         {
@@ -1099,7 +959,6 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1138,14 +997,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1178,14 +1029,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a device class subgroup.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1205,14 +1048,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1246,14 +1081,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1300,7 +1127,6 @@ public final class DeviceManagementAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -1311,7 +1137,7 @@ public final class DeviceManagementAsyncClient {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -1360,20 +1186,12 @@ public final class DeviceManagementAsyncClient {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1421,14 +1239,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Deletes a device class subgroup deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
@@ -1450,20 +1260,12 @@ public final class DeviceManagementAsyncClient {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1510,20 +1312,12 @@ public final class DeviceManagementAsyncClient {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -1572,14 +1366,6 @@ public final class DeviceManagementAsyncClient {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1600,7 +1386,7 @@ public final class DeviceManagementAsyncClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     totalDevices: Integer
      *     devicesInProgressCount: Integer
@@ -1638,7 +1424,6 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1679,14 +1464,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Retrieve operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -1714,11 +1491,11 @@ public final class DeviceManagementAsyncClient {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
+     *     lastActionDateTime: OffsetDateTime
+     *     createdDateTime: OffsetDateTime
      *     etag: String
      * }
      * }</pre>
@@ -1746,8 +1523,7 @@ public final class DeviceManagementAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1771,11 +1547,11 @@ public final class DeviceManagementAsyncClient {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -1798,14 +1574,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Start the device diagnostics log collection operation on specified devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1862,14 +1630,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Get the device diagnostics log collection operation.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1906,14 +1666,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Get all device diagnostics log collection operations.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1953,14 +1705,6 @@ public final class DeviceManagementAsyncClient {
 
     /**
      * Get device diagnostics log collection operation with detailed status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2003,15 +1747,6 @@ public final class DeviceManagementAsyncClient {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2034,6 +1769,7 @@ public final class DeviceManagementAsyncClient {
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2043,7 +1779,7 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listDeviceHealthWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceHealthWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> listDeviceHealthWithResponse(String filter, RequestOptions requestOptions) {
+        return this.serviceClient.listDeviceHealthWithResponseAsync(filter, requestOptions);
     }
 }
