@@ -2698,6 +2698,18 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl swapOSDisk(String diskId) {
+        if (diskId == null
+            || !isManagedDiskEnabled()
+            || this.innerModel().storageProfile().osDisk().managedDisk() == null) {
+            return this;
+        }
+        this.storageProfile().osDisk().withName(ResourceUtils.nameFromResourceId(diskId));
+        this.storageProfile().osDisk().managedDisk().withId(diskId);
+        return this;
+    }
+
     /** Class to manage Data disk collection. */
     private class ManagedDataDiskCollection {
         private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();

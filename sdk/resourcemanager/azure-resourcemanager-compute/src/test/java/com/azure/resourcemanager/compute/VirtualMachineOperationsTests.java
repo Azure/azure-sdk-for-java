@@ -18,7 +18,10 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.Disk;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.DiskState;
+import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
@@ -35,6 +38,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.resourcemanager.keyvault.models.Key;
+import com.azure.resourcemanager.keyvault.models.KeyPermissions;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
@@ -53,6 +59,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -1444,6 +1451,109 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .create()
         );
     }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canSwapOSDiskWithManagedDisk() {
+        String storageAccountName = generateRandomResourceName("sa", 15);
+        StorageAccount storageAccount = this.storageManager
+            .storageAccounts()
+            .define(storageAccountName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
+
+        // create vm with os disk encrypted with platform managed key
+        String vm1Name = generateRandomResourceName("vm", 15);
+        VirtualMachine vm1 = this.computeManager
+            .virtualMachines()
+            .define(vm1Name)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/24")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10, 1, CachingTypes.READ_WRITE)
+            .withExistingStorageAccount(storageAccount)
+            .create();
+        Disk vm1OSDisk = this.computeManager.disks().getById(vm1.osDiskId());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, vm1OSDisk.encryption().type());
+
+        // create vm with os disk encrypted with customer managed key (cmk)
+        String vaultName = generateRandomResourceName("vault", 15);
+        Vault vault = this.keyVaultManager
+            .vaults()
+            .define(vaultName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .defineAccessPolicy()
+            .forServicePrincipal(clientIdFromFile())
+            .allowKeyPermissions(KeyPermissions.CREATE)
+            .attach()
+            .create();
+
+        String keyName = generateRandomResourceName("key", 15);
+        Key key = vault.keys()
+            .define(keyName)
+            .withKeyTypeToCreate(KeyType.RSA)
+            .withKeySize(4096)
+            .create();
+
+        String desName = generateRandomResourceName("des", 15);
+        DiskEncryptionSet des = this.computeManager.diskEncryptionSets()
+            .define(desName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+            .withExistingKeyVault(vault.id())
+            .withExistingKey(key.id())
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+
+        vault.update()
+            .defineAccessPolicy()
+            .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
+            .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.UNWRAP_KEY, KeyPermissions.WRAP_KEY)
+            .attach()
+            .withPurgeProtectionEnabled()
+            .apply();
+
+        String vm2Name = generateRandomResourceName("vm", 15);
+        VirtualMachine vm2 = this.computeManager.virtualMachines()
+            .define(vm2Name)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/24")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withOSDiskDiskEncryptionSet(des.id())
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
+            .create();
+        String vm2OSDiskId = vm2.osDiskId();
+        this.computeManager.virtualMachines().deleteById(vm2.id());
+        Disk vm2OSDisk = this.computeManager.disks().getById(vm2OSDiskId);
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, vm2OSDisk.encryption().type());
+
+        // swap vm1's os disk(encrypted with pmk) with vm2's os disk(encrypted with cmk)
+        vm1.deallocate();
+        vm1.update()
+            .swapOSDisk(vm2OSDiskId)
+            .apply();
+        vm1.start();
+        vm1.refresh();
+        Assertions.assertEquals(vm1.osDiskId(), vm2OSDiskId);
+        Assertions.assertTrue(des.id().equalsIgnoreCase(vm1.storageProfile().osDisk().managedDisk().diskEncryptionSet().id()));
+    }
+
+
+
+    // *********************************** helper methods ***********************************
 
     private CreatablesInfo prepareCreatableVirtualMachines(
         Region region, String vmNamePrefix, String networkNamePrefix, String publicIpNamePrefix, int vmCount) {
