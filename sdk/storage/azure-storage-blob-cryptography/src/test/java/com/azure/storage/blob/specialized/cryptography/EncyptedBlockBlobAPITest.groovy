@@ -131,41 +131,29 @@ class EncyptedBlockBlobAPITest extends APISpec {
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient())
         def encryptedBlobClient = new EncryptedBlobClient(beac)
-        def blobClient = cc.getBlobClient(beac.getBlobName())
 
-        def dataSize = 20 * 1024 * 1024
         def data = getRandomData(dataSize)
-        def offset = 5003000
-        def endRange = 6000000
-        def dataDuplicate = data.duplicate().position(offset).limit(endRange)
 
-        // 3000 passes
-        // 5 * 1024 * 1024 - 10 passes
-        // 20 * 1024 * 1024 - 10 passes
-        // 4 * 1024 * 1024 passes
-        // 4 * 1024 * 1024 - 10 passes
-        // 8 * 1024 * 1024 passes
-        // Seems anything over one encryption region struggles
-        // ranges?
-        // 3000000-12000000. Passes
-        // 5000000-12000000. Middle of regions, middle of blob. Passes.
-        // 5000000-15000000. Middle of regions, middle of blob with one full region in the middle.passes
-        // 3000000-18000000. Middle of regions, expands to whole blob. passes
-        // 0-20mb. Whole blob. passes
-        // 4mb-8mb. Exact boundary. passes.
-        // 5003000-6000000. All in one region. passes
-        // Have to update logic around adjusting ranges. If there's a range adjust it, otherwise still try decrypting cus it could've been an empty (full) range
         when:
-        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
+        beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate()))).block()
 
         def plaintextOut = new ByteArrayOutputStream()
-        encryptedBlobClient.downloadStreamWithResponse(plaintextOut, new BlobRange(offset, endRange - offset), null, null, false, null, null)
+        encryptedBlobClient.downloadStream(plaintextOut)
 
         then:
         // TODO:
         // Shouldn't have to duplicate data, but something weird was happening around having to flip the data when I used the original source
         // <= 4mb and I had to flip. Otherwise I had to not flip?
-        dataDuplicate == ByteBuffer.wrap(plaintextOut.toByteArray())
+        data == ByteBuffer.wrap(plaintextOut.toByteArray())
+
+        where:
+        dataSize              | _
+        3000                  | _
+        5 * 1024 * 1024 - 10  | _
+        20 * 1024 * 1024 - 10 | _
+        4 * 1024 * 1024       | _
+        4 * 1024 * 1024 - 10  | _
+        8 * 1024 * 1024       | _
     }
 
     // Key and key resolver null
@@ -322,14 +310,17 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         and:
         def outStream = new ByteArrayOutputStream()
-        def downloadResponse = cc.getBlobClient(beac.getBlobName()).downloadStreamWithResponse(outStream, null, null, null, false, null, null)
+        def downloadResponse = cc.getBlobClient(beac.getBlobName())
+            .downloadStreamWithResponse(outStream, null, null, null, false, null, null)
         def ciphertextRawBites = outStream.toByteArray()
         def ciphertextInputStream = new ByteArrayInputStream(ciphertextRawBites)
         def plaintextOriginal = data.array()
         def plaintextOutputStream = new ByteArrayOutputStream()
 
-        def encryptionData = new ObjectMapper().readValue(downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
-            EncryptionData.class)
+        def encryptionData = new ObjectMapper()
+            .readValue(downloadResponse.getDeserializedHeaders().getMetadata()
+                .get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+                EncryptionData.class)
         def cek = fakeKey.unwrapKey(
             encryptionData.getWrappedContentKey().getAlgorithm(),
             encryptionData.getWrappedContentKey().getEncryptedKey()).block()
@@ -340,7 +331,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         int numChunks = (int) Math.ceil(data.array().length / (4 * 1024 * 1024.0));
 
         for (int i = 0; i < numChunks; i++) {
-            def IV = ciphertextInputStream.readNBytes(12)
+            def IV = new byte[12]
+            ciphertextInputStream.read(IV)
             GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, IV)
 
             cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
@@ -352,9 +344,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ByteBuffer.wrap(plaintextOutputStream.toByteArray()) == ByteBuffer.wrap(plaintextOriginal)
 
         where:
-        dataSize | _
-        3000 | _ // small
-        5 * 1024 * 1024 - 10 | _ // medium
+        dataSize              | _
+        3000                  | _ // small
+        5 * 1024 * 1024 - 10  | _ // medium
         20 * 1024 * 1024 - 10 | _ // large
     }
 
@@ -436,26 +428,26 @@ class EncyptedBlockBlobAPITest extends APISpec {
     }
 
     class NoOpKey implements AsyncKeyEncryptionKey {
-            @Override
-            Mono<String> getKeyId() {
-                return Mono.just("local:key1")
-            }
+        @Override
+        Mono<String> getKeyId() {
+            return Mono.just("local:key1")
+        }
 
-            @Override
-            Mono<byte[]> wrapKey(String algorithm, byte[] key) {
-                if (algorithm != "None") {
-                    throw new IllegalArgumentException()
-                }
-                return Mono.just(key)
+        @Override
+        Mono<byte[]> wrapKey(String algorithm, byte[] key) {
+            if (algorithm != "None") {
+                throw new IllegalArgumentException()
             }
+            return Mono.just(key)
+        }
 
-            @Override
-            Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
-                if (algorithm != "None") {
-                    throw new IllegalArgumentException()
-                }
-                return Mono.just(encryptedKey)
+        @Override
+        Mono<byte[]> unwrapKey(String algorithm, byte[] encryptedKey) {
+            if (algorithm != "None") {
+                throw new IllegalArgumentException()
             }
+            return Mono.just(encryptedKey)
+        }
     }
 
     @Unroll
@@ -727,7 +719,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         // Download data with encrypted client - command should fail
         ByteArrayOutputStream os = new ByteArrayOutputStream()
-        client.downloadWithResponse(os, new BlobRange(3,2), null, null, false, null, null)
+        client.downloadWithResponse(os, new BlobRange(3, 2), null, null, false, null, null)
 
         then:
         notThrown(IllegalStateException)
@@ -1887,6 +1879,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
         return result.remaining() == 0
     }
+
     class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
         private String expectedRangeHeader
 
