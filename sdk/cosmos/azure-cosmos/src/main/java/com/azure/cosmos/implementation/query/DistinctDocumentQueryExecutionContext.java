@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ public class DistinctDocumentQueryExecutionContext<T>
     private final IDocumentQueryExecutionComponent<T> component;
     private final DistinctMap distinctMap;
     private final AtomicReference<UInt128> lastHash;
+    private final PipelinedDocumentQueryParams<T> sqlQueryParams;
 
     private DistinctDocumentQueryExecutionContext(
         IDocumentQueryExecutionComponent<T> component,
         DistinctQueryType distinctQueryType,
-        UInt128 previousHash) {
+        UInt128 previousHash,
+        PipelinedDocumentQueryParams<T> sqlQueryParams) {
         if (distinctQueryType == DistinctQueryType.NONE) {
             throw new IllegalArgumentException("Invalid distinct query type");
         }
@@ -41,6 +44,7 @@ public class DistinctDocumentQueryExecutionContext<T>
         this.component = component;
         this.distinctMap = DistinctMap.create(distinctQueryType, previousHash);
         this.lastHash = new AtomicReference<>();
+        this.sqlQueryParams = sqlQueryParams;
     }
 
     public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -75,7 +79,7 @@ public class DistinctDocumentQueryExecutionContext<T>
         return createSourceComponentFunction
             .apply(distinctContinuationToken.getSourceToken(), documentQueryParams)
             .map(component -> new DistinctDocumentQueryExecutionContext<>(
-                component, distinctQueryType, continuationTokenLastHash));
+                component, distinctQueryType, continuationTokenLastHash, documentQueryParams));
     }
 
     @Override
@@ -84,6 +88,14 @@ public class DistinctDocumentQueryExecutionContext<T>
             final List<T> distinctResults = new ArrayList<>();
 
             tFeedResponse.getResults().forEach(document -> {
+
+                if (this.sqlQueryParams.getQuery().getQueryText().equals("select DISTINCT value a.postalCode from a where a.city = @city")) {
+                    try {
+                        System.out.println("DistinctDocumentQueryExecutionContext " + Utils.getSimpleObjectMapper().writeValueAsString(document));
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }
                 Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
                 if (this.distinctMap.add(document, outHash)) {
                     distinctResults.add(document);

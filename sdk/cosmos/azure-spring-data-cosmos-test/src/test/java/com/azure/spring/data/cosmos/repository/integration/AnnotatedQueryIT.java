@@ -122,6 +122,8 @@ public class AnnotatedQueryIT {
 
     @Test
     public void testAnnotatedQueryWithValueAsPage() {
+
+        LOGGER.info("Start running testAnnotatedQueryWithValueAsPage");
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAll(addresses);
 
@@ -134,21 +136,19 @@ public class AnnotatedQueryIT {
 
     @Test
     public void testAnnotatedQueryWithValueAsList() {
+
+        LOGGER.info("Start running testAnnotatedQueryWithValueAsList");
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAllWithLogging(addresses);
 
-        final List<JsonNode> fetchedAddresses = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
-
-        assertThat(fetchedAddresses.size()).isEqualTo(2);
-        try {
-            LOGGER.info("First address is: " + OBJECT_MAPPER.writeValueAsString(fetchedAddresses.get(0)));
-            LOGGER.info("Second address is: " + OBJECT_MAPPER.writeValueAsString(fetchedAddresses.get(1)));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        LOGGER.info("Getting all addresses in partition1");
+        final List<Address> result = addressRepository.annotatedFindListByCity(Address.TEST_ADDRESS1_PARTITION1.getCity());
+        for (Address address:result) {
+            LOGGER.info(address.toString());
         }
 
-        LOGGER.info("Trying to get distinct value");
-        final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCityByDistinct(TestConstants.CITY);
+        final List<String> postalCodes = addressRepository.annotatedFindPostalCodeValuesByCity(TestConstants.CITY);
+
         assertAddressPostalCodes(postalCodes, addresses);
     }
 

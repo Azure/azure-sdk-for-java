@@ -303,6 +303,11 @@ implements IDocumentQueryExecutionContext<T> {
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
 
+            if (querySpec.getQueryText().equals("select DISTINCT value a.postalCode from a where a.city = @city")) {
+                System.out.println("DocumentQueryExecutionContextBase: enable logFromRntbd");
+                executeQueryRequest.logResponseFromRntbd = true;
+            }
+
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;

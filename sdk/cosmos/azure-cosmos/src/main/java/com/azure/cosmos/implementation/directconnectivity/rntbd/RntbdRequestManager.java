@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -817,6 +818,19 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
             requestRecord.complete(storeResponse);
+
+            // decide whether to log the rntbd response
+            if (requestRecord.args().serviceRequest().logResponseFromRntbd) {
+                System.out.println("RntbdRequestManager response:" +  Utils.utf8StringFromOrNull(storeResponse.getResponseBody()));
+                logger.info(Utils.utf8StringFromOrNull(storeResponse.getResponseBody()));
+
+                final Map<String, String> responseHeaders = response.getHeaders().asMap(
+                        this.rntbdContext().orElseThrow(IllegalStateException::new), activityId
+                );
+
+                System.out.println(responseHeaders);
+                logger.info("RntbdRequestManager" + responseHeaders);
+            }
 
         } else {
 
