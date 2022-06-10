@@ -181,7 +181,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    public <T> CosmosPatchOperations move(String from,String path) {
+    public CosmosPatchOperations move(String from,String path) {
 
         checkArgument(StringUtils.isNotEmpty(from), "Source path empty %s", from);
         checkArgument(StringUtils.isNotEmpty(path), "Destination path empty %s", path);
