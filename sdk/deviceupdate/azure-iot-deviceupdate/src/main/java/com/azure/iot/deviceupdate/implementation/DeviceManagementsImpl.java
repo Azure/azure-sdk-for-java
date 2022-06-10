@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -86,6 +87,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,6 +108,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -127,6 +130,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData deviceClassPatch,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -147,6 +151,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -167,6 +172,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -186,6 +192,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -206,6 +213,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData importType,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -226,6 +234,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("deviceId") String deviceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -247,6 +256,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceId") String deviceId,
                 @PathParam("moduleId") String moduleId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -266,6 +276,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -285,6 +296,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -305,6 +317,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -325,6 +338,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -345,6 +359,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -365,6 +380,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -385,6 +401,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -406,6 +423,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -428,6 +446,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData deployment,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -449,6 +468,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -470,6 +490,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -490,6 +511,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("groupId") String groupId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -511,6 +533,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -532,6 +555,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -554,6 +578,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -575,6 +600,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -596,6 +622,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("groupId") String groupId,
                 @PathParam("deviceClassId") String deviceClassId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -619,6 +646,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -642,6 +670,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -665,6 +694,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -688,6 +718,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -711,6 +742,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -734,6 +766,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("deviceClassId") String deviceClassId,
                 @PathParam("deploymentId") String deploymentId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -754,6 +787,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -773,6 +807,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -794,6 +829,7 @@ public final class DeviceManagementsImpl {
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData logCollectionRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -814,6 +850,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -833,6 +870,7 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -853,6 +891,7 @@ public final class DeviceManagementsImpl {
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -872,6 +911,8 @@ public final class DeviceManagementsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @QueryParam("api-version") String apiVersion,
+                @QueryParam("filter") String filter,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -890,6 +931,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeviceClassesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -908,6 +950,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listInstallableUpdatesForDeviceClassNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -926,6 +969,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDevicesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -944,6 +988,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listGroupsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -962,6 +1007,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listBestUpdatesForGroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -980,6 +1026,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeploymentsForGroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -998,6 +1045,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDeploymentsForDeviceClassSubgroupNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1016,6 +1064,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listDevicesForDeviceClassSubgroupDeploymentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1034,6 +1083,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listOperationsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1052,6 +1102,7 @@ public final class DeviceManagementsImpl {
         Mono<Response<BinaryData>> listLogCollectionOperationsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -1059,14 +1110,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1111,12 +1154,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClasses(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1133,14 +1178,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1187,10 +1224,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceClasses(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1207,14 +1246,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1271,14 +1302,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1337,14 +1360,6 @@ public final class DeviceManagementsImpl {
      * Gets a list of all device classes (unique combinations of device manufacturer and model) for all devices
      * connected to Device Update for IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1393,14 +1408,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the properties of a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1439,6 +1446,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClass(
@@ -1446,20 +1454,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets the properties of a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1500,25 +1501,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets the properties of a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1562,14 +1557,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Update device class details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1618,6 +1605,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateDeviceClass(
@@ -1626,20 +1614,13 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
                                 deviceClassPatch,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Update device class details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1689,26 +1670,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateDeviceClassWithResponseAsync(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
                 deviceClassPatch,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Update device class details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1763,14 +1738,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1782,6 +1749,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeviceClass(
@@ -1789,20 +1757,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1816,25 +1777,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassWithResponseAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeviceClass(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1852,14 +1807,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1891,6 +1838,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
             String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listInstallableUpdatesForDeviceClass(
@@ -1898,6 +1846,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         deviceClassId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -1913,14 +1862,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1954,11 +1895,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassSinglePageAsync(
             String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listInstallableUpdatesForDeviceClass(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         deviceClassId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -1974,14 +1917,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2026,14 +1961,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Gets a list of installable updates for a device class.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2081,14 +2008,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets a list of installable updates for a device class.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2131,7 +2050,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2187,12 +2105,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDevices(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -2215,7 +2135,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2272,10 +2191,12 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesSinglePageAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDevices(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -2298,7 +2219,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2372,7 +2292,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2447,7 +2366,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of devices returned. You can filter on GroupId, DeviceClassId, or GroupId and DeploymentStatus.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2510,14 +2428,6 @@ public final class DeviceManagementsImpl {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2534,6 +2444,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importDevicesWithResponseAsync(BinaryData importType, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.importDevices(
@@ -2541,6 +2452,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
                                 importType,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -2548,14 +2460,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2575,11 +2479,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> importDevicesWithResponseAsync(
             BinaryData importType, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.importDevices(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
                 importType,
+                accept,
                 requestOptions,
                 context);
     }
@@ -2587,14 +2493,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2629,14 +2527,6 @@ public final class DeviceManagementsImpl {
     /**
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2673,14 +2563,6 @@ public final class DeviceManagementsImpl {
      * Import existing devices from IoT Hub. This is a long-running-operation; use Operation-Location response header
      * value to check for operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2702,14 +2584,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2760,6 +2634,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceWithResponseAsync(String deviceId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDevice(
@@ -2767,20 +2642,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 deviceId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2833,25 +2701,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceWithResponseAsync(
             String deviceId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDevice(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets the device properties and latest deployment status for a device connected to Device Update for IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2909,14 +2771,6 @@ public final class DeviceManagementsImpl {
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2968,6 +2822,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(
             String deviceId, String moduleId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceModule(
@@ -2976,6 +2831,7 @@ public final class DeviceManagementsImpl {
                                 deviceId,
                                 moduleId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -2983,14 +2839,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3044,12 +2892,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceModuleWithResponseAsync(
             String deviceId, String moduleId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceModule(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 deviceId,
                 moduleId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3057,14 +2907,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device module properties and latest deployment status for a device module connected to Device Update for
      * IoT Hub.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3124,14 +2966,6 @@ public final class DeviceManagementsImpl {
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3153,12 +2987,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getUpdateCompliance(
                                 this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3166,14 +3002,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3198,10 +3026,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUpdateComplianceWithResponseAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getUpdateCompliance(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3209,14 +3039,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the breakdown of how many devices are on their latest update, have new updates available, or are in progress
      * receiving new updates.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3251,7 +3073,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3285,12 +3106,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listGroups(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -3313,7 +3136,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3348,10 +3170,12 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsSinglePageAsync(RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listGroups(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -3374,7 +3198,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3427,7 +3250,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3481,7 +3303,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of groups returned. You can order by any combination of groupId, device count, created date, subgroupsWithNewUpdatesAvailableCount, subgroupsWithUpdatesInProgressCount, or subgroupsOnLatestUpdateCount.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3521,14 +3342,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the device group properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3556,6 +3369,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getGroup(
@@ -3563,20 +3377,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets the device group properties.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3607,25 +3414,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets the device group properties.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3660,14 +3461,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device group.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3678,6 +3471,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteGroup(
@@ -3685,20 +3479,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3712,25 +3499,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device group.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3748,14 +3529,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3781,6 +3554,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupUpdateComplianceWithResponseAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getGroupUpdateCompliance(
@@ -3788,6 +3562,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -3795,14 +3570,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3829,11 +3596,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGroupUpdateComplianceWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getGroupUpdateCompliance(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -3841,14 +3610,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device group update compliance information such as how many devices are on their latest update, how many need
      * new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3884,7 +3645,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3923,6 +3683,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listBestUpdatesForGroup(
@@ -3930,6 +3691,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         groupId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -3952,7 +3714,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3992,11 +3753,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listBestUpdatesForGroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -4019,7 +3782,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4076,7 +3838,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4135,7 +3896,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of bestUpdates returned. You can filter on update Provider, Name and Version property.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4184,7 +3944,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -4195,7 +3954,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -4237,6 +3996,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForGroup(
@@ -4244,6 +4004,7 @@ public final class DeviceManagementsImpl {
                                         this.client.getInstanceId(),
                                         groupId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -4265,7 +4026,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -4276,7 +4036,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -4319,11 +4079,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupSinglePageAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForGroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -4345,7 +4107,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -4356,7 +4117,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -4414,7 +4175,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -4425,7 +4185,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -4485,7 +4245,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -4496,7 +4255,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -4542,20 +4301,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4594,6 +4345,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeployment(
@@ -4602,6 +4354,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4609,20 +4362,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4662,12 +4407,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -4675,20 +4422,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4733,20 +4472,12 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4778,7 +4509,7 @@ public final class DeviceManagementsImpl {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4818,6 +4549,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponseAsync(
             String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDeployment(
@@ -4827,6 +4559,7 @@ public final class DeviceManagementsImpl {
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
                                 deployment,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4834,20 +4567,12 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4879,7 +4604,7 @@ public final class DeviceManagementsImpl {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4924,6 +4649,7 @@ public final class DeviceManagementsImpl {
             BinaryData deployment,
             RequestOptions requestOptions,
             Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -4931,6 +4657,7 @@ public final class DeviceManagementsImpl {
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
                 deployment,
+                accept,
                 requestOptions,
                 context);
     }
@@ -4938,20 +4665,12 @@ public final class DeviceManagementsImpl {
     /**
      * Creates or updates a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -4983,7 +4702,7 @@ public final class DeviceManagementsImpl {
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -5029,14 +4748,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5049,6 +4760,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeployment(
@@ -5057,20 +4769,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
@@ -5085,26 +4790,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeploymentWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deploymentId Deployment identifier.
@@ -5125,14 +4824,6 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5152,7 +4843,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     subgroupStatus: [
      *         {
@@ -5183,6 +4874,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeploymentStatus(
@@ -5191,6 +4883,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5198,14 +4891,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5226,7 +4911,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     subgroupStatus: [
      *         {
@@ -5258,12 +4943,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentStatusWithResponseAsync(
             String groupId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeploymentStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5271,14 +4958,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5299,7 +4978,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     subgroupStatus: [
      *         {
@@ -5342,7 +5021,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5374,6 +5052,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listDeviceClassSubgroupsForGroup(
@@ -5381,6 +5060,7 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 groupId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5394,7 +5074,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5427,11 +5106,13 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listDeviceClassSubgroupsForGroupWithResponseAsync(
             String groupId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceClassSubgroupsForGroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5445,7 +5126,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of device class subgroups returned. You can filter on compat properties by name and value.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5482,14 +5162,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets device class subgroup details.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5514,6 +5186,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDetailsWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroupDetails(
@@ -5522,20 +5195,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Gets device class subgroup details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5562,26 +5228,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDetailsWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroupDetails(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Gets device class subgroup details.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5613,14 +5273,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device class subgroup.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5633,6 +5285,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeviceClassSubgroup(
@@ -5641,20 +5294,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device class subgroup.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -5669,26 +5315,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device class subgroup.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -5709,14 +5349,6 @@ public final class DeviceManagementsImpl {
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5742,6 +5374,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroupUpdateCompliance(
@@ -5750,6 +5383,7 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -5757,14 +5391,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5792,12 +5418,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroupUpdateCompliance(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -5805,14 +5433,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device class subgroup update compliance information such as how many devices are on their latest update, how
      * many need new updates, and how many are in progress on receiving a new update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5845,14 +5465,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5885,6 +5497,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listBestUpdatesForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listBestUpdatesForDeviceClassSubgroup(
@@ -5893,20 +5506,13 @@ public final class DeviceManagementsImpl {
                                 groupId,
                                 deviceClassId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5941,26 +5547,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listBestUpdatesForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listBestUpdatesForDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 groupId,
                 deviceClassId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get the best available update for a device class subgroup and a count of how many devices need this update.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -6005,7 +5605,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -6016,7 +5615,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -6059,6 +5658,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForDeviceClassSubgroup(
@@ -6067,6 +5667,7 @@ public final class DeviceManagementsImpl {
                                         groupId,
                                         deviceClassId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -6088,7 +5689,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -6099,7 +5699,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -6143,12 +5743,14 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupSinglePageAsync(
             String groupId, String deviceClassId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForDeviceClassSubgroup(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         groupId,
                         deviceClassId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -6170,7 +5772,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -6181,7 +5782,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -6242,7 +5843,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -6253,7 +5853,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -6318,7 +5918,6 @@ public final class DeviceManagementsImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Orders the set of deployments returned. You can order by start date.</td></tr>
      * </table>
      *
@@ -6329,7 +5928,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -6377,20 +5976,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6430,6 +6021,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeploymentForDeviceClassSubgroup(
@@ -6439,6 +6031,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6446,20 +6039,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6500,6 +6085,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeploymentForDeviceClassSubgroup(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6507,6 +6093,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -6514,20 +6101,12 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the deployment properties.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6575,14 +6154,6 @@ public final class DeviceManagementsImpl {
     /**
      * Deletes a device class subgroup deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
      * @param deploymentId Deployment identifier.
@@ -6596,6 +6167,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDeviceClassSubgroupDeployment(
@@ -6605,20 +6177,13 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Deletes a device class subgroup deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -6634,6 +6199,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDeviceClassSubgroupDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteDeviceClassSubgroupDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6641,20 +6207,13 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Deletes a device class subgroup deployment.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * @param groupId Group identity.
      * @param deviceClassId Device class identifier.
@@ -6677,20 +6236,12 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6730,6 +6281,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.stopDeployment(
@@ -6739,6 +6291,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6746,20 +6299,12 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6800,6 +6345,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> stopDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.stopDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -6807,6 +6353,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -6814,20 +6361,12 @@ public final class DeviceManagementsImpl {
     /**
      * Stops a deployment.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6873,20 +6412,12 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6926,6 +6457,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.retryDeployment(
@@ -6935,6 +6467,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -6942,20 +6475,12 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -6996,6 +6521,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retryDeploymentWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.retryDeployment(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -7003,6 +6529,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -7010,20 +6537,12 @@ public final class DeviceManagementsImpl {
     /**
      * Retries a deployment with failed devices.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     deploymentId: String
-     *     startDateTime: String
+     *     startDateTime: OffsetDateTime
      *     update: {
      *         updateId: {
      *             provider: String
@@ -7070,14 +6589,6 @@ public final class DeviceManagementsImpl {
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -7098,7 +6609,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     totalDevices: Integer
      *     devicesInProgressCount: Integer
@@ -7122,6 +6633,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDeviceClassSubgroupDeploymentStatus(
@@ -7131,6 +6643,7 @@ public final class DeviceManagementsImpl {
                                 deviceClassId,
                                 deploymentId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -7138,14 +6651,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -7167,7 +6672,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     totalDevices: Integer
      *     devicesInProgressCount: Integer
@@ -7192,6 +6697,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getDeviceClassSubgroupDeploymentStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
@@ -7199,6 +6705,7 @@ public final class DeviceManagementsImpl {
                 deviceClassId,
                 deploymentId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
@@ -7206,14 +6713,6 @@ public final class DeviceManagementsImpl {
     /**
      * Gets the status of a deployment including a breakdown of how many devices in the deployment are in progress,
      * completed, or failed.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -7235,7 +6734,7 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     totalDevices: Integer
      *     devicesInProgressCount: Integer
@@ -7273,7 +6772,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7307,6 +6805,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesForDeviceClassSubgroupDeploymentSinglePageAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDevicesForDeviceClassSubgroupDeployment(
@@ -7316,6 +6815,7 @@ public final class DeviceManagementsImpl {
                                         deviceClassId,
                                         deploymentId,
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -7338,7 +6838,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7373,6 +6872,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesForDeviceClassSubgroupDeploymentSinglePageAsync(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDevicesForDeviceClassSubgroupDeployment(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
@@ -7380,6 +6880,7 @@ public final class DeviceManagementsImpl {
                         deviceClassId,
                         deploymentId,
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -7402,7 +6903,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7458,7 +6958,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7515,7 +7014,6 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of deployment device states returned. You can filter on deviceId and moduleId and/or deviceState.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7556,14 +7054,6 @@ public final class DeviceManagementsImpl {
     /**
      * Retrieve operation status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Header Parameters</strong>
      *
      * <table border="1">
@@ -7591,11 +7081,11 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
+     *     lastActionDateTime: OffsetDateTime
+     *     createdDateTime: OffsetDateTime
      *     etag: String
      * }
      * }</pre>
@@ -7610,6 +7100,7 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
@@ -7617,20 +7108,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Retrieve operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -7659,11 +7143,11 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
+     *     lastActionDateTime: OffsetDateTime
+     *     createdDateTime: OffsetDateTime
      *     etag: String
      * }
      * }</pre>
@@ -7680,25 +7164,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getOperationWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getOperation(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Retrieve operation status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -7727,11 +7205,11 @@ public final class DeviceManagementsImpl {
      *             errorDetail: String
      *             innerError: (recursive schema, see innerError above)
      *         }
-     *         occurredDateTime: String
+     *         occurredDateTime: OffsetDateTime
      *     }
      *     traceId: String
-     *     lastActionDateTime: String
-     *     createdDateTime: String
+     *     lastActionDateTime: OffsetDateTime
+     *     createdDateTime: OffsetDateTime
      *     etag: String
      * }
      * }</pre>
@@ -7758,8 +7236,7 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7783,11 +7260,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -7805,12 +7282,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperations(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -7833,8 +7312,7 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7858,11 +7336,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -7882,10 +7360,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listOperations(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -7908,8 +7388,7 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7933,11 +7412,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -7973,8 +7452,7 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -7998,11 +7476,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -8039,8 +7517,7 @@ public final class DeviceManagementsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
-     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -8064,11 +7541,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -8090,14 +7567,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Start the device diagnostics log collection operation on specified devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -8147,6 +7616,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> collectLogsWithResponseAsync(
             String operationId, BinaryData logCollectionRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.collectLogs(
@@ -8155,20 +7625,13 @@ public final class DeviceManagementsImpl {
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
                                 logCollectionRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Start the device diagnostics log collection operation on specified devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -8219,26 +7682,20 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> collectLogsWithResponseAsync(
             String operationId, BinaryData logCollectionRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.collectLogs(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
                 logCollectionRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Start the device diagnostics log collection operation on specified devices.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -8294,14 +7751,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get the device diagnostics log collection operation.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -8332,6 +7781,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionOperationWithResponseAsync(
             String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLogCollectionOperation(
@@ -8339,20 +7789,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get the device diagnostics log collection operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8385,25 +7828,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionOperationWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLogCollectionOperation(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get the device diagnostics log collection operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8440,14 +7877,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collection operations.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -8481,12 +7910,14 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionOperationsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLogCollectionOperations(
                                         this.client.getEndpoint(),
                                         this.client.getInstanceId(),
                                         this.client.getServiceVersion().getVersion(),
+                                        accept,
                                         requestOptions,
                                         context))
                 .map(
@@ -8502,14 +7933,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Get all device diagnostics log collection operations.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8546,10 +7969,12 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionOperationsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listLogCollectionOperations(
                         this.client.getEndpoint(),
                         this.client.getInstanceId(),
                         this.client.getServiceVersion().getVersion(),
+                        accept,
                         requestOptions,
                         context)
                 .map(
@@ -8565,14 +7990,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Get all device diagnostics log collection operations.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8618,14 +8035,6 @@ public final class DeviceManagementsImpl {
 
     /**
      * Get all device diagnostics log collection operations.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8674,14 +8083,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get all device diagnostics log collection operations.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -8720,14 +8121,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get device diagnostics log collection operation with detailed status.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -8762,6 +8155,7 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionOperationDetailedStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getLogCollectionOperationDetailedStatus(
@@ -8769,20 +8163,13 @@ public final class DeviceManagementsImpl {
                                 this.client.getInstanceId(),
                                 operationId,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get device diagnostics log collection operation with detailed status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8819,25 +8206,19 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLogCollectionOperationDetailedStatusWithResponseAsync(
             String operationId, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getLogCollectionOperationDetailedStatus(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
                 this.client.getServiceVersion().getVersion(),
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get device diagnostics log collection operation with detailed status.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8878,15 +8259,6 @@ public final class DeviceManagementsImpl {
     /**
      * Get list of device health.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -8909,6 +8281,7 @@ public final class DeviceManagementsImpl {
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -8917,28 +8290,22 @@ public final class DeviceManagementsImpl {
      * @return list of device health along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listDeviceHealthWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> listDeviceHealthWithResponseAsync(String filter, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.listDeviceHealth(
                                 this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 this.client.getServiceVersion().getVersion(),
+                                filter,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get list of device health.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -8962,6 +8329,7 @@ public final class DeviceManagementsImpl {
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -8972,26 +8340,20 @@ public final class DeviceManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listDeviceHealthWithResponseAsync(
-            RequestOptions requestOptions, Context context) {
+            String filter, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeviceHealth(
                 this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 this.client.getServiceVersion().getVersion(),
+                filter,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Get list of device health.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>filter</td><td>String</td><td>Yes</td><td>Filter list by specified properties.</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -9015,6 +8377,7 @@ public final class DeviceManagementsImpl {
      * }
      * }</pre>
      *
+     * @param filter Filter list by specified properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -9023,8 +8386,8 @@ public final class DeviceManagementsImpl {
      * @return list of device health along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listDeviceHealthWithResponse(RequestOptions requestOptions) {
-        return listDeviceHealthWithResponseAsync(requestOptions).block();
+    public Response<BinaryData> listDeviceHealthWithResponse(String filter, RequestOptions requestOptions) {
+        return listDeviceHealthWithResponseAsync(filter, requestOptions).block();
     }
 
     /**
@@ -9073,10 +8436,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeviceClassesNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9135,7 +8499,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeviceClassesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDeviceClassesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDeviceClassesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9180,10 +8545,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listInstallableUpdatesForDeviceClassNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9229,8 +8595,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listInstallableUpdatesForDeviceClassNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listInstallableUpdatesForDeviceClassNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9299,9 +8666,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listDevicesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                                service.listDevicesNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9371,7 +8740,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDevicesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDevicesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9419,8 +8789,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.listGroupsNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                        context ->
+                                service.listGroupsNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9469,7 +8842,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listGroupsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listGroupsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listGroupsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9520,10 +8894,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listBestUpdatesForGroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9575,7 +8950,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listBestUpdatesForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listBestUpdatesForGroupNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listBestUpdatesForGroupNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9597,7 +8973,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -9638,10 +9014,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForGroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9663,7 +9040,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -9705,7 +9082,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForGroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listDeploymentsForGroupNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listDeploymentsForGroupNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9727,7 +9105,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -9768,10 +9146,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDeploymentsForDeviceClassSubgroupNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9793,7 +9172,7 @@ public final class DeviceManagementsImpl {
      *     value: [
      *         {
      *             deploymentId: String
-     *             startDateTime: String
+     *             startDateTime: OffsetDateTime
      *             update: {
      *                 updateId: {
      *                     provider: String
@@ -9835,8 +9214,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDeploymentsForDeviceClassSubgroupNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDeploymentsForDeviceClassSubgroupNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9880,10 +9260,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listDevicesForDeviceClassSubgroupDeploymentNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9928,8 +9309,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listDevicesForDeviceClassSubgroupDeploymentNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.listDevicesForDeviceClassSubgroupDeploymentNext(
-                        nextLink, this.client.getEndpoint(), requestOptions, context)
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -9965,11 +9347,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -9989,10 +9371,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listOperationsNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10028,11 +9411,11 @@ public final class DeviceManagementsImpl {
      *                     errorDetail: String
      *                     innerError: (recursive schema, see innerError above)
      *                 }
-     *                 occurredDateTime: String
+     *                 occurredDateTime: OffsetDateTime
      *             }
      *             traceId: String
-     *             lastActionDateTime: String
-     *             createdDateTime: String
+     *             lastActionDateTime: OffsetDateTime
+     *             createdDateTime: OffsetDateTime
      *             etag: String
      *         }
      *     ]
@@ -10053,7 +9436,8 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listOperationsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listOperationsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10103,10 +9487,11 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.listLogCollectionOperationsNext(
-                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -10157,7 +9542,9 @@ public final class DeviceManagementsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLogCollectionOperationsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listLogCollectionOperationsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        final String accept = "application/json";
+        return service.listLogCollectionOperationsNext(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
