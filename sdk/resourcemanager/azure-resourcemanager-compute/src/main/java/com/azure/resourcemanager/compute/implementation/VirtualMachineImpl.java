@@ -2699,15 +2699,35 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl swapOSDisk(String diskId) {
-        if (diskId == null
-            || !isManagedDiskEnabled()
-            || this.innerModel().storageProfile().osDisk().managedDisk() == null) {
+    public VirtualMachineImpl withOSDisk(String diskId) {
+        if (diskId == null) {
             return this;
         }
-        this.storageProfile().osDisk().withName(ResourceUtils.nameFromResourceId(diskId));
+        return withOSDisk(diskId, ResourceUtils.nameFromResourceId(diskId));
+    }
+
+    @Override
+    public VirtualMachineImpl withOSDisk(String diskId, String diskName) {
+        if (!isManagedDiskEnabled() || this.innerModel().storageProfile().osDisk().managedDisk() == null) {
+            return this;
+        }
+        OSDisk osDisk = new OSDisk()
+            .withName(diskName)
+            // CreateOption is marked "required" in swagger, but in actual update, it's not.
+            // This is a workaround for bypassing this swagger bug.
+            .withCreateOption(this.innerModel().storageProfile().osDisk().createOption());
+        osDisk.withManagedDisk(new ManagedDiskParameters().withId(diskId));
+        this.storageProfile().withOsDisk(osDisk);
         this.storageProfile().osDisk().managedDisk().withId(diskId);
         return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withOSDisk(Disk disk) {
+        if (disk == null) {
+            return this;
+        }
+        return withOSDisk(disk.id(), disk.name());
     }
 
     /** Class to manage Data disk collection. */

@@ -2371,7 +2371,7 @@ public interface VirtualMachine
         }
 
         /** The stage of the VM update allowing to swap os disk. */
-        interface SwapOSDisk {
+        interface WithOSDisk {
             /**
              * Swaps the OS disk of the virtual machine for the specified managed disk.
              * <p>Note:</p>
@@ -2384,7 +2384,36 @@ public interface VirtualMachine
              * @param diskId id of the managed disk to swap OS disk for
              * @return the next stage of the update
              */
-            Update swapOSDisk(String diskId);
+            Update withOSDisk(String diskId);
+
+            /**
+             * Swaps the OS disk of the virtual machine for the specified managed disk.
+             * <p>Note:</p>
+             * <p>- Both the original OS disk and the disk to swap for have to be managed disks.</p>
+             * <p>- You cannot switch the OS Type of the VM
+             *      (i.e. Swap an OS Disk with Linux for an OS Disk with Windows).</p>
+             * <p>- Make sure that the VM size and storage type are compatible with the disk you want to attach.
+             *      For example, if the disk you want to use is in Premium Storage, then the VM needs to be capable of
+             *      Premium Storage (like a DS-series size).</p>
+             * @param diskId id of the managed disk to swap OS disk for
+             * @param diskName name for the new OS disk
+             * @return the next stage of the update
+             */
+            Update withOSDisk(String diskId, String diskName);
+
+            /**
+             * Swaps the OS disk of the virtual machine for the specified managed disk.
+             * <p>Note:</p>
+             * <p>- Both the original OS disk and the disk to swap for have to be managed disks.</p>
+             * <p>- You cannot switch the OS Type of the VM
+             *      (i.e. Swap an OS Disk with Linux for an OS Disk with Windows).</p>
+             * <p>- Make sure that the VM size and storage type are compatible with the disk you want to attach.
+             *      For example, if the disk you want to use is in Premium Storage, then the VM needs to be capable of
+             *      Premium Storage (like a DS-series size).</p>
+             * @param disk the managed disk to swap OS disk for
+             * @return the next stage of the update
+             */
+            Update withOSDisk(Disk disk);
         }
     }
 
@@ -2403,7 +2432,7 @@ public interface VirtualMachine
             UpdateStages.WithUserAssignedManagedServiceIdentity,
             UpdateStages.WithLicenseType,
             UpdateStages.WithAdditionalCapacities,
-            UpdateStages.SwapOSDisk {
+            UpdateStages.WithOSDisk {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

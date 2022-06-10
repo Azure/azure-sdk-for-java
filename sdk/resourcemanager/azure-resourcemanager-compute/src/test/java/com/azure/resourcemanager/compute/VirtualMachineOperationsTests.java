@@ -1477,6 +1477,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withNewDataDisk(10, 1, CachingTypes.READ_WRITE)
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .withExistingStorageAccount(storageAccount)
             .create();
         Disk vm1OSDisk = this.computeManager.disks().getById(vm1.osDiskId());
@@ -1543,12 +1544,22 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // swap vm1's os disk(encrypted with pmk) with vm2's os disk(encrypted with cmk)
         vm1.deallocate();
         vm1.update()
-            .swapOSDisk(vm2OSDiskId)
+            .withOSDisk(vm2OSDiskId)
             .apply();
         vm1.start();
         vm1.refresh();
         Assertions.assertEquals(vm1.osDiskId(), vm2OSDiskId);
         Assertions.assertTrue(des.id().equalsIgnoreCase(vm1.storageProfile().osDisk().managedDisk().diskEncryptionSet().id()));
+
+        // swap back vm1's os disk(encrypted with pmk)
+        vm1.deallocate();
+        vm1.update()
+            .withOSDisk(vm1OSDisk)
+            .apply();
+        vm1.start();
+        vm1.refresh();
+        Assertions.assertEquals(vm1.osDiskId(), vm1OSDisk.id());
+        Assertions.assertNull(vm1.storageProfile().osDisk().managedDisk().diskEncryptionSet());
     }
 
 
