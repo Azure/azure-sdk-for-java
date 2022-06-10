@@ -76,7 +76,7 @@ parameters:
   type: boolean
   default: true
 - name: release_azurecosmosencryption
-  displayName: azure-cosmos-encryption'
+  displayName: 'azure-cosmos-encryption'
   type: boolean
   default: true
 - name: release_azurecosmosspark31
