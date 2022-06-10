@@ -24,5 +24,40 @@ environment settings:
 
 ## Creating Client
 
-You need to use AzureDeviceUpdateClientBuilder to create a proper valid AzureDeviceUpdateClient. This main client will
-let you access the other clients - Updates and Management. 
+You need to use `DeviceUpdateClientBuilder`, resp. `DeviceManagementClientBuilder`, to create a valid instance of 
+`DeviceUpdateClient`, resp. `DeviceManagementClient`. There are also async clients available - 
+`DeviceUpdateAsyncClient`, resp. `DeviceManagementAsyncClient`.
+
+Create new instance of `DeviceUpdateAsyncClient`:
+```java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.instantiate
+DeviceUpdateAsyncClient client = new DeviceUpdateClientBuilder()
+    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
+    .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildAsyncClient();
+```
+
+To create new instance of `DeviceManagementAsyncClient` use the following code:
+```java com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
+DeviceManagementAsyncClient client = new DeviceManagementClientBuilder()
+    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
+    .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildAsyncClient();
+```
+
+## List device updates
+
+In the sample `ListUpdatesSample`, it uses `DeviceUpdateAsyncClient` to call `listVersions` method.
+It returns a `PagedFlux`, you can call `response.toStream().count()` to get the device count.
+
+## Get device update
+
+In the sample `GetUpdateSample`, it uses `DeviceUpdateAsyncClient` to call `getUpdateWithResponse` method.
+
+## Get Device
+
+In the sample `GetDeviceSample`, it uses `DeviceManagementAsyncClient` to call `getDeviceWithResponse`. 
+
