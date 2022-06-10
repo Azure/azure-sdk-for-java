@@ -4,17 +4,13 @@
 
 package com.azure.resourcemanager.delegatednetwork.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** Represents an instance of a resource. */
-@Immutable
+@Fluent
 public class DelegatedSubnetResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnetResource.class);
-
     /** {@inheritDoc} */
     @Override
     public DelegatedSubnetResource withLocation(String location) {

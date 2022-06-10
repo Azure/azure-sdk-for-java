@@ -33,7 +33,11 @@ public final class ControllerState extends ExpandableStringEnum<ControllerState>
         return fromString(name, ControllerState.class);
     }
 
-    /** @return known ControllerState values. */
+    /**
+     * Gets known ControllerState values.
+     *
+     * @return known ControllerState values.
+     */
     public static Collection<ControllerState> values() {
         return values(ControllerState.class);
     }

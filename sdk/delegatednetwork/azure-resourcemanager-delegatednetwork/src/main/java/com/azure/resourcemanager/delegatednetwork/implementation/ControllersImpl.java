@@ -12,10 +12,9 @@ import com.azure.resourcemanager.delegatednetwork.fluent.ControllersClient;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
 import com.azure.resourcemanager.delegatednetwork.models.Controllers;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedController;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ControllersImpl implements Controllers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ControllersImpl.class);
 
     private final ControllersClient innerClient;
 
@@ -63,7 +62,7 @@ public final class ControllersImpl implements Controllers {
     public DelegatedController getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -71,7 +70,7 @@ public final class ControllersImpl implements Controllers {
         }
         String resourceName = Utils.getValueFromIdByName(id, "controller");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'controller'.", id)));
@@ -82,7 +81,7 @@ public final class ControllersImpl implements Controllers {
     public Response<DelegatedController> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,7 +89,7 @@ public final class ControllersImpl implements Controllers {
         }
         String resourceName = Utils.getValueFromIdByName(id, "controller");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'controller'.", id)));
@@ -101,7 +100,7 @@ public final class ControllersImpl implements Controllers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class ControllersImpl implements Controllers {
         }
         String resourceName = Utils.getValueFromIdByName(id, "controller");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'controller'.", id)));
@@ -120,7 +119,7 @@ public final class ControllersImpl implements Controllers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class ControllersImpl implements Controllers {
         }
         String resourceName = Utils.getValueFromIdByName(id, "controller");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'controller'.", id)));

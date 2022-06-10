@@ -24,7 +24,11 @@ public final class OrchestratorKind extends ExpandableStringEnum<OrchestratorKin
         return fromString(name, OrchestratorKind.class);
     }
 
-    /** @return known OrchestratorKind values. */
+    /**
+     * Gets known OrchestratorKind values.
+     *
+     * @return known OrchestratorKind values.
+     */
     public static Collection<OrchestratorKind> values() {
         return values(OrchestratorKind.class);
     }

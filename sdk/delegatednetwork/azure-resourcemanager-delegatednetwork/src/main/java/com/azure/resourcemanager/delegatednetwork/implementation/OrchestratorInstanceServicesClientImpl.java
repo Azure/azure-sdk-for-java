@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.delegatednetwork.fluent.OrchestratorInstanceServicesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OrchestratorInstanceServicesClient. */
 public final class OrchestratorInstanceServicesClientImpl implements OrchestratorInstanceServicesClient {
-    private final ClientLogger logger = new ClientLogger(OrchestratorInstanceServicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OrchestratorInstanceServicesService service;
 
@@ -114,6 +111,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("forceDelete") Boolean forceDelete,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -187,7 +185,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrchestratorInner>> getByResourceGroupWithResponseAsync(
@@ -236,7 +235,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrchestratorInner>> getByResourceGroupWithResponseAsync(
@@ -281,19 +281,12 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrchestratorInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<OrchestratorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -320,7 +313,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrchestratorInner> getByResourceGroupWithResponse(
@@ -337,7 +330,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -393,7 +387,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -445,16 +440,20 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link PollerFlux} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrchestratorInner>, OrchestratorInner> beginCreateAsync(
         String resourceGroupName, String resourceName, OrchestratorInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
             .<OrchestratorInner, OrchestratorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), OrchestratorInner.class, OrchestratorInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                OrchestratorInner.class,
+                OrchestratorInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -467,9 +466,9 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link PollerFlux} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OrchestratorInner>, OrchestratorInner> beginCreateAsync(
         String resourceGroupName, String resourceName, OrchestratorInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -490,9 +489,9 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(
         String resourceGroupName, String resourceName, OrchestratorInner parameters) {
         return beginCreateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -508,9 +507,9 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(
         String resourceGroupName, String resourceName, OrchestratorInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -525,7 +524,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrchestratorInner> createAsync(
@@ -545,7 +544,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrchestratorInner> createAsync(
@@ -594,13 +593,15 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -631,6 +632,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
                             resourceName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            forceDelete,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -641,15 +643,16 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -678,6 +681,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
                 resourceName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                forceDelete,
                 accept,
                 context);
     }
@@ -687,17 +691,20 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -705,17 +712,19 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -726,14 +735,16 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete).getSyncPoller();
     }
 
     /**
@@ -741,16 +752,35 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -761,11 +791,14 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
+        final Boolean forceDelete = null;
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -773,17 +806,34 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        deleteAsync(resourceGroupName, resourceName, forceDelete).block();
     }
 
     /**
@@ -797,7 +847,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        deleteAsync(resourceGroupName, resourceName).block();
+        final Boolean forceDelete = null;
+        deleteAsync(resourceGroupName, resourceName, forceDelete).block();
     }
 
     /**
@@ -805,14 +856,15 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, Context context) {
-        deleteAsync(resourceGroupName, resourceName, context).block();
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        deleteAsync(resourceGroupName, resourceName, forceDelete, context).block();
     }
 
     /**
@@ -824,7 +876,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrchestratorInner>> patchWithResponseAsync(
@@ -880,7 +933,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrchestratorInner>> patchWithResponseAsync(
@@ -935,20 +989,13 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OrchestratorInner> patchAsync(
         String resourceGroupName, String resourceName, OrchestratorResourceUpdateParameters parameters) {
         return patchWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap(
-                (Response<OrchestratorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -978,7 +1025,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return represents an instance of a orchestrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrchestratorInner> patchWithResponse(
@@ -994,7 +1041,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listSinglePageAsync() {
@@ -1040,7 +1088,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listSinglePageAsync(Context context) {
@@ -1081,7 +1130,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrchestratorInner> listAsync() {
@@ -1096,7 +1145,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrchestratorInner> listAsync(Context context) {
@@ -1109,7 +1158,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrchestratorInner> list() {
@@ -1123,7 +1173,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrchestratorInner> list(Context context) {
@@ -1137,7 +1188,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1189,7 +1241,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listByResourceGroupSinglePageAsync(
@@ -1238,7 +1291,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrchestratorInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1255,7 +1308,7 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OrchestratorInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1271,7 +1324,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrchestratorInner> listByResourceGroup(String resourceGroupName) {
@@ -1286,7 +1340,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OrchestratorInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1300,7 +1355,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of OrchestratorInstance resources.
+     * @return an array of OrchestratorInstance resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1337,7 +1393,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of OrchestratorInstance resources.
+     * @return an array of OrchestratorInstance resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listBySubscriptionNextSinglePageAsync(
@@ -1373,7 +1430,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of OrchestratorInstance resources.
+     * @return an array of OrchestratorInstance resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1410,7 +1468,8 @@ public final class OrchestratorInstanceServicesClientImpl implements Orchestrato
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of OrchestratorInstance resources.
+     * @return an array of OrchestratorInstance resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OrchestratorInner>> listByResourceGroupNextSinglePageAsync(

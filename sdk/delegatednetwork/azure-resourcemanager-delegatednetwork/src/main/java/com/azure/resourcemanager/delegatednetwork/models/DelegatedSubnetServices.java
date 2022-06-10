@@ -31,7 +31,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc DelegatedSubnet Link.
+     * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     Response<DelegatedSubnet> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -77,7 +77,7 @@ public interface DelegatedSubnetServices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a subscription.
+     * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DelegatedSubnet> list();
 
@@ -88,7 +88,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a subscription.
+     * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DelegatedSubnet> list(Context context);
 
@@ -99,7 +99,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a resource group.
+     * @return all the DelegatedSubnets resources in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DelegatedSubnet> listByResourceGroup(String resourceGroupName);
 
@@ -111,7 +111,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a resource group.
+     * @return all the DelegatedSubnets resources in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DelegatedSubnet> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -122,7 +122,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc DelegatedSubnet Link.
+     * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     DelegatedSubnet getById(String id);
 
@@ -134,7 +134,7 @@ public interface DelegatedSubnetServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc DelegatedSubnet Link.
+     * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     Response<DelegatedSubnet> getByIdWithResponse(String id, Context context);
 

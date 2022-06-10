@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.models.ActionType;
 import com.azure.resourcemanager.delegatednetwork.models.OperationDisplay;
 import com.azure.resourcemanager.delegatednetwork.models.Origin;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of a REST API operation, returned from the Resource Provider Operations API. */
+/** REST API Operation Details of a REST API operation, returned from the Resource Provider Operations API. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The name of the operation, as per Resource-Based Access Control (RBAC).
      * Examples: "Microsoft.Compute/virtualMachines/write",

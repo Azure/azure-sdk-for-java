@@ -69,6 +69,10 @@ public final class DelegatedSubnetImpl implements DelegatedSubnet, DelegatedSubn
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DelegatedSubnetInner innerModel() {
         return this.innerObject;
     }

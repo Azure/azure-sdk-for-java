@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OrchestratorIdentity model. */
 @Fluent
 public class OrchestratorIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorIdentity.class);
-
     /*
      * The principal id of the system assigned identity which is used by
      * orchestrator.

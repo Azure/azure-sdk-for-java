@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.fluent.DelegatedNetworksClient;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedControllerInner;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedControllers;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DelegatedNetworksClient. */
 public final class DelegatedNetworksClientImpl implements DelegatedNetworksClient {
-    private final ClientLogger logger = new ClientLogger(DelegatedNetworksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DelegatedNetworksService service;
 
@@ -110,7 +107,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listSinglePageAsync() {
@@ -156,7 +154,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listSinglePageAsync(Context context) {
@@ -197,7 +196,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedControllerInner> listAsync() {
@@ -212,7 +211,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedControllerInner> listAsync(Context context) {
@@ -225,7 +224,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DelegatedControllerInner> list() {
@@ -239,7 +238,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a subscription.
+     * @return all the delegatedController resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DelegatedControllerInner> list(Context context) {
@@ -253,7 +252,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -305,7 +305,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listByResourceGroupSinglePageAsync(
@@ -354,7 +355,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedControllerInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -371,7 +372,7 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedControllerInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -387,7 +388,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DelegatedControllerInner> listByResourceGroup(String resourceGroupName) {
@@ -402,7 +404,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group.
+     * @return all the delegatedController resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DelegatedControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -416,7 +419,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Delegated controller resources.
+     * @return an array of Delegated controller resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -453,7 +457,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Delegated controller resources.
+     * @return an array of Delegated controller resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listBySubscriptionNextSinglePageAsync(
@@ -489,7 +494,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Delegated controller resources.
+     * @return an array of Delegated controller resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -526,7 +532,8 @@ public final class DelegatedNetworksClientImpl implements DelegatedNetworksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Delegated controller resources.
+     * @return an array of Delegated controller resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedControllerInner>> listByResourceGroupNextSinglePageAsync(

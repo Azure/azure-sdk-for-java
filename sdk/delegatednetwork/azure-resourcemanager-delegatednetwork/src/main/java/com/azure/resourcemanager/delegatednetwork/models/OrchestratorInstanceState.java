@@ -33,7 +33,11 @@ public final class OrchestratorInstanceState extends ExpandableStringEnum<Orches
         return fromString(name, OrchestratorInstanceState.class);
     }
 
-    /** @return known OrchestratorInstanceState values. */
+    /**
+     * Gets known OrchestratorInstanceState values.
+     *
+     * @return known OrchestratorInstanceState values.
+     */
     public static Collection<OrchestratorInstanceState> values() {
         return values(OrchestratorInstanceState.class);
     }

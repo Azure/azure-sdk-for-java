@@ -33,7 +33,11 @@ public final class DelegatedSubnetState extends ExpandableStringEnum<DelegatedSu
         return fromString(name, DelegatedSubnetState.class);
     }
 
-    /** @return known DelegatedSubnetState values. */
+    /**
+     * Gets known DelegatedSubnetState values.
+     *
+     * @return known DelegatedSubnetState values.
+     */
     public static Collection<DelegatedSubnetState> values() {
         return values(DelegatedSubnetState.class);
     }

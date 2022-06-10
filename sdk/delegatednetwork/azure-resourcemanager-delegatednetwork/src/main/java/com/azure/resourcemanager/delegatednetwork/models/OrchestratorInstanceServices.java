@@ -31,7 +31,7 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response}.
      */
     Response<Orchestrator> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -41,30 +41,44 @@ public interface OrchestratorInstanceServices {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String resourceName);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete);
 
     /**
      * Deletes the Orchestrator Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String resourceName);
+
+    /**
+     * Deletes the Orchestrator Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
 
     /**
      * Get all the orchestratorInstance resources in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Orchestrator> list();
 
@@ -75,7 +89,8 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Orchestrator> list(Context context);
 
@@ -86,7 +101,8 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Orchestrator> listByResourceGroup(String resourceGroupName);
 
@@ -98,7 +114,8 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Orchestrator> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -109,7 +126,7 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response}.
      */
     Orchestrator getById(String id);
 
@@ -121,7 +138,7 @@ public interface OrchestratorInstanceServices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
+     * @return details about the orchestrator instance along with {@link Response}.
      */
     Response<Orchestrator> getByIdWithResponse(String id, Context context);
 
@@ -139,12 +156,13 @@ public interface OrchestratorInstanceServices {
      * Deletes the Orchestrator Instance.
      *
      * @param id the resource ID.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean forceDelete, Context context);
 
     /**
      * Begins definition for a new Orchestrator resource.

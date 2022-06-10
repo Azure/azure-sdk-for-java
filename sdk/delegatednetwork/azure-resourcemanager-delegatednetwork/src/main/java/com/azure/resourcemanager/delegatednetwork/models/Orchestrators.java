@@ -7,15 +7,12 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of OrchestratorInstance resources. */
 @Fluent
 public final class Orchestrators {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Orchestrators.class);
-
     /*
      * An array of OrchestratorInstance resources.
      */
@@ -64,11 +61,13 @@ public final class Orchestrators {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model Orchestrators"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Orchestrators.class);
 }

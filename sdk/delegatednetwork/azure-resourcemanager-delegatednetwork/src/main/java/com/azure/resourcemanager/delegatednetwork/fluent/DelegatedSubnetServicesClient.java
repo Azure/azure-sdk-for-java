@@ -38,7 +38,7 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dnc DelegatedSubnet Link.
+     * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DelegatedSubnetInner> getByResourceGroupWithResponse(
@@ -53,9 +53,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
         String resourceGroupName, String resourceName, DelegatedSubnetInner parameters);
 
@@ -69,9 +69,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
         String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context);
 
@@ -114,9 +114,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(
         String resourceGroupName, String resourceName, ResourceUpdateParameters parameters);
 
@@ -130,9 +130,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(
         String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context);
 
@@ -176,9 +176,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Boolean forceDelete);
 
     /**
@@ -191,9 +191,9 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
 
@@ -241,7 +241,7 @@ public interface DelegatedSubnetServicesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a subscription.
+     * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedSubnetInner> list();
@@ -253,7 +253,7 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a subscription.
+     * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedSubnetInner> list(Context context);
@@ -265,7 +265,7 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a resource group.
+     * @return all the DelegatedSubnets resources in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedSubnetInner> listByResourceGroup(String resourceGroupName);
@@ -278,7 +278,7 @@ public interface DelegatedSubnetServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the DelegatedSubnets resources in a resource group.
+     * @return all the DelegatedSubnets resources in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DelegatedSubnetInner> listByResourceGroup(String resourceGroupName, Context context);

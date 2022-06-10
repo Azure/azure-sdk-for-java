@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** controller details. */
 @Fluent
 public final class ControllerDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerDetails.class);
-
     /*
      * controller arm resource id
      */

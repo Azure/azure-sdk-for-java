@@ -13,10 +13,9 @@ import com.azure.resourcemanager.delegatednetwork.fluent.DelegatedSubnetServices
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnet;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DelegatedSubnetServicesImpl implements DelegatedSubnetServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnetServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DelegatedSubnetServicesImpl.class);
 
     private final DelegatedSubnetServicesClient innerClient;
 
@@ -89,7 +88,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public DelegatedSubnet getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -97,7 +96,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +109,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public Response<DelegatedSubnet> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +130,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +138,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,7 +152,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,7 +160,7 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
         }
         String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

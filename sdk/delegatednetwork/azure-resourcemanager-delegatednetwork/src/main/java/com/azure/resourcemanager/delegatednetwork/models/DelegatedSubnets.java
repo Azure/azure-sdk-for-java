@@ -7,15 +7,12 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.DelegatedSubnetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of DelegatedSubnet resources. */
 @Fluent
 public final class DelegatedSubnets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnets.class);
-
     /*
      * An array of DelegatedSubnet resources.
      */
@@ -64,11 +61,13 @@ public final class DelegatedSubnets {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model DelegatedSubnets"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DelegatedSubnets.class);
 }

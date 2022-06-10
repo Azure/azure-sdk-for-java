@@ -5,102 +5,29 @@
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetResource;
 import com.azure.resourcemanager.delegatednetwork.models.DelegatedSubnetState;
 import com.azure.resourcemanager.delegatednetwork.models.SubnetDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents an instance of a orchestrator. */
-@JsonFlatten
 @Fluent
-public class DelegatedSubnetInner extends DelegatedSubnetResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelegatedSubnetInner.class);
-
+public final class DelegatedSubnetInner extends DelegatedSubnetResource {
     /*
-     * Resource guid.
+     * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
-
-    /*
-     * The current state of dnc delegated subnet resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DelegatedSubnetState provisioningState;
-
-    /*
-     * subnet details
-     */
-    @JsonProperty(value = "properties.subnetDetails")
-    private SubnetDetails subnetDetails;
-
-    /*
-     * Properties of the controller.
-     */
-    @JsonProperty(value = "properties.controllerDetails")
-    private ControllerDetails controllerDetails;
+    @JsonProperty(value = "properties")
+    private DelegatedSubnetProperties innerProperties;
 
     /**
-     * Get the resourceGuid property: Resource guid.
+     * Get the innerProperties property: Properties of the provision operation request.
      *
-     * @return the resourceGuid value.
+     * @return the innerProperties value.
      */
-    public String resourceGuid() {
-        return this.resourceGuid;
-    }
-
-    /**
-     * Get the provisioningState property: The current state of dnc delegated subnet resource.
-     *
-     * @return the provisioningState value.
-     */
-    public DelegatedSubnetState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the subnetDetails property: subnet details.
-     *
-     * @return the subnetDetails value.
-     */
-    public SubnetDetails subnetDetails() {
-        return this.subnetDetails;
-    }
-
-    /**
-     * Set the subnetDetails property: subnet details.
-     *
-     * @param subnetDetails the subnetDetails value to set.
-     * @return the DelegatedSubnetInner object itself.
-     */
-    public DelegatedSubnetInner withSubnetDetails(SubnetDetails subnetDetails) {
-        this.subnetDetails = subnetDetails;
-        return this;
-    }
-
-    /**
-     * Get the controllerDetails property: Properties of the controller.
-     *
-     * @return the controllerDetails value.
-     */
-    public ControllerDetails controllerDetails() {
-        return this.controllerDetails;
-    }
-
-    /**
-     * Set the controllerDetails property: Properties of the controller.
-     *
-     * @param controllerDetails the controllerDetails value to set.
-     * @return the DelegatedSubnetInner object itself.
-     */
-    public DelegatedSubnetInner withControllerDetails(ControllerDetails controllerDetails) {
-        this.controllerDetails = controllerDetails;
-        return this;
+    private DelegatedSubnetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -118,6 +45,70 @@ public class DelegatedSubnetInner extends DelegatedSubnetResource {
     }
 
     /**
+     * Get the resourceGuid property: Resource guid.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the provisioningState property: The current state of dnc delegated subnet resource.
+     *
+     * @return the provisioningState value.
+     */
+    public DelegatedSubnetState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the subnetDetails property: subnet details.
+     *
+     * @return the subnetDetails value.
+     */
+    public SubnetDetails subnetDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnetDetails();
+    }
+
+    /**
+     * Set the subnetDetails property: subnet details.
+     *
+     * @param subnetDetails the subnetDetails value to set.
+     * @return the DelegatedSubnetInner object itself.
+     */
+    public DelegatedSubnetInner withSubnetDetails(SubnetDetails subnetDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DelegatedSubnetProperties();
+        }
+        this.innerProperties().withSubnetDetails(subnetDetails);
+        return this;
+    }
+
+    /**
+     * Get the controllerDetails property: Properties of the controller.
+     *
+     * @return the controllerDetails value.
+     */
+    public ControllerDetails controllerDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().controllerDetails();
+    }
+
+    /**
+     * Set the controllerDetails property: Properties of the controller.
+     *
+     * @param controllerDetails the controllerDetails value to set.
+     * @return the DelegatedSubnetInner object itself.
+     */
+    public DelegatedSubnetInner withControllerDetails(ControllerDetails controllerDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DelegatedSubnetProperties();
+        }
+        this.innerProperties().withControllerDetails(controllerDetails);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -125,11 +116,8 @@ public class DelegatedSubnetInner extends DelegatedSubnetResource {
     @Override
     public void validate() {
         super.validate();
-        if (subnetDetails() != null) {
-            subnetDetails().validate();
-        }
-        if (controllerDetails() != null) {
-            controllerDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents an instance of a resource. */
 @Fluent
 public class OrchestratorResource extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorResource.class);
-
     /*
      * The kind of workbook. Choices are user and shared.
      */
@@ -89,7 +86,7 @@ public class OrchestratorResource extends Resource {
      */
     public void validate() {
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model OrchestratorResource"));
         }
@@ -97,4 +94,6 @@ public class OrchestratorResource extends Resource {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorResource.class);
 }

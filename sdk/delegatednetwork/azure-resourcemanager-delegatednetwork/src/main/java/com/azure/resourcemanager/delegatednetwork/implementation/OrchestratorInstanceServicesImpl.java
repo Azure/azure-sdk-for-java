@@ -13,10 +13,9 @@ import com.azure.resourcemanager.delegatednetwork.fluent.OrchestratorInstanceSer
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
 import com.azure.resourcemanager.delegatednetwork.models.Orchestrator;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorInstanceServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrchestratorInstanceServicesImpl implements OrchestratorInstanceServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorInstanceServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorInstanceServicesImpl.class);
 
     private final OrchestratorInstanceServicesClient innerClient;
 
@@ -53,12 +52,16 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete) {
+        this.serviceClient().delete(resourceGroupName, resourceName, forceDelete);
+    }
+
+    public void delete(String resourceGroupName, String resourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
-    public void delete(String resourceGroupName, String resourceName, Context context) {
-        this.serviceClient().delete(resourceGroupName, resourceName, context);
+    public void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+        this.serviceClient().delete(resourceGroupName, resourceName, forceDelete, context);
     }
 
     public PagedIterable<Orchestrator> list() {
@@ -84,7 +87,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
     public Orchestrator getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +95,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
         String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
@@ -103,7 +106,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
     public Response<Orchestrator> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +114,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
         String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
@@ -122,7 +125,7 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,18 +133,19 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
         String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
-        this.delete(resourceGroupName, resourceName, Context.NONE);
+        Boolean localForceDelete = null;
+        this.delete(resourceGroupName, resourceName, localForceDelete, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,12 +153,12 @@ public final class OrchestratorInstanceServicesImpl implements OrchestratorInsta
         }
         String resourceName = Utils.getValueFromIdByName(id, "orchestrators");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'orchestrators'.", id)));
         }
-        this.delete(resourceGroupName, resourceName, context);
+        this.delete(resourceGroupName, resourceName, forceDelete, context);
     }
 
     private OrchestratorInstanceServicesClient serviceClient() {
