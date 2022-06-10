@@ -18,10 +18,6 @@
     <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-
-  <properties>
-    <checkstyle.skip>true</checkstyle.skip>
-  </properties>
   
   <developers>
     <developer>

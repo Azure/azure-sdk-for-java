@@ -157,6 +157,7 @@ public class TargetingFilter implements IFeatureFilter {
      * Computes the percentage that the contextId falls into.
      * @param contextId Id of the context being targeted
      * @return the bucket value of the context id
+     * @throws TargetingException Unable to create hash of target context
      */
     protected double isTargetedPercentage(String contextId) {
         byte[] hash = null;
@@ -185,8 +186,9 @@ public class TargetingFilter implements IFeatureFilter {
     /**
      * Validates the settings of a targeting filter.
      * @param settings targeting filter settings
+     * @throws TargetingException when a required parameter is missing or percentage value is greater than 100.
      */
-    protected void validateSettings(TargetingFilterSettings settings) {
+    void validateSettings(TargetingFilterSettings settings) {
         String paramName = "";
         String reason = "";
 

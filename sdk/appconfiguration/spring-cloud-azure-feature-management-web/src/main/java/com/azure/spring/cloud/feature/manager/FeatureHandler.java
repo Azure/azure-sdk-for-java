@@ -26,11 +26,11 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureHandler.class);
 
-    private FeatureManager featureManager;
+    private final FeatureManager featureManager;
 
-    private FeatureManagerSnapshot featureManagerSnapshot;
+    private final FeatureManagerSnapshot featureManagerSnapshot;
 
-    private IDisabledFeaturesHandler disabledFeaturesHandler;
+    private final IDisabledFeaturesHandler disabledFeaturesHandler;
 
     /**
      * Interceptor for Requests to check if they should be run.

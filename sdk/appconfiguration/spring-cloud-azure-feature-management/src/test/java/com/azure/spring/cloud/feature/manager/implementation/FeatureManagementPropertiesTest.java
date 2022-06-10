@@ -71,7 +71,7 @@ public class FeatureManagementPropertiesTest {
 
         featuresOn.put("A", true);
         features.put("Beta", featuresOn);
-        
+
         FeatureManagementProperties properties = new FeatureManagementProperties();
         properties.putAll(features);
 
@@ -89,7 +89,7 @@ public class FeatureManagementPropertiesTest {
         FeatureManagementProperties properties = new FeatureManagementProperties();
         properties.putAll(features);
 
-        assertNull(properties.getOnOff().getOrDefault("Beta.A",null));
+        assertNull(properties.getOnOff().getOrDefault("Beta.A", null));
         assertEquals(0, properties.size());
     }
 
@@ -110,7 +110,7 @@ public class FeatureManagementPropertiesTest {
         filterMapper.put(0, enabledFor);
         featureV.setEnabledFor(filterMapper);
         features.put("FeatureV", featureV);
-        
+
         FeatureManagementProperties properties = new FeatureManagementProperties();
         properties.putAll(features);
 
@@ -125,37 +125,36 @@ public class FeatureManagementPropertiesTest {
         assertEquals(ffec.getParameters().size(), 1);
         assertEquals(ffec.getParameters().get("chance"), "50");
     }
-    
+
     @Test
     public void featureVariantLoadTest() {
-    	HashMap<String, Object> features = new HashMap<String, Object>();
-    	
-    	DynamicFeature df = new DynamicFeature();
-    	df.setAssigner("Microsoft.Targeting");
-    	
-    	FeatureVariant fv = new FeatureVariant();
-    	fv.setName("TestVariant");
-    	fv.setDefault(true);
-    	fv.setConfigurationReference("config.reference");
-    	
-    	LinkedHashMap<String, Object> assignmentParameters = new LinkedHashMap<>();
-    	
-    	assignmentParameters.put("User", "Doe");
-    	
-    	fv.setAssignmentParameters(assignmentParameters);
-    	
-    	Map<String, FeatureVariant> variants = new HashMap<>();
-    	
-    	variants.put("TestVariant", fv);
-    	
-    	df.setVariants(variants);
-    	
-    	features.put("TestDynamicFeature", df);
-    	
-    	
-    	FeatureManagementProperties properties = new FeatureManagementProperties();
+        HashMap<String, Object> features = new HashMap<String, Object>();
+
+        DynamicFeature df = new DynamicFeature();
+        df.setAssigner("Microsoft.Targeting");
+
+        FeatureVariant fv = new FeatureVariant();
+        fv.setName("TestVariant");
+        fv.setDefault(true);
+        fv.setConfigurationReference("config.reference");
+
+        LinkedHashMap<String, Object> assignmentParameters = new LinkedHashMap<>();
+
+        assignmentParameters.put("User", "Doe");
+
+        fv.setAssignmentParameters(assignmentParameters);
+
+        Map<String, FeatureVariant> variants = new HashMap<>();
+
+        variants.put("TestVariant", fv);
+
+        df.setVariants(variants);
+
+        features.put("TestDynamicFeature", df);
+
+        FeatureManagementProperties properties = new FeatureManagementProperties();
         properties.putAll(features);
-        
+
         assertNotNull(properties.getDynamicFeatures().get("TestDynamicFeature"));
     }
 }

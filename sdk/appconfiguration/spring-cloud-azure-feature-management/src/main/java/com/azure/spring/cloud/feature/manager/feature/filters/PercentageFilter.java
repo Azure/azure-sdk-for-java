@@ -32,7 +32,7 @@ public final class PercentageFilter implements IFeatureFilter {
 
         boolean result = true;
 
-        if (value.equals("null") || Double.parseDouble(value) < 0) {
+        if ("null".equals(value) || Double.parseDouble(value) < 0) {
             LOGGER.warn("The {} feature filter does not have a valid {} value for feature {}.",
                 this.getClass().getSimpleName(), PERCENTAGE_FILTER_SETTING, context.getName());
             result = false;

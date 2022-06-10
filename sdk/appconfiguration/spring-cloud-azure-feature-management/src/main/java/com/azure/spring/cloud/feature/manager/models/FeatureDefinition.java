@@ -15,11 +15,11 @@ import com.azure.spring.cloud.feature.manager.implementation.models.DynamicFeatu
 @Validated
 public class FeatureDefinition {
 
-    private String name;
+    private final String name;
 
-    private String assigner;
+    private final String assigner;
 
-    private List<FeatureVariant> variants;
+    private final List<FeatureVariant> variants;
 
     /**
      * Definition of a Dynamic Feature.

@@ -22,7 +22,7 @@ public final class TargetingException extends RuntimeException {
      * Creates a new instance of the FilterNotFoundException
      *
      * @param message the error message.
-     * @param cause   the original error thrown, typically of NoSuchBeanDefinitionException type.
+     * @param cause the original error thrown, typically of NoSuchBeanDefinitionException type.
      */
     public TargetingException(String message, Throwable cause) {
         super(message, cause);

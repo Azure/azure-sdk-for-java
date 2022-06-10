@@ -12,17 +12,13 @@
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
   <name>Spring Cloud Azure Feature Management</name>
   <description>Adds Feature Management into Spring</description>
-  
+
   <scm>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:ssh://git@github.com:Azure/azure-sdk-for-java.git</developerConnection>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <properties>
-    <checkstyle.skip>true</checkstyle.skip>
-  </properties>
-  
   <developers>
     <developer>
       <id>microsoft</id>

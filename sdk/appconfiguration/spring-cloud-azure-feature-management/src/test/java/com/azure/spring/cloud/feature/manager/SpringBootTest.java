@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
 import java.lang.annotation.Documented;
@@ -11,13 +13,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
 import org.springframework.test.context.BootstrapWith;
 
-@Target(value=ElementType.TYPE)
-@Retention(value=RetentionPolicy.RUNTIME)
+@Target(value = ElementType.TYPE)
+@Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@BootstrapWith(value=SpringBootTestContextBootstrapper.class)
-@ExtendWith(value=org.springframework.test.context.junit.jupiter.SpringExtension.class)
-public @interface SpringBootTest 
-{
-    
+@BootstrapWith(value = SpringBootTestContextBootstrapper.class)
+@ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class)
+public @interface SpringBootTest {
+
 }

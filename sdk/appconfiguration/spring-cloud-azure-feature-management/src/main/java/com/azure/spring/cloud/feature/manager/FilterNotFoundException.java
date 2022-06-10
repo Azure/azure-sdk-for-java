@@ -23,8 +23,8 @@ public final class FilterNotFoundException extends RuntimeException {
      * Creates a new instance of the FilterNotFoundException
      *
      * @param message the error message.
-     * @param cause   the original error thrown, typically of NoSuchBeanDefinitionException type.
-     * @param filter  The filter context used to find the not found filter.
+     * @param cause the original error thrown, typically of NoSuchBeanDefinitionException type.
+     * @param filter The filter context used to find the not found filter.
      */
     FilterNotFoundException(String message, Throwable cause, FeatureFilterEvaluationContext filter) {
         super(message, cause);

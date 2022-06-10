@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.manager.feature.evaluators;
+package com.azure.spring.cloud.feature.manager.feature.filters;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.feature.manager.TargetingException;
-import com.azure.spring.cloud.feature.manager.feature.filters.TargetingFilter;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.Audience;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.manager.implementation.targeting.TargetingFilterSettings;

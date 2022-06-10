@@ -1,4 +1,6 @@
-package com.azure.spring.cloud.feature.manager.feature.evaluators;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.feature.manager.feature.filters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

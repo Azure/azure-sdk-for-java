@@ -16,7 +16,7 @@ public interface IDisabledFeaturesHandler {
     /**
      * Called when an endpoint intercepter returns and no redirect is set.
      *
-     * @param request  current HTTP
+     * @param request current HTTP
      * @param response current HTTP
      * @return response to current HTTP request
      */

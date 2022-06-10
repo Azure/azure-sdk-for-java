@@ -14,7 +14,7 @@ public final class FeatureManagementException extends RuntimeException {
      * The error message of what caused the Feature Management Exception
      */
     private final String message;
-    
+
     /**
      * Creates a new instance of the FilterNotFoundException
      *
@@ -29,7 +29,7 @@ public final class FeatureManagementException extends RuntimeException {
      * Creates a new instance of the FilterNotFoundException
      *
      * @param message the error message.
-     * @param cause   the original error thrown, typically of NoSuchBeanDefinitionException type.
+     * @param cause the original error thrown, typically of NoSuchBeanDefinitionException type.
      */
     FeatureManagementException(String message, Throwable cause) {
         super(message, cause);
