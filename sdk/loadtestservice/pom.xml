@@ -38,7 +38,6 @@
       </activation>
       <modules>
         <module>azure-analytics-loadtestservice</module>
-        <module>azure-loadtestservice-dataplane</module>
         <module>azure-resourcemanager-loadtestservice</module>
       </modules>
     </profile>
