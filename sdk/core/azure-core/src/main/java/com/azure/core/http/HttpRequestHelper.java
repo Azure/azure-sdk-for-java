@@ -8,17 +8,23 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
  * Utilities to handle HttpRequest.
  */
 public final class HttpRequestHelper {
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRequestHelper.class);
 
     private HttpRequestHelper() {
     }
@@ -30,12 +36,12 @@ public final class HttpRequestHelper {
      */
     public static HttpRequest prepareForRetransmission(HttpRequest request) {
         HttpRequest requestCopy = request.copy();
-        BinaryData requestBody = requestCopy.getBodyAsBinaryData();
-        requestCopy.setBody(prepareBodyForRetransmission(requestBody));
+        BinaryData requestBody = request.getBodyAsBinaryData();
+        requestCopy.setBody(prepareBodyForRetransmission(requestBody, request));
         return requestCopy;
     }
 
-    private static BinaryData prepareBodyForRetransmission(BinaryData requestBody) {
+    private static BinaryData prepareBodyForRetransmission(BinaryData requestBody, HttpRequest request) {
         if (requestBody == null) {
             return null;
         }
@@ -47,6 +53,28 @@ public final class HttpRequestHelper {
             || content instanceof StringContent
             || content instanceof FileContent) {
             return requestBody;
+        } else if (content instanceof InputStreamContent) {
+            InputStream inputStream = content.toStream();
+            Long contentLength = getRequestContentLength(content, request.getHeaders());
+            if (contentLength != null && contentLength < Integer.MAX_VALUE) {
+                if (inputStream.markSupported()) {
+                    try {
+                        inputStream.reset();
+                    } catch (IOException e) {
+                        // ignore.
+                    }
+                    inputStream.mark(contentLength.intValue());
+                    return requestBody;
+                } else {
+                    // If stream is not seekable buffer body and set it in both derived and original request.
+                    byte[] bufferedContent = content.toBytes();
+                    BinaryData bufferedBinaryData = BinaryData.fromBytes(bufferedContent);
+                    request.setBody(bufferedBinaryData);
+                    return bufferedBinaryData;
+                }
+            } else {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Non retriable request body"));
+            }
         } else {
             /*
              Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
@@ -59,5 +87,16 @@ public final class HttpRequestHelper {
             Flux<ByteBuffer> bufferedBody = requestBody.toFluxByteBuffer().map(ByteBuffer::duplicate);
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(bufferedBody, requestBody.getLength()));
         }
+    }
+
+    private static Long getRequestContentLength(BinaryDataContent content, HttpHeaders headers) {
+        Long contentLength = content.getLength();
+        if (contentLength == null) {
+            String contentLengthHeaderValue = headers.getValue("Content-Length");
+            if (contentLengthHeaderValue != null) {
+                contentLength = Long.valueOf(contentLengthHeaderValue);
+            }
+        }
+        return contentLength;
     }
 }
