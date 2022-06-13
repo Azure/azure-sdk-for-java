@@ -283,6 +283,11 @@
           "justification": "Fixes a bug."
         },
         {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
