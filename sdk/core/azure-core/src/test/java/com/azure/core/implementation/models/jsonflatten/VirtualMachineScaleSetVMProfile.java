@@ -5,8 +5,9 @@ package com.azure.core.implementation.models.jsonflatten;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
@@ -37,11 +38,16 @@ public final class VirtualMachineScaleSetVMProfile implements JsonSerializable<V
         return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineScaleSetVMProfile profile = new VirtualMachineScaleSetVMProfile();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("networkProfile".equals(fieldName)) {
                     profile.setNetworkProfile(VirtualMachineScaleSetNetworkProfile.fromJson(reader));
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return profile;
         });

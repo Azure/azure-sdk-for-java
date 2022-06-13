@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 /**
@@ -47,11 +48,16 @@ public final class JsonFlattenOnJsonIgnoredProperty implements JsonSerializable<
         return JsonUtils.readObject(jsonReader, reader -> {
             JsonFlattenOnJsonIgnoredProperty flatten = new JsonFlattenOnJsonIgnoredProperty();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("name".equals(fieldName)) {
                     flatten.setName(reader.getStringValue());
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return flatten;
         });

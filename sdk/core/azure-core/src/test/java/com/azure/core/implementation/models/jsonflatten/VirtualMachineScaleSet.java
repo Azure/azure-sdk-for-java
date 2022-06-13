@@ -43,15 +43,25 @@ public final class VirtualMachineScaleSet implements JsonSerializable<VirtualMac
         return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineScaleSet set = new VirtualMachineScaleSet();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("virtualMachineProfile".equals(fieldName2)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("virtualMachineProfile".equals(fieldName)) {
                             set.setVirtualMachineProfile(VirtualMachineScaleSetVMProfile.fromJson(reader));
+                        } else {
+                            reader.skipChildren();
                         }
-                    });
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return set;
         });

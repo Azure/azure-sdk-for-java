@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -61,21 +62,45 @@ public final class FlattenedPropertiesAndJsonAnyGetter implements JsonSerializab
         return jsonWriter.writeEndObject().flush();
     }
 
+    @SuppressWarnings("unchecked")
     public static FlattenedPropertiesAndJsonAnyGetter fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
             FlattenedPropertiesAndJsonAnyGetter properties = new FlattenedPropertiesAndJsonAnyGetter();
-            properties.additionalProperties = JsonUtils.readFields(reader, true, fieldName -> {
-                if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("string".equals(fieldName2)) {
-                            properties.setString(reader.getStringValue());
-                        }
-                    });
-                    return true;
-                }
-                return false;
-            });
+            Map<String, Object> additionalProperties = null;
 
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("string".equals(fieldName)) {
+                            properties.setString(reader.getStringValue());
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            Map<String, Object> flattenedAdditionalProperties =
+                                (Map<String, Object>) additionalProperties
+                                    .computeIfAbsent("flattened", ignored -> new LinkedHashMap<String, Object>());
+
+                            flattenedAdditionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, JsonUtils.readUntypedField(reader));
+                }
+            }
+
+            properties.additionalProperties = additionalProperties;
             return properties;
         });
     }

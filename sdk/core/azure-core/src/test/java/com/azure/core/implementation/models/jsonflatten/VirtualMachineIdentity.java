@@ -65,7 +65,10 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
         return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineIdentity identity = new VirtualMachineIdentity();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("type".equals(fieldName)) {
                     identity.setType(JsonUtils.readArray(jsonReader, JsonReader::getStringValue));
                 } else if ("userAssignedIdentities".equals(fieldName)
@@ -79,8 +82,10 @@ public final class VirtualMachineIdentity implements JsonSerializable<VirtualMac
                     }
 
                     identity.setUserAssignedIdentities(userAssignedIdentities);
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return identity;
         });

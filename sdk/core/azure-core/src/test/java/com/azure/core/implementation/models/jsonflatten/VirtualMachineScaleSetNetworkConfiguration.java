@@ -57,17 +57,26 @@ public final class VirtualMachineScaleSetNetworkConfiguration
         return JsonUtils.readObject(jsonReader, reader -> {
             VirtualMachineScaleSetNetworkConfiguration configuration = new VirtualMachineScaleSetNetworkConfiguration();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("name".equals(fieldName)) {
                     configuration.setName(jsonReader.getStringValue());
                 } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("primary".equals(fieldName2)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("primary".equals(fieldName)) {
                             configuration.setPrimary(getNullableProperty(reader, JsonReader::getBooleanValue));
+                        } else {
+                            reader.skipChildren();
                         }
-                    });
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return configuration;
         });

@@ -3,8 +3,8 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -13,7 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -283,76 +282,71 @@ public final class JsonUtils {
     }
 
     /**
-     * Reads the fields of a JSON object until the end of the object is reached.
+     * Reads and returns the current JSON object the {@link JsonReader} is pointing to. This will mutate the current
+     * location of {@code jsonReader}.
      * <p>
-     * The passed {@link JsonReader} will point to the field value each time {@code fieldNameConsumer} is called.
-     * <p>
-     * An {@link IllegalStateException} will be thrown if the {@link JsonReader#currentToken()} isn't
-     * {@link JsonToken#START_OBJECT} or {@link JsonToken#NULL} when the method is called.
+     * If the {@code jsonReader} is pointing to {@link JsonToken#NULL} null will be returned. Otherwise, the current
+     * JSON object will be read until completion and returned as a raw JSON string.
      *
      * @param jsonReader The {@link JsonReader} being read.
-     * @param fieldNameConsumer The field name consumer function.
-     * @throws IllegalStateException If {@link JsonReader#currentToken()} isn't {@link JsonToken#START_OBJECT} or
-     * {@link JsonToken#NULL} when this method is called.
+     * @return The buffered JSON object the {@link JsonReader} was pointing to, or null if it was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IllegalStateException If the {@code jsonReader}'s {@link JsonReader#currentToken() current token} isn't
+     * one of {@link JsonToken#NULL}, {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY}, or
+     * {@link JsonToken#FIELD_NAME}.
      */
-    public static void readFields(JsonReader jsonReader, Consumer<String> fieldNameConsumer) {
-        readFields(jsonReader, false, fieldName -> {
-            fieldNameConsumer.accept(fieldName);
-            return false;
-        });
-    }
-
-    /**
-     * Reads the fields of a JSON object until the end of the object is reached.
-     * <p>
-     * The passed {@link JsonReader} will point to the field value each time {@code fieldNameConsumer} is called.
-     * <p>
-     * An {@link IllegalStateException} will be thrown if the {@link JsonReader#currentToken()} isn't
-     * {@link JsonToken#START_OBJECT} or {@link JsonToken#NULL} when the method is called.
-     * <p>
-     * If {@code readAdditionalProperties} is true and {@code fieldNameConsumer} returns false the JSON field value
-     * will be read as if it were an additional property. After the object completes reading the untyped additional
-     * properties mapping will be returned, this may be null if there were no additional properties in the JSON object.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @param readAdditionalProperties Whether additional properties should be read.
-     * @param fieldNameConsumer The field name consumer function.
-     * @return The additional property map if {@code readAdditionalProperties} is true and there were additional
-     * properties in the JSON object, otherwise null.
-     * @throws IllegalStateException If {@link JsonReader#currentToken()} isn't {@link JsonToken#START_OBJECT} or
-     * {@link JsonToken#NULL} when this method is called.
-     */
-    public static Map<String, Object> readFields(JsonReader jsonReader, boolean readAdditionalProperties,
-        Function<String, Boolean> fieldNameConsumer) {
-        if (jsonReader.currentToken() != JsonToken.START_OBJECT && jsonReader.currentToken() != JsonToken.NULL) {
-            throw new IllegalStateException("Expected the current token of the JsonReader to either be "
-                + "START_OBJECT or NULL. It was: " + jsonReader.currentToken());
-        }
-
+    public static String bufferedJsonObject(JsonReader jsonReader) {
         if (jsonReader.currentToken() == JsonToken.NULL) {
+            // If the current token is JsonToken.NULL return null.
             return null;
-        }
+        } else if (jsonReader.isStartArrayOrObject()) {
+            // If the current token is the beginning of an array or object use JsonReader's readChildren method.
+            return jsonReader.readChildren();
+        } else if (jsonReader.currentToken() == JsonToken.FIELD_NAME) {
+            // Otherwise, we're in a complex case where the reading needs to be handled.
 
-        Map<String, Object> additionalProperties = null;
+            // Add a starting object token.
+            StringBuilder json = new StringBuilder("{");
 
-        while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-            String fieldName = jsonReader.getFieldName();
-            jsonReader.nextToken();
-
-            boolean consumed = fieldNameConsumer.apply(fieldName);
-
-            if (!consumed && readAdditionalProperties) {
-                if (additionalProperties == null) {
-                    additionalProperties = new LinkedHashMap<>();
+            JsonToken token = jsonReader.currentToken();
+            boolean needsComa = false;
+            while (token != JsonToken.END_OBJECT) {
+                // Appending comas happens in the subsequent loop run to prevent the case of appending comas before
+                // the end of the object, ex {"fieldName":true,}
+                if (needsComa) {
+                    json.append(",");
                 }
 
-                additionalProperties.put(fieldName, readUntypedField(jsonReader));
-            } else if (!consumed) {
-                jsonReader.skipChildren();
-            }
-        }
+                if (token == JsonToken.FIELD_NAME) {
+                    // Field names need to have quotes added and a trailing colon.
+                    json.append("\"").append(jsonReader.getFieldName()).append("\":");
 
-        return additionalProperties;
+                    // Comas shouldn't happen after a field name.
+                    needsComa = false;
+                } else {
+                    if (token == JsonToken.STRING) {
+                        // String fields need to have quotes added.
+                        json.append("\"").append(jsonReader.getStringValue()).append("\"");
+                    } else if (jsonReader.isStartArrayOrObject()) {
+                        // Structures use readChildren.
+                        jsonReader.readChildren(json);
+                    } else {
+                        // All other value types use text value.
+                        json.append(jsonReader.getTextValue());
+                    }
+
+                    // Comas should happen after a field value.
+                    needsComa = true;
+                }
+
+                token = jsonReader.nextToken();
+            }
+
+            return json.toString();
+        } else {
+            throw new IllegalStateException("Cannot buffer a JSON object from a non-array, non-object, non-field name "
+                + "starting location. Starting location: " + jsonReader.currentToken());
+        }
     }
 
     private JsonUtils() {
