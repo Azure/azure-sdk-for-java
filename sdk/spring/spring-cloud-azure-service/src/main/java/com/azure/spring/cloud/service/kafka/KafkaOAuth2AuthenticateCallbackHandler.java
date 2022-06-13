@@ -4,8 +4,10 @@ package com.azure.spring.cloud.service.kafka;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.core.implementation.credential.provider.TokenCredentialProvider;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
+import com.azure.spring.cloud.core.implementation.util.AzureConfigUtils;
 import com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerToken;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
@@ -20,20 +22,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
 /**
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
  */
 public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallbackHandler {
+    private final AzureThirdPartyServiceProperties properties = new AzureThirdPartyServiceProperties();
+    private final DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory =
+        new DefaultAzureCredentialBuilderFactory(properties);
     private TokenCredential credential;
     private AzureOAuthBearerToken accessToken;
-    private String clientId;
-    private String tenantId;
-    private String authorityHost;
     private String tokenAudience;
 
-    public static TokenCredentialProvider tokenCredentialProvider;
+    public final AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
 
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
@@ -41,9 +44,8 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         bootstrapServer = bootstrapServer.replaceAll("\\[|\\]", "");
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
-        this.clientId = (String) configs.getOrDefault(AzureKafkaConfigs.CLIENT_ID_CONFIG, null);
-        this.tenantId = (String) configs.getOrDefault(AzureKafkaConfigs.TENANT_ID_CONFIG, null);
-        this.authorityHost = (String) configs.getOrDefault(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG, null);
+        credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
+        AzureConfigUtils.convertConfigMapToAzureProperties(configs, properties);
     }
 
     @Override
@@ -62,20 +64,11 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
     private TokenCredential getTokenCredential() {
         if (credential == null) {
-            if (tokenCredentialProvider == null) {
-                DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
-                if (clientId != null && !clientId.isEmpty()) {
-                    credentialBuilder.managedIdentityClientId(clientId);
-                }
-                if (tenantId != null && !tenantId.isEmpty()) {
-                    credentialBuilder.tenantId(tenantId);
-                }
-                if (authorityHost != null && !authorityHost.isEmpty()) {
-                    credentialBuilder.authorityHost(authorityHost);
-                }
-                credential = credentialBuilder.build();
-            } else {
-                credential = tokenCredentialProvider.getTokenCredential();
+            // Resolve the token credential when there is no credential passed from configs.
+            credential = tokenCredentialResolver.resolve(properties);
+            if (credential == null) {
+                // Create DefaultAzureCredential when no credential can be resolved from configs.
+                credential = defaultAzureCredentialBuilderFactory.build().build();
             }
         }
         return credential;
@@ -85,7 +78,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         if (accessToken == null || accessToken.isExpired()) {
             TokenRequestContext request = new TokenRequestContext();
             request.addScopes(tokenAudience);
-            request.setTenantId(tenantId);
+            request.setTenantId(properties.getProfile().getTenantId());
             accessToken = new AzureOAuthBearerToken(credential.getToken(request).block(Duration.ofSeconds(30)));
         }
 

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.core.provider;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +59,20 @@ public interface AzureProfileOptionsProvider {
         AZURE_CHINA,
         AZURE_GERMANY,
         AZURE_US_GOVERNMENT,
-        OTHER
+        OTHER;
+
+        private static final Map<String, CloudType> CLOUD_TYPE_MAP;
+
+        static {
+            Map<String, CloudType> map = new HashMap<>();
+            for (CloudType c : CloudType.values())
+                map.put(c.name().toLowerCase(), c);
+            CLOUD_TYPE_MAP = Collections.unmodifiableMap(map);
+        }
+
+        public static CloudType get(String cloudType) {
+            return CLOUD_TYPE_MAP.get(cloudType.toLowerCase());
+        }
     }
 
     /**
