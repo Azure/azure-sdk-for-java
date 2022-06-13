@@ -110,7 +110,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 // What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
 // Maybe we just respond to customers when they complain and tell them to adjust a bit.
         // If there is no range, there is nothing to expand, so we can continue with the request
-        if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) == null) {
+        String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
+        if (initialRangeHeader == null) {
             return next.process().flatMap(httpResponse -> {
                 // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
                 // response
@@ -170,7 +171,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 return data == null ? next.process() : Mono.just(data)
                     .flatMap(encryptionData -> {
                         EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                            requestHeaders.getValue(RANGE_HEADER), encryptionData);
+                            initialRangeHeader, encryptionData);
                         if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null
                             && encryptionData != null) {
                             requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
