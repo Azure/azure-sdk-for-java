@@ -43,6 +43,7 @@
       <modules>
         <module>microsoft-azure-servicebus</module>
         <module>azure-messaging-servicebus</module>
+        <module>azure-messaging-servicebus-stress</module>
         <module>azure-messaging-servicebus-track1-perf</module>
         <module>azure-messaging-servicebus-track2-perf</module>
       </modules>
