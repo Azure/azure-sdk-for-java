@@ -74,7 +74,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
         then:
         // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy and a blob user agent modification policy
-        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 3
+        regularClient.getHttpPipeline().getPolicyCount() == encryptedClient.getHttpPipeline().getPolicyCount() - 2
         encryptedClient.getHttpPipeline().getPolicy(0) instanceof BlobDecryptionPolicy
         encryptedClient.getHttpPipeline().getPolicy(2) instanceof BlobUserAgentModificationPolicy
     }
