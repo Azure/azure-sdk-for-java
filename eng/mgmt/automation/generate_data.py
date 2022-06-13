@@ -24,8 +24,9 @@ YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
 def sdk_automation(config: dict) -> List[dict]:
-    # 1. swagger/README.md in sdk repository that matches readme from input
-    # 2. autorestConfig from input
+    # priority:
+    # 1. autorestConfig from input
+    # 2. swagger/README.md in sdk repository that matches readme from input
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -33,8 +34,7 @@ def sdk_automation(config: dict) -> List[dict]:
 
     packages = []
 
-    autorest_config: str = config['autorestConfig'] if 'autorestConfig' in config else None
-
+    # find readme.md in spec repository
     readme_file_paths = []
     for file_path in config['relatedReadmeMdFiles']:
         match = re.search(
@@ -48,32 +48,39 @@ def sdk_automation(config: dict) -> List[dict]:
     # readme.md required
     if not readme_file_paths:
         return packages
-
     # we only take first readme.md
     readme_file_path = readme_file_paths[0]
-
     logging.info('[RESOLVE] README from specification %s', readme_file_path)
 
-    # find all swagger/readme.md in sdk repo
-    swagger_readmes = glob.glob(os.path.join(sdk_root, 'sdk/*/*/swagger/README.md'))
-    sdk_readme_abspath = find_sdk_readme(readme_file_path, swagger_readmes)
+    sdk_readme_abspath = None
+
+    if 'autorestConfig' in config:
+        # autorestConfig
+
+        autorest_config: str = config['autorestConfig']
+
+        # find 'output-folder', and write swagger/README.md
+        autorest_config = autorest_config.replace(r'\r\n', r'\n')
+        yaml_blocks = re.findall(YAML_BLOCK_REGEX, autorest_config, re.DOTALL)
+        for yaml_str in yaml_blocks:
+            yaml_json = yaml.safe_load(yaml_str)
+            if 'output-folder' in yaml_json:
+                output_folder: str = yaml_json['output-folder']
+                if output_folder.startswith('sdk/'):
+                    sdk_readme_abspath = os.path.join(sdk_root, output_folder, 'swagger', 'README.md')
+                    os.makedirs(os.path.dirname(sdk_readme_abspath), exist_ok=True)
+                    with open(sdk_readme_abspath, 'w', encoding='utf-8') as f_out:
+                        f_out.write(autorest_config)
+                    logging.info('[RESOLVE] Create README from autorestConfig')
+                break
 
     if not sdk_readme_abspath:
-        if autorest_config:
-            # find 'output-folder', and write swagger/README.md
-            autorest_config = autorest_config.replace(r'\r\n', r'\n')
-            yaml_blocks = re.findall(YAML_BLOCK_REGEX, autorest_config, re.DOTALL)
-            for yaml_str in yaml_blocks:
-                yaml_json = yaml.safe_load(yaml_str)
-                if 'output-folder' in yaml_json:
-                    output_folder: str = yaml_json['output-folder']
-                    if output_folder.startswith('sdk/'):
-                        sdk_readme_abspath = os.path.join(sdk_root, output_folder, 'swagger', 'README.md')
-                        os.makedirs(os.path.dirname(sdk_readme_abspath), exist_ok=True)
-                        with open(sdk_readme_abspath, 'w', encoding='utf-8') as f_out:
-                            f_out.write(autorest_config)
-                        logging.info('[RESOLVE] Create README from autorestConfig')
-                    break
+        # swagger/README.md in sdk repository
+
+        # find all swagger/README.md in sdk repo
+        swagger_readmes = glob.glob(os.path.join(sdk_root, 'sdk/*/*/swagger/README.md'))
+        # find the README.md that matches
+        sdk_readme_abspath = find_sdk_readme(readme_file_path, swagger_readmes)
 
     if sdk_readme_abspath:
         spec_readme_abspath = os.path.join(spec_root, readme_file_path)
