@@ -94,9 +94,9 @@ public class AzureEventHubsKafkaOAUTH2Configuration {
     @ConditionalOnClass(KafkaMessageChannelBinder.class)
     @Configuration(proxyBeanMethods = false)
     @Import(KafkaBinderConfiguration.class)
-    class AzureKafkaSpringCloudStreamAutoConfiguration {
+    static class AzureKafkaSpringCloudStreamAutoConfiguration {
         @Bean
-        KafkaBinderConfigurationPropertiesBeanPostProcessor KafkaBinderConfigurationPropertiesBeanPostProcessor(
+        KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(
             AzureGlobalProperties azureGlobalProperties) {
             return new KafkaBinderConfigurationPropertiesBeanPostProcessor(azureGlobalProperties);
         }

@@ -8,7 +8,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
-import com.azure.spring.cloud.service.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -74,7 +73,7 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     @Test
     void createTokenCredentialByResolver() {
-        configs.put(MANAGED_IDENTITY_ENABLED, true);
+        configs.put(MANAGED_IDENTITY_ENABLED, "true");
         handler.configure(configs, null, null);
 
         AzureThirdPartyServiceProperties properties = (AzureThirdPartyServiceProperties) ReflectionTestUtils

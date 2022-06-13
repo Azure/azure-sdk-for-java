@@ -38,7 +38,7 @@ class AzureKafkaAutoconfigurationUtilsTest {
     void testWhenSecurityProtocolNotConfigured() {
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        ShouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties();
     }
 
     @Test
@@ -53,7 +53,7 @@ class AzureKafkaAutoconfigurationUtilsTest {
         targetConfigs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        ShouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties();
     }
 
     @Test
@@ -73,10 +73,10 @@ class AzureKafkaAutoconfigurationUtilsTest {
         targetConfigs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, "fake-value");
         assertTrue(needConfigureSaslOAuth(sourceConfigs));
         configureOAuthProperties(targetConfigs);
-        ShouldConfigureOAuthTargetProperties();
+        shouldConfigureOAuthTargetProperties();
     }
 
-    private void ShouldConfigureOAuthTargetProperties() {
+    private void shouldConfigureOAuthTargetProperties() {
         assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, targetConfigs.get(SECURITY_PROTOCOL_CONFIG));
         assertEquals(SASL_MECHANISM_OAUTH, targetConfigs.get(SASL_MECHANISM));
         assertEquals(SASL_JAAS_CONFIG_OAUTH, targetConfigs.get(SASL_JAAS_CONFIG));

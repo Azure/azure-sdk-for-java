@@ -77,8 +77,8 @@ public class AzureEventHubsKafkaAutoConfiguration {
     public KafkaProperties azureKafkaProperties(
             ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
 
-        LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager" +
-                " has been deprecated, please use OAuth2 instead.");
+        LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager"
+            + " has been deprecated, please use OAuth2 instead.");
 
         KafkaProperties kafkaProperties = new KafkaProperties();
 

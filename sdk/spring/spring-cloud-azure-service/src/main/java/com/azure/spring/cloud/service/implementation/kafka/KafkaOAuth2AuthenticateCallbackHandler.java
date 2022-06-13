@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.service.kafka;
+package com.azure.spring.cloud.service.implementation.kafka;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
 import com.azure.spring.cloud.core.implementation.util.AzureConfigUtils;
-import com.azure.spring.cloud.service.implementation.kafka.AzureOAuthBearerToken;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -36,7 +36,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private AzureOAuthBearerToken accessToken;
     private String tokenAudience;
 
-    public final AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
+    private final AzureTokenCredentialResolver tokenCredentialResolver = new AzureTokenCredentialResolver();
 
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
@@ -79,9 +79,11 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
             TokenRequestContext request = new TokenRequestContext();
             request.addScopes(tokenAudience);
             request.setTenantId(properties.getProfile().getTenantId());
-            accessToken = new AzureOAuthBearerToken(credential.getToken(request).block(Duration.ofSeconds(30)));
+            AccessToken accessToken = credential.getToken(request).block(Duration.ofSeconds(30));
+            if (accessToken != null) {
+                this.accessToken = new AzureOAuthBearerToken(accessToken);
+            }
         }
-
         return accessToken;
     }
 

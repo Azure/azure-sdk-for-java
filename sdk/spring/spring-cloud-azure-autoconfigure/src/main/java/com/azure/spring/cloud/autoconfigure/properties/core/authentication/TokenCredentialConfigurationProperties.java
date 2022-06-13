@@ -142,8 +142,12 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TokenCredentialConfigurationProperties that = (TokenCredentialConfigurationProperties) o;
         return managedIdentityEnabled == that.managedIdentityEnabled
                 && Objects.equals(clientId, that.clientId)
@@ -154,4 +158,8 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
                 && Objects.equals(password, that.password);
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

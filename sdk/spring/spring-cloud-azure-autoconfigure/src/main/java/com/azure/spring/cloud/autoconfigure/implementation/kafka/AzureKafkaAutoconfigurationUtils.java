@@ -4,11 +4,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
-import com.azure.spring.cloud.service.kafka.KafkaOAuth2AuthenticateCallbackHandler;
+import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,11 +36,12 @@ public final class AzureKafkaAutoconfigurationUtils {
     private static final String LOG_PROPERTIES_CONFIGURE = "Property %s will be configured as %s.";
 
     static {
-        KAFKA_OAUTH_CONFIGS = new HashMap<>();
-        KAFKA_OAUTH_CONFIGS.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
-        KAFKA_OAUTH_CONFIGS.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        KAFKA_OAUTH_CONFIGS.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
-        KAFKA_OAUTH_CONFIGS.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
+        Map<String, String> configs = new HashMap<>();
+        configs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+        configs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
+        configs.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+        configs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
+        KAFKA_OAUTH_CONFIGS = Collections.unmodifiableMap(configs);
     }
 
     private AzureKafkaAutoconfigurationUtils() {

@@ -25,7 +25,7 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
 
     private final AzureGlobalProperties azureGlobalProperties;
 
-    public KafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
+    KafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
 

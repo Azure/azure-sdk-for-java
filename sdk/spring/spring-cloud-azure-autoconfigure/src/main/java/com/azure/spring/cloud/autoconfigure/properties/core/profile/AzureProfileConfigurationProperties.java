@@ -456,8 +456,12 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             AzureEnvironmentConfigurationProperties that = (AzureEnvironmentConfigurationProperties) o;
             return Objects.equals(portal, that.portal)
                     && Objects.equals(publishingProfile, that.publishingProfile)
@@ -482,16 +486,28 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
                     && Objects.equals(azureApplicationInsightsEndpoint, that.azureApplicationInsightsEndpoint);
         }
 
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AzureProfileConfigurationProperties)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AzureProfileConfigurationProperties)) {
+            return false;
+        }
         AzureProfileConfigurationProperties that = (AzureProfileConfigurationProperties) o;
         return Objects.equals(tenantId, that.tenantId)
                 && Objects.equals(subscriptionId, that.subscriptionId)
                 && cloudType == that.cloudType && Objects.equals(environment, that.environment);
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

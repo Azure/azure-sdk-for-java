@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.service.implementation.kafka;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.spring.cloud.service.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

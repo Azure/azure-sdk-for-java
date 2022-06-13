@@ -5,6 +5,7 @@ package com.azure.spring.cloud.core.provider;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -83,13 +84,19 @@ public interface AzureProfileOptionsProvider {
 
         static {
             Map<String, CloudType> map = new HashMap<>();
-            for (CloudType c : CloudType.values())
-                map.put(c.name().toLowerCase(), c);
+            for (CloudType c : CloudType.values()) {
+                map.put(c.name().toLowerCase(Locale.ROOT), c);
+            }
             CLOUD_TYPE_MAP = Collections.unmodifiableMap(map);
         }
 
+        /**
+         * Get the {@link CloudType} from {@link String} value.
+         * @param cloudType the cloud type string value
+         * @return the {@link CloudType}
+         */
         public static CloudType get(String cloudType) {
-            return CLOUD_TYPE_MAP.get(cloudType.toLowerCase());
+            return CLOUD_TYPE_MAP.get(cloudType.toLowerCase(Locale.ROOT));
         }
     }
 

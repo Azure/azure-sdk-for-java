@@ -123,7 +123,7 @@ public final class AzurePropertiesUtils {
     }
 
     private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {
-        final Set<String> ignoredNames = new HashSet<>();
+        final Set<String> emptyNames = new HashSet<>();
 
         final BeanWrapper beanWrapper = new BeanWrapperImpl(source);
         PropertyDescriptor[] pds = beanWrapper.getPropertyDescriptors();
@@ -131,18 +131,14 @@ public final class AzurePropertiesUtils {
         for (PropertyDescriptor pd : pds) {
             Object srcValue = beanWrapper.getPropertyValue(pd.getName());
             if (predicate.test(srcValue)) {
-                ignoredNames.add(pd.getName());
+                emptyNames.add(pd.getName());
             }
         }
-        return ignoredNames.toArray(new String[0]);
+        return emptyNames.toArray(new String[0]);
     }
 
     private static String[] findNullPropertyNames(Object source) {
         return findPropertyNames(source, Objects::isNull);
-    }
-
-    private static String[] findNonNullPropertyNames(Object source) {
-        return findPropertyNames(source, Objects::nonNull);
     }
 
 }

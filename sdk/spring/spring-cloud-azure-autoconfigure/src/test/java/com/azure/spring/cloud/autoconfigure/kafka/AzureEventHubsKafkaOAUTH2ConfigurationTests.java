@@ -261,16 +261,16 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 assertThat(context).hasSingleBean(ConsumerFactory.class);
                 assertThat(context).hasSingleBean(ProducerFactory.class);
 
-                DefaultKafkaConsumerFactory consumerFactory =
-                    (DefaultKafkaConsumerFactory) context.getBean(ConsumerFactory.class);
+                DefaultKafkaConsumerFactory<?, ?> consumerFactory =
+                    (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                 Map<String, Object> consumerProperties = consumerFactory.getConfigurationProperties();
                 TokenCredential defaultAzureCredential =
                     (TokenCredential) context.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
                 assertEquals(defaultAzureCredential, consumerProperties.get(AZURE_TOKEN_CREDENTIAL));
                 shouldConfigureOAuthProperties(consumerProperties);
 
-                DefaultKafkaProducerFactory producerFactory =
-                    (DefaultKafkaProducerFactory) context.getBean(ProducerFactory.class);
+                DefaultKafkaProducerFactory<?, ?> producerFactory =
+                    (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
                 Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
                 assertNotEquals(defaultAzureCredential, producerProperties.get(AZURE_TOKEN_CREDENTIAL));
                 assertTrue(producerProperties.get(AZURE_TOKEN_CREDENTIAL) instanceof ManagedIdentityCredential);

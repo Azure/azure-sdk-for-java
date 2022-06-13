@@ -159,12 +159,69 @@ class AzureConfigUtilsTest {
     void testConvertAzurePropertiesToConfigMapWithCustomValues() {
         AzureThirdPartyServiceProperties properties = new AzureThirdPartyServiceProperties();
         Map<String, String> configs = new HashMap<>();
-        configs.put(CLIENT_CERTIFICATE_PASSWORD_VALUE, "test");
+        configs.put(CLIENT_CERTIFICATE_PASSWORD_VALUE, "CLIENT_CERTIFICATE_PASSWORD_VALUE");
+        configs.put(CLIENT_CERTIFICATE_PATH, "CLIENT_CERTIFICATE_PATH_VALUE");
+        configs.put(CLIENT_ID, "CLIENT_ID_VALUE");
+        configs.put(CLIENT_SECRET, "CLIENT_SECRET_VALUE");
+        configs.put(MANAGED_IDENTITY_ENABLED, "false");
+        configs.put(PASSWORD, "PASSWORD_VALUE");
+        configs.put(USERNAME, "USERNAME_VALUE");
+        configs.put(CLOUD_TYPE, "AZURE");
+        configs.put(ACTIVE_DIRECTORY_ENDPOINT, "ACTIVE_DIRECTORY_ENDPOINT_VALUE");
+        configs.put(ACTIVE_DIRECTORY_GRAPH_API_VERSION, "ACTIVE_DIRECTORY_GRAPH_API_VERSION_VALUE");
+        configs.put(ACTIVE_DIRECTORY_GRAPH_ENDPOINT, "ACTIVE_DIRECTORY_GRAPH_ENDPOINT_VALUE");
+        configs.put(ACTIVE_DIRECTORY_RESOURCE_ID, "ACTIVE_DIRECTORY_RESOURCE_ID_VALUE");
+        configs.put(AZURE_APPLICATION_INSIGHTS_ENDPOINT, "AZURE_APPLICATION_INSIGHTS_ENDPOINT_VALUE");
+        configs.put(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX,
+            "AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX_VALUE");
+        configs.put(AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX,
+            "AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX_VALUE");
+        configs.put(AZURE_LOG_ANALYTICS_ENDPOINT, "AZURE_LOG_ANALYTICS_ENDPOINT_VALUE");
+        configs.put(DATA_LAKE_ENDPOINT_RESOURCE_ID, "DATA_LAKE_ENDPOINT_RESOURCE_ID_VALUE");
+        configs.put(GALLERY_ENDPOINT, "GALLERY_ENDPOINT_VALUE");
+        configs.put(KEY_VAULT_DNS_SUFFIX, "KEY_VAULT_DNS_SUFFIX_VALUE");
+        configs.put(MANAGEMENT_ENDPOINT, "MANAGEMENT_ENDPOINT_VALUE");
+        configs.put(MICROSOFT_GRAPH_ENDPOINT, "MICROSOFT_GRAPH_ENDPOINT_VALUE");
+        configs.put(PORTAL, "PORTAL_VALUE");
+        configs.put(PUBLISHING_PROFILE, "PUBLISHING_PROFILE_VALUE");
+        configs.put(RESOURCE_MANAGER_ENDPOINT, "RESOURCE_MANAGER_ENDPOINT_VALUE");
+        configs.put(SQL_MANAGEMENT_ENDPOINT, "SQL_MANAGEMENT_ENDPOINT_VALUE");
+        configs.put(SQL_SERVER_HOSTNAME_SUFFIX, "SQL_SERVER_HOSTNAME_SUFFIX_VALUE");
+        configs.put(STORAGE_ENDPOINT_SUFFIX, "STORAGE_ENDPOINT_SUFFIX_VALUE");
+        configs.put(SUBSCRIPTION_ID, "SUBSCRIPTION_ID_VALUE");
+        configs.put(TENANT_ID, "TENANT_ID_VALUE");
         convertConfigMapToAzureProperties(this.configs, properties);
         convertAzurePropertiesToConfigMap(properties, configs);
 
-        assertEquals("test", configs.get(CLIENT_CERTIFICATE_PASSWORD));
-        assertEquals(CLIENT_CERTIFICATE_PATH_VALUE, configs.get(CLIENT_CERTIFICATE_PATH));
+        assertEquals("CLIENT_CERTIFICATE_PASSWORD_VALUE", configs.get(CLIENT_CERTIFICATE_PASSWORD));
+        assertEquals("CLIENT_CERTIFICATE_PATH_VALUE", configs.get(CLIENT_CERTIFICATE_PATH));
+        assertEquals("CLIENT_ID_VALUE", configs.get(CLIENT_ID));
+        assertEquals("CLIENT_SECRET_VALUE", configs.get(CLIENT_SECRET));
+        assertEquals("false", configs.get(MANAGED_IDENTITY_ENABLED));
+        assertEquals("PASSWORD_VALUE", configs.get(PASSWORD));
+        assertEquals("USERNAME_VALUE", configs.get(USERNAME));
+        assertEquals("AZURE", configs.get(CLOUD_TYPE));
+        assertEquals("ACTIVE_DIRECTORY_ENDPOINT_VALUE", configs.get(ACTIVE_DIRECTORY_ENDPOINT));
+        assertEquals("ACTIVE_DIRECTORY_GRAPH_API_VERSION_VALUE", configs.get(ACTIVE_DIRECTORY_GRAPH_API_VERSION));
+        assertEquals("ACTIVE_DIRECTORY_GRAPH_ENDPOINT_VALUE", configs.get(ACTIVE_DIRECTORY_GRAPH_ENDPOINT));
+        assertEquals("ACTIVE_DIRECTORY_RESOURCE_ID_VALUE", configs.get(ACTIVE_DIRECTORY_RESOURCE_ID));
+        assertEquals("AZURE_APPLICATION_INSIGHTS_ENDPOINT_VALUE", configs.get(AZURE_APPLICATION_INSIGHTS_ENDPOINT));
+        assertEquals("AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX_VALUE", configs.get(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX));
+        assertEquals("AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX_VALUE", configs.get(AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX));
+        assertEquals("AZURE_LOG_ANALYTICS_ENDPOINT_VALUE", configs.get(AZURE_LOG_ANALYTICS_ENDPOINT));
+        assertEquals("DATA_LAKE_ENDPOINT_RESOURCE_ID_VALUE", configs.get(DATA_LAKE_ENDPOINT_RESOURCE_ID));
+        assertEquals("GALLERY_ENDPOINT_VALUE", configs.get(GALLERY_ENDPOINT));
+        assertEquals("KEY_VAULT_DNS_SUFFIX_VALUE", configs.get(KEY_VAULT_DNS_SUFFIX));
+        assertEquals("MANAGEMENT_ENDPOINT_VALUE", configs.get(MANAGEMENT_ENDPOINT));
+        assertEquals("MICROSOFT_GRAPH_ENDPOINT_VALUE", configs.get(MICROSOFT_GRAPH_ENDPOINT));
+        assertEquals("PORTAL_VALUE", configs.get(PORTAL));
+        assertEquals("PUBLISHING_PROFILE_VALUE", configs.get(PUBLISHING_PROFILE));
+        assertEquals("RESOURCE_MANAGER_ENDPOINT_VALUE", configs.get(RESOURCE_MANAGER_ENDPOINT));
+        assertEquals("SQL_MANAGEMENT_ENDPOINT_VALUE", configs.get(SQL_MANAGEMENT_ENDPOINT));
+        assertEquals("SQL_SERVER_HOSTNAME_SUFFIX_VALUE", configs.get(SQL_SERVER_HOSTNAME_SUFFIX));
+        assertEquals("STORAGE_ENDPOINT_SUFFIX_VALUE", configs.get(STORAGE_ENDPOINT_SUFFIX));
+        assertEquals("SUBSCRIPTION_ID_VALUE", configs.get(SUBSCRIPTION_ID));
+        assertEquals("TENANT_ID_VALUE", configs.get(TENANT_ID));
     }
 
     @Test
