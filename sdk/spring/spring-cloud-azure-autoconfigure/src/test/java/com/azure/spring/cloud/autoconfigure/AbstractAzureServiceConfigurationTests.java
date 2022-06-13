@@ -41,7 +41,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".profile.tenant-id=test-tenant-id",
                 getPropertyPrefix() + ".credential.client-id=test-client-id",
-                getPropertyPrefix() + ".credential.client-secret=test-client-secret"
+                getPropertyPrefix() + ".credential.client-secret=" + "test-client-secret"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -77,7 +77,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".credential.client-id=test-client-id",
                 getPropertyPrefix() + ".credential.username=test-username",
-                getPropertyPrefix() + ".credential.password=test-password"
+                getPropertyPrefix() + ".credential.password=" + "test-password"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
