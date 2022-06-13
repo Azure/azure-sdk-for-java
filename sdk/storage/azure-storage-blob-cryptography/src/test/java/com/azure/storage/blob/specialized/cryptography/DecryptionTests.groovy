@@ -29,7 +29,9 @@ class DecryptionTests extends APISpec {
         keyId = "keyId"
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
 
-        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false)
+        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false,
+            getBlobClientBuilder(environment.primaryAccount.getCredential(), environment.primaryAccount.blobEndpoint)
+                .containerName(generateContainerName()).blobName(generateBlobName()).buildAsyncClient())
 
         blobName = generateBlobName()
     }
