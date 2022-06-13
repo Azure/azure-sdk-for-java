@@ -1,0 +1,33 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-servicebus") -}}
+{{- define "stress.java-servicebus" -}}
+metadata:
+  labels:
+    testInstance: "servicebus-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: servicebus-stress-test
+    chaos: "true"
+spec:
+  containers:
+    - name: sender
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          java "org.springframework.boot.loader.JarLauncher" \
+          --TEST_CLASS=MessageSender
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: receiver
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+            set -a &&
+            source $ENV_FILE &&
+            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+            "org.springframework.boot.loader.JarLauncher" \
+            --TEST_CLASS=MessageReceiver
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}
