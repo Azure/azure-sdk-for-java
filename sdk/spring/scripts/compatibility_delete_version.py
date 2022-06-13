@@ -16,14 +16,14 @@ from log import log
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     find_all_poms_do_version_control("./sdk/spring")
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 

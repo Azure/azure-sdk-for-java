@@ -16,7 +16,7 @@ import argparse
 from log import log
 
 
-CHANGE_LOG_FILE = 'sdk/spring/CHANGELOG.md'
+CHANGELOG_FILE = 'sdk/spring/CHANGELOG.md'
 
 
 def get_args():
@@ -42,7 +42,7 @@ def update_changelog(spring_boot_dependencies_version, spring_cloud_dependencies
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     args = get_args()
     update_changelog(args.spring_boot_dependencies_version, args.spring_cloud_dependencies_version, CHANGE_LOG_FILE)
@@ -50,7 +50,7 @@ def main():
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
