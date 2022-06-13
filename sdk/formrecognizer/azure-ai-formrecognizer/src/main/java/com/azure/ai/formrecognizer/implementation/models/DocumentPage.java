@@ -12,6 +12,12 @@ import java.util.List;
 @Fluent
 public final class DocumentPage {
     /*
+     * Kind of document page.
+     */
+    @JsonProperty(value = "kind", required = true)
+    private DocumentPageKind kind;
+
+    /*
      * 1-based page number in the input document.
      */
     @JsonProperty(value = "pageNumber", required = true)
@@ -21,26 +27,26 @@ public final class DocumentPage {
      * The general orientation of the content in clockwise direction, measured
      * in degrees between (-180, 180].
      */
-    @JsonProperty(value = "angle", required = true)
-    private float angle;
+    @JsonProperty(value = "angle")
+    private Float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
-    @JsonProperty(value = "width", required = true)
-    private float width;
+    @JsonProperty(value = "width")
+    private Float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
-    @JsonProperty(value = "height", required = true)
-    private float height;
+    @JsonProperty(value = "height")
+    private Float height;
 
     /*
-     * The unit used by the width, height, and boundingBox properties. For
-     * images, the unit is "pixel". For PDF, the unit is "inch".
+     * The unit used by the width, height, and polygon properties. For images,
+     * the unit is "pixel". For PDF, the unit is "inch".
      */
-    @JsonProperty(value = "unit", required = true)
+    @JsonProperty(value = "unit")
     private LengthUnit unit;
 
     /*
@@ -52,7 +58,7 @@ public final class DocumentPage {
     /*
      * Extracted words from the page.
      */
-    @JsonProperty(value = "words", required = true)
+    @JsonProperty(value = "words")
     private List<DocumentWord> words;
 
     /*
@@ -62,11 +68,37 @@ public final class DocumentPage {
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
+     * Extracted images from the page.
+     */
+    @JsonProperty(value = "images")
+    private List<DocumentImage> images;
+
+    /*
      * Extracted lines from the page, potentially containing both textual and
      * visual elements.
      */
-    @JsonProperty(value = "lines", required = true)
+    @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
+
+    /**
+     * Get the kind property: Kind of document page.
+     *
+     * @return the kind value.
+     */
+    public DocumentPageKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of document page.
+     *
+     * @param kind the kind value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setKind(DocumentPageKind kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.
@@ -94,7 +126,7 @@ public final class DocumentPage {
      *
      * @return the angle value.
      */
-    public float getAngle() {
+    public Float getAngle() {
         return this.angle;
     }
 
@@ -105,7 +137,7 @@ public final class DocumentPage {
      * @param angle the angle value to set.
      * @return the DocumentPage object itself.
      */
-    public DocumentPage setAngle(float angle) {
+    public DocumentPage setAngle(Float angle) {
         this.angle = angle;
         return this;
     }
@@ -115,7 +147,7 @@ public final class DocumentPage {
      *
      * @return the width value.
      */
-    public float getWidth() {
+    public Float getWidth() {
         return this.width;
     }
 
@@ -125,7 +157,7 @@ public final class DocumentPage {
      * @param width the width value to set.
      * @return the DocumentPage object itself.
      */
-    public DocumentPage setWidth(float width) {
+    public DocumentPage setWidth(Float width) {
         this.width = width;
         return this;
     }
@@ -135,7 +167,7 @@ public final class DocumentPage {
      *
      * @return the height value.
      */
-    public float getHeight() {
+    public Float getHeight() {
         return this.height;
     }
 
@@ -145,13 +177,13 @@ public final class DocumentPage {
      * @param height the height value to set.
      * @return the DocumentPage object itself.
      */
-    public DocumentPage setHeight(float height) {
+    public DocumentPage setHeight(Float height) {
         this.height = height;
         return this;
     }
 
     /**
-     * Get the unit property: The unit used by the width, height, and boundingBox properties. For images, the unit is
+     * Get the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
      *
      * @return the unit value.
@@ -161,7 +193,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the unit property: The unit used by the width, height, and boundingBox properties. For images, the unit is
+     * Set the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
      *
      * @param unit the unit value to set.
@@ -229,6 +261,26 @@ public final class DocumentPage {
      */
     public DocumentPage setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
+        return this;
+    }
+
+    /**
+     * Get the images property: Extracted images from the page.
+     *
+     * @return the images value.
+     */
+    public List<DocumentImage> getImages() {
+        return this.images;
+    }
+
+    /**
+     * Set the images property: Extracted images from the page.
+     *
+     * @param images the images value to set.
+     * @return the DocumentPage object itself.
+     */
+    public DocumentPage setImages(List<DocumentImage> images) {
+        this.images = images;
         return this;
     }
 

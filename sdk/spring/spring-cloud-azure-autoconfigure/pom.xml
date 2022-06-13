@@ -110,7 +110,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.21.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      <version>3.22.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -118,7 +118,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -140,13 +140,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.28.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.30.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.31.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -182,19 +182,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.17.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.17.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.13.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -207,7 +207,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -228,25 +228,25 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>5.6.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-resource-server</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <version>5.6.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>5.6.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>5.6.4</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -293,14 +293,8 @@
     </dependency>
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-standalone</artifactId>
-      <version>2.24.1</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-standalone;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>pl.pragmatists</groupId>
-      <artifactId>JUnitParams</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;pl.pragmatists:JUnitParams;external_dependency} -->
+      <artifactId>wiremock-jre8</artifactId>
+      <version>2.33.2</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-jre8;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -351,12 +345,12 @@
                 <include>org.springframework.data:spring-data-redis:[2.6.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.8.5]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.2.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework:spring-context-support:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[5.6.3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.6.3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[5.6.3]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.6.3]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.19]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-context-support:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[5.6.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.6.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[5.6.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[5.6.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework:spring-jms:[5.3.20]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

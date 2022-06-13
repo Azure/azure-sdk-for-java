@@ -45,6 +45,55 @@ public interface WorkloadsClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the PhpWorkloadsClient object to access its operations.
+     *
+     * @return the PhpWorkloadsClient object.
+     */
+    PhpWorkloadsClient getPhpWorkloads();
+
+    /**
+     * Gets the WordpressInstancesClient object to access its operations.
+     *
+     * @return the WordpressInstancesClient object.
+     */
+    WordpressInstancesClient getWordpressInstances();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the SapVirtualInstancesClient object to access its operations.
+     *
+     * @return the SapVirtualInstancesClient object.
+     */
+    SapVirtualInstancesClient getSapVirtualInstances();
+
+    /**
+     * Gets the SapCentralInstancesClient object to access its operations.
+     *
+     * @return the SapCentralInstancesClient object.
+     */
+    SapCentralInstancesClient getSapCentralInstances();
+
+    /**
+     * Gets the SapDatabaseInstancesClient object to access its operations.
+     *
+     * @return the SapDatabaseInstancesClient object.
+     */
+    SapDatabaseInstancesClient getSapDatabaseInstances();
+
+    /**
+     * Gets the SapApplicationServerInstancesClient object to access its operations.
+     *
+     * @return the SapApplicationServerInstancesClient object.
+     */
+    SapApplicationServerInstancesClient getSapApplicationServerInstances();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -64,4 +113,11 @@ public interface WorkloadsClient {
      * @return the ProviderInstancesClient object.
      */
     ProviderInstancesClient getProviderInstances();
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    SkusClient getSkus();
 }

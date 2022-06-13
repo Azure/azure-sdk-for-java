@@ -83,7 +83,9 @@ public class RntbdConnectionStateListener {
 
                 return this.addressResolver.updateAddresses(this.endpoint.serverKey());
             } else {
-                logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Endpoint closed while onConnectionEvent: {}", this.endpoint);
+                }
             }
         }
 

@@ -221,32 +221,11 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
 
     /**
-     * Gets the ResourceSkusClient object to access its operations.
-     *
-     * @return the ResourceSkusClient object.
-     */
-    ResourceSkusClient getResourceSkus();
-
-    /**
      * Gets the DisksClient object to access its operations.
      *
      * @return the DisksClient object.
      */
     DisksClient getDisks();
-
-    /**
-     * Gets the SnapshotsClient object to access its operations.
-     *
-     * @return the SnapshotsClient object.
-     */
-    SnapshotsClient getSnapshots();
-
-    /**
-     * Gets the DiskEncryptionSetsClient object to access its operations.
-     *
-     * @return the DiskEncryptionSetsClient object.
-     */
-    DiskEncryptionSetsClient getDiskEncryptionSets();
 
     /**
      * Gets the DiskAccessesClient object to access its operations.
@@ -256,11 +235,32 @@ public interface ComputeManagementClient {
     DiskAccessesClient getDiskAccesses();
 
     /**
+     * Gets the DiskEncryptionSetsClient object to access its operations.
+     *
+     * @return the DiskEncryptionSetsClient object.
+     */
+    DiskEncryptionSetsClient getDiskEncryptionSets();
+
+    /**
      * Gets the DiskRestorePointsClient object to access its operations.
      *
      * @return the DiskRestorePointsClient object.
      */
     DiskRestorePointsClient getDiskRestorePoints();
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    SnapshotsClient getSnapshots();
+
+    /**
+     * Gets the ResourceSkusClient object to access its operations.
+     *
+     * @return the ResourceSkusClient object.
+     */
+    ResourceSkusClient getResourceSkus();
 
     /**
      * Gets the GalleriesClient object to access its operations.

@@ -12,7 +12,7 @@ public final class ProviderInstancesListSamples {
      * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_List.json
      */
     /**
-     * Sample code: List all SAP Monitors providers in a subscription.
+     * Sample code: List all SAP monitors providers in a subscription.
      *
      * @param manager Entry point to WorkloadsManager.
      */

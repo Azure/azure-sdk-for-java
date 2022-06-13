@@ -33,7 +33,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-identity
         groupId: com.azure
         safeName: azureidentity
+    AdditionalModules:
+      - name: azure-identity-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

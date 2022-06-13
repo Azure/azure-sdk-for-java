@@ -128,15 +128,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LiveTokenResponseInner> getAsync(String resourceUri) {
-        return getWithResponseAsync(resourceUri)
-            .flatMap(
-                (Response<LiveTokenResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

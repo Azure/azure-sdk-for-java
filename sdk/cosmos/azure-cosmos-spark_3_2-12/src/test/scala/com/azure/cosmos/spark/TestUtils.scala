@@ -272,4 +272,16 @@ object Platform {
   def isWindows: Boolean = {
     System.getProperty("os.name").toLowerCase.contains("win")
   }
+
+  // Indicates whether a test is capable of running when it attempts to access DirectByteBuffer via reflection.
+  // Spark 3.1 was written in a way where it attempts to access DirectByteBuffer illegally via reflection in Java 16+.
+  def canRunTestAccessingDirectByteBuffer: (Boolean, Any) = {
+    val hasSparkVersion = util.Properties.propIsSet("cosmos-spark-version")
+    val sparkVersion = util.Properties.propOrElse("cosmos-spark-version", "unknown")
+
+    (!util.Properties.isJavaAtLeast("16") || (hasSparkVersion && !sparkVersion.equals("3.1")),
+      s"Test was skipped as it will attempt to reflectively access DirectByteBuffer while using JVM version ${util.Properties.javaSpecVersion} and Spark version $sparkVersion. "
+        + "These versions used together will result in an InaccessibleObjectException due to JVM changes on how internal APIs can be accessed by reflection,"
+        + " and the Spark version, or unknown version, attempts to access DirectByteBuffer via reflection.")
+  }
 }

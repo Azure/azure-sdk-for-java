@@ -251,15 +251,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> listAsync(
         String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentExportConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -431,14 +423,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     private Mono<List<ApplicationInsightsComponentExportConfigurationInner>> createAsync(
         String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, exportProperties)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentExportConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,14 +589,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     private Mono<ApplicationInsightsComponentExportConfigurationInner> deleteAsync(
         String resourceGroupName, String resourceName, String exportId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, exportId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -772,14 +750,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
     private Mono<ApplicationInsightsComponentExportConfigurationInner> getAsync(
         String resourceGroupName, String resourceName, String exportId) {
         return getWithResponseAsync(resourceGroupName, resourceName, exportId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -967,14 +938,7 @@ public final class ExportConfigurationsClientImpl implements ExportConfiguration
         String exportId,
         ApplicationInsightsComponentExportRequest exportProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, exportId, exportProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentExportConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

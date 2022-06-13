@@ -3,15 +3,54 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
-- Support OAuth2 authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
+- GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
+- GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
 
 ### Breaking Changes
-- Drop support of connection string or Azure Resource Manager based authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
 
 ### Bugs Fixed
 
 ### Other Changes
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
++ Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
+    +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
+    + Add properties `spring.cloud.azure.keyvault`.
++ Support OAuth2 authentication configuration for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
+
+#### Breaking Changes
+- Deprecate support of connection string or Azure Resource Manager based authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Bugs Fixed
+- Fix the `ServiceBusContainerProperties` constructor with overriding the default field values [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+- Restrict the concurrency value to be int format in `ServiceBusListener` [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+
+### Spring Cloud Azure Starter Active Directory
+This section includes changes in `spring-cloud-azure-starter-active-directory` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Cloud Azure Starter Active Directory B2C
+This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Cloud Azure Service
+
+#### Features Added
+- Support OAuth2 authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
 
 ## 4.2.0 (2022-05-26)
 
@@ -32,16 +71,19 @@
 ### Features Added
 - GA the `spring-cloud-azure-starter-keyvault-certificates`. This starter supports the auto-configuration of Azure Key Vault `CertificateClient` and `CertificateAsyncClient`. 
 
-### Bugs Fixed
-- Fix the bean `AzureTokenCredentialAutoConfiguration` initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
-- Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
-- Fix application startup issue by changing property names in configuration metadata from camel-case to kebab-case [#28312](https://github.com/Azure/azure-sdk-for-java/issues/28312).
-
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
 - Upgrade `azure-resourcemanager` to 2.14.0.
 - Upgrade `azure-sdk-bom` to 1.2.1 [#28586](https://github.com/Azure/azure-sdk-for-java/pull/28586).
 - Use `azure-cosmos:4.29.1` instead of the version `4.28.1` in `azure-sdk-bom` [#28555](https://github.com/Azure/azure-sdk-for-java/pull/28555).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix the bean `AzureTokenCredentialAutoConfiguration` initialization exception when the multiple ThreadPoolTaskExecutors beans exist [#28525](https://github.com/Azure/azure-sdk-for-java/issues/28525).
+- Fix incorrect bean name `staticStorageBlobConnectionStringProvider` in the auto-configuration of `AzureStorageFileShareAutoConfiguration` [#28464](https://github.com/Azure/azure-sdk-for-java/issues/28464).
+- Fix application startup issue by changing property names in configuration metadata from camel-case to kebab-case [#28312](https://github.com/Azure/azure-sdk-for-java/issues/28312).
 
 ## 4.0.0 (2022-03-28)
 - This release is compatible with Spring Boot 2.5.0-2.5.11, 2.6.0-2.6.5. (Note: 2.5.x (x>11) and 2.6.y (y>5) should be supported, but they aren't tested with this release.)

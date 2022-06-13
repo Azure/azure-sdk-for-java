@@ -427,14 +427,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     private Mono<ApplicationInsightsComponentApiKeyInner> createAsync(
         String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, apiKeyProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentApiKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -598,14 +591,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     private Mono<ApplicationInsightsComponentApiKeyInner> deleteAsync(
         String resourceGroupName, String resourceName, String keyId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, keyId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentApiKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -763,14 +749,7 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     private Mono<ApplicationInsightsComponentApiKeyInner> getAsync(
         String resourceGroupName, String resourceName, String keyId) {
         return getWithResponseAsync(resourceGroupName, resourceName, keyId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentApiKeyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

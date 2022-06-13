@@ -56,6 +56,12 @@ parameters:
 - name: EnableBatchRelease
   type: boolean
   default: false
+- name: UseEsrpRelease
+  type: boolean
+  default: true
+- name: JavaBuildVersion
+  type: string
+  default: $(JavaBuildVersion)
 
 stages:
   - stage: Build
@@ -84,11 +90,16 @@ stages:
             - ${{ replacement }}
 
           - AZURE_TEST.*=.*/
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         ${{ if eq(parameters.SDKType, 'data') }}:
           TestGoals: 'verify'
           TestOptions: '-am'
+          JavaBuildVersion: '1.11'
+        ${{ else }}:
+          JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
@@ -113,6 +124,7 @@ stages:
           TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
     - ${{ else }}:
       - template: archetype-java-release.yml
         parameters:
@@ -124,4 +136,5 @@ stages:
           TestPipeline: ${{ parameters.TestPipeline }}
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
 

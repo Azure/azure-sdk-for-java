@@ -15,7 +15,7 @@ public final class MonitorsCreateSamples {
      * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_Create.json
      */
     /**
-     * Sample code: Create a SAP Monitor.
+     * Sample code: Create a SAP monitor.
      *
      * @param manager Entry point to WorkloadsManager.
      */

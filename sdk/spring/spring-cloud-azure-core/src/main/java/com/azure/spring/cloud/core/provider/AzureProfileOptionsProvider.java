@@ -54,11 +54,29 @@ public interface AzureProfileOptionsProvider {
      * types will be OTHER.
      */
     enum CloudType {
-
+        /**
+         * Azure
+         */
         AZURE,
+
+        /**
+         * Azure China
+         */
         AZURE_CHINA,
+
+        /**
+         * Azure Germany
+         */
         AZURE_GERMANY,
+
+        /**
+         * Azure US government
+         */
         AZURE_US_GOVERNMENT,
+
+        /**
+         * Other
+         */
         OTHER;
 
         private static final Map<String, CloudType> CLOUD_TYPE_MAP;

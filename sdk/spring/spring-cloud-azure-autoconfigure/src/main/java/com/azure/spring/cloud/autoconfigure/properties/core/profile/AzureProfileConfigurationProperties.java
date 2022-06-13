@@ -77,7 +77,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
     }
 
     /**
-     *
+     * Azure environment configuration properties.
      */
     public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
         /**
@@ -162,6 +162,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return portal;
         }
 
+        /**
+         * Sets the portal.
+         *
+         * @param portal The portal.
+         */
         public void setPortal(String portal) {
             this.portal = portal;
         }
@@ -171,6 +176,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return publishingProfile;
         }
 
+        /**
+         * Sets the publishing profile.
+         *
+         * @param publishingProfile The publishing profile.
+         */
         public void setPublishingProfile(String publishingProfile) {
             this.publishingProfile = publishingProfile;
         }
@@ -180,6 +190,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return managementEndpoint;
         }
 
+        /**
+         * Sets the management endpoint.
+         *
+         * @param managementEndpoint The management endpoint.
+         */
         public void setManagementEndpoint(String managementEndpoint) {
             this.managementEndpoint = managementEndpoint;
         }
@@ -189,6 +204,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return resourceManagerEndpoint;
         }
 
+        /**
+         * Sets the resource manager endpoint.
+         *
+         * @param resourceManagerEndpoint The resource manager endpoint.
+         */
         public void setResourceManagerEndpoint(String resourceManagerEndpoint) {
             this.resourceManagerEndpoint = resourceManagerEndpoint;
         }
@@ -198,6 +218,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return sqlManagementEndpoint;
         }
 
+        /**
+         * Sets the SQL management endpoint.
+         *
+         * @param sqlManagementEndpoint The SQL management endpoint.
+         */
         public void setSqlManagementEndpoint(String sqlManagementEndpoint) {
             this.sqlManagementEndpoint = sqlManagementEndpoint;
         }
@@ -207,6 +232,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return sqlServerHostnameSuffix;
         }
 
+        /**
+         * Sets the SQL server hostname suffix.
+         *
+         * @param sqlServerHostnameSuffix The SQL server hostname suffix.
+         */
         public void setSqlServerHostnameSuffix(String sqlServerHostnameSuffix) {
             this.sqlServerHostnameSuffix = sqlServerHostnameSuffix;
         }
@@ -216,6 +246,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return galleryEndpoint;
         }
 
+        /**
+         * Sets the gallery endpoint.
+         *
+         * @param galleryEndpoint The gallery endpoint.
+         */
         public void setGalleryEndpoint(String galleryEndpoint) {
             this.galleryEndpoint = galleryEndpoint;
         }
@@ -225,6 +260,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return activeDirectoryEndpoint;
         }
 
+        /**
+         * Sets the active directory endpoint.
+         *
+         * @param activeDirectoryEndpoint The active directory endpoint.
+         */
         public void setActiveDirectoryEndpoint(String activeDirectoryEndpoint) {
             this.activeDirectoryEndpoint = activeDirectoryEndpoint;
         }
@@ -234,6 +274,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return activeDirectoryResourceId;
         }
 
+        /**
+         * Sets the active directory resource ID.
+         *
+         * @param activeDirectoryResourceId The active directory resource ID.
+         */
         public void setActiveDirectoryResourceId(String activeDirectoryResourceId) {
             this.activeDirectoryResourceId = activeDirectoryResourceId;
         }
@@ -243,6 +288,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return activeDirectoryGraphEndpoint;
         }
 
+        /**
+         * Sets the active directory graph endpoint.
+         *
+         * @param activeDirectoryGraphEndpoint The active directory graph endpoint.
+         */
         public void setActiveDirectoryGraphEndpoint(String activeDirectoryGraphEndpoint) {
             this.activeDirectoryGraphEndpoint = activeDirectoryGraphEndpoint;
         }
@@ -252,6 +302,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return activeDirectoryGraphApiVersion;
         }
 
+        /**
+         * Sets the active directory graph API version.
+         *
+         * @param activeDirectoryGraphApiVersion The active directory graph API version.
+         */
         public void setActiveDirectoryGraphApiVersion(String activeDirectoryGraphApiVersion) {
             this.activeDirectoryGraphApiVersion = activeDirectoryGraphApiVersion;
         }
@@ -261,6 +316,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return microsoftGraphEndpoint;
         }
 
+        /**
+         * Sets the Microsoft Graph endpoint.
+         *
+         * @param microsoftGraphEndpoint The Microsoft Graph endpoint.
+         */
         public void setMicrosoftGraphEndpoint(String microsoftGraphEndpoint) {
             this.microsoftGraphEndpoint = microsoftGraphEndpoint;
         }
@@ -270,6 +330,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return dataLakeEndpointResourceId;
         }
 
+        /**
+         * Sets the Data Lake endpoint resource ID.
+         *
+         * @param dataLakeEndpointResourceId The Data Lake endpoint resource ID.
+         */
         public void setDataLakeEndpointResourceId(String dataLakeEndpointResourceId) {
             this.dataLakeEndpointResourceId = dataLakeEndpointResourceId;
         }
@@ -279,6 +344,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return storageEndpointSuffix;
         }
 
+        /**
+         * Sets the Storage endpoint suffix.
+         *
+         * @param storageEndpointSuffix The Storage endpoint suffix.
+         */
         public void setStorageEndpointSuffix(String storageEndpointSuffix) {
             this.storageEndpointSuffix = storageEndpointSuffix;
         }
@@ -288,6 +358,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return keyVaultDnsSuffix;
         }
 
+        /**
+         * Sets the KeyVault DNS suffix.
+         *
+         * @param keyVaultDnsSuffix The KeyVault DNS suffix.
+         */
         public void setKeyVaultDnsSuffix(String keyVaultDnsSuffix) {
             this.keyVaultDnsSuffix = keyVaultDnsSuffix;
         }
@@ -297,6 +372,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return azureDataLakeStoreFileSystemEndpointSuffix;
         }
 
+        /**
+         * Sets the Azure Data Lake Storage file system endpoint suffix.
+         *
+         * @param azureDataLakeStoreFileSystemEndpointSuffix The Azure Data Lake Storage file system endpoint suffix.
+         */
         public void setAzureDataLakeStoreFileSystemEndpointSuffix(String azureDataLakeStoreFileSystemEndpointSuffix) {
             this.azureDataLakeStoreFileSystemEndpointSuffix = azureDataLakeStoreFileSystemEndpointSuffix;
         }
@@ -306,6 +386,12 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
         }
 
+        /**
+         * Sets the Azure Data Lake analytics catalog and job endpoint suffix.
+         *
+         * @param azureDataLakeAnalyticsCatalogAndJobEndpointSuffix The Azure Data Lake analytics catalog and job
+         * endpoint suffix.
+         */
         public void setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
             this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
         }
@@ -315,6 +401,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return azureLogAnalyticsEndpoint;
         }
 
+        /**
+         * Sets the Azure log analytics endpoint.
+         *
+         * @param azureLogAnalyticsEndpoint The Azure log analytics endpoint.
+         */
         public void setAzureLogAnalyticsEndpoint(String azureLogAnalyticsEndpoint) {
             this.azureLogAnalyticsEndpoint = azureLogAnalyticsEndpoint;
         }
@@ -324,6 +415,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return azureApplicationInsightsEndpoint;
         }
 
+        /**
+         * Sets the Azure Application Insights endpoint.
+         *
+         * @param azureApplicationInsightsEndpoint The Azure Application Insights endpoint.
+         */
         public void setAzureApplicationInsightsEndpoint(String azureApplicationInsightsEndpoint) {
             this.azureApplicationInsightsEndpoint = azureApplicationInsightsEndpoint;
         }

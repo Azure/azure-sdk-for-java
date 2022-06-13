@@ -253,7 +253,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
             String host = credentialList[0].substring("AccountEndpoint=".length());
             String key = credentialList[1].substring("AccountKey=".length());
 
-            if (useProxy) {
+            if (useProxy && this.httpProxyServer != null) {
                 System.setProperty(
                         "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
                         String.format("{\"type\":\"HTTP\", \"host\": \"%s\", \"port\": %d}", this.httpProxyServer.getHost(), this.httpProxyServer.getPort()));

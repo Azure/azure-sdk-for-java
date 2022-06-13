@@ -4,8 +4,9 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
-import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
+import com.azure.ai.formrecognizer.models.Point;
+import com.azure.ai.formrecognizer.models.SelectionMarkState;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public final class DocumentSelectionMarkHelper {
      */
     public interface DocumentSelectionMarkAccessor {
         void setState(DocumentSelectionMark documentSelectionMark, SelectionMarkState state);
-        void setBoundingBox(DocumentSelectionMark documentSelectionMark, List<Float> boundingBox);
+        void setBoundingPolygon(DocumentSelectionMark documentSelectionMark, List<Point> boundingPolygon);
         void setSpan(DocumentSelectionMark documentSelectionMark, DocumentSpan span);
         void setConfidence(DocumentSelectionMark documentSelectionMark, float confidence);
 
@@ -42,8 +43,8 @@ public final class DocumentSelectionMarkHelper {
         accessor.setState(documentSelectionMark, state);
     }
 
-    static void setBoundingBox(DocumentSelectionMark documentSelectionMark, List<Float> boundingBox) {
-        accessor.setBoundingBox(documentSelectionMark, boundingBox);
+    static void setBoundingPolygon(DocumentSelectionMark documentSelectionMark, List<Point> boundingPolygon) {
+        accessor.setBoundingPolygon(documentSelectionMark, boundingPolygon);
     }
 
     static void setSpan(DocumentSelectionMark documentSelectionMark, DocumentSpan span) {

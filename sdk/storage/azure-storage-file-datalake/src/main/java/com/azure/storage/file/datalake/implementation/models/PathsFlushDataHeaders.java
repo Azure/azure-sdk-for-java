@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -67,6 +68,32 @@ public final class PathsFlushDataHeaders {
      */
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsFlushDataHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsFlushDataHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        if (rawHeaders.getValue("Last-Modified") != null) {
+            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        }
+        if (rawHeaders.getValue("Content-Length") != null) {
+            this.contentLength = Long.parseLong(rawHeaders.getValue("Content-Length"));
+        }
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        if (rawHeaders.getValue("x-ms-request-server-encrypted") != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(rawHeaders.getValue("x-ms-request-server-encrypted"));
+        }
+        if (rawHeaders.getValue("Date") != null) {
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
+        }
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.

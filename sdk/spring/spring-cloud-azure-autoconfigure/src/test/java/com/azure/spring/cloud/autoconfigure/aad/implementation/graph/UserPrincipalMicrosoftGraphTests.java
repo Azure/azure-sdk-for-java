@@ -3,15 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipal;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -47,9 +46,8 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@WireMockTest(httpPort = 8080)
 class UserPrincipalMicrosoftGraphTests {
-
-    private WireMockRule wireMockRule;
 
     private String clientId;
     private String clientSecret;
@@ -81,15 +79,6 @@ class UserPrincipalMicrosoftGraphTests {
         endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
-        wireMockRule = new WireMockRule(8080);
-        wireMockRule.start();
-    }
-
-    @AfterAll
-    void close() {
-        if (wireMockRule.isRunning()) {
-            wireMockRule.shutdown();
-        }
     }
 
     @Test
