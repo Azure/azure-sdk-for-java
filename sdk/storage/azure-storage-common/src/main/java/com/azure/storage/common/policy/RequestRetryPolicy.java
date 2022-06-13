@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpRequestBodyBufferingMode;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -86,7 +87,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             delayMs = (long) ((ThreadLocalRandom.current().nextFloat() / 2 + 0.8) * 1000); // Add jitter
         }
 
-        return originalRequest.copyWithRetryableBodyAsync()
+        return originalRequest.copyWithRetryableBodyAsync(HttpRequestBodyBufferingMode.SHALLOW)
             .flatMap(requestCopy -> {
                 context.setHttpRequest(requestCopy);
                 ProgressReporter progressReporter = Contexts.getProgressReporter(context);

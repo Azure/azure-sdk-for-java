@@ -292,12 +292,13 @@ public class HttpRequest {
 
     /**
      * TODO (kasobol-msft) add docs.
+     * @param bufferingMode The buffering mode.
      * @return The request.
      */
-    public HttpRequest copyWithRetryableBody() {
+    public HttpRequest copyWithRetryableBody(HttpRequestBodyBufferingMode bufferingMode) {
         try {
             final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-            BinaryData retryableBody = getRetryableBody();
+            BinaryData retryableBody  = getRetryableBody(bufferingMode);
             return new HttpRequest(httpMethod, url, bufferedHeaders, retryableBody);
         } finally {
             requestBodyCopied = true;
@@ -306,15 +307,21 @@ public class HttpRequest {
 
     /**
      * TODO (kasobol-msft) add docs.
+     * @param bufferingMode The buffering mode.
      * @return The request.
      */
-    public Mono<HttpRequest> copyWithRetryableBodyAsync() {
-        return Mono.fromCallable(this::copyWithRetryableBody);
+    public Mono<HttpRequest> copyWithRetryableBodyAsync(HttpRequestBodyBufferingMode bufferingMode) {
+        // TODO (kasobol-msft) make toBytes async in binary data to complete async behavior in final PR.
+        return Mono.fromCallable(() -> copyWithRetryableBody(bufferingMode));
     }
 
-    private BinaryData getRetryableBody() {
+    private BinaryData getRetryableBody(HttpRequestBodyBufferingMode bufferingMode) {
         if (body == null) {
             return null;
+        }
+
+        if (bufferingMode == HttpRequestBodyBufferingMode.NEVER) {
+            return body;
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(body);
@@ -328,7 +335,7 @@ public class HttpRequest {
             InputStream inputStream = content.toStream();
             Long contentLength = getContentLength();
             if (contentLength != null && contentLength < Integer.MAX_VALUE) {
-                if (inputStream.markSupported()) {
+                if (inputStream.markSupported() && bufferingMode == HttpRequestBodyBufferingMode.SHALLOW) {
                     if (requestBodyCopied) {
                         try {
                             inputStream.reset();
@@ -358,8 +365,15 @@ public class HttpRequest {
              ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
              duplicates the ByteBuffer object, not the underlying data.
              */
-            Flux<ByteBuffer> bufferedBody = body.toFluxByteBuffer().map(ByteBuffer::duplicate);
-            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(bufferedBody, body.getLength()));
+            if (bufferingMode == HttpRequestBodyBufferingMode.SHALLOW) {
+                Flux<ByteBuffer> bufferedBody = body.toFluxByteBuffer().map(ByteBuffer::duplicate);
+                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(bufferedBody, body.getLength()));
+            } else {
+                byte[] bufferedContent = content.toBytes();
+                BinaryData bufferedBinaryData = BinaryData.fromBytes(bufferedContent);
+                this.setBody(bufferedBinaryData);
+                return bufferedBinaryData;
+            }
         }
     }
 
