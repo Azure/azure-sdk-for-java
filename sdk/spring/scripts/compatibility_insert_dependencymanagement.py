@@ -25,14 +25,14 @@ def get_args():
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     add_dependency_management_for_all_poms_files_in_directory("./sdk/spring", get_args().spring_boot_dependencies_version, get_args().spring_cloud_dependencies_version)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
