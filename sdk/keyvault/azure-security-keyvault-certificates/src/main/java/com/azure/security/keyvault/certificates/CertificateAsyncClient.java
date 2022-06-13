@@ -34,6 +34,7 @@ import com.azure.security.keyvault.certificates.implementation.CertificateRestor
 import com.azure.security.keyvault.certificates.implementation.CertificateService;
 import com.azure.security.keyvault.certificates.implementation.CertificateUpdateParameters;
 import com.azure.security.keyvault.certificates.implementation.Contacts;
+import com.azure.security.keyvault.certificates.implementation.IssuerAttributes;
 import com.azure.security.keyvault.certificates.implementation.IssuerCredentials;
 import com.azure.security.keyvault.certificates.implementation.OrganizationDetails;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -1617,14 +1618,23 @@ public final class CertificateAsyncClient {
         context = context == null ? Context.NONE : context;
         CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
             .provider(issuer.getProvider())
-            .credentials(new IssuerCredentials().accountId(issuer.getAccountId()).password(issuer.getPassword()))
-            .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
-        return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Creating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response -> logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to create the certificate issuer - {}", issuer.getName(), error));
+            .organizationDetails(new OrganizationDetails()
+                .id(issuer.getOrganizationId())
+                .adminDetails(issuer.getAdministratorContacts()))
+            .credentials(new IssuerCredentials()
+                .password(issuer.getPassword())
+                .accountId(issuer.getAccountId()))
+            .attributes(new IssuerAttributes()
+                .enabled(issuer.isEnabled()));
+
+        return service.setCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuer.getName(), parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Creating certificate issuer - {}",  issuer.getName()))
+            .doOnSuccess(response ->
+                logger.verbose("Created the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to create the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**
@@ -1694,11 +1704,14 @@ public final class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
         context = context == null ? Context.NONE : context;
-        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Retrieving certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
+        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Retrieving certificate issuer - {}",  issuerName))
+            .doOnSuccess(response ->
+                logger.verbose("Retrieved the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1766,11 +1779,15 @@ public final class CertificateAsyncClient {
 
     Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
         context = context == null ? Context.NONE : context;
-        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Deleting certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
+
+        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Deleting certificate issuer - {}",  issuerName))
+            .doOnSuccess(response ->
+                logger.verbose("Deleted the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
     }
 
 
@@ -1814,8 +1831,8 @@ public final class CertificateAsyncClient {
 
     private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersFirstPage(Context context) {
         try {
-            return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            return service.getCertificateIssuers(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
                 .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
@@ -1833,11 +1850,15 @@ public final class CertificateAsyncClient {
      */
     private Mono<PagedResponse<IssuerProperties>> listPropertiesOfIssuersNextPage(String continuationToken, Context context) {
         try {
-            return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Listed next certificate issuers page - Page {} ", continuationToken))
-                .doOnError(error -> logger.warning("Failed to list next certificate issuers page - Page {} ", continuationToken, error));
+            return service.getCertificateIssuers(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored ->
+                    logger.verbose("Listing next certificate issuers page - Page {} ", continuationToken))
+                .doOnSuccess(response ->
+                    logger.verbose("Listed next certificate issuers page - Page {} ", continuationToken))
+                .doOnError(error ->
+                    logger.warning("Failed to list next certificate issuers page - Page {} ", continuationToken,
+                        error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1927,13 +1948,24 @@ public final class CertificateAsyncClient {
         context = context == null ? Context.NONE : context;
         CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
             .provider(issuer.getProvider())
-            .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
-            .credentials(new IssuerCredentials().password(issuer.getPassword()).accountId(issuer.getAccountId()));
-        return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE, updateParameters, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Updating certificate issuer - {}",  issuer.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to updated the certificate issuer - {}", issuer.getName(), error));
+            .organizationDetails(new OrganizationDetails()
+                .id(issuer.getOrganizationId())
+                .adminDetails(issuer.getAdministratorContacts()))
+            .credentials(new IssuerCredentials()
+                .password(issuer.getPassword())
+                .accountId(issuer.getAccountId()))
+            .attributes(new IssuerAttributes()
+                .enabled(issuer.isEnabled()));
+
+        return service.updateCertificateIssuer(vaultUrl, issuer.getName(), apiVersion, ACCEPT_LANGUAGE,
+            updateParameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY,
+                KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored ->
+                logger.verbose("Updating certificate issuer - {}",  issuer.getName()))
+            .doOnSuccess(response ->
+                logger.verbose("Updated up the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error ->
+                logger.warning("Failed to updated the certificate issuer - {}", issuer.getName(), error));
     }
 
     /**

@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.test.scheduler.VirtualTimeScheduler;
 import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 
@@ -94,7 +95,7 @@ public class RetryUtilTest {
     void withRetryFluxEmitsItemsLaterThanTimeout() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
-        final Duration timeout = Duration.ofMillis(500);
+        final Duration timeout = Duration.ofSeconds(5);
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
@@ -107,14 +108,20 @@ public class RetryUtilTest {
         final Flux<AmqpTransportType> flux = singleItem.flux()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
-        // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(flux, options, timeoutMessage))
-            .expectSubscription()
-            .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
-            .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .expectNoEvent(totalWaitTime)
-            .thenCancel()
-            .verify();
+        final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
+        try {
+            // Act & Assert
+            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage),
+                    () -> virtualTimeScheduler, 1)
+                .expectSubscription()
+                .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
+                .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .expectNoEvent(totalWaitTime)
+                .thenCancel()
+                .verify();
+        } finally {
+            virtualTimeScheduler.dispose();
+        }
 
         assertEquals(1, resubscribe.get());
     }
@@ -210,15 +217,22 @@ public class RetryUtilTest {
             .setTryTimeout(timeout);
 
         final Flux<Integer> stream = Flux.concat(
-            Flux.just(0, 1, 2),
-            Flux.error(nonTransientError),
-            Flux.just(3, 4));
+            Flux.defer(() -> Flux.just(0, 1, 2)),
+            Flux.defer(() -> Flux.error(nonTransientError)),
+            Flux.defer(() -> Flux.just(3, 4)));
+
+        final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create(true);
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
-            .expectNext(0, 1, 2)
-            .expectErrorMatches(error -> error.equals(nonTransientError))
-            .verify();
+        try {
+            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage),
+                    () -> virtualTimeScheduler, 4)
+                .expectNext(0, 1, 2)
+                .expectErrorMatches(error -> error.equals(nonTransientError))
+                .verify();
+        } finally {
+            virtualTimeScheduler.dispose();
+        }
     }
 
     static Stream<AmqpRetryOptions> createRetry() {

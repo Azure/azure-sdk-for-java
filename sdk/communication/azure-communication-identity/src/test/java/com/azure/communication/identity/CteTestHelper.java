@@ -68,7 +68,7 @@ public class CteTestHelper {
      */
     private static GetTokenForTeamsUserOptions createTeamsUserExchangeTokenRequest() throws MalformedURLException, ExecutionException, InterruptedException {
         GetTokenForTeamsUserOptions options = new GetTokenForTeamsUserOptions("Sanitized", "Sanitized", "Sanitized");
-        if (TEST_MODE != TestMode.PLAYBACK) {
+        if (!skipExchangeAadTeamsTokenTest() && TEST_MODE != TestMode.PLAYBACK) {
             try {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
                         .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
