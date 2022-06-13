@@ -3,284 +3,287 @@
 
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
-//import com.azure.spring.cloud.autoconfigure.kafka.properties.AzureEventHubsKafkaProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
+import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
+import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
+import org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
 
-import static com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_MECHANISM_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_MECHANISM_OAUTH;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
+import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.CLIENT_ID;
+import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.MANAGED_IDENTITY_ENABLED;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
-import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
+import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class AzureKafkaSpringBootAutoConfigurationTests {
+class AzureEventHubsKafkaOAUTH2ConfigurationTests {
 
-    static final String CONNECTION_STRING_FORMAT =
-            "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    private static final String SPRING_BOOT_KAFKA_PROPERTIES_PREFIX = "spring.kafka.properties.";
+    private static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
+    private static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";
+    private static final String SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.consumer-properties.";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureKafkaSpringBootAutoConfiguration.class,
-                    AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class))
-            .withBean(KafkaProperties.class, KafkaProperties::new);
-
-    @Test
-    void shouldNotConfigureWhenAzureEventHubsKafkaDisabled() {
-        this.contextRunner
-                .withPropertyValues("spring.cloud.azure.kafka.enabled=false")
-                .run(context -> assertThat(context).doesNotHaveBean(AzureKafkaSpringBootAutoConfiguration.class));
-    }
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAUTH2Configuration.class,
+            AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class));
 
     @Test
     void shouldNotConfigureWithoutKafkaTemplate() {
         this.contextRunner
-                .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-                .run(context -> assertThat(context).doesNotHaveBean(AzureKafkaSpringBootAutoConfiguration.class));
+            .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAUTH2Configuration.class));
     }
 
     @Test
-    void azureGlobalPropertiesShouldBind() {
+    void shouldNotConfigureBPPWithoutKafkaMessageChannelBinder() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.cloud.azure.credential.client-id=test-client-id",
-                        "spring.cloud.azure.profile.tenant-id=test-tenant-id",
-                        "spring.cloud.azure.profile.environment.active-directory-endpoint=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint()
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-
-                    AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                    assertEquals("test-client-id", azureGlobalProperties.getCredential().getClientId());
-                    assertEquals("test-tenant-id", azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
-//                    AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
-//                    assertTrue(azureEventHubsKafkaProperties.isEnabled());
-//                    assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
-//                    assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-//                    assertNotEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
-                });
+            .withBean(KafkaProperties.class, KafkaProperties::new)
+            .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
+            .run(context -> {
+                assertThat(context)
+                    .doesNotHaveBean(AzureEventHubsKafkaOAUTH2Configuration.AzureKafkaSpringCloudStreamAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+            });
     }
 
     @Test
-    void azureEventHubsKafkaPropertiesShouldBind() {
+    void shouldConfigureFactoryCustomizersAndBPP() {
         this.contextRunner
-                .withPropertyValues(
-//                        AzureKafkaConfigs.CLIENT_ID_CONFIG + "=test-client-id",
-//                        AzureKafkaConfigs.TENANT_ID_CONFIG + "=test-tenant-id",
-//                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint()
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-
-                    AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                    assertNull(azureGlobalProperties.getCredential().getClientId());
-                    assertNull(azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
-//                    AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
-//                    assertTrue(azureEventHubsKafkaProperties.isEnabled());
-//                    assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
-//                    assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-//                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
-                });
+            .run(context -> {
+                assertThat(context).hasSingleBean(DefaultKafkaConsumerFactoryCustomizer.class);
+                assertThat(context).hasSingleBean(DefaultKafkaProducerFactoryCustomizer.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+            });
     }
 
     @Test
-    void azureEventHubsKafkaPropertiesShouldOverride() {
+    void testKafkaBootPropertiesShouldBindOnBoot() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.cloud.azure.credential.client-id=fake-client-id",
-                        "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
-                        "spring.cloud.azure.profile.environment.active-directory-endpoint=" + AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
-                        "spring.cloud.azure.kafka.enabled=true"
-//                        AzureKafkaConfigs.CLIENT_ID_CONFIG + "=test-client-id",
-//                        AzureKafkaConfigs.TENANT_ID_CONFIG + "=test-tenant-id",
-//                        AzureKafkaConfigs.AAD_ENDPOINT_CONFIG + "=" + AZURE_GERMANY.getActiveDirectoryEndpoint()
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+            .withPropertyValues(
+                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
+                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                "spring.cloud.azure.credential.client-id=azure-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                    assertEquals("fake-client-id", azureGlobalProperties.getCredential().getClientId());
-                    assertEquals("fake-tenant-id", azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals(AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
+                assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
+                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                assertEquals("kafka-client-id", kafkaProperties.getProperties().get(CLIENT_ID));
+                assertEquals("kafka-client-id", kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
+                assertEquals("kafka-producer-client-id", kafkaProperties.buildProducerProperties().get(CLIENT_ID));
 
-//                    AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
-//                    assertTrue(azureEventHubsKafkaProperties.isEnabled());
-//                    assertEquals("test-client-id", azureEventHubsKafkaProperties.getCredential().getClientId());
-//                    assertEquals("test-tenant-id", azureEventHubsKafkaProperties.getProfile().getTenantId());
-//                    assertEquals(AZURE_GERMANY.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
-                });
+                AzureThirdPartyServiceProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                    kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
+                assertEquals("kafka-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
+                AzureThirdPartyServiceProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                    kafkaProperties.buildProducerProperties(), azureGlobalProperties);
+                assertEquals("kafka-producer-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
+            });
     }
 
     @Test
-    void noAzurePropertiesShouldBind() {
+    void testKafkaBootPropertiesShouldBindOnBinder() {
         this.contextRunner
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+            .withPropertyValues(
+                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
+                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                "spring.cloud.azure.credential.client-id=azure-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
-                    AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
-                    assertNull(azureGlobalProperties.getCredential().getClientId());
-                    assertNull(azureGlobalProperties.getProfile().getTenantId());
-                    assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), azureGlobalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
 
-//                    AzureEventHubsKafkaProperties azureEventHubsKafkaProperties = context.getBean(AzureEventHubsKafkaProperties.class);
-//                    assertTrue(azureEventHubsKafkaProperties.isEnabled());
-//                    assertNull(azureEventHubsKafkaProperties.getCredential().getClientId());
-//                    assertNull(azureEventHubsKafkaProperties.getProfile().getTenantId());
-//                    assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(), azureEventHubsKafkaProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+                Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
+                assertEquals("kafka-client-id", consumerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(consumerConfiguration);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.CLIENT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.TENANT_ID_CONFIG));
-//                    assertNull(kafkaProperties.getProperties().get(AzureKafkaConfigs.AAD_ENDPOINT_CONFIG));
-                });
+                Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
+                assertEquals("kafka-producer-client-id", producerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(producerConfiguration);
+            });
     }
 
     @Test
-    void testConfigureKafkaProperties() {
+    void testAzureGlobalPropertiesShouldBindOnBoot() {
         this.contextRunner
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withPropertyValues(
+                "spring.cloud.azure.credential.client-id=azure-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                AzureGlobalProperties azureGlobalProperties = context.getBean(AzureGlobalProperties.class);
+                assertEquals("azure-client-id", azureGlobalProperties.getCredential().getClientId());
+                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                assertNull(kafkaProperties.getProperties().get(CLIENT_ID));
+                assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
+                assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
 
-                    Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
-                    testOAuthKafkaPropertiesBind(adminProperties);
-
-                    Map<String, Object> consumerProperties = kafkaProperties.buildConsumerProperties();
-                    testOAuthKafkaPropertiesBind(consumerProperties);
-
-                    Map<String, Object> producerProperties = kafkaProperties.buildProducerProperties();
-                    testOAuthKafkaPropertiesBind(producerProperties);
-                });
+                AzureThirdPartyServiceProperties azureBuiltKafkaConsumerProp = buildAzureProperties(
+                    kafkaProperties.buildConsumerProperties(), azureGlobalProperties);
+                assertEquals("azure-client-id", azureBuiltKafkaConsumerProp.getCredential().getClientId());
+                AzureThirdPartyServiceProperties azureBuiltKafkaProducerProp = buildAzureProperties(
+                    kafkaProperties.buildProducerProperties(), azureGlobalProperties);
+                assertEquals("azure-client-id", azureBuiltKafkaProducerProp.getCredential().getClientId());
+            });
     }
 
     @Test
-    void testConfigureSecurityProtocolProperties() {
+    void testAzureGlobalPropertiesShouldBindOnBinder() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.kafka.admin.security.protocol=SSL",
-                        "spring.kafka.producer.security.protocol=" + SECURITY_PROTOCOL_CONFIG_SASL
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withPropertyValues(
+                "spring.cloud.azure.credential.client-id=azure-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
 
-                    Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
-                    testOAuthKafkaPropertiesNotBind(adminProperties);
+                Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
+                assertEquals("azure-client-id", consumerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(consumerConfiguration);
 
-                    Map<String, Object> consumerProperties = kafkaProperties.buildConsumerProperties();
-                    testOAuthKafkaPropertiesBind(consumerProperties);
-
-                    Map<String, Object> producerProperties = kafkaProperties.buildProducerProperties();
-                    testOAuthKafkaPropertiesBind(producerProperties);
-                });
+                Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
+                assertEquals("azure-client-id", producerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(producerConfiguration);
+            });
     }
 
     @Test
-    void testConfigureSaslProperties() {
+    void testKafkaBinderPropertiesShouldNotBindOnBoot() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.kafka.properties.security.protocol=" + SECURITY_PROTOCOL_CONFIG_SASL,
-                        "spring.kafka.admin.properties.sasl.mechanism=" + SASL_MECHANISM_OAUTH,
-                        "spring.kafka.producer.properties.sasl.mechanism=PLAIN"
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withPropertyValues(
+                SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
+                SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-
-                    Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
-                    testOAuthKafkaPropertiesBind(adminProperties);
-
-                    Map<String, Object> consumerProperties = kafkaProperties.buildConsumerProperties();
-                    testOAuthKafkaPropertiesBind(consumerProperties);
-
-                    Map<String, Object> producerProperties = kafkaProperties.buildProducerProperties();
-                    assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, producerProperties.get(SECURITY_PROTOCOL_CONFIG));
-                    assertNotEquals(SASL_MECHANISM_OAUTH, producerProperties.get(SASL_MECHANISM));
-                    assertNotEquals(SASL_JAAS_CONFIG_OAUTH, producerProperties.get(SASL_JAAS_CONFIG));
-                    assertNotEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, producerProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
-
-                });
+                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                assertNull(kafkaProperties.getProperties().get(CLIENT_ID));
+                assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
+                assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
+            });
     }
 
     @Test
-    void testConfigureJaasProperties() {
+    void testKafkaBinderPropertiesShouldBindOnBinder() {
         this.contextRunner
-                .withPropertyValues(
-                        "spring.kafka.security.protocol=" + SECURITY_PROTOCOL_CONFIG_SASL,
-                        "spring.kafka.properties.sasl.mechanism=" + SASL_MECHANISM_OAUTH,
-                        "spring.kafka.admin.properties.sasl.jaas.config=fake-admin-custom",
-                        "spring.kafka.producer.properties.login.callback.handler.class=fake-producer-custom"
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringBootAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+            .withPropertyValues(
+                SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
+                SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
+                SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
+                SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                "spring.cloud.azure.credential.client-id=azure-client-id"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
+                assertThat(context).hasSingleBean(KafkaTopicProvisioner.class);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
 
-                    Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
-                    testOAuthKafkaPropertiesBind(adminProperties);
+                Map<String, String> kafkaConfiguration = kafkaProperties.getConfiguration();
+                assertEquals("cloud-client-id", kafkaConfiguration.get(CLIENT_ID));
+                
+                KafkaTopicProvisioner kafkaTopicProvisioner = context.getBean(KafkaTopicProvisioner.class);
+                Map<String, Object> adminClientProperties = (Map<String, Object>) ReflectionTestUtils.getField(kafkaTopicProvisioner,
+                    "adminClientProperties");
+                testOAuthKafkaPropertiesBind(adminClientProperties);
 
-                    Map<String, Object> consumerProperties = kafkaProperties.buildConsumerProperties();
-                    testOAuthKafkaPropertiesBind(consumerProperties);
+                Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
+                assertEquals("cloud-consumer-client-id", consumerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(consumerConfiguration);
 
-                    Map<String, Object> producerProperties = kafkaProperties.buildProducerProperties();
-                    testOAuthKafkaPropertiesBind(producerProperties);
-                });
+                Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
+                assertEquals("kafka-producer-client-id", producerConfiguration.get(CLIENT_ID));
+                testOAuthKafkaPropertiesBind(producerConfiguration);
+            });
+    }
+
+    @Test
+    void testFactoryConfigureOAuthAndTokenCredential() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.kafka.producer.properties." + MANAGED_IDENTITY_ENABLED + "=true"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
+                assertThat(context).hasSingleBean(ConsumerFactory.class);
+                assertThat(context).hasSingleBean(ProducerFactory.class);
+
+                DefaultKafkaConsumerFactory consumerFactory =
+                    (DefaultKafkaConsumerFactory) context.getBean(ConsumerFactory.class);
+                Map<String, Object> consumerProperties = consumerFactory.getConfigurationProperties();
+                TokenCredential defaultAzureCredential =
+                    (TokenCredential) context.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
+                assertEquals(defaultAzureCredential, consumerProperties.get(AZURE_TOKEN_CREDENTIAL));
+                shouldConfigureOAuthProperties(consumerProperties);
+
+                DefaultKafkaProducerFactory producerFactory =
+                    (DefaultKafkaProducerFactory) context.getBean(ProducerFactory.class);
+                Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
+                assertNotEquals(defaultAzureCredential, producerProperties.get(AZURE_TOKEN_CREDENTIAL));
+                assertTrue(producerProperties.get(AZURE_TOKEN_CREDENTIAL) instanceof ManagedIdentityCredential);
+                shouldConfigureOAuthProperties(producerProperties);
+            });
+    }
+
+    private void shouldConfigureOAuthProperties(Map<String, Object> configurationProperties) {
+        assertEquals(SECURITY_PROTOCOL_CONFIG_SASL, configurationProperties.get(SECURITY_PROTOCOL_CONFIG));
+        assertEquals(SASL_MECHANISM_OAUTH, configurationProperties.get(SASL_MECHANISM));
+        assertEquals(SASL_JAAS_CONFIG_OAUTH, configurationProperties.get(SASL_JAAS_CONFIG));
+        assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH,
+            configurationProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
     private <T> void testOAuthKafkaPropertiesBind(Map<String, T> kafkaProperties) {
@@ -290,10 +293,4 @@ class AzureKafkaSpringBootAutoConfigurationTests {
         assertEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, kafkaProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
     }
 
-    private <T> void testOAuthKafkaPropertiesNotBind(Map<String, T> kafkaProperties) {
-        assertNotEquals(SECURITY_PROTOCOL_CONFIG_SASL, kafkaProperties.get(SECURITY_PROTOCOL_CONFIG));
-        assertNotEquals(SASL_MECHANISM_OAUTH, kafkaProperties.get(SASL_MECHANISM));
-        assertNotEquals(SASL_JAAS_CONFIG_OAUTH, kafkaProperties.get(SASL_JAAS_CONFIG));
-        assertNotEquals(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH, kafkaProperties.get(SASL_LOGIN_CALLBACK_HANDLER_CLASS));
-    }
 }

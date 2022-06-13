@@ -7,8 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.kafka.properties.AzureEventHubsKafkaProperties;
+import com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAUTH2Configuration;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
@@ -169,13 +168,13 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     @Test
     void shouldNotOverrideKafkaPropertiesWithConnectionStringAutoConfiguration() {
         new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
+                .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAUTH2Configuration.class, AzureEventHubsKafkaAutoConfiguration.class,
                         AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class))
                 .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test"))
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
+//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
                     assertThat(context).hasSingleBean(KafkaProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
