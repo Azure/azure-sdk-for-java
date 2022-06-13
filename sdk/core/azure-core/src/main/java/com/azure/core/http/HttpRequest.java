@@ -14,6 +14,7 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -301,6 +302,14 @@ public class HttpRequest {
         } finally {
             requestBodyCopied = true;
         }
+    }
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     * @return The request.
+     */
+    public Mono<HttpRequest> copyWithRetryableBodyAsync() {
+        return Mono.fromCallable(this::copyWithRetryableBody);
     }
 
     private BinaryData getRetryableBody() {
