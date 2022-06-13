@@ -26,6 +26,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeFileSystemClient}
@@ -233,6 +234,39 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeFileSystemClient#createFileWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createFileWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, options, timeout,
+            new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileSystemClient#deleteFile(String)} and
      * {@link DataLakeFileSystemClient#deleteFileWithResponse(String, DataLakeRequestConditions, Duration, Context)}
      */
@@ -278,6 +312,39 @@ public class FileSystemClientJavaDocCodeSamples {
             permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions,
             timeout, new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemClient#createDirectoryWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createDirectoryWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createDirectoryWithResponse(directoryName,
+            options, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
     }
 
     /**
@@ -557,8 +624,11 @@ public class FileSystemClientJavaDocCodeSamples {
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -610,8 +680,11 @@ public class FileSystemClientJavaDocCodeSamples {
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeDirectoryClient> response = client.createDirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));

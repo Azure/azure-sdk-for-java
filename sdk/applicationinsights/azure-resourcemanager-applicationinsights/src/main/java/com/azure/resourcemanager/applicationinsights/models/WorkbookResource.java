@@ -22,7 +22,7 @@ public class WorkbookResource extends Resource {
      * The kind of workbook. Only valid value is shared.
      */
     @JsonProperty(value = "kind")
-    private Kind kind;
+    private WorkbookSharedTypeKind kind;
 
     /*
      * Resource etag
@@ -55,7 +55,7 @@ public class WorkbookResource extends Resource {
      *
      * @return the kind value.
      */
-    public Kind kind() {
+    public WorkbookSharedTypeKind kind() {
         return this.kind;
     }
 
@@ -65,7 +65,7 @@ public class WorkbookResource extends Resource {
      * @param kind the kind value to set.
      * @return the WorkbookResource object itself.
      */
-    public WorkbookResource withKind(Kind kind) {
+    public WorkbookResource withKind(WorkbookSharedTypeKind kind) {
         this.kind = kind;
         return this;
     }

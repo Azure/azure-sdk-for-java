@@ -25,7 +25,11 @@ public final class ConfigurationResourceType extends ExpandableStringEnum<Config
         return fromString(name, ConfigurationResourceType.class);
     }
 
-    /** @return known ConfigurationResourceType values. */
+    /**
+     * Gets known ConfigurationResourceType values.
+     *
+     * @return known ConfigurationResourceType values.
+     */
     public static Collection<ConfigurationResourceType> values() {
         return values(ConfigurationResourceType.class);
     }

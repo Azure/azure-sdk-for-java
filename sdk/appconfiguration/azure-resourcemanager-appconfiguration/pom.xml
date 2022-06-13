@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-appconfiguration</artifactId>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appconfiguration;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appconfiguration;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for AppConfiguration Management</name>
-  <description>This package contains Microsoft Azure SDK for AppConfiguration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2021-10-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for AppConfiguration Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2022-05-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

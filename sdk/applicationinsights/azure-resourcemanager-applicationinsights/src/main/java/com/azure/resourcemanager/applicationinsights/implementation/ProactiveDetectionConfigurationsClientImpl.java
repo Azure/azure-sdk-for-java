@@ -222,15 +222,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listAsync(
         String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -395,14 +387,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getAsync(
         String resourceGroupName, String resourceName, String configurationId) {
         return getWithResponseAsync(resourceGroupName, resourceName, configurationId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,14 +589,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

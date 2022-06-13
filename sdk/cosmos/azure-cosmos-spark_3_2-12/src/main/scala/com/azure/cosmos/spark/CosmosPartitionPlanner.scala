@@ -396,25 +396,40 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         Some(range)
       })
 
+    val result = new ArrayBuffer[PartitionMetadata]
     orderedRanges
-      .map(range => {
-        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+      .foreach(range => {
+        logInfo(s"merging range $range")
+        val initialStartTokensIndex = startTokensIndex
+        val initialLatestTokensIndex = latestTokensIndex
+        while (startTokensIndex < startTokens.length &&
+          !SparkBridgeImplementationInternal.doRangesOverlap(range, startTokens(startTokensIndex)._1)) {
+
           startTokensIndex += 1
-          if (startTokensIndex >= startTokens.length) {
-            throw new IllegalStateException(s"No overlapping start token found for range '$range'.")
-          }
         }
 
-        while (!SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+        while (startTokensIndex < startTokens.length &&
+          latestTokensIndex < latestTokens.length &&
+          !SparkBridgeImplementationInternal.doRangesOverlap(range, latestTokens(latestTokensIndex).feedRange)) {
+
           latestTokensIndex += 1
-          if (latestTokensIndex >= latestTokens.length) {
-            throw new IllegalStateException(s"No overlapping latest token found for range '$range'.")
-          }
         }
 
-        val startLsn: Long = startTokens(startTokensIndex)._2
-        latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+        if (startTokensIndex < startTokens.length &&
+          latestTokensIndex < latestTokens.length) {
+
+          val startLsn: Long = startTokens(startTokensIndex)._2
+          val newToken = latestTokens(latestTokensIndex).cloneForSubRange(range, startLsn)
+          result.append(newToken)
+        } else {
+          startTokensIndex = initialStartTokensIndex
+          latestTokensIndex = initialLatestTokensIndex
+        }
       })
+
+    assert(result.size > 0)
+
+    result.toArray
   }
   // scalastyle:on method.length
 

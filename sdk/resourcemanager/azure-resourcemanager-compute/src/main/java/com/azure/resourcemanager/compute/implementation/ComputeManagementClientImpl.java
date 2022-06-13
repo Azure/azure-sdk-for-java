@@ -440,18 +440,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineScaleSetVMRunCommands;
     }
 
-    /** The ResourceSkusClient object to access its operations. */
-    private final ResourceSkusClient resourceSkus;
-
-    /**
-     * Gets the ResourceSkusClient object to access its operations.
-     *
-     * @return the ResourceSkusClient object.
-     */
-    public ResourceSkusClient getResourceSkus() {
-        return this.resourceSkus;
-    }
-
     /** The DisksClient object to access its operations. */
     private final DisksClient disks;
 
@@ -462,30 +450,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public DisksClient getDisks() {
         return this.disks;
-    }
-
-    /** The SnapshotsClient object to access its operations. */
-    private final SnapshotsClient snapshots;
-
-    /**
-     * Gets the SnapshotsClient object to access its operations.
-     *
-     * @return the SnapshotsClient object.
-     */
-    public SnapshotsClient getSnapshots() {
-        return this.snapshots;
-    }
-
-    /** The DiskEncryptionSetsClient object to access its operations. */
-    private final DiskEncryptionSetsClient diskEncryptionSets;
-
-    /**
-     * Gets the DiskEncryptionSetsClient object to access its operations.
-     *
-     * @return the DiskEncryptionSetsClient object.
-     */
-    public DiskEncryptionSetsClient getDiskEncryptionSets() {
-        return this.diskEncryptionSets;
     }
 
     /** The DiskAccessesClient object to access its operations. */
@@ -500,6 +464,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.diskAccesses;
     }
 
+    /** The DiskEncryptionSetsClient object to access its operations. */
+    private final DiskEncryptionSetsClient diskEncryptionSets;
+
+    /**
+     * Gets the DiskEncryptionSetsClient object to access its operations.
+     *
+     * @return the DiskEncryptionSetsClient object.
+     */
+    public DiskEncryptionSetsClient getDiskEncryptionSets() {
+        return this.diskEncryptionSets;
+    }
+
     /** The DiskRestorePointsClient object to access its operations. */
     private final DiskRestorePointsClient diskRestorePoints;
 
@@ -510,6 +486,30 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public DiskRestorePointsClient getDiskRestorePoints() {
         return this.diskRestorePoints;
+    }
+
+    /** The SnapshotsClient object to access its operations. */
+    private final SnapshotsClient snapshots;
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    public SnapshotsClient getSnapshots() {
+        return this.snapshots;
+    }
+
+    /** The ResourceSkusClient object to access its operations. */
+    private final ResourceSkusClient resourceSkus;
+
+    /**
+     * Gets the ResourceSkusClient object to access its operations.
+     *
+     * @return the ResourceSkusClient object.
+     */
+    public ResourceSkusClient getResourceSkus() {
+        return this.resourceSkus;
     }
 
     /** The GalleriesClient object to access its operations. */
@@ -766,12 +766,12 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
         this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
-        this.resourceSkus = new ResourceSkusClientImpl(this);
         this.disks = new DisksClientImpl(this);
-        this.snapshots = new SnapshotsClientImpl(this);
-        this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
         this.diskAccesses = new DiskAccessesClientImpl(this);
+        this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
         this.diskRestorePoints = new DiskRestorePointsClientImpl(this);
+        this.snapshots = new SnapshotsClientImpl(this);
+        this.resourceSkus = new ResourceSkusClientImpl(this);
         this.galleries = new GalleriesClientImpl(this);
         this.galleryImages = new GalleryImagesClientImpl(this);
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);

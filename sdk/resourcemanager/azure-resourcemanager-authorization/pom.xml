@@ -44,7 +44,6 @@
       --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

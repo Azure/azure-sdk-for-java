@@ -3,6 +3,8 @@
 ## 4.3.0-beta.1 (Unreleased)
 
 ### Features Added
+- GA the `spring-cloud-azure-starter-storage`. This starter supports all features of Azure Storage.
+- GA the `spring-cloud-azure-starter-keyvault`. This starter supports all features of Azure Key Vault.
 
 ### Breaking Changes
 
@@ -10,12 +12,42 @@
 
 ### Other Changes
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
++ Add `AzureStorageConfiguration` to make Azure storage service share common property configuration [#29094](https://github.com/Azure/azure-sdk-for-java/pull/29094).
+    +  Add properties `spring.cloud.azure.storage.endpoint`, `spring.cloud.azure.storage.account-key`, `spring.cloud.azure.storage.sas-token`, `spring.cloud.azure.storage.connection-string`, `spring.cloud.azure.storage.account-name`.
++ Add `AzureKeyVaultConfiguration` to make Azure Key Vault service share common property configuration [#29306](https://github.com/Azure/azure-sdk-for-java/pull/29306).
+    + Add properties `spring.cloud.azure.keyvault`.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+#### Features Added
+- Add `enabled` option in `AzureServiceBusJmsProperties` [#29232](https://github.com/Azure/azure-sdk-for-java/issues/29232).
+
+#### Bugs Fixed
+- Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
 
 #### Bugs Fixed
 - Fix the `ServiceBusContainerProperties` constructor with overriding the default field values [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
 - Restrict the concurrency value to be int format in `ServiceBusListener` [#29095](https://github.com/Azure/azure-sdk-for-java/pull/29095).
+
+### Spring Cloud Azure Starter Active Directory
+This section includes changes in `spring-cloud-azure-starter-active-directory` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
+
+### Spring Cloud Azure Starter Active Directory B2C
+This section includes changes in `spring-cloud-azure-starter-active-directory-b2c` module.
+
+#### Dependency Updates
+- Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
 ## 4.2.0 (2022-05-26)
 

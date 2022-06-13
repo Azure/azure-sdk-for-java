@@ -122,6 +122,10 @@ public final class ConfigurationStoreImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConfigurationStoreInner innerModel() {
         return this.innerObject;
     }

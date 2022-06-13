@@ -26,11 +26,27 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloads.fluent.WorkloadsClient;
 import com.azure.resourcemanager.workloads.implementation.MonitorsImpl;
 import com.azure.resourcemanager.workloads.implementation.OperationsImpl;
+import com.azure.resourcemanager.workloads.implementation.PhpWorkloadsImpl;
 import com.azure.resourcemanager.workloads.implementation.ProviderInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.ResourceProvidersImpl;
+import com.azure.resourcemanager.workloads.implementation.SapApplicationServerInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.SapCentralInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.SapDatabaseInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.SapVirtualInstancesImpl;
+import com.azure.resourcemanager.workloads.implementation.SkusImpl;
+import com.azure.resourcemanager.workloads.implementation.WordpressInstancesImpl;
 import com.azure.resourcemanager.workloads.implementation.WorkloadsClientBuilder;
 import com.azure.resourcemanager.workloads.models.Monitors;
 import com.azure.resourcemanager.workloads.models.Operations;
+import com.azure.resourcemanager.workloads.models.PhpWorkloads;
 import com.azure.resourcemanager.workloads.models.ProviderInstances;
+import com.azure.resourcemanager.workloads.models.ResourceProviders;
+import com.azure.resourcemanager.workloads.models.SapApplicationServerInstances;
+import com.azure.resourcemanager.workloads.models.SapCentralInstances;
+import com.azure.resourcemanager.workloads.models.SapDatabaseInstances;
+import com.azure.resourcemanager.workloads.models.SapVirtualInstances;
+import com.azure.resourcemanager.workloads.models.Skus;
+import com.azure.resourcemanager.workloads.models.WordpressInstances;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -40,11 +56,27 @@ import java.util.stream.Collectors;
 
 /** Entry point to WorkloadsManager. Workloads client provides access to various workload operations. */
 public final class WorkloadsManager {
+    private PhpWorkloads phpWorkloads;
+
+    private WordpressInstances wordpressInstances;
+
+    private ResourceProviders resourceProviders;
+
+    private SapVirtualInstances sapVirtualInstances;
+
+    private SapCentralInstances sapCentralInstances;
+
+    private SapDatabaseInstances sapDatabaseInstances;
+
+    private SapApplicationServerInstances sapApplicationServerInstances;
+
     private Operations operations;
 
     private Monitors monitors;
 
     private ProviderInstances providerInstances;
+
+    private Skus skus;
 
     private final WorkloadsClient clientObject;
 
@@ -269,6 +301,91 @@ public final class WorkloadsManager {
     }
 
     /**
+     * Gets the resource collection API of PhpWorkloads. It manages PhpWorkloadResource.
+     *
+     * @return Resource collection API of PhpWorkloads.
+     */
+    public PhpWorkloads phpWorkloads() {
+        if (this.phpWorkloads == null) {
+            this.phpWorkloads = new PhpWorkloadsImpl(clientObject.getPhpWorkloads(), this);
+        }
+        return phpWorkloads;
+    }
+
+    /**
+     * Gets the resource collection API of WordpressInstances.
+     *
+     * @return Resource collection API of WordpressInstances.
+     */
+    public WordpressInstances wordpressInstances() {
+        if (this.wordpressInstances == null) {
+            this.wordpressInstances = new WordpressInstancesImpl(clientObject.getWordpressInstances(), this);
+        }
+        return wordpressInstances;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
+    }
+
+    /**
+     * Gets the resource collection API of SapVirtualInstances. It manages SapVirtualInstance.
+     *
+     * @return Resource collection API of SapVirtualInstances.
+     */
+    public SapVirtualInstances sapVirtualInstances() {
+        if (this.sapVirtualInstances == null) {
+            this.sapVirtualInstances = new SapVirtualInstancesImpl(clientObject.getSapVirtualInstances(), this);
+        }
+        return sapVirtualInstances;
+    }
+
+    /**
+     * Gets the resource collection API of SapCentralInstances. It manages SapCentralServerInstance.
+     *
+     * @return Resource collection API of SapCentralInstances.
+     */
+    public SapCentralInstances sapCentralInstances() {
+        if (this.sapCentralInstances == null) {
+            this.sapCentralInstances = new SapCentralInstancesImpl(clientObject.getSapCentralInstances(), this);
+        }
+        return sapCentralInstances;
+    }
+
+    /**
+     * Gets the resource collection API of SapDatabaseInstances. It manages SapDatabaseInstance.
+     *
+     * @return Resource collection API of SapDatabaseInstances.
+     */
+    public SapDatabaseInstances sapDatabaseInstances() {
+        if (this.sapDatabaseInstances == null) {
+            this.sapDatabaseInstances = new SapDatabaseInstancesImpl(clientObject.getSapDatabaseInstances(), this);
+        }
+        return sapDatabaseInstances;
+    }
+
+    /**
+     * Gets the resource collection API of SapApplicationServerInstances. It manages SapApplicationServerInstance.
+     *
+     * @return Resource collection API of SapApplicationServerInstances.
+     */
+    public SapApplicationServerInstances sapApplicationServerInstances() {
+        if (this.sapApplicationServerInstances == null) {
+            this.sapApplicationServerInstances =
+                new SapApplicationServerInstancesImpl(clientObject.getSapApplicationServerInstances(), this);
+        }
+        return sapApplicationServerInstances;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -302,6 +419,18 @@ public final class WorkloadsManager {
             this.providerInstances = new ProviderInstancesImpl(clientObject.getProviderInstances(), this);
         }
         return providerInstances;
+    }
+
+    /**
+     * Gets the resource collection API of Skus.
+     *
+     * @return Resource collection API of Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(clientObject.getSkus(), this);
+        }
+        return skus;
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
@@ -120,6 +121,12 @@ public final class DiskRestorePointProperties {
      */
     @JsonProperty(value = "sourceResourceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceLocation;
+
+    /*
+     * Contains the security related information for the resource.
+     */
+    @JsonProperty(value = "securityProfile")
+    private DiskSecurityProfile securityProfile;
 
     /**
      * Get the timeCreated property: The timestamp of restorePoint creation.
@@ -361,6 +368,26 @@ public final class DiskRestorePointProperties {
     }
 
     /**
+     * Get the securityProfile property: Contains the security related information for the resource.
+     *
+     * @return the securityProfile value.
+     */
+    public DiskSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Contains the security related information for the resource.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the DiskRestorePointProperties object itself.
+     */
+    public DiskRestorePointProperties withSecurityProfile(DiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -374,6 +401,9 @@ public final class DiskRestorePointProperties {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 }

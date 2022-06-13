@@ -90,6 +90,11 @@ class BlobServicePropertiesImpl
     }
 
     @Override
+    public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
+        return this.innerModel().containerDeleteRetentionPolicy();
+    }
+
+    @Override
     public String id() {
         return this.innerModel().id();
     }
@@ -170,6 +175,24 @@ class BlobServicePropertiesImpl
     @Override
     public BlobServicePropertiesImpl withBlobVersioningDisabled() {
         this.innerModel().withIsVersioningEnabled(false);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withContainerDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        this.innerModel().withContainerDeleteRetentionPolicy(deleteRetentionPolicy);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withContainerDeleteRetentionPolicyEnabled(int numDaysEnabled) {
+        this.innerModel().withContainerDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withContainerDeleteRetentionPolicyDisabled() {
+        this.innerModel().withContainerDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(false));
         return this;
     }
 }

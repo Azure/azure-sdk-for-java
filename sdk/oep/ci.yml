@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: oep
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-oep
         groupId: com.azure.resourcemanager

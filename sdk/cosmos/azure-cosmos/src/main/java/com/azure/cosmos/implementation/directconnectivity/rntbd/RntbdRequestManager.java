@@ -42,7 +42,9 @@ import io.netty.channel.pool.ChannelHealthChecker;
 import io.netty.handler.codec.CorruptedFrameException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.ssl.SslHandler;
+import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 import io.netty.handler.timeout.IdleStateEvent;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.Timeout;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -63,6 +65,7 @@ import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
@@ -99,6 +102,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     private final ConcurrentHashMap<Long, RntbdRequestRecord> pendingRequests;
     private final Timestamps timestamps = new Timestamps();
     private final RntbdConnectionStateListener rntbdConnectionStateListener;
+    private final long idleConnectionTimerResolutionInNanos;
 
     private boolean closingExceptionally = false;
     private CoalescingBufferQueue pendingWrites;
@@ -108,7 +112,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     public RntbdRequestManager(
         final ChannelHealthChecker healthChecker,
         final int pendingRequestLimit,
-        final RntbdConnectionStateListener connectionStateListener) {
+        final RntbdConnectionStateListener connectionStateListener,
+        final long idleConnectionTimerResolutionInNanos) {
 
         checkArgument(pendingRequestLimit > 0, "pendingRequestLimit: %s", pendingRequestLimit);
         checkNotNull(healthChecker, "healthChecker");
@@ -117,6 +122,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.pendingRequestLimit = pendingRequestLimit;
         this.healthChecker = healthChecker;
         this.rntbdConnectionStateListener = connectionStateListener;
+        this.idleConnectionTimerResolutionInNanos = idleConnectionTimerResolutionInNanos;
     }
 
     // region ChannelHandler methods
@@ -375,9 +381,37 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             if (event instanceof RntbdContextException) {
                 this.contextFuture.completeExceptionally((RntbdContextException) event);
-                context.pipeline().flush().close();
+                this.exceptionCaught(context, (RntbdContextException)event);
                 return;
             }
+
+            if (event instanceof SslHandshakeCompletionEvent) {
+                SslHandshakeCompletionEvent sslHandshakeCompletionEvent = (SslHandshakeCompletionEvent) event;
+
+                if (sslHandshakeCompletionEvent.isSuccess()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake completed, adding idleStateHandler");
+                    }
+
+                    context.pipeline().addAfter(
+                            SslHandler.class.toString(),
+                            IdleStateHandler.class.toString(),
+                            new IdleStateHandler(
+                                this.idleConnectionTimerResolutionInNanos,
+                                this.idleConnectionTimerResolutionInNanos,
+                                0,
+                                TimeUnit.NANOSECONDS));
+                } else {
+                    // Even if we do not capture here, the channel will still be closed properly,
+                    // but we will lose the inner exception: the request will fail with closeChannelException instead sslHandshake related exception.
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("SslHandshake failed", sslHandshakeCompletionEvent.cause());
+                    }
+                    this.exceptionCaught(context, sslHandshakeCompletionEvent.cause());
+                    return;
+                }
+            }
+
             context.fireUserEventTriggered(event);
 
         } catch (Throwable error) {

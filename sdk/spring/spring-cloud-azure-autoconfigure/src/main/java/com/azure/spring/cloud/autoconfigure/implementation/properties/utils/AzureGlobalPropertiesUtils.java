@@ -12,7 +12,7 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 
 /**
- * Util class for processor {@link AzureGlobalProperties}.
+ * Util class for processing {@link AzureGlobalProperties}.
  */
 public final class AzureGlobalPropertiesUtils {
 

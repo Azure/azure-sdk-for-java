@@ -6,9 +6,11 @@ package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.workloads.models.ManagedRGConfiguration;
 import com.azure.resourcemanager.workloads.models.MonitorPropertiesErrors;
 import com.azure.resourcemanager.workloads.models.RoutingPreference;
+import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -17,10 +19,43 @@ import java.util.Map;
 @Fluent
 public final class MonitorInner extends Resource {
     /*
+     * Managed service identity (user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private UserAssignedServiceIdentity identity;
+
+    /*
      * SAP monitor properties
      */
     @JsonProperty(value = "properties")
     private MonitorProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Get the identity property: Managed service identity (user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public UserAssignedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the MonitorInner object itself.
+     */
+    public MonitorInner withIdentity(UserAssignedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: SAP monitor properties.
@@ -29,6 +64,15 @@ public final class MonitorInner extends Resource {
      */
     private MonitorProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -46,7 +90,7 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: State of provisioning of the monitor.
+     * Get the provisioningState property: State of provisioning of the SAP monitor.
      *
      * @return the provisioningState value.
      */
@@ -64,8 +108,8 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the appLocation property: The monitor resources will be deployed in the monitoring region. The subnet region
-     * should be same as the monitoring region.
+     * Get the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
      *
      * @return the appLocation value.
      */
@@ -74,8 +118,8 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Set the appLocation property: The monitor resources will be deployed in the monitoring region. The subnet region
-     * should be same as the monitoring region.
+     * Set the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+     * region should be same as the SAP monitoring region.
      *
      * @param appLocation the appLocation value to set.
      * @return the MonitorInner object itself.
@@ -89,8 +133,8 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the routingPreference property: Sets the routing preference of the monitor. By default only RFC1918 traffic
-     * is routed to the customer VNET.
+     * Get the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
+     * traffic is routed to the customer VNET.
      *
      * @return the routingPreference value.
      */
@@ -99,8 +143,8 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Set the routingPreference property: Sets the routing preference of the monitor. By default only RFC1918 traffic
-     * is routed to the customer VNET.
+     * Set the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
+     * traffic is routed to the customer VNET.
      *
      * @param routingPreference the routingPreference value to set.
      * @return the MonitorInner object itself.
@@ -138,7 +182,7 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for
+     * Get the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
      *
      * @return the logAnalyticsWorkspaceArmId value.
@@ -148,7 +192,7 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for
+     * Set the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
      *
      * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set.
@@ -186,7 +230,7 @@ public final class MonitorInner extends Resource {
     }
 
     /**
-     * Get the msiArmId property: The ARM ID of the MSI used for monitoring.
+     * Get the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
      *
      * @return the msiArmId value.
      */
@@ -200,6 +244,9 @@ public final class MonitorInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
