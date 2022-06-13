@@ -11,6 +11,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
@@ -32,13 +33,20 @@ public final class ApacheHttpAsyncResponse extends ApacheHttpAsyncResponseBase {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
+        return Mono.from(getBody().map(bf -> {
+            byte[] bytes = bf.array();
+            // Consistent with GAed behaviour.
+            if (bytes == null || bytes.length == 0) {
+                return null;
+            }
+            return bytes;
+        }));
 
-
-        return Mono.from(FluxUtil.collectBytesInByteBufferStream(getBody()));
+//        return FluxUtil.collectBytesInByteBufferStream(getBody());
     }
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        return Mono.empty();
+        return getBodyAsByteArray().map(body -> new ByteArrayInputStream(body));
     }
 }
