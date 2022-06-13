@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpRequestHelper;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -87,7 +86,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             delayMs = (long) ((ThreadLocalRandom.current().nextFloat() / 2 + 0.8) * 1000); // Add jitter
         }
 
-        context.setHttpRequest(HttpRequestHelper.prepareForRetransmission(originalRequest));
+        context.setHttpRequest(originalRequest.copyWithRetryableBody());
         ProgressReporter progressReporter = Contexts.getProgressReporter(context);
         if (progressReporter != null) {
             progressReporter.reset();
