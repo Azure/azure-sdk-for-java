@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.configureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.ifSaslOAuthNeedConfigure;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.needConfigureSaslOAuth;
 import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.convertAzurePropertiesToConfigMap;
 import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner.normalalizeBootPropsWithBinder;
 
@@ -53,7 +53,7 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
     }
 
     private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
-        if (ifSaslOAuthNeedConfigure(mergedConfiguration)) {
+        if (needConfigureSaslOAuth(mergedConfiguration)) {
             AzureThirdPartyServiceProperties azureKafkaConsumerProperties =
                 buildAzureProperties(mergedConfiguration, azureGlobalProperties);
             convertAzurePropertiesToConfigMap(azureKafkaConsumerProperties, sourceProperties);

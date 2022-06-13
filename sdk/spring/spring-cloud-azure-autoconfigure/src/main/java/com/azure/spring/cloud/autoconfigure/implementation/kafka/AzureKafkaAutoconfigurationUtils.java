@@ -18,12 +18,14 @@ import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CON
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
+import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
+import static org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule.OAUTHBEARER_MECHANISM;
 
 public final class AzureKafkaAutoconfigurationUtils {
 
     public static final Map<String, String> KAFKA_OAUTH_CONFIGS;
-    public static final String SECURITY_PROTOCOL_CONFIG_SASL = "SASL_SSL";
-    public static final String SASL_MECHANISM_OAUTH = "OAUTHBEARER";
+    public static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
+    public static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     public static final String SASL_JAAS_CONFIG_OAUTH =
         "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;";
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
@@ -50,7 +52,7 @@ public final class AzureKafkaAutoconfigurationUtils {
      * @param sourceProperties the source kafka properties for admin/consumer/producer to detect
      * @return whether we need to configure with Spring Cloud Azure MSI support or not.
      */
-    public static boolean ifSaslOAuthNeedConfigure(Map<String, Object> sourceProperties) {
+    public static boolean needConfigureSaslOAuth(Map<String, Object> sourceProperties) {
         String securityProtocol = (String) sourceProperties.get(SECURITY_PROTOCOL_CONFIG);
         String saslMechanism = (String) sourceProperties.get(SASL_MECHANISM);
         return securityProtocol == null || (SECURITY_PROTOCOL_CONFIG_SASL.equalsIgnoreCase(securityProtocol)
