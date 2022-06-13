@@ -214,6 +214,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testKafkaBinderPropertiesShouldBindOnBinder() {
         this.contextRunner
             .withPropertyValues(

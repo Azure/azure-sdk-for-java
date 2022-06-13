@@ -6,8 +6,6 @@ package com.azure.spring.cloud.autoconfigure.properties.core.authentication;
 
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
-import java.util.Objects;
-
 /**
  * Azure properties used for getting token credential.
  */
@@ -140,26 +138,4 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
         this.managedIdentityEnabled = managedIdentityEnabled;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TokenCredentialConfigurationProperties that = (TokenCredentialConfigurationProperties) o;
-        return managedIdentityEnabled == that.managedIdentityEnabled
-                && Objects.equals(clientId, that.clientId)
-                && Objects.equals(clientSecret, that.clientSecret)
-                && Objects.equals(clientCertificatePath, that.clientCertificatePath)
-                && Objects.equals(clientCertificatePassword, that.clientCertificatePassword)
-                && Objects.equals(username, that.username)
-                && Objects.equals(password, that.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }
