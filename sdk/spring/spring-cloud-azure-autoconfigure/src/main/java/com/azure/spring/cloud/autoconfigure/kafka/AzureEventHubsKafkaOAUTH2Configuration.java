@@ -47,8 +47,11 @@ public class AzureEventHubsKafkaOAUTH2Configuration {
     private final AzureGlobalProperties azureGlobalProperties;
     private final TokenCredential defaultTokenCredential;
 
+    private static final String SPRING_BOOT_KAFKA_PROPERTIES_BEAN_NAME = "spring.kafka-org.springframework.boot"
+        + ".autoconfigure.kafka.KafkaProperties";
 
-    AzureEventHubsKafkaOAUTH2Configuration(KafkaProperties kafkaProperties, AzureTokenCredentialResolver resolver,
+    AzureEventHubsKafkaOAUTH2Configuration(@Qualifier(SPRING_BOOT_KAFKA_PROPERTIES_BEAN_NAME) KafkaProperties kafkaProperties,
+                                           AzureTokenCredentialResolver resolver,
                                            @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                            AzureGlobalProperties azureGlobalProperties) {
         this.kafkaProperties = kafkaProperties;

@@ -13,6 +13,7 @@ import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -169,15 +170,15 @@ class AzureEventHubsKafkaAutoConfigurationTests {
     void shouldNotOverrideKafkaPropertiesWithConnectionStringAutoConfiguration() {
         new ApplicationContextRunner()
                 .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAUTH2Configuration.class, AzureEventHubsKafkaAutoConfiguration.class,
-                        AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class))
+                        AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
+                    KafkaAutoConfiguration.class))
                 .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test"))
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
                     assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-//                    assertThat(context).hasSingleBean(AzureEventHubsKafkaProperties.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+                    assertThat(context).getBeans(KafkaProperties.class).hasSize(2);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                    KafkaProperties kafkaProperties = (KafkaProperties) context.getBean("azureKafkaProperties");
                     Map<String, String> properties = kafkaProperties.getProperties();
                     assertThat(kafkaProperties.getBootstrapServers()).isEqualTo(Collections.singletonList("test.servicebus.windows.net:9093"));
                     assertThat(properties.get("security.protocol")).isEqualTo("SASL_SSL");
