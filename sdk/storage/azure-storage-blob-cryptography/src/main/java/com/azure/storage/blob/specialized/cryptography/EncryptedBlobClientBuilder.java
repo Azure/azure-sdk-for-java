@@ -307,7 +307,7 @@ public final class EncryptedBlobClientBuilder implements
             boolean decryptionPolicyPresent = false;
             for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
                 HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
-                if (currPolicy instanceof BlobDecryptionPolicy || currPolicy instanceof FetchEncryptionVersionPolicy) {
+                if (currPolicy instanceof BlobDecryptionPolicy) {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
                         + " configured for encryption/decryption in a way that might conflict with the passed key "
                         + "information. Please ensure that the passed pipeline is not already configured for "
@@ -316,8 +316,8 @@ public final class EncryptedBlobClientBuilder implements
                 policies.add(currPolicy);
             }
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
-            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-            policies.add(0, new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption,
+                getUnencryptedBlobClient()));
 
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -330,8 +330,7 @@ public final class EncryptedBlobClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new FetchEncryptionVersionPolicy(getUnencryptedBlobClient(), requiresEncryption));
-        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
+        policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption, getUnencryptedBlobClient()));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
         policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));

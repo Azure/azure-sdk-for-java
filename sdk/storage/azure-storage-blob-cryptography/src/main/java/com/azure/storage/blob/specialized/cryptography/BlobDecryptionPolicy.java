@@ -11,15 +11,19 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -74,6 +78,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      */
     private final boolean requiresEncryption;
 
+    private final BlobAsyncClient blobClient;
+
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
      * <p>
@@ -89,86 +95,132 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * @param requiresEncryption Whether encryption is enforced by this client.
      */
     BlobDecryptionPolicy(AsyncKeyEncryptionKey key, AsyncKeyEncryptionKeyResolver keyResolver,
-        boolean requiresEncryption) {
+        boolean requiresEncryption, BlobAsyncClient blobClient) {
         this.keyWrapper = key;
         this.keyResolver = keyResolver;
         this.requiresEncryption = requiresEncryption;
+        this.blobClient = blobClient;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
+// TODO: If we do a download on a big file, every single download chunk is going to repeat this process. How to avoid that?
+// Current thinking is override anything that manages large downloads and do the getProps up front and then pass it through
+// the context for this policy to skip
+// What about pathological download chunk sizes of like 4mb+1, where we grab almost an entire extra region on every download?
+// Maybe we just respond to customers when they complain and tell them to adjust a bit.
+        // If there is no range, there is nothing to expand, so we can continue with the request
+        if (requestHeaders.getValue(CryptographyConstants.RANGE_HEADER) == null) {
+            return next.process().flatMap(httpResponse -> {
+                // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
+                // response
+                if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null) {
+                    HttpHeaders responseHeaders = httpResponse.getHeaders();
 
-        // Get the encryption data put in the pipeline by the FetchEncryptionDataPolicy.
-        // This will be present if there was a range set on the request. It will not be present if this is
-        // not a download or there was no range set.
-        EncryptionData encryptionData = (EncryptionData) context.getData(ENCRYPTION_DATA_KEY)
-            .orElse(null);
+                    /*
+                     * Deserialize encryption data.
+                     * If there is no encryption data set on the blob, then we can return the request as is since we
+                     * didn't expand the range at all.
+                     */
+                    EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                            httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
+                                + ENCRYPTION_DATA_KEY), requiresEncryption);
+                    // If there was no encryption data, it was either an error response, or the blob is not decrypted.
+                    if (encryptionData == null) {
+                        return Mono.just(httpResponse);
+                    }
 
-        // 1. Expand the range of download for decryption if a range was present. If the range was present, we know the
-        // policy would have already fetched the encryption data. If there was no encryptiondata, do not mess with the
-        // range.
-        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-            requestHeaders.getValue(RANGE_HEADER), encryptionData);
-        if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null
-            && encryptionData != null) {
-            requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
-        }
+                    /*
+                     * We will need to know the total size of the data to know when to finalize the decryption. If it
+                     * was not set originally with the intent of downloading the whole blob, update it here.
+                     * If there was no range set on the request, we skipped instantiating a BlobRange as we did not have
+                     * encryption data at the time. Instantiate now with a BlobRange that indicates a full blob.
+                     */
+                    EncryptedBlobRange encryptedRange = new EncryptedBlobRange(new BlobRange(0), encryptionData);
+                    encryptedRange.setAdjustedDownloadCount(
+                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
-        // 2. Replace the body of the response with a decrypted version of the body
-        return next.process().flatMap(httpResponse -> {
-            // Assumption: Download is the only API on an encrypted client that is a get request and has a body in the
-            // response
-            if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody() != null) {
-                HttpHeaders responseHeaders = httpResponse.getHeaders();
+                    /*
+                     * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
+                     * block size. Padding is only ever present in track 1.
+                     */
+                    boolean padding = encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
+                        && (encryptedRange.toBlobRange().getOffset()
+                        + encryptedRange.toBlobRange().getCount()
+                        > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
-                /*
-                 * If there was no range set on the request, we skipped doing a get properties first as we are getting
-                 * the whole blob anyway, so we didn't have to know the version a priori to adjust the range.
-                 * In that case, we deserialize the encryption data here.
-                 * If there is no encryption data set on the blob, then we would have skipped adjusting the range above
-                 * and we can just return the response as is.
-                 */
-                EncryptionData encryptionDataFinal =
-                    encryptionData == null ? EncryptionData.getAndValidateEncryptionData(
-                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY),
-                        requiresEncryption) : encryptionData;
-                // Checking that encryption data at least exists on the download call even if we didn't use it for
-                // deserialization ensures that the download response was not an error response.
-                if (encryptionDataFinal == null
-                    || httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY)
-                    == null) {
+                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
+                        encryptionData, httpResponse.getRequest().getUrl().toString());
+
+                    return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));
+                } else {
                     return Mono.just(httpResponse);
                 }
+            });
+        } else {
+            // Issue a get properties call to determine how much we will need to expand the range.
+            // Apply the request conditions from the download to the getProperties.
+            BlobRequestConditions rc = extractRequestConditionsFromRequest(requestHeaders);
+            return this.blobClient.getPropertiesWithResponse(rc).flatMap(response -> {
+                EncryptionData data = EncryptionData.getAndValidateEncryptionData(
+                    response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+                    requiresEncryption);
 
-                /*
-                 * We will need to know the total size of the data to know when to finalize the decryption. If it was
-                 * not set originally with the intent of downloading the whole blob, update it here.
-                 * If there was no range set on the request, we skipped instantiating a BlobRange as we did not have
-                 * encryption data at the time. Instantiate now with a BlobRange that indicates a full blob.
-                 */
-                EncryptedBlobRange encryptedRangeFinal = encryptedRange == null
-                    ? new EncryptedBlobRange(new BlobRange(0), encryptionDataFinal) : encryptedRange;
-                encryptedRangeFinal.setAdjustedDownloadCount(
-                    Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+                // If there is no encryption data, then the blob is not encrypted. Pass the request through.
+                return data == null ? next.process() : Mono.just(data)
+                    .flatMap(encryptionData -> {
+                        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
+                            requestHeaders.getValue(RANGE_HEADER), encryptionData);
+                        if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null
+                            && encryptionData != null) {
+                            requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
+                        }
+                        return Mono.zip(Mono.just(encryptionData), Mono.just(encryptedRange));
+                    })
+                    .flatMap(tuple2 -> next.process().flatMap(httpResponse -> {
+                        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody()
+                            != null) {
+                            HttpHeaders responseHeaders = httpResponse.getHeaders();
+                            // Checking that encryption data at least exists on the download call even if we didn't use
+                            // it for deserialization ensures that the download response was not an error response.
+                            if (httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
+                                + ENCRYPTION_DATA_KEY) == null) {
+                                return Mono.just(httpResponse);
+                            }
+                            tuple2.getT2().setAdjustedDownloadCount(
+                                Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
-                /*
-                 * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
-                 * block size. Padding is only ever present in track 1.
-                 */
-                boolean padding = encryptionDataFinal.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
-                    && (encryptedRangeFinal.toBlobRange().getOffset()
-                    + encryptedRangeFinal.toBlobRange().getCount()
-                    > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                            /*
+                             * We expect padding only if we are at the end of a blob and it is not a multiple of the
+                             * encryption block size. Padding is only ever present in track 1.
+                             */
+                            boolean padding = tuple2.getT1().getEncryptionAgent().getProtocol()
+                                .equals(ENCRYPTION_PROTOCOL_V1)
+                                && (tuple2.getT2().toBlobRange().getOffset() + tuple2.getT2().toBlobRange().getCount()
+                                > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
-                Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRangeFinal, padding,
-                    encryptionDataFinal, httpResponse.getRequest().getUrl().toString());
+                            Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), tuple2.getT2(), padding,
+                                tuple2.getT1(), httpResponse.getRequest().getUrl().toString());
 
-                return Mono.just(new BlobDecryptionPolicy.DecryptedResponse(httpResponse, plainTextData));
-            } else {
-                return Mono.just(httpResponse);
-            }
-        });
+                            return Mono.just(new DecryptedResponse(httpResponse, plainTextData));
+                        } else {
+                            return Mono.just(httpResponse);
+                        }
+                    }));
+            });
+        }
+    }
+
+    private BlobRequestConditions extractRequestConditionsFromRequest(HttpHeaders requestHeaders) {
+        return new BlobRequestConditions()
+            .setLeaseId(requestHeaders.getValue("x-ms-lease-id"))
+            .setIfUnmodifiedSince(requestHeaders.getValue("If-Unmodified-Since") == null ? null
+                : new DateTimeRfc1123(requestHeaders.getValue("If-Unmodified-Since")).getDateTime())
+            .setIfNoneMatch(requestHeaders.getValue("If-None-Match"))
+            .setIfMatch(requestHeaders.getValue("If-Match"))
+            .setIfModifiedSince(requestHeaders.getValue("If-Modified-Since") == null ? null
+                : new DateTimeRfc1123(requestHeaders.getValue("If-Modified-Since")).getDateTime());
     }
 
     /**
@@ -307,7 +359,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
         BufferStagingArea stagingArea =
             new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
-            gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
+                gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
 
         return UploadUtils.chunkSource(encryptedFlux,
                 new com.azure.storage.common.ParallelTransferOptions()
