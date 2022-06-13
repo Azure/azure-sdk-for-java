@@ -19,7 +19,9 @@
                 "Samp1eP@ssw0rd",
                 "facebookapplicationsecret",
                 "updatedfacebooksecret",
-                "serverappsecret"
+                "serverappsecret",
+                "test-password",
+                "test-client-secret"
             ],
             "_justification": "Secret used by test code, it is fake."
         },

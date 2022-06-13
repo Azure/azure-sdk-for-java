@@ -7,9 +7,13 @@ import java.lang.reflect.Field;
 
 public final class ReflectionUtils {
 
+    public static final String FIELD_NOT_FOUND_FORMAT = "Field %s can't found on class %s";
     public static Object getField(Class<?> clazz, String fieldName, Object target) {
         Field field = org.springframework.util.ReflectionUtils.findField(clazz, fieldName);
-        field.setAccessible(true);
+        if (field == null) {
+            throw new IllegalArgumentException(String.format(FIELD_NOT_FOUND_FORMAT, fieldName, clazz));
+        }
+        org.springframework.util.ReflectionUtils.makeAccessible(field);
         return org.springframework.util.ReflectionUtils.getField(field, target);
     }
 }
