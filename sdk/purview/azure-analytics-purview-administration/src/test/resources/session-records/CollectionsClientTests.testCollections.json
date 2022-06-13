@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com/collections?api-version=2019-11-01-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "e9ed8746-4f71-4d00-aeb2-c1e6c29baa42"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"name\":\"purview-weidxu\",\"friendlyName\":\"purview-weidxu\",\"description\":\"The root collection.\",\"systemData\":{\"createdBy\":\"ee0d7c8c-838b-4b6a-8633-912e324d445f\",\"createdByType\":\"User\",\"createdAt\":\"2021-09-24T09:06:33.240519Z\",\"lastModifiedBy\":\"ee0d7c8c-838b-4b6a-8633-912e324d445f\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-24T09:06:33.240519Z\"},\"collectionProvisioningState\":\"Succeeded\"},{\"name\":\"bpfadw\",\"friendlyName\":\"collection1\",\"parentCollection\":{\"type\":\"CollectionReference\",\"referenceName\":\"purview-weidxu\"},\"systemData\":{\"createdBy\":\"ee0d7c8c-838b-4b6a-8633-912e324d445f\",\"createdByType\":\"User\",\"createdAt\":\"2021-09-24T13:52:12.0065573Z\",\"lastModifiedBy\":\"ee0d7c8c-838b-4b6a-8633-912e324d445f\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-09-24T13:52:12.0065574Z\"},\"collectionProvisioningState\":\"Succeeded\"}],\"count\":2}",
+      "Date" : "Mon, 27 Sep 2021 02:27:50 GMT",
+      "x-ms-correlation-request-id" : "8607a552-6e34-4df5-837a-5c5c0f5bb12a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
