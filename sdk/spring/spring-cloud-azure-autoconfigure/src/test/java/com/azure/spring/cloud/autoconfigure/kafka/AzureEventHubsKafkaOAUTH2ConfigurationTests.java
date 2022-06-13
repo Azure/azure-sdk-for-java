@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -69,7 +70,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
     @Test
     void shouldNotConfigureBPPWithoutKafkaMessageChannelBinder() {
         this.contextRunner
-            .withBean(KafkaProperties.class, KafkaProperties::new)
+            .withUserConfiguration(KafkaAutoConfiguration.class)
             .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
             .run(context -> {
                 assertThat(context)
