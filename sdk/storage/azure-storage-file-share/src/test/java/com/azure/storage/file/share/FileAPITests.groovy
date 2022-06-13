@@ -1134,11 +1134,12 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
-        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
+        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options change time"() {
         given:
         def client = primaryFileClient.create(1024)
@@ -1159,7 +1160,8 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        smbProperties.getFileChangeTime() == primaryFileClient.getProperties().getSmbProperties().getFileChangeTime()
+        smbProperties.getFileChangeTime().truncatedTo(ChronoUnit.MICROS) ==
+            primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
     }
 
     def "Start copy with options copy smbFileProperties permission key"() {
@@ -1188,8 +1190,8 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        properties.getFileCreationTime() == smbProperties.getFileCreationTime()
-        properties.getFileLastWriteTime() == smbProperties.getFileLastWriteTime()
+        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
+        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -1247,13 +1249,14 @@ class FileAPITests extends APISpec {
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options with original smb properties"() {
         given:
         primaryFileClient.create(1024)
         def initialProperties = primaryFileClient.getProperties()
-        def creationTime = initialProperties.getSmbProperties().getFileCreationTime()
-        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime()
-        def changedTime = initialProperties.getSmbProperties().getFileChangeTime()
+        def creationTime = initialProperties.getSmbProperties().getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
+        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        def changedTime = initialProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
         def fileAttributes = initialProperties.getSmbProperties().getNtfsFileAttributes()
 
         def sourceURL = primaryFileClient.getFileUrl()
@@ -1278,9 +1281,9 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        creationTime == resultProperties.getSmbProperties().getFileCreationTime()
-        lastWrittenTime == resultProperties.getSmbProperties().getFileLastWriteTime()
-        changedTime == resultProperties.getSmbProperties().getFileChangeTime()
+        creationTime == resultProperties.getSmbProperties().getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
+        lastWrittenTime == resultProperties.getSmbProperties().getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        changedTime == resultProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
         fileAttributes == resultProperties.getSmbProperties().getNtfsFileAttributes()
     }
 
