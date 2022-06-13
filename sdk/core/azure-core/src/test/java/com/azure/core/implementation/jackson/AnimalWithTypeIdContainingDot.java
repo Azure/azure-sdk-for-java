@@ -21,30 +21,40 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<
      */
     public static AnimalWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
         return JsonUtils.readObject(jsonReader, reader -> {
-            // Buffer the JSON structure and make it replayable.
-            String json = JsonUtils.bufferedJsonObject(jsonReader);
-
-            // Use multiple passes to read the object as either this parent type or the children types.
-            JsonReader replayReader = DefaultJsonReader.fromString(json);
-
             String discriminatorValue = null;
+            JsonReader readerToUse = null;
 
-            // First reading will determine the sub-object type.
-            while (replayReader.nextToken() != JsonToken.END_OBJECT) {
-                if ("@odata.type".equals(replayReader.getFieldName())) {
-                    replayReader.nextToken();
-                    discriminatorValue = replayReader.getStringValue();
-                    break;
+            // Read the first field name and determine if it's the discriminator field.
+            jsonReader.nextToken();
+            if ("@odata.type".equals(jsonReader.getFieldName())) {
+                jsonReader.nextToken();
+                discriminatorValue = jsonReader.getStringValue();
+                readerToUse = jsonReader;
+            } else {
+                // If it isn't the discriminator field buffer the JSON structure to make it replayable and find the
+                // discriminator field value.
+                String json = JsonUtils.bufferJsonObject(jsonReader);
+                JsonReader replayReader = DefaultJsonReader.fromString(json);
+                while (replayReader.nextToken() != JsonToken.END_OBJECT) {
+                    if ("@odata.type".equals(replayReader.getFieldName())) {
+                        replayReader.nextToken();
+                        discriminatorValue = replayReader.getStringValue();
+                        break;
+                    }
+                }
+
+                if (discriminatorValue != null) {
+                    readerToUse = DefaultJsonReader.fromString(json);
                 }
             }
 
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("#Favourite.Pet.DogWithTypeIdContainingDot".equals(discriminatorValue)) {
-                return DogWithTypeIdContainingDot.fromJson(DefaultJsonReader.fromString(json));
+                return DogWithTypeIdContainingDot.fromJson(readerToUse);
             } else if ("#Favourite.Pet.CatWithTypeIdContainingDot".equals(discriminatorValue)) {
-                return CatWithTypeIdContainingDot.fromJson(DefaultJsonReader.fromString(json));
+                return CatWithTypeIdContainingDot.fromJson(readerToUse);
             } else if ("#Favourite.Pet.RabbitWithTypeIdContainingDot".equals(discriminatorValue)) {
-                return RabbitWithTypeIdContainingDot.fromJson(DefaultJsonReader.fromString(json));
+                return RabbitWithTypeIdContainingDot.fromJson(readerToUse);
             } else {
                 throw new IllegalStateException("Discriminator field '@odata.type' was either missing or didn't match "
                     + "one of the expected values '#Favourite.Pet.DogWithTypeIdContainingDot', "

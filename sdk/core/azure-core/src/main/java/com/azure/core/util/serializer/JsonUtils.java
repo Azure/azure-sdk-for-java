@@ -89,9 +89,9 @@ public final class JsonUtils {
      * Handles basic logic for deserializing an object before passing it into the deserialization function.
      * <p>
      * This will initialize the {@link JsonReader} for object reading and then check if the current token is
-     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} and throw
-     * an {@link IllegalStateException}. The {@link JsonToken} passed into the {@code deserializationFunc} will be
-     * {@link JsonToken#START_OBJECT} if the function is called.
+     * {@link JsonToken#NULL} and return null or check if the current isn't a {@link JsonToken#START_OBJECT} or
+     * {@link JsonToken#FIELD_NAME} and throw an {@link IllegalStateException}. {@link JsonToken#FIELD_NAME} is a valid
+     * starting location to support partial object reads.
      * <p>
      * Use {@link #readArray(JsonReader, Function)} if a JSON array is being deserialized.
      *
@@ -103,13 +103,14 @@ public final class JsonUtils {
      * @throws IllegalStateException If the initial token for reading isn't {@link JsonToken#START_OBJECT}.
      */
     public static <T> T readObject(JsonReader jsonReader, Function<JsonReader, T> deserializationFunc) {
-        if (jsonReader.currentToken() == null) {
-            jsonReader.nextToken();
+        JsonToken currentToken = jsonReader.currentToken();
+        if (currentToken == null) {
+            currentToken = jsonReader.nextToken();
         }
 
-        if (jsonReader.currentToken() == JsonToken.NULL) {
+        if (currentToken == JsonToken.NULL) {
             return null;
-        } else if (jsonReader.currentToken() != JsonToken.START_OBJECT) {
+        } else if (currentToken == JsonToken.END_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             // Otherwise, this is an invalid state, throw an exception.
             throw new IllegalStateException("Unexpected token to begin deserialization: " + jsonReader.currentToken());
         }
@@ -295,7 +296,7 @@ public final class JsonUtils {
      * one of {@link JsonToken#NULL}, {@link JsonToken#START_OBJECT}, {@link JsonToken#START_ARRAY}, or
      * {@link JsonToken#FIELD_NAME}.
      */
-    public static String bufferedJsonObject(JsonReader jsonReader) {
+    public static String bufferJsonObject(JsonReader jsonReader) {
         if (jsonReader.currentToken() == JsonToken.NULL) {
             // If the current token is JsonToken.NULL return null.
             return null;
