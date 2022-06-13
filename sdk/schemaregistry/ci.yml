@@ -28,14 +28,27 @@ pr:
       - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
       - sdk/schemaregistry/azure-data-schemaregistry-apacheavro/pom.xml
 
+parameters:
+- name: release_azuredataschemaregistry
+  displayName: 'azure-data-schemaregistry'
+  type: boolean
+  default: true
+- name: release_azuredataschemaregistryapacheavro
+  displayName: 'azure-data-schemaregistry-apacheavro'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: schemaregistry
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-schemaregistry
         groupId: com.azure
         safeName: azuredataschemaregistry
+        releaseInBatch: ${{ parameters.release_azuredataschemaregistry }}
       - name: azure-data-schemaregistry-apacheavro
         groupId: com.azure
         safeName: azuredataschemaregistryapacheavro
+        releaseInBatch: ${{ parameters.release_azuredataschemaregistryapacheavro }}
