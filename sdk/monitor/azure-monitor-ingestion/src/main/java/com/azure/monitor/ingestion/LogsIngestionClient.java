@@ -3,10 +3,9 @@ package com.azure.monitor.ingestion;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.monitor.ingestion.models.SendLogsOptions;
-import com.azure.monitor.ingestion.models.SendLogsResult;
+import com.azure.monitor.ingestion.models.UploadLogsOptions;
+import com.azure.monitor.ingestion.models.UploadLogsResult;
 
 import java.util.List;
 
@@ -16,34 +15,34 @@ import java.util.List;
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionClient {
 
-    LogsIngestionClient(LogsIngestionAsyncClient asyncClient) {
+    private final LogsIngestionAsyncClient asyncClient;
 
+    LogsIngestionClient(LogsIngestionAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
      * @param dataCollectionRuleId
-     * @param streamDeclaration
+     * @param streamName
      * @param logs
      * @param options
      * @param context
-     * @param <T>
      * @return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<SendLogsResult> sendLogsWithResponse(String dataCollectionRuleId, String streamDeclaration,
-                                                             List<T> logs, SendLogsOptions options, Context context) {
-        return null;
+    public UploadLogsResult upload(String dataCollectionRuleId, String streamName,
+                                                         List<Object> logs, UploadLogsOptions options, Context context) {
+        return asyncClient.upload(dataCollectionRuleId, streamName, logs, options, context).block();
     }
 
     /**
      * @param dataCollectionRuleId
-     * @param streamDeclaration
+     * @param streamName
      * @param logs
-     * @param <T>
      * @return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> SendLogsResult sendLogs(String dataCollectionRuleId, String streamDeclaration, List<T> logs) {
-        return null;
+    public UploadLogsResult upload(String dataCollectionRuleId, String streamName, List<Object> logs) {
+        return upload(dataCollectionRuleId, streamName, logs);
     }
 }

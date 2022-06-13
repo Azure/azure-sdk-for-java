@@ -34,19 +34,23 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the IngestionUsingDataCollectionRules type. */
-@ServiceClientBuilder(serviceClients = {IngestionUsingDataCollectionRulesImpl.class})
-public final class IngestionUsingDataCollectionRulesImplBuilder
-        implements HttpTrait<IngestionUsingDataCollectionRulesImplBuilder>,
-                ConfigurationTrait<IngestionUsingDataCollectionRulesImplBuilder>,
-                TokenCredentialTrait<IngestionUsingDataCollectionRulesImplBuilder>,
-                EndpointTrait<IngestionUsingDataCollectionRulesImplBuilder> {
+/** A builder for creating a new instance of the IngestionUsingDataCollectionRulesClient type. */
+@ServiceClientBuilder(
+        serviceClients = {
+            IngestionUsingDataCollectionRulesClient.class,
+            IngestionUsingDataCollectionRulesAsyncClient.class
+        })
+public final class IngestionUsingDataCollectionRulesClientBuilder
+        implements HttpTrait<IngestionUsingDataCollectionRulesClientBuilder>,
+                ConfigurationTrait<IngestionUsingDataCollectionRulesClientBuilder>,
+                TokenCredentialTrait<IngestionUsingDataCollectionRulesClientBuilder>,
+                EndpointTrait<IngestionUsingDataCollectionRulesClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -56,9 +60,9 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the IngestionUsingDataCollectionRulesImplBuilder. */
+    /** Create an instance of the IngestionUsingDataCollectionRulesClientBuilder. */
     @Generated
-    public IngestionUsingDataCollectionRulesImplBuilder() {
+    public IngestionUsingDataCollectionRulesClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -70,7 +74,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder pipeline(HttpPipeline pipeline) {
+    public IngestionUsingDataCollectionRulesClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -83,7 +87,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder httpClient(HttpClient httpClient) {
+    public IngestionUsingDataCollectionRulesClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -96,7 +100,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public IngestionUsingDataCollectionRulesClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -110,7 +114,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder clientOptions(ClientOptions clientOptions) {
+    public IngestionUsingDataCollectionRulesClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -123,7 +127,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder retryOptions(RetryOptions retryOptions) {
+    public IngestionUsingDataCollectionRulesClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -131,7 +135,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public IngestionUsingDataCollectionRulesClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -145,7 +149,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder configuration(Configuration configuration) {
+    public IngestionUsingDataCollectionRulesClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -158,7 +162,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder credential(TokenCredential tokenCredential) {
+    public IngestionUsingDataCollectionRulesClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -171,42 +175,26 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public IngestionUsingDataCollectionRulesImplBuilder endpoint(String endpoint) {
+    public IngestionUsingDataCollectionRulesClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
 
     /*
-     * Api Version
+     * Service version
      */
-    @Generated private String apiVersion;
+    @Generated private IngestionUsingDataCollectionRulesServiceVersion serviceVersion;
 
     /**
-     * Sets Api Version.
+     * Sets Service version.
      *
-     * @param apiVersion the apiVersion value.
-     * @return the IngestionUsingDataCollectionRulesImplBuilder.
+     * @param serviceVersion the serviceVersion value.
+     * @return the IngestionUsingDataCollectionRulesClientBuilder.
      */
     @Generated
-    public IngestionUsingDataCollectionRulesImplBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    @Generated private SerializerAdapter serializerAdapter;
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the IngestionUsingDataCollectionRulesImplBuilder.
-     */
-    @Generated
-    public IngestionUsingDataCollectionRulesImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
+    public IngestionUsingDataCollectionRulesClientBuilder serviceVersion(
+            IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -220,32 +208,30 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the IngestionUsingDataCollectionRulesImplBuilder.
+     * @return the IngestionUsingDataCollectionRulesClientBuilder.
      */
     @Generated
-    public IngestionUsingDataCollectionRulesImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public IngestionUsingDataCollectionRulesClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of IngestionUsingDataCollectionRulesImpl with the provided parameters.
+     * Builds an instance of IngestionUsingDataCollectionRulesClientImpl with the provided parameters.
      *
-     * @return an instance of IngestionUsingDataCollectionRulesImpl.
+     * @return an instance of IngestionUsingDataCollectionRulesClientImpl.
      */
     @Generated
-    public IngestionUsingDataCollectionRulesImpl buildClient() {
+    private IngestionUsingDataCollectionRulesClientImpl buildInnerClient() {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (apiVersion == null) {
-            this.apiVersion = "2021-11-01-preview";
+        if (serviceVersion == null) {
+            this.serviceVersion = IngestionUsingDataCollectionRulesServiceVersion.getLatest();
         }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        IngestionUsingDataCollectionRulesImpl client =
-                new IngestionUsingDataCollectionRulesImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        IngestionUsingDataCollectionRulesClientImpl client =
+                new IngestionUsingDataCollectionRulesClientImpl(
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 
@@ -280,8 +266,7 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://monitor.azure.com//.default"
-                    /*String.format("%s/.default", endpoint)*/));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,"https://monitor.azure.com//.default"));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()
@@ -296,5 +281,26 @@ public final class IngestionUsingDataCollectionRulesImplBuilder
                         .clientOptions(clientOptions)
                         .build();
         return httpPipeline;
+    }
+
+    /**
+     * Builds an instance of IngestionUsingDataCollectionRulesAsyncClient class.
+     *
+     * @return an instance of IngestionUsingDataCollectionRulesAsyncClient.
+     */
+    @Generated
+    public IngestionUsingDataCollectionRulesAsyncClient buildAsyncClient() {
+        return new IngestionUsingDataCollectionRulesAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of IngestionUsingDataCollectionRulesClient class.
+     *
+     * @return an instance of IngestionUsingDataCollectionRulesClient.
+     */
+    @Generated
+    public IngestionUsingDataCollectionRulesClient buildClient() {
+        return new IngestionUsingDataCollectionRulesClient(
+                new IngestionUsingDataCollectionRulesAsyncClient(buildInnerClient()));
     }
 }

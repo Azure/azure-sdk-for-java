@@ -1,12 +1,13 @@
 package com.azure.monitor.ingestion.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.ObjectSerializer;
 
 /**
  *
  */
-public final class SendLogsOptions {
-
+@Fluent
+public final class UploadLogsOptions {
     private ObjectSerializer objectSerializer;
     private Integer maxConcurrency;
 
@@ -20,7 +21,7 @@ public final class SendLogsOptions {
     /**
      * @param objectSerializer
      */
-    public SendLogsOptions setObjectSerializer(ObjectSerializer objectSerializer) {
+    public UploadLogsOptions setObjectSerializer(ObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
         return this;
     }
@@ -35,7 +36,7 @@ public final class SendLogsOptions {
     /**
      * @param maxConcurrency
      */
-    public SendLogsOptions setMaxConcurrency(Integer maxConcurrency) {
+    public UploadLogsOptions setMaxConcurrency(Integer maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
     }

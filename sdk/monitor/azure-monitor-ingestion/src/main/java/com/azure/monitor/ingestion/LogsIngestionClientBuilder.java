@@ -15,7 +15,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesImplBuilder;
+import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
 
 /**
  *
@@ -24,8 +24,8 @@ import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRu
 public final class LogsIngestionClientBuilder implements ConfigurationTrait<LogsIngestionClientBuilder>,
         HttpTrait<LogsIngestionClientBuilder>, EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsIngestionClientBuilder.class);
-    private final IngestionUsingDataCollectionRulesImplBuilder innerLogBuilder = new IngestionUsingDataCollectionRulesImplBuilder();
-    private ClientOptions clientOptions;
+    private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder =
+            new IngestionUsingDataCollectionRulesClientBuilder();
     private LogsIngestionServiceVersion serviceVersion;
 
     /**
@@ -110,6 +110,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      */
     @Override
     public LogsIngestionClientBuilder retryOptions(RetryOptions retryOptions) {
+        innerLogBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -131,7 +132,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      */
     @Override
     public LogsIngestionClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+        innerLogBuilder.clientOptions(clientOptions);
         return this;
     }
 
@@ -158,8 +159,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @return An asynchronous {@link LogsIngestionAsyncClient}.
      */
     public LogsIngestionAsyncClient buildAsyncClient() {
-        logger.info("Using service version " + this.serviceVersion);
-        return new LogsIngestionAsyncClient(innerLogBuilder.buildClient());
+        return new LogsIngestionAsyncClient(innerLogBuilder.buildAsyncClient());
     }
 
 }

@@ -4,7 +4,7 @@
 
 ```yaml
 java: true
-use: '@autorest/java@4.0.54'
+use: '@autorest/java@4.0.61'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/preview/2021-11-01-preview/DataCollectionRules.json
@@ -21,4 +21,5 @@ model-override-setter-from-superclass: true
 credential-types: tokencredential
 client-side-validations: true
 artifact-id: azure-monitor-logingestion
+data-plane: true
 ```

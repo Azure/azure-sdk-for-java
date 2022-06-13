@@ -3,8 +3,8 @@ package com.azure.monitor.ingestion.models;
 /**
  *
  */
-public enum SendLogsStatus {
+public enum UploadLogsStatus {
     SUCCESS,
-
-    PARTIAL_FAILURE;
+    PARTIAL_FAILURE,
+    FAILURE;
 }
