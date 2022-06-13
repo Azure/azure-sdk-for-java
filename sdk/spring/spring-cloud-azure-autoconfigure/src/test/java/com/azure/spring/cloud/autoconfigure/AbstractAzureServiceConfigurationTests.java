@@ -39,9 +39,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         getMinimalContextRunner()
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".profile.tenant-id=test-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=test-client-id",
-                getPropertyPrefix() + ".credential.client-secret=" + "test-client-secret"
+                getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
+                getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -57,9 +57,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         getMinimalContextRunner()
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".profile.tenant-id=test-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=test-client-id",
-                getPropertyPrefix() + ".credential.client-certificate-path=test-client-cert-path"
+                getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
+                getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -75,9 +75,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         getMinimalContextRunner()
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".credential.client-id=test-client-id",
-                getPropertyPrefix() + ".credential.username=test-username",
-                getPropertyPrefix() + ".credential.password=" + "test-password"
+                getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                getPropertyPrefix() + ".credential.username=fake-username",
+                getPropertyPrefix() + ".credential.password=fake-password"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
