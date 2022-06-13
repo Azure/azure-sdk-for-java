@@ -103,8 +103,8 @@ com.azure:azure-iot-deviceupdate;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventgrid;4.11.2;4.12.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.12.0;5.12.1
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.12.2;1.13.0
+com.azure:azure-messaging-eventhubs;5.12.1;5.13.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.13.0;1.14.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-redis;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
