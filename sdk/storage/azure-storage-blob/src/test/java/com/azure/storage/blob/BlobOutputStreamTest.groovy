@@ -34,6 +34,25 @@ class BlobOutputStreamTest extends APISpec {
     }
 
     @LiveOnly
+    def "BlockBlob output stream with close multiple times"() {
+        setup:
+        def data = getRandomByteArray(10 * Constants.MB)
+        def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        def outputStream = blockBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+        // call again, no exceptions should be thrown
+        outputStream.close()
+        outputStream.close()
+
+        then:
+        blockBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+    }
+
+    @LiveOnly
     def "BlockBlob output stream default no overwrite"() {
         setup:
         def data = getRandomByteArray(10 * Constants.MB)

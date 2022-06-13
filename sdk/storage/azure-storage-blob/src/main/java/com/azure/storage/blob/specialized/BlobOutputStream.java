@@ -26,6 +26,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -114,6 +115,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     @Override
     public synchronized void close() throws IOException {
         try {
+            if (this.lastError != null && this.lastError.getMessage().equals(Constants.STREAM_CLOSED)) {
+                return;
+            }
             // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
             // if an exception was thrown by any thread in the threadExecutor, realize it now
             this.checkStreamState();
