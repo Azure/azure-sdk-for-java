@@ -1,16 +1,33 @@
 ## Release History
 
-### 4.11.0-beta.1 (Unreleased)
+### 4.12.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29027](https://github.com/Azure/azure-sdk-for-java/pull/29027)
-* Added a config option `spark.cosmos.serialization.dateTimeConversionMode` to allow changing date/time conversion to fall back to converting `java.sql.Date` and `java.sql.Tiemstamp` into Epoch Milliseconds like in the Cosmos DB Connector for Spark 2.4 - See [PR 29081](https://github.com/Azure/azure-sdk-for-java/pull/29081)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.11.1 (2022-06-09)
+
+#### Bugs Fixed
+* Fixes bug preventing usage of feedRangeFilter with change feed. - See [PR 29338](https://github.com/Azure/azure-sdk-for-java/pull/29338)
+
+### 4.11.0 (2022-06-08)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.31.0`.
+
+### 4.10.1 (2022-06-01)
+
+#### Features Added
+* Added ability to disable endpoint rediscovery when using custom domain names in combination with private endpoints from a custom (on-premise) Spark environment (neither Databricks nor Synapse). - See [PR 29027](https://github.com/Azure/azure-sdk-for-java/pull/29027)
+* Added a config option `spark.cosmos.serialization.dateTimeConversionMode` to allow changing date/time conversion to fall back to converting `java.sql.Date` and `java.sql.Tiemstamp` into Epoch Milliseconds like in the Cosmos DB Connector for Spark 2.4 - See [PR 29081](https://github.com/Azure/azure-sdk-for-java/pull/29081)
+
+#### Bugs Fixed
+* Fixed possible perf issue when Split results in 410 when trying to get latest LSN in Spark partitioner that could result in reprocessing change feed events (causing "hot partition2") - See [PR 29152](https://github.com/Azure/azure-sdk-for-java/pull/29152)
+* Fixed a bug resulting in ChangeFeed requests using the account's default consistency model instead of falling back to eventual if `spark.cosmos.read.forceEventualConsistency` is `true` (the default config). - See [PR 29152](https://github.com/Azure/azure-sdk-for-java/pull/29152)
 
 ### 4.10.0 (2022-05-20)
 #### Features Added

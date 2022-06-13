@@ -154,7 +154,7 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.using(() -> FileChannel.open(file), channel -> Flux.generate(() -> 0, (count, sink) -> {
+        return Flux.using(() -> FileChannel.open(file), channel -> Flux.generate(() -> 0L, (count, sink) -> {
             if (count == length) {
                 sink.complete();
                 return count;

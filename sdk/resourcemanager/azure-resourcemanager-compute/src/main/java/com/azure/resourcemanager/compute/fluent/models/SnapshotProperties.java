@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.CopyCompletionError;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
@@ -155,6 +156,13 @@ public final class SnapshotProperties {
      */
     @JsonProperty(value = "completionPercent")
     private Float completionPercent;
+
+    /*
+     * Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     */
+    @JsonProperty(value = "copyCompletionError")
+    private CopyCompletionError copyCompletionError;
 
     /*
      * Additional authentication requirements when exporting or uploading to a
@@ -530,6 +538,28 @@ public final class SnapshotProperties {
     }
 
     /**
+     * Get the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @return the copyCompletionError value.
+     */
+    public CopyCompletionError copyCompletionError() {
+        return this.copyCompletionError;
+    }
+
+    /**
+     * Set the copyCompletionError property: Indicates the error details if the background copy of a resource created
+     * via the CopyStart operation fails.
+     *
+     * @param copyCompletionError the copyCompletionError value to set.
+     * @return the SnapshotProperties object itself.
+     */
+    public SnapshotProperties withCopyCompletionError(CopyCompletionError copyCompletionError) {
+        this.copyCompletionError = copyCompletionError;
+        return this;
+    }
+
+    /**
      * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
      * or snapshot.
      *
@@ -578,6 +608,9 @@ public final class SnapshotProperties {
         }
         if (securityProfile() != null) {
             securityProfile().validate();
+        }
+        if (copyCompletionError() != null) {
+            copyCompletionError().validate();
         }
     }
 

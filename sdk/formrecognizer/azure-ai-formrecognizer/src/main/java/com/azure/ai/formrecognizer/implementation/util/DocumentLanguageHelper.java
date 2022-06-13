@@ -30,13 +30,13 @@ public final class DocumentLanguageHelper {
      * Type defining the methods to set the non-public properties of an {@link DocumentLanguage} instance.
      */
     public interface DocumentLanguageAccessor {
-        void setCode(DocumentLanguage documentLanguage, String content);
+        void setLocale(DocumentLanguage documentLanguage, String locale);
         void setSpans(DocumentLanguage documentLanguage, List<DocumentSpan> spans);
         void setConfidence(DocumentLanguage documentLanguage, Float confidence);
     }
 
-    static void setCode(DocumentLanguage documentLanguage, String content) {
-        accessor.setCode(documentLanguage, content);
+    static void setLocale(DocumentLanguage documentLanguage, String locale) {
+        accessor.setLocale(documentLanguage, locale);
     }
 
     static void setConfidence(DocumentLanguage documentLanguage, Float confidence) {

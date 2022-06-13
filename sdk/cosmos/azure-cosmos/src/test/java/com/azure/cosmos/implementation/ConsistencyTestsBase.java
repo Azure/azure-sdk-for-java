@@ -395,6 +395,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
                         .build();
 
         String collectionId = UUID.randomUUID().toString();
@@ -654,6 +655,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(ClientTelemetryConfig.getDefaultConfig())
                         .build();
         RxDocumentClientImpl validationClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()

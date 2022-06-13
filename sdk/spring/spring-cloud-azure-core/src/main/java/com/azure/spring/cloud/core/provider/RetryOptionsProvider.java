@@ -107,7 +107,14 @@ public interface RetryOptionsProvider {
      */
     enum RetryMode {
 
+        /**
+         * Fixed backoff retry mode.
+         */
         FIXED,
+
+        /**
+         * Exponential backoff retry mode.
+         */
         EXPONENTIAL
     }
 }

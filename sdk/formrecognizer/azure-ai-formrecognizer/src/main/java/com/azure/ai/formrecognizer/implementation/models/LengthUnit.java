@@ -27,7 +27,11 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
         return fromString(name, LengthUnit.class);
     }
 
-    /** @return known LengthUnit values. */
+    /**
+     * Gets known LengthUnit values.
+     *
+     * @return known LengthUnit values.
+     */
     public static Collection<LengthUnit> values() {
         return values(LengthUnit.class);
     }

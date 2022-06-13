@@ -33,14 +33,27 @@ pr:
       - sdk/digitaltwins/azure-digitaltwins-core/pom.xml
       - sdk/digitaltwins/azure-resourcemanager-digitaltwins/pom.xml
 
+parameters:
+- name: release_azuredigitaltwinscore
+  displayName: 'azure-digitaltwins-core'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerdigitaltwins
+  displayName: 'azure-resourcemanager-digitaltwins'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: digitaltwins
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-digitaltwins-core
         groupId: com.azure
         safeName: azuredigitaltwinscore
+        releaseInBatch: ${{ parameters.release_azuredigitaltwinscore }}
       - name: azure-resourcemanager-digitaltwins
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdigitaltwins
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdigitaltwins }}

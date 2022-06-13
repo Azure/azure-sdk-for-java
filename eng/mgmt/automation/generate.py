@@ -121,12 +121,12 @@ def sdk_automation(input_file: str, output_file: str):
             tag = None
             if service == 'resources':
                 with open(os.path.join(config['specFolder'], readme)) as fin:
-                    tag_match = re.search('tag: (package-resources-[\S]+)',
+                    tag_match = re.search(r'tag: (package-resources-\S+)',
                                           fin.read())
                     if tag_match:
                         tag = tag_match.group(1)
                     else:
-                        tag = 'package-resources-2020-10'
+                        tag = 'package-resources-2021-01'
 
             module = ARTIFACT_FORMAT.format(service)
             output_folder = OUTPUT_FOLDER_FORMAT.format(service)

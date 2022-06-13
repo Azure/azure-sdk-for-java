@@ -163,7 +163,6 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         return processorMap.computeIfAbsent(key, k -> {
             ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
             ProcessorProperties processorProperties = propertiesMerger.merge(properties, this.namespaceProperties);
-            processorProperties.setAutoComplete(false);
             processorProperties.setEntityName(k.getDestination());
             if (!k.hasGroup()) {
                 processorProperties.setEntityType(ServiceBusEntityType.QUEUE);

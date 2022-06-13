@@ -169,10 +169,12 @@
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage</module>
         <module>spring-cloud-azure-starter-storage-blob</module>
         <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
@@ -218,10 +220,12 @@
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage</module>
         <module>spring-cloud-azure-starter-storage-blob</module>
         <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appconfiguration.fluent.models.PrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A reference to a related private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionReference.class);
-
     /*
      * The resource ID.
      */

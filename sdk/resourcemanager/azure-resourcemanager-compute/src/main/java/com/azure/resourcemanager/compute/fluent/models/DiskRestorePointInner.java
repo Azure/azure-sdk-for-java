@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
@@ -295,6 +296,29 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
      */
     public String sourceResourceLocation() {
         return this.innerProperties() == null ? null : this.innerProperties().sourceResourceLocation();
+    }
+
+    /**
+     * Get the securityProfile property: Contains the security related information for the resource.
+     *
+     * @return the securityProfile value.
+     */
+    public DiskSecurityProfile securityProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
+    }
+
+    /**
+     * Set the securityProfile property: Contains the security related information for the resource.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the DiskRestorePointInner object itself.
+     */
+    public DiskRestorePointInner withSecurityProfile(DiskSecurityProfile securityProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskRestorePointProperties();
+        }
+        this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
     }
 
     /**
