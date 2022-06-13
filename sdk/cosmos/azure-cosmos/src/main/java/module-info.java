@@ -15,7 +15,7 @@ module com.azure.cosmos {
     requires io.netty.resolver;
     requires io.netty.codec.http;
     requires io.netty.codec.http2;
-//    requires io.netty.transport.epoll;
+    requires io.netty.transport.epoll;
     requires io.netty.transport.classes.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty.core;
