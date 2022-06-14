@@ -8,15 +8,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -77,6 +80,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to DevTestLabsManager. The DevTest Labs Client. */
 public final class DevTestLabsManager {
@@ -158,6 +162,19 @@ public final class DevTestLabsManager {
     }
 
     /**
+     * Creates an instance of DevTestLabs service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DevTestLabs service API instance.
+     */
+    public static DevTestLabsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DevTestLabsManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DevTestLabsManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -168,12 +185,14 @@ public final class DevTestLabsManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -213,6 +232,17 @@ public final class DevTestLabsManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -224,15 +254,30 @@ public final class DevTestLabsManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -268,20 +313,38 @@ public final class DevTestLabsManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -293,7 +356,11 @@ public final class DevTestLabsManager {
         }
     }
 
-    /** @return Resource collection API of ProviderOperations. */
+    /**
+     * Gets the resource collection API of ProviderOperations.
+     *
+     * @return Resource collection API of ProviderOperations.
+     */
     public ProviderOperations providerOperations() {
         if (this.providerOperations == null) {
             this.providerOperations = new ProviderOperationsImpl(clientObject.getProviderOperations(), this);
@@ -301,7 +368,11 @@ public final class DevTestLabsManager {
         return providerOperations;
     }
 
-    /** @return Resource collection API of Labs. */
+    /**
+     * Gets the resource collection API of Labs. It manages Lab.
+     *
+     * @return Resource collection API of Labs.
+     */
     public Labs labs() {
         if (this.labs == null) {
             this.labs = new LabsImpl(clientObject.getLabs(), this);
@@ -309,7 +380,11 @@ public final class DevTestLabsManager {
         return labs;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -317,7 +392,11 @@ public final class DevTestLabsManager {
         return operations;
     }
 
-    /** @return Resource collection API of GlobalSchedules. */
+    /**
+     * Gets the resource collection API of GlobalSchedules. It manages Schedule.
+     *
+     * @return Resource collection API of GlobalSchedules.
+     */
     public GlobalSchedules globalSchedules() {
         if (this.globalSchedules == null) {
             this.globalSchedules = new GlobalSchedulesImpl(clientObject.getGlobalSchedules(), this);
@@ -325,7 +404,11 @@ public final class DevTestLabsManager {
         return globalSchedules;
     }
 
-    /** @return Resource collection API of ArtifactSources. */
+    /**
+     * Gets the resource collection API of ArtifactSources. It manages ArtifactSource.
+     *
+     * @return Resource collection API of ArtifactSources.
+     */
     public ArtifactSources artifactSources() {
         if (this.artifactSources == null) {
             this.artifactSources = new ArtifactSourcesImpl(clientObject.getArtifactSources(), this);
@@ -333,7 +416,11 @@ public final class DevTestLabsManager {
         return artifactSources;
     }
 
-    /** @return Resource collection API of ArmTemplates. */
+    /**
+     * Gets the resource collection API of ArmTemplates.
+     *
+     * @return Resource collection API of ArmTemplates.
+     */
     public ArmTemplates armTemplates() {
         if (this.armTemplates == null) {
             this.armTemplates = new ArmTemplatesImpl(clientObject.getArmTemplates(), this);
@@ -341,7 +428,11 @@ public final class DevTestLabsManager {
         return armTemplates;
     }
 
-    /** @return Resource collection API of Artifacts. */
+    /**
+     * Gets the resource collection API of Artifacts.
+     *
+     * @return Resource collection API of Artifacts.
+     */
     public Artifacts artifacts() {
         if (this.artifacts == null) {
             this.artifacts = new ArtifactsImpl(clientObject.getArtifacts(), this);
@@ -349,7 +440,11 @@ public final class DevTestLabsManager {
         return artifacts;
     }
 
-    /** @return Resource collection API of Costs. */
+    /**
+     * Gets the resource collection API of Costs. It manages LabCost.
+     *
+     * @return Resource collection API of Costs.
+     */
     public Costs costs() {
         if (this.costs == null) {
             this.costs = new CostsImpl(clientObject.getCosts(), this);
@@ -357,7 +452,11 @@ public final class DevTestLabsManager {
         return costs;
     }
 
-    /** @return Resource collection API of CustomImages. */
+    /**
+     * Gets the resource collection API of CustomImages. It manages CustomImage.
+     *
+     * @return Resource collection API of CustomImages.
+     */
     public CustomImages customImages() {
         if (this.customImages == null) {
             this.customImages = new CustomImagesImpl(clientObject.getCustomImages(), this);
@@ -365,7 +464,11 @@ public final class DevTestLabsManager {
         return customImages;
     }
 
-    /** @return Resource collection API of Formulas. */
+    /**
+     * Gets the resource collection API of Formulas. It manages Formula.
+     *
+     * @return Resource collection API of Formulas.
+     */
     public Formulas formulas() {
         if (this.formulas == null) {
             this.formulas = new FormulasImpl(clientObject.getFormulas(), this);
@@ -373,7 +476,11 @@ public final class DevTestLabsManager {
         return formulas;
     }
 
-    /** @return Resource collection API of GalleryImages. */
+    /**
+     * Gets the resource collection API of GalleryImages.
+     *
+     * @return Resource collection API of GalleryImages.
+     */
     public GalleryImages galleryImages() {
         if (this.galleryImages == null) {
             this.galleryImages = new GalleryImagesImpl(clientObject.getGalleryImages(), this);
@@ -381,7 +488,11 @@ public final class DevTestLabsManager {
         return galleryImages;
     }
 
-    /** @return Resource collection API of NotificationChannels. */
+    /**
+     * Gets the resource collection API of NotificationChannels. It manages NotificationChannel.
+     *
+     * @return Resource collection API of NotificationChannels.
+     */
     public NotificationChannels notificationChannels() {
         if (this.notificationChannels == null) {
             this.notificationChannels = new NotificationChannelsImpl(clientObject.getNotificationChannels(), this);
@@ -389,7 +500,11 @@ public final class DevTestLabsManager {
         return notificationChannels;
     }
 
-    /** @return Resource collection API of PolicySets. */
+    /**
+     * Gets the resource collection API of PolicySets.
+     *
+     * @return Resource collection API of PolicySets.
+     */
     public PolicySets policySets() {
         if (this.policySets == null) {
             this.policySets = new PolicySetsImpl(clientObject.getPolicySets(), this);
@@ -397,7 +512,11 @@ public final class DevTestLabsManager {
         return policySets;
     }
 
-    /** @return Resource collection API of Policies. */
+    /**
+     * Gets the resource collection API of Policies. It manages Policy.
+     *
+     * @return Resource collection API of Policies.
+     */
     public Policies policies() {
         if (this.policies == null) {
             this.policies = new PoliciesImpl(clientObject.getPolicies(), this);
@@ -405,7 +524,11 @@ public final class DevTestLabsManager {
         return policies;
     }
 
-    /** @return Resource collection API of Schedules. */
+    /**
+     * Gets the resource collection API of Schedules.
+     *
+     * @return Resource collection API of Schedules.
+     */
     public Schedules schedules() {
         if (this.schedules == null) {
             this.schedules = new SchedulesImpl(clientObject.getSchedules(), this);
@@ -413,7 +536,11 @@ public final class DevTestLabsManager {
         return schedules;
     }
 
-    /** @return Resource collection API of ServiceRunners. */
+    /**
+     * Gets the resource collection API of ServiceRunners. It manages ServiceRunner.
+     *
+     * @return Resource collection API of ServiceRunners.
+     */
     public ServiceRunners serviceRunners() {
         if (this.serviceRunners == null) {
             this.serviceRunners = new ServiceRunnersImpl(clientObject.getServiceRunners(), this);
@@ -421,7 +548,11 @@ public final class DevTestLabsManager {
         return serviceRunners;
     }
 
-    /** @return Resource collection API of Users. */
+    /**
+     * Gets the resource collection API of Users. It manages User.
+     *
+     * @return Resource collection API of Users.
+     */
     public Users users() {
         if (this.users == null) {
             this.users = new UsersImpl(clientObject.getUsers(), this);
@@ -429,7 +560,11 @@ public final class DevTestLabsManager {
         return users;
     }
 
-    /** @return Resource collection API of Disks. */
+    /**
+     * Gets the resource collection API of Disks. It manages Disk.
+     *
+     * @return Resource collection API of Disks.
+     */
     public Disks disks() {
         if (this.disks == null) {
             this.disks = new DisksImpl(clientObject.getDisks(), this);
@@ -437,7 +572,11 @@ public final class DevTestLabsManager {
         return disks;
     }
 
-    /** @return Resource collection API of Environments. */
+    /**
+     * Gets the resource collection API of Environments. It manages DtlEnvironment.
+     *
+     * @return Resource collection API of Environments.
+     */
     public Environments environments() {
         if (this.environments == null) {
             this.environments = new EnvironmentsImpl(clientObject.getEnvironments(), this);
@@ -445,7 +584,11 @@ public final class DevTestLabsManager {
         return environments;
     }
 
-    /** @return Resource collection API of Secrets. */
+    /**
+     * Gets the resource collection API of Secrets. It manages Secret.
+     *
+     * @return Resource collection API of Secrets.
+     */
     public Secrets secrets() {
         if (this.secrets == null) {
             this.secrets = new SecretsImpl(clientObject.getSecrets(), this);
@@ -453,7 +596,11 @@ public final class DevTestLabsManager {
         return secrets;
     }
 
-    /** @return Resource collection API of ServiceFabrics. */
+    /**
+     * Gets the resource collection API of ServiceFabrics. It manages ServiceFabric.
+     *
+     * @return Resource collection API of ServiceFabrics.
+     */
     public ServiceFabrics serviceFabrics() {
         if (this.serviceFabrics == null) {
             this.serviceFabrics = new ServiceFabricsImpl(clientObject.getServiceFabrics(), this);
@@ -461,7 +608,11 @@ public final class DevTestLabsManager {
         return serviceFabrics;
     }
 
-    /** @return Resource collection API of ServiceFabricSchedules. */
+    /**
+     * Gets the resource collection API of ServiceFabricSchedules.
+     *
+     * @return Resource collection API of ServiceFabricSchedules.
+     */
     public ServiceFabricSchedules serviceFabricSchedules() {
         if (this.serviceFabricSchedules == null) {
             this.serviceFabricSchedules =
@@ -470,7 +621,11 @@ public final class DevTestLabsManager {
         return serviceFabricSchedules;
     }
 
-    /** @return Resource collection API of VirtualMachines. */
+    /**
+     * Gets the resource collection API of VirtualMachines. It manages LabVirtualMachine.
+     *
+     * @return Resource collection API of VirtualMachines.
+     */
     public VirtualMachines virtualMachines() {
         if (this.virtualMachines == null) {
             this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
@@ -478,7 +633,11 @@ public final class DevTestLabsManager {
         return virtualMachines;
     }
 
-    /** @return Resource collection API of VirtualMachineSchedules. */
+    /**
+     * Gets the resource collection API of VirtualMachineSchedules.
+     *
+     * @return Resource collection API of VirtualMachineSchedules.
+     */
     public VirtualMachineSchedules virtualMachineSchedules() {
         if (this.virtualMachineSchedules == null) {
             this.virtualMachineSchedules =
@@ -487,7 +646,11 @@ public final class DevTestLabsManager {
         return virtualMachineSchedules;
     }
 
-    /** @return Resource collection API of VirtualNetworks. */
+    /**
+     * Gets the resource collection API of VirtualNetworks. It manages VirtualNetwork.
+     *
+     * @return Resource collection API of VirtualNetworks.
+     */
     public VirtualNetworks virtualNetworks() {
         if (this.virtualNetworks == null) {
             this.virtualNetworks = new VirtualNetworksImpl(clientObject.getVirtualNetworks(), this);

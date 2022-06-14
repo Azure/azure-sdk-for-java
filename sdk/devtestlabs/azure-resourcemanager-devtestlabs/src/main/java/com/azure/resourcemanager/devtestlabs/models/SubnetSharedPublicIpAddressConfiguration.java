@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Configuration for public IP address sharing. */
 @Fluent
 public final class SubnetSharedPublicIpAddressConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetSharedPublicIpAddressConfiguration.class);
-
     /*
      * Backend ports that virtual machines on this subnet are allowed to expose
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for plan on a custom image. */
 @Fluent
 public final class CustomImagePropertiesFromPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagePropertiesFromPlan.class);
-
     /*
      * The id of the plan, equivalent to name of the plan
      */

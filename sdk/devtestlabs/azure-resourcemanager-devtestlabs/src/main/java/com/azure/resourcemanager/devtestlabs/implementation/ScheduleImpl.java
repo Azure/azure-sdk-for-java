@@ -101,6 +101,10 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ScheduleInner innerModel() {
         return this.innerObject;
     }

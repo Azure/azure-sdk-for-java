@@ -27,7 +27,11 @@ public final class ReportingCycleType extends ExpandableStringEnum<ReportingCycl
         return fromString(name, ReportingCycleType.class);
     }
 
-    /** @return known ReportingCycleType values. */
+    /**
+     * Gets known ReportingCycleType values.
+     *
+     * @return known ReportingCycleType values.
+     */
     public static Collection<ReportingCycleType> values() {
         return values(ReportingCycleType.class);
     }

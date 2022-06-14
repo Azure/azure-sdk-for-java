@@ -27,7 +27,11 @@ public final class PolicyEvaluatorType extends ExpandableStringEnum<PolicyEvalua
         return fromString(name, PolicyEvaluatorType.class);
     }
 
-    /** @return known PolicyEvaluatorType values. */
+    /**
+     * Gets known PolicyEvaluatorType values.
+     *
+     * @return known PolicyEvaluatorType values.
+     */
     public static Collection<PolicyEvaluatorType> values() {
         return values(PolicyEvaluatorType.class);
     }

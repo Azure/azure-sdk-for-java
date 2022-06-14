@@ -30,7 +30,11 @@ public final class WindowsOsState extends ExpandableStringEnum<WindowsOsState> {
         return fromString(name, WindowsOsState.class);
     }
 
-    /** @return known WindowsOsState values. */
+    /**
+     * Gets known WindowsOsState values.
+     *
+     * @return known WindowsOsState values.
+     */
     public static Collection<WindowsOsState> values() {
         return values(WindowsOsState.class);
     }

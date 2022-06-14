@@ -228,6 +228,10 @@ public final class LabVirtualMachineImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabVirtualMachineInner innerModel() {
         return this.innerObject;
     }

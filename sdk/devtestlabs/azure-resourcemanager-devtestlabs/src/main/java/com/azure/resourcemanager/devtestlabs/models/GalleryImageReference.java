@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The reference information for an Azure Marketplace image. */
 @Fluent
 public final class GalleryImageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageReference.class);
-
     /*
      * The offer of the gallery image.
      */

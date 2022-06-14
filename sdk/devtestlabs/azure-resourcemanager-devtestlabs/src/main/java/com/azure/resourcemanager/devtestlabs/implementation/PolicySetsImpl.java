@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesRespo
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesRequest;
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesResponse;
 import com.azure.resourcemanager.devtestlabs.models.PolicySets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PolicySetsImpl implements PolicySets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PolicySetsImpl.class);
 
     private final PolicySetsClient innerClient;
 

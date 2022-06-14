@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a generated ARM template. */
 @Fluent
 public final class ArmTemplateInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplateInfoInner.class);
-
     /*
      * The template's contents.
      */

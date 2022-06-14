@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Subnet information as returned by the Microsoft.Network API. */
 @Fluent
 public final class ExternalSubnet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExternalSubnet.class);
-
     /*
      * Gets or sets the identifier.
      */

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.devtestlabs.models.ArmTemplateInfo;
 import com.azure.resourcemanager.devtestlabs.models.Artifact;
 import com.azure.resourcemanager.devtestlabs.models.Artifacts;
 import com.azure.resourcemanager.devtestlabs.models.GenerateArmTemplateRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArtifactsImpl implements Artifacts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArtifactsImpl.class);
 
     private final ArtifactsClient innerClient;
 

@@ -15,7 +15,7 @@ public interface Labs {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> list();
 
@@ -30,7 +30,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> list(String expand, String filter, Integer top, String orderby, Context context);
 
@@ -41,7 +41,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> listByResourceGroup(String resourceGroupName);
 
@@ -57,7 +57,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Lab> listByResourceGroup(
         String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
@@ -84,7 +84,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
+     * @return lab along with {@link Response}.
      */
     Response<Lab> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand, Context context);
 
@@ -218,7 +218,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
+     * @return response body for generating an upload URI along with {@link Response}.
      */
     Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
         String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
@@ -263,7 +263,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(String resourceGroupName, String name);
 
@@ -276,7 +276,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LabVhd> listVhds(String resourceGroupName, String name, Context context);
 
@@ -287,7 +287,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
+     * @return lab along with {@link Response}.
      */
     Lab getById(String id);
 
@@ -300,7 +300,7 @@ public interface Labs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
+     * @return lab along with {@link Response}.
      */
     Response<Lab> getByIdWithResponse(String id, String expand, Context context);
 

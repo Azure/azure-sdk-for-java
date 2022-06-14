@@ -28,7 +28,11 @@ public final class FileUploadOptions extends ExpandableStringEnum<FileUploadOpti
         return fromString(name, FileUploadOptions.class);
     }
 
-    /** @return known FileUploadOptions values. */
+    /**
+     * Gets known FileUploadOptions values.
+     *
+     * @return known FileUploadOptions values.
+     */
     public static Collection<FileUploadOptions> values() {
         return values(FileUploadOptions.class);
     }

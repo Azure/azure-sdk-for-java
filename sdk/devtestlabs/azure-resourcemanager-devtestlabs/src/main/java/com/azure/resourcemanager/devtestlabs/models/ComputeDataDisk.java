@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A data disks attached to a virtual machine. */
 @Fluent
 public final class ComputeDataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeDataDisk.class);
-
     /*
      * Gets data disk name.
      */

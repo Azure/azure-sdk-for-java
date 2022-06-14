@@ -6,17 +6,13 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.IdentityProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A container for a managed identity to execute DevTest lab services. */
 @Fluent
 public final class ServiceRunnerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceRunnerInner.class);
-
     /*
      * The identity of the resource.
      */

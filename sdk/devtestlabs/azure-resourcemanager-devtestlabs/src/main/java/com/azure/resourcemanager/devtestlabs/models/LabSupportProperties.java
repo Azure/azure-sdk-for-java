@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a lab's support banner. */
 @Fluent
 public final class LabSupportProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabSupportProperties.class);
-
     /*
      * Is the lab support banner active/enabled at this time?
      */

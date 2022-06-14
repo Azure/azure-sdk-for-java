@@ -160,6 +160,10 @@ public final class LabImpl implements Lab, Lab.Definition, Lab.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LabInner innerModel() {
         return this.innerObject;
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body for detaching data disk from a virtual machine. */
 @Fluent
 public final class DetachDataDiskProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetachDataDiskProperties.class);
-
     /*
      * Specifies the disk resource ID to detach from virtual machine.
      */

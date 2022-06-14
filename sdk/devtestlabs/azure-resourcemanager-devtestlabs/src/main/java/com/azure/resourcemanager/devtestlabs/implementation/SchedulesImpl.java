@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.Schedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SchedulesImpl implements Schedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchedulesImpl.class);
 
     private final SchedulesClient innerClient;
 

@@ -30,7 +30,11 @@ public final class LinuxOsState extends ExpandableStringEnum<LinuxOsState> {
         return fromString(name, LinuxOsState.class);
     }
 
-    /** @return known LinuxOsState values. */
+    /**
+     * Gets known LinuxOsState values.
+     *
+     * @return known LinuxOsState values.
+     */
     public static Collection<LinuxOsState> values() {
         return values(LinuxOsState.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to attach new disk to the Virtual Machine. */
 @Fluent
 public final class AttachNewDataDiskOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachNewDataDiskOptions.class);
-
     /*
      * Size of the disk to be attached in Gibibytes.
      */

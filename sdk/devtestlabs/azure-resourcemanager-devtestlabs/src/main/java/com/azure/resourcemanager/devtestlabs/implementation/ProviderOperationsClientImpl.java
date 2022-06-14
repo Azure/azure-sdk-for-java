@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.fluent.ProviderOperationsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationMetadataInner;
 import com.azure.resourcemanager.devtestlabs.models.ProviderOperationResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProviderOperationsClient. */
 public final class ProviderOperationsClientImpl implements ProviderOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ProviderOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProviderOperationsService service;
 
@@ -85,7 +82,8 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationMetadataInner>> listSinglePageAsync() {
@@ -118,7 +116,8 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationMetadataInner>> listSinglePageAsync(Context context) {
@@ -148,7 +147,7 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationMetadataInner> listAsync() {
@@ -162,7 +161,7 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationMetadataInner> listAsync(Context context) {
@@ -175,7 +174,7 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationMetadataInner> list() {
@@ -189,7 +188,7 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationMetadataInner> list(Context context) {
@@ -203,7 +202,8 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationMetadataInner>> listNextSinglePageAsync(String nextLink) {
@@ -239,7 +239,8 @@ public final class ProviderOperationsClientImpl implements ProviderOperationsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list REST API operations.
+     * @return result of the request to list REST API operations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationMetadataInner>> listNextSinglePageAsync(String nextLink, Context context) {

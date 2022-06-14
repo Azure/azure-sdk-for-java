@@ -33,7 +33,7 @@ public interface Costs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response}.
      */
     Response<LabCost> getWithResponse(
         String resourceGroupName, String labName, String name, String expand, Context context);
@@ -45,7 +45,7 @@ public interface Costs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response}.
      */
     LabCost getById(String id);
 
@@ -58,7 +58,7 @@ public interface Costs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cost.
+     * @return cost along with {@link Response}.
      */
     Response<LabCost> getByIdWithResponse(String id, String expand, Context context);
 

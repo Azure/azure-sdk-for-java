@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters of the export operation. */
 @Fluent
 public final class ExportResourceUsageParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportResourceUsageParameters.class);
-
     /*
      * The blob storage absolute sas uri with write permission to the container
      * which the usage data needs to be uploaded to.

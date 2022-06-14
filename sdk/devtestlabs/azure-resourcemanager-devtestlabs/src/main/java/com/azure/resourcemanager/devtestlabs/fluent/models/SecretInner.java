@@ -5,73 +5,27 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A secret. */
-@JsonFlatten
 @Fluent
-public class SecretInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretInner.class);
-
+public final class SecretInner extends Resource {
     /*
-     * The value of the secret for secret creation.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    @JsonProperty(value = "properties", required = true)
+    private SecretProperties innerProperties = new SecretProperties();
 
     /**
-     * Get the value property: The value of the secret for secret creation.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @return the value value.
+     * @return the innerProperties value.
      */
-    public String value() {
-        return this.value;
-    }
-
-    /**
-     * Set the value property: The value of the secret for secret creation.
-     *
-     * @param value the value value to set.
-     * @return the SecretInner object itself.
-     */
-    public SecretInner withValue(String value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private SecretProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -89,10 +43,60 @@ public class SecretInner extends Resource {
     }
 
     /**
+     * Get the value property: The value of the secret for secret creation.
+     *
+     * @return the value value.
+     */
+    public String value() {
+        return this.innerProperties() == null ? null : this.innerProperties().value();
+    }
+
+    /**
+     * Set the value property: The value of the secret for secret creation.
+     *
+     * @param value the value value to set.
+     * @return the SecretInner object itself.
+     */
+    public SecretInner withValue(String value) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecretProperties();
+        }
+        this.innerProperties().withValue(value);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model SecretInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretInner.class);
 }

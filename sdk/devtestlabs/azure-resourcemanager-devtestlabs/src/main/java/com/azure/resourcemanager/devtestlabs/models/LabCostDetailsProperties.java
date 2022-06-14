@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a lab cost item. */
 @Fluent
 public final class LabCostDetailsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabCostDetailsProperties.class);
-
     /*
      * The date of the cost item.
      */

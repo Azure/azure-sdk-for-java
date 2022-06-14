@@ -30,7 +30,11 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
         return fromString(name, StorageType.class);
     }
 
-    /** @return known StorageType values. */
+    /**
+     * Gets known StorageType values.
+     *
+     * @return known StorageType values.
+     */
     public static Collection<StorageType> values() {
         return values(StorageType.class);
     }

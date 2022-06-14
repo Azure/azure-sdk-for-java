@@ -21,10 +21,9 @@ import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachine;
 import com.azure.resourcemanager.devtestlabs.models.RdpConnection;
 import com.azure.resourcemanager.devtestlabs.models.ResizeLabVirtualMachineProperties;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 
@@ -248,7 +247,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public LabVirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -256,14 +255,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -276,7 +275,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public Response<LabVirtualMachine> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -284,14 +283,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -303,7 +302,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -311,14 +310,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -330,7 +329,7 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -338,14 +337,14 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "virtualmachines");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

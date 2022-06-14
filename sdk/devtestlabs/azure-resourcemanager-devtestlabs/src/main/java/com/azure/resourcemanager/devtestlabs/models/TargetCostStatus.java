@@ -27,7 +27,11 @@ public final class TargetCostStatus extends ExpandableStringEnum<TargetCostStatu
         return fromString(name, TargetCostStatus.class);
     }
 
-    /** @return known TargetCostStatus values. */
+    /**
+     * Gets known TargetCostStatus values.
+     *
+     * @return known TargetCostStatus values.
+     */
     public static Collection<TargetCostStatus> values() {
         return values(TargetCostStatus.class);
     }

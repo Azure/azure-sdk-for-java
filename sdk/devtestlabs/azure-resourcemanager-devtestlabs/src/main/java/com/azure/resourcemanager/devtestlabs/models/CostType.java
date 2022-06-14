@@ -30,7 +30,11 @@ public final class CostType extends ExpandableStringEnum<CostType> {
         return fromString(name, CostType.class);
     }
 
-    /** @return known CostType values. */
+    /**
+     * Gets known CostType values.
+     *
+     * @return known CostType values.
+     */
     public static Collection<CostType> values() {
         return values(CostType.class);
     }

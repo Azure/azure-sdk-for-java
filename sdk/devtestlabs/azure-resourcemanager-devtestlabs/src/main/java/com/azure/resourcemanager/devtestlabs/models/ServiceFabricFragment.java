@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A Service Fabric. */
-@Immutable
+@Fluent
 public final class ServiceFabricFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceFabricFragment.class);
-
     /** {@inheritDoc} */
     @Override
     public ServiceFabricFragment withTags(Map<String, String> tags) {

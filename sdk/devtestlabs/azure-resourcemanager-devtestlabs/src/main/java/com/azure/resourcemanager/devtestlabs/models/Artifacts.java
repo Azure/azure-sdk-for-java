@@ -19,7 +19,7 @@ public interface Artifacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Artifact> list(String resourceGroupName, String labName, String artifactSourceName);
 
@@ -37,7 +37,7 @@ public interface Artifacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Artifact> list(
         String resourceGroupName,
@@ -75,7 +75,7 @@ public interface Artifacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact.
+     * @return artifact along with {@link Response}.
      */
     Response<Artifact> getWithResponse(
         String resourceGroupName,
@@ -119,7 +119,7 @@ public interface Artifacts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a generated ARM template.
+     * @return information about a generated ARM template along with {@link Response}.
      */
     Response<ArmTemplateInfo> generateArmTemplateWithResponse(
         String resourceGroupName,

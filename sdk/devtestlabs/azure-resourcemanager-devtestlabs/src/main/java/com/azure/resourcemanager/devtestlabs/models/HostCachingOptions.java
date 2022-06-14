@@ -30,7 +30,11 @@ public final class HostCachingOptions extends ExpandableStringEnum<HostCachingOp
         return fromString(name, HostCachingOptions.class);
     }
 
-    /** @return known HostCachingOptions values. */
+    /**
+     * Gets known HostCachingOptions values.
+     *
+     * @return known HostCachingOptions values.
+     */
     public static Collection<HostCachingOptions> values() {
         return values(HostCachingOptions.class);
     }

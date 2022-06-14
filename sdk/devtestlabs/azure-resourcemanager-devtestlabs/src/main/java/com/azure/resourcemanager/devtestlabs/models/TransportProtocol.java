@@ -27,7 +27,11 @@ public final class TransportProtocol extends ExpandableStringEnum<TransportProto
         return fromString(name, TransportProtocol.class);
     }
 
-    /** @return known TransportProtocol values. */
+    /**
+     * Gets known TransportProtocol values.
+     *
+     * @return known TransportProtocol values.
+     */
     public static Collection<TransportProtocol> values() {
         return values(TransportProtocol.class);
     }

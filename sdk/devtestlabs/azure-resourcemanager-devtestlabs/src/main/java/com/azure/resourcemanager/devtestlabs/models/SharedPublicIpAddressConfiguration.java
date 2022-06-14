@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a virtual machine that determine how it is connected to a load balancer. */
 @Fluent
 public final class SharedPublicIpAddressConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPublicIpAddressConfiguration.class);
-
     /*
      * The incoming NAT rules
      */

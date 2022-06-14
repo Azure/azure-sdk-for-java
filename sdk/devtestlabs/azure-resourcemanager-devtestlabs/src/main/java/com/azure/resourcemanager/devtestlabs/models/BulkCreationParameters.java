@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters for creating multiple virtual machines as a single action. */
 @Fluent
 public final class BulkCreationParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BulkCreationParameters.class);
-
     /*
      * The number of virtual machine instances to create.
      */

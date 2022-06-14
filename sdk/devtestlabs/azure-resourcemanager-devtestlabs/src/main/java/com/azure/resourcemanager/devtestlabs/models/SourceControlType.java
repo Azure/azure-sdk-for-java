@@ -30,7 +30,11 @@ public final class SourceControlType extends ExpandableStringEnum<SourceControlT
         return fromString(name, SourceControlType.class);
     }
 
-    /** @return known SourceControlType values. */
+    /**
+     * Gets known SourceControlType values.
+     *
+     * @return known SourceControlType values.
+     */
     public static Collection<SourceControlType> values() {
         return values(SourceControlType.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response body for generating an upload URI. */
 @Fluent
 public final class GenerateUploadUriResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateUploadUriResponseInner.class);
-
     /*
      * The upload URI for the VHD.
      */

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.CostsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.LabCostInner;
 import com.azure.resourcemanager.devtestlabs.models.Costs;
 import com.azure.resourcemanager.devtestlabs.models.LabCost;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CostsImpl implements Costs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CostsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CostsImpl.class);
 
     private final CostsClient innerClient;
 
@@ -53,7 +52,7 @@ public final class CostsImpl implements Costs {
     public LabCost getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -61,14 +60,14 @@ public final class CostsImpl implements Costs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "costs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'costs'.", id)));
@@ -80,7 +79,7 @@ public final class CostsImpl implements Costs {
     public Response<LabCost> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -88,14 +87,14 @@ public final class CostsImpl implements Costs {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "costs");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'costs'.", id)));

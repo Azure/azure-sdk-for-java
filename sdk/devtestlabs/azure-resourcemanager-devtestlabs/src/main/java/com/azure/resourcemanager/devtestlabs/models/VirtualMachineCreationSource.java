@@ -30,7 +30,11 @@ public final class VirtualMachineCreationSource extends ExpandableStringEnum<Vir
         return fromString(name, VirtualMachineCreationSource.class);
     }
 
-    /** @return known VirtualMachineCreationSource values. */
+    /**
+     * Gets known VirtualMachineCreationSource values.
+     *
+     * @return known VirtualMachineCreationSource values.
+     */
     public static Collection<VirtualMachineCreationSource> values() {
         return values(VirtualMachineCreationSource.class);
     }

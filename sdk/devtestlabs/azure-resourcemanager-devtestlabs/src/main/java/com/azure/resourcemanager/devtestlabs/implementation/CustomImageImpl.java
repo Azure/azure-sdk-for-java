@@ -109,6 +109,10 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CustomImageInner innerModel() {
         return this.innerObject;
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status information about a virtual machine. */
 @Fluent
 public final class ComputeVmInstanceViewStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeVmInstanceViewStatus.class);
-
     /*
      * Gets the status Code.
      */

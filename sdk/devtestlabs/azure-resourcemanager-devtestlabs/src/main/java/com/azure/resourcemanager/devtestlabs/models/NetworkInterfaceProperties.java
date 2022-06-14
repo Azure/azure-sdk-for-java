@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a network interface. */
 @Fluent
 public final class NetworkInterfaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceProperties.class);
-
     /*
      * The resource ID of the virtual network.
      */

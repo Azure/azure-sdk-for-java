@@ -78,6 +78,10 @@ public final class ServiceFabricImpl implements ServiceFabric, ServiceFabric.Def
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceFabricInner innerModel() {
         return this.innerObject;
     }

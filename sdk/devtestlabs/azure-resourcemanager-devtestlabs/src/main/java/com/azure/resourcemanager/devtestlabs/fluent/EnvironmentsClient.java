@@ -25,7 +25,7 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DtlEnvironmentInner> list(String resourceGroupName, String labName, String username);
@@ -44,7 +44,7 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DtlEnvironmentInner> list(
@@ -84,7 +84,7 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return environment.
+     * @return environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DtlEnvironmentInner> getWithResponse(
@@ -101,9 +101,9 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment);
 
@@ -119,9 +119,9 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String labName,
@@ -180,9 +180,9 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name);
 
@@ -197,9 +197,9 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context);
 
@@ -261,7 +261,7 @@ public interface EnvironmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment, which is essentially an ARM template deployment.
+     * @return an environment, which is essentially an ARM template deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DtlEnvironmentInner> updateWithResponse(

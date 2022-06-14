@@ -32,7 +32,7 @@ public interface ServiceRunners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service runner.
+     * @return service runner along with {@link Response}.
      */
     Response<ServiceRunner> getWithResponse(String resourceGroupName, String labName, String name, Context context);
 
@@ -58,7 +58,7 @@ public interface ServiceRunners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context);
 
@@ -69,7 +69,7 @@ public interface ServiceRunners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service runner.
+     * @return service runner along with {@link Response}.
      */
     ServiceRunner getById(String id);
 
@@ -81,7 +81,7 @@ public interface ServiceRunners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service runner.
+     * @return service runner along with {@link Response}.
      */
     Response<ServiceRunner> getByIdWithResponse(String id, Context context);
 
@@ -103,7 +103,7 @@ public interface ServiceRunners {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

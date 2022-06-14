@@ -98,6 +98,13 @@ public interface ServiceFabric {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.ServiceFabricInner object.
      *
      * @return the inner object.
@@ -270,7 +277,7 @@ public interface ServiceFabric {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedules applicable to a virtual machine.
+     * @return schedules applicable to a virtual machine along with {@link Response}.
      */
     Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context);
 

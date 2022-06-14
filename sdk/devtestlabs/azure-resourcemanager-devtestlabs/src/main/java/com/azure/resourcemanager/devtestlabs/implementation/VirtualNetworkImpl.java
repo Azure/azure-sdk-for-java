@@ -102,6 +102,10 @@ public final class VirtualNetworkImpl implements VirtualNetwork, VirtualNetwork.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualNetworkInner innerModel() {
         return this.innerObject;
     }

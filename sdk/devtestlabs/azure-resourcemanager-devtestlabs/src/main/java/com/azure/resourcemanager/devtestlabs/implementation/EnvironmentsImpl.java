@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.EnvironmentsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.DtlEnvironmentInner;
 import com.azure.resourcemanager.devtestlabs.models.DtlEnvironment;
 import com.azure.resourcemanager.devtestlabs.models.Environments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnvironmentsImpl implements Environments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnvironmentsImpl.class);
 
     private final EnvironmentsClient innerClient;
 
@@ -82,7 +81,7 @@ public final class EnvironmentsImpl implements Environments {
     public DtlEnvironment getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,21 +89,21 @@ public final class EnvironmentsImpl implements Environments {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "environments");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
@@ -116,7 +115,7 @@ public final class EnvironmentsImpl implements Environments {
     public Response<DtlEnvironment> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,21 +123,21 @@ public final class EnvironmentsImpl implements Environments {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "environments");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
@@ -149,7 +148,7 @@ public final class EnvironmentsImpl implements Environments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,21 +156,21 @@ public final class EnvironmentsImpl implements Environments {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "environments");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
@@ -182,7 +181,7 @@ public final class EnvironmentsImpl implements Environments {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -190,21 +189,21 @@ public final class EnvironmentsImpl implements Environments {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "environments");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));

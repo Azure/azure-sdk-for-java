@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.ArtifactSourcesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArtifactSourceInner;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactSource;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactSources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArtifactSourcesImpl implements ArtifactSources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactSourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArtifactSourcesImpl.class);
 
     private final ArtifactSourcesClient innerClient;
 
@@ -81,7 +80,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public ArtifactSource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,14 +88,14 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "artifactsources");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +108,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public Response<ArtifactSource> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +116,14 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "artifactsources");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,26 +143,26 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "artifactsources");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'artifactsources'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,14 +170,14 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "artifactsources");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

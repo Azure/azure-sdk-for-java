@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Storage information about the data disks present in the custom image. */
 @Fluent
 public final class DataDiskStorageTypeInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskStorageTypeInfo.class);
-
     /*
      * Disk Lun
      */

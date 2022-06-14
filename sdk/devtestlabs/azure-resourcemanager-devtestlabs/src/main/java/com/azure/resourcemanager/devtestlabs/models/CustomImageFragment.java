@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A custom image. */
-@Immutable
+@Fluent
 public final class CustomImageFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImageFragment.class);
-
     /** {@inheritDoc} */
     @Override
     public CustomImageFragment withTags(Map<String, String> tags) {

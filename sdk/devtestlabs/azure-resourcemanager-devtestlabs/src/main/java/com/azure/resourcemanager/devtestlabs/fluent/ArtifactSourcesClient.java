@@ -22,7 +22,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ArtifactSourceInner> list(String resourceGroupName, String labName);
@@ -40,7 +40,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ArtifactSourceInner> list(
@@ -77,7 +77,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact source.
+     * @return artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ArtifactSourceInner> getWithResponse(
@@ -110,7 +110,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source.
+     * @return properties of an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ArtifactSourceInner> createOrUpdateWithResponse(
@@ -139,7 +139,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context);
@@ -171,7 +171,7 @@ public interface ArtifactSourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source.
+     * @return properties of an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ArtifactSourceInner> updateWithResponse(

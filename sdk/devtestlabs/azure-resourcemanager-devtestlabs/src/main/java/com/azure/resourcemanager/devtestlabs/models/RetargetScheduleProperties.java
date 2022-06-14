@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for retargeting a virtual machine schedule. */
 @Fluent
 public final class RetargetScheduleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetargetScheduleProperties.class);
-
     /*
      * The resource Id of the virtual machine on which the schedule operates
      */

@@ -5,273 +5,30 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
 import com.azure.resourcemanager.devtestlabs.models.SourceControlType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Properties of an artifact source. */
-@JsonFlatten
 @Fluent
-public class ArtifactSourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactSourceInner.class);
-
+public final class ArtifactSourceInner extends Resource {
     /*
-     * The artifact source's display name.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The artifact source's URI.
-     */
-    @JsonProperty(value = "properties.uri")
-    private String uri;
-
-    /*
-     * The artifact source's type.
-     */
-    @JsonProperty(value = "properties.sourceType")
-    private SourceControlType sourceType;
-
-    /*
-     * The folder containing artifacts.
-     */
-    @JsonProperty(value = "properties.folderPath")
-    private String folderPath;
-
-    /*
-     * The folder containing Azure Resource Manager templates.
-     */
-    @JsonProperty(value = "properties.armTemplateFolderPath")
-    private String armTemplateFolderPath;
-
-    /*
-     * The artifact source's branch reference.
-     */
-    @JsonProperty(value = "properties.branchRef")
-    private String branchRef;
-
-    /*
-     * The security token to authenticate to the artifact source.
-     */
-    @JsonProperty(value = "properties.securityToken")
-    private String securityToken;
-
-    /*
-     * Indicates if the artifact source is enabled (values: Enabled, Disabled).
-     */
-    @JsonProperty(value = "properties.status")
-    private EnableStatus status;
-
-    /*
-     * The artifact source's creation date.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    @JsonProperty(value = "properties", required = true)
+    private ArtifactSourceProperties innerProperties = new ArtifactSourceProperties();
 
     /**
-     * Get the displayName property: The artifact source's display name.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @return the displayName value.
+     * @return the innerProperties value.
      */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the displayName property: The artifact source's display name.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the uri property: The artifact source's URI.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: The artifact source's URI.
-     *
-     * @param uri the uri value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    /**
-     * Get the sourceType property: The artifact source's type.
-     *
-     * @return the sourceType value.
-     */
-    public SourceControlType sourceType() {
-        return this.sourceType;
-    }
-
-    /**
-     * Set the sourceType property: The artifact source's type.
-     *
-     * @param sourceType the sourceType value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withSourceType(SourceControlType sourceType) {
-        this.sourceType = sourceType;
-        return this;
-    }
-
-    /**
-     * Get the folderPath property: The folder containing artifacts.
-     *
-     * @return the folderPath value.
-     */
-    public String folderPath() {
-        return this.folderPath;
-    }
-
-    /**
-     * Set the folderPath property: The folder containing artifacts.
-     *
-     * @param folderPath the folderPath value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withFolderPath(String folderPath) {
-        this.folderPath = folderPath;
-        return this;
-    }
-
-    /**
-     * Get the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
-     *
-     * @return the armTemplateFolderPath value.
-     */
-    public String armTemplateFolderPath() {
-        return this.armTemplateFolderPath;
-    }
-
-    /**
-     * Set the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
-     *
-     * @param armTemplateFolderPath the armTemplateFolderPath value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withArmTemplateFolderPath(String armTemplateFolderPath) {
-        this.armTemplateFolderPath = armTemplateFolderPath;
-        return this;
-    }
-
-    /**
-     * Get the branchRef property: The artifact source's branch reference.
-     *
-     * @return the branchRef value.
-     */
-    public String branchRef() {
-        return this.branchRef;
-    }
-
-    /**
-     * Set the branchRef property: The artifact source's branch reference.
-     *
-     * @param branchRef the branchRef value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withBranchRef(String branchRef) {
-        this.branchRef = branchRef;
-        return this;
-    }
-
-    /**
-     * Get the securityToken property: The security token to authenticate to the artifact source.
-     *
-     * @return the securityToken value.
-     */
-    public String securityToken() {
-        return this.securityToken;
-    }
-
-    /**
-     * Set the securityToken property: The security token to authenticate to the artifact source.
-     *
-     * @param securityToken the securityToken value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withSecurityToken(String securityToken) {
-        this.securityToken = securityToken;
-        return this;
-    }
-
-    /**
-     * Get the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
-     *
-     * @return the status value.
-     */
-    public EnableStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
-     *
-     * @param status the status value to set.
-     * @return the ArtifactSourceInner object itself.
-     */
-    public ArtifactSourceInner withStatus(EnableStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The artifact source's creation date.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private ArtifactSourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -289,10 +46,231 @@ public class ArtifactSourceInner extends Resource {
     }
 
     /**
+     * Get the displayName property: The artifact source's display name.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The artifact source's display name.
+     *
+     * @param displayName the displayName value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the uri property: The artifact source's URI.
+     *
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
+    }
+
+    /**
+     * Set the uri property: The artifact source's URI.
+     *
+     * @param uri the uri value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withUri(String uri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withUri(uri);
+        return this;
+    }
+
+    /**
+     * Get the sourceType property: The artifact source's type.
+     *
+     * @return the sourceType value.
+     */
+    public SourceControlType sourceType() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
+    }
+
+    /**
+     * Set the sourceType property: The artifact source's type.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withSourceType(SourceControlType sourceType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withSourceType(sourceType);
+        return this;
+    }
+
+    /**
+     * Get the folderPath property: The folder containing artifacts.
+     *
+     * @return the folderPath value.
+     */
+    public String folderPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().folderPath();
+    }
+
+    /**
+     * Set the folderPath property: The folder containing artifacts.
+     *
+     * @param folderPath the folderPath value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withFolderPath(String folderPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withFolderPath(folderPath);
+        return this;
+    }
+
+    /**
+     * Get the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
+     *
+     * @return the armTemplateFolderPath value.
+     */
+    public String armTemplateFolderPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().armTemplateFolderPath();
+    }
+
+    /**
+     * Set the armTemplateFolderPath property: The folder containing Azure Resource Manager templates.
+     *
+     * @param armTemplateFolderPath the armTemplateFolderPath value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withArmTemplateFolderPath(String armTemplateFolderPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withArmTemplateFolderPath(armTemplateFolderPath);
+        return this;
+    }
+
+    /**
+     * Get the branchRef property: The artifact source's branch reference.
+     *
+     * @return the branchRef value.
+     */
+    public String branchRef() {
+        return this.innerProperties() == null ? null : this.innerProperties().branchRef();
+    }
+
+    /**
+     * Set the branchRef property: The artifact source's branch reference.
+     *
+     * @param branchRef the branchRef value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withBranchRef(String branchRef) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withBranchRef(branchRef);
+        return this;
+    }
+
+    /**
+     * Get the securityToken property: The security token to authenticate to the artifact source.
+     *
+     * @return the securityToken value.
+     */
+    public String securityToken() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityToken();
+    }
+
+    /**
+     * Set the securityToken property: The security token to authenticate to the artifact source.
+     *
+     * @param securityToken the securityToken value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withSecurityToken(String securityToken) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withSecurityToken(securityToken);
+        return this;
+    }
+
+    /**
+     * Get the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
+     *
+     * @return the status value.
+     */
+    public EnableStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Indicates if the artifact source is enabled (values: Enabled, Disabled).
+     *
+     * @param status the status value to set.
+     * @return the ArtifactSourceInner object itself.
+     */
+    public ArtifactSourceInner withStatus(EnableStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArtifactSourceProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The artifact source's creation date.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ArtifactSourceInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ArtifactSourceInner.class);
 }

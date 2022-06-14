@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for evaluating a policy set. */
 @Fluent
 public final class EvaluatePoliciesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EvaluatePoliciesProperties.class);
-
     /*
      * The fact name.
      */

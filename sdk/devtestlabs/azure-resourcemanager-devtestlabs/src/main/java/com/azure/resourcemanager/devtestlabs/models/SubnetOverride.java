@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Property overrides on a subnet of a virtual network. */
 @Fluent
 public final class SubnetOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetOverride.class);
-
     /*
      * The resource ID of the subnet.
      */

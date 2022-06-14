@@ -93,6 +93,10 @@ public final class NotificationChannelImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NotificationChannelInner innerModel() {
         return this.innerObject;
     }

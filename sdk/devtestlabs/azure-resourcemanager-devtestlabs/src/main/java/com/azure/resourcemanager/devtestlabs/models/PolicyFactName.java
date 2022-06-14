@@ -51,7 +51,11 @@ public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
         return fromString(name, PolicyFactName.class);
     }
 
-    /** @return known PolicyFactName values. */
+    /**
+     * Gets known PolicyFactName values.
+     *
+     * @return known PolicyFactName values.
+     */
     public static Collection<PolicyFactName> values() {
         return values(PolicyFactName.class);
     }

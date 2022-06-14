@@ -30,7 +30,11 @@ public final class CustomImageOsType extends ExpandableStringEnum<CustomImageOsT
         return fromString(name, CustomImageOsType.class);
     }
 
-    /** @return known CustomImageOsType values. */
+    /**
+     * Gets known CustomImageOsType values.
+     *
+     * @return known CustomImageOsType values.
+     */
     public static Collection<CustomImageOsType> values() {
         return values(CustomImageOsType.class);
     }

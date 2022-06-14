@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.ServiceFabricSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceFabricSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricSchedulesImpl.class);
 
     private final ServiceFabricSchedulesClient innerClient;
 

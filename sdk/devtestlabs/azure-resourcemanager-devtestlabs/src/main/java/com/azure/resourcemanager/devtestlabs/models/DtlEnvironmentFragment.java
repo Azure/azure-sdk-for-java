@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** An environment, which is essentially an ARM template deployment. */
-@Immutable
+@Fluent
 public final class DtlEnvironmentFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DtlEnvironmentFragment.class);
-
     /** {@inheritDoc} */
     @Override
     public DtlEnvironmentFragment withTags(Map<String, String> tags) {

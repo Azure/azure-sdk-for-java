@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a Linux OS. */
 @Fluent
 public final class LinuxOsInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxOsInfo.class);
-
     /*
      * The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested,
      * DeprovisionApplied).

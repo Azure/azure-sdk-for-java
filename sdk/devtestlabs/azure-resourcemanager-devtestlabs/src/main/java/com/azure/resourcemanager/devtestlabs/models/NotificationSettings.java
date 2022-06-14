@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification settings for a schedule. */
 @Fluent
 public final class NotificationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationSettings.class);
-
     /*
      * If notifications are enabled for this schedule (i.e. Enabled, Disabled).
      */

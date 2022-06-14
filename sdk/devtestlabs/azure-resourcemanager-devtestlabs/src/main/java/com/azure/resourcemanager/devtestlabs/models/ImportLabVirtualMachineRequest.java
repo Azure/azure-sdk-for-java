@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This represents the payload required to import a virtual machine from a different lab into the current one. */
 @Fluent
 public final class ImportLabVirtualMachineRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportLabVirtualMachineRequest.class);
-
     /*
      * The full resource ID of the virtual machine to be imported.
      */

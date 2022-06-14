@@ -27,7 +27,11 @@ public final class EnvironmentPermission extends ExpandableStringEnum<Environmen
         return fromString(name, EnvironmentPermission.class);
     }
 
-    /** @return known EnvironmentPermission values. */
+    /**
+     * Gets known EnvironmentPermission values.
+     *
+     * @return known EnvironmentPermission values.
+     */
     public static Collection<EnvironmentPermission> values() {
         return values(EnvironmentPermission.class);
     }

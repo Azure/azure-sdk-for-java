@@ -27,7 +27,11 @@ public final class EnableStatus extends ExpandableStringEnum<EnableStatus> {
         return fromString(name, EnableStatus.class);
     }
 
-    /** @return known EnableStatus values. */
+    /**
+     * Gets known EnableStatus values.
+     *
+     * @return known EnableStatus values.
+     */
     public static Collection<EnableStatus> values() {
         return values(EnableStatus.class);
     }

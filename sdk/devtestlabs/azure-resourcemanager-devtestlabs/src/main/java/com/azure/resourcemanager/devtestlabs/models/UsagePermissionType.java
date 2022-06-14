@@ -30,7 +30,11 @@ public final class UsagePermissionType extends ExpandableStringEnum<UsagePermiss
         return fromString(name, UsagePermissionType.class);
     }
 
-    /** @return known UsagePermissionType values. */
+    /**
+     * Gets known UsagePermissionType values.
+     *
+     * @return known UsagePermissionType values.
+     */
     public static Collection<UsagePermissionType> values() {
         return values(UsagePermissionType.class);
     }

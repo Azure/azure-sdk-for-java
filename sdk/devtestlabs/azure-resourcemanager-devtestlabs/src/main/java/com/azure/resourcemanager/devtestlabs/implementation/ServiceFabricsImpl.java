@@ -15,10 +15,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceFabricInner;
 import com.azure.resourcemanager.devtestlabs.models.ApplicableSchedule;
 import com.azure.resourcemanager.devtestlabs.models.ServiceFabric;
 import com.azure.resourcemanager.devtestlabs.models.ServiceFabrics;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServiceFabricsImpl implements ServiceFabrics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceFabricsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricsImpl.class);
 
     private final ServiceFabricsClient innerClient;
 
@@ -128,7 +127,7 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     public ServiceFabric getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,21 +135,21 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     public Response<ServiceFabric> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,21 +170,21 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -197,7 +196,7 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,21 +204,21 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -231,7 +230,7 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -239,21 +238,21 @@ public final class ServiceFabricsImpl implements ServiceFabrics {
         }
         String labName = Utils.getValueFromIdByName(id, "labs");
         if (labName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'labs'.", id)));
         }
         String username = Utils.getValueFromIdByName(id, "users");
         if (username == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "servicefabrics");
         if (name == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

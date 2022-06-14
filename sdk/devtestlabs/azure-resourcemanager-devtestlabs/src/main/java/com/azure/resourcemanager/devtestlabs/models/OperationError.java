@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error details for the operation in case of a failure. */
 @Fluent
 public final class OperationError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationError.class);
-
     /*
      * The error code of the operation error.
      */

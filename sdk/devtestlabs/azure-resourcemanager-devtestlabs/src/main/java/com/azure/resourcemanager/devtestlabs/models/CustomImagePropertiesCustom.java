@@ -6,14 +6,11 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for creating a custom image from a VHD. */
 @Fluent
 public final class CustomImagePropertiesCustom {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagePropertiesCustom.class);
-
     /*
      * The image name.
      */
@@ -99,10 +96,12 @@ public final class CustomImagePropertiesCustom {
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model CustomImagePropertiesCustom"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomImagePropertiesCustom.class);
 }

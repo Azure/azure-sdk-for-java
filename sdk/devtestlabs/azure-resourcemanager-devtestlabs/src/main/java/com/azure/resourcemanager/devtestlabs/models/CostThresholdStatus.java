@@ -27,7 +27,11 @@ public final class CostThresholdStatus extends ExpandableStringEnum<CostThreshol
         return fromString(name, CostThresholdStatus.class);
     }
 
-    /** @return known CostThresholdStatus values. */
+    /**
+     * Gets known CostThresholdStatus values.
+     *
+     * @return known CostThresholdStatus values.
+     */
     public static Collection<CostThresholdStatus> values() {
         return values(CostThresholdStatus.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a daily schedule. */
 @Fluent
 public final class DayDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DayDetails.class);
-
     /*
      * The time of day the schedule will occur.
      */

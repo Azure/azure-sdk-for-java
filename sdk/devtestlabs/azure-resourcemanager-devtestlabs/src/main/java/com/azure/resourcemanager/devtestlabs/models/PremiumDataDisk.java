@@ -27,7 +27,11 @@ public final class PremiumDataDisk extends ExpandableStringEnum<PremiumDataDisk>
         return fromString(name, PremiumDataDisk.class);
     }
 
-    /** @return known PremiumDataDisk values. */
+    /**
+     * Gets known PremiumDataDisk values.
+     *
+     * @return known PremiumDataDisk values.
+     */
     public static Collection<PremiumDataDisk> values() {
         return values(PremiumDataDisk.class);
     }

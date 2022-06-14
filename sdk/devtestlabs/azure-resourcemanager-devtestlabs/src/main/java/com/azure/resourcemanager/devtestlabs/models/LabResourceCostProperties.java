@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a resource cost item. */
 @Fluent
 public final class LabResourceCostProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabResourceCostProperties.class);
-
     /*
      * The name of the resource.
      */

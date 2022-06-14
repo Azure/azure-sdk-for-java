@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a user's secret store. */
 @Fluent
 public final class UserSecretStore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSecretStore.class);
-
     /*
      * The URI of the user's Key vault.
      */

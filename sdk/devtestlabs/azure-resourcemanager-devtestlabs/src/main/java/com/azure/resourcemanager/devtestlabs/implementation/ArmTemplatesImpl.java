@@ -13,10 +13,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.ArmTemplatesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplate;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArmTemplatesImpl implements ArmTemplates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArmTemplatesImpl.class);
 
     private final ArmTemplatesClient innerClient;
 

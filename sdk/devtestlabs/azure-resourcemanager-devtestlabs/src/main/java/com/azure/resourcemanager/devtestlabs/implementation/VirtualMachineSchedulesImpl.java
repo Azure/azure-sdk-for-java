@@ -14,10 +14,9 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachineSchedules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineSchedulesImpl.class);
 
     private final VirtualMachineSchedulesClient innerClient;
 

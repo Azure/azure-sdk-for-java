@@ -90,6 +90,10 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PolicyInner innerModel() {
         return this.innerObject;
     }

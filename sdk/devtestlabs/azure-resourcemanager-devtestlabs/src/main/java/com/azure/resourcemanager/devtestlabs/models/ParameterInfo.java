@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about an artifact's parameter. */
 @Fluent
 public final class ParameterInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterInfo.class);
-
     /*
      * The name of the artifact parameter.
      */

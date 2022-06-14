@@ -27,7 +27,11 @@ public final class NotificationChannelEventType extends ExpandableStringEnum<Not
         return fromString(name, NotificationChannelEventType.class);
     }
 
-    /** @return known NotificationChannelEventType values. */
+    /**
+     * Gets known NotificationChannelEventType values.
+     *
+     * @return known NotificationChannelEventType values.
+     */
     public static Collection<NotificationChannelEventType> values() {
         return values(NotificationChannelEventType.class);
     }

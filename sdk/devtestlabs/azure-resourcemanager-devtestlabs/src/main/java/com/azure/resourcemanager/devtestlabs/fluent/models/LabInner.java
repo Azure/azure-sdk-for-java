@@ -5,439 +5,33 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.EnvironmentPermission;
 import com.azure.resourcemanager.devtestlabs.models.LabAnnouncementProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabSupportProperties;
 import com.azure.resourcemanager.devtestlabs.models.PremiumDataDisk;
 import com.azure.resourcemanager.devtestlabs.models.StorageType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** A lab. */
-@JsonFlatten
 @Fluent
-public class LabInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabInner.class);
-
+public final class LabInner extends Resource {
     /*
-     * The lab's default storage account.
+     * The properties of the resource.
      */
-    @JsonProperty(value = "properties.defaultStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultStorageAccount;
-
-    /*
-     * The lab's default premium storage account.
-     */
-    @JsonProperty(value = "properties.defaultPremiumStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultPremiumStorageAccount;
-
-    /*
-     * The lab's artifact storage account.
-     */
-    @JsonProperty(value = "properties.artifactsStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
-    private String artifactsStorageAccount;
-
-    /*
-     * The lab's premium data disk storage account.
-     */
-    @JsonProperty(value = "properties.premiumDataDiskStorageAccount", access = JsonProperty.Access.WRITE_ONLY)
-    private String premiumDataDiskStorageAccount;
-
-    /*
-     * The lab's Key vault.
-     */
-    @JsonProperty(value = "properties.vaultName", access = JsonProperty.Access.WRITE_ONLY)
-    private String vaultName;
-
-    /*
-     * Type of storage used by the lab. It can be either Premium or Standard.
-     * Default is Premium.
-     */
-    @JsonProperty(value = "properties.labStorageType")
-    private StorageType labStorageType;
-
-    /*
-     * The ordered list of artifact resource IDs that should be applied on all
-     * Linux VM creations by default, prior to the artifacts specified by the
-     * user.
-     */
-    @JsonProperty(value = "properties.mandatoryArtifactsResourceIdsLinux")
-    private List<String> mandatoryArtifactsResourceIdsLinux;
-
-    /*
-     * The ordered list of artifact resource IDs that should be applied on all
-     * Windows VM creations by default, prior to the artifacts specified by the
-     * user.
-     */
-    @JsonProperty(value = "properties.mandatoryArtifactsResourceIdsWindows")
-    private List<String> mandatoryArtifactsResourceIdsWindows;
-
-    /*
-     * The creation date of the lab.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The setting to enable usage of premium data disks.
-     * When its value is 'Enabled', creation of standard or premium data disks
-     * is allowed.
-     * When its value is 'Disabled', only creation of standard data disks is
-     * allowed.
-     */
-    @JsonProperty(value = "properties.premiumDataDisks")
-    private PremiumDataDisk premiumDataDisks;
-
-    /*
-     * The access rights to be granted to the user when provisioning an
-     * environment
-     */
-    @JsonProperty(value = "properties.environmentPermission")
-    private EnvironmentPermission environmentPermission;
-
-    /*
-     * The properties of any lab announcement associated with this lab
-     */
-    @JsonProperty(value = "properties.announcement")
-    private LabAnnouncementProperties announcement;
-
-    /*
-     * The properties of any lab support message associated with this lab
-     */
-    @JsonProperty(value = "properties.support")
-    private LabSupportProperties support;
-
-    /*
-     * The resource group in which all new lab virtual machines will be
-     * created. To let DevTest Labs manage resource group creation, set this
-     * value to null.
-     */
-    @JsonProperty(value = "properties.vmCreationResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmCreationResourceGroup;
-
-    /*
-     * The public IP address for the lab's load balancer.
-     */
-    @JsonProperty(value = "properties.publicIpId", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicIpId;
-
-    /*
-     * The load balancer used to for lab VMs that use shared IP address.
-     */
-    @JsonProperty(value = "properties.loadBalancerId", access = JsonProperty.Access.WRITE_ONLY)
-    private String loadBalancerId;
-
-    /*
-     * The Network Security Group attached to the lab VMs Network interfaces to
-     * restrict open ports.
-     */
-    @JsonProperty(value = "properties.networkSecurityGroupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String networkSecurityGroupId;
-
-    /*
-     * Extended properties of the lab used for experimental features
-     */
-    @JsonProperty(value = "properties.extendedProperties")
-    private Map<String, String> extendedProperties;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    @JsonProperty(value = "properties")
+    private LabProperties innerProperties;
 
     /**
-     * Get the defaultStorageAccount property: The lab's default storage account.
+     * Get the innerProperties property: The properties of the resource.
      *
-     * @return the defaultStorageAccount value.
+     * @return the innerProperties value.
      */
-    public String defaultStorageAccount() {
-        return this.defaultStorageAccount;
-    }
-
-    /**
-     * Get the defaultPremiumStorageAccount property: The lab's default premium storage account.
-     *
-     * @return the defaultPremiumStorageAccount value.
-     */
-    public String defaultPremiumStorageAccount() {
-        return this.defaultPremiumStorageAccount;
-    }
-
-    /**
-     * Get the artifactsStorageAccount property: The lab's artifact storage account.
-     *
-     * @return the artifactsStorageAccount value.
-     */
-    public String artifactsStorageAccount() {
-        return this.artifactsStorageAccount;
-    }
-
-    /**
-     * Get the premiumDataDiskStorageAccount property: The lab's premium data disk storage account.
-     *
-     * @return the premiumDataDiskStorageAccount value.
-     */
-    public String premiumDataDiskStorageAccount() {
-        return this.premiumDataDiskStorageAccount;
-    }
-
-    /**
-     * Get the vaultName property: The lab's Key vault.
-     *
-     * @return the vaultName value.
-     */
-    public String vaultName() {
-        return this.vaultName;
-    }
-
-    /**
-     * Get the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
-     * is Premium.
-     *
-     * @return the labStorageType value.
-     */
-    public StorageType labStorageType() {
-        return this.labStorageType;
-    }
-
-    /**
-     * Set the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
-     * is Premium.
-     *
-     * @param labStorageType the labStorageType value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withLabStorageType(StorageType labStorageType) {
-        this.labStorageType = labStorageType;
-        return this;
-    }
-
-    /**
-     * Get the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
-     * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
-     * @return the mandatoryArtifactsResourceIdsLinux value.
-     */
-    public List<String> mandatoryArtifactsResourceIdsLinux() {
-        return this.mandatoryArtifactsResourceIdsLinux;
-    }
-
-    /**
-     * Set the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
-     * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
-     *
-     * @param mandatoryArtifactsResourceIdsLinux the mandatoryArtifactsResourceIdsLinux value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withMandatoryArtifactsResourceIdsLinux(List<String> mandatoryArtifactsResourceIdsLinux) {
-        this.mandatoryArtifactsResourceIdsLinux = mandatoryArtifactsResourceIdsLinux;
-        return this;
-    }
-
-    /**
-     * Get the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
-     * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
-     * @return the mandatoryArtifactsResourceIdsWindows value.
-     */
-    public List<String> mandatoryArtifactsResourceIdsWindows() {
-        return this.mandatoryArtifactsResourceIdsWindows;
-    }
-
-    /**
-     * Set the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
-     * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
-     *
-     * @param mandatoryArtifactsResourceIdsWindows the mandatoryArtifactsResourceIdsWindows value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withMandatoryArtifactsResourceIdsWindows(List<String> mandatoryArtifactsResourceIdsWindows) {
-        this.mandatoryArtifactsResourceIdsWindows = mandatoryArtifactsResourceIdsWindows;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the lab.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
-     * @return the premiumDataDisks value.
-     */
-    public PremiumDataDisk premiumDataDisks() {
-        return this.premiumDataDisks;
-    }
-
-    /**
-     * Set the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
-     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
-     * standard data disks is allowed.
-     *
-     * @param premiumDataDisks the premiumDataDisks value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withPremiumDataDisks(PremiumDataDisk premiumDataDisks) {
-        this.premiumDataDisks = premiumDataDisks;
-        return this;
-    }
-
-    /**
-     * Get the environmentPermission property: The access rights to be granted to the user when provisioning an
-     * environment.
-     *
-     * @return the environmentPermission value.
-     */
-    public EnvironmentPermission environmentPermission() {
-        return this.environmentPermission;
-    }
-
-    /**
-     * Set the environmentPermission property: The access rights to be granted to the user when provisioning an
-     * environment.
-     *
-     * @param environmentPermission the environmentPermission value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withEnvironmentPermission(EnvironmentPermission environmentPermission) {
-        this.environmentPermission = environmentPermission;
-        return this;
-    }
-
-    /**
-     * Get the announcement property: The properties of any lab announcement associated with this lab.
-     *
-     * @return the announcement value.
-     */
-    public LabAnnouncementProperties announcement() {
-        return this.announcement;
-    }
-
-    /**
-     * Set the announcement property: The properties of any lab announcement associated with this lab.
-     *
-     * @param announcement the announcement value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withAnnouncement(LabAnnouncementProperties announcement) {
-        this.announcement = announcement;
-        return this;
-    }
-
-    /**
-     * Get the support property: The properties of any lab support message associated with this lab.
-     *
-     * @return the support value.
-     */
-    public LabSupportProperties support() {
-        return this.support;
-    }
-
-    /**
-     * Set the support property: The properties of any lab support message associated with this lab.
-     *
-     * @param support the support value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withSupport(LabSupportProperties support) {
-        this.support = support;
-        return this;
-    }
-
-    /**
-     * Get the vmCreationResourceGroup property: The resource group in which all new lab virtual machines will be
-     * created. To let DevTest Labs manage resource group creation, set this value to null.
-     *
-     * @return the vmCreationResourceGroup value.
-     */
-    public String vmCreationResourceGroup() {
-        return this.vmCreationResourceGroup;
-    }
-
-    /**
-     * Get the publicIpId property: The public IP address for the lab's load balancer.
-     *
-     * @return the publicIpId value.
-     */
-    public String publicIpId() {
-        return this.publicIpId;
-    }
-
-    /**
-     * Get the loadBalancerId property: The load balancer used to for lab VMs that use shared IP address.
-     *
-     * @return the loadBalancerId value.
-     */
-    public String loadBalancerId() {
-        return this.loadBalancerId;
-    }
-
-    /**
-     * Get the networkSecurityGroupId property: The Network Security Group attached to the lab VMs Network interfaces to
-     * restrict open ports.
-     *
-     * @return the networkSecurityGroupId value.
-     */
-    public String networkSecurityGroupId() {
-        return this.networkSecurityGroupId;
-    }
-
-    /**
-     * Get the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
-     * @return the extendedProperties value.
-     */
-    public Map<String, String> extendedProperties() {
-        return this.extendedProperties;
-    }
-
-    /**
-     * Set the extendedProperties property: Extended properties of the lab used for experimental features.
-     *
-     * @param extendedProperties the extendedProperties value to set.
-     * @return the LabInner object itself.
-     */
-    public LabInner withExtendedProperties(Map<String, String> extendedProperties) {
-        this.extendedProperties = extendedProperties;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    private LabProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -455,16 +49,319 @@ public class LabInner extends Resource {
     }
 
     /**
+     * Get the defaultStorageAccount property: The lab's default storage account.
+     *
+     * @return the defaultStorageAccount value.
+     */
+    public String defaultStorageAccount() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultStorageAccount();
+    }
+
+    /**
+     * Get the defaultPremiumStorageAccount property: The lab's default premium storage account.
+     *
+     * @return the defaultPremiumStorageAccount value.
+     */
+    public String defaultPremiumStorageAccount() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultPremiumStorageAccount();
+    }
+
+    /**
+     * Get the artifactsStorageAccount property: The lab's artifact storage account.
+     *
+     * @return the artifactsStorageAccount value.
+     */
+    public String artifactsStorageAccount() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactsStorageAccount();
+    }
+
+    /**
+     * Get the premiumDataDiskStorageAccount property: The lab's premium data disk storage account.
+     *
+     * @return the premiumDataDiskStorageAccount value.
+     */
+    public String premiumDataDiskStorageAccount() {
+        return this.innerProperties() == null ? null : this.innerProperties().premiumDataDiskStorageAccount();
+    }
+
+    /**
+     * Get the vaultName property: The lab's Key vault.
+     *
+     * @return the vaultName value.
+     */
+    public String vaultName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vaultName();
+    }
+
+    /**
+     * Get the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
+     * is Premium.
+     *
+     * @return the labStorageType value.
+     */
+    public StorageType labStorageType() {
+        return this.innerProperties() == null ? null : this.innerProperties().labStorageType();
+    }
+
+    /**
+     * Set the labStorageType property: Type of storage used by the lab. It can be either Premium or Standard. Default
+     * is Premium.
+     *
+     * @param labStorageType the labStorageType value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withLabStorageType(StorageType labStorageType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withLabStorageType(labStorageType);
+        return this;
+    }
+
+    /**
+     * Get the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
+     * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
+     *
+     * @return the mandatoryArtifactsResourceIdsLinux value.
+     */
+    public List<String> mandatoryArtifactsResourceIdsLinux() {
+        return this.innerProperties() == null ? null : this.innerProperties().mandatoryArtifactsResourceIdsLinux();
+    }
+
+    /**
+     * Set the mandatoryArtifactsResourceIdsLinux property: The ordered list of artifact resource IDs that should be
+     * applied on all Linux VM creations by default, prior to the artifacts specified by the user.
+     *
+     * @param mandatoryArtifactsResourceIdsLinux the mandatoryArtifactsResourceIdsLinux value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withMandatoryArtifactsResourceIdsLinux(List<String> mandatoryArtifactsResourceIdsLinux) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withMandatoryArtifactsResourceIdsLinux(mandatoryArtifactsResourceIdsLinux);
+        return this;
+    }
+
+    /**
+     * Get the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
+     * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
+     *
+     * @return the mandatoryArtifactsResourceIdsWindows value.
+     */
+    public List<String> mandatoryArtifactsResourceIdsWindows() {
+        return this.innerProperties() == null ? null : this.innerProperties().mandatoryArtifactsResourceIdsWindows();
+    }
+
+    /**
+     * Set the mandatoryArtifactsResourceIdsWindows property: The ordered list of artifact resource IDs that should be
+     * applied on all Windows VM creations by default, prior to the artifacts specified by the user.
+     *
+     * @param mandatoryArtifactsResourceIdsWindows the mandatoryArtifactsResourceIdsWindows value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withMandatoryArtifactsResourceIdsWindows(List<String> mandatoryArtifactsResourceIdsWindows) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withMandatoryArtifactsResourceIdsWindows(mandatoryArtifactsResourceIdsWindows);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the lab.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
+     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
+     * standard data disks is allowed.
+     *
+     * @return the premiumDataDisks value.
+     */
+    public PremiumDataDisk premiumDataDisks() {
+        return this.innerProperties() == null ? null : this.innerProperties().premiumDataDisks();
+    }
+
+    /**
+     * Set the premiumDataDisks property: The setting to enable usage of premium data disks. When its value is
+     * 'Enabled', creation of standard or premium data disks is allowed. When its value is 'Disabled', only creation of
+     * standard data disks is allowed.
+     *
+     * @param premiumDataDisks the premiumDataDisks value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withPremiumDataDisks(PremiumDataDisk premiumDataDisks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withPremiumDataDisks(premiumDataDisks);
+        return this;
+    }
+
+    /**
+     * Get the environmentPermission property: The access rights to be granted to the user when provisioning an
+     * environment.
+     *
+     * @return the environmentPermission value.
+     */
+    public EnvironmentPermission environmentPermission() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentPermission();
+    }
+
+    /**
+     * Set the environmentPermission property: The access rights to be granted to the user when provisioning an
+     * environment.
+     *
+     * @param environmentPermission the environmentPermission value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withEnvironmentPermission(EnvironmentPermission environmentPermission) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withEnvironmentPermission(environmentPermission);
+        return this;
+    }
+
+    /**
+     * Get the announcement property: The properties of any lab announcement associated with this lab.
+     *
+     * @return the announcement value.
+     */
+    public LabAnnouncementProperties announcement() {
+        return this.innerProperties() == null ? null : this.innerProperties().announcement();
+    }
+
+    /**
+     * Set the announcement property: The properties of any lab announcement associated with this lab.
+     *
+     * @param announcement the announcement value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withAnnouncement(LabAnnouncementProperties announcement) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withAnnouncement(announcement);
+        return this;
+    }
+
+    /**
+     * Get the support property: The properties of any lab support message associated with this lab.
+     *
+     * @return the support value.
+     */
+    public LabSupportProperties support() {
+        return this.innerProperties() == null ? null : this.innerProperties().support();
+    }
+
+    /**
+     * Set the support property: The properties of any lab support message associated with this lab.
+     *
+     * @param support the support value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withSupport(LabSupportProperties support) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withSupport(support);
+        return this;
+    }
+
+    /**
+     * Get the vmCreationResourceGroup property: The resource group in which all new lab virtual machines will be
+     * created. To let DevTest Labs manage resource group creation, set this value to null.
+     *
+     * @return the vmCreationResourceGroup value.
+     */
+    public String vmCreationResourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmCreationResourceGroup();
+    }
+
+    /**
+     * Get the publicIpId property: The public IP address for the lab's load balancer.
+     *
+     * @return the publicIpId value.
+     */
+    public String publicIpId() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpId();
+    }
+
+    /**
+     * Get the loadBalancerId property: The load balancer used to for lab VMs that use shared IP address.
+     *
+     * @return the loadBalancerId value.
+     */
+    public String loadBalancerId() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerId();
+    }
+
+    /**
+     * Get the networkSecurityGroupId property: The Network Security Group attached to the lab VMs Network interfaces to
+     * restrict open ports.
+     *
+     * @return the networkSecurityGroupId value.
+     */
+    public String networkSecurityGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkSecurityGroupId();
+    }
+
+    /**
+     * Get the extendedProperties property: Extended properties of the lab used for experimental features.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
+    }
+
+    /**
+     * Set the extendedProperties property: Extended properties of the lab used for experimental features.
+     *
+     * @param extendedProperties the extendedProperties value to set.
+     * @return the LabInner object itself.
+     */
+    public LabInner withExtendedProperties(Map<String, String> extendedProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabProperties();
+        }
+        this.innerProperties().withExtendedProperties(extendedProperties);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     *
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (announcement() != null) {
-            announcement().validate();
-        }
-        if (support() != null) {
-            support().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A lab. */
-@Immutable
+@Fluent
 public final class LabFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabFragment.class);
-
     /** {@inheritDoc} */
     @Override
     public LabFragment withTags(Map<String, String> tags) {

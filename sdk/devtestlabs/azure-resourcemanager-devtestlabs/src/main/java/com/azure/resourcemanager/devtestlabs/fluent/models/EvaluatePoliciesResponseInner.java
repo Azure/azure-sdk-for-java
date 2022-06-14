@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devtestlabs.models.PolicySetResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response body for evaluating a policy set. */
 @Fluent
 public final class EvaluatePoliciesResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EvaluatePoliciesResponseInner.class);
-
     /*
      * Results of evaluating a policy set.
      */

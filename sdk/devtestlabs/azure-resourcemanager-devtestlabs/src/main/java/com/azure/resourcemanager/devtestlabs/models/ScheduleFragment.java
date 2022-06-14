@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
 /** A schedule. */
-@Immutable
+@Fluent
 public final class ScheduleFragment extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleFragment.class);
-
     /** {@inheritDoc} */
     @Override
     public ScheduleFragment withTags(Map<String, String> tags) {
