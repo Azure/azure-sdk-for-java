@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gets the application SSH endpoint. */
 @Fluent
 public final class ApplicationGetEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGetEndpoint.class);
-
     /*
      * The location of the endpoint.
      */

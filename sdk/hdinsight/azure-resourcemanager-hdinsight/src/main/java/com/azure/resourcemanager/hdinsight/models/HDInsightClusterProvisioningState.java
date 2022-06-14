@@ -36,7 +36,11 @@ public final class HDInsightClusterProvisioningState extends ExpandableStringEnu
         return fromString(name, HDInsightClusterProvisioningState.class);
     }
 
-    /** @return known HDInsightClusterProvisioningState values. */
+    /**
+     * Gets known HDInsightClusterProvisioningState values.
+     *
+     * @return known HDInsightClusterProvisioningState values.
+     */
     public static Collection<HDInsightClusterProvisioningState> values() {
         return values(HDInsightClusterProvisioningState.class);
     }

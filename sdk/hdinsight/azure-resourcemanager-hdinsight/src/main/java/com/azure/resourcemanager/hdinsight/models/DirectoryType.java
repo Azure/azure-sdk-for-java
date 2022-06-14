@@ -24,7 +24,11 @@ public final class DirectoryType extends ExpandableStringEnum<DirectoryType> {
         return fromString(name, DirectoryType.class);
     }
 
-    /** @return known DirectoryType values. */
+    /**
+     * Gets known DirectoryType values.
+     *
+     * @return known DirectoryType values.
+     */
     public static Collection<DirectoryType> values() {
         return values(DirectoryType.class);
     }

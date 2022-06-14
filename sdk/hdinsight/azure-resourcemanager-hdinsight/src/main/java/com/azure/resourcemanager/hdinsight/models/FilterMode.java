@@ -33,7 +33,11 @@ public final class FilterMode extends ExpandableStringEnum<FilterMode> {
         return fromString(name, FilterMode.class);
     }
 
-    /** @return known FilterMode values. */
+    /**
+     * Gets known FilterMode values.
+     *
+     * @return known FilterMode values.
+     */
     public static Collection<FilterMode> values() {
         return values(FilterMode.class);
     }

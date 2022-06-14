@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway settings. */
 @Immutable
 public final class GatewaySettingsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewaySettingsInner.class);
-
     /*
      * Indicates whether or not the gateway settings based authorization is
      * enabled.

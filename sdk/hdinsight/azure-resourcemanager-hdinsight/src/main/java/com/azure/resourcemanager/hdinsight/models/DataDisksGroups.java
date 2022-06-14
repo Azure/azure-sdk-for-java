@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The data disks groups for the role. */
 @Fluent
 public final class DataDisksGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisksGroups.class);
-
     /*
      * The number of disks per node.
      */

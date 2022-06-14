@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response spec of checking name availability. */
 @Fluent
 public final class NameAvailabilityCheckResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityCheckResultInner.class);
-
     /*
      * This indicates whether the name is available.
      */

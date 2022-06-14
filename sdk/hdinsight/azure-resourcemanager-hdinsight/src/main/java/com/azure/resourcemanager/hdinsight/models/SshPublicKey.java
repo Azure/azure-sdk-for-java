@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SSH public key for the cluster nodes. */
 @Fluent
 public final class SshPublicKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKey.class);
-
     /*
      * The certificate for SSH.
      */

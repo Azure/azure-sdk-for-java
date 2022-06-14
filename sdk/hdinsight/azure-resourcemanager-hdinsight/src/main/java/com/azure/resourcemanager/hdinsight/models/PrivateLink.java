@@ -27,7 +27,11 @@ public final class PrivateLink extends ExpandableStringEnum<PrivateLink> {
         return fromString(name, PrivateLink.class);
     }
 
-    /** @return known PrivateLink values. */
+    /**
+     * Gets known PrivateLink values.
+     *
+     * @return known PrivateLink values.
+     */
     public static Collection<PrivateLink> values() {
         return values(PrivateLink.class);
     }

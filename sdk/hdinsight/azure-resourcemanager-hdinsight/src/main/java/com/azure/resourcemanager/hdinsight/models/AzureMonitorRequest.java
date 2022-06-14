@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The azure monitor parameters. */
 @Fluent
 public final class AzureMonitorRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorRequest.class);
-
     /*
      * The Log Analytics workspace ID.
      */

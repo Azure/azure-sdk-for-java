@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for a schedule-based autoscale rule, consisting of an array of days + a time and capacity. */
 @Fluent
 public final class AutoscaleSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSchedule.class);
-
     /*
      * Days of the week for a schedule-based autoscale rule
      */

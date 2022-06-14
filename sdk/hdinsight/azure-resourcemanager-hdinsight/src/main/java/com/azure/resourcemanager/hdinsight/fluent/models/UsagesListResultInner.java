@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.Usage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response for the operation to get regional usages for a subscription. */
 @Fluent
 public final class UsagesListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesListResultInner.class);
-
     /*
      * The list of usages.
      */

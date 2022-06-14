@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Identity for the cluster. */
 @Fluent
 public class ClusterIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterIdentity.class);
-
     /*
      * The principal id of cluster identity. This property will only be
      * provided for a system assigned identity.

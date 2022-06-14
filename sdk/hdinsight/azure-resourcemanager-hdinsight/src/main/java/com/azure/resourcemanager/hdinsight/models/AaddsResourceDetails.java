@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Azure active directory domain service resource details. */
 @Fluent
 public final class AaddsResourceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AaddsResourceDetails.class);
-
     /*
      * The Azure active directory domain service name.
      */

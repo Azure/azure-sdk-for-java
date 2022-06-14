@@ -6,14 +6,11 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a script action on role on the cluster. */
 @Fluent
 public final class ScriptAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptAction.class);
-
     /*
      * The name of the script action.
      */
@@ -99,19 +96,21 @@ public final class ScriptAction {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ScriptAction"));
         }
         if (uri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property uri in model ScriptAction"));
         }
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property parameters in model ScriptAction"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptAction.class);
 }

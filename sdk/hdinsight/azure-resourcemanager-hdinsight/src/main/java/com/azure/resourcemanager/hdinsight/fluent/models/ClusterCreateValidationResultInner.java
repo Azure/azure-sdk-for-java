@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.AaddsResourceDetails;
 import com.azure.resourcemanager.hdinsight.models.ValidationErrorInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** The response of cluster create request validation. */
 @Fluent
 public final class ClusterCreateValidationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCreateValidationResultInner.class);
-
     /*
      * The validation errors.
      */

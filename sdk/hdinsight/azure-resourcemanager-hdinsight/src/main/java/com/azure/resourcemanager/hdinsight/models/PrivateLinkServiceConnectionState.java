@@ -6,14 +6,11 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private link service connection state. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
      * The concrete private link service connection.
      */
@@ -99,10 +96,12 @@ public final class PrivateLinkServiceConnectionState {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model PrivateLinkServiceConnectionState"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionState.class);
 }

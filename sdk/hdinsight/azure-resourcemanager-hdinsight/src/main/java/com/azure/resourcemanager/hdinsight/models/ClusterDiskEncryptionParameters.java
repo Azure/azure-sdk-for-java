@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Disk Encryption Cluster request parameters. */
 @Fluent
 public final class ClusterDiskEncryptionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterDiskEncryptionParameters.class);
-
     /*
      * Base key vault URI where the customers key is located eg.
      * https://myvault.vault.azure.net

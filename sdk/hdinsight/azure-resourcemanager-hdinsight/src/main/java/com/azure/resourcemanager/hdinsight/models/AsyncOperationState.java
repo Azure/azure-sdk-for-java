@@ -30,7 +30,11 @@ public final class AsyncOperationState extends ExpandableStringEnum<AsyncOperati
         return fromString(name, AsyncOperationState.class);
     }
 
-    /** @return known AsyncOperationState values. */
+    /**
+     * Gets known AsyncOperationState values.
+     *
+     * @return known AsyncOperationState values.
+     */
     public static Collection<AsyncOperationState> values() {
         return values(AsyncOperationState.class);
     }

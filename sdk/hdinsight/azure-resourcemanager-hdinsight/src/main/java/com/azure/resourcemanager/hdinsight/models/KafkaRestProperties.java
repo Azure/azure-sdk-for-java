@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The kafka rest proxy configuration which contains AAD security group information. */
 @Fluent
 public final class KafkaRestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KafkaRestProperties.class);
-
     /*
      * The information of AAD security group.
      */

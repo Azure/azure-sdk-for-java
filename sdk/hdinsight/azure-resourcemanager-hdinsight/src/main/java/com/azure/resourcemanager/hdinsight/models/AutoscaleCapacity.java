@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The load-based autoscale request parameters. */
 @Fluent
 public final class AutoscaleCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleCapacity.class);
-
     /*
      * The minimum instance count of the cluster
      */

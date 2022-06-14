@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The configuration object for the specified cluster. */
 @Fluent
 public final class ClusterConfigurationsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterConfigurationsInner.class);
-
     /*
      * The configuration object for the specified configuration for the
      * specified cluster.

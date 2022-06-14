@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration that services will be excluded when creating cluster. */
 @Fluent
 public final class ExcludedServicesConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExcludedServicesConfig.class);
-
     /*
      * The config id of excluded services.
      */

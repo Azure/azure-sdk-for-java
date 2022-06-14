@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.IpConfiguration;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkConfigurationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The private link configuration properties. */
 @Fluent
 public final class PrivateLinkConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkConfigurationProperties.class);
-
     /*
      * The HDInsight private linkable sub-resource name to apply the private
      * link configuration to. For example, 'headnode', 'gateway', 'edgenode'.
@@ -96,13 +93,13 @@ public final class PrivateLinkConfigurationProperties {
      */
     public void validate() {
         if (groupId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupId in model PrivateLinkConfigurationProperties"));
         }
         if (ipConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipConfigurations in model PrivateLinkConfigurationProperties"));
@@ -110,4 +107,6 @@ public final class PrivateLinkConfigurationProperties {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkConfigurationProperties.class);
 }

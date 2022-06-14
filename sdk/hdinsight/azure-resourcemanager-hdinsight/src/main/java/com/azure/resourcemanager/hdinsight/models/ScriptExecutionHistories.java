@@ -18,7 +18,7 @@ public interface ScriptExecutionHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName);
 
@@ -31,7 +31,7 @@ public interface ScriptExecutionHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list script execution history response.
+     * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RuntimeScriptActionDetail> listByCluster(
         String resourceGroupName, String clusterName, Context context);
@@ -58,7 +58,7 @@ public interface ScriptExecutionHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> promoteWithResponse(
         String resourceGroupName, String clusterName, String scriptExecutionId, Context context);

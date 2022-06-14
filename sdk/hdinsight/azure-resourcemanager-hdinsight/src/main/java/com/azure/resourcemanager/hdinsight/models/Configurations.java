@@ -31,7 +31,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all configuration information for an HDI cluster.
+     * @return all configuration information for an HDI cluster along with {@link Response}.
      */
     Response<ClusterConfigurations> listWithResponse(String resourceGroupName, String clusterName, Context context);
 
@@ -94,7 +94,8 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration object for the specified configuration for the specified cluster.
+     * @return the configuration object for the specified configuration for the specified cluster along with {@link
+     *     Response}.
      */
     Response<Map<String, String>> getWithResponse(
         String resourceGroupName, String clusterName, String configurationName, Context context);

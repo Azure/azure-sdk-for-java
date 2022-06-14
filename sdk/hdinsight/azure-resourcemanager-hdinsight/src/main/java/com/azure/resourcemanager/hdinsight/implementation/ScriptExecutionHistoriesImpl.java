@@ -12,10 +12,9 @@ import com.azure.resourcemanager.hdinsight.fluent.ScriptExecutionHistoriesClient
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
 import com.azure.resourcemanager.hdinsight.models.ScriptExecutionHistories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptExecutionHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionHistoriesImpl.class);
 
     private final ScriptExecutionHistoriesClient innerClient;
 

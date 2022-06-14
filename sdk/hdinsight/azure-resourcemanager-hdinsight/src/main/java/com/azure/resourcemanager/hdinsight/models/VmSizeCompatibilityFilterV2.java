@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,8 +16,6 @@ import java.util.List;
  */
 @Fluent
 public final class VmSizeCompatibilityFilterV2 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VmSizeCompatibilityFilterV2.class);
-
     /*
      * The filtering mode. Effectively this can enabling or disabling the VM
      * sizes in a particular set.

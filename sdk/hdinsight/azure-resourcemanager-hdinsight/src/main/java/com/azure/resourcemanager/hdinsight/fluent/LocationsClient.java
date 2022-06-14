@@ -39,7 +39,7 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the capabilities for the specified location.
+     * @return the capabilities for the specified location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CapabilitiesResultInner> getCapabilitiesWithResponse(String location, Context context);
@@ -64,7 +64,7 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional usages for a subscription.
+     * @return the response for the operation to get regional usages for a subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UsagesListResultInner> listUsagesWithResponse(String location, Context context);
@@ -89,7 +89,8 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional billingSpecs for a subscription.
+     * @return the response for the operation to get regional billingSpecs for a subscription along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingResponseListResultInner> listBillingSpecsWithResponse(String location, Context context);
@@ -116,7 +117,7 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status.
+     * @return the async operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AsyncOperationResultInner> getAzureAsyncOperationStatusWithResponse(
@@ -145,7 +146,7 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response spec of checking name availability.
+     * @return the response spec of checking name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityCheckResultInner> checkNameAvailabilityWithResponse(
@@ -174,7 +175,7 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of cluster create request validation.
+     * @return the response of cluster create request validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterCreateValidationResultInner> validateClusterCreateRequestWithResponse(

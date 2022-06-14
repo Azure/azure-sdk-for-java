@@ -27,7 +27,11 @@ public final class Tier extends ExpandableStringEnum<Tier> {
         return fromString(name, Tier.class);
     }
 
-    /** @return known Tier values. */
+    /**
+     * Gets known Tier values.
+     *
+     * @return known Tier values.
+     */
     public static Collection<Tier> values() {
         return values(Tier.class);
     }

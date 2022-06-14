@@ -33,7 +33,11 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
         return fromString(name, ResourceIdentityType.class);
     }
 
-    /** @return known ResourceIdentityType values. */
+    /**
+     * Gets known ResourceIdentityType values.
+     *
+     * @return known ResourceIdentityType values.
+     */
     public static Collection<ResourceIdentityType> values() {
         return values(ResourceIdentityType.class);
     }

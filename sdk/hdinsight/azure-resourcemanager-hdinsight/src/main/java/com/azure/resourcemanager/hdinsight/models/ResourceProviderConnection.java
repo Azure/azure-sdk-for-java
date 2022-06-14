@@ -27,7 +27,11 @@ public final class ResourceProviderConnection extends ExpandableStringEnum<Resou
         return fromString(name, ResourceProviderConnection.class);
     }
 
-    /** @return known ResourceProviderConnection values. */
+    /**
+     * Gets known ResourceProviderConnection values.
+     *
+     * @return known ResourceProviderConnection values.
+     */
     public static Collection<ResourceProviderConnection> values() {
         return values(ResourceProviderConnection.class);
     }

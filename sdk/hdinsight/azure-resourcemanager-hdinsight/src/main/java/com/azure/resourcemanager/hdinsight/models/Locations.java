@@ -28,7 +28,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the capabilities for the specified location.
+     * @return the capabilities for the specified location along with {@link Response}.
      */
     Response<CapabilitiesResult> getCapabilitiesWithResponse(String location, Context context);
 
@@ -51,7 +51,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional usages for a subscription.
+     * @return the response for the operation to get regional usages for a subscription along with {@link Response}.
      */
     Response<UsagesListResult> listUsagesWithResponse(String location, Context context);
 
@@ -74,7 +74,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for the operation to get regional billingSpecs for a subscription.
+     * @return the response for the operation to get regional billingSpecs for a subscription along with {@link
+     *     Response}.
      */
     Response<BillingResponseListResult> listBillingSpecsWithResponse(String location, Context context);
 
@@ -99,7 +100,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status.
+     * @return the async operation status along with {@link Response}.
      */
     Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
         String location, String operationId, Context context);
@@ -126,7 +127,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response spec of checking name availability.
+     * @return the response spec of checking name availability along with {@link Response}.
      */
     Response<NameAvailabilityCheckResult> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityCheckRequestParameters parameters, Context context);
@@ -153,7 +154,7 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of cluster create request validation.
+     * @return the response of cluster create request validation along with {@link Response}.
      */
     Response<ClusterCreateValidationResult> validateClusterCreateRequestWithResponse(
         String location, ClusterCreateRequestValidationParameters parameters, Context context);

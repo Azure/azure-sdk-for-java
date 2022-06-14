@@ -56,7 +56,7 @@ public interface Extensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Operations Management Suite (OMS) on the HDInsight cluster.
+     * @return the status of Operations Management Suite (OMS) on the HDInsight cluster along with {@link Response}.
      */
     Response<ClusterMonitoringResponse> getMonitoringStatusWithResponse(
         String resourceGroupName, String clusterName, Context context);
@@ -131,7 +131,7 @@ public interface Extensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Azure Monitor on the HDInsight cluster.
+     * @return the status of Azure Monitor on the HDInsight cluster along with {@link Response}.
      */
     Response<AzureMonitorResponse> getAzureMonitorStatusWithResponse(
         String resourceGroupName, String clusterName, Context context);
@@ -210,7 +210,7 @@ public interface Extensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the extension properties for the specified HDInsight cluster extension.
+     * @return the extension properties for the specified HDInsight cluster extension along with {@link Response}.
      */
     Response<ClusterMonitoringResponse> getWithResponse(
         String resourceGroupName, String clusterName, String extensionName, Context context);
@@ -266,7 +266,7 @@ public interface Extensions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status.
+     * @return the async operation status along with {@link Response}.
      */
     Response<AsyncOperationResult> getAzureAsyncOperationStatusWithResponse(
         String resourceGroupName, String clusterName, String extensionName, String operationId, Context context);

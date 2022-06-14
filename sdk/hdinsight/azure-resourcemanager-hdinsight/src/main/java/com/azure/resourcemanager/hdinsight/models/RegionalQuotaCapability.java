@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The regional quota capacity. */
 @Fluent
 public final class RegionalQuotaCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalQuotaCapability.class);
-
     /*
      * The region name.
      */

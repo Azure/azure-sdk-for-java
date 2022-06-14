@@ -27,7 +27,11 @@ public final class PrivateIpAllocationMethod extends ExpandableStringEnum<Privat
         return fromString(name, PrivateIpAllocationMethod.class);
     }
 
-    /** @return known PrivateIpAllocationMethod values. */
+    /**
+     * Gets known PrivateIpAllocationMethod values.
+     *
+     * @return known PrivateIpAllocationMethod values.
+     */
     public static Collection<PrivateIpAllocationMethod> values() {
         return values(PrivateIpAllocationMethod.class);
     }

@@ -14,13 +14,12 @@ import com.azure.resourcemanager.hdinsight.fluent.models.HostInfoInner;
 import com.azure.resourcemanager.hdinsight.models.AsyncOperationResult;
 import com.azure.resourcemanager.hdinsight.models.HostInfo;
 import com.azure.resourcemanager.hdinsight.models.VirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinesImpl.class);
 
     private final VirtualMachinesClient innerClient;
 

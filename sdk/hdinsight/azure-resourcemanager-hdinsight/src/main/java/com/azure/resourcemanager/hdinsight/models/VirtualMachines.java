@@ -31,7 +31,7 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list cluster hosts.
+     * @return result of the request to list cluster hosts along with {@link Response}.
      */
     Response<List<HostInfo>> listHostsWithResponse(String resourceGroupName, String clusterName, Context context);
 
@@ -83,7 +83,7 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status.
+     * @return the async operation status along with {@link Response}.
      */
     Response<AsyncOperationResult> getAsyncOperationStatusWithResponse(
         String resourceGroupName, String clusterName, String operationId, Context context);

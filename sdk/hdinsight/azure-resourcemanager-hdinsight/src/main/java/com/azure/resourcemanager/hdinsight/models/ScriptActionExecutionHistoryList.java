@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list script execution history response. */
 @Immutable
 public final class ScriptActionExecutionHistoryList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptActionExecutionHistoryList.class);
-
     /*
      * The list of persisted script action details for the cluster.
      */

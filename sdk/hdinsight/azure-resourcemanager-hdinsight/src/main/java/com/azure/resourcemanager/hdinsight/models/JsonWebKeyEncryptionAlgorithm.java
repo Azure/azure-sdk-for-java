@@ -30,7 +30,11 @@ public final class JsonWebKeyEncryptionAlgorithm extends ExpandableStringEnum<Js
         return fromString(name, JsonWebKeyEncryptionAlgorithm.class);
     }
 
-    /** @return known JsonWebKeyEncryptionAlgorithm values. */
+    /**
+     * Gets known JsonWebKeyEncryptionAlgorithm values.
+     *
+     * @return known JsonWebKeyEncryptionAlgorithm values.
+     */
     public static Collection<JsonWebKeyEncryptionAlgorithm> values() {
         return values(JsonWebKeyEncryptionAlgorithm.class);
     }

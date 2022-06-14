@@ -24,10 +24,9 @@ import com.azure.resourcemanager.hdinsight.models.Locations;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestParameters;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckResult;
 import com.azure.resourcemanager.hdinsight.models.UsagesListResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 

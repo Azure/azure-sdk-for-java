@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information of AAD security group. */
 @Fluent
 public final class ClientGroupInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientGroupInfo.class);
-
     /*
      * The AAD security group name.
      */

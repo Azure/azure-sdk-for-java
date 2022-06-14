@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The regions capability. */
 @Fluent
 public final class RegionsCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionsCapability.class);
-
     /*
      * The list of region capabilities.
      */
