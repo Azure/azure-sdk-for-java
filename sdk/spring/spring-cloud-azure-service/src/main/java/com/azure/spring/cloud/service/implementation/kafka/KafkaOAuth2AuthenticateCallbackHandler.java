@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
-import com.azure.spring.cloud.core.implementation.util.AzureConfigUtils;
+import com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
 /**
@@ -45,7 +45,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
         credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
-        AzureConfigUtils.convertConfigMapToAzureProperties(configs, properties);
+        AzureIdentityCustomConfigUtils.convertConfigMapToAzureProperties(configs, properties);
     }
 
     @Override

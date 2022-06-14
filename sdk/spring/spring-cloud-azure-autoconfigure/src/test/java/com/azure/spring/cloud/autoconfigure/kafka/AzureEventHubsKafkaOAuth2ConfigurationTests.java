@@ -35,9 +35,9 @@ import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKaf
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_MECHANISM_OAUTH;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SECURITY_PROTOCOL_CONFIG_SASL;
 import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.buildAzureProperties;
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.CLIENT_ID;
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.MANAGED_IDENTITY_ENABLED;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.CLIENT_ID;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.MANAGED_IDENTITY_ENABLED;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class AzureEventHubsKafkaOAUTH2ConfigurationTests {
+class AzureEventHubsKafkaOAuth2ConfigurationTests {
 
     private static final String SPRING_BOOT_KAFKA_PROPERTIES_PREFIX = "spring.kafka.properties.";
     private static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
@@ -57,14 +57,14 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
     private static final String SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.consumer-properties.";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAUTH2Configuration.class,
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2Configuration.class,
             AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class));
 
     @Test
     void shouldNotConfigureWithoutKafkaTemplate() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAUTH2Configuration.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2Configuration.class));
     }
 
     @Test
@@ -74,7 +74,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
             .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
             .run(context -> {
                 assertThat(context)
-                    .doesNotHaveBean(AzureEventHubsKafkaOAUTH2Configuration.AzureKafkaSpringCloudStreamAutoConfiguration.class);
+                    .doesNotHaveBean(AzureEventHubsKafkaOAuth2Configuration.AzureKafkaSpringCloudStreamAutoConfiguration.class);
                 assertThat(context).doesNotHaveBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
             });
     }
@@ -98,7 +98,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.cloud.azure.credential.client-id=azure-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(AzureGlobalProperties.class);
                 assertThat(context).hasSingleBean(KafkaProperties.class);
 
@@ -127,7 +127,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.cloud.azure.credential.client-id=azure-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
@@ -150,7 +150,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.cloud.azure.credential.client-id=azure-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(AzureGlobalProperties.class);
                 assertThat(context).hasSingleBean(KafkaProperties.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
@@ -178,7 +178,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.cloud.azure.credential.client-id=azure-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
@@ -202,7 +202,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
                 assertThat(context).hasSingleBean(KafkaProperties.class);
@@ -226,7 +226,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.cloud.azure.credential.client-id=azure-client-id"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
                 assertThat(context).hasSingleBean(KafkaTopicProvisioner.class);
@@ -258,7 +258,7 @@ class AzureEventHubsKafkaOAUTH2ConfigurationTests {
                 "spring.kafka.producer.properties." + MANAGED_IDENTITY_ENABLED + "=true"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAUTH2Configuration.class);
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2Configuration.class);
                 assertThat(context).hasBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
                 assertThat(context).hasSingleBean(ConsumerFactory.class);
                 assertThat(context).hasSingleBean(ProducerFactory.class);

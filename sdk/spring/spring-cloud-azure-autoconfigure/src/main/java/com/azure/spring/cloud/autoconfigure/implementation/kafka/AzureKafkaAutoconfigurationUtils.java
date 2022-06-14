@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.convertConfigMapToAzureProperties;
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;

@@ -7,13 +7,12 @@ import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Store the constants for customized Azure properties in other third party services.
  */
-public final class AzureConfigUtils {
-    private AzureConfigUtils() {
+public final class AzureIdentityCustomConfigUtils {
+    private AzureIdentityCustomConfigUtils() {
     }
 
     public static final String CLIENT_CERTIFICATE_PASSWORD = "azure.credential.client-certificate-password";
@@ -89,65 +88,37 @@ public final class AzureConfigUtils {
 
     public static void convertAzurePropertiesToConfigMap(AzureThirdPartyServiceProperties source,
                                                          Map<String, String> target) {
-
-        Optional.ofNullable(source.getCredential().getClientCertificatePassword())
-                .ifPresent(v -> target.putIfAbsent(CLIENT_CERTIFICATE_PASSWORD, v));
-        Optional.ofNullable(source.getCredential().getClientCertificatePath())
-                .ifPresent(v -> target.putIfAbsent(CLIENT_CERTIFICATE_PATH, v));
-        Optional.ofNullable(source.getCredential().getClientId())
-                .ifPresent(v -> target.putIfAbsent(CLIENT_ID, v));
-        Optional.ofNullable(source.getCredential().getClientSecret())
-                .ifPresent(v -> target.putIfAbsent(CLIENT_SECRET, v));
-        Optional.ofNullable(source.getCredential().isManagedIdentityEnabled())
-                .ifPresent(v -> target.putIfAbsent(MANAGED_IDENTITY_ENABLED, String.valueOf(v)));
-        Optional.ofNullable(source.getCredential().getPassword())
-                .ifPresent(v -> target.putIfAbsent(PASSWORD, v));
-        Optional.ofNullable(source.getCredential().getUsername())
-                .ifPresent(v -> target.putIfAbsent(USERNAME, v));
-        Optional.ofNullable(source.getProfile().getCloudType())
-                .ifPresent(v -> target.putIfAbsent(CLOUD_TYPE, v.name()));
-        Optional.ofNullable(source.getProfile().getEnvironment().getActiveDirectoryEndpoint())
-                .ifPresent(v -> target.putIfAbsent(ACTIVE_DIRECTORY_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getActiveDirectoryGraphApiVersion())
-                .ifPresent(v -> target.putIfAbsent(ACTIVE_DIRECTORY_GRAPH_API_VERSION, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getActiveDirectoryGraphEndpoint())
-                .ifPresent(v -> target.putIfAbsent(ACTIVE_DIRECTORY_GRAPH_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getActiveDirectoryResourceId())
-                .ifPresent(v -> target.putIfAbsent(ACTIVE_DIRECTORY_RESOURCE_ID, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getAzureApplicationInsightsEndpoint())
-                .ifPresent(v -> target.putIfAbsent(AZURE_APPLICATION_INSIGHTS_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix())
-                .ifPresent(v -> target.putIfAbsent(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix())
-                .ifPresent(v -> target.putIfAbsent(AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getAzureLogAnalyticsEndpoint())
-                .ifPresent(v -> target.putIfAbsent(AZURE_LOG_ANALYTICS_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getDataLakeEndpointResourceId())
-                .ifPresent(v -> target.putIfAbsent(DATA_LAKE_ENDPOINT_RESOURCE_ID, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getGalleryEndpoint())
-                .ifPresent(v -> target.putIfAbsent(GALLERY_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getKeyVaultDnsSuffix())
-                .ifPresent(v -> target.putIfAbsent(KEY_VAULT_DNS_SUFFIX, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getManagementEndpoint())
-                .ifPresent(v -> target.putIfAbsent(MANAGEMENT_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getMicrosoftGraphEndpoint())
-                .ifPresent(v -> target.putIfAbsent(MICROSOFT_GRAPH_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getPortal())
-                .ifPresent(v -> target.putIfAbsent(PORTAL, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getPublishingProfile())
-                .ifPresent(v -> target.putIfAbsent(PUBLISHING_PROFILE, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getResourceManagerEndpoint())
-                .ifPresent(v -> target.putIfAbsent(RESOURCE_MANAGER_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getSqlManagementEndpoint())
-                .ifPresent(v -> target.putIfAbsent(SQL_MANAGEMENT_ENDPOINT, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getSqlServerHostnameSuffix())
-                .ifPresent(v -> target.putIfAbsent(SQL_SERVER_HOSTNAME_SUFFIX, v));
-        Optional.ofNullable(source.getProfile().getEnvironment().getStorageEndpointSuffix())
-                .ifPresent(v -> target.putIfAbsent(STORAGE_ENDPOINT_SUFFIX, v));
-        Optional.ofNullable(source.getProfile().getSubscriptionId())
-                .ifPresent(v -> target.putIfAbsent(SUBSCRIPTION_ID, v));
-        Optional.ofNullable(source.getProfile().getTenantId())
-                .ifPresent(v -> target.putIfAbsent(TENANT_ID, v));
+        PropertyMapper propertyMapper = new PropertyMapper();
+        propertyMapper.from(source.getCredential().getClientCertificatePassword()).to(prop -> target.putIfAbsent(CLIENT_CERTIFICATE_PASSWORD, prop));
+        propertyMapper.from(source.getCredential().getClientCertificatePath()).to(prop -> target.putIfAbsent(CLIENT_CERTIFICATE_PATH, prop));
+        propertyMapper.from(source.getCredential().getClientId()).to(prop -> target.putIfAbsent(CLIENT_ID, prop));
+        propertyMapper.from(source.getCredential().getClientSecret()).to(prop -> target.putIfAbsent(CLIENT_SECRET, prop));
+        propertyMapper.from(source.getCredential().getClientCertificatePath()).to(prop -> target.putIfAbsent(CLIENT_CERTIFICATE_PATH, prop));
+        propertyMapper.from(source.getCredential().isManagedIdentityEnabled()).to(prop -> target.putIfAbsent(MANAGED_IDENTITY_ENABLED, String.valueOf(prop)));
+        propertyMapper.from(source.getCredential().getPassword()).to(prop -> target.putIfAbsent(PASSWORD, prop));
+        propertyMapper.from(source.getCredential().getUsername()).to(prop -> target.putIfAbsent(USERNAME, prop));
+        propertyMapper.from(source.getProfile().getCloudType()).to(prop -> target.putIfAbsent(CLOUD_TYPE, prop.name()));
+        propertyMapper.from(source.getProfile().getEnvironment().getActiveDirectoryEndpoint()).to(prop -> target.putIfAbsent(ACTIVE_DIRECTORY_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getActiveDirectoryGraphApiVersion()).to(prop -> target.putIfAbsent(ACTIVE_DIRECTORY_GRAPH_API_VERSION, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getActiveDirectoryGraphEndpoint()).to(prop -> target.putIfAbsent(ACTIVE_DIRECTORY_GRAPH_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getActiveDirectoryResourceId()).to(prop -> target.putIfAbsent(ACTIVE_DIRECTORY_RESOURCE_ID, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getAzureApplicationInsightsEndpoint()).to(prop -> target.putIfAbsent(AZURE_APPLICATION_INSIGHTS_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix()).to(prop -> target.putIfAbsent(AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix()).to(prop -> target.putIfAbsent(AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getAzureLogAnalyticsEndpoint()).to(prop -> target.putIfAbsent(AZURE_LOG_ANALYTICS_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getDataLakeEndpointResourceId()).to(prop -> target.putIfAbsent(DATA_LAKE_ENDPOINT_RESOURCE_ID, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getGalleryEndpoint()).to(prop -> target.putIfAbsent(GALLERY_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getKeyVaultDnsSuffix()).to(prop -> target.putIfAbsent(KEY_VAULT_DNS_SUFFIX, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getManagementEndpoint()).to(prop -> target.putIfAbsent(MANAGEMENT_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getMicrosoftGraphEndpoint()).to(prop -> target.putIfAbsent(MICROSOFT_GRAPH_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getPortal()).to(prop -> target.putIfAbsent(PORTAL, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getPublishingProfile()).to(prop -> target.putIfAbsent(PUBLISHING_PROFILE, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getResourceManagerEndpoint()).to(prop -> target.putIfAbsent(RESOURCE_MANAGER_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getSqlManagementEndpoint()).to(prop -> target.putIfAbsent(SQL_MANAGEMENT_ENDPOINT, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getSqlServerHostnameSuffix()).to(prop -> target.putIfAbsent(SQL_SERVER_HOSTNAME_SUFFIX, prop));
+        propertyMapper.from(source.getProfile().getEnvironment().getStorageEndpointSuffix()).to(prop -> target.putIfAbsent(STORAGE_ENDPOINT_SUFFIX, prop));
+        propertyMapper.from(source.getProfile().getSubscriptionId()).to(prop -> target.putIfAbsent(SUBSCRIPTION_ID, prop));
+        propertyMapper.from(source.getProfile().getTenantId()).to(prop -> target.putIfAbsent(TENANT_ID, prop));
     }
 
 }

@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.core.implementation.util.AzureConfigUtils.MANAGED_IDENTITY_ENABLED;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.MANAGED_IDENTITY_ENABLED;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

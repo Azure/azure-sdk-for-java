@@ -47,10 +47,6 @@ This section includes changes in `spring-cloud-azure-starter-active-directory-b2
 #### Dependency Updates
 - Upgrade spring-security to 5.6.4 to address [CVE-2022-22978](https://spring.io/blog/2022/05/15/cve-2022-22978-authorization-bypass-in-regexrequestmatcher) [#29304](https://github.com/Azure/azure-sdk-for-java/pull/29304).
 
-### Spring Cloud Azure Service
-
-#### Features Added
-- Support OAuth2 authentication for Spring ecosystems of Kafka [#29135](https://github.com/Azure/azure-sdk-for-java/pull/29135).
 
 ## 4.2.0 (2022-05-26)
 
