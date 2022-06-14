@@ -1,19 +1,19 @@
 # Release History
 
-## 1.0.0-beta.4 (2022-06-02)
+## 1.0.0-beta.4 (2022-06-14)
 
 ### Features Added
 
-- Support Atlas 2.2 APIs
+- Supported Atlas 2.2 APIs.
 
 ### Breaking Changes
 
-- Expose required query and header parameters to method signature.
+- Exposed required query and header parameters to method signature.
 
 ### Bugs Fixed
 
-- Add missing query parameter `includeTermHierarchy` for update term API
-- Add missing query parameter `excludeRelationshipTypes` for get term API
+- Added missing query parameter `includeTermHierarchy` for update term API.
+- Added missing query parameter `excludeRelationshipTypes` for get term API.
 
 ### Other Changes
 
