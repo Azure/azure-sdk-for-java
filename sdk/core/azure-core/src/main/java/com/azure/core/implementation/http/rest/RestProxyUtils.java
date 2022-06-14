@@ -19,6 +19,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ResponseExceptionConstructorCache;
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -211,6 +213,13 @@ public final class RestProxyUtils {
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("'ResumeOperation' isn't supported."));
         }
+    }
+
+    public static boolean isReactive(Type type) {
+        if (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)) {
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -1,86 +1,35 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
-package com.azure.core.http.rest;
+package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
+import com.azure.core.http.rest.*;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.rest.*;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.invoke.MethodHandle;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
+import java.util.EnumSet;
+import java.util.function.Consumer;
 
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
-
-//TODO (g2vinay): Address any Pending comments from this PR: https://github.com/Azure/azure-sdk-for-java/pull/27911/
-/**
- * Type to create a proxy implementation for an interface describing REST API methods.
- *
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
- */
-public final class SyncRestProxy implements InvocationHandler {
-    private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
-    private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
-    private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
-    private static final String MUST_IMPLEMENT_PAGE_ERROR =
-        "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
-
-    private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-
-    // RestProxy is a commonly used class, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(SyncRestProxy.class);
-
-    private final HttpPipeline httpPipeline;
-    private final SerializerAdapter serializer;
-    private final SwaggerInterfaceParser interfaceParser;
-    private final HttpResponseDecoder decoder;
-
+public class SyncRestProxy extends RestProxyBase {
     /**
      * Create a RestProxy.
      *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer the serializer that will be used to convert response bodies to POJOs.
+     * @param httpPipeline    the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer      the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
-     * this RestProxy "implements".
      */
-    private SyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
-        this.interfaceParser = interfaceParser;
-        this.decoder = new HttpResponseDecoder(this.serializer);
-    }
-
-    /**
-     * Get the SwaggerMethodParser for the provided method. The Method must exist on the Swagger interface that this
-     * RestProxy was created to "implement".
-     *
-     * @param method the method to get a SwaggerMethodParser for
-     * @return the SwaggerMethodParser for the provided method
-     */
-    private SwaggerMethodParser getMethodParser(Method method) {
-        return interfaceParser.getMethodParser(method);
+    public SyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
+        super(httpPipeline, serializer, interfaceParser);
     }
 
     /**
@@ -94,35 +43,23 @@ public final class SyncRestProxy implements InvocationHandler {
         return httpPipeline.sendSync(request, contextData);
     }
 
+    public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
+        return RestProxyUtils.createHttpRequest(methodParser, serializer, true, args);
+    }
+
+
     @Override
-    public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
+    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
 
-        final SwaggerMethodParser methodParser = getMethodParser(method);
-        HttpRequest request;
-        try {
-            request = RestProxyUtils.createHttpRequest(methodParser, serializer, false, args);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-        }
-
-        Context context = methodParser.setContext(args);
-
-        RequestOptions options = methodParser.setRequestOptions(args);
-        context = RestProxyUtils.mergeRequestOptionsContext(context, options);
-
-        context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-            .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
-
-        HttpDecodedResponse decodedResponse = null;
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
         try {
             context = startTracingSpan(method, context);
 
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
-            if (options != null) {
-                options.getRequestCallback().accept(request);
+            if (options != null && requestCallback != null) {
+                requestCallback.accept(request);
             }
 
             if (request.getBodyAsBinaryData() != null) {
@@ -131,7 +68,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options);
+            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options, errorOptions);
         } catch (RuntimeException e) {
             throwable = e;
             throw LOGGER.logExceptionAsError(e);
@@ -141,6 +78,7 @@ public final class SyncRestProxy implements InvocationHandler {
             }
         }
     }
+
 
     /**
      * Starts the tracing span for the current service call, additionally set metadata attributes on the span by passing
@@ -178,14 +116,14 @@ public final class SyncRestProxy implements InvocationHandler {
      * the HTTP request.
      * @return An async-version of the provided decodedResponse.
      */
-    private HttpDecodedResponse ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-        final SwaggerMethodParser methodParser, RequestOptions options) {
+    private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                                                 final SwaggerMethodParser methodParser, RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
         if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && options.getErrorOptions().contains(ErrorOptions.NO_THROW))) {
+            || (options != null && errorOptions.contains(ErrorOptions.NO_THROW))) {
             return decodedResponse;
         }
 
@@ -211,9 +149,9 @@ public final class SyncRestProxy implements InvocationHandler {
         }
     }
 
-    private Object handleRestResponseReturnType(final HttpDecodedResponse response,
-        final SwaggerMethodParser methodParser,
-        final Type entityType) {
+    private Object handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
+                                                final SwaggerMethodParser methodParser,
+                                                final Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             if (entityType.equals(StreamResponse.class)) {
                 return createResponseSync(response, entityType, null);
@@ -239,7 +177,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
 
     @SuppressWarnings("unchecked")
-    private Response<?> createResponseSync(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
+    private Response<?> createResponseSync(HttpResponseDecoder.HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -289,8 +227,8 @@ public final class SyncRestProxy implements InvocationHandler {
         return RESPONSE_CONSTRUCTORS_CACHE.invokeSync(ctr, response, bodyAsObject);
     }
 
-    private Object handleBodyReturnTypeSync(final HttpDecodedResponse response,
-                                         final SwaggerMethodParser methodParser, final Type entityType) {
+    private Object handleBodyReturnTypeSync(final HttpResponseDecoder.HttpDecodedResponse response,
+                                            final SwaggerMethodParser methodParser, final Type entityType) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -332,13 +270,14 @@ public final class SyncRestProxy implements InvocationHandler {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return the deserialized result
      */
-    private Object handleRestReturnType(final HttpDecodedResponse httpDecodedResponse,
-        final SwaggerMethodParser methodParser,
-        final Type returnType,
-        final Context context,
-        final RequestOptions options) {
-        final HttpDecodedResponse expectedResponse =
-            ensureExpectedStatus(httpDecodedResponse, methodParser, options);
+    private Object handleRestReturnType(final HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
+                                        final SwaggerMethodParser methodParser,
+                                        final Type returnType,
+                                        final Context context,
+                                        final RequestOptions options,
+                                        EnumSet<ErrorOptions> errorOptions) {
+        final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
+            ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
@@ -355,7 +294,7 @@ public final class SyncRestProxy implements InvocationHandler {
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private static void endTracingSpan(HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
+    private static void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable, Context tracingContext) {
         if (tracingContext == null) {
             return;
         }
@@ -384,45 +323,5 @@ public final class SyncRestProxy implements InvocationHandler {
             }
         }
         TracerProxy.end(statusCode, throwable, tracingContext);
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     *
-     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param <A> the type of the Swagger interface
-     * @return a proxy implementation of the provided Swagger interface
-     */
-    public static <A> A create(Class<A> swaggerInterface) {
-        return create(swaggerInterface, RestProxyUtils.createDefaultPipeline(), RestProxyUtils.createDefaultSerializer());
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     *
-     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
-     * @param <A> the type of the Swagger interface
-     * @return a proxy implementation of the provided Swagger interface
-     */
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
-        return create(swaggerInterface, httpPipeline, RestProxyUtils.createDefaultSerializer());
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     *
-     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipline that will be used to send Http requests
-     * @param serializer the serializer that will be used to convert POJOs to and from request and response bodies
-     * @param <A> the type of the Swagger interface.
-     * @return a proxy implementation of the provided Swagger interface
-     */
-    @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, serializer);
-        final SyncRestProxy restProxy = new SyncRestProxy(httpPipeline, serializer, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
-            restProxy);
     }
 }
