@@ -881,6 +881,7 @@ class FileAsyncAPITests extends APISpec {
         }.expectComplete().verify(Duration.ofMinutes(1))
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options file permission"() {
         given:
         primaryFileAsyncClient.create(1024).block()
@@ -943,6 +944,7 @@ class FileAsyncAPITests extends APISpec {
             primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options copy smbFileProperties permission key"() {
         given:
         primaryFileAsyncClient.create(1024).block()

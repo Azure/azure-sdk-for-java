@@ -1108,6 +1108,7 @@ class FileAPITests extends APISpec {
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options file permission"() {
         given:
         primaryFileClient.create(1024)
@@ -1164,6 +1165,7 @@ class FileAPITests extends APISpec {
             primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
     def "Start copy with options copy smbFileProperties permission key"() {
         given:
         primaryFileClient.create(1024)

@@ -864,6 +864,7 @@ class FileSystemAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -885,6 +886,7 @@ class FileSystemAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -901,6 +903,7 @@ class FileSystemAPITest extends APISpec {
         fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with time expires on absolute and never expire"() {
         when:
         def options = new DataLakePathCreateOptions()
@@ -917,6 +920,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -1137,6 +1141,7 @@ class FileSystemAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -1158,6 +1163,7 @@ class FileSystemAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -1175,6 +1181,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with time expires on absolute and never expire"() {
         when:
         def options = new DataLakePathCreateOptions()
@@ -1191,6 +1198,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
