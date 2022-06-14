@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Advisor Digest configuration entity. */
 @Fluent
 public final class DigestConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DigestConfig.class);
-
     /*
      * Name of digest configuration. Value is case-insensitive and must be
      * unique within a subscription.

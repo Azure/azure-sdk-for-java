@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A summary of the recommendation. */
 @Fluent
 public final class ShortDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShortDescription.class);
-
     /*
      * The issue or opportunity identified by the recommendation.
      */

@@ -5,36 +5,27 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated with the rule. */
-@JsonFlatten
 @Fluent
-public class SuppressionContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SuppressionContractInner.class);
-
+public final class SuppressionContractInner extends ProxyResource {
     /*
-     * The GUID of the suppression.
+     * The properties of the suppression.
      */
-    @JsonProperty(value = "properties.suppressionId")
-    private String suppressionId;
+    @JsonProperty(value = "properties")
+    private SuppressionProperties innerProperties;
 
-    /*
-     * The duration for which the suppression is valid.
+    /**
+     * Get the innerProperties property: The properties of the suppression.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.ttl")
-    private String ttl;
-
-    /*
-     * Gets or sets the expiration time stamp.
-     */
-    @JsonProperty(value = "properties.expirationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationTimestamp;
+    private SuppressionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the suppressionId property: The GUID of the suppression.
@@ -42,7 +33,7 @@ public class SuppressionContractInner extends ProxyResource {
      * @return the suppressionId value.
      */
     public String suppressionId() {
-        return this.suppressionId;
+        return this.innerProperties() == null ? null : this.innerProperties().suppressionId();
     }
 
     /**
@@ -52,7 +43,10 @@ public class SuppressionContractInner extends ProxyResource {
      * @return the SuppressionContractInner object itself.
      */
     public SuppressionContractInner withSuppressionId(String suppressionId) {
-        this.suppressionId = suppressionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SuppressionProperties();
+        }
+        this.innerProperties().withSuppressionId(suppressionId);
         return this;
     }
 
@@ -62,7 +56,7 @@ public class SuppressionContractInner extends ProxyResource {
      * @return the ttl value.
      */
     public String ttl() {
-        return this.ttl;
+        return this.innerProperties() == null ? null : this.innerProperties().ttl();
     }
 
     /**
@@ -72,7 +66,10 @@ public class SuppressionContractInner extends ProxyResource {
      * @return the SuppressionContractInner object itself.
      */
     public SuppressionContractInner withTtl(String ttl) {
-        this.ttl = ttl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SuppressionProperties();
+        }
+        this.innerProperties().withTtl(ttl);
         return this;
     }
 
@@ -82,7 +79,7 @@ public class SuppressionContractInner extends ProxyResource {
      * @return the expirationTimestamp value.
      */
     public OffsetDateTime expirationTimestamp() {
-        return this.expirationTimestamp;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimestamp();
     }
 
     /**
@@ -91,5 +88,8 @@ public class SuppressionContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

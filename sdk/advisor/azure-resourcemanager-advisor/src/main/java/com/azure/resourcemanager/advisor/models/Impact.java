@@ -30,7 +30,11 @@ public final class Impact extends ExpandableStringEnum<Impact> {
         return fromString(name, Impact.class);
     }
 
-    /** @return known Impact values. */
+    /**
+     * Gets known Impact values.
+     *
+     * @return known Impact values.
+     */
     public static Collection<Impact> values() {
         return values(Impact.class);
     }

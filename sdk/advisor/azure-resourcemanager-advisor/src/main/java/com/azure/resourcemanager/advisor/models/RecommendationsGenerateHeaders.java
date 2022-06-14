@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RecommendationsGenerateHeaders model. */
 @Fluent
 public final class RecommendationsGenerateHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationsGenerateHeaders.class);
-
     /*
      * The Retry-After property.
      */

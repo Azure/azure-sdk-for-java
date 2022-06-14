@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.models.MetadataSupportedValueDetail;
 import com.azure.resourcemanager.advisor.models.Scenario;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The metadata entity contract. */
-@JsonFlatten
 @Fluent
-public class MetadataEntityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataEntityInner.class);
-
+public final class MetadataEntityInner {
     /*
      * The resource Id of the metadata entity.
      */
@@ -38,28 +32,10 @@ public class MetadataEntityInner {
     private String name;
 
     /*
-     * The display name.
+     * The metadata entity properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The list of keys on which this entity depends on.
-     */
-    @JsonProperty(value = "properties.dependsOn")
-    private List<String> dependsOn;
-
-    /*
-     * The list of scenarios applicable to this metadata entity.
-     */
-    @JsonProperty(value = "properties.applicableScenarios")
-    private List<Scenario> applicableScenarios;
-
-    /*
-     * The list of supported values.
-     */
-    @JsonProperty(value = "properties.supportedValues")
-    private List<MetadataSupportedValueDetail> supportedValues;
+    @JsonProperty(value = "properties")
+    private MetadataEntityProperties innerProperties;
 
     /**
      * Get the id property: The resource Id of the metadata entity.
@@ -122,12 +98,21 @@ public class MetadataEntityInner {
     }
 
     /**
+     * Get the innerProperties property: The metadata entity properties.
+     *
+     * @return the innerProperties value.
+     */
+    private MetadataEntityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the displayName property: The display name.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -137,7 +122,10 @@ public class MetadataEntityInner {
      * @return the MetadataEntityInner object itself.
      */
     public MetadataEntityInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataEntityProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -147,7 +135,7 @@ public class MetadataEntityInner {
      * @return the dependsOn value.
      */
     public List<String> dependsOn() {
-        return this.dependsOn;
+        return this.innerProperties() == null ? null : this.innerProperties().dependsOn();
     }
 
     /**
@@ -157,7 +145,10 @@ public class MetadataEntityInner {
      * @return the MetadataEntityInner object itself.
      */
     public MetadataEntityInner withDependsOn(List<String> dependsOn) {
-        this.dependsOn = dependsOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataEntityProperties();
+        }
+        this.innerProperties().withDependsOn(dependsOn);
         return this;
     }
 
@@ -167,7 +158,7 @@ public class MetadataEntityInner {
      * @return the applicableScenarios value.
      */
     public List<Scenario> applicableScenarios() {
-        return this.applicableScenarios;
+        return this.innerProperties() == null ? null : this.innerProperties().applicableScenarios();
     }
 
     /**
@@ -177,7 +168,10 @@ public class MetadataEntityInner {
      * @return the MetadataEntityInner object itself.
      */
     public MetadataEntityInner withApplicableScenarios(List<Scenario> applicableScenarios) {
-        this.applicableScenarios = applicableScenarios;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataEntityProperties();
+        }
+        this.innerProperties().withApplicableScenarios(applicableScenarios);
         return this;
     }
 
@@ -187,7 +181,7 @@ public class MetadataEntityInner {
      * @return the supportedValues value.
      */
     public List<MetadataSupportedValueDetail> supportedValues() {
-        return this.supportedValues;
+        return this.innerProperties() == null ? null : this.innerProperties().supportedValues();
     }
 
     /**
@@ -197,7 +191,10 @@ public class MetadataEntityInner {
      * @return the MetadataEntityInner object itself.
      */
     public MetadataEntityInner withSupportedValues(List<MetadataSupportedValueDetail> supportedValues) {
-        this.supportedValues = supportedValues;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataEntityProperties();
+        }
+        this.innerProperties().withSupportedValues(supportedValues);
         return this;
     }
 
@@ -207,8 +204,8 @@ public class MetadataEntityInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (supportedValues() != null) {
-            supportedValues().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

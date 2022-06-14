@@ -5,40 +5,29 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
 import com.azure.resourcemanager.advisor.models.DigestConfig;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Advisor configuration data structure. */
-@JsonFlatten
 @Fluent
-public class ConfigDataInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigDataInner.class);
-
+public final class ConfigDataInner extends ProxyResource {
     /*
-     * Exclude the resource from Advisor evaluations. Valid values: False
-     * (default) or True.
+     * The Advisor configuration data structure.
      */
-    @JsonProperty(value = "properties.exclude")
-    private Boolean exclude;
+    @JsonProperty(value = "properties")
+    private ConfigDataProperties innerProperties;
 
-    /*
-     * Minimum percentage threshold for Advisor low CPU utilization evaluation.
-     * Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
+    /**
+     * Get the innerProperties property: The Advisor configuration data structure.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.lowCpuThreshold")
-    private CpuThreshold lowCpuThreshold;
-
-    /*
-     * Advisor digest configuration. Valid only for subscriptions
-     */
-    @JsonProperty(value = "properties.digests")
-    private List<DigestConfig> digests;
+    private ConfigDataProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the exclude property: Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
@@ -46,7 +35,7 @@ public class ConfigDataInner extends ProxyResource {
      * @return the exclude value.
      */
     public Boolean exclude() {
-        return this.exclude;
+        return this.innerProperties() == null ? null : this.innerProperties().exclude();
     }
 
     /**
@@ -56,7 +45,10 @@ public class ConfigDataInner extends ProxyResource {
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withExclude(Boolean exclude) {
-        this.exclude = exclude;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withExclude(exclude);
         return this;
     }
 
@@ -67,7 +59,7 @@ public class ConfigDataInner extends ProxyResource {
      * @return the lowCpuThreshold value.
      */
     public CpuThreshold lowCpuThreshold() {
-        return this.lowCpuThreshold;
+        return this.innerProperties() == null ? null : this.innerProperties().lowCpuThreshold();
     }
 
     /**
@@ -78,7 +70,10 @@ public class ConfigDataInner extends ProxyResource {
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withLowCpuThreshold(CpuThreshold lowCpuThreshold) {
-        this.lowCpuThreshold = lowCpuThreshold;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withLowCpuThreshold(lowCpuThreshold);
         return this;
     }
 
@@ -88,7 +83,7 @@ public class ConfigDataInner extends ProxyResource {
      * @return the digests value.
      */
     public List<DigestConfig> digests() {
-        return this.digests;
+        return this.innerProperties() == null ? null : this.innerProperties().digests();
     }
 
     /**
@@ -98,7 +93,10 @@ public class ConfigDataInner extends ProxyResource {
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withDigests(List<DigestConfig> digests) {
-        this.digests = digests;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withDigests(digests);
         return this;
     }
 
@@ -108,8 +106,8 @@ public class ConfigDataInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (digests() != null) {
-            digests().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

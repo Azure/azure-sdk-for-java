@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The operation supported by Advisor. */
 @Fluent
 public final class OperationDisplayInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplayInfo.class);
-
     /*
      * The description of the operation.
      */

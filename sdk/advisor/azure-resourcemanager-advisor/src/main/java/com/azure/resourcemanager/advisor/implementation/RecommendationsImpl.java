@@ -14,11 +14,10 @@ import com.azure.resourcemanager.advisor.fluent.models.ResourceRecommendationBas
 import com.azure.resourcemanager.advisor.models.Recommendations;
 import com.azure.resourcemanager.advisor.models.RecommendationsGenerateResponse;
 import com.azure.resourcemanager.advisor.models.ResourceRecommendationBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class RecommendationsImpl implements Recommendations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationsImpl.class);
 
     private final RecommendationsClient innerClient;
 

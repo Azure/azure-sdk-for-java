@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.RecommendationMetadatasClient;
 import com.azure.resourcemanager.advisor.fluent.models.MetadataEntityInner;
 import com.azure.resourcemanager.advisor.models.MetadataEntityListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecommendationMetadatasClient. */
 public final class RecommendationMetadatasClientImpl implements RecommendationMetadatasClient {
-    private final ClientLogger logger = new ClientLogger(RecommendationMetadatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecommendationMetadatasService service;
 
@@ -99,7 +96,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
+     * @return the metadata entity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MetadataEntityInner>> getWithResponseAsync(String name) {
@@ -127,7 +124,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
+     * @return the metadata entity along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MetadataEntityInner>> getWithResponseAsync(String name, Context context) {
@@ -152,19 +149,11 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
+     * @return the metadata entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MetadataEntityInner> getAsync(String name) {
-        return getWithResponseAsync(name)
-            .flatMap(
-                (Response<MetadataEntityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -189,7 +178,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata entity.
+     * @return the metadata entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataEntityInner> getWithResponse(String name, Context context) {
@@ -201,7 +190,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetadataEntityInner>> listSinglePageAsync() {
@@ -234,7 +223,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetadataEntityInner>> listSinglePageAsync(Context context) {
@@ -264,7 +253,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MetadataEntityInner> listAsync() {
@@ -278,7 +267,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MetadataEntityInner> listAsync(Context context) {
@@ -291,7 +280,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list() {
@@ -305,7 +294,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetadataEntityInner> list(Context context) {
@@ -319,7 +308,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetadataEntityInner>> listNextSinglePageAsync(String nextLink) {
@@ -355,7 +344,7 @@ public final class RecommendationMetadatasClientImpl implements RecommendationMe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of metadata entities.
+     * @return the list of metadata entities along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MetadataEntityInner>> listNextSinglePageAsync(String nextLink, Context context) {

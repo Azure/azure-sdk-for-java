@@ -27,7 +27,11 @@ public final class DigestConfigState extends ExpandableStringEnum<DigestConfigSt
         return fromString(name, DigestConfigState.class);
     }
 
-    /** @return known DigestConfigState values. */
+    /**
+     * Gets known DigestConfigState values.
+     *
+     * @return known DigestConfigState values.
+     */
     public static Collection<DigestConfigState> values() {
         return values(DigestConfigState.class);
     }

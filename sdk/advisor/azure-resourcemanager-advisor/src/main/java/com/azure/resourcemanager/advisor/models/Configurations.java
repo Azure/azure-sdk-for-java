@@ -16,7 +16,7 @@ public interface Configurations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConfigData> list();
 
@@ -27,7 +27,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConfigData> list(Context context);
 
@@ -52,7 +52,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Advisor configuration data structure.
+     * @return the Advisor configuration data structure along with {@link Response}.
      */
     Response<ConfigData> createInSubscriptionWithResponse(
         ConfigurationName configurationName, ConfigDataInner configContract, Context context);
@@ -64,7 +64,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConfigData> listByResourceGroup(String resourceGroup);
 
@@ -76,7 +76,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor configurations.
+     * @return the list of Advisor configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ConfigData> listByResourceGroup(String resourceGroup, Context context);
 

@@ -36,7 +36,11 @@ public final class Category extends ExpandableStringEnum<Category> {
         return fromString(name, Category.class);
     }
 
-    /** @return known Category values. */
+    /**
+     * Gets known Category values.
+     *
+     * @return known Category values.
+     */
     public static Collection<Category> values() {
         return values(Category.class);
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.models.SuppressionContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of Advisor suppressions. */
 @Fluent
 public final class SuppressionContractListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SuppressionContractListResult.class);
-
     /*
      * The link used to get the next page of suppressions.
      */

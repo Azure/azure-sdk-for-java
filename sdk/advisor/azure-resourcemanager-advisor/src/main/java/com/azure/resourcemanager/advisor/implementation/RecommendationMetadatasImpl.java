@@ -13,10 +13,9 @@ import com.azure.resourcemanager.advisor.fluent.RecommendationMetadatasClient;
 import com.azure.resourcemanager.advisor.fluent.models.MetadataEntityInner;
 import com.azure.resourcemanager.advisor.models.MetadataEntity;
 import com.azure.resourcemanager.advisor.models.RecommendationMetadatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecommendationMetadatasImpl implements RecommendationMetadatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationMetadatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationMetadatasImpl.class);
 
     private final RecommendationMetadatasClient innerClient;
 

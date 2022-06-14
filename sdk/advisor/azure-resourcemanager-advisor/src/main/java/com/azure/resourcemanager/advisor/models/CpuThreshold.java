@@ -33,7 +33,11 @@ public final class CpuThreshold extends ExpandableStringEnum<CpuThreshold> {
         return fromString(name, CpuThreshold.class);
     }
 
-    /** @return known CpuThreshold values. */
+    /**
+     * Gets known CpuThreshold values.
+     *
+     * @return known CpuThreshold values.
+     */
     public static Collection<CpuThreshold> values() {
         return values(CpuThreshold.class);
     }

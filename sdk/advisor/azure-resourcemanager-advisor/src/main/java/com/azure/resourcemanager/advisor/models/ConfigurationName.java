@@ -24,7 +24,11 @@ public final class ConfigurationName extends ExpandableStringEnum<ConfigurationN
         return fromString(name, ConfigurationName.class);
     }
 
-    /** @return known ConfigurationName values. */
+    /**
+     * Gets known ConfigurationName values.
+     *
+     * @return known ConfigurationName values.
+     */
     public static Collection<ConfigurationName> values() {
         return values(ConfigurationName.class);
     }

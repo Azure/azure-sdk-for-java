@@ -24,7 +24,11 @@ public final class Scenario extends ExpandableStringEnum<Scenario> {
         return fromString(name, Scenario.class);
     }
 
-    /** @return known Scenario values. */
+    /**
+     * Gets known Scenario values.
+     *
+     * @return known Scenario values.
+     */
     public static Collection<Scenario> values() {
         return values(Scenario.class);
     }

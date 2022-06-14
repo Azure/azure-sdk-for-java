@@ -14,10 +14,9 @@ import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
 import com.azure.resourcemanager.advisor.models.ConfigData;
 import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
