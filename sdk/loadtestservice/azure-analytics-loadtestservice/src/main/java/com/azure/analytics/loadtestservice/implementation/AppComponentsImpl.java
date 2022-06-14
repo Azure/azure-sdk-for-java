@@ -53,7 +53,7 @@ public final class AppComponentsImpl {
      * The interface defining all the services for AzureLoadTestingAppComponents to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("https://{Endpoint}")
     @ServiceInterface(name = "AzureLoadTestingAppC")
     private interface AppComponentsService {
         @Patch("/appcomponents/{name}")
@@ -69,7 +69,7 @@ public final class AppComponentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateAppComponents(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData body,
@@ -90,7 +90,7 @@ public final class AppComponentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteAppComponent(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -110,7 +110,7 @@ public final class AppComponentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAppComponentByName(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -130,7 +130,7 @@ public final class AppComponentsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAppComponent(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -200,7 +200,7 @@ public final class AppComponentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateAppComponents(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 body,
@@ -271,7 +271,7 @@ public final class AppComponentsImpl {
             String name, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createOrUpdateAppComponents(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 body,
@@ -359,7 +359,7 @@ public final class AppComponentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteAppComponent(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -384,7 +384,7 @@ public final class AppComponentsImpl {
             String name, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteAppComponent(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -449,7 +449,7 @@ public final class AppComponentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAppComponentByName(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -497,7 +497,7 @@ public final class AppComponentsImpl {
             String name, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getAppComponentByName(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -591,7 +591,7 @@ public final class AppComponentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAppComponent(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -645,7 +645,11 @@ public final class AppComponentsImpl {
     public Mono<Response<BinaryData>> getAppComponentWithResponseAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getAppComponent(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**

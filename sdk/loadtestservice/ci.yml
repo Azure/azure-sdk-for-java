@@ -40,3 +40,4 @@ extends:
       - name: azure-analytics-loadtestservice
         groupId: com.azure
         safeName: azureanalyticsloadtestservice
+

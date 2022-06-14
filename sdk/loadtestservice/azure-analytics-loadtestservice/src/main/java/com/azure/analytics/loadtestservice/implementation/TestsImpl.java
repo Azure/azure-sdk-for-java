@@ -53,7 +53,7 @@ public final class TestsImpl {
      * The interface defining all the services for AzureLoadTestingTests to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{$host}")
+    @Host("https://{Endpoint}")
     @ServiceInterface(name = "AzureLoadTestingTest")
     private interface TestsService {
         @Patch("/loadtests/{testId}")
@@ -69,7 +69,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateTest(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
                 @BodyParam("application/merge-patch+json") BinaryData body,
@@ -90,7 +90,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteLoadTest(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
                 @HeaderParam("Accept") String accept,
@@ -110,7 +110,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getLoadTest(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
                 @HeaderParam("Accept") String accept,
@@ -130,7 +130,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLoadTestSearch(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -150,7 +150,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadTestFile(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @PathParam("fileId") String fileId,
                 @QueryParam("api-version") String apiVersion,
@@ -173,7 +173,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTestFile(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @PathParam("fileId") String fileId,
                 @QueryParam("api-version") String apiVersion,
@@ -194,7 +194,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestFile(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @PathParam("fileId") String fileId,
                 @QueryParam("api-version") String apiVersion,
@@ -215,7 +215,7 @@ public final class TestsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAllTestFiles(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("testId") String testId,
                 @HeaderParam("Accept") String accept,
@@ -362,7 +362,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateTest(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 testId,
                                 body,
@@ -509,7 +509,7 @@ public final class TestsImpl {
             String testId, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createOrUpdateTest(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 testId,
                 body,
@@ -673,7 +673,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteLoadTest(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 testId,
                                 accept,
@@ -698,7 +698,7 @@ public final class TestsImpl {
             String testId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteLoadTest(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 testId,
                 accept,
@@ -799,7 +799,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getLoadTest(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 testId,
                                 accept,
@@ -884,7 +884,7 @@ public final class TestsImpl {
             String testId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getLoadTest(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 testId,
                 accept,
@@ -1065,7 +1065,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.listLoadTestSearch(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -1169,7 +1169,11 @@ public final class TestsImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listLoadTestSearch(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1317,7 +1321,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.uploadTestFile(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testId,
                                 fileId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1381,7 +1385,7 @@ public final class TestsImpl {
             Context context) {
         final String accept = "application/json";
         return service.uploadTestFile(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testId,
                 fileId,
                 this.client.getServiceVersion().getVersion(),
@@ -1472,7 +1476,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTestFile(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testId,
                                 fileId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1512,7 +1516,7 @@ public final class TestsImpl {
             String testId, String fileId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTestFile(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testId,
                 fileId,
                 this.client.getServiceVersion().getVersion(),
@@ -1570,7 +1574,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteTestFile(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testId,
                                 fileId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1597,7 +1601,7 @@ public final class TestsImpl {
             String testId, String fileId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteTestFile(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testId,
                 fileId,
                 this.client.getServiceVersion().getVersion(),
@@ -1666,7 +1670,7 @@ public final class TestsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAllTestFiles(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 testId,
                                 accept,
@@ -1717,7 +1721,7 @@ public final class TestsImpl {
             String testId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getAllTestFiles(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 testId,
                 accept,

@@ -8,6 +8,7 @@ import com.azure.analytics.loadtestservice.implementation.AzureLoadTestingClient
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -39,7 +40,9 @@ import java.util.stream.Collectors;
 /** A builder for creating a new instance of the TestRunClient type. */
 @ServiceClientBuilder(serviceClients = {TestRunClient.class, TestRunAsyncClient.class})
 public final class TestRunClientBuilder
-        implements HttpTrait<TestRunClientBuilder>, ConfigurationTrait<TestRunClientBuilder> {
+        implements HttpTrait<TestRunClientBuilder>,
+                ConfigurationTrait<TestRunClientBuilder>,
+                EndpointTrait<TestRunClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -145,19 +148,15 @@ public final class TestRunClientBuilder
     }
 
     /*
-     * server parameter
+     * The service endpoint
      */
-    @Generated private String host;
+    @Generated private String endpoint;
 
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the TestRunClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
-    public TestRunClientBuilder host(String host) {
-        this.host = host;
+    @Override
+    public TestRunClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -206,15 +205,12 @@ public final class TestRunClientBuilder
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (host == null) {
-            this.host = "https://<dataPlaneURL>";
-        }
         if (serviceVersion == null) {
             this.serviceVersion = AzureLoadTestingServiceVersion.getLatest();
         }
         AzureLoadTestingClientImpl client =
                 new AzureLoadTestingClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 

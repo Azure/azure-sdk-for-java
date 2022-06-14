@@ -8,6 +8,7 @@ import com.azure.analytics.loadtestservice.implementation.AzureLoadTestingClient
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -38,7 +39,10 @@ import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the TestClient type. */
 @ServiceClientBuilder(serviceClients = {TestClient.class, TestAsyncClient.class})
-public final class TestClientBuilder implements HttpTrait<TestClientBuilder>, ConfigurationTrait<TestClientBuilder> {
+public final class TestClientBuilder
+        implements HttpTrait<TestClientBuilder>,
+                ConfigurationTrait<TestClientBuilder>,
+                EndpointTrait<TestClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -144,19 +148,15 @@ public final class TestClientBuilder implements HttpTrait<TestClientBuilder>, Co
     }
 
     /*
-     * server parameter
+     * The service endpoint
      */
-    @Generated private String host;
+    @Generated private String endpoint;
 
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the TestClientBuilder.
-     */
+    /** {@inheritDoc}. */
     @Generated
-    public TestClientBuilder host(String host) {
-        this.host = host;
+    @Override
+    public TestClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -205,15 +205,12 @@ public final class TestClientBuilder implements HttpTrait<TestClientBuilder>, Co
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (host == null) {
-            this.host = "https://<dataPlaneURL>";
-        }
         if (serviceVersion == null) {
             this.serviceVersion = AzureLoadTestingServiceVersion.getLatest();
         }
         AzureLoadTestingClientImpl client =
                 new AzureLoadTestingClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 

@@ -15,16 +15,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureLoadTestingClient type. */
 public final class AzureLoadTestingClientImpl {
-    /** server parameter. */
-    private final String host;
+    /** URL to perform data plane API operations on the resource. */
+    private final String endpoint;
 
     /**
-     * Gets server parameter.
+     * Gets URL to perform data plane API operations on the resource.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Service version. */
@@ -114,16 +114,16 @@ public final class AzureLoadTestingClientImpl {
     /**
      * Initializes an instance of AzureLoadTestingClient client.
      *
-     * @param host server parameter.
+     * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
-    public AzureLoadTestingClientImpl(String host, AzureLoadTestingServiceVersion serviceVersion) {
+    public AzureLoadTestingClientImpl(String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host,
+                endpoint,
                 serviceVersion);
     }
 
@@ -131,12 +131,12 @@ public final class AzureLoadTestingClientImpl {
      * Initializes an instance of AzureLoadTestingClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
+     * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
     public AzureLoadTestingClientImpl(
-            HttpPipeline httpPipeline, String host, AzureLoadTestingServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, serviceVersion);
+            HttpPipeline httpPipeline, String endpoint, AzureLoadTestingServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -144,17 +144,17 @@ public final class AzureLoadTestingClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host server parameter.
+     * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
     public AzureLoadTestingClientImpl(
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
-            String host,
+            String endpoint,
             AzureLoadTestingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.host = host;
+        this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.appComponents = new AppComponentsImpl(this);
         this.serverMetrics = new ServerMetricsImpl(this);

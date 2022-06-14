@@ -53,7 +53,7 @@ public final class TestRunsImpl {
      * The interface defining all the services for AzureLoadTestingTestRuns to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{$host}")
+    @Host("https://{Endpoint}")
     @ServiceInterface(name = "AzureLoadTestingTest")
     private interface TestRunsService {
         @Delete("/testruns/{testRunId}")
@@ -69,7 +69,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteTestRun(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -89,7 +89,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAndUpdateTest(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData body,
@@ -110,7 +110,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTestRun(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -130,7 +130,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTestRunFile(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("fileId") String fileId,
                 @QueryParam("api-version") String apiVersion,
@@ -151,7 +151,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTestRunsSearch(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -170,7 +170,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> stopTestRun(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -190,7 +190,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTestRunClientMetrics(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -211,7 +211,7 @@ public final class TestRunsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getTestRunClientMetricsFilters(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -236,7 +236,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteTestRun(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -261,7 +261,7 @@ public final class TestRunsImpl {
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteTestRun(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -494,7 +494,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createAndUpdateTest(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 body,
@@ -711,7 +711,7 @@ public final class TestRunsImpl {
             String testRunId, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createAndUpdateTest(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 body,
@@ -1036,7 +1036,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTestRun(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1152,7 +1152,7 @@ public final class TestRunsImpl {
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTestRun(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -1299,7 +1299,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTestRunFile(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 fileId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1339,7 +1339,7 @@ public final class TestRunsImpl {
             String testRunId, String fileId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTestRunFile(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 fileId,
                 this.client.getServiceVersion().getVersion(),
@@ -1507,7 +1507,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.listTestRunsSearch(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -1642,7 +1642,11 @@ public final class TestRunsImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listTestRunsSearch(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -1880,7 +1884,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.stopTestRun(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -1996,7 +2000,7 @@ public final class TestRunsImpl {
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.stopTestRun(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -2183,7 +2187,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTestRunClientMetrics(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 body,
@@ -2263,7 +2267,7 @@ public final class TestRunsImpl {
             String testRunId, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTestRunClientMetrics(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 body,
@@ -2381,7 +2385,7 @@ public final class TestRunsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getTestRunClientMetricsFilters(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -2427,7 +2431,7 @@ public final class TestRunsImpl {
             String testRunId, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getTestRunClientMetricsFilters(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 testRunId,
                 this.client.getServiceVersion().getVersion(),
                 accept,

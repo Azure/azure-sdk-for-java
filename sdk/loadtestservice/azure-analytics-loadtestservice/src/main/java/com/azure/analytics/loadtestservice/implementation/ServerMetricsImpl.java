@@ -53,7 +53,7 @@ public final class ServerMetricsImpl {
      * The interface defining all the services for AzureLoadTestingServerMetrics to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("{$host}")
+    @Host("https://{Endpoint}")
     @ServiceInterface(name = "AzureLoadTestingServ")
     private interface ServerMetricsService {
         @Patch("/serverMetricsConfig/{name}")
@@ -69,7 +69,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateServerMetricsConfig(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/merge-patch+json") BinaryData body,
@@ -90,7 +90,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getServerMetricsByName(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -110,7 +110,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteServerMetrics(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -130,7 +130,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getServerMetrics(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -149,7 +149,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getServerDefaultMetrics(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -168,7 +168,7 @@ public final class ServerMetricsImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSupportedResourceType(
-                @HostParam("$host") String host,
+                @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -244,7 +244,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateServerMetricsConfig(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 body,
@@ -321,7 +321,7 @@ public final class ServerMetricsImpl {
             String name, BinaryData body, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.createOrUpdateServerMetricsConfig(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 body,
@@ -442,7 +442,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getServerMetricsByName(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -493,7 +493,7 @@ public final class ServerMetricsImpl {
             String name, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getServerMetricsByName(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -559,7 +559,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteServerMetrics(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
@@ -584,7 +584,7 @@ public final class ServerMetricsImpl {
             String name, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.deleteServerMetrics(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 name,
                 this.client.getServiceVersion().getVersion(),
                 accept,
@@ -659,7 +659,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getServerMetrics(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -717,7 +717,11 @@ public final class ServerMetricsImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getServerMetrics(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -807,7 +811,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getServerDefaultMetrics(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -852,7 +856,11 @@ public final class ServerMetricsImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.getServerDefaultMetrics(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
@@ -918,7 +926,7 @@ public final class ServerMetricsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.listSupportedResourceType(
-                                this.client.getHost(),
+                                this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accept,
                                 requestOptions,
@@ -952,7 +960,11 @@ public final class ServerMetricsImpl {
             RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listSupportedResourceType(
-                this.client.getHost(), this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**

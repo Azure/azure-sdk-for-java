@@ -32,7 +32,7 @@ class AzureLoadTestingClientTestBase extends TestBase {
     protected void beforeTest() {
         AppComponentClientBuilder appComponentClientbuilder =
                 new AppComponentClientBuilder()
-                        .host(Configuration.getGlobalConfiguration().get("HOST", "https://<dataPlaneURL>"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -44,7 +44,7 @@ class AzureLoadTestingClientTestBase extends TestBase {
 
         ServerMetricsClientBuilder serverMetricsClientbuilder =
                 new ServerMetricsClientBuilder()
-                        .host(Configuration.getGlobalConfiguration().get("HOST", "https://<dataPlaneURL>"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -56,7 +56,7 @@ class AzureLoadTestingClientTestBase extends TestBase {
 
         TestClientBuilder testClientbuilder =
                 new TestClientBuilder()
-                        .host(Configuration.getGlobalConfiguration().get("HOST", "https://<dataPlaneURL>"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -68,7 +68,7 @@ class AzureLoadTestingClientTestBase extends TestBase {
 
         TestRunClientBuilder testRunClientbuilder =
                 new TestRunClientBuilder()
-                        .host(Configuration.getGlobalConfiguration().get("HOST", "https://<dataPlaneURL>"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

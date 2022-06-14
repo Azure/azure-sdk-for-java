@@ -2,7 +2,7 @@
 
 ```yaml
 input-file:
-- D:/Project/azure-rest-api-specs/specification/loadtestservice/data-plane/Microsoft.LoadTestService/preview/2022-06-01-preview/loadtestservice.json
+- D:/Project/loadtestservice.json
 output-folder: ../
 java: true
 regenerate-pom: false
