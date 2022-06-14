@@ -30,7 +30,11 @@ public final class DatabasePrincipalType extends ExpandableStringEnum<DatabasePr
         return fromString(name, DatabasePrincipalType.class);
     }
 
-    /** @return known DatabasePrincipalType values. */
+    /**
+     * Gets known DatabasePrincipalType values.
+     *
+     * @return known DatabasePrincipalType values.
+     */
     public static Collection<DatabasePrincipalType> values() {
         return values(DatabasePrincipalType.class);
     }

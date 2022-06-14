@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation result properties. */
 @Fluent
 public final class OperationResultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultProperties.class);
-
     /*
      * The kind of the operation.
      */

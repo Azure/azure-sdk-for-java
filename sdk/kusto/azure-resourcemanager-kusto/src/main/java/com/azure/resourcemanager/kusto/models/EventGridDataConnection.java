@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.EventGridConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("EventGrid")
 @Fluent
 public final class EventGridDataConnection extends DataConnectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventGridDataConnection.class);
-
     /*
      * The properties of the Event Grid data connection.
      */
@@ -260,8 +256,8 @@ public final class EventGridDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub and storage account.
+     * Get the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @return the managedIdentityResourceId value.
      */
@@ -270,8 +266,8 @@ public final class EventGridDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub and storage account.
+     * Set the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the EventGridDataConnection object itself.

@@ -39,7 +39,11 @@ public final class DatabasePrincipalRole extends ExpandableStringEnum<DatabasePr
         return fromString(name, DatabasePrincipalRole.class);
     }
 
-    /** @return known DatabasePrincipalRole values. */
+    /**
+     * Gets known DatabasePrincipalRole values.
+     *
+     * @return known DatabasePrincipalRole values.
+     */
     public static Collection<DatabasePrincipalRole> values() {
         return values(DatabasePrincipalRole.class);
     }

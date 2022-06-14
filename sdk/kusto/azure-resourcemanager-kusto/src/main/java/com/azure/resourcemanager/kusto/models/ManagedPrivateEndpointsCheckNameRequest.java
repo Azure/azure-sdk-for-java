@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result returned from a managedPrivateEndpoints check name availability request. */
 @Fluent
 public final class ManagedPrivateEndpointsCheckNameRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsCheckNameRequest.class);
-
     /*
      * Managed private endpoint resource name.
      */
@@ -79,10 +76,12 @@ public final class ManagedPrivateEndpointsCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ManagedPrivateEndpointsCheckNameRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointsCheckNameRequest.class);
 }

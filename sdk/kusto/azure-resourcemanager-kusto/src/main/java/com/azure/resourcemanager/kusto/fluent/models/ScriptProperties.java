@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing database script property. */
 @Fluent
 public final class ScriptProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptProperties.class);
-
     /*
      * The url to the KQL script blob file. Must not be used together with
      * scriptContent property

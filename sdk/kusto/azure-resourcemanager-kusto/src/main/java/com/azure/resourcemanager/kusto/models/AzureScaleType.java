@@ -30,7 +30,11 @@ public final class AzureScaleType extends ExpandableStringEnum<AzureScaleType> {
         return fromString(name, AzureScaleType.class);
     }
 
-    /** @return known AzureScaleType values. */
+    /**
+     * Gets known AzureScaleType values.
+     *
+     * @return known AzureScaleType values.
+     */
     public static Collection<AzureScaleType> values() {
         return values(AzureScaleType.class);
     }

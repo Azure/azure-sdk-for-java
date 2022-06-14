@@ -30,7 +30,11 @@ public final class PrincipalsModificationKind extends ExpandableStringEnum<Princ
         return fromString(name, PrincipalsModificationKind.class);
     }
 
-    /** @return known PrincipalsModificationKind values. */
+    /**
+     * Gets known PrincipalsModificationKind values.
+     *
+     * @return known PrincipalsModificationKind values.
+     */
     public static Collection<PrincipalsModificationKind> values() {
         return values(PrincipalsModificationKind.class);
     }

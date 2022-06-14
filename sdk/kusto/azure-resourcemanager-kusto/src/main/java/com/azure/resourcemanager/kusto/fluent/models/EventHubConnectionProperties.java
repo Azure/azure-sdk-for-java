@@ -10,15 +10,12 @@ import com.azure.resourcemanager.kusto.models.Compression;
 import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing the Kusto event hub connection properties. */
 @Fluent
 public final class EventHubConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConnectionProperties.class);
-
     /*
      * The resource ID of the event hub to be used to create a data connection.
      */
@@ -71,8 +68,9 @@ public final class EventHubConnectionProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id.  For user assigned
+     * identity (UAI) provide the UAI resource Id.
      */
     @JsonProperty(value = "managedIdentityResourceId")
     private String managedIdentityResourceId;
@@ -246,8 +244,8 @@ public final class EventHubConnectionProperties {
     }
 
     /**
-     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * Get the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @return the managedIdentityResourceId value.
      */
@@ -256,8 +254,8 @@ public final class EventHubConnectionProperties {
     }
 
     /**
-     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * Set the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the EventHubConnectionProperties object itself.
@@ -305,16 +303,18 @@ public final class EventHubConnectionProperties {
      */
     public void validate() {
         if (eventHubResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubResourceId in model EventHubConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroup in model EventHubConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConnectionProperties.class);
 }

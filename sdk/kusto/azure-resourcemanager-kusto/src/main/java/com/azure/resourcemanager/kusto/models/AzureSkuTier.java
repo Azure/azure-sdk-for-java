@@ -27,7 +27,11 @@ public final class AzureSkuTier extends ExpandableStringEnum<AzureSkuTier> {
         return fromString(name, AzureSkuTier.class);
     }
 
-    /** @return known AzureSkuTier values. */
+    /**
+     * Gets known AzureSkuTier values.
+     *
+     * @return known AzureSkuTier values.
+     */
     public static Collection<AzureSkuTier> values() {
         return values(AzureSkuTier.class);
     }

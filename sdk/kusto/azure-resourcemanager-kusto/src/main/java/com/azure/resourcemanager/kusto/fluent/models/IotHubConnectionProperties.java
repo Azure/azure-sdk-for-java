@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.IotHubDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing the Kusto Iot hub connection properties. */
 @Fluent
 public final class IotHubConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubConnectionProperties.class);
-
     /*
      * The resource ID of the Iot hub to be used to create a data connection.
      */
@@ -260,22 +257,24 @@ public final class IotHubConnectionProperties {
      */
     public void validate() {
         if (iotHubResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property iotHubResourceId in model IotHubConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroup in model IotHubConnectionProperties"));
         }
         if (sharedAccessPolicyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sharedAccessPolicyName in model IotHubConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IotHubConnectionProperties.class);
 }

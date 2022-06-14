@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DatabaseStatistics;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Class representing the Kusto database properties. */
 @Fluent
 public final class ReadWriteDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadWriteDatabaseProperties.class);
-
     /*
      * The provisioned state of the resource.
      */

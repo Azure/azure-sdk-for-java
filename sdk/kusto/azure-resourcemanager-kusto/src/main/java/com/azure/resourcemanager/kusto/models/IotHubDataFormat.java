@@ -69,7 +69,11 @@ public final class IotHubDataFormat extends ExpandableStringEnum<IotHubDataForma
         return fromString(name, IotHubDataFormat.class);
     }
 
-    /** @return known IotHubDataFormat values. */
+    /**
+     * Gets known IotHubDataFormat values.
+     *
+     * @return known IotHubDataFormat values.
+     */
     public static Collection<IotHubDataFormat> values() {
         return values(IotHubDataFormat.class);
     }

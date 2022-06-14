@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of language extension objects. */
 @Fluent
 public final class LanguageExtensionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LanguageExtensionsList.class);
-
     /*
      * The list of language extensions.
      */

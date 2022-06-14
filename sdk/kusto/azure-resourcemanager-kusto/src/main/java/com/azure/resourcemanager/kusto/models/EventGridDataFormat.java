@@ -69,7 +69,11 @@ public final class EventGridDataFormat extends ExpandableStringEnum<EventGridDat
         return fromString(name, EventGridDataFormat.class);
     }
 
-    /** @return known EventGridDataFormat values. */
+    /**
+     * Gets known EventGridDataFormat values.
+     *
+     * @return known EventGridDataFormat values.
+     */
     public static Collection<EventGridDataFormat> values() {
         return values(EventGridDataFormat.class);
     }

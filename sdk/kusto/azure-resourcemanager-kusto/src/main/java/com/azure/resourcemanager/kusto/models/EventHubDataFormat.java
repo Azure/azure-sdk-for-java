@@ -69,7 +69,11 @@ public final class EventHubDataFormat extends ExpandableStringEnum<EventHubDataF
         return fromString(name, EventHubDataFormat.class);
     }
 
-    /** @return known EventHubDataFormat values. */
+    /**
+     * Gets known EventHubDataFormat values.
+     *
+     * @return known EventHubDataFormat values.
+     */
     public static Collection<EventHubDataFormat> values() {
         return values(EventHubDataFormat.class);
     }

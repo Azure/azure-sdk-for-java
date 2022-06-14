@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Endpoints accessed for a common purpose that the Kusto Service Environment requires outbound network access to. */
 @Fluent
 public final class OutboundNetworkDependenciesEndpointProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OutboundNetworkDependenciesEndpointProperties.class);
-
     /*
      * The type of service accessed by the Kusto Service Environment, e.g.,
      * Azure Storage, Azure SQL Database, and Azure Active Directory.

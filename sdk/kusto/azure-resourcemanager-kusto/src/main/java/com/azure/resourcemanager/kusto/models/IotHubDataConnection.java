@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.IotHubConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("IotHub")
 @Fluent
 public final class IotHubDataConnection extends DataConnectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubDataConnection.class);
-
     /*
      * The Iot Hub data connection properties.
      */

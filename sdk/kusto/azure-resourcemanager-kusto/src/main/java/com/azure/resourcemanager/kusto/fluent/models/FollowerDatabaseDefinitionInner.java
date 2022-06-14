@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing follower database request. */
 @Fluent
 public final class FollowerDatabaseDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FollowerDatabaseDefinitionInner.class);
-
     /*
      * Resource id of the cluster that follows a database owned by this
      * cluster.
@@ -95,17 +92,19 @@ public final class FollowerDatabaseDefinitionInner {
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
         }
         if (attachedDatabaseConfigurationName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property attachedDatabaseConfigurationName in model"
                             + " FollowerDatabaseDefinitionInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FollowerDatabaseDefinitionInner.class);
 }

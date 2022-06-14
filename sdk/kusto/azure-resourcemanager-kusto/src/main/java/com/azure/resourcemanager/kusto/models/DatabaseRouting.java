@@ -27,7 +27,11 @@ public final class DatabaseRouting extends ExpandableStringEnum<DatabaseRouting>
         return fromString(name, DatabaseRouting.class);
     }
 
-    /** @return known DatabaseRouting values. */
+    /**
+     * Gets known DatabaseRouting values.
+     *
+     * @return known DatabaseRouting values.
+     */
     public static Collection<DatabaseRouting> values() {
         return values(DatabaseRouting.class);
     }

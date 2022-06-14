@@ -27,7 +27,11 @@ public final class LanguageExtensionName extends ExpandableStringEnum<LanguageEx
         return fromString(name, LanguageExtensionName.class);
     }
 
-    /** @return known LanguageExtensionName values. */
+    /**
+     * Gets known LanguageExtensionName values.
+     *
+     * @return known LanguageExtensionName values.
+     */
     public static Collection<LanguageExtensionName> values() {
         return values(LanguageExtensionName.class);
     }

@@ -27,7 +27,11 @@ public final class Kind extends ExpandableStringEnum<Kind> {
         return fromString(name, Kind.class);
     }
 
-    /** @return known Kind values. */
+    /**
+     * Gets known Kind values.
+     *
+     * @return known Kind values.
+     */
     public static Collection<Kind> values() {
         return values(Kind.class);
     }

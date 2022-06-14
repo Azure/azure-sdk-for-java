@@ -30,7 +30,11 @@ public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
         return fromString(name, PrincipalType.class);
     }
 
-    /** @return known PrincipalType values. */
+    /**
+     * Gets known PrincipalType values.
+     *
+     * @return known PrincipalType values.
+     */
     public static Collection<PrincipalType> values() {
         return values(PrincipalType.class);
     }

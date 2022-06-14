@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.DatabasesClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabasesClient. */
 public final class DatabasesClientImpl implements DatabasesClient {
-    private final ClientLogger logger = new ClientLogger(DatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DatabasesService service;
 
@@ -347,14 +344,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
         String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -676,14 +666,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> getAsync(String resourceGroupName, String clusterName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName)
-            .flatMap(
-                (Response<DatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1877,14 +1860,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToAdd) {
         return addPrincipalsWithResponseAsync(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd)
-            .flatMap(
-                (Response<DatabasePrincipalListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2086,14 +2062,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         DatabasePrincipalListRequest databasePrincipalsToRemove) {
         return removePrincipalsWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove)
-            .flatMap(
-                (Response<DatabasePrincipalListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

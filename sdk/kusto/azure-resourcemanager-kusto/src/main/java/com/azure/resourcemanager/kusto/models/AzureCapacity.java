@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure capacity definition. */
 @Fluent
 public final class AzureCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureCapacity.class);
-
     /*
      * Scale type.
      */
@@ -125,9 +122,11 @@ public final class AzureCapacity {
      */
     public void validate() {
         if (scaleType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property scaleType in model AzureCapacity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureCapacity.class);
 }

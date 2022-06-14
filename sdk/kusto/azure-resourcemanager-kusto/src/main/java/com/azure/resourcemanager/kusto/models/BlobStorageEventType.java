@@ -29,7 +29,11 @@ public final class BlobStorageEventType extends ExpandableStringEnum<BlobStorage
         return fromString(name, BlobStorageEventType.class);
     }
 
-    /** @return known BlobStorageEventType values. */
+    /**
+     * Gets known BlobStorageEventType values.
+     *
+     * @return known BlobStorageEventType values.
+     */
     public static Collection<BlobStorageEventType> values() {
         return values(BlobStorageEventType.class);
     }

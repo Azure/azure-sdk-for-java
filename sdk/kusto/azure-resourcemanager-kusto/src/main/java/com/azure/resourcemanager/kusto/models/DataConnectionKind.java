@@ -30,7 +30,11 @@ public final class DataConnectionKind extends ExpandableStringEnum<DataConnectio
         return fromString(name, DataConnectionKind.class);
     }
 
-    /** @return known DataConnectionKind values. */
+    /**
+     * Gets known DataConnectionKind values.
+     *
+     * @return known DataConnectionKind values.
+     */
     public static Collection<DataConnectionKind> values() {
         return values(DataConnectionKind.class);
     }

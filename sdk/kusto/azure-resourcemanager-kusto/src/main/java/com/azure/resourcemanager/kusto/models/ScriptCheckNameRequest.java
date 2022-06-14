@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A script name availability request. */
 @Fluent
 public final class ScriptCheckNameRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCheckNameRequest.class);
-
     /*
      * Script name.
      */
@@ -78,9 +75,11 @@ public final class ScriptCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ScriptCheckNameRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptCheckNameRequest.class);
 }

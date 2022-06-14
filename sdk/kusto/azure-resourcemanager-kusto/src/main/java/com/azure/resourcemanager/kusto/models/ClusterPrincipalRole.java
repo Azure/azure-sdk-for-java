@@ -27,7 +27,11 @@ public final class ClusterPrincipalRole extends ExpandableStringEnum<ClusterPrin
         return fromString(name, ClusterPrincipalRole.class);
     }
 
-    /** @return known ClusterPrincipalRole values. */
+    /**
+     * Gets known ClusterPrincipalRole values.
+     *
+     * @return known ClusterPrincipalRole values.
+     */
     public static Collection<ClusterPrincipalRole> values() {
         return values(ClusterPrincipalRole.class);
     }

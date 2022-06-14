@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A REST API operation. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * The operation name. This is of the format
      * {provider}/{resource}/{operation}.
@@ -35,7 +31,7 @@ public final class OperationInner {
     private String origin;
 
     /*
-     * Any object
+     * Properties of the operation.
      */
     @JsonProperty(value = "properties")
     private Object properties;
@@ -101,7 +97,7 @@ public final class OperationInner {
     }
 
     /**
-     * Get the properties property: Any object.
+     * Get the properties property: Properties of the operation.
      *
      * @return the properties value.
      */
@@ -110,7 +106,7 @@ public final class OperationInner {
     }
 
     /**
-     * Set the properties property: Any object.
+     * Set the properties property: Properties of the operation.
      *
      * @param properties the properties value to set.
      * @return the OperationInner object itself.

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.EventHubConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("EventHub")
 @Fluent
 public final class EventHubDataConnection extends DataConnectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubDataConnection.class);
-
     /*
      * The Event Hub data connection properties to validate.
      */
@@ -220,8 +216,8 @@ public final class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * Get the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @return the managedIdentityResourceId value.
      */
@@ -230,8 +226,8 @@ public final class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
-     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * Set the managedIdentityResourceId property: Empty for non-managed identity based data connection. For system
+     * assigned identity, provide cluster resource Id. For user assigned identity (UAI) provide the UAI resource Id.
      *
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the EventHubDataConnection object itself.

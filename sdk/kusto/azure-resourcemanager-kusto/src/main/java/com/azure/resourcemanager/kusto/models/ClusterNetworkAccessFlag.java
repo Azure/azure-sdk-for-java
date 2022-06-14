@@ -27,7 +27,11 @@ public final class ClusterNetworkAccessFlag extends ExpandableStringEnum<Cluster
         return fromString(name, ClusterNetworkAccessFlag.class);
     }
 
-    /** @return known ClusterNetworkAccessFlag values. */
+    /**
+     * Gets known ClusterNetworkAccessFlag values.
+     *
+     * @return known ClusterNetworkAccessFlag values.
+     */
     public static Collection<ClusterNetworkAccessFlag> values() {
         return values(ClusterNetworkAccessFlag.class);
     }

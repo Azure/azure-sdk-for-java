@@ -30,7 +30,11 @@ public final class DefaultPrincipalsModificationKind extends ExpandableStringEnu
         return fromString(name, DefaultPrincipalsModificationKind.class);
     }
 
-    /** @return known DefaultPrincipalsModificationKind values. */
+    /**
+     * Gets known DefaultPrincipalsModificationKind values.
+     *
+     * @return known DefaultPrincipalsModificationKind values.
+     */
     public static Collection<DefaultPrincipalsModificationKind> values() {
         return values(DefaultPrincipalsModificationKind.class);
     }

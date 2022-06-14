@@ -6,14 +6,11 @@ package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A principal assignment check name availability request. */
 @Fluent
 public final class ClusterPrincipalAssignmentCheckNameRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentCheckNameRequest.class);
-
     /*
      * Principal Assignment resource name.
      */
@@ -78,10 +75,12 @@ public final class ClusterPrincipalAssignmentCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ClusterPrincipalAssignmentCheckNameRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterPrincipalAssignmentCheckNameRequest.class);
 }

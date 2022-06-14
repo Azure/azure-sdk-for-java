@@ -153,7 +153,11 @@ public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
         return fromString(name, AzureSkuName.class);
     }
 
-    /** @return known AzureSkuName values. */
+    /**
+     * Gets known AzureSkuName values.
+     *
+     * @return known AzureSkuName values.
+     */
     public static Collection<AzureSkuName> values() {
         return values(AzureSkuName.class);
     }

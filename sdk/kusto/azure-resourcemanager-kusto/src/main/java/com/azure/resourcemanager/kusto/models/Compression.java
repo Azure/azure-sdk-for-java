@@ -27,7 +27,11 @@ public final class Compression extends ExpandableStringEnum<Compression> {
         return fromString(name, Compression.class);
     }
 
-    /** @return known Compression values. */
+    /**
+     * Gets known Compression values.
+     *
+     * @return known Compression values.
+     */
     public static Collection<Compression> values() {
         return values(Compression.class);
     }

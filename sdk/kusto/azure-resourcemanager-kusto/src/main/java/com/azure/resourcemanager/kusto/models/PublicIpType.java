@@ -27,7 +27,11 @@ public final class PublicIpType extends ExpandableStringEnum<PublicIpType> {
         return fromString(name, PublicIpType.class);
     }
 
-    /** @return known PublicIpType values. */
+    /**
+     * Gets known PublicIpType values.
+     *
+     * @return known PublicIpType values.
+     */
     public static Collection<PublicIpType> values() {
         return values(PublicIpType.class);
     }

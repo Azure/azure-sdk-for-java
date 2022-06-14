@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.Reason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result returned from a check name availability request. */
 @Fluent
 public final class CheckNameResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameResultInner.class);
-
     /*
      * Specifies a Boolean value that indicates if the name is available.
      */

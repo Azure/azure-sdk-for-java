@@ -27,7 +27,11 @@ public final class EngineType extends ExpandableStringEnum<EngineType> {
         return fromString(name, EngineType.class);
     }
 
-    /** @return known EngineType values. */
+    /**
+     * Gets known EngineType values.
+     *
+     * @return known EngineType values.
+     */
     public static Collection<EngineType> values() {
         return values(EngineType.class);
     }

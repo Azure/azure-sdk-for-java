@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsResultsClient. */
 public final class OperationsResultsClientImpl implements OperationsResultsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsResultsService service;
 
@@ -173,15 +170,7 @@ public final class OperationsResultsClientImpl implements OperationsResultsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<OperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
