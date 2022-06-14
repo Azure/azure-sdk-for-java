@@ -337,7 +337,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
             cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmParameterSpec)
 
-            plaintextOutputStream.write(cipher.doFinal(ciphertextInputStream.readNBytes((4 * 1024 * 1024) + 16)))
+            byte[] buffer = new byte[(4 * 1024 * 1024) + 16]
+            ciphertextInputStream.read(buffer)
+            plaintextOutputStream.write(cipher.doFinal(buffer))
         }
 
         then:
