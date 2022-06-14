@@ -876,6 +876,7 @@
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
         <module>sdk/customerinsights</module>
+        <module>sdk/customproviders</module>
         <module>sdk/dashboard</module>
         <module>sdk/databox</module>
         <module>sdk/databoxedge</module>
