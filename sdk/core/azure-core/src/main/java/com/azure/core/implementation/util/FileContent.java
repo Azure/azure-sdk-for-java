@@ -177,6 +177,11 @@ public final class FileContent extends BinaryDataContent {
         });
     }
 
+    @Override
+    public boolean isRepeatable() {
+        return true;
+    }
+
     /**
      * Gets the file that this content represents.
      *

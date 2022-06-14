@@ -87,6 +87,11 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         return content;
     }
 
+    @Override
+    public boolean isRepeatable() {
+        return false;
+    }
+
     private byte[] getBytes() {
         return FluxUtil.collectBytesInByteBufferStream(content)
                 // this doesn't seem to be working (newBoundedElastic() didn't work either)

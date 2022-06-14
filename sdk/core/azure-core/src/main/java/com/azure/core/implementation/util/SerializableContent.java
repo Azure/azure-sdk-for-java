@@ -76,6 +76,11 @@ public final class SerializableContent extends BinaryDataContent {
         return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
     }
 
+    @Override
+    public boolean isRepeatable() {
+        return true;
+    }
+
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
     }

@@ -71,6 +71,11 @@ public final class StringContent extends BinaryDataContent {
         return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
     }
 
+    @Override
+    public boolean isRepeatable() {
+        return true;
+    }
+
     private byte[] getBytes() {
         return this.content.getBytes(StandardCharsets.UTF_8);
     }

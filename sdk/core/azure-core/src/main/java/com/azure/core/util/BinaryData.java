@@ -1459,4 +1459,12 @@ public final class BinaryData {
     public Long getLength() {
         return content.getLength();
     }
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     * @return A flag.
+     */
+    public boolean isRepeatable() {
+        return content.isRepeatable();
+    }
 }

@@ -3,22 +3,12 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -35,7 +25,6 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private BinaryData body;
-    private volatile boolean requestBodyCopied = false;
 
     /**
      * Create a new HttpRequest instance.
@@ -288,103 +277,5 @@ public class HttpRequest {
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
-    }
-
-    /**
-     * TODO (kasobol-msft) add docs.
-     * @param bufferingMode The buffering mode.
-     * @return The request.
-     */
-    public HttpRequest copyWithRetryableBody(HttpRequestBodyBufferingMode bufferingMode) {
-        try {
-            final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-            BinaryData retryableBody  = getRetryableBody(bufferingMode);
-            return new HttpRequest(httpMethod, url, bufferedHeaders, retryableBody);
-        } finally {
-            requestBodyCopied = true;
-        }
-    }
-
-    /**
-     * TODO (kasobol-msft) add docs.
-     * @param bufferingMode The buffering mode.
-     * @return The request.
-     */
-    public Mono<HttpRequest> copyWithRetryableBodyAsync(HttpRequestBodyBufferingMode bufferingMode) {
-        // TODO (kasobol-msft) make toBytes async in binary data to complete async behavior in final PR.
-        return Mono.fromCallable(() -> copyWithRetryableBody(bufferingMode));
-    }
-
-    private BinaryData getRetryableBody(HttpRequestBodyBufferingMode bufferingMode) {
-        if (body == null) {
-            return null;
-        }
-
-        if (bufferingMode == HttpRequestBodyBufferingMode.NEVER) {
-            return body;
-        }
-
-        BinaryDataContent content = BinaryDataHelper.getContent(body);
-
-        if (content instanceof ByteArrayContent
-            || content instanceof SerializableContent
-            || content instanceof StringContent
-            || content instanceof FileContent) {
-            return body;
-        } else if (content instanceof InputStreamContent) {
-            InputStream inputStream = content.toStream();
-            Long contentLength = getContentLength();
-            if (contentLength != null && contentLength < Integer.MAX_VALUE) {
-                if (inputStream.markSupported() && bufferingMode == HttpRequestBodyBufferingMode.SHALLOW) {
-                    if (requestBodyCopied) {
-                        try {
-                            inputStream.reset();
-                        } catch (IOException e) {
-                            throw LOGGER.logExceptionAsError(
-                                new UncheckedIOException("Unable to reset request body", e));
-                        }
-                    }
-                    inputStream.mark(contentLength.intValue());
-                    return body;
-                } else {
-                    // If stream is not seekable buffer body and set it in both derived and original request.
-                    byte[] bufferedContent = content.toBytes();
-                    BinaryData bufferedBinaryData = BinaryData.fromBytes(bufferedContent);
-                    this.setBody(bufferedBinaryData);
-                    return bufferedBinaryData;
-                }
-            } else {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Non retryable request body"));
-            }
-        } else {
-            /*
-             Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
-             simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
-             stream, the buffers that were emitted will have already been consumed (their position set to their limit),
-             so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-             ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-             duplicates the ByteBuffer object, not the underlying data.
-             */
-            if (bufferingMode == HttpRequestBodyBufferingMode.SHALLOW) {
-                Flux<ByteBuffer> bufferedBody = body.toFluxByteBuffer().map(ByteBuffer::duplicate);
-                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(bufferedBody, body.getLength()));
-            } else {
-                byte[] bufferedContent = content.toBytes();
-                BinaryData bufferedBinaryData = BinaryData.fromBytes(bufferedContent);
-                this.setBody(bufferedBinaryData);
-                return bufferedBinaryData;
-            }
-        }
-    }
-
-    private Long getContentLength() {
-        Long contentLength = body.getLength();
-        if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue("Content-Length");
-            if (contentLengthHeaderValue != null) {
-                contentLength = Long.valueOf(contentLengthHeaderValue);
-            }
-        }
-        return contentLength;
     }
 }

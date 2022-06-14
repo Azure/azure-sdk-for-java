@@ -80,6 +80,12 @@ public final class InputStreamContent extends BinaryDataContent {
         return FluxUtil.toFluxByteBuffer(this.content, STREAM_READ_SIZE);
     }
 
+    @Override
+    public boolean isRepeatable() {
+        // TODO (kasobol-msft) for now.
+        return false;
+    }
+
     private byte[] getBytes() {
         try {
             ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();

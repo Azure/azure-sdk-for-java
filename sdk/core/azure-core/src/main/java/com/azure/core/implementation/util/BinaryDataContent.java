@@ -74,4 +74,10 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
+
+    /**
+     * TODO (kasobol-msft) add docs.
+     * @return A flag.
+     */
+    public abstract boolean isRepeatable();
 }
