@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -43,6 +46,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to ElasticManager. */
 public final class ElasticManager {
@@ -90,6 +94,19 @@ public final class ElasticManager {
     }
 
     /**
+     * Creates an instance of elastic service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the elastic service API instance.
+     */
+    public static ElasticManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new ElasticManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create ElasticManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -100,13 +117,14 @@ public final class ElasticManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -168,15 +186,30 @@ public final class ElasticManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -216,16 +249,34 @@ public final class ElasticManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -237,7 +288,11 @@ public final class ElasticManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -245,7 +300,11 @@ public final class ElasticManager {
         return operations;
     }
 
-    /** @return Resource collection API of Monitors. */
+    /**
+     * Gets the resource collection API of Monitors. It manages ElasticMonitorResource.
+     *
+     * @return Resource collection API of Monitors.
+     */
     public Monitors monitors() {
         if (this.monitors == null) {
             this.monitors = new MonitorsImpl(clientObject.getMonitors(), this);
@@ -253,7 +312,11 @@ public final class ElasticManager {
         return monitors;
     }
 
-    /** @return Resource collection API of MonitoredResources. */
+    /**
+     * Gets the resource collection API of MonitoredResources.
+     *
+     * @return Resource collection API of MonitoredResources.
+     */
     public MonitoredResources monitoredResources() {
         if (this.monitoredResources == null) {
             this.monitoredResources = new MonitoredResourcesImpl(clientObject.getMonitoredResources(), this);
@@ -261,7 +324,11 @@ public final class ElasticManager {
         return monitoredResources;
     }
 
-    /** @return Resource collection API of DeploymentInfoes. */
+    /**
+     * Gets the resource collection API of DeploymentInfoes.
+     *
+     * @return Resource collection API of DeploymentInfoes.
+     */
     public DeploymentInfoes deploymentInfoes() {
         if (this.deploymentInfoes == null) {
             this.deploymentInfoes = new DeploymentInfoesImpl(clientObject.getDeploymentInfoes(), this);
@@ -269,7 +336,11 @@ public final class ElasticManager {
         return deploymentInfoes;
     }
 
-    /** @return Resource collection API of TagRules. */
+    /**
+     * Gets the resource collection API of TagRules. It manages MonitoringTagRules.
+     *
+     * @return Resource collection API of TagRules.
+     */
     public TagRules tagRules() {
         if (this.tagRules == null) {
             this.tagRules = new TagRulesImpl(clientObject.getTagRules(), this);
@@ -277,7 +348,11 @@ public final class ElasticManager {
         return tagRules;
     }
 
-    /** @return Resource collection API of VMHosts. */
+    /**
+     * Gets the resource collection API of VMHosts.
+     *
+     * @return Resource collection API of VMHosts.
+     */
     public VMHosts vMHosts() {
         if (this.vMHosts == null) {
             this.vMHosts = new VMHostsImpl(clientObject.getVMHosts(), this);
@@ -285,7 +360,11 @@ public final class ElasticManager {
         return vMHosts;
     }
 
-    /** @return Resource collection API of VMIngestions. */
+    /**
+     * Gets the resource collection API of VMIngestions.
+     *
+     * @return Resource collection API of VMIngestions.
+     */
     public VMIngestions vMIngestions() {
         if (this.vMIngestions == null) {
             this.vMIngestions = new VMIngestionsImpl(clientObject.getVMIngestions(), this);
@@ -293,7 +372,11 @@ public final class ElasticManager {
         return vMIngestions;
     }
 
-    /** @return Resource collection API of VMCollections. */
+    /**
+     * Gets the resource collection API of VMCollections.
+     *
+     * @return Resource collection API of VMCollections.
+     */
     public VMCollections vMCollections() {
         if (this.vMCollections == null) {
             this.vMCollections = new VMCollectionsImpl(clientObject.getVMCollections(), this);

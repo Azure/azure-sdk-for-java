@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Set of rules for sending logs for the Monitor resource. */
 @Fluent
 public final class LogRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogRules.class);
-
     /*
      * Flag specifying if AAD logs should be sent for the Monitor resource.
      */

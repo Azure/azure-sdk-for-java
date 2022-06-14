@@ -27,7 +27,11 @@ public final class MonitoringStatus extends ExpandableStringEnum<MonitoringStatu
         return fromString(name, MonitoringStatus.class);
     }
 
-    /** @return known MonitoringStatus values. */
+    /**
+     * Gets known MonitoringStatus values.
+     *
+     * @return known MonitoringStatus values.
+     */
     public static Collection<MonitoringStatus> values() {
         return values(MonitoringStatus.class);
     }

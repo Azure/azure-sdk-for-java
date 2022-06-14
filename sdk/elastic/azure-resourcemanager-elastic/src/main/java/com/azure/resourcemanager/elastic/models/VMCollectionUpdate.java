@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Update VM resource collection. */
 @Fluent
 public final class VMCollectionUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMCollectionUpdate.class);
-
     /*
      * ARM id of the VM resource.
      */
@@ -21,7 +17,7 @@ public final class VMCollectionUpdate {
     private String vmResourceId;
 
     /*
-     * Operation to be performed for given VM.
+     * OperationName Operation to be performed for given VM.
      */
     @JsonProperty(value = "operationName")
     private OperationName operationName;
@@ -47,7 +43,7 @@ public final class VMCollectionUpdate {
     }
 
     /**
-     * Get the operationName property: Operation to be performed for given VM.
+     * Get the operationName property: OperationName Operation to be performed for given VM.
      *
      * @return the operationName value.
      */
@@ -56,7 +52,7 @@ public final class VMCollectionUpdate {
     }
 
     /**
-     * Set the operationName property: Operation to be performed for given VM.
+     * Set the operationName property: OperationName Operation to be performed for given VM.
      *
      * @param operationName the operationName value to set.
      * @return the VMCollectionUpdate object itself.

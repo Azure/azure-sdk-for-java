@@ -7,19 +7,15 @@ package com.azure.resourcemanager.elastic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.models.IdentityProperties;
 import com.azure.resourcemanager.elastic.models.MonitorProperties;
 import com.azure.resourcemanager.elastic.models.ResourceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Monitor resource. */
 @Fluent
 public final class ElasticMonitorResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticMonitorResourceInner.class);
-
     /*
      * SKU of the monitor resource.
      */

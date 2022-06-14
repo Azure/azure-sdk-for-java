@@ -12,10 +12,9 @@ import com.azure.resourcemanager.elastic.fluent.DeploymentInfoesClient;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoResponse;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DeploymentInfoesImpl implements DeploymentInfoes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInfoesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentInfoesImpl.class);
 
     private final DeploymentInfoesClient innerClient;
 

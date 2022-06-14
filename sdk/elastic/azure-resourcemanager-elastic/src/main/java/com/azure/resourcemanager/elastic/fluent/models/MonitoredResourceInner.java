@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a resource currently being monitored by the Elastic monitor resource. */
 @Fluent
 public final class MonitoredResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoredResourceInner.class);
-
     /*
      * The ARM id of the resource.
      */
@@ -22,8 +18,8 @@ public final class MonitoredResourceInner {
     private String id;
 
     /*
-     * Flag indicating the status of the resource for sending logs operation to
-     * Elastic.
+     * SendingLogs Flag indicating the status of the resource for sending logs
+     * operation to Elastic.
      */
     @JsonProperty(value = "sendingLogs")
     private SendingLogs sendingLogs;
@@ -55,7 +51,8 @@ public final class MonitoredResourceInner {
     }
 
     /**
-     * Get the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * Get the sendingLogs property: SendingLogs Flag indicating the status of the resource for sending logs operation
+     * to Elastic.
      *
      * @return the sendingLogs value.
      */
@@ -64,7 +61,8 @@ public final class MonitoredResourceInner {
     }
 
     /**
-     * Set the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * Set the sendingLogs property: SendingLogs Flag indicating the status of the resource for sending logs operation
+     * to Elastic.
      *
      * @param sendingLogs the sendingLogs value to set.
      * @return the MonitoredResourceInner object itself.

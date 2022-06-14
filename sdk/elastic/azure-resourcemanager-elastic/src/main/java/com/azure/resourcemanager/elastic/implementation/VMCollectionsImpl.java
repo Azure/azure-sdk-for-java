@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.VMCollectionsClient;
 import com.azure.resourcemanager.elastic.models.VMCollectionUpdate;
 import com.azure.resourcemanager.elastic.models.VMCollections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VMCollectionsImpl implements VMCollections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMCollectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMCollectionsImpl.class);
 
     private final VMCollectionsClient innerClient;
 

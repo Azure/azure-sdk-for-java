@@ -11,10 +11,9 @@ import com.azure.resourcemanager.elastic.fluent.VMHostsClient;
 import com.azure.resourcemanager.elastic.fluent.models.VMResourcesInner;
 import com.azure.resourcemanager.elastic.models.VMHosts;
 import com.azure.resourcemanager.elastic.models.VMResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VMHostsImpl implements VMHosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMHostsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMHostsImpl.class);
 
     private final VMHostsClient innerClient;
 

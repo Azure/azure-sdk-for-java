@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The vm ingestion details to install an agent. */
 @Fluent
 public final class VMIngestionDetailsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMIngestionDetailsResponseInner.class);
-
     /*
      * The cloudId of given Elastic monitor resource.
      */

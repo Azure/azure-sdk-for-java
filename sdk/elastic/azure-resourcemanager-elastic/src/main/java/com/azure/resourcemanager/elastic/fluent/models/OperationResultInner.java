@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Microsoft.Elastic REST API operation. */
 @Fluent
 public final class OperationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultInner.class);
-
     /*
      * Operation name, i.e., {provider}/{resource}/{operation}.
      */

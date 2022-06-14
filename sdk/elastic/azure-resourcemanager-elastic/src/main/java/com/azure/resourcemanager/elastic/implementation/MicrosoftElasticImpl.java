@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -36,15 +37,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MicrosoftElasticImpl type. */
 @ServiceClient(builder = MicrosoftElasticBuilder.class)
 public final class MicrosoftElasticImpl implements MicrosoftElastic {
-    private final ClientLogger logger = new ClientLogger(MicrosoftElasticImpl.class);
-
     /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private final String subscriptionId;
 
@@ -236,7 +234,7 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-01";
+        this.apiVersion = "2020-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.monitoredResources = new MonitoredResourcesClientImpl(this);
@@ -263,10 +261,7 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -330,7 +325,7 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -389,4 +384,6 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftElasticImpl.class);
 }

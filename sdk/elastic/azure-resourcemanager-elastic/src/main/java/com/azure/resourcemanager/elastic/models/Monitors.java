@@ -15,7 +15,7 @@ public interface Monitors {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticMonitorResource> list();
 
@@ -26,7 +26,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticMonitorResource> list(Context context);
 
@@ -37,7 +37,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName);
 
@@ -49,7 +49,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ElasticMonitorResource> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -74,7 +74,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response}.
      */
     Response<ElasticMonitorResource> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context);
@@ -109,7 +109,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response}.
      */
     ElasticMonitorResource getById(String id);
 
@@ -121,7 +121,7 @@ public interface Monitors {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific monitor resource.
+     * @return the properties of a specific monitor resource along with {@link Response}.
      */
     Response<ElasticMonitorResource> getByIdWithResponse(String id, Context context);
 

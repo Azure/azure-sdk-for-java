@@ -12,10 +12,9 @@ import com.azure.resourcemanager.elastic.fluent.VMIngestionsClient;
 import com.azure.resourcemanager.elastic.fluent.models.VMIngestionDetailsResponseInner;
 import com.azure.resourcemanager.elastic.models.VMIngestionDetailsResponse;
 import com.azure.resourcemanager.elastic.models.VMIngestions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VMIngestionsImpl implements VMIngestions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMIngestionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VMIngestionsImpl.class);
 
     private final VMIngestionsClient innerClient;
 

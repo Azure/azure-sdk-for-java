@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Elastic Resource Properties. */
 @Fluent
 public final class ElasticProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticProperties.class);
-
     /*
      * Details of the user's elastic account.
      */

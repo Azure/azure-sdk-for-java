@@ -27,7 +27,11 @@ public final class OperationName extends ExpandableStringEnum<OperationName> {
         return fromString(name, OperationName.class);
     }
 
-    /** @return known OperationName values. */
+    /**
+     * Gets known OperationName values.
+     *
+     * @return known OperationName values.
+     */
     public static Collection<OperationName> values() {
         return values(OperationName.class);
     }

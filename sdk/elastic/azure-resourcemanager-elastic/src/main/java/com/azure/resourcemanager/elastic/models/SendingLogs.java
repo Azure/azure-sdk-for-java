@@ -27,7 +27,11 @@ public final class SendingLogs extends ExpandableStringEnum<SendingLogs> {
         return fromString(name, SendingLogs.class);
     }
 
-    /** @return known SendingLogs values. */
+    /**
+     * Gets known SendingLogs values.
+     *
+     * @return known SendingLogs values.
+     */
     public static Collection<SendingLogs> values() {
         return values(SendingLogs.class);
     }

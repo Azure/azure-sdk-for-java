@@ -71,6 +71,10 @@ public final class ElasticMonitorResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ElasticMonitorResourceInner innerModel() {
         return this.innerObject;
     }

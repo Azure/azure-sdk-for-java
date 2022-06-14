@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the properties for a TagRules resource. */
 @Fluent
 public final class MonitoringTagRulesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesProperties.class);
-
     /*
-     * Provisioning state of the monitoring tag rules.
+     * ProvisioningState Provisioning state of the monitoring tag rules.
      */
     @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
@@ -27,7 +23,7 @@ public final class MonitoringTagRulesProperties {
     private LogRules logRules;
 
     /**
-     * Get the provisioningState property: Provisioning state of the monitoring tag rules.
+     * Get the provisioningState property: ProvisioningState Provisioning state of the monitoring tag rules.
      *
      * @return the provisioningState value.
      */
@@ -36,7 +32,7 @@ public final class MonitoringTagRulesProperties {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the monitoring tag rules.
+     * Set the provisioningState property: ProvisioningState Provisioning state of the monitoring tag rules.
      *
      * @param provisioningState the provisioningState value to set.
      * @return the MonitoringTagRulesProperties object itself.

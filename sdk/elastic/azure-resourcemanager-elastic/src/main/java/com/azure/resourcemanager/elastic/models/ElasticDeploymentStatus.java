@@ -27,7 +27,11 @@ public final class ElasticDeploymentStatus extends ExpandableStringEnum<ElasticD
         return fromString(name, ElasticDeploymentStatus.class);
     }
 
-    /** @return known ElasticDeploymentStatus values. */
+    /**
+     * Gets known ElasticDeploymentStatus values.
+     *
+     * @return known ElasticDeploymentStatus values.
+     */
     public static Collection<ElasticDeploymentStatus> values() {
         return values(ElasticDeploymentStatus.class);
     }

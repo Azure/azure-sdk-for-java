@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to the monitor resource. */
 @Fluent
 public final class MonitorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorProperties.class);
-
     /*
-     * Provisioning state of the monitor resource.
+     * ProvisioningState Provisioning state of the monitor resource.
      */
     @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
@@ -51,7 +47,7 @@ public final class MonitorProperties {
     private Integer liftrResourcePreference;
 
     /**
-     * Get the provisioningState property: Provisioning state of the monitor resource.
+     * Get the provisioningState property: ProvisioningState Provisioning state of the monitor resource.
      *
      * @return the provisioningState value.
      */
@@ -60,7 +56,7 @@ public final class MonitorProperties {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the monitor resource.
+     * Set the provisioningState property: ProvisioningState Provisioning state of the monitor resource.
      *
      * @param provisioningState the provisioningState value to set.
      * @return the MonitorProperties object itself.

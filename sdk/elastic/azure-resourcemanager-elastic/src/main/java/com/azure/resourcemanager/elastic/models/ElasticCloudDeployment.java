@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the user's elastic deployment associated with the monitor resource. */
 @Immutable
 public final class ElasticCloudDeployment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticCloudDeployment.class);
-
     /*
      * Elastic deployment name
      */
