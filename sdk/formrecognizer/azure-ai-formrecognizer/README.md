@@ -68,7 +68,7 @@ This table shows the relationship between SDK versions and supported API version
 |SDK version|Supported API version of service
 |-|-
 |3.0.x | 2.0
-|3.1.X - 3.1.X| 2.0, 2.1 (default)
+|3.1.X - 3.1.12| 2.0, 2.1 (default)
 |4.0.0-beta.1 - Latest beta release| 2022-01-30-preview (default)
 
 > Note: Starting with version 2022-01-30-preview, a new set of clients were introduced to leverage the newest features
