@@ -1461,9 +1461,9 @@ public final class BinaryData {
     }
 
     /**
-     * Returns a flag indicating whether the content can always be repeatedly consumed using all accessors including
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
      * {@link #toStream()} and {@link #toFluxByteBuffer()}
-     * @return a flag indicating whether the content can always be repeatedly consumed using all accessors.
+     * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
      */
     public boolean isReplayable() {
         return content.isReplayable();
