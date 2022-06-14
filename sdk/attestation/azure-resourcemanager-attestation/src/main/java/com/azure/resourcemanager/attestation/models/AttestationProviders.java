@@ -30,7 +30,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response}.
      */
     Response<AttestationProvider> getByResourceGroupWithResponse(
         String resourceGroupName, String providerName, Context context);
@@ -55,7 +55,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String providerName, Context context);
 
@@ -75,7 +75,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response}.
      */
     Response<AttestationProviderListResult> listWithResponse(Context context);
 
@@ -98,7 +98,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response}.
      */
     Response<AttestationProviderListResult> listByResourceGroupWithResponse(String resourceGroupName, Context context);
 
@@ -118,7 +118,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider.
+     * @return the default provider along with {@link Response}.
      */
     Response<AttestationProviderListResult> listDefaultWithResponse(Context context);
 
@@ -141,7 +141,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider by location.
+     * @return the default provider by location along with {@link Response}.
      */
     Response<AttestationProvider> getDefaultByLocationWithResponse(String location, Context context);
 
@@ -152,7 +152,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response}.
      */
     AttestationProvider getById(String id);
 
@@ -164,7 +164,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response}.
      */
     Response<AttestationProvider> getByIdWithResponse(String id, Context context);
 
@@ -186,7 +186,7 @@ public interface AttestationProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

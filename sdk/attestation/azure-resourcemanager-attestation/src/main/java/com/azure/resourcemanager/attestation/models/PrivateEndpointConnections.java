@@ -18,7 +18,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String providerName);
 
@@ -31,7 +32,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String providerName, Context context);
 
@@ -60,7 +62,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the attestation provider.
+     * @return the specified private endpoint connection associated with the attestation provider along with {@link
+     *     Response}.
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
@@ -89,7 +92,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
@@ -101,7 +104,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the attestation provider.
+     * @return the specified private endpoint connection associated with the attestation provider along with {@link
+     *     Response}.
      */
     PrivateEndpointConnection getById(String id);
 
@@ -113,7 +117,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the attestation provider.
+     * @return the specified private endpoint connection associated with the attestation provider along with {@link
+     *     Response}.
      */
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 
@@ -135,7 +140,7 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

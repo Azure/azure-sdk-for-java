@@ -6,15 +6,12 @@ package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JsonWebKey model. */
 @Fluent
 public final class JsonWebKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
-
     /*
      * The "alg" (algorithm) parameter identifies the algorithm intended for
      * use with the key.  The values used should either be registered in the
@@ -519,8 +516,10 @@ public final class JsonWebKey {
      */
     public void validate() {
         if (kty() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property kty in model JsonWebKey"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JsonWebKey.class);
 }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.attestation.fluent.models.AttestationProviderLi
 import com.azure.resourcemanager.attestation.models.AttestationProvider;
 import com.azure.resourcemanager.attestation.models.AttestationProviderListResult;
 import com.azure.resourcemanager.attestation.models.AttestationProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AttestationProvidersImpl implements AttestationProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AttestationProvidersImpl.class);
 
     private final AttestationProvidersClient innerClient;
 
@@ -156,7 +155,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
     public AttestationProvider getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,7 +177,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
     public Response<AttestationProvider> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -200,7 +199,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -208,7 +207,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -216,13 +215,13 @@ public final class AttestationProvidersImpl implements AttestationProviders {
                                 "The resource ID '%s' is not valid. Missing path segment 'attestationProviders'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, providerName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, providerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -230,7 +229,7 @@ public final class AttestationProvidersImpl implements AttestationProviders {
         }
         String providerName = Utils.getValueFromIdByName(id, "attestationProviders");
         if (providerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

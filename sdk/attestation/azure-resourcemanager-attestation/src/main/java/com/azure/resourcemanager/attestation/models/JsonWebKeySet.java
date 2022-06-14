@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JsonWebKeySet model. */
 @Fluent
 public final class JsonWebKeySet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonWebKeySet.class);
-
     /*
      * The value of the "keys" parameter is an array of JWK values.  By
      * default, the order of the JWK values within the array does not imply

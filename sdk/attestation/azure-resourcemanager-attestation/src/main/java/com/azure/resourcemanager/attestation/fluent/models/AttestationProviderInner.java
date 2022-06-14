@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.attestation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.attestation.models.AttestationServiceStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Attestation service response message. */
-@JsonFlatten
 @Fluent
-public class AttestationProviderInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttestationProviderInner.class);
-
+public final class AttestationProviderInner extends Resource {
     /*
      * The system metadata relating to this resource
      */
@@ -28,29 +22,10 @@ public class AttestationProviderInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Trust model for the attestation provider.
+     * Describes Attestation service status.
      */
-    @JsonProperty(value = "properties.trustModel")
-    private String trustModel;
-
-    /*
-     * Status of attestation service.
-     */
-    @JsonProperty(value = "properties.status")
-    private AttestationServiceStatus status;
-
-    /*
-     * Gets the uri of attestation service
-     */
-    @JsonProperty(value = "properties.attestUri")
-    private String attestUri;
-
-    /*
-     * List of private endpoint connections associated with the attestation
-     * provider.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+    @JsonProperty(value = "properties")
+    private StatusResult innerProperties;
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
@@ -62,73 +37,12 @@ public class AttestationProviderInner extends Resource {
     }
 
     /**
-     * Get the trustModel property: Trust model for the attestation provider.
+     * Get the innerProperties property: Describes Attestation service status.
      *
-     * @return the trustModel value.
+     * @return the innerProperties value.
      */
-    public String trustModel() {
-        return this.trustModel;
-    }
-
-    /**
-     * Set the trustModel property: Trust model for the attestation provider.
-     *
-     * @param trustModel the trustModel value to set.
-     * @return the AttestationProviderInner object itself.
-     */
-    public AttestationProviderInner withTrustModel(String trustModel) {
-        this.trustModel = trustModel;
-        return this;
-    }
-
-    /**
-     * Get the status property: Status of attestation service.
-     *
-     * @return the status value.
-     */
-    public AttestationServiceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Status of attestation service.
-     *
-     * @param status the status value to set.
-     * @return the AttestationProviderInner object itself.
-     */
-    public AttestationProviderInner withStatus(AttestationServiceStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the attestUri property: Gets the uri of attestation service.
-     *
-     * @return the attestUri value.
-     */
-    public String attestUri() {
-        return this.attestUri;
-    }
-
-    /**
-     * Set the attestUri property: Gets the uri of attestation service.
-     *
-     * @param attestUri the attestUri value to set.
-     * @return the AttestationProviderInner object itself.
-     */
-    public AttestationProviderInner withAttestUri(String attestUri) {
-        this.attestUri = attestUri;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: List of private endpoint connections associated with the attestation
-     * provider.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
+    private StatusResult innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -146,13 +60,92 @@ public class AttestationProviderInner extends Resource {
     }
 
     /**
+     * Get the trustModel property: Trust model for the attestation provider.
+     *
+     * @return the trustModel value.
+     */
+    public String trustModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustModel();
+    }
+
+    /**
+     * Set the trustModel property: Trust model for the attestation provider.
+     *
+     * @param trustModel the trustModel value to set.
+     * @return the AttestationProviderInner object itself.
+     */
+    public AttestationProviderInner withTrustModel(String trustModel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StatusResult();
+        }
+        this.innerProperties().withTrustModel(trustModel);
+        return this;
+    }
+
+    /**
+     * Get the status property: Status of attestation service.
+     *
+     * @return the status value.
+     */
+    public AttestationServiceStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Status of attestation service.
+     *
+     * @param status the status value to set.
+     * @return the AttestationProviderInner object itself.
+     */
+    public AttestationProviderInner withStatus(AttestationServiceStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StatusResult();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the attestUri property: Gets the uri of attestation service.
+     *
+     * @return the attestUri value.
+     */
+    public String attestUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().attestUri();
+    }
+
+    /**
+     * Set the attestUri property: Gets the uri of attestation service.
+     *
+     * @param attestUri the attestUri value to set.
+     * @return the AttestationProviderInner object itself.
+     */
+    public AttestationProviderInner withAttestUri(String attestUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StatusResult();
+        }
+        this.innerProperties().withAttestUri(attestUri);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections associated with the attestation
+     * provider.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -30,7 +30,11 @@ public final class AttestationServiceStatus extends ExpandableStringEnum<Attesta
         return fromString(name, AttestationServiceStatus.class);
     }
 
-    /** @return known AttestationServiceStatus values. */
+    /**
+     * Gets known AttestationServiceStatus values.
+     *
+     * @return known AttestationServiceStatus values.
+     */
     public static Collection<AttestationServiceStatus> values() {
         return values(AttestationServiceStatus.class);
     }

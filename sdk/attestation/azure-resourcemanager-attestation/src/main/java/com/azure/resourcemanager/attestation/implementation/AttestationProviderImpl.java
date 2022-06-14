@@ -89,6 +89,10 @@ public final class AttestationProviderImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AttestationProviderInner innerModel() {
         return this.innerObject;
     }

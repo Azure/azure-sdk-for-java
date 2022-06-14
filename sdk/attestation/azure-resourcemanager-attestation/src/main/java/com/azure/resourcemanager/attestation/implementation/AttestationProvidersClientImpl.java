@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.attestation.fluent.AttestationProvidersClient;
 import com.azure.resourcemanager.attestation.fluent.models.AttestationProviderInner;
 import com.azure.resourcemanager.attestation.fluent.models.AttestationProviderListResultInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AttestationProvidersClient. */
 public final class AttestationProvidersClientImpl implements AttestationProvidersClient {
-    private final ClientLogger logger = new ClientLogger(AttestationProvidersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AttestationProvidersService service;
 
@@ -181,7 +178,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> getByResourceGroupWithResponseAsync(
@@ -230,7 +227,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> getByResourceGroupWithResponseAsync(
@@ -275,19 +272,12 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderInner> getByResourceGroupAsync(String resourceGroupName, String providerName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, providerName)
-            .flatMap(
-                (Response<AttestationProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -314,7 +304,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of Attestation Provider.
+     * @return the status of Attestation Provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderInner> getByResourceGroupWithResponse(
@@ -331,7 +321,8 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> createWithResponseAsync(
@@ -387,7 +378,8 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> createWithResponseAsync(
@@ -442,20 +434,13 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderInner> createAsync(
         String resourceGroupName, String providerName, AttestationServiceCreationParams creationParams) {
         return createWithResponseAsync(resourceGroupName, providerName, creationParams)
-            .flatMap(
-                (Response<AttestationProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -485,7 +470,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderInner> createWithResponse(
@@ -505,7 +490,8 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> updateWithResponseAsync(
@@ -561,7 +547,8 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> updateWithResponseAsync(
@@ -613,20 +600,13 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderInner> updateAsync(
         String resourceGroupName, String providerName, AttestationServicePatchParams updateParams) {
         return updateWithResponseAsync(resourceGroupName, providerName, updateParams)
-            .flatMap(
-                (Response<AttestationProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -656,7 +636,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation service response message.
+     * @return attestation service response message along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderInner> updateWithResponse(
@@ -672,7 +652,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String providerName) {
@@ -720,7 +700,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -765,11 +745,11 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String providerName) {
-        return deleteWithResponseAsync(resourceGroupName, providerName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, providerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -795,7 +775,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String providerName, Context context) {
@@ -807,7 +787,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listWithResponseAsync() {
@@ -844,7 +824,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listWithResponseAsync(Context context) {
@@ -876,19 +856,11 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderListResultInner> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<AttestationProviderListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -910,7 +882,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderListResultInner> listWithResponse(Context context) {
@@ -924,7 +896,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listByResourceGroupWithResponseAsync(
@@ -968,7 +940,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listByResourceGroupWithResponseAsync(
@@ -1008,19 +980,11 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderListResultInner> listByResourceGroupAsync(String resourceGroupName) {
-        return listByResourceGroupWithResponseAsync(resourceGroupName)
-            .flatMap(
-                (Response<AttestationProviderListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listByResourceGroupWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1045,7 +1009,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attestation Providers List.
+     * @return attestation Providers List along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderListResultInner> listByResourceGroupWithResponse(
@@ -1058,7 +1022,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider.
+     * @return the default provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listDefaultWithResponseAsync() {
@@ -1095,7 +1059,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider.
+     * @return the default provider along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderListResultInner>> listDefaultWithResponseAsync(Context context) {
@@ -1127,19 +1091,11 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider.
+     * @return the default provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderListResultInner> listDefaultAsync() {
-        return listDefaultWithResponseAsync()
-            .flatMap(
-                (Response<AttestationProviderListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listDefaultWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1161,7 +1117,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider.
+     * @return the default provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderListResultInner> listDefaultWithResponse(Context context) {
@@ -1175,7 +1131,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider by location.
+     * @return the default provider by location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> getDefaultByLocationWithResponseAsync(String location) {
@@ -1217,7 +1173,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider by location.
+     * @return the default provider by location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttestationProviderInner>> getDefaultByLocationWithResponseAsync(
@@ -1256,19 +1212,11 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider by location.
+     * @return the default provider by location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AttestationProviderInner> getDefaultByLocationAsync(String location) {
-        return getDefaultByLocationWithResponseAsync(location)
-            .flatMap(
-                (Response<AttestationProviderInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getDefaultByLocationWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1293,7 +1241,7 @@ public final class AttestationProvidersClientImpl implements AttestationProvider
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default provider by location.
+     * @return the default provider by location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationProviderInner> getDefaultByLocationWithResponse(String location, Context context) {

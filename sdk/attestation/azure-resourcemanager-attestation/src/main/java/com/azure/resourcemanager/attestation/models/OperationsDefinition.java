@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition object with the name and properties of an operation. */
 @Fluent
 public final class OperationsDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsDefinition.class);
-
     /*
      * Name of the operation.
      */

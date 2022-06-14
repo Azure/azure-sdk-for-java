@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A collection of information about the state of the connection between service consumer and provider. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
      * Indicates whether the connection has been Approved/Rejected/Removed by
      * the owner of the service.
