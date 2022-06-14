@@ -4,6 +4,12 @@
 
 ### Features Added
 
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+
 ### Breaking Changes
 
 ### Bugs Fixed
