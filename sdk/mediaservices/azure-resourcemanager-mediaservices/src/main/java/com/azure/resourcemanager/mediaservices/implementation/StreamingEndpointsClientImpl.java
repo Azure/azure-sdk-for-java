@@ -528,14 +528,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     private Mono<StreamingEndpointInner> getAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
-            .flatMap(
-                (Response<StreamingEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1660,14 +1653,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     private Mono<StreamingEndpointSkuInfoListResultInner> skusAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
-            .flatMap(
-                (Response<StreamingEndpointSkuInfoListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

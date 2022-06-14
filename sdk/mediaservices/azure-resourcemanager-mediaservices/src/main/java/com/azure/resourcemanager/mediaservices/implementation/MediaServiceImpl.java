@@ -100,6 +100,10 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MediaServiceInner innerModel() {
         return this.innerObject;
     }

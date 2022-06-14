@@ -562,14 +562,7 @@ public final class AssetsClientImpl implements AssetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssetInner> getAsync(String resourceGroupName, String accountName, String assetName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName)
-            .flatMap(
-                (Response<AssetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -742,14 +735,7 @@ public final class AssetsClientImpl implements AssetsClient {
     private Mono<AssetInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String assetName, AssetInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, parameters)
-            .flatMap(
-                (Response<AssetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -908,8 +894,7 @@ public final class AssetsClientImpl implements AssetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String assetName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, assetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, assetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1081,14 +1066,7 @@ public final class AssetsClientImpl implements AssetsClient {
     private Mono<AssetInner> updateAsync(
         String resourceGroupName, String accountName, String assetName, AssetInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, assetName, parameters)
-            .flatMap(
-                (Response<AssetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1272,14 +1250,7 @@ public final class AssetsClientImpl implements AssetsClient {
     private Mono<AssetContainerSasInner> listContainerSasAsync(
         String resourceGroupName, String accountName, String assetName, ListContainerSasInput parameters) {
         return listContainerSasWithResponseAsync(resourceGroupName, accountName, assetName, parameters)
-            .flatMap(
-                (Response<AssetContainerSasInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1450,14 +1421,7 @@ public final class AssetsClientImpl implements AssetsClient {
     private Mono<StorageEncryptedAssetDecryptionDataInner> getEncryptionKeyAsync(
         String resourceGroupName, String accountName, String assetName) {
         return getEncryptionKeyWithResponseAsync(resourceGroupName, accountName, assetName)
-            .flatMap(
-                (Response<StorageEncryptedAssetDecryptionDataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1619,14 +1583,7 @@ public final class AssetsClientImpl implements AssetsClient {
     private Mono<ListStreamingLocatorsResponseInner> listStreamingLocatorsAsync(
         String resourceGroupName, String accountName, String assetName) {
         return listStreamingLocatorsWithResponseAsync(resourceGroupName, accountName, assetName)
-            .flatMap(
-                (Response<ListStreamingLocatorsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

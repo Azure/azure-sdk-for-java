@@ -485,14 +485,7 @@ public final class TracksClientImpl implements TracksClient {
     private Mono<AssetTrackInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String trackName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName)
-            .flatMap(
-                (Response<AssetTrackInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

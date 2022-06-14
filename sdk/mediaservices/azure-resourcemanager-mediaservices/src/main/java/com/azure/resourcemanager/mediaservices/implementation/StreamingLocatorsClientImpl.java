@@ -532,14 +532,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<StreamingLocatorInner> getAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<StreamingLocatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -718,14 +711,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<StreamingLocatorInner> createAsync(
         String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, parameters)
-            .flatMap(
-                (Response<StreamingLocatorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -892,7 +878,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingLocatorName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1053,14 +1039,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<ListContentKeysResponseInner> listContentKeysAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return listContentKeysWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<ListContentKeysResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1223,14 +1202,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     private Mono<ListPathsResponseInner> listPathsAsync(
         String resourceGroupName, String accountName, String streamingLocatorName) {
         return listPathsWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
-            .flatMap(
-                (Response<ListPathsResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

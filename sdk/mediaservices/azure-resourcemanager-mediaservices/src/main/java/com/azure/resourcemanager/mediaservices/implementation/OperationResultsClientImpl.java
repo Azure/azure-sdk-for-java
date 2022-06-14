@@ -218,14 +218,7 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     private Mono<AssetTrackInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, operationId)
-            .flatMap(
-                (OperationResultsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

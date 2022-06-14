@@ -494,14 +494,7 @@ public final class TransformsClientImpl implements TransformsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransformInner> getAsync(String resourceGroupName, String accountName, String transformName) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -683,14 +676,7 @@ public final class TransformsClientImpl implements TransformsClient {
     private Mono<TransformInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String transformName, TransformInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, transformName, parameters)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -856,8 +842,7 @@ public final class TransformsClientImpl implements TransformsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String transformName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, transformName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, transformName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1038,14 +1023,7 @@ public final class TransformsClientImpl implements TransformsClient {
     private Mono<TransformInner> updateAsync(
         String resourceGroupName, String accountName, String transformName, TransformInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, parameters)
-            .flatMap(
-                (Response<TransformInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -533,14 +533,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     private Mono<ContentKeyPolicyInner> getAsync(
         String resourceGroupName, String accountName, String contentKeyPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, contentKeyPolicyName)
-            .flatMap(
-                (Response<ContentKeyPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -719,14 +712,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     private Mono<ContentKeyPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, contentKeyPolicyName, parameters)
-            .flatMap(
-                (Response<ContentKeyPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -894,7 +880,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String contentKeyPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, contentKeyPolicyName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1072,14 +1058,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     private Mono<ContentKeyPolicyInner> updateAsync(
         String resourceGroupName, String accountName, String contentKeyPolicyName, ContentKeyPolicyInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, contentKeyPolicyName, parameters)
-            .flatMap(
-                (Response<ContentKeyPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1249,14 +1228,7 @@ public final class ContentKeyPoliciesClientImpl implements ContentKeyPoliciesCli
     private Mono<ContentKeyPolicyPropertiesInner> getPolicyPropertiesWithSecretsAsync(
         String resourceGroupName, String accountName, String contentKeyPolicyName) {
         return getPolicyPropertiesWithSecretsWithResponseAsync(resourceGroupName, accountName, contentKeyPolicyName)
-            .flatMap(
-                (Response<ContentKeyPolicyPropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

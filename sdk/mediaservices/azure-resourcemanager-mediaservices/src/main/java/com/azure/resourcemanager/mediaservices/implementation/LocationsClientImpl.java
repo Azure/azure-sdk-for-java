@@ -182,14 +182,7 @@ public final class LocationsClientImpl implements LocationsClient {
     private Mono<EntityNameAvailabilityCheckOutputInner> checkNameAvailabilityAsync(
         String locationName, CheckNameAvailabilityInput parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
-            .flatMap(
-                (Response<EntityNameAvailabilityCheckOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

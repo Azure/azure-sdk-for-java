@@ -454,14 +454,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountFilterInner> getAsync(String resourceGroupName, String accountName, String filterName) {
         return getWithResponseAsync(resourceGroupName, accountName, filterName)
-            .flatMap(
-                (Response<AccountFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -638,14 +631,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
     private Mono<AccountFilterInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, filterName, parameters)
-            .flatMap(
-                (Response<AccountFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -808,8 +794,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String filterName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, filterName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName, filterName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -985,14 +970,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
     private Mono<AccountFilterInner> updateAsync(
         String resourceGroupName, String accountName, String filterName, AccountFilterInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, filterName, parameters)
-            .flatMap(
-                (Response<AccountFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

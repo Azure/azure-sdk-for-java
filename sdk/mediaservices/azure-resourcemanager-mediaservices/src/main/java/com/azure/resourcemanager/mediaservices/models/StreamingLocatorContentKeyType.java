@@ -30,7 +30,11 @@ public final class StreamingLocatorContentKeyType extends ExpandableStringEnum<S
         return fromString(name, StreamingLocatorContentKeyType.class);
     }
 
-    /** @return known StreamingLocatorContentKeyType values. */
+    /**
+     * Gets known StreamingLocatorContentKeyType values.
+     *
+     * @return known StreamingLocatorContentKeyType values.
+     */
     public static Collection<StreamingLocatorContentKeyType> values() {
         return values(StreamingLocatorContentKeyType.class);
     }

@@ -556,14 +556,7 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> getAsync(
         String resourceGroupName, String accountName, String transformName, String jobName) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -754,14 +747,7 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> createAsync(
         String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -940,7 +926,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String transformName, String jobName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1133,14 +1119,7 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<JobInner> updateAsync(
         String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
-            .flatMap(
-                (Response<JobInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1322,7 +1301,7 @@ public final class JobsClientImpl implements JobsClient {
     private Mono<Void> cancelJobAsync(
         String resourceGroupName, String accountName, String transformName, String jobName) {
         return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -523,14 +523,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LiveEventInner> getAsync(String resourceGroupName, String accountName, String liveEventName) {
         return getWithResponseAsync(resourceGroupName, accountName, liveEventName)
-            .flatMap(
-                (Response<LiveEventInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

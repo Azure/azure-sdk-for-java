@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -136,6 +138,19 @@ public final class MediaServicesManager {
     }
 
     /**
+     * Creates an instance of MediaServices service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the MediaServices service API instance.
+     */
+    public static MediaServicesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new MediaServicesManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create MediaServicesManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -153,6 +168,7 @@ public final class MediaServicesManager {
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -214,6 +230,19 @@ public final class MediaServicesManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
@@ -246,7 +275,7 @@ public final class MediaServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mediaservices")
                 .append("/")
-                .append("2.0.0");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -264,10 +293,15 @@ public final class MediaServicesManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -298,7 +332,11 @@ public final class MediaServicesManager {
         }
     }
 
-    /** @return Resource collection API of AccountFilters. */
+    /**
+     * Gets the resource collection API of AccountFilters. It manages AccountFilter.
+     *
+     * @return Resource collection API of AccountFilters.
+     */
     public AccountFilters accountFilters() {
         if (this.accountFilters == null) {
             this.accountFilters = new AccountFiltersImpl(clientObject.getAccountFilters(), this);
@@ -306,7 +344,11 @@ public final class MediaServicesManager {
         return accountFilters;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -314,7 +356,11 @@ public final class MediaServicesManager {
         return operations;
     }
 
-    /** @return Resource collection API of Mediaservices. */
+    /**
+     * Gets the resource collection API of Mediaservices. It manages MediaService.
+     *
+     * @return Resource collection API of Mediaservices.
+     */
     public Mediaservices mediaservices() {
         if (this.mediaservices == null) {
             this.mediaservices = new MediaservicesImpl(clientObject.getMediaservices(), this);
@@ -322,7 +368,11 @@ public final class MediaServicesManager {
         return mediaservices;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -330,7 +380,11 @@ public final class MediaServicesManager {
         return privateLinkResources;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -339,7 +393,11 @@ public final class MediaServicesManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of Locations. */
+    /**
+     * Gets the resource collection API of Locations.
+     *
+     * @return Resource collection API of Locations.
+     */
     public Locations locations() {
         if (this.locations == null) {
             this.locations = new LocationsImpl(clientObject.getLocations(), this);
@@ -347,7 +405,11 @@ public final class MediaServicesManager {
         return locations;
     }
 
-    /** @return Resource collection API of Assets. */
+    /**
+     * Gets the resource collection API of Assets. It manages Asset.
+     *
+     * @return Resource collection API of Assets.
+     */
     public Assets assets() {
         if (this.assets == null) {
             this.assets = new AssetsImpl(clientObject.getAssets(), this);
@@ -355,7 +417,11 @@ public final class MediaServicesManager {
         return assets;
     }
 
-    /** @return Resource collection API of AssetFilters. */
+    /**
+     * Gets the resource collection API of AssetFilters. It manages AssetFilter.
+     *
+     * @return Resource collection API of AssetFilters.
+     */
     public AssetFilters assetFilters() {
         if (this.assetFilters == null) {
             this.assetFilters = new AssetFiltersImpl(clientObject.getAssetFilters(), this);
@@ -363,7 +429,11 @@ public final class MediaServicesManager {
         return assetFilters;
     }
 
-    /** @return Resource collection API of Tracks. */
+    /**
+     * Gets the resource collection API of Tracks. It manages AssetTrack.
+     *
+     * @return Resource collection API of Tracks.
+     */
     public Tracks tracks() {
         if (this.tracks == null) {
             this.tracks = new TracksImpl(clientObject.getTracks(), this);
@@ -371,7 +441,11 @@ public final class MediaServicesManager {
         return tracks;
     }
 
-    /** @return Resource collection API of OperationStatuses. */
+    /**
+     * Gets the resource collection API of OperationStatuses.
+     *
+     * @return Resource collection API of OperationStatuses.
+     */
     public OperationStatuses operationStatuses() {
         if (this.operationStatuses == null) {
             this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
@@ -379,7 +453,11 @@ public final class MediaServicesManager {
         return operationStatuses;
     }
 
-    /** @return Resource collection API of OperationResults. */
+    /**
+     * Gets the resource collection API of OperationResults.
+     *
+     * @return Resource collection API of OperationResults.
+     */
     public OperationResults operationResults() {
         if (this.operationResults == null) {
             this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
@@ -387,7 +465,11 @@ public final class MediaServicesManager {
         return operationResults;
     }
 
-    /** @return Resource collection API of ContentKeyPolicies. */
+    /**
+     * Gets the resource collection API of ContentKeyPolicies. It manages ContentKeyPolicy.
+     *
+     * @return Resource collection API of ContentKeyPolicies.
+     */
     public ContentKeyPolicies contentKeyPolicies() {
         if (this.contentKeyPolicies == null) {
             this.contentKeyPolicies = new ContentKeyPoliciesImpl(clientObject.getContentKeyPolicies(), this);
@@ -395,7 +477,11 @@ public final class MediaServicesManager {
         return contentKeyPolicies;
     }
 
-    /** @return Resource collection API of Transforms. */
+    /**
+     * Gets the resource collection API of Transforms. It manages Transform.
+     *
+     * @return Resource collection API of Transforms.
+     */
     public Transforms transforms() {
         if (this.transforms == null) {
             this.transforms = new TransformsImpl(clientObject.getTransforms(), this);
@@ -403,7 +489,11 @@ public final class MediaServicesManager {
         return transforms;
     }
 
-    /** @return Resource collection API of Jobs. */
+    /**
+     * Gets the resource collection API of Jobs. It manages Job.
+     *
+     * @return Resource collection API of Jobs.
+     */
     public Jobs jobs() {
         if (this.jobs == null) {
             this.jobs = new JobsImpl(clientObject.getJobs(), this);
@@ -411,7 +501,11 @@ public final class MediaServicesManager {
         return jobs;
     }
 
-    /** @return Resource collection API of StreamingPolicies. */
+    /**
+     * Gets the resource collection API of StreamingPolicies. It manages StreamingPolicy.
+     *
+     * @return Resource collection API of StreamingPolicies.
+     */
     public StreamingPolicies streamingPolicies() {
         if (this.streamingPolicies == null) {
             this.streamingPolicies = new StreamingPoliciesImpl(clientObject.getStreamingPolicies(), this);
@@ -419,7 +513,11 @@ public final class MediaServicesManager {
         return streamingPolicies;
     }
 
-    /** @return Resource collection API of StreamingLocators. */
+    /**
+     * Gets the resource collection API of StreamingLocators. It manages StreamingLocator.
+     *
+     * @return Resource collection API of StreamingLocators.
+     */
     public StreamingLocators streamingLocators() {
         if (this.streamingLocators == null) {
             this.streamingLocators = new StreamingLocatorsImpl(clientObject.getStreamingLocators(), this);
@@ -427,7 +525,11 @@ public final class MediaServicesManager {
         return streamingLocators;
     }
 
-    /** @return Resource collection API of LiveEvents. */
+    /**
+     * Gets the resource collection API of LiveEvents. It manages LiveEvent.
+     *
+     * @return Resource collection API of LiveEvents.
+     */
     public LiveEvents liveEvents() {
         if (this.liveEvents == null) {
             this.liveEvents = new LiveEventsImpl(clientObject.getLiveEvents(), this);
@@ -435,7 +537,11 @@ public final class MediaServicesManager {
         return liveEvents;
     }
 
-    /** @return Resource collection API of LiveOutputs. */
+    /**
+     * Gets the resource collection API of LiveOutputs. It manages LiveOutput.
+     *
+     * @return Resource collection API of LiveOutputs.
+     */
     public LiveOutputs liveOutputs() {
         if (this.liveOutputs == null) {
             this.liveOutputs = new LiveOutputsImpl(clientObject.getLiveOutputs(), this);
@@ -443,7 +549,11 @@ public final class MediaServicesManager {
         return liveOutputs;
     }
 
-    /** @return Resource collection API of StreamingEndpoints. */
+    /**
+     * Gets the resource collection API of StreamingEndpoints. It manages StreamingEndpoint.
+     *
+     * @return Resource collection API of StreamingEndpoints.
+     */
     public StreamingEndpoints streamingEndpoints() {
         if (this.streamingEndpoints == null) {
             this.streamingEndpoints = new StreamingEndpointsImpl(clientObject.getStreamingEndpoints(), this);

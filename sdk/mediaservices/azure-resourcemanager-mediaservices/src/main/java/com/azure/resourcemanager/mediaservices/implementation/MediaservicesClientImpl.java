@@ -482,14 +482,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MediaServiceInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -649,14 +642,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<MediaServiceInner> createOrUpdateAsync(
         String resourceGroupName, String accountName, MediaServiceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -801,7 +787,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -959,14 +945,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<MediaServiceInner> updateAsync(
         String resourceGroupName, String accountName, MediaServiceUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<MediaServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1128,7 +1107,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<Void> syncStorageKeysAsync(
         String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
         return syncStorageKeysWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1289,14 +1268,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     private Mono<EdgePoliciesInner> listEdgePoliciesAsync(
         String resourceGroupName, String accountName, ListEdgePoliciesInput parameters) {
         return listEdgePoliciesWithResponseAsync(resourceGroupName, accountName, parameters)
-            .flatMap(
-                (Response<EdgePoliciesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

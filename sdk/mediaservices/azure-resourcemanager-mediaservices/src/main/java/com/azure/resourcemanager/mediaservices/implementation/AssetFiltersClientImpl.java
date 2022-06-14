@@ -490,14 +490,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     private Mono<AssetFilterInner> getAsync(
         String resourceGroupName, String accountName, String assetName, String filterName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, filterName)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -696,14 +689,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         String filterName,
         AssetFilterInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -887,7 +873,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String assetName, String filterName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, assetName, filterName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1085,14 +1071,7 @@ public final class AssetFiltersClientImpl implements AssetFiltersClient {
         String filterName,
         AssetFilterInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, assetName, filterName, parameters)
-            .flatMap(
-                (Response<AssetFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
