@@ -27,7 +27,6 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-b', '--spring_boot_dependencies_version', type = str, required = True)
     args = parser.parse_args()
-    log.set_log_level(args.log)
     return args
 
 
