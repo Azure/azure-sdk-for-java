@@ -656,8 +656,14 @@ class APISpec extends StorageSpec {
         }
     }
 
+    /**
+     * Compares the two timestamps to the minute
+     * @param expectedTime
+     * @param actualTime
+     * @return whether timestamps match (excluding seconds)
+     */
     def compareDatesWithPrecision(OffsetDateTime expectedTime, OffsetDateTime actualTime) {
-        return expectedTime.truncatedTo(ChronoUnit.MICROS) == actualTime.truncatedTo(ChronoUnit.MICROS)
+        return expectedTime.truncatedTo(ChronoUnit.MINUTES) == actualTime.truncatedTo(ChronoUnit.MINUTES)
     }
 
     /**
