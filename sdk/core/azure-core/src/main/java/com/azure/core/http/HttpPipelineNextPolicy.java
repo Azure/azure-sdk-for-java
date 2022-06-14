@@ -15,7 +15,7 @@ import reactor.core.scheduler.Schedulers;
 public class HttpPipelineNextPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
     private final HttpPipelineCallState state;
-    private final boolean originatedFromSyncContext;
+    private final boolean originatedFromSyncPolicy;
 
     /**
      * Package Private ctr.
@@ -26,7 +26,7 @@ public class HttpPipelineNextPolicy {
      */
     HttpPipelineNextPolicy(HttpPipelineCallState state) {
         this.state = state;
-        this.originatedFromSyncContext = false;
+        this.originatedFromSyncPolicy = false;
     }
 
     /**
@@ -38,7 +38,7 @@ public class HttpPipelineNextPolicy {
      */
     HttpPipelineNextPolicy(HttpPipelineCallState state, boolean originatedFromSyncPolicy) {
         this.state = state;
-        this.originatedFromSyncContext = originatedFromSyncPolicy;
+        this.originatedFromSyncPolicy = originatedFromSyncPolicy;
     }
 
     /**
@@ -47,13 +47,13 @@ public class HttpPipelineNextPolicy {
      * @return A publisher which upon subscription invokes next policy and emits response from the policy.
      */
     public Mono<HttpResponse> process() {
-        if (originatedFromSyncContext && !Schedulers.isInNonBlockingThread()) {
+        if (originatedFromSyncPolicy && !Schedulers.isInNonBlockingThread()) {
             // Pipeline executes in synchronous style. We most likely got here via default implementation in the
             // HttpPipelinePolicy.processSynchronously so go back to sync style here.
             // Don't do this on non-blocking threads.
             return Mono.fromCallable(() -> new HttpPipelineNextSyncPolicy(state).processSync());
         } else {
-            if (originatedFromSyncContext) {
+            if (originatedFromSyncPolicy) {
                 LOGGER.warning("The pipeline switched from synchronous to asynchronous."
                     + "Check if {} does not override HttpPipelinePolicy.processSync",
                     this.state.getCurrentPolicy().getClass().getSimpleName());
@@ -76,6 +76,6 @@ public class HttpPipelineNextPolicy {
      */
     @Override
     public HttpPipelineNextPolicy clone() {
-        return new HttpPipelineNextPolicy(this.state.clone(), this.originatedFromSyncContext);
+        return new HttpPipelineNextPolicy(this.state.clone(), this.originatedFromSyncPolicy);
     }
 }
