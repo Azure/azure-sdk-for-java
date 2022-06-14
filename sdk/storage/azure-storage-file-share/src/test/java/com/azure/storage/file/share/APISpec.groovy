@@ -29,6 +29,8 @@ import reactor.core.publisher.Mono
 
 import java.nio.ByteBuffer
 import java.time.Duration
+import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.BiFunction
 import java.util.function.Function
@@ -338,6 +340,10 @@ class APISpec extends StorageSpec {
                 return HttpPipelinePosition.PER_CALL
             }
         }
+    }
+
+    def compareDatesWithPrecision(OffsetDateTime expectedTime, OffsetDateTime actualTime) {
+        return expectedTime.truncatedTo(ChronoUnit.MICROS) == actualTime.truncatedTo(ChronoUnit.MICROS)
     }
 
     /**

@@ -212,7 +212,7 @@ class FileAPITests extends APISpec {
             null, null, null, null, null)
 
         then:
-        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     def "Create file with args error"() {
@@ -1135,8 +1135,8 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -1161,8 +1161,7 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        smbProperties.getFileChangeTime().truncatedTo(ChronoUnit.MICROS) ==
-            primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(smbProperties.getFileChangeTime(), primaryFileClient.getProperties().getSmbProperties().getFileChangeTime())
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
@@ -1192,8 +1191,8 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -1256,9 +1255,9 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(1024)
         def initialProperties = primaryFileClient.getProperties()
-        def creationTime = initialProperties.getSmbProperties().getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
-        def changedTime = initialProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        def creationTime = initialProperties.getSmbProperties().getFileCreationTime()
+        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime()
+        def changedTime = initialProperties.getSmbProperties().getFileChangeTime()
         def fileAttributes = initialProperties.getSmbProperties().getNtfsFileAttributes()
 
         def sourceURL = primaryFileClient.getFileUrl()
@@ -1283,9 +1282,9 @@ class FileAPITests extends APISpec {
         then:
         pollResponse.getValue().getCopyId() != null
         pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        creationTime == resultProperties.getSmbProperties().getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        lastWrittenTime == resultProperties.getSmbProperties().getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
-        changedTime == resultProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(creationTime, resultProperties.getSmbProperties().getFileCreationTime())
+        compareDatesWithPrecision(lastWrittenTime, resultProperties.getSmbProperties().getFileLastWriteTime())
+        compareDatesWithPrecision(changedTime, resultProperties.getSmbProperties().getFileChangeTime())
         fileAttributes == resultProperties.getSmbProperties().getNtfsFileAttributes()
     }
 
@@ -1478,7 +1477,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.setProperties(512, null, new FileSmbProperties().setFileChangeTime(changeTime), null)
 
         then:
-        primaryFileClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(primaryFileClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     def "Set httpHeaders error"() {
@@ -1949,7 +1948,7 @@ class FileAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.ARCHIVE, NtfsFileAttributes.READ_ONLY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
-        destProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == fileChangeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(destProperties.getSmbProperties().getFileChangeTime(), fileChangeTime)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

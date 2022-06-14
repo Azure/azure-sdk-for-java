@@ -912,8 +912,8 @@ class FileAsyncAPITests extends APISpec {
 
         def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -940,8 +940,7 @@ class FileAsyncAPITests extends APISpec {
             assert it.getValue().getCopyId() != null
         }.expectComplete().verify(Duration.ofMinutes(1))
 
-        smbProperties.getFileChangeTime().truncatedTo(ChronoUnit.MICROS) ==
-            primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(smbProperties.getFileChangeTime(), primaryFileAsyncClient.getProperties().block().getSmbProperties().getFileChangeTime())
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_06_08")
@@ -974,8 +973,8 @@ class FileAsyncAPITests extends APISpec {
 
         def properties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        properties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        properties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS) == smbProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(properties.getFileCreationTime(), smbProperties.getFileCreationTime())
+        compareDatesWithPrecision(properties.getFileLastWriteTime(), smbProperties.getFileLastWriteTime())
         properties.getNtfsFileAttributes() == smbProperties.getNtfsFileAttributes()
     }
 
@@ -1042,9 +1041,9 @@ class FileAsyncAPITests extends APISpec {
         given:
         primaryFileAsyncClient.create(1024).block()
         def initialProperties = primaryFileAsyncClient.getProperties().block()
-        def creationTime = initialProperties.getSmbProperties().getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
-        def changedTime = initialProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        def creationTime = initialProperties.getSmbProperties().getFileCreationTime()
+        def lastWrittenTime = initialProperties.getSmbProperties().getFileLastWriteTime()
+        def changedTime = initialProperties.getSmbProperties().getFileChangeTime()
         def fileAttributes = initialProperties.getSmbProperties().getNtfsFileAttributes()
 
         def sourceURL = primaryFileAsyncClient.getFileUrl()
@@ -1072,9 +1071,9 @@ class FileAsyncAPITests extends APISpec {
 
         def resultProperties = primaryFileAsyncClient.getProperties().block().getSmbProperties()
 
-        creationTime == resultProperties.getFileCreationTime().truncatedTo(ChronoUnit.MICROS)
-        lastWrittenTime == resultProperties.getFileLastWriteTime().truncatedTo(ChronoUnit.MICROS)
-        changedTime == resultProperties.getFileChangeTime().truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(creationTime, resultProperties.getFileCreationTime())
+        compareDatesWithPrecision(lastWrittenTime, resultProperties.getFileLastWriteTime())
+        compareDatesWithPrecision(changedTime, resultProperties.getFileChangeTime())
         fileAttributes == resultProperties.getNtfsFileAttributes()
     }
 
