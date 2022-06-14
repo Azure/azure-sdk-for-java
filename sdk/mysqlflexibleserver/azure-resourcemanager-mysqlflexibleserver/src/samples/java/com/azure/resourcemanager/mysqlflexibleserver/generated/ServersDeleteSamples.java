@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Servers Delete. */
 public final class ServersDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerDelete.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/ServerDelete.json
      */
     /**
-     * Sample code: Delete a server.
+     * Sample code: ServerDelete.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void deleteAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void serverDelete(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.servers().delete("TestGroup", "testserver", Context.NONE);
     }
 }

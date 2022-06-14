@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
-import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
+import com.azure.resourcemanager.mysqlflexibleserver.models.InfrastructureEncryption;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MinimalTlsVersionEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.PublicNetworkAccessEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerPrivateEndpointConnection;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.mysqlflexibleserver.models.SslEnforcementEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.StorageProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The properties of a server. */
 @Fluent
@@ -29,101 +28,90 @@ public final class ServerProperties {
     private String administratorLogin;
 
     /*
-     * The password of the administrator login (required for server creation).
-     */
-    @JsonProperty(value = "administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
      * Server version.
      */
     @JsonProperty(value = "version")
     private ServerVersion version;
 
     /*
-     * availability Zone information of the server.
+     * Enable ssl enforcement or not when connect to server.
      */
-    @JsonProperty(value = "availabilityZone")
-    private String availabilityZone;
+    @JsonProperty(value = "sslEnforcement")
+    private SslEnforcementEnum sslEnforcement;
 
     /*
-     * The mode to create a new MySQL server.
+     * Enforce a minimal Tls version for the server.
      */
-    @JsonProperty(value = "createMode")
-    private CreateMode createMode;
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersionEnum minimalTlsVersion;
 
     /*
-     * The source MySQL server id.
+     * Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
      */
-    @JsonProperty(value = "sourceServerResourceId")
-    private String sourceServerResourceId;
+    @JsonProperty(value = "byokEnforcement", access = JsonProperty.Access.WRITE_ONLY)
+    private String byokEnforcement;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to
-     * restore from.
+     * Status showing whether the server enabled infrastructure encryption.
      */
-    @JsonProperty(value = "restorePointInTime")
-    private OffsetDateTime restorePointInTime;
+    @JsonProperty(value = "infrastructureEncryption")
+    private InfrastructureEncryption infrastructureEncryption;
 
     /*
-     * The replication role.
+     * A state of a server that is visible to user.
      */
-    @JsonProperty(value = "replicationRole")
-    private ReplicationRole replicationRole;
-
-    /*
-     * The maximum number of replicas that a primary server can have.
-     */
-    @JsonProperty(value = "replicaCapacity", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer replicaCapacity;
-
-    /*
-     * The Data Encryption for CMK.
-     */
-    @JsonProperty(value = "dataEncryption")
-    private DataEncryption dataEncryption;
-
-    /*
-     * The state of a server.
-     */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private ServerState state;
+    @JsonProperty(value = "userVisibleState")
+    private ServerState userVisibleState;
 
     /*
      * The fully qualified domain name of a server.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "fullyQualifiedDomainName")
     private String fullyQualifiedDomainName;
 
     /*
-     * Storage related properties of a server.
+     * Earliest restore point creation time (ISO8601 format)
      */
-    @JsonProperty(value = "storage")
-    private Storage storage;
+    @JsonProperty(value = "earliestRestoreDate")
+    private OffsetDateTime earliestRestoreDate;
 
     /*
-     * Backup related properties of a server.
+     * Storage profile of a server.
      */
-    @JsonProperty(value = "backup")
-    private Backup backup;
+    @JsonProperty(value = "storageProfile")
+    private StorageProfile storageProfile;
 
     /*
-     * High availability related properties of a server.
+     * The replication role of the server.
      */
-    @JsonProperty(value = "highAvailability")
-    private HighAvailability highAvailability;
+    @JsonProperty(value = "replicationRole")
+    private String replicationRole;
 
     /*
-     * Network related properties of a server.
+     * The master server id of a replica server.
      */
-    @JsonProperty(value = "network")
-    private Network network;
+    @JsonProperty(value = "masterServerId")
+    private String masterServerId;
 
     /*
-     * Maintenance window of a server.
+     * The maximum number of replicas that a master server can have.
      */
-    @JsonProperty(value = "maintenanceWindow")
-    private MaintenanceWindow maintenanceWindow;
+    @JsonProperty(value = "replicaCapacity")
+    private Integer replicaCapacity;
+
+    /*
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
+
+    /*
+     * List of private endpoint connections on a server
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
@@ -148,28 +136,6 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the administratorLoginPassword property: The password of the administrator login (required for server
-     * creation).
-     *
-     * @return the administratorLoginPassword value.
-     */
-    public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
-    }
-
-    /**
-     * Set the administratorLoginPassword property: The password of the administrator login (required for server
-     * creation).
-     *
-     * @param administratorLoginPassword the administratorLoginPassword value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
-        return this;
-    }
-
-    /**
      * Get the version property: Server version.
      *
      * @return the version value.
@@ -190,143 +156,93 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the availabilityZone property: availability Zone information of the server.
+     * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
      *
-     * @return the availabilityZone value.
+     * @return the sslEnforcement value.
      */
-    public String availabilityZone() {
-        return this.availabilityZone;
+    public SslEnforcementEnum sslEnforcement() {
+        return this.sslEnforcement;
     }
 
     /**
-     * Set the availabilityZone property: availability Zone information of the server.
+     * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
      *
-     * @param availabilityZone the availabilityZone value to set.
+     * @param sslEnforcement the sslEnforcement value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withAvailabilityZone(String availabilityZone) {
-        this.availabilityZone = availabilityZone;
+    public ServerProperties withSslEnforcement(SslEnforcementEnum sslEnforcement) {
+        this.sslEnforcement = sslEnforcement;
         return this;
     }
 
     /**
-     * Get the createMode property: The mode to create a new MySQL server.
+     * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
      *
-     * @return the createMode value.
+     * @return the minimalTlsVersion value.
      */
-    public CreateMode createMode() {
-        return this.createMode;
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.minimalTlsVersion;
     }
 
     /**
-     * Set the createMode property: The mode to create a new MySQL server.
+     * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
      *
-     * @param createMode the createMode value to set.
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withCreateMode(CreateMode createMode) {
-        this.createMode = createMode;
+    public ServerProperties withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
         return this;
     }
 
     /**
-     * Get the sourceServerResourceId property: The source MySQL server id.
+     * Get the byokEnforcement property: Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
      *
-     * @return the sourceServerResourceId value.
+     * @return the byokEnforcement value.
      */
-    public String sourceServerResourceId() {
-        return this.sourceServerResourceId;
+    public String byokEnforcement() {
+        return this.byokEnforcement;
     }
 
     /**
-     * Set the sourceServerResourceId property: The source MySQL server id.
+     * Get the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
      *
-     * @param sourceServerResourceId the sourceServerResourceId value to set.
+     * @return the infrastructureEncryption value.
+     */
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.infrastructureEncryption;
+    }
+
+    /**
+     * Set the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
+     *
+     * @param infrastructureEncryption the infrastructureEncryption value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withSourceServerResourceId(String sourceServerResourceId) {
-        this.sourceServerResourceId = sourceServerResourceId;
+    public ServerProperties withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
+        this.infrastructureEncryption = infrastructureEncryption;
         return this;
     }
 
     /**
-     * Get the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from.
+     * Get the userVisibleState property: A state of a server that is visible to user.
      *
-     * @return the restorePointInTime value.
+     * @return the userVisibleState value.
      */
-    public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+    public ServerState userVisibleState() {
+        return this.userVisibleState;
     }
 
     /**
-     * Set the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from.
+     * Set the userVisibleState property: A state of a server that is visible to user.
      *
-     * @param restorePointInTime the restorePointInTime value to set.
+     * @param userVisibleState the userVisibleState value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+    public ServerProperties withUserVisibleState(ServerState userVisibleState) {
+        this.userVisibleState = userVisibleState;
         return this;
-    }
-
-    /**
-     * Get the replicationRole property: The replication role.
-     *
-     * @return the replicationRole value.
-     */
-    public ReplicationRole replicationRole() {
-        return this.replicationRole;
-    }
-
-    /**
-     * Set the replicationRole property: The replication role.
-     *
-     * @param replicationRole the replicationRole value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withReplicationRole(ReplicationRole replicationRole) {
-        this.replicationRole = replicationRole;
-        return this;
-    }
-
-    /**
-     * Get the replicaCapacity property: The maximum number of replicas that a primary server can have.
-     *
-     * @return the replicaCapacity value.
-     */
-    public Integer replicaCapacity() {
-        return this.replicaCapacity;
-    }
-
-    /**
-     * Get the dataEncryption property: The Data Encryption for CMK.
-     *
-     * @return the dataEncryption value.
-     */
-    public DataEncryption dataEncryption() {
-        return this.dataEncryption;
-    }
-
-    /**
-     * Set the dataEncryption property: The Data Encryption for CMK.
-     *
-     * @param dataEncryption the dataEncryption value to set.
-     * @return the ServerProperties object itself.
-     */
-    public ServerProperties withDataEncryption(DataEncryption dataEncryption) {
-        this.dataEncryption = dataEncryption;
-        return this;
-    }
-
-    /**
-     * Get the state property: The state of a server.
-     *
-     * @return the state value.
-     */
-    public ServerState state() {
-        return this.state;
     }
 
     /**
@@ -339,103 +255,145 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the storage property: Storage related properties of a server.
+     * Set the fullyQualifiedDomainName property: The fully qualified domain name of a server.
      *
-     * @return the storage value.
-     */
-    public Storage storage() {
-        return this.storage;
-    }
-
-    /**
-     * Set the storage property: Storage related properties of a server.
-     *
-     * @param storage the storage value to set.
+     * @param fullyQualifiedDomainName the fullyQualifiedDomainName value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withStorage(Storage storage) {
-        this.storage = storage;
+    public ServerProperties withFullyQualifiedDomainName(String fullyQualifiedDomainName) {
+        this.fullyQualifiedDomainName = fullyQualifiedDomainName;
         return this;
     }
 
     /**
-     * Get the backup property: Backup related properties of a server.
+     * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
      *
-     * @return the backup value.
+     * @return the earliestRestoreDate value.
      */
-    public Backup backup() {
-        return this.backup;
+    public OffsetDateTime earliestRestoreDate() {
+        return this.earliestRestoreDate;
     }
 
     /**
-     * Set the backup property: Backup related properties of a server.
+     * Set the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
      *
-     * @param backup the backup value to set.
+     * @param earliestRestoreDate the earliestRestoreDate value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withBackup(Backup backup) {
-        this.backup = backup;
+    public ServerProperties withEarliestRestoreDate(OffsetDateTime earliestRestoreDate) {
+        this.earliestRestoreDate = earliestRestoreDate;
         return this;
     }
 
     /**
-     * Get the highAvailability property: High availability related properties of a server.
+     * Get the storageProfile property: Storage profile of a server.
      *
-     * @return the highAvailability value.
+     * @return the storageProfile value.
      */
-    public HighAvailability highAvailability() {
-        return this.highAvailability;
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
     }
 
     /**
-     * Set the highAvailability property: High availability related properties of a server.
+     * Set the storageProfile property: Storage profile of a server.
      *
-     * @param highAvailability the highAvailability value to set.
+     * @param storageProfile the storageProfile value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withHighAvailability(HighAvailability highAvailability) {
-        this.highAvailability = highAvailability;
+    public ServerProperties withStorageProfile(StorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
         return this;
     }
 
     /**
-     * Get the network property: Network related properties of a server.
+     * Get the replicationRole property: The replication role of the server.
      *
-     * @return the network value.
+     * @return the replicationRole value.
      */
-    public Network network() {
-        return this.network;
+    public String replicationRole() {
+        return this.replicationRole;
     }
 
     /**
-     * Set the network property: Network related properties of a server.
+     * Set the replicationRole property: The replication role of the server.
      *
-     * @param network the network value to set.
+     * @param replicationRole the replicationRole value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withNetwork(Network network) {
-        this.network = network;
+    public ServerProperties withReplicationRole(String replicationRole) {
+        this.replicationRole = replicationRole;
         return this;
     }
 
     /**
-     * Get the maintenanceWindow property: Maintenance window of a server.
+     * Get the masterServerId property: The master server id of a replica server.
      *
-     * @return the maintenanceWindow value.
+     * @return the masterServerId value.
      */
-    public MaintenanceWindow maintenanceWindow() {
-        return this.maintenanceWindow;
+    public String masterServerId() {
+        return this.masterServerId;
     }
 
     /**
-     * Set the maintenanceWindow property: Maintenance window of a server.
+     * Set the masterServerId property: The master server id of a replica server.
      *
-     * @param maintenanceWindow the maintenanceWindow value to set.
+     * @param masterServerId the masterServerId value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
-        this.maintenanceWindow = maintenanceWindow;
+    public ServerProperties withMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
         return this;
+    }
+
+    /**
+     * Get the replicaCapacity property: The maximum number of replicas that a master server can have.
+     *
+     * @return the replicaCapacity value.
+     */
+    public Integer replicaCapacity() {
+        return this.replicaCapacity;
+    }
+
+    /**
+     * Set the replicaCapacity property: The maximum number of replicas that a master server can have.
+     *
+     * @param replicaCapacity the replicaCapacity value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withReplicaCapacity(Integer replicaCapacity) {
+        this.replicaCapacity = replicaCapacity;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a server.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -444,23 +402,11 @@ public final class ServerProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dataEncryption() != null) {
-            dataEncryption().validate();
+        if (storageProfile() != null) {
+            storageProfile().validate();
         }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (network() != null) {
-            network().validate();
-        }
-        if (maintenanceWindow() != null) {
-            maintenanceWindow().validate();
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

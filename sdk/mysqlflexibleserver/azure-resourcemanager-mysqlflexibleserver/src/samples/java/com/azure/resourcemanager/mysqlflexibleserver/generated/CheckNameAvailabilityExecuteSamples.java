@@ -10,19 +10,17 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.NameAvailabilityRequ
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/CheckNameAvailability.json
      */
     /**
-     * Sample code: Check name availability.
+     * Sample code: NameAvailability.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void checkNameAvailability(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void nameAvailability(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager
             .checkNameAvailabilities()
             .executeWithResponse(
-                "SouthEastAsia",
-                new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforMySQL/flexibleServers"),
-                Context.NONE);
+                new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforMySQL"), Context.NONE);
     }
 }

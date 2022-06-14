@@ -6,9 +6,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.OperationInner;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.OperationListResultInner;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
@@ -17,10 +17,10 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return a list of resource provider operations.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationListResultInner list();
 
     /**
      * Lists all of the available REST API operations.
@@ -29,8 +29,8 @@ public interface OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return a list of resource provider operations along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationListResultInner> listWithResponse(Context context);
 }

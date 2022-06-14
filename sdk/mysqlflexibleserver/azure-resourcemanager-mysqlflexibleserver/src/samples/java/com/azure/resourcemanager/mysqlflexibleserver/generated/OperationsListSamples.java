@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/OperationsList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -17,6 +17,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void operationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().listWithResponse(Context.NONE);
     }
 }

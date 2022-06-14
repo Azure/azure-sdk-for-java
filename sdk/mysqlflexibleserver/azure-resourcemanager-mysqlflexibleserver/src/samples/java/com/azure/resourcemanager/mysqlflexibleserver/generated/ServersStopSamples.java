@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Servers Stop. */
 public final class ServersStopSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerStop.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2020-01-01/examples/ServerStop.json
      */
     /**
-     * Sample code: Stop a server.
+     * Sample code: ServerStop.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void stopAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void serverStop(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.servers().stop("TestGroup", "testserver", Context.NONE);
     }
 }

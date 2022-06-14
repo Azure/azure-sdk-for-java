@@ -5,10 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
-import com.azure.resourcemanager.mysqlflexibleserver.models.IsConfigPendingRestart;
-import com.azure.resourcemanager.mysqlflexibleserver.models.IsDynamicConfig;
-import com.azure.resourcemanager.mysqlflexibleserver.models.IsReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a configuration. */
@@ -48,25 +44,7 @@ public final class ConfigurationProperties {
      * Source of the configuration.
      */
     @JsonProperty(value = "source")
-    private ConfigurationSource source;
-
-    /*
-     * If is the configuration read only.
-     */
-    @JsonProperty(value = "isReadOnly", access = JsonProperty.Access.WRITE_ONLY)
-    private IsReadOnly isReadOnly;
-
-    /*
-     * If is the configuration pending restart or not.
-     */
-    @JsonProperty(value = "isConfigPendingRestart", access = JsonProperty.Access.WRITE_ONLY)
-    private IsConfigPendingRestart isConfigPendingRestart;
-
-    /*
-     * If is the configuration dynamic.
-     */
-    @JsonProperty(value = "isDynamicConfig", access = JsonProperty.Access.WRITE_ONLY)
-    private IsDynamicConfig isDynamicConfig;
+    private String source;
 
     /**
      * Get the value property: Value of the configuration.
@@ -129,7 +107,7 @@ public final class ConfigurationProperties {
      *
      * @return the source value.
      */
-    public ConfigurationSource source() {
+    public String source() {
         return this.source;
     }
 
@@ -139,36 +117,9 @@ public final class ConfigurationProperties {
      * @param source the source value to set.
      * @return the ConfigurationProperties object itself.
      */
-    public ConfigurationProperties withSource(ConfigurationSource source) {
+    public ConfigurationProperties withSource(String source) {
         this.source = source;
         return this;
-    }
-
-    /**
-     * Get the isReadOnly property: If is the configuration read only.
-     *
-     * @return the isReadOnly value.
-     */
-    public IsReadOnly isReadOnly() {
-        return this.isReadOnly;
-    }
-
-    /**
-     * Get the isConfigPendingRestart property: If is the configuration pending restart or not.
-     *
-     * @return the isConfigPendingRestart value.
-     */
-    public IsConfigPendingRestart isConfigPendingRestart() {
-        return this.isConfigPendingRestart;
-    }
-
-    /**
-     * Get the isDynamicConfig property: If is the configuration dynamic.
-     *
-     * @return the isDynamicConfig value.
-     */
-    public IsDynamicConfig isDynamicConfig() {
-        return this.isDynamicConfig;
     }
 
     /**

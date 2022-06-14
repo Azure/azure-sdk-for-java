@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.OperationsClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.OperationInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Operation;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.OperationListResultInner;
+import com.azure.resourcemanager.mysqlflexibleserver.models.OperationListResult;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Operations;
 
 public final class OperationsImpl implements Operations {
@@ -25,14 +26,26 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Operation> list() {
-        PagedIterable<OperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+    public OperationListResult list() {
+        OperationListResultInner inner = this.serviceClient().list();
+        if (inner != null) {
+            return new OperationListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<Operation> list(Context context) {
-        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+    public Response<OperationListResult> listWithResponse(Context context) {
+        Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new OperationListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     private OperationsClient serviceClient() {

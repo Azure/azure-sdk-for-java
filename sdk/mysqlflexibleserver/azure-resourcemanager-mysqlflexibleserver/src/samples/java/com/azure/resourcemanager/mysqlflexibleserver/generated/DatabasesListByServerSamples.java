@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Databases ListByServer. */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/DatabasesListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/DatabaseListByServer.json
      */
     /**
-     * Sample code: List databases in a server.
+     * Sample code: DatabaseList.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void listDatabasesInAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void databaseList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.databases().listByServer("TestGroup", "testserver", Context.NONE);
     }
 }

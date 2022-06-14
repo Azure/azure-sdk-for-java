@@ -15,31 +15,46 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.BackupsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.AdvisorsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckNameAvailabilitiesClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.CheckVirtualNetworkSubnetUsagesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.FirewallRulesClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedPerformanceTiersClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedRecommendedActionSessionsOperationStatusClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedRecommendedActionSessionsResultsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.LogFilesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.MySqlManagementClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.OperationsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.QueryTextsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.RecommendedActionsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.RecoverableServersClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ReplicasClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServerAdministratorsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServerBasedPerformanceTiersClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServerKeysClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServerParametersClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServerSecurityAlertPoliciesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ServersClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.TopQueryStatisticsClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.VirtualNetworkRulesClient;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.WaitStatisticsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -68,18 +83,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -142,18 +145,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.replicas;
     }
 
-    /** The BackupsClient object to access its operations. */
-    private final BackupsClient backups;
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     *
-     * @return the BackupsClient object.
-     */
-    public BackupsClient getBackups() {
-        return this.backups;
-    }
-
     /** The FirewallRulesClient object to access its operations. */
     private final FirewallRulesClient firewallRules;
 
@@ -164,6 +155,18 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public FirewallRulesClient getFirewallRules() {
         return this.firewallRules;
+    }
+
+    /** The VirtualNetworkRulesClient object to access its operations. */
+    private final VirtualNetworkRulesClient virtualNetworkRules;
+
+    /**
+     * Gets the VirtualNetworkRulesClient object to access its operations.
+     *
+     * @return the VirtualNetworkRulesClient object.
+     */
+    public VirtualNetworkRulesClient getVirtualNetworkRules() {
+        return this.virtualNetworkRules;
     }
 
     /** The DatabasesClient object to access its operations. */
@@ -190,28 +193,76 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.configurations;
     }
 
-    /** The LocationBasedCapabilitiesClient object to access its operations. */
-    private final LocationBasedCapabilitiesClient locationBasedCapabilities;
+    /** The ServerParametersClient object to access its operations. */
+    private final ServerParametersClient serverParameters;
 
     /**
-     * Gets the LocationBasedCapabilitiesClient object to access its operations.
+     * Gets the ServerParametersClient object to access its operations.
      *
-     * @return the LocationBasedCapabilitiesClient object.
+     * @return the ServerParametersClient object.
      */
-    public LocationBasedCapabilitiesClient getLocationBasedCapabilities() {
-        return this.locationBasedCapabilities;
+    public ServerParametersClient getServerParameters() {
+        return this.serverParameters;
     }
 
-    /** The CheckVirtualNetworkSubnetUsagesClient object to access its operations. */
-    private final CheckVirtualNetworkSubnetUsagesClient checkVirtualNetworkSubnetUsages;
+    /** The LogFilesClient object to access its operations. */
+    private final LogFilesClient logFiles;
 
     /**
-     * Gets the CheckVirtualNetworkSubnetUsagesClient object to access its operations.
+     * Gets the LogFilesClient object to access its operations.
      *
-     * @return the CheckVirtualNetworkSubnetUsagesClient object.
+     * @return the LogFilesClient object.
      */
-    public CheckVirtualNetworkSubnetUsagesClient getCheckVirtualNetworkSubnetUsages() {
-        return this.checkVirtualNetworkSubnetUsages;
+    public LogFilesClient getLogFiles() {
+        return this.logFiles;
+    }
+
+    /** The ServerAdministratorsClient object to access its operations. */
+    private final ServerAdministratorsClient serverAdministrators;
+
+    /**
+     * Gets the ServerAdministratorsClient object to access its operations.
+     *
+     * @return the ServerAdministratorsClient object.
+     */
+    public ServerAdministratorsClient getServerAdministrators() {
+        return this.serverAdministrators;
+    }
+
+    /** The RecoverableServersClient object to access its operations. */
+    private final RecoverableServersClient recoverableServers;
+
+    /**
+     * Gets the RecoverableServersClient object to access its operations.
+     *
+     * @return the RecoverableServersClient object.
+     */
+    public RecoverableServersClient getRecoverableServers() {
+        return this.recoverableServers;
+    }
+
+    /** The ServerBasedPerformanceTiersClient object to access its operations. */
+    private final ServerBasedPerformanceTiersClient serverBasedPerformanceTiers;
+
+    /**
+     * Gets the ServerBasedPerformanceTiersClient object to access its operations.
+     *
+     * @return the ServerBasedPerformanceTiersClient object.
+     */
+    public ServerBasedPerformanceTiersClient getServerBasedPerformanceTiers() {
+        return this.serverBasedPerformanceTiers;
+    }
+
+    /** The LocationBasedPerformanceTiersClient object to access its operations. */
+    private final LocationBasedPerformanceTiersClient locationBasedPerformanceTiers;
+
+    /**
+     * Gets the LocationBasedPerformanceTiersClient object to access its operations.
+     *
+     * @return the LocationBasedPerformanceTiersClient object.
+     */
+    public LocationBasedPerformanceTiersClient getLocationBasedPerformanceTiers() {
+        return this.locationBasedPerformanceTiers;
     }
 
     /** The CheckNameAvailabilitiesClient object to access its operations. */
@@ -226,18 +277,6 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         return this.checkNameAvailabilities;
     }
 
-    /** The GetPrivateDnsZoneSuffixesClient object to access its operations. */
-    private final GetPrivateDnsZoneSuffixesClient getPrivateDnsZoneSuffixes;
-
-    /**
-     * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
-     *
-     * @return the GetPrivateDnsZoneSuffixesClient object.
-     */
-    public GetPrivateDnsZoneSuffixesClient getGetPrivateDnsZoneSuffixes() {
-        return this.getPrivateDnsZoneSuffixes;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -248,6 +287,152 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /** The ServerSecurityAlertPoliciesClient object to access its operations. */
+    private final ServerSecurityAlertPoliciesClient serverSecurityAlertPolicies;
+
+    /**
+     * Gets the ServerSecurityAlertPoliciesClient object to access its operations.
+     *
+     * @return the ServerSecurityAlertPoliciesClient object.
+     */
+    public ServerSecurityAlertPoliciesClient getServerSecurityAlertPolicies() {
+        return this.serverSecurityAlertPolicies;
+    }
+
+    /** The QueryTextsClient object to access its operations. */
+    private final QueryTextsClient queryTexts;
+
+    /**
+     * Gets the QueryTextsClient object to access its operations.
+     *
+     * @return the QueryTextsClient object.
+     */
+    public QueryTextsClient getQueryTexts() {
+        return this.queryTexts;
+    }
+
+    /** The TopQueryStatisticsClient object to access its operations. */
+    private final TopQueryStatisticsClient topQueryStatistics;
+
+    /**
+     * Gets the TopQueryStatisticsClient object to access its operations.
+     *
+     * @return the TopQueryStatisticsClient object.
+     */
+    public TopQueryStatisticsClient getTopQueryStatistics() {
+        return this.topQueryStatistics;
+    }
+
+    /** The WaitStatisticsClient object to access its operations. */
+    private final WaitStatisticsClient waitStatistics;
+
+    /**
+     * Gets the WaitStatisticsClient object to access its operations.
+     *
+     * @return the WaitStatisticsClient object.
+     */
+    public WaitStatisticsClient getWaitStatistics() {
+        return this.waitStatistics;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
+    /** The AdvisorsClient object to access its operations. */
+    private final AdvisorsClient advisors;
+
+    /**
+     * Gets the AdvisorsClient object to access its operations.
+     *
+     * @return the AdvisorsClient object.
+     */
+    public AdvisorsClient getAdvisors() {
+        return this.advisors;
+    }
+
+    /** The RecommendedActionsClient object to access its operations. */
+    private final RecommendedActionsClient recommendedActions;
+
+    /**
+     * Gets the RecommendedActionsClient object to access its operations.
+     *
+     * @return the RecommendedActionsClient object.
+     */
+    public RecommendedActionsClient getRecommendedActions() {
+        return this.recommendedActions;
+    }
+
+    /** The LocationBasedRecommendedActionSessionsOperationStatusClient object to access its operations. */
+    private final LocationBasedRecommendedActionSessionsOperationStatusClient
+        locationBasedRecommendedActionSessionsOperationStatus;
+
+    /**
+     * Gets the LocationBasedRecommendedActionSessionsOperationStatusClient object to access its operations.
+     *
+     * @return the LocationBasedRecommendedActionSessionsOperationStatusClient object.
+     */
+    public LocationBasedRecommendedActionSessionsOperationStatusClient
+        getLocationBasedRecommendedActionSessionsOperationStatus() {
+        return this.locationBasedRecommendedActionSessionsOperationStatus;
+    }
+
+    /** The LocationBasedRecommendedActionSessionsResultsClient object to access its operations. */
+    private final LocationBasedRecommendedActionSessionsResultsClient locationBasedRecommendedActionSessionsResults;
+
+    /**
+     * Gets the LocationBasedRecommendedActionSessionsResultsClient object to access its operations.
+     *
+     * @return the LocationBasedRecommendedActionSessionsResultsClient object.
+     */
+    public LocationBasedRecommendedActionSessionsResultsClient getLocationBasedRecommendedActionSessionsResults() {
+        return this.locationBasedRecommendedActionSessionsResults;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The ServerKeysClient object to access its operations. */
+    private final ServerKeysClient serverKeys;
+
+    /**
+     * Gets the ServerKeysClient object to access its operations.
+     *
+     * @return the ServerKeysClient object.
+     */
+    public ServerKeysClient getServerKeys() {
+        return this.serverKeys;
     }
 
     /**
@@ -272,18 +457,34 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-05-01";
         this.servers = new ServersClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
-        this.backups = new BackupsClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
+        this.virtualNetworkRules = new VirtualNetworkRulesClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
-        this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
-        this.checkVirtualNetworkSubnetUsages = new CheckVirtualNetworkSubnetUsagesClientImpl(this);
+        this.serverParameters = new ServerParametersClientImpl(this);
+        this.logFiles = new LogFilesClientImpl(this);
+        this.serverAdministrators = new ServerAdministratorsClientImpl(this);
+        this.recoverableServers = new RecoverableServersClientImpl(this);
+        this.serverBasedPerformanceTiers = new ServerBasedPerformanceTiersClientImpl(this);
+        this.locationBasedPerformanceTiers = new LocationBasedPerformanceTiersClientImpl(this);
         this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
-        this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesClientImpl(this);
+        this.queryTexts = new QueryTextsClientImpl(this);
+        this.topQueryStatistics = new TopQueryStatisticsClientImpl(this);
+        this.waitStatistics = new WaitStatisticsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.advisors = new AdvisorsClientImpl(this);
+        this.recommendedActions = new RecommendedActionsClientImpl(this);
+        this.locationBasedRecommendedActionSessionsOperationStatus =
+            new LocationBasedRecommendedActionSessionsOperationStatusClientImpl(this);
+        this.locationBasedRecommendedActionSessionsResults =
+            new LocationBasedRecommendedActionSessionsResultsClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.serverKeys = new ServerKeysClientImpl(this);
     }
 
     /**
@@ -302,10 +503,7 @@ public final class MySqlManagementClientImpl implements MySqlManagementClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**

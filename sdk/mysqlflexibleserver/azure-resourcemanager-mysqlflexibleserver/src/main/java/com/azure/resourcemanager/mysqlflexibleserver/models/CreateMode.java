@@ -16,11 +16,11 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /** Static value PointInTimeRestore for CreateMode. */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
-    /** Static value Replica for CreateMode. */
-    public static final CreateMode REPLICA = fromString("Replica");
-
     /** Static value GeoRestore for CreateMode. */
     public static final CreateMode GEO_RESTORE = fromString("GeoRestore");
+
+    /** Static value Replica for CreateMode. */
+    public static final CreateMode REPLICA = fromString("Replica");
 
     /**
      * Creates or finds a CreateMode from its string representation.
@@ -33,7 +33,11 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
         return fromString(name, CreateMode.class);
     }
 
-    /** @return known CreateMode values. */
+    /**
+     * Gets known CreateMode values.
+     *
+     * @return known CreateMode values.
+     */
     public static Collection<CreateMode> values() {
         return values(CreateMode.class);
     }

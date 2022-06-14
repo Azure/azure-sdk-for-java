@@ -18,12 +18,6 @@ public final class DatabaseListResult {
     @JsonProperty(value = "value")
     private List<DatabaseInner> value;
 
-    /*
-     * The link used to get the next page of operations.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
     /**
      * Get the value property: The list of databases housed in a server.
      *
@@ -41,26 +35,6 @@ public final class DatabaseListResult {
      */
     public DatabaseListResult withValue(List<DatabaseInner> value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link used to get the next page of operations.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link used to get the next page of operations.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the DatabaseListResult object itself.
-     */
-    public DatabaseListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 

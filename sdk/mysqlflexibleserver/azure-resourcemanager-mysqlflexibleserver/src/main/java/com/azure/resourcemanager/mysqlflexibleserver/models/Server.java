@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of Server. */
@@ -49,11 +49,11 @@ public interface Server {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: The cmk identity for the server.
+     * Gets the identity property: The Azure Active Directory identity of the server.
      *
      * @return the identity value.
      */
-    Identity identity();
+    ResourceIdentity identity();
 
     /**
      * Gets the sku property: The SKU (pricing tier) of the server.
@@ -61,13 +61,6 @@ public interface Server {
      * @return the sku value.
      */
     Sku sku();
-
-    /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the administratorLogin property: The administrator's login name of a server. Can only be specified when the
@@ -78,14 +71,6 @@ public interface Server {
     String administratorLogin();
 
     /**
-     * Gets the administratorLoginPassword property: The password of the administrator login (required for server
-     * creation).
-     *
-     * @return the administratorLoginPassword value.
-     */
-    String administratorLoginPassword();
-
-    /**
      * Gets the version property: Server version.
      *
      * @return the version value.
@@ -93,61 +78,40 @@ public interface Server {
     ServerVersion version();
 
     /**
-     * Gets the availabilityZone property: availability Zone information of the server.
+     * Gets the sslEnforcement property: Enable ssl enforcement or not when connect to server.
      *
-     * @return the availabilityZone value.
+     * @return the sslEnforcement value.
      */
-    String availabilityZone();
+    SslEnforcementEnum sslEnforcement();
 
     /**
-     * Gets the createMode property: The mode to create a new MySQL server.
+     * Gets the minimalTlsVersion property: Enforce a minimal Tls version for the server.
      *
-     * @return the createMode value.
+     * @return the minimalTlsVersion value.
      */
-    CreateMode createMode();
+    MinimalTlsVersionEnum minimalTlsVersion();
 
     /**
-     * Gets the sourceServerResourceId property: The source MySQL server id.
+     * Gets the byokEnforcement property: Status showing whether the server data encryption is enabled with
+     * customer-managed keys.
      *
-     * @return the sourceServerResourceId value.
+     * @return the byokEnforcement value.
      */
-    String sourceServerResourceId();
+    String byokEnforcement();
 
     /**
-     * Gets the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the time to
-     * restore from.
+     * Gets the infrastructureEncryption property: Status showing whether the server enabled infrastructure encryption.
      *
-     * @return the restorePointInTime value.
+     * @return the infrastructureEncryption value.
      */
-    OffsetDateTime restorePointInTime();
+    InfrastructureEncryption infrastructureEncryption();
 
     /**
-     * Gets the replicationRole property: The replication role.
+     * Gets the userVisibleState property: A state of a server that is visible to user.
      *
-     * @return the replicationRole value.
+     * @return the userVisibleState value.
      */
-    ReplicationRole replicationRole();
-
-    /**
-     * Gets the replicaCapacity property: The maximum number of replicas that a primary server can have.
-     *
-     * @return the replicaCapacity value.
-     */
-    Integer replicaCapacity();
-
-    /**
-     * Gets the dataEncryption property: The Data Encryption for CMK.
-     *
-     * @return the dataEncryption value.
-     */
-    DataEncryption dataEncryption();
-
-    /**
-     * Gets the state property: The state of a server.
-     *
-     * @return the state value.
-     */
-    ServerState state();
+    ServerState userVisibleState();
 
     /**
      * Gets the fullyQualifiedDomainName property: The fully qualified domain name of a server.
@@ -157,39 +121,54 @@ public interface Server {
     String fullyQualifiedDomainName();
 
     /**
-     * Gets the storage property: Storage related properties of a server.
+     * Gets the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
      *
-     * @return the storage value.
+     * @return the earliestRestoreDate value.
      */
-    Storage storage();
+    OffsetDateTime earliestRestoreDate();
 
     /**
-     * Gets the backup property: Backup related properties of a server.
+     * Gets the storageProfile property: Storage profile of a server.
      *
-     * @return the backup value.
+     * @return the storageProfile value.
      */
-    Backup backup();
+    StorageProfile storageProfile();
 
     /**
-     * Gets the highAvailability property: High availability related properties of a server.
+     * Gets the replicationRole property: The replication role of the server.
      *
-     * @return the highAvailability value.
+     * @return the replicationRole value.
      */
-    HighAvailability highAvailability();
+    String replicationRole();
 
     /**
-     * Gets the network property: Network related properties of a server.
+     * Gets the masterServerId property: The master server id of a replica server.
      *
-     * @return the network value.
+     * @return the masterServerId value.
      */
-    Network network();
+    String masterServerId();
 
     /**
-     * Gets the maintenanceWindow property: Maintenance window of a server.
+     * Gets the replicaCapacity property: The maximum number of replicas that a master server can have.
      *
-     * @return the maintenanceWindow value.
+     * @return the replicaCapacity value.
      */
-    MaintenanceWindow maintenanceWindow();
+    Integer replicaCapacity();
+
+    /**
+     * Gets the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
+
+    /**
+     * Gets the privateEndpointConnections property: List of private endpoint connections on a server.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
@@ -206,6 +185,13 @@ public interface Server {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner object.
      *
      * @return the inner object.
@@ -217,6 +203,7 @@ public interface Server {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
     /** The Server definition stages. */
@@ -229,7 +216,7 @@ public interface Server {
             /**
              * Specifies the region for the resource.
              *
-             * @param location The geo-location where the resource lives.
+             * @param location The location the resource resides in.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(Region location);
@@ -237,7 +224,7 @@ public interface Server {
             /**
              * Specifies the region for the resource.
              *
-             * @param location The geo-location where the resource lives.
+             * @param location The location the resource resides in.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
@@ -250,29 +237,24 @@ public interface Server {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithProperties withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the Server definition allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the server..
+             *
+             * @param properties Properties of the server.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(ServerPropertiesForCreate properties);
         }
         /**
          * The stage of the Server definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithAdministratorLogin,
-                DefinitionStages.WithAdministratorLoginPassword,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithAvailabilityZone,
-                DefinitionStages.WithCreateMode,
-                DefinitionStages.WithSourceServerResourceId,
-                DefinitionStages.WithRestorePointInTime,
-                DefinitionStages.WithReplicationRole,
-                DefinitionStages.WithDataEncryption,
-                DefinitionStages.WithStorage,
-                DefinitionStages.WithBackup,
-                DefinitionStages.WithHighAvailability,
-                DefinitionStages.WithNetwork {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku {
             /**
              * Executes the create request.
              *
@@ -291,9 +273,9 @@ public interface Server {
         /** The stage of the Server definition allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Application-specific metadata in the form of key-value pairs..
              *
-             * @param tags Resource tags.
+             * @param tags Application-specific metadata in the form of key-value pairs.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
@@ -301,12 +283,12 @@ public interface Server {
         /** The stage of the Server definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The cmk identity for the server..
+             * Specifies the identity property: The Azure Active Directory identity of the server..
              *
-             * @param identity The cmk identity for the server.
+             * @param identity The Azure Active Directory identity of the server.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(Identity identity);
+            WithCreate withIdentity(ResourceIdentity identity);
         }
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {
@@ -317,141 +299,6 @@ public interface Server {
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
-        }
-        /** The stage of the Server definition allowing to specify administratorLogin. */
-        interface WithAdministratorLogin {
-            /**
-             * Specifies the administratorLogin property: The administrator's login name of a server. Can only be
-             * specified when the server is being created (and is required for creation)..
-             *
-             * @param administratorLogin The administrator's login name of a server. Can only be specified when the
-             *     server is being created (and is required for creation).
-             * @return the next definition stage.
-             */
-            WithCreate withAdministratorLogin(String administratorLogin);
-        }
-        /** The stage of the Server definition allowing to specify administratorLoginPassword. */
-        interface WithAdministratorLoginPassword {
-            /**
-             * Specifies the administratorLoginPassword property: The password of the administrator login (required for
-             * server creation)..
-             *
-             * @param administratorLoginPassword The password of the administrator login (required for server creation).
-             * @return the next definition stage.
-             */
-            WithCreate withAdministratorLoginPassword(String administratorLoginPassword);
-        }
-        /** The stage of the Server definition allowing to specify version. */
-        interface WithVersion {
-            /**
-             * Specifies the version property: Server version..
-             *
-             * @param version Server version.
-             * @return the next definition stage.
-             */
-            WithCreate withVersion(ServerVersion version);
-        }
-        /** The stage of the Server definition allowing to specify availabilityZone. */
-        interface WithAvailabilityZone {
-            /**
-             * Specifies the availabilityZone property: availability Zone information of the server..
-             *
-             * @param availabilityZone availability Zone information of the server.
-             * @return the next definition stage.
-             */
-            WithCreate withAvailabilityZone(String availabilityZone);
-        }
-        /** The stage of the Server definition allowing to specify createMode. */
-        interface WithCreateMode {
-            /**
-             * Specifies the createMode property: The mode to create a new MySQL server..
-             *
-             * @param createMode The mode to create a new MySQL server.
-             * @return the next definition stage.
-             */
-            WithCreate withCreateMode(CreateMode createMode);
-        }
-        /** The stage of the Server definition allowing to specify sourceServerResourceId. */
-        interface WithSourceServerResourceId {
-            /**
-             * Specifies the sourceServerResourceId property: The source MySQL server id..
-             *
-             * @param sourceServerResourceId The source MySQL server id.
-             * @return the next definition stage.
-             */
-            WithCreate withSourceServerResourceId(String sourceServerResourceId);
-        }
-        /** The stage of the Server definition allowing to specify restorePointInTime. */
-        interface WithRestorePointInTime {
-            /**
-             * Specifies the restorePointInTime property: Restore point creation time (ISO8601 format), specifying the
-             * time to restore from..
-             *
-             * @param restorePointInTime Restore point creation time (ISO8601 format), specifying the time to restore
-             *     from.
-             * @return the next definition stage.
-             */
-            WithCreate withRestorePointInTime(OffsetDateTime restorePointInTime);
-        }
-        /** The stage of the Server definition allowing to specify replicationRole. */
-        interface WithReplicationRole {
-            /**
-             * Specifies the replicationRole property: The replication role..
-             *
-             * @param replicationRole The replication role.
-             * @return the next definition stage.
-             */
-            WithCreate withReplicationRole(ReplicationRole replicationRole);
-        }
-        /** The stage of the Server definition allowing to specify dataEncryption. */
-        interface WithDataEncryption {
-            /**
-             * Specifies the dataEncryption property: The Data Encryption for CMK..
-             *
-             * @param dataEncryption The Data Encryption for CMK.
-             * @return the next definition stage.
-             */
-            WithCreate withDataEncryption(DataEncryption dataEncryption);
-        }
-        /** The stage of the Server definition allowing to specify storage. */
-        interface WithStorage {
-            /**
-             * Specifies the storage property: Storage related properties of a server..
-             *
-             * @param storage Storage related properties of a server.
-             * @return the next definition stage.
-             */
-            WithCreate withStorage(Storage storage);
-        }
-        /** The stage of the Server definition allowing to specify backup. */
-        interface WithBackup {
-            /**
-             * Specifies the backup property: Backup related properties of a server..
-             *
-             * @param backup Backup related properties of a server.
-             * @return the next definition stage.
-             */
-            WithCreate withBackup(Backup backup);
-        }
-        /** The stage of the Server definition allowing to specify highAvailability. */
-        interface WithHighAvailability {
-            /**
-             * Specifies the highAvailability property: High availability related properties of a server..
-             *
-             * @param highAvailability High availability related properties of a server.
-             * @return the next definition stage.
-             */
-            WithCreate withHighAvailability(HighAvailability highAvailability);
-        }
-        /** The stage of the Server definition allowing to specify network. */
-        interface WithNetwork {
-            /**
-             * Specifies the network property: Network related properties of a server..
-             *
-             * @param network Network related properties of a server.
-             * @return the next definition stage.
-             */
-            WithCreate withNetwork(Network network);
         }
     }
     /**
@@ -466,13 +313,13 @@ public interface Server {
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
             UpdateStages.WithSku,
+            UpdateStages.WithStorageProfile,
             UpdateStages.WithAdministratorLoginPassword,
-            UpdateStages.WithStorage,
-            UpdateStages.WithBackup,
-            UpdateStages.WithHighAvailability,
-            UpdateStages.WithMaintenanceWindow,
-            UpdateStages.WithReplicationRole,
-            UpdateStages.WithDataEncryption {
+            UpdateStages.WithVersion,
+            UpdateStages.WithSslEnforcement,
+            UpdateStages.WithMinimalTlsVersion,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithReplicationRole {
         /**
          * Executes the update request.
          *
@@ -503,12 +350,12 @@ public interface Server {
         /** The stage of the Server update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The cmk identity for the server..
+             * Specifies the identity property: The Azure Active Directory identity of the server..
              *
-             * @param identity The cmk identity for the server.
+             * @param identity The Azure Active Directory identity of the server.
              * @return the next definition stage.
              */
-            Update withIdentity(Identity identity);
+            Update withIdentity(ResourceIdentity identity);
         }
         /** The stage of the Server update allowing to specify sku. */
         interface WithSku {
@@ -520,6 +367,16 @@ public interface Server {
              */
             Update withSku(Sku sku);
         }
+        /** The stage of the Server update allowing to specify storageProfile. */
+        interface WithStorageProfile {
+            /**
+             * Specifies the storageProfile property: Storage profile of a server..
+             *
+             * @param storageProfile Storage profile of a server.
+             * @return the next definition stage.
+             */
+            Update withStorageProfile(StorageProfile storageProfile);
+        }
         /** The stage of the Server update allowing to specify administratorLoginPassword. */
         interface WithAdministratorLoginPassword {
             /**
@@ -530,45 +387,47 @@ public interface Server {
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
         }
-        /** The stage of the Server update allowing to specify storage. */
-        interface WithStorage {
+        /** The stage of the Server update allowing to specify version. */
+        interface WithVersion {
             /**
-             * Specifies the storage property: Storage related properties of a server..
+             * Specifies the version property: The version of a server..
              *
-             * @param storage Storage related properties of a server.
+             * @param version The version of a server.
              * @return the next definition stage.
              */
-            Update withStorage(Storage storage);
+            Update withVersion(ServerVersion version);
         }
-        /** The stage of the Server update allowing to specify backup. */
-        interface WithBackup {
+        /** The stage of the Server update allowing to specify sslEnforcement. */
+        interface WithSslEnforcement {
             /**
-             * Specifies the backup property: Backup related properties of a server..
+             * Specifies the sslEnforcement property: Enable ssl enforcement or not when connect to server..
              *
-             * @param backup Backup related properties of a server.
+             * @param sslEnforcement Enable ssl enforcement or not when connect to server.
              * @return the next definition stage.
              */
-            Update withBackup(Backup backup);
+            Update withSslEnforcement(SslEnforcementEnum sslEnforcement);
         }
-        /** The stage of the Server update allowing to specify highAvailability. */
-        interface WithHighAvailability {
+        /** The stage of the Server update allowing to specify minimalTlsVersion. */
+        interface WithMinimalTlsVersion {
             /**
-             * Specifies the highAvailability property: High availability related properties of a server..
+             * Specifies the minimalTlsVersion property: Enforce a minimal Tls version for the server..
              *
-             * @param highAvailability High availability related properties of a server.
+             * @param minimalTlsVersion Enforce a minimal Tls version for the server.
              * @return the next definition stage.
              */
-            Update withHighAvailability(HighAvailability highAvailability);
+            Update withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion);
         }
-        /** The stage of the Server update allowing to specify maintenanceWindow. */
-        interface WithMaintenanceWindow {
+        /** The stage of the Server update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
             /**
-             * Specifies the maintenanceWindow property: Maintenance window of a server..
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for this
+             * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
              *
-             * @param maintenanceWindow Maintenance window of a server.
+             * @param publicNetworkAccess Whether or not public network access is allowed for this server. Value is
+             *     optional but if passed in, must be 'Enabled' or 'Disabled'.
              * @return the next definition stage.
              */
-            Update withMaintenanceWindow(MaintenanceWindow maintenanceWindow);
+            Update withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess);
         }
         /** The stage of the Server update allowing to specify replicationRole. */
         interface WithReplicationRole {
@@ -578,17 +437,7 @@ public interface Server {
              * @param replicationRole The replication role of the server.
              * @return the next definition stage.
              */
-            Update withReplicationRole(ReplicationRole replicationRole);
-        }
-        /** The stage of the Server update allowing to specify dataEncryption. */
-        interface WithDataEncryption {
-            /**
-             * Specifies the dataEncryption property: The Data Encryption for CMK..
-             *
-             * @param dataEncryption The Data Encryption for CMK.
-             * @return the next definition stage.
-             */
-            Update withDataEncryption(DataEncryption dataEncryption);
+            Update withReplicationRole(String replicationRole);
         }
     }
     /**
@@ -607,46 +456,25 @@ public interface Server {
     Server refresh(Context context);
 
     /**
-     * Manual failover a server.
+     * Restarts a server.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void failover();
+    void restart();
 
     /**
-     * Manual failover a server.
+     * Restarts a server.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void failover(Context context);
+    void restart(Context context);
 
     /**
-     * Restarts a server.
-     *
-     * @param parameters The required parameters for restarting a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restart(ServerRestartParameter parameters);
-
-    /**
-     * Restarts a server.
-     *
-     * @param parameters The required parameters for restarting a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restart(ServerRestartParameter parameters, Context context);
-
-    /**
-     * Starts a server.
+     * Starts a stopped server.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -654,7 +482,7 @@ public interface Server {
     void start();
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -664,7 +492,7 @@ public interface Server {
     void start(Context context);
 
     /**
-     * Stops a server.
+     * Stops a running server.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -672,7 +500,7 @@ public interface Server {
     void stop();
 
     /**
-     * Stops a server.
+     * Stops a running server.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -680,4 +508,25 @@ public interface Server {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(Context context);
+
+    /**
+     * Upgrade server version.
+     *
+     * @param parameters The required parameters for updating a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(ServerUpgradeParameters parameters);
+
+    /**
+     * Upgrade server version.
+     *
+     * @param parameters The required parameters for updating a server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(ServerUpgradeParameters parameters, Context context);
 }

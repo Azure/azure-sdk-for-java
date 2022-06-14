@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Servers ListByResourceGroup. */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServersListByResourceGroup.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/ServerListByResourceGroup.json
      */
     /**
-     * Sample code: List servers in a resource group.
+     * Sample code: ServerListByResourceGroup.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void listServersInAResourceGroup(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().listByResourceGroup("TestGroup", Context.NONE);
+    public static void serverListByResourceGroup(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.servers().listByResourceGroup("testrg", Context.NONE);
     }
 }

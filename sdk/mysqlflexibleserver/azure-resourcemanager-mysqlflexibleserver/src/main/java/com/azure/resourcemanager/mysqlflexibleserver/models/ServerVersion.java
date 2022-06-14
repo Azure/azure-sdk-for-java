@@ -10,11 +10,14 @@ import java.util.Collection;
 
 /** Defines values for ServerVersion. */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
+    /** Static value 5.6 for ServerVersion. */
+    public static final ServerVersion FIVE_SIX = fromString("5.6");
+
     /** Static value 5.7 for ServerVersion. */
     public static final ServerVersion FIVE_SEVEN = fromString("5.7");
 
-    /** Static value 8.0.21 for ServerVersion. */
-    public static final ServerVersion EIGHT_ZERO_TWO_ONE = fromString("8.0.21");
+    /** Static value 8.0 for ServerVersion. */
+    public static final ServerVersion EIGHT_ZERO = fromString("8.0");
 
     /**
      * Creates or finds a ServerVersion from its string representation.
@@ -27,7 +30,11 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
         return fromString(name, ServerVersion.class);
     }
 
-    /** @return known ServerVersion values. */
+    /**
+     * Gets known ServerVersion values.
+     *
+     * @return known ServerVersion values.
+     */
     public static Collection<ServerVersion> values() {
         return values(ServerVersion.class);
     }

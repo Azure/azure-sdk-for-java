@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.DatabaseInner;
 
@@ -32,13 +31,6 @@ public interface Database {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the charset property: The charset of the database.
      *
      * @return the charset value.
@@ -51,6 +43,13 @@ public interface Database {
      * @return the collation value.
      */
     String collation();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.DatabaseInner object.
@@ -77,7 +76,7 @@ public interface Database {
              * @param serverName The name of the server.
              * @return the next definition stage.
              */
-            WithCreate withExistingFlexibleServer(String resourceGroupName, String serverName);
+            WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
         /**
          * The stage of the Database definition which contains all the minimum required properties for the resource to

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.FirewallRuleInner;
 
@@ -32,13 +31,6 @@ public interface FirewallRule {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
      *
      * @return the startIpAddress value.
@@ -51,6 +43,13 @@ public interface FirewallRule {
      * @return the endIpAddress value.
      */
     String endIpAddress();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.FirewallRuleInner object.
@@ -81,7 +80,7 @@ public interface FirewallRule {
              * @param serverName The name of the server.
              * @return the next definition stage.
              */
-            WithStartIpAddress withExistingFlexibleServer(String resourceGroupName, String serverName);
+            WithStartIpAddress withExistingServer(String resourceGroupName, String serverName);
         }
         /** The stage of the FirewallRule definition allowing to specify startIpAddress. */
         interface WithStartIpAddress {

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /** Resource collection API of Operations. */
@@ -14,9 +14,9 @@ public interface Operations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return a list of resource provider operations.
      */
-    PagedIterable<Operation> list();
+    OperationListResult list();
 
     /**
      * Lists all of the available REST API operations.
@@ -25,7 +25,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return a list of resource provider operations along with {@link Response}.
      */
-    PagedIterable<Operation> list(Context context);
+    Response<OperationListResult> listWithResponse(Context context);
 }

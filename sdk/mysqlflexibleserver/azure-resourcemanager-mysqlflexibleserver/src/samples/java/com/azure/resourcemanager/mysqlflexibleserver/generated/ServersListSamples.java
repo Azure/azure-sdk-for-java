@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Servers List. */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServersList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/ServerList.json
      */
     /**
-     * Sample code: List servers in a subscription.
+     * Sample code: ServerList.
      *
      * @param manager Entry point to MySqlManager.
      */
-    public static void listServersInASubscription(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void serverList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.servers().list(Context.NONE);
     }
 }
