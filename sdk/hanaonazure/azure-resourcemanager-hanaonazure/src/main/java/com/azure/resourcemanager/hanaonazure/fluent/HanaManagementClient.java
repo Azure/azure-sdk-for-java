@@ -53,9 +53,16 @@ public interface HanaManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the HanaInstancesClient object to access its operations.
+     * Gets the SapMonitorsClient object to access its operations.
      *
-     * @return the HanaInstancesClient object.
+     * @return the SapMonitorsClient object.
      */
-    HanaInstancesClient getHanaInstances();
+    SapMonitorsClient getSapMonitors();
+
+    /**
+     * Gets the ProviderInstancesClient object to access its operations.
+     *
+     * @return the ProviderInstancesClient object.
+     */
+    ProviderInstancesClient getProviderInstances();
 }

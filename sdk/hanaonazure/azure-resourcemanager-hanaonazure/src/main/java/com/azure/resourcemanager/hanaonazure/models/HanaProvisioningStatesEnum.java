@@ -42,7 +42,11 @@ public final class HanaProvisioningStatesEnum extends ExpandableStringEnum<HanaP
         return fromString(name, HanaProvisioningStatesEnum.class);
     }
 
-    /** @return known HanaProvisioningStatesEnum values. */
+    /**
+     * Gets known HanaProvisioningStatesEnum values.
+     *
+     * @return known HanaProvisioningStatesEnum values.
+     */
     public static Collection<HanaProvisioningStatesEnum> values() {
         return values(HanaProvisioningStatesEnum.class);
     }

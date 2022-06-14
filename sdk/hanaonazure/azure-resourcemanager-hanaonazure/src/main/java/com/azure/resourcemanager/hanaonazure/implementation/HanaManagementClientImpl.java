@@ -15,30 +15,29 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.hanaonazure.fluent.HanaInstancesClient;
 import com.azure.resourcemanager.hanaonazure.fluent.HanaManagementClient;
 import com.azure.resourcemanager.hanaonazure.fluent.OperationsClient;
+import com.azure.resourcemanager.hanaonazure.fluent.ProviderInstancesClient;
+import com.azure.resourcemanager.hanaonazure.fluent.SapMonitorsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the HanaManagementClientImpl type. */
 @ServiceClient(builder = HanaManagementClientBuilder.class)
 public final class HanaManagementClientImpl implements HanaManagementClient {
-    private final ClientLogger logger = new ClientLogger(HanaManagementClientImpl.class);
-
     /**
      * Subscription ID which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI
      * for every service call.
@@ -127,16 +126,28 @@ public final class HanaManagementClientImpl implements HanaManagementClient {
         return this.operations;
     }
 
-    /** The HanaInstancesClient object to access its operations. */
-    private final HanaInstancesClient hanaInstances;
+    /** The SapMonitorsClient object to access its operations. */
+    private final SapMonitorsClient sapMonitors;
 
     /**
-     * Gets the HanaInstancesClient object to access its operations.
+     * Gets the SapMonitorsClient object to access its operations.
      *
-     * @return the HanaInstancesClient object.
+     * @return the SapMonitorsClient object.
      */
-    public HanaInstancesClient getHanaInstances() {
-        return this.hanaInstances;
+    public SapMonitorsClient getSapMonitors() {
+        return this.sapMonitors;
+    }
+
+    /** The ProviderInstancesClient object to access its operations. */
+    private final ProviderInstancesClient providerInstances;
+
+    /**
+     * Gets the ProviderInstancesClient object to access its operations.
+     *
+     * @return the ProviderInstancesClient object.
+     */
+    public ProviderInstancesClient getProviderInstances() {
+        return this.providerInstances;
     }
 
     /**
@@ -162,9 +173,10 @@ public final class HanaManagementClientImpl implements HanaManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-11-03-preview";
+        this.apiVersion = "2020-02-07-preview";
         this.operations = new OperationsClientImpl(this);
-        this.hanaInstances = new HanaInstancesClientImpl(this);
+        this.sapMonitors = new SapMonitorsClientImpl(this);
+        this.providerInstances = new ProviderInstancesClientImpl(this);
     }
 
     /**
@@ -183,10 +195,7 @@ public final class HanaManagementClientImpl implements HanaManagementClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -250,7 +259,7 @@ public final class HanaManagementClientImpl implements HanaManagementClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -309,4 +318,6 @@ public final class HanaManagementClientImpl implements HanaManagementClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HanaManagementClientImpl.class);
 }

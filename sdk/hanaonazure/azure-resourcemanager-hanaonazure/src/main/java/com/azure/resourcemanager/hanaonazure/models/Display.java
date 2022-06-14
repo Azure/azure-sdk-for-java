@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Detailed HANA operation information. */
 @Immutable
 public final class Display {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Display.class);
-
     /*
      * The localized friendly form of the resource provider name. This form is
      * also expected to include the publisher/company responsible. Use Title

@@ -5,51 +5,47 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.hanaonazure.fluent.models.SapMonitorInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List HANA Instances operation. */
+/** The response from the List SAP monitors operation. */
 @Fluent
-public final class HanaInstancesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HanaInstancesListResult.class);
-
+public final class SapMonitorListResult {
     /*
-     * The list of SAP HANA on Azure instances.
+     * The list of SAP monitors.
      */
     @JsonProperty(value = "value")
-    private List<HanaInstanceInner> value;
+    private List<SapMonitorInner> value;
 
     /*
-     * The URL to get the next set of HANA instances.
+     * The URL to get the next set of SAP monitors.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: The list of SAP HANA on Azure instances.
+     * Get the value property: The list of SAP monitors.
      *
      * @return the value value.
      */
-    public List<HanaInstanceInner> value() {
+    public List<SapMonitorInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: The list of SAP HANA on Azure instances.
+     * Set the value property: The list of SAP monitors.
      *
      * @param value the value value to set.
-     * @return the HanaInstancesListResult object itself.
+     * @return the SapMonitorListResult object itself.
      */
-    public HanaInstancesListResult withValue(List<HanaInstanceInner> value) {
+    public SapMonitorListResult withValue(List<SapMonitorInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of HANA instances.
+     * Get the nextLink property: The URL to get the next set of SAP monitors.
      *
      * @return the nextLink value.
      */
@@ -58,12 +54,12 @@ public final class HanaInstancesListResult {
     }
 
     /**
-     * Set the nextLink property: The URL to get the next set of HANA instances.
+     * Set the nextLink property: The URL to get the next set of SAP monitors.
      *
      * @param nextLink the nextLink value to set.
-     * @return the HanaInstancesListResult object itself.
+     * @return the SapMonitorListResult object itself.
      */
-    public HanaInstancesListResult withNextLink(String nextLink) {
+    public SapMonitorListResult withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
