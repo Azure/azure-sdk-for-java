@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data of a property change. */
 @Fluent
 public final class PropertyChange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PropertyChange.class);
-
     /*
      * The type of the change.
      */
