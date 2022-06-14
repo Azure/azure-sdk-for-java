@@ -1212,7 +1212,7 @@ class FileSystemAPITest extends APISpec {
         def fileProps = fsc.getFileClient(fileName).getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        expireTime == expectedExpire
+        expireTime.truncatedTo(ChronoUnit.MICROS) == expectedExpire.truncatedTo(ChronoUnit.MICROS)
     }
 
     def "Delete file min"() {
