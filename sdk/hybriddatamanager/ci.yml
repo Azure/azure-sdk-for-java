@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybriddatamanager/ci.yml
+      - sdk/hybriddatamanager/azure-resourcemanager-hybriddatamanager/
+    exclude:
+      - sdk/hybriddatamanager/pom.xml
+      - sdk/hybriddatamanager/azure-resourcemanager-hybriddatamanager/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybriddatamanager/ci.yml
+      - sdk/hybriddatamanager/azure-resourcemanager-hybriddatamanager/
+    exclude:
+      - sdk/hybriddatamanager/pom.xml
+      - sdk/hybriddatamanager/azure-resourcemanager-hybriddatamanager/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hybriddatamanager
+    Artifacts:
+      - name: azure-resourcemanager-hybriddatamanager
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhybriddatamanager
