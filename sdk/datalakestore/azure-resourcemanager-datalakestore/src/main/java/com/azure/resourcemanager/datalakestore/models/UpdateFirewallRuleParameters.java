@@ -5,30 +5,26 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateFirewallRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a firewall rule. */
-@JsonFlatten
 @Fluent
-public class UpdateFirewallRuleParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateFirewallRuleParameters.class);
-
+public final class UpdateFirewallRuleParameters {
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties to use when updating a firewall rule.
      */
-    @JsonProperty(value = "properties.startIpAddress")
-    private String startIpAddress;
+    @JsonProperty(value = "properties")
+    private UpdateFirewallRuleProperties innerProperties;
 
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+    /**
+     * Get the innerProperties property: The firewall rule properties to use when updating a firewall rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endIpAddress")
-    private String endIpAddress;
+    private UpdateFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
@@ -37,7 +33,7 @@ public class UpdateFirewallRuleParameters {
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -48,7 +44,10 @@ public class UpdateFirewallRuleParameters {
      * @return the UpdateFirewallRuleParameters object itself.
      */
     public UpdateFirewallRuleParameters withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -59,7 +58,7 @@ public class UpdateFirewallRuleParameters {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -70,7 +69,10 @@ public class UpdateFirewallRuleParameters {
      * @return the UpdateFirewallRuleParameters object itself.
      */
     public UpdateFirewallRuleParameters withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -80,5 +82,8 @@ public class UpdateFirewallRuleParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

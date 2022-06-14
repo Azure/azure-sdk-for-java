@@ -58,48 +58,6 @@ public interface DataLakeStoreAccount {
     EncryptionIdentity identity();
 
     /**
-     * Gets the accountId property: The unique identifier associated with this Data Lake Store account.
-     *
-     * @return the accountId value.
-     */
-    UUID accountId();
-
-    /**
-     * Gets the provisioningState property: The provisioning status of the Data Lake Store account.
-     *
-     * @return the provisioningState value.
-     */
-    DataLakeStoreAccountStatus provisioningState();
-
-    /**
-     * Gets the state property: The state of the Data Lake Store account.
-     *
-     * @return the state value.
-     */
-    DataLakeStoreAccountState state();
-
-    /**
-     * Gets the creationTime property: The account creation time.
-     *
-     * @return the creationTime value.
-     */
-    OffsetDateTime creationTime();
-
-    /**
-     * Gets the lastModifiedTime property: The account last modified time.
-     *
-     * @return the lastModifiedTime value.
-     */
-    OffsetDateTime lastModifiedTime();
-
-    /**
-     * Gets the endpoint property: The full CName endpoint for this account.
-     *
-     * @return the endpoint value.
-     */
-    String endpoint();
-
-    /**
      * Gets the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
      * Store account.
      *
@@ -190,6 +148,48 @@ public interface DataLakeStoreAccount {
     TierType currentTier();
 
     /**
+     * Gets the accountId property: The unique identifier associated with this Data Lake Store account.
+     *
+     * @return the accountId value.
+     */
+    UUID accountId();
+
+    /**
+     * Gets the provisioningState property: The provisioning status of the Data Lake Store account.
+     *
+     * @return the provisioningState value.
+     */
+    DataLakeStoreAccountStatus provisioningState();
+
+    /**
+     * Gets the state property: The state of the Data Lake Store account.
+     *
+     * @return the state value.
+     */
+    DataLakeStoreAccountState state();
+
+    /**
+     * Gets the creationTime property: The account creation time.
+     *
+     * @return the creationTime value.
+     */
+    OffsetDateTime creationTime();
+
+    /**
+     * Gets the lastModifiedTime property: The account last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
+    OffsetDateTime lastModifiedTime();
+
+    /**
+     * Gets the endpoint property: The full CName endpoint for this account.
+     *
+     * @return the endpoint value.
+     */
+    String endpoint();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -202,6 +202,13 @@ public interface DataLakeStoreAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakestore.fluent.models.DataLakeStoreAccountInner object.
@@ -604,7 +611,7 @@ public interface DataLakeStoreAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> enableKeyVaultWithResponse(Context context);
 }

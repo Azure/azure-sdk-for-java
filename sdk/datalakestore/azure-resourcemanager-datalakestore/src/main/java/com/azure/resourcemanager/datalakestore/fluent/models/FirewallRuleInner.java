@@ -4,32 +4,18 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Store firewall rule information. */
-@JsonFlatten
-@Immutable
-public class FirewallRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
-
+@Fluent
+public final class FirewallRuleInner extends SubResource {
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties.
      */
-    @JsonProperty(value = "properties.startIpAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String startIpAddress;
-
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
-     */
-    @JsonProperty(value = "properties.endIpAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String endIpAddress;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private FirewallRuleProperties innerProperties;
 
     /*
      * The resource name.
@@ -44,23 +30,12 @@ public class FirewallRuleInner extends SubResource {
     private String type;
 
     /**
-     * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
-     * Start and End should be in the same protocol.
+     * Get the innerProperties property: The firewall rule properties.
      *
-     * @return the startIpAddress value.
+     * @return the innerProperties value.
      */
-    public String startIpAddress() {
-        return this.startIpAddress;
-    }
-
-    /**
-     * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
-     * and End should be in the same protocol.
-     *
-     * @return the endIpAddress value.
-     */
-    public String endIpAddress() {
-        return this.endIpAddress;
+    private FirewallRuleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -89,10 +64,33 @@ public class FirewallRuleInner extends SubResource {
     }
 
     /**
+     * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
+     * Start and End should be in the same protocol.
+     *
+     * @return the startIpAddress value.
+     */
+    public String startIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
+    }
+
+    /**
+     * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
+     * and End should be in the same protocol.
+     *
+     * @return the endIpAddress value.
+     */
+    public String endIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

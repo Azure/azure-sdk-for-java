@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List Usages operation. */
 @Fluent
 public final class UsageListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResult.class);
-
     /*
      * Gets or sets the list of Storage Resource Usages.
      */

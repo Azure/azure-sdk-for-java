@@ -29,7 +29,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription-level properties and limits for Data Lake Store specified by resource location.
+     * @return subscription-level properties and limits for Data Lake Store specified by resource location along with
+     *     {@link Response}.
      */
     Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context);
 
@@ -40,7 +41,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> getUsage(String location);
 
@@ -52,7 +54,8 @@ public interface Locations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<Usage> getUsage(String location, Context context);
 }

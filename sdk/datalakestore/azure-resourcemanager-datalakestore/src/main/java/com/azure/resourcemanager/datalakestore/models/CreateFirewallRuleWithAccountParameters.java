@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateFirewallRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new firewall rule while creating a new Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class CreateFirewallRuleWithAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateFirewallRuleWithAccountParameters.class);
-
+public final class CreateFirewallRuleWithAccountParameters {
     /*
      * The unique name of the firewall rule to create.
      */
@@ -23,18 +19,10 @@ public class CreateFirewallRuleWithAccountParameters {
     private String name;
 
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties to use when creating a new firewall rule.
      */
-    @JsonProperty(value = "properties.startIpAddress", required = true)
-    private String startIpAddress;
-
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
-     */
-    @JsonProperty(value = "properties.endIpAddress", required = true)
-    private String endIpAddress;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateFirewallRuleProperties innerProperties = new CreateOrUpdateFirewallRuleProperties();
 
     /**
      * Get the name property: The unique name of the firewall rule to create.
@@ -57,13 +45,22 @@ public class CreateFirewallRuleWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The firewall rule properties to use when creating a new firewall rule.
+     *
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
      *
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -74,7 +71,10 @@ public class CreateFirewallRuleWithAccountParameters {
      * @return the CreateFirewallRuleWithAccountParameters object itself.
      */
     public CreateFirewallRuleWithAccountParameters withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -85,7 +85,7 @@ public class CreateFirewallRuleWithAccountParameters {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -96,7 +96,10 @@ public class CreateFirewallRuleWithAccountParameters {
      * @return the CreateFirewallRuleWithAccountParameters object itself.
      */
     public CreateFirewallRuleWithAccountParameters withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -107,22 +110,20 @@ public class CreateFirewallRuleWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CreateFirewallRuleWithAccountParameters"));
         }
-        if (startIpAddress() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property startIpAddress in model CreateFirewallRuleWithAccountParameters"));
-        }
-        if (endIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model CreateFirewallRuleWithAccountParameters"));
+                        "Missing required property innerProperties in model CreateFirewallRuleWithAccountParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateFirewallRuleWithAccountParameters.class);
 }

@@ -23,7 +23,8 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrustedIdProviderInner> listByAccount(String resourceGroupName, String accountName);
@@ -37,7 +38,8 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TrustedIdProviderInner> listByAccount(String resourceGroupName, String accountName, Context context);
@@ -76,7 +78,7 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TrustedIdProviderInner> createOrUpdateWithResponse(
@@ -110,7 +112,7 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TrustedIdProviderInner> getWithResponse(
@@ -143,7 +145,7 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider information.
+     * @return data Lake Store trusted identity provider information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TrustedIdProviderInner> updateWithResponse(
@@ -176,7 +178,7 @@ public interface TrustedIdProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

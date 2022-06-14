@@ -15,10 +15,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.UsageInner;
 import com.azure.resourcemanager.datalakestore.models.CapabilityInformation;
 import com.azure.resourcemanager.datalakestore.models.Locations;
 import com.azure.resourcemanager.datalakestore.models.Usage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 

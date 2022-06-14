@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption configuration used to update a user managed Key Vault key. */
 @Fluent
 public final class UpdateEncryptionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateEncryptionConfig.class);
-
     /*
      * The updated Key Vault key to use in user managed key rotation.
      */

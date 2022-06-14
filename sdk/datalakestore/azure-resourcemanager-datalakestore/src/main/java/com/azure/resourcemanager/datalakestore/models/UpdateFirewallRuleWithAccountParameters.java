@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.UpdateFirewallRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update a firewall rule while updating a Data Lake Store account. */
-@JsonFlatten
 @Fluent
-public class UpdateFirewallRuleWithAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateFirewallRuleWithAccountParameters.class);
-
+public final class UpdateFirewallRuleWithAccountParameters {
     /*
      * The unique name of the firewall rule to update.
      */
@@ -23,18 +19,10 @@ public class UpdateFirewallRuleWithAccountParameters {
     private String name;
 
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties to use when updating a firewall rule.
      */
-    @JsonProperty(value = "properties.startIpAddress")
-    private String startIpAddress;
-
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
-     */
-    @JsonProperty(value = "properties.endIpAddress")
-    private String endIpAddress;
+    @JsonProperty(value = "properties")
+    private UpdateFirewallRuleProperties innerProperties;
 
     /**
      * Get the name property: The unique name of the firewall rule to update.
@@ -57,13 +45,22 @@ public class UpdateFirewallRuleWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The firewall rule properties to use when updating a firewall rule.
+     *
+     * @return the innerProperties value.
+     */
+    private UpdateFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
      * Start and End should be in the same protocol.
      *
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -74,7 +71,10 @@ public class UpdateFirewallRuleWithAccountParameters {
      * @return the UpdateFirewallRuleWithAccountParameters object itself.
      */
     public UpdateFirewallRuleWithAccountParameters withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -85,7 +85,7 @@ public class UpdateFirewallRuleWithAccountParameters {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -96,7 +96,10 @@ public class UpdateFirewallRuleWithAccountParameters {
      * @return the UpdateFirewallRuleWithAccountParameters object itself.
      */
     public UpdateFirewallRuleWithAccountParameters withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -107,10 +110,15 @@ public class UpdateFirewallRuleWithAccountParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model UpdateFirewallRuleWithAccountParameters"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateFirewallRuleWithAccountParameters.class);
 }

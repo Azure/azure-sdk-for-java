@@ -5,30 +5,27 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateFirewallRuleProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create a new firewall rule. */
-@JsonFlatten
 @Fluent
-public class CreateOrUpdateFirewallRuleParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateFirewallRuleParameters.class);
-
+public final class CreateOrUpdateFirewallRuleParameters {
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties to use when creating a new firewall rule.
      */
-    @JsonProperty(value = "properties.startIpAddress", required = true)
-    private String startIpAddress;
+    @JsonProperty(value = "properties", required = true)
+    private CreateOrUpdateFirewallRuleProperties innerProperties = new CreateOrUpdateFirewallRuleProperties();
 
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+    /**
+     * Get the innerProperties property: The firewall rule properties to use when creating a new firewall rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endIpAddress", required = true)
-    private String endIpAddress;
+    private CreateOrUpdateFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
@@ -37,7 +34,7 @@ public class CreateOrUpdateFirewallRuleParameters {
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
-        return this.startIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
     }
 
     /**
@@ -48,7 +45,10 @@ public class CreateOrUpdateFirewallRuleParameters {
      * @return the CreateOrUpdateFirewallRuleParameters object itself.
      */
     public CreateOrUpdateFirewallRuleParameters withStartIpAddress(String startIpAddress) {
-        this.startIpAddress = startIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIpAddress(startIpAddress);
         return this;
     }
 
@@ -59,7 +59,7 @@ public class CreateOrUpdateFirewallRuleParameters {
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
-        return this.endIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
     }
 
     /**
@@ -70,7 +70,10 @@ public class CreateOrUpdateFirewallRuleParameters {
      * @return the CreateOrUpdateFirewallRuleParameters object itself.
      */
     public CreateOrUpdateFirewallRuleParameters withEndIpAddress(String endIpAddress) {
-        this.endIpAddress = endIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -80,17 +83,15 @@ public class CreateOrUpdateFirewallRuleParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (startIpAddress() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property startIpAddress in model CreateOrUpdateFirewallRuleParameters"));
-        }
-        if (endIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model CreateOrUpdateFirewallRuleParameters"));
+                        "Missing required property innerProperties in model CreateOrUpdateFirewallRuleParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateFirewallRuleParameters.class);
 }

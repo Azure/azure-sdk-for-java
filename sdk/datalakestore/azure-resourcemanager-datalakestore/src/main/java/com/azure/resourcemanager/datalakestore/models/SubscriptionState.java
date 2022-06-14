@@ -36,7 +36,11 @@ public final class SubscriptionState extends ExpandableStringEnum<SubscriptionSt
         return fromString(name, SubscriptionState.class);
     }
 
-    /** @return known SubscriptionState values. */
+    /**
+     * Gets known SubscriptionState values.
+     *
+     * @return known SubscriptionState values.
+     */
     public static Collection<SubscriptionState> values() {
         return values(SubscriptionState.class);
     }

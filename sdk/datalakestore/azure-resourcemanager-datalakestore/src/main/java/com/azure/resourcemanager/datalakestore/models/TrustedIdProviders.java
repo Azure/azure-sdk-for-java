@@ -18,7 +18,8 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TrustedIdProvider> listByAccount(String resourceGroupName, String accountName);
 
@@ -31,7 +32,8 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store trusted identity provider list information.
+     * @return data Lake Store trusted identity provider list information as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<TrustedIdProvider> listByAccount(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +60,7 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
     Response<TrustedIdProvider> getWithResponse(
         String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
@@ -85,7 +87,7 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String trustedIdProviderName, Context context);
@@ -97,7 +99,7 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
     TrustedIdProvider getById(String id);
 
@@ -109,7 +111,7 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store trusted identity provider.
+     * @return the specified Data Lake Store trusted identity provider along with {@link Response}.
      */
     Response<TrustedIdProvider> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +133,7 @@ public interface TrustedIdProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

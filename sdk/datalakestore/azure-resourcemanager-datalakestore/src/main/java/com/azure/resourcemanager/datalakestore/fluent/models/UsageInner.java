@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakestore.models.UsageName;
 import com.azure.resourcemanager.datalakestore.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the Resource Usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * Gets the unit of measurement.
      */
