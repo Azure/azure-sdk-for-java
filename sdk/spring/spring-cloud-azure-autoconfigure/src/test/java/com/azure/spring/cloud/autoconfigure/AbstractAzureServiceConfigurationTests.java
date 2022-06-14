@@ -76,7 +76,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.username=fake-username"
+                getPropertyPrefix() + ".credential.username = fake-username"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
