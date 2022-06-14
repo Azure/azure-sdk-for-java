@@ -5,8 +5,10 @@ package com.azure.core.http.rest;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
@@ -19,11 +21,14 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -62,6 +67,12 @@ public class RestProxyTests {
             @BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
+        );
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        Mono<Response<Void>> testListNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink
         );
     }
 
@@ -215,5 +226,24 @@ public class RestProxyTests {
             Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
                 Collections.singletonMap("key", "value2"))
         );
+    }
+
+    @Test
+    public void doesNotChangeEncodedPath() {
+        HttpClient client = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> requestArgumentCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(client.send(requestArgumentCaptor.capture(), Mockito.any()))
+            .thenReturn(Mono.just(new MockHttpResponse(null, 200)));
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        String nextLinkUrl =
+            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        testInterface.testListNext(nextLinkUrl).block();
+
+        Assertions.assertEquals(nextLinkUrl, requestArgumentCaptor.getValue().getUrl().toString());
     }
 }
