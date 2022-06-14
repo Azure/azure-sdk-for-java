@@ -21,10 +21,9 @@ import com.azure.resourcemanager.azurestack.models.Product;
 import com.azure.resourcemanager.azurestack.models.ProductList;
 import com.azure.resourcemanager.azurestack.models.ProductLog;
 import com.azure.resourcemanager.azurestack.models.Products;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductsImpl implements Products {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductsImpl.class);
 
     private final ProductsClient innerClient;
 

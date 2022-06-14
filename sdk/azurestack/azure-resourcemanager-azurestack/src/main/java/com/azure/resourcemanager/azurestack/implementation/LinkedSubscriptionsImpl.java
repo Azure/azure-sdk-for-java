@@ -13,10 +13,9 @@ import com.azure.resourcemanager.azurestack.fluent.LinkedSubscriptionsClient;
 import com.azure.resourcemanager.azurestack.fluent.models.LinkedSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.LinkedSubscription;
 import com.azure.resourcemanager.azurestack.models.LinkedSubscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedSubscriptionsImpl.class);
 
     private final LinkedSubscriptionsClient innerClient;
 
@@ -83,7 +82,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
     public LinkedSubscription getById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -91,7 +90,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
         }
         String linkedSubscriptionName = Utils.getValueFromIdByName(id, "linkedSubscriptions");
         if (linkedSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,7 +103,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
     public Response<LinkedSubscription> getByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
         }
         String linkedSubscriptionName = Utils.getValueFromIdByName(id, "linkedSubscriptions");
         if (linkedSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
     public void deleteById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,20 +132,20 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
         }
         String linkedSubscriptionName = Utils.getValueFromIdByName(id, "linkedSubscriptions");
         if (linkedSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedSubscriptions'.", id)));
         }
-        this.deleteWithResponse(resourceGroup, linkedSubscriptionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroup, linkedSubscriptionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class LinkedSubscriptionsImpl implements LinkedSubscriptions {
         }
         String linkedSubscriptionName = Utils.getValueFromIdByName(id, "linkedSubscriptions");
         if (linkedSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

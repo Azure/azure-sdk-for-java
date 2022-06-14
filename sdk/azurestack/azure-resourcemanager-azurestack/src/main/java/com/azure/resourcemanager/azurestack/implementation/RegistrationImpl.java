@@ -46,18 +46,6 @@ public final class RegistrationImpl implements Registration, Registration.Defini
         }
     }
 
-    public String objectId() {
-        return this.innerModel().objectId();
-    }
-
-    public String cloudId() {
-        return this.innerModel().cloudId();
-    }
-
-    public String billingModel() {
-        return this.innerModel().billingModel();
-    }
-
     public String kind() {
         return this.innerModel().kind();
     }
@@ -70,12 +58,28 @@ public final class RegistrationImpl implements Registration, Registration.Defini
         return this.innerModel().etag();
     }
 
+    public String objectId() {
+        return this.innerModel().objectId();
+    }
+
+    public String cloudId() {
+        return this.innerModel().cloudId();
+    }
+
+    public String billingModel() {
+        return this.innerModel().billingModel();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroup;
     }
 
     public RegistrationInner innerModel() {

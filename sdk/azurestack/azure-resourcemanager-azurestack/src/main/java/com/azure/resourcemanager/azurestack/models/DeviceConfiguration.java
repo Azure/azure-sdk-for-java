@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Device Configuration. */
 @Immutable
 public final class DeviceConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceConfiguration.class);
-
     /*
      * Version of the device.
      */

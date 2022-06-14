@@ -45,6 +45,18 @@ public final class LinkedSubscriptionImpl
         }
     }
 
+    public String kind() {
+        return this.innerModel().kind();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String linkedSubscriptionId() {
         return this.innerModel().linkedSubscriptionId();
     }
@@ -73,24 +85,16 @@ public final class LinkedSubscriptionImpl
         return this.innerModel().deviceConnectionStatus();
     }
 
-    public String kind() {
-        return this.innerModel().kind();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroup;
     }
 
     public LinkedSubscriptionInner innerModel() {

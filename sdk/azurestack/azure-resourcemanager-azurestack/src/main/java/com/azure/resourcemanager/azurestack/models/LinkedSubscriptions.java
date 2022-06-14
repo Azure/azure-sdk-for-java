@@ -17,7 +17,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of linked subscriptions with paging support.
+     * @return list of linked subscriptions with paging support as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedSubscription> listByResourceGroup(String resourceGroup);
 
@@ -29,7 +29,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of linked subscriptions with paging support.
+     * @return list of linked subscriptions with paging support as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedSubscription> listByResourceGroup(String resourceGroup, Context context);
 
@@ -38,7 +38,7 @@ public interface LinkedSubscriptions {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of linked subscriptions with paging support.
+     * @return list of linked subscriptions with paging support as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedSubscription> list();
 
@@ -49,7 +49,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of linked subscriptions with paging support.
+     * @return list of linked subscriptions with paging support as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LinkedSubscription> list(Context context);
 
@@ -74,7 +74,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked Subscription information.
+     * @return linked Subscription information along with {@link Response}.
      */
     Response<LinkedSubscription> getByResourceGroupWithResponse(
         String resourceGroup, String linkedSubscriptionName, Context context);
@@ -99,7 +99,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroup, String linkedSubscriptionName, Context context);
 
@@ -110,7 +110,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked Subscription information.
+     * @return linked Subscription information along with {@link Response}.
      */
     LinkedSubscription getById(String id);
 
@@ -122,7 +122,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked Subscription information.
+     * @return linked Subscription information along with {@link Response}.
      */
     Response<LinkedSubscription> getByIdWithResponse(String id, Context context);
 
@@ -144,7 +144,7 @@ public interface LinkedSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -55,7 +55,11 @@ public final class CompatibilityIssue extends ExpandableStringEnum<Compatibility
         return fromString(name, CompatibilityIssue.class);
     }
 
-    /** @return known CompatibilityIssue values. */
+    /**
+     * Gets known CompatibilityIssue values.
+     *
+     * @return known CompatibilityIssue values.
+     */
     public static Collection<CompatibilityIssue> values() {
         return values(CompatibilityIssue.class);
     }

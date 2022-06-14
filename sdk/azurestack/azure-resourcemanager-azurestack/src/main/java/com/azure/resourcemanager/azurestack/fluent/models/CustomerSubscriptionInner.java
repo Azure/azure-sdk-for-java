@@ -5,30 +5,24 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer subscription. */
-@JsonFlatten
 @Fluent
-public class CustomerSubscriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionInner.class);
+public final class CustomerSubscriptionInner extends ProxyResource {
+    /*
+     * Customer subscription properties.
+     */
+    @JsonProperty(value = "properties")
+    private CustomerSubscriptionProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
-
-    /*
-     * Tenant Id.
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private String tenantId;
 
     /*
      * The entity tag used for optimistic concurrency when modifying the
@@ -38,32 +32,21 @@ public class CustomerSubscriptionInner extends ProxyResource {
     private String etag;
 
     /**
+     * Get the innerProperties property: Customer subscription properties.
+     *
+     * @return the innerProperties value.
+     */
+    private CustomerSubscriptionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the tenantId property: Tenant Id.
-     *
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId property: Tenant Id.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the CustomerSubscriptionInner object itself.
-     */
-    public CustomerSubscriptionInner withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
     }
 
     /**
@@ -87,10 +70,36 @@ public class CustomerSubscriptionInner extends ProxyResource {
     }
 
     /**
+     * Get the tenantId property: Tenant Id.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: Tenant Id.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the CustomerSubscriptionInner object itself.
+     */
+    public CustomerSubscriptionInner withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerSubscriptionProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

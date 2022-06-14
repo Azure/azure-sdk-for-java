@@ -39,6 +39,13 @@ public interface Product {
     SystemData systemData();
 
     /**
+     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the displayName property: The display name of the product.
      *
      * @return the displayName value.
@@ -163,13 +170,6 @@ public interface Product {
      * @return the compatibility value.
      */
     Compatibility compatibility();
-
-    /**
-     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ProductInner object.

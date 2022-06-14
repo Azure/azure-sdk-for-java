@@ -18,7 +18,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> list(String resourceGroup, String registrationName);
 
@@ -31,7 +31,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> list(String resourceGroup, String registrationName, Context context);
 
@@ -58,7 +58,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response}.
      */
     Response<Product> getWithResponse(
         String resourceGroup, String registrationName, String productName, Context context);
@@ -86,7 +86,8 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return extended description about the product required for installing it into Azure Stack along with {@link
+     *     Response}.
      */
     Response<ExtendedProduct> listDetailsWithResponse(
         String resourceGroup, String registrationName, String productName, Context context);
@@ -115,7 +116,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link Response}.
      */
     Response<ProductList> getProductsWithResponse(
         String resourceGroup,
@@ -148,7 +149,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response}.
      */
     Response<Product> getProductWithResponse(
         String resourceGroup,
@@ -181,7 +182,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log along with {@link Response}.
      */
     Response<ProductLog> uploadLogWithResponse(
         String resourceGroup,

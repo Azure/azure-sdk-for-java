@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.ProductsClient;
 import com.azure.resourcemanager.azurestack.fluent.models.ExtendedProductInner;
 import com.azure.resourcemanager.azurestack.fluent.models.ProductInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProductsClient. */
 public final class ProductsClientImpl implements ProductsClient {
-    private final ClientLogger logger = new ClientLogger(ProductsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProductsService service;
 
@@ -181,7 +178,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductInner>> listSinglePageAsync(String resourceGroup, String registrationName) {
@@ -238,7 +235,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductInner>> listSinglePageAsync(
@@ -292,7 +289,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProductInner> listAsync(String resourceGroup, String registrationName) {
@@ -309,7 +306,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProductInner> listAsync(String resourceGroup, String registrationName, Context context) {
@@ -326,7 +323,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductInner> list(String resourceGroup, String registrationName) {
@@ -342,7 +339,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProductInner> list(String resourceGroup, String registrationName, Context context) {
@@ -358,7 +355,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductInner>> getWithResponseAsync(
@@ -412,7 +409,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductInner>> getWithResponseAsync(
@@ -462,19 +459,12 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductInner> getAsync(String resourceGroup, String registrationName, String productName) {
         return getWithResponseAsync(resourceGroup, registrationName, productName)
-            .flatMap(
-                (Response<ProductInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -503,7 +493,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductInner> getWithResponse(
@@ -520,7 +510,8 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return extended description about the product required for installing it into Azure Stack along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedProductInner>> listDetailsWithResponseAsync(
@@ -574,7 +565,8 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return extended description about the product required for installing it into Azure Stack along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedProductInner>> listDetailsWithResponseAsync(
@@ -624,20 +616,14 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return extended description about the product required for installing it into Azure Stack on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtendedProductInner> listDetailsAsync(
         String resourceGroup, String registrationName, String productName) {
         return listDetailsWithResponseAsync(resourceGroup, registrationName, productName)
-            .flatMap(
-                (Response<ExtendedProductInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -666,7 +652,8 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended description about the product required for installing it into Azure Stack.
+     * @return extended description about the product required for installing it into Azure Stack along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedProductInner> listDetailsWithResponse(
@@ -684,7 +671,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductListInner>> getProductsWithResponseAsync(
@@ -743,7 +730,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductListInner>> getProductsWithResponseAsync(
@@ -802,20 +789,13 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductListInner> getProductsAsync(
         String resourceGroup, String registrationName, String productName, DeviceConfiguration deviceConfiguration) {
         return getProductsWithResponseAsync(resourceGroup, registrationName, productName, deviceConfiguration)
-            .flatMap(
-                (Response<ProductListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -827,20 +807,13 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductListInner> getProductsAsync(String resourceGroup, String registrationName, String productName) {
         final DeviceConfiguration deviceConfiguration = null;
         return getProductsWithResponseAsync(resourceGroup, registrationName, productName, deviceConfiguration)
-            .flatMap(
-                (Response<ProductListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -871,7 +844,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductListInner> getProductsWithResponse(
@@ -894,7 +867,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductInner>> getProductWithResponseAsync(
@@ -953,7 +926,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductInner>> getProductWithResponseAsync(
@@ -1012,20 +985,13 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductInner> getProductAsync(
         String resourceGroup, String registrationName, String productName, DeviceConfiguration deviceConfiguration) {
         return getProductWithResponseAsync(resourceGroup, registrationName, productName, deviceConfiguration)
-            .flatMap(
-                (Response<ProductInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1037,20 +1003,13 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductInner> getProductAsync(String resourceGroup, String registrationName, String productName) {
         final DeviceConfiguration deviceConfiguration = null;
         return getProductWithResponseAsync(resourceGroup, registrationName, productName, deviceConfiguration)
-            .flatMap(
-                (Response<ProductInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1081,7 +1040,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product information.
+     * @return product information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductInner> getProductWithResponse(
@@ -1104,7 +1063,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductLogInner>> uploadLogWithResponseAsync(
@@ -1166,7 +1125,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProductLogInner>> uploadLogWithResponseAsync(
@@ -1225,7 +1184,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductLogInner> uploadLogAsync(
@@ -1234,14 +1193,7 @@ public final class ProductsClientImpl implements ProductsClient {
         String productName,
         MarketplaceProductLogUpdate marketplaceProductLogUpdate) {
         return uploadLogWithResponseAsync(resourceGroup, registrationName, productName, marketplaceProductLogUpdate)
-            .flatMap(
-                (Response<ProductLogInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1253,20 +1205,13 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProductLogInner> uploadLogAsync(String resourceGroup, String registrationName, String productName) {
         final MarketplaceProductLogUpdate marketplaceProductLogUpdate = null;
         return uploadLogWithResponseAsync(resourceGroup, registrationName, productName, marketplaceProductLogUpdate)
-            .flatMap(
-                (Response<ProductLogInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1297,7 +1242,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return product action log.
+     * @return product action log along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProductLogInner> uploadLogWithResponse(
@@ -1318,7 +1263,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductInner>> listNextSinglePageAsync(String nextLink) {
@@ -1354,7 +1299,7 @@ public final class ProductsClientImpl implements ProductsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of products.
+     * @return pageable list of products along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProductInner>> listNextSinglePageAsync(String nextLink, Context context) {

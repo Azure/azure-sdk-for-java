@@ -25,55 +25,6 @@ public interface ExtendedProduct {
     String productKind();
 
     /**
-     * Gets the computeRole property: Specifies kind of compute role included in the package.
-     *
-     * @return the computeRole value.
-     */
-    ComputeRole computeRole();
-
-    /**
-     * Gets the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
-     *
-     * @return the isSystemExtension value.
-     */
-    Boolean isSystemExtension();
-
-    /**
-     * Gets the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
-     *
-     * @return the supportMultipleExtensions value.
-     */
-    Boolean supportMultipleExtensions();
-
-    /**
-     * Gets the versionPropertiesVersion property: Specifies product version.
-     *
-     * @return the versionPropertiesVersion value.
-     */
-    String versionPropertiesVersion();
-
-    /**
-     * Gets the vmOsType property: Specifies operating system used by the product.
-     *
-     * @return the vmOsType value.
-     */
-    OperatingSystem vmOsType();
-
-    /**
-     * Gets the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
-     *
-     * @return the vmScaleSetEnabled value.
-     */
-    Boolean vmScaleSetEnabled();
-
-    /**
-     * Gets the uri property: The URI.
-     *
-     * @return the uri value.
-     */
-    String uri();
-
-    /**
      * Gets the version property: Specifies product version.
      *
      * @return the version value.
@@ -93,6 +44,48 @@ public interface ExtendedProduct {
      * @return the dataDiskImages value.
      */
     List<DataDiskImage> dataDiskImages();
+
+    /**
+     * Gets the computeRole property: Specifies kind of compute role included in the package.
+     *
+     * @return the computeRole value.
+     */
+    ComputeRole computeRole();
+
+    /**
+     * Gets the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
+     *
+     * @return the isSystemExtension value.
+     */
+    Boolean isSystemExtension();
+
+    /**
+     * Gets the uri property: The URI.
+     *
+     * @return the uri value.
+     */
+    String uri();
+
+    /**
+     * Gets the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
+     *
+     * @return the supportMultipleExtensions value.
+     */
+    Boolean supportMultipleExtensions();
+
+    /**
+     * Gets the vmOsType property: Specifies operating system used by the product.
+     *
+     * @return the vmOsType value.
+     */
+    OperatingSystem vmOsType();
+
+    /**
+     * Gets the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
+     *
+     * @return the vmScaleSetEnabled value.
+     */
+    Boolean vmScaleSetEnabled();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.ExtendedProductInner object.

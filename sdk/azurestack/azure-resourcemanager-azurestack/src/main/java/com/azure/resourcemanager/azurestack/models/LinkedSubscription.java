@@ -48,6 +48,27 @@ public interface LinkedSubscription {
     Map<String, String> tags();
 
     /**
+     * Gets the kind property: The kind of the resource.
+     *
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the linkedSubscriptionId property: The identifier associated with the device subscription.
      *
      * @return the linkedSubscriptionId value.
@@ -100,27 +121,6 @@ public interface LinkedSubscription {
     String deviceConnectionStatus();
 
     /**
-     * Gets the kind property: The kind of the resource.
-     *
-     * @return the kind value.
-     */
-    String kind();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -133,6 +133,13 @@ public interface LinkedSubscription {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.LinkedSubscriptionInner object.

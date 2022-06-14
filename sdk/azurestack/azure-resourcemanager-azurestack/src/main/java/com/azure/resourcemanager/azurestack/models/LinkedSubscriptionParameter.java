@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.azurestack.fluent.models.LinkedSubscriptionParameterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Linked Subscription resource. */
-@JsonFlatten
 @Fluent
-public class LinkedSubscriptionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedSubscriptionParameter.class);
+public final class LinkedSubscriptionParameter {
+    /*
+     * Properties of the Linked Subscription resource
+     */
+    @JsonProperty(value = "properties", required = true)
+    private LinkedSubscriptionParameterProperties innerProperties = new LinkedSubscriptionParameterProperties();
 
     /*
      * Location of the resource.
@@ -22,17 +24,14 @@ public class LinkedSubscriptionParameter {
     @JsonProperty(value = "location", required = true)
     private Location location;
 
-    /*
-     * The identifier associated with the device subscription.
+    /**
+     * Get the innerProperties property: Properties of the Linked Subscription resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedSubscriptionId", required = true)
-    private String linkedSubscriptionId;
-
-    /*
-     * The identifier associated with the device registration.
-     */
-    @JsonProperty(value = "properties.registrationResourceId", required = true)
-    private String registrationResourceId;
+    private LinkedSubscriptionParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: Location of the resource.
@@ -60,7 +59,7 @@ public class LinkedSubscriptionParameter {
      * @return the linkedSubscriptionId value.
      */
     public String linkedSubscriptionId() {
-        return this.linkedSubscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedSubscriptionId();
     }
 
     /**
@@ -70,7 +69,10 @@ public class LinkedSubscriptionParameter {
      * @return the LinkedSubscriptionParameter object itself.
      */
     public LinkedSubscriptionParameter withLinkedSubscriptionId(String linkedSubscriptionId) {
-        this.linkedSubscriptionId = linkedSubscriptionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedSubscriptionParameterProperties();
+        }
+        this.innerProperties().withLinkedSubscriptionId(linkedSubscriptionId);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class LinkedSubscriptionParameter {
      * @return the registrationResourceId value.
      */
     public String registrationResourceId() {
-        return this.registrationResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationResourceId();
     }
 
     /**
@@ -90,7 +92,10 @@ public class LinkedSubscriptionParameter {
      * @return the LinkedSubscriptionParameter object itself.
      */
     public LinkedSubscriptionParameter withRegistrationResourceId(String registrationResourceId) {
-        this.registrationResourceId = registrationResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedSubscriptionParameterProperties();
+        }
+        this.innerProperties().withRegistrationResourceId(registrationResourceId);
         return this;
     }
 
@@ -100,23 +105,21 @@ public class LinkedSubscriptionParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LinkedSubscriptionParameter"));
+        } else {
+            innerProperties().validate();
+        }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model LinkedSubscriptionParameter"));
         }
-        if (linkedSubscriptionId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedSubscriptionId in model LinkedSubscriptionParameter"));
-        }
-        if (registrationResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property registrationResourceId in model LinkedSubscriptionParameter"));
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedSubscriptionParameter.class);
 }

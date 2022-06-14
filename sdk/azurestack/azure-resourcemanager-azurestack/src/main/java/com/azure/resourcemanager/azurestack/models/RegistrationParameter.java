@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.azurestack.fluent.models.RegistrationParameterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Registration resource. */
-@JsonFlatten
 @Fluent
-public class RegistrationParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationParameter.class);
+public final class RegistrationParameter {
+    /*
+     * Properties of the Azure Stack registration resource
+     */
+    @JsonProperty(value = "properties", required = true)
+    private RegistrationParameterProperties innerProperties = new RegistrationParameterProperties();
 
     /*
      * Location of the resource.
@@ -22,11 +24,14 @@ public class RegistrationParameter {
     @JsonProperty(value = "location", required = true)
     private Location location;
 
-    /*
-     * The token identifying registered Azure Stack
+    /**
+     * Get the innerProperties property: Properties of the Azure Stack registration resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.registrationToken", required = true)
-    private String registrationToken;
+    private RegistrationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: Location of the resource.
@@ -54,7 +59,7 @@ public class RegistrationParameter {
      * @return the registrationToken value.
      */
     public String registrationToken() {
-        return this.registrationToken;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationToken();
     }
 
     /**
@@ -64,7 +69,10 @@ public class RegistrationParameter {
      * @return the RegistrationParameter object itself.
      */
     public RegistrationParameter withRegistrationToken(String registrationToken) {
-        this.registrationToken = registrationToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistrationParameterProperties();
+        }
+        this.innerProperties().withRegistrationToken(registrationToken);
         return this;
     }
 
@@ -74,16 +82,20 @@ public class RegistrationParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model RegistrationParameter"));
+        } else {
+            innerProperties().validate();
+        }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model RegistrationParameter"));
         }
-        if (registrationToken() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property registrationToken in model RegistrationParameter"));
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegistrationParameter.class);
 }

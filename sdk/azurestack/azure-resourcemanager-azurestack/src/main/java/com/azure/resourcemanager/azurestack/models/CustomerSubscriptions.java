@@ -18,7 +18,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CustomerSubscription> list(String resourceGroup, String registrationName);
 
@@ -31,7 +31,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CustomerSubscription> list(String resourceGroup, String registrationName, Context context);
 
@@ -58,7 +58,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response}.
      */
     Response<CustomerSubscription> getWithResponse(
         String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
@@ -85,7 +85,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
@@ -97,7 +97,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response}.
      */
     CustomerSubscription getById(String id);
 
@@ -109,7 +109,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response}.
      */
     Response<CustomerSubscription> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +131,7 @@ public interface CustomerSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

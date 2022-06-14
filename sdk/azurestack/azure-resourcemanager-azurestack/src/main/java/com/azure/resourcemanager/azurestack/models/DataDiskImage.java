@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data disk image. */
 @Immutable
 public final class DataDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskImage.class);
-
     /*
      * The LUN.
      */

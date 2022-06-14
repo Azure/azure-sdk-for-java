@@ -40,6 +40,10 @@ public final class ProductImpl implements Product {
         return this.innerModel().systemData();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -115,10 +119,6 @@ public final class ProductImpl implements Product {
 
     public Compatibility compatibility() {
         return this.innerModel().compatibility();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ProductInner innerModel() {

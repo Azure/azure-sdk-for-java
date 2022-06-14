@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Pageable list of registrations. */
 @Fluent
 public final class RegistrationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationList.class);
-
     /*
      * URI to the next page.
      */

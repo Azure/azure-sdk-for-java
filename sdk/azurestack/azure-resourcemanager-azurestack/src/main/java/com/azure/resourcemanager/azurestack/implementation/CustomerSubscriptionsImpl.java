@@ -13,10 +13,9 @@ import com.azure.resourcemanager.azurestack.fluent.CustomerSubscriptionsClient;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscription;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomerSubscriptionsImpl.class);
 
     private final CustomerSubscriptionsClient innerClient;
 
@@ -79,7 +78,7 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
     public CustomerSubscription getById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -87,14 +86,14 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -108,7 +107,7 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
     public Response<CustomerSubscription> getByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,14 +115,14 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
     public void deleteById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,14 +144,14 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,13 +159,13 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
                                 "The resource ID '%s' is not valid. Missing path segment 'customerSubscriptions'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,14 +173,14 @@ public final class CustomerSubscriptionsImpl implements CustomerSubscriptions {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         String customerSubscriptionName = Utils.getValueFromIdByName(id, "customerSubscriptions");
         if (customerSubscriptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

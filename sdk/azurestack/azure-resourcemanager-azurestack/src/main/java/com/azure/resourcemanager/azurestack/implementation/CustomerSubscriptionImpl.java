@@ -36,12 +36,12 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
         return this.innerModel().systemData();
     }
 
-    public String tenantId() {
-        return this.innerModel().tenantId();
-    }
-
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public String tenantId() {
+        return this.innerModel().tenantId();
     }
 
     public CustomerSubscriptionInner innerModel() {
@@ -112,13 +112,13 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
         return this;
     }
 
-    public CustomerSubscriptionImpl withTenantId(String tenantId) {
-        this.innerModel().withTenantId(tenantId);
+    public CustomerSubscriptionImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
         return this;
     }
 
-    public CustomerSubscriptionImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
+    public CustomerSubscriptionImpl withTenantId(String tenantId) {
+        this.innerModel().withTenantId(tenantId);
         return this;
     }
 }

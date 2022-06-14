@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the localized display information for this particular operation or action. */
 @Fluent
 public final class Display {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Display.class);
-
     /*
      * The localized, friendly version of the resource provider name.
      */

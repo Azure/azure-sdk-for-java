@@ -5,64 +5,19 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Linked Subscription information. */
-@JsonFlatten
 @Fluent
-public class LinkedSubscriptionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedSubscriptionInner.class);
-
+public final class LinkedSubscriptionInner extends Resource {
     /*
-     * The identifier associated with the device subscription.
+     * Linked Subscription resource.
      */
-    @JsonProperty(value = "properties.linkedSubscriptionId")
-    private String linkedSubscriptionId;
-
-    /*
-     * The identifier associated with the device registration.
-     */
-    @JsonProperty(value = "properties.registrationResourceId")
-    private String registrationResourceId;
-
-    /*
-     * The identifier of the Azure Stack device for remote management.
-     */
-    @JsonProperty(value = "properties.deviceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceId;
-
-    /*
-     * The object identifier associated with the Azure Stack device connecting
-     * to Azure.
-     */
-    @JsonProperty(value = "properties.deviceObjectId", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceObjectId;
-
-    /*
-     * The connection state of the Azure Stack device.
-     */
-    @JsonProperty(value = "properties.deviceLinkState", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceLinkState;
-
-    /*
-     * The last remote management connection time for the Azure Stack device
-     * connected to the linked subscription resource.
-     */
-    @JsonProperty(value = "properties.lastConnectedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastConnectedTime;
-
-    /*
-     * The status of the remote management connection of the Azure Stack
-     * device.
-     */
-    @JsonProperty(value = "properties.deviceConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceConnectionStatus;
+    @JsonProperty(value = "properties")
+    private LinkedSubscriptionProperties innerProperties;
 
     /*
      * The kind of the resource.
@@ -84,91 +39,12 @@ public class LinkedSubscriptionInner extends Resource {
     private String etag;
 
     /**
-     * Get the linkedSubscriptionId property: The identifier associated with the device subscription.
+     * Get the innerProperties property: Linked Subscription resource.
      *
-     * @return the linkedSubscriptionId value.
+     * @return the innerProperties value.
      */
-    public String linkedSubscriptionId() {
-        return this.linkedSubscriptionId;
-    }
-
-    /**
-     * Set the linkedSubscriptionId property: The identifier associated with the device subscription.
-     *
-     * @param linkedSubscriptionId the linkedSubscriptionId value to set.
-     * @return the LinkedSubscriptionInner object itself.
-     */
-    public LinkedSubscriptionInner withLinkedSubscriptionId(String linkedSubscriptionId) {
-        this.linkedSubscriptionId = linkedSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the registrationResourceId property: The identifier associated with the device registration.
-     *
-     * @return the registrationResourceId value.
-     */
-    public String registrationResourceId() {
-        return this.registrationResourceId;
-    }
-
-    /**
-     * Set the registrationResourceId property: The identifier associated with the device registration.
-     *
-     * @param registrationResourceId the registrationResourceId value to set.
-     * @return the LinkedSubscriptionInner object itself.
-     */
-    public LinkedSubscriptionInner withRegistrationResourceId(String registrationResourceId) {
-        this.registrationResourceId = registrationResourceId;
-        return this;
-    }
-
-    /**
-     * Get the deviceId property: The identifier of the Azure Stack device for remote management.
-     *
-     * @return the deviceId value.
-     */
-    public String deviceId() {
-        return this.deviceId;
-    }
-
-    /**
-     * Get the deviceObjectId property: The object identifier associated with the Azure Stack device connecting to
-     * Azure.
-     *
-     * @return the deviceObjectId value.
-     */
-    public String deviceObjectId() {
-        return this.deviceObjectId;
-    }
-
-    /**
-     * Get the deviceLinkState property: The connection state of the Azure Stack device.
-     *
-     * @return the deviceLinkState value.
-     */
-    public String deviceLinkState() {
-        return this.deviceLinkState;
-    }
-
-    /**
-     * Get the lastConnectedTime property: The last remote management connection time for the Azure Stack device
-     * connected to the linked subscription resource.
-     *
-     * @return the lastConnectedTime value.
-     */
-    public String lastConnectedTime() {
-        return this.lastConnectedTime;
-    }
-
-    /**
-     * Get the deviceConnectionStatus property: The status of the remote management connection of the Azure Stack
-     * device.
-     *
-     * @return the deviceConnectionStatus value.
-     */
-    public String deviceConnectionStatus() {
-        return this.deviceConnectionStatus;
+    private LinkedSubscriptionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -224,10 +100,107 @@ public class LinkedSubscriptionInner extends Resource {
     }
 
     /**
+     * Get the linkedSubscriptionId property: The identifier associated with the device subscription.
+     *
+     * @return the linkedSubscriptionId value.
+     */
+    public String linkedSubscriptionId() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedSubscriptionId();
+    }
+
+    /**
+     * Set the linkedSubscriptionId property: The identifier associated with the device subscription.
+     *
+     * @param linkedSubscriptionId the linkedSubscriptionId value to set.
+     * @return the LinkedSubscriptionInner object itself.
+     */
+    public LinkedSubscriptionInner withLinkedSubscriptionId(String linkedSubscriptionId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedSubscriptionProperties();
+        }
+        this.innerProperties().withLinkedSubscriptionId(linkedSubscriptionId);
+        return this;
+    }
+
+    /**
+     * Get the registrationResourceId property: The identifier associated with the device registration.
+     *
+     * @return the registrationResourceId value.
+     */
+    public String registrationResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().registrationResourceId();
+    }
+
+    /**
+     * Set the registrationResourceId property: The identifier associated with the device registration.
+     *
+     * @param registrationResourceId the registrationResourceId value to set.
+     * @return the LinkedSubscriptionInner object itself.
+     */
+    public LinkedSubscriptionInner withRegistrationResourceId(String registrationResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedSubscriptionProperties();
+        }
+        this.innerProperties().withRegistrationResourceId(registrationResourceId);
+        return this;
+    }
+
+    /**
+     * Get the deviceId property: The identifier of the Azure Stack device for remote management.
+     *
+     * @return the deviceId value.
+     */
+    public String deviceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().deviceId();
+    }
+
+    /**
+     * Get the deviceObjectId property: The object identifier associated with the Azure Stack device connecting to
+     * Azure.
+     *
+     * @return the deviceObjectId value.
+     */
+    public String deviceObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().deviceObjectId();
+    }
+
+    /**
+     * Get the deviceLinkState property: The connection state of the Azure Stack device.
+     *
+     * @return the deviceLinkState value.
+     */
+    public String deviceLinkState() {
+        return this.innerProperties() == null ? null : this.innerProperties().deviceLinkState();
+    }
+
+    /**
+     * Get the lastConnectedTime property: The last remote management connection time for the Azure Stack device
+     * connected to the linked subscription resource.
+     *
+     * @return the lastConnectedTime value.
+     */
+    public String lastConnectedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastConnectedTime();
+    }
+
+    /**
+     * Get the deviceConnectionStatus property: The status of the remote management connection of the Azure Stack
+     * device.
+     *
+     * @return the deviceConnectionStatus value.
+     */
+    public String deviceConnectionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().deviceConnectionStatus();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

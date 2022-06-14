@@ -30,7 +30,11 @@ public final class ComputeRole extends ExpandableStringEnum<ComputeRole> {
         return fromString(name, ComputeRole.class);
     }
 
-    /** @return known ComputeRole values. */
+    /**
+     * Gets known ComputeRole values.
+     *
+     * @return known ComputeRole values.
+     */
     public static Collection<ComputeRole> values() {
         return values(ComputeRole.class);
     }

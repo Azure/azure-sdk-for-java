@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cloud specific manifest JSON properties. */
 @Fluent
 public final class CloudManifestFileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFileProperties.class);
-
     /*
      * Cloud specific manifest data.
      */

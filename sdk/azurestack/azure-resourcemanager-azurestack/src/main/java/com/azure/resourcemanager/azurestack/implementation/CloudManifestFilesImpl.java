@@ -12,10 +12,9 @@ import com.azure.resourcemanager.azurestack.fluent.CloudManifestFilesClient;
 import com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileResponseInner;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFileResponse;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CloudManifestFilesImpl implements CloudManifestFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CloudManifestFilesImpl.class);
 
     private final CloudManifestFilesClient innerClient;
 

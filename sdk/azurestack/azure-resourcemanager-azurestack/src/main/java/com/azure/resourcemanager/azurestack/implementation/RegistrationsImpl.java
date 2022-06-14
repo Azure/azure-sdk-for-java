@@ -15,10 +15,9 @@ import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
 import com.azure.resourcemanager.azurestack.models.ActivationKeyResult;
 import com.azure.resourcemanager.azurestack.models.Registration;
 import com.azure.resourcemanager.azurestack.models.Registrations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegistrationsImpl implements Registrations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegistrationsImpl.class);
 
     private final RegistrationsClient innerClient;
 
@@ -37,6 +36,16 @@ public final class RegistrationsImpl implements Registrations {
 
     public PagedIterable<Registration> listByResourceGroup(String resourceGroup, Context context) {
         PagedIterable<RegistrationInner> inner = this.serviceClient().listByResourceGroup(resourceGroup, context);
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list() {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list(Context context) {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
     }
 
@@ -108,7 +117,7 @@ public final class RegistrationsImpl implements Registrations {
     public Registration getById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +125,7 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
@@ -127,7 +136,7 @@ public final class RegistrationsImpl implements Registrations {
     public Response<Registration> getByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +144,7 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
@@ -146,7 +155,7 @@ public final class RegistrationsImpl implements Registrations {
     public void deleteById(String id) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,18 +163,18 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        this.deleteWithResponse(resourceGroup, registrationName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroup, registrationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,7 +182,7 @@ public final class RegistrationsImpl implements Registrations {
         }
         String registrationName = Utils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));

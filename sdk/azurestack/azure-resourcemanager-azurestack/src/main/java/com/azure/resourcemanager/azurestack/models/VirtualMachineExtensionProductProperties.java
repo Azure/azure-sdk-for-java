@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.azurestack.fluent.models.Uri;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Product information. */
-@JsonFlatten
 @Immutable
 public class VirtualMachineExtensionProductProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionProductProperties.class);
-
     /*
      * Specifies kind of compute role included in the package.
      */
@@ -27,6 +22,12 @@ public class VirtualMachineExtensionProductProperties {
      */
     @JsonProperty(value = "isSystemExtension", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSystemExtension;
+
+    /*
+     * Specifies a download location where content can be downloaded from.
+     */
+    @JsonProperty(value = "sourceBlob", access = JsonProperty.Access.WRITE_ONLY)
+    private Uri innerSourceBlob;
 
     /*
      * Indicates if specified product supports multiple extensions.
@@ -53,12 +54,6 @@ public class VirtualMachineExtensionProductProperties {
     @JsonProperty(value = "vmScaleSetEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean vmScaleSetEnabled;
 
-    /*
-     * The URI.
-     */
-    @JsonProperty(value = "sourceBlob.uri", access = JsonProperty.Access.WRITE_ONLY)
-    private String uri;
-
     /**
      * Get the computeRole property: Specifies kind of compute role included in the package.
      *
@@ -75,6 +70,15 @@ public class VirtualMachineExtensionProductProperties {
      */
     public Boolean isSystemExtension() {
         return this.isSystemExtension;
+    }
+
+    /**
+     * Get the innerSourceBlob property: Specifies a download location where content can be downloaded from.
+     *
+     * @return the innerSourceBlob value.
+     */
+    private Uri innerSourceBlob() {
+        return this.innerSourceBlob;
     }
 
     /**
@@ -119,7 +123,7 @@ public class VirtualMachineExtensionProductProperties {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerSourceBlob() == null ? null : this.innerSourceBlob().uri();
     }
 
     /**
@@ -128,5 +132,8 @@ public class VirtualMachineExtensionProductProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerSourceBlob() != null) {
+            innerSourceBlob().validate();
+        }
     }
 }

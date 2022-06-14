@@ -24,7 +24,11 @@ public final class Location extends ExpandableStringEnum<Location> {
         return fromString(name, Location.class);
     }
 
-    /** @return known Location values. */
+    /**
+     * Gets known Location values.
+     *
+     * @return known Location values.
+     */
     public static Collection<Location> values() {
         return values(Location.class);
     }

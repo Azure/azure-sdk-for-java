@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Operations. */
 @Fluent
 public final class OperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationList.class);
-
     /*
      * Array of operations
      */

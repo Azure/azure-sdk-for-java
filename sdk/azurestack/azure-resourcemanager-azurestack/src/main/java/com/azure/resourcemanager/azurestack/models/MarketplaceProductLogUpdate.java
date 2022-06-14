@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Update details for product log. */
 @Immutable
 public final class MarketplaceProductLogUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketplaceProductLogUpdate.class);
-
     /*
      * Operation to log.
      */

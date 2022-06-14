@@ -49,27 +49,6 @@ public interface Registration {
     Map<String, String> tags();
 
     /**
-     * Gets the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
-     * @return the objectId value.
-     */
-    String objectId();
-
-    /**
-     * Gets the cloudId property: The identifier of the registered Azure Stack.
-     *
-     * @return the cloudId value.
-     */
-    String cloudId();
-
-    /**
-     * Gets the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
-     * @return the billingModel value.
-     */
-    String billingModel();
-
-    /**
      * Gets the kind property: The kind of the resource.
      *
      * @return the kind value.
@@ -91,6 +70,27 @@ public interface Registration {
     String etag();
 
     /**
+     * Gets the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
+     *
+     * @return the objectId value.
+     */
+    String objectId();
+
+    /**
+     * Gets the cloudId property: The identifier of the registered Azure Stack.
+     *
+     * @return the cloudId value.
+     */
+    String cloudId();
+
+    /**
+     * Gets the billingModel property: Specifies the billing mode for the Azure Stack registration.
+     *
+     * @return the billingModel value.
+     */
+    String billingModel();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -103,6 +103,13 @@ public interface Registration {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner object.
@@ -243,7 +250,7 @@ public interface Registration {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource containing the Azure Stack activation key.
+     * @return the resource containing the Azure Stack activation key along with {@link Response}.
      */
     Response<ActivationKeyResult> getActivationKeyWithResponse(Context context);
 
@@ -262,7 +269,7 @@ public interface Registration {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> enableRemoteManagementWithResponse(Context context);
 }

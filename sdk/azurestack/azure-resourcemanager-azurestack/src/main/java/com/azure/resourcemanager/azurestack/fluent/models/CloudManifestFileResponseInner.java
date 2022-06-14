@@ -6,16 +6,12 @@ package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFileProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cloud specific manifest GET response. */
 @Fluent
 public final class CloudManifestFileResponseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFileResponseInner.class);
-
     /*
      * Cloud specific manifest data.
      */

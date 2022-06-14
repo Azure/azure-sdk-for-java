@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Pageable list of customer subscriptions. */
 @Fluent
 public final class CustomerSubscriptionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionList.class);
-
     /*
      * URI to the next page.
      */
