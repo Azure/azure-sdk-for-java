@@ -7,16 +7,12 @@ package com.azure.resourcemanager.datadog.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capture logs and metrics of Azure resources based on ARM tags. */
 @Fluent
 public final class MonitoringTagRulesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesInner.class);
-
     /*
      * Definition of the properties for a TagRules resource.
      */

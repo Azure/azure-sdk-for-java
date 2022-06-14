@@ -80,6 +80,10 @@ public final class DatadogMonitorResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatadogMonitorResourceInner innerModel() {
         return this.innerObject;
     }

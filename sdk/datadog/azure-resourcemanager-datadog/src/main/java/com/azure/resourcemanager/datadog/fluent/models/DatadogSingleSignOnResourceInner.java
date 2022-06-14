@@ -7,16 +7,12 @@ package com.azure.resourcemanager.datadog.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datadog.models.DatadogSingleSignOnProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogSingleSignOnResource model. */
 @Fluent
 public final class DatadogSingleSignOnResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogSingleSignOnResourceInner.class);
-
     /*
      * The properties property.
      */

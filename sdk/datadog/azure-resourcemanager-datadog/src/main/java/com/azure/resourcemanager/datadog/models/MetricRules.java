@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Set of rules for sending metrics for the Monitor resource. */
 @Fluent
 public final class MetricRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricRules.class);
-
     /*
      * List of filtering tags to be used for capturing metrics. If empty, all
      * resources will be captured. If only Exclude action is specified, the

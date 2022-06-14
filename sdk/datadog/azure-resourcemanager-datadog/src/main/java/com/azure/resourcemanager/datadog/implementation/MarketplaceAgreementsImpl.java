@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datadog.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogAgreementResource;
 import com.azure.resourcemanager.datadog.models.MarketplaceAgreements;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketplaceAgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MarketplaceAgreementsImpl.class);
 
     private final MarketplaceAgreementsClient innerClient;
 

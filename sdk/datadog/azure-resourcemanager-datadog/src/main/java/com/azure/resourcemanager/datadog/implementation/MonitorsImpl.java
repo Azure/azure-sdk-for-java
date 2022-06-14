@@ -23,10 +23,9 @@ import com.azure.resourcemanager.datadog.models.DatadogSetPasswordLink;
 import com.azure.resourcemanager.datadog.models.LinkedResource;
 import com.azure.resourcemanager.datadog.models.MonitoredResource;
 import com.azure.resourcemanager.datadog.models.Monitors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MonitorsImpl implements Monitors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorsImpl.class);
 
     private final MonitorsClient innerClient;
 
@@ -198,7 +197,7 @@ public final class MonitorsImpl implements Monitors {
     public DatadogMonitorResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,7 +205,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -217,7 +216,7 @@ public final class MonitorsImpl implements Monitors {
     public Response<DatadogMonitorResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -225,7 +224,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -236,7 +235,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,7 +243,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
@@ -255,7 +254,7 @@ public final class MonitorsImpl implements Monitors {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -263,7 +262,7 @@ public final class MonitorsImpl implements Monitors {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));

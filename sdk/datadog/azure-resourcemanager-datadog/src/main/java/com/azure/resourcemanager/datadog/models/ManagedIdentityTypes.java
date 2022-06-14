@@ -27,7 +27,11 @@ public final class ManagedIdentityTypes extends ExpandableStringEnum<ManagedIden
         return fromString(name, ManagedIdentityTypes.class);
     }
 
-    /** @return known ManagedIdentityTypes values. */
+    /**
+     * Gets known ManagedIdentityTypes values.
+     *
+     * @return known ManagedIdentityTypes values.
+     */
     public static Collection<ManagedIdentityTypes> values() {
         return values(ManagedIdentityTypes.class);
     }

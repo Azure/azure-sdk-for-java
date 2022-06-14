@@ -33,7 +33,11 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
         return fromString(name, MarketplaceSubscriptionStatus.class);
     }
 
-    /** @return known MarketplaceSubscriptionStatus values. */
+    /**
+     * Gets known MarketplaceSubscriptionStatus values.
+     *
+     * @return known MarketplaceSubscriptionStatus values.
+     */
     public static Collection<MarketplaceSubscriptionStatus> values() {
         return values(MarketplaceSubscriptionStatus.class);
     }

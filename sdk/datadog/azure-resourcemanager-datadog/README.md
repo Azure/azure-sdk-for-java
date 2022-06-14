@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datadog</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,6 +74,7 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/datadog/azure-resourcemanager-datadog/SAMPLE.md)
 
 
 ## Troubleshooting

@@ -36,6 +36,10 @@ public final class DatadogSingleSignOnResourceImpl
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatadogSingleSignOnResourceInner innerModel() {
         return this.innerObject;
     }

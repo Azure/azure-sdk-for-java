@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the properties for a TagRules resource. */
 @Fluent
 public final class MonitoringTagRulesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoringTagRulesProperties.class);
-
     /*
      * The provisioningState property.
      */

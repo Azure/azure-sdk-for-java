@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datadog.fluent.SingleSignOnConfigurationsClient
 import com.azure.resourcemanager.datadog.fluent.models.DatadogSingleSignOnResourceInner;
 import com.azure.resourcemanager.datadog.models.DatadogSingleSignOnResource;
 import com.azure.resourcemanager.datadog.models.SingleSignOnConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingleSignOnConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SingleSignOnConfigurationsImpl.class);
 
     private final SingleSignOnConfigurationsClient innerClient;
 
@@ -70,7 +69,7 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
     public DatadogSingleSignOnResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -78,14 +77,14 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -99,7 +98,7 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
     public Response<DatadogSingleSignOnResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,14 +106,14 @@ public final class SingleSignOnConfigurationsImpl implements SingleSignOnConfigu
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

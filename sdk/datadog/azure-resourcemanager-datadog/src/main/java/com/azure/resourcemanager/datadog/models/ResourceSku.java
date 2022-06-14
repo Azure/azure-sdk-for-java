@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceSku model. */
 @Fluent
 public final class ResourceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSku.class);
-
     /*
      * Name of the SKU.
      */
@@ -47,9 +44,11 @@ public final class ResourceSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ResourceSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceSku.class);
 }

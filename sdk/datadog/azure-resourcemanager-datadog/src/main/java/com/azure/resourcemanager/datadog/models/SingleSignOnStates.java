@@ -33,7 +33,11 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
         return fromString(name, SingleSignOnStates.class);
     }
 
-    /** @return known SingleSignOnStates values. */
+    /**
+     * Gets known SingleSignOnStates values.
+     *
+     * @return known SingleSignOnStates values.
+     */
     public static Collection<SingleSignOnStates> values() {
         return values(SingleSignOnStates.class);
     }

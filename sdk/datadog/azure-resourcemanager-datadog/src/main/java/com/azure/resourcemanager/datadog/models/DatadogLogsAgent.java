@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatadogLogsAgent model. */
 @Fluent
 public final class DatadogLogsAgent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogLogsAgent.class);
-
     /*
      * The transport.
      */
