@@ -5,6 +5,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-stress</artifactId>
@@ -13,9 +19,20 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+    <!-- Always target the minimum supported Java release in stress tests. -->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Skip all linting in stress tests. -->
+    <codesnippet.skip>true</codesnippet.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <revapi.skip>true</revapi.skip>
+
+    <!-- Skip missing Javadocs in stress tests. -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -56,6 +73,21 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.microsoft.azure:applicationinsights-core:[2.6.4]</include> <!-- {x-version-update;com.azure:applicationinsights-core;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[2.6.7]</include> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>

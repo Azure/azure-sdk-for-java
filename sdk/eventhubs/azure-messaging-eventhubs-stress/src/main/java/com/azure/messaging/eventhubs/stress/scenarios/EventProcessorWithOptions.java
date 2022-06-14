@@ -31,12 +31,15 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Process events with options from application arguments. <br/>
- * Support options: <br/>
- * --UPDATE_CHECKPOINT boolean <br/>
- * --NEED_SEND_EVENT_HUB boolean <br/>
- * --RECEIVE_BATCH_SIZE  int <br/>
- * --RECEIVE_BATCH_TIMEOUT int <br/>
+ * Process events with options from application arguments.
+ * <p>
+ * Support options:
+ * <pre>
+ * --UPDATE_CHECKPOINT boolean
+ * --NEED_SEND_EVENT_HUB boolean
+ * --RECEIVE_BATCH_SIZE  int
+ * --RECEIVE_BATCH_TIMEOUT int
+ * </pre>
  */
 @Service("EventProcessorWithOptions")
 public class EventProcessorWithOptions extends EventHubsScenario {
