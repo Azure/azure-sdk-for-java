@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/exceptionPolicies/a6ff9336-63d3-4c07-af52-f492c97dc594-ExceptionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "cccf41c1-9b39-46d6-836a-8a02be60f20d",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "Last-Modified" : "Tue, 14 Jun 2022 21:40:39 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 14 Jun 2022 21:40:38 GMT",
+      "ETag" : "\"d30b4b6f-0000-0700-0000-62a900570000\"",
+      "trace-id" : "d09497dc12936fcf6b8d6e3e4577b4fa",
+      "X-Azure-Ref" : "0VwCpYgAAAAC+ZG1jldT/RLelNr2+QEgLWVZSMzExMDAwMTE2MDM3AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "Body" : "{\"id\":\"a6ff9336-63d3-4c07-af52-f492c97dc594-ExceptionPolicy\",\"name\":\"a6ff9336-63d3-4c07-af52-f492c97dc594-ExceptionPolicy-Name\",\"exceptionRules\":{\"a6ff9336-63d3-4c07-af52-f492c97dc594-ExceptionPolicy\":{\"trigger\":{\"kind\":\"queue-length\",\"threshold\":1},\"actions\":{\"CancelledDueToMaxQueueLengthReached\":{\"kind\":\"cancel\",\"note\":\"Job Cancelled as maximum queue length is reached.\",\"dispositionCode\":\"CancelledDueToMaxQueueLengthReached\"}}}}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/exceptionPolicies/a6ff9336-63d3-4c07-af52-f492c97dc594-ExceptionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "97eeccf9-2cf9-48d4-bf42-0e179cb92d45"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "6e1eda68f2a2da6b124ce533a1f2eee4",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0VwCpYgAAAACxNtVnuK4KR4IocTWuRgmTWVZSMzExMDAwMTE2MDM3AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "StatusCode" : "204",
+      "Date" : "Tue, 14 Jun 2022 21:40:38 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

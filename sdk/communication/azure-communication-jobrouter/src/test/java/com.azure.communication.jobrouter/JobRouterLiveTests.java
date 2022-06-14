@@ -6,14 +6,21 @@ package com.azure.communication.jobrouter;
 import com.azure.communication.jobrouter.models.AzureFunctionRule;
 import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
+import com.azure.communication.jobrouter.models.CancelExceptionAction;
+import com.azure.communication.jobrouter.models.ChannelConfiguration;
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionAction;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
+import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.QueueSelector;
 import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
+import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.StaticQueueSelector;
 import com.azure.communication.jobrouter.models.StaticRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
@@ -162,7 +169,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
 
         String queueId = String.format("%s-Queue", UUID.randomUUID());
-        JobQueue jobQueue = createQueue(queueId, distributionPolicyId);
+        JobQueue jobQueue = createQueue(queueId, distributionPolicy.getId());
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", UUID.randomUUID());
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -216,6 +223,102 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
         // Cleanup
         routerClient.deleteClassificationPolicy(classificationPolicyId);
+        routerClient.deleteQueue(queueId);
+        routerClient.deleteDistributionPolicy(distributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void CreateExceptionPolicy() {
+        // Setup
+        String exceptionPolicyId = String.format("%s-ExceptionPolicy", UUID.randomUUID());
+        String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
+
+        QueueLengthExceptionTrigger queueLengthExceptionTrigger = new QueueLengthExceptionTrigger();
+        queueLengthExceptionTrigger.setThreshold(1);
+
+        CancelExceptionAction exceptionAction = new CancelExceptionAction();
+        exceptionAction.setDispositionCode("CancelledDueToMaxQueueLengthReached");
+        exceptionAction.setNote("Job Cancelled as maximum queue length is reached.");
+
+        Map<String, ExceptionAction> exceptionActions = new HashMap<>() {{
+            put("CancelledDueToMaxQueueLengthReached", exceptionAction);
+        }};
+
+        ExceptionRule exceptionRule = new ExceptionRule();
+        exceptionRule.setTrigger(queueLengthExceptionTrigger);
+        exceptionRule.setActions(exceptionActions);
+
+        Map<String, ExceptionRule> exceptionRules = new HashMap<>() {{
+            put(exceptionPolicyId, exceptionRule);
+        }};
+
+        ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
+        exceptionPolicy.setName(exceptionPolicyName);
+        exceptionPolicy.setExceptionRules(exceptionRules);
+
+        // Action
+        Response<ExceptionPolicy> response = routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteExceptionPolicy(exceptionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void CreateWorker() {
+        // Setup
+        /**
+         * Setup queue
+         */
+        String distributionPolicyId = String.format("%s-DistributionPolicy", UUID.randomUUID());
+        DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
+
+        String queueId = String.format("%s-Queue", UUID.randomUUID());
+        JobQueue jobQueue = createQueue(queueId, distributionPolicy.getId());
+
+        /**
+         * Setup worker
+         */
+        String workerId = String.format("%s-Worker", UUID.randomUUID());
+
+        Map<String, Object> labels = new HashMap<>() {{
+            put("Label", "Value");
+        }};
+
+        Map<String, Object> tags = new HashMap<>() {{
+            put("Tag", "Value");
+        }};
+
+        ChannelConfiguration channelConfiguration = new ChannelConfiguration();
+        channelConfiguration.setCapacityCostPerJob(1);
+        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<>() {{
+            put("channel1", channelConfiguration);
+        }};
+
+        Map<String, Object> queueAssignments = new HashMap<>() {{
+            put(jobQueue.getId(), new Object());
+        }};
+
+        RouterWorker routerWorker = new RouterWorker();
+        routerWorker.setAvailableForOffers(false);
+        routerWorker.setLabels(labels);
+        routerWorker.setTags(tags);
+        routerWorker.setTotalCapacity(10);
+        routerWorker.setChannelConfigurations(channelConfigurations);
+        routerWorker.setQueueAssignments(queueAssignments);
+
+        // Action
+        Response<RouterWorker> response = routerClient.upsertWorker(workerId, routerWorker);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteWorker(workerId);
         routerClient.deleteQueue(queueId);
         routerClient.deleteDistributionPolicy(distributionPolicyId);
     }

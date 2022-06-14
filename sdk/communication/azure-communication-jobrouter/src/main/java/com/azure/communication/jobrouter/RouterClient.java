@@ -972,7 +972,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWorkerWithResponse(String id) {
+    public Response<Void> deleteWorker(String id) {
         return this.deleteWorkerWithResponse(id, null);
     }
 
