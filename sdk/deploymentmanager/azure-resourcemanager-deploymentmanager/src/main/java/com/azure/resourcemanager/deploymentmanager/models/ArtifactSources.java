@@ -31,7 +31,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source along with {@link Response}.
      */
     Response<ArtifactSource> getByResourceGroupWithResponse(
         String resourceGroupName, String artifactSourceName, Context context);
@@ -56,7 +56,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String artifactSourceName, Context context);
 
@@ -79,7 +79,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of artifact sources.
+     * @return the list of artifact sources along with {@link Response}.
      */
     Response<List<ArtifactSource>> listWithResponse(String resourceGroupName, Context context);
 
@@ -90,7 +90,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source along with {@link Response}.
      */
     ArtifactSource getById(String id);
 
@@ -102,7 +102,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an artifact source.
+     * @return an artifact source along with {@link Response}.
      */
     Response<ArtifactSource> getByIdWithResponse(String id, Context context);
 
@@ -124,7 +124,7 @@ public interface ArtifactSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

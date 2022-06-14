@@ -5,75 +5,27 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The resource representation of a service in a service topology. */
-@JsonFlatten
 @Fluent
-public class ServiceResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceInner.class);
-
+public final class ServiceResourceInner extends Resource {
     /*
-     * The Azure location to which the resources in the service belong to or
-     * should be deployed to.
+     * The properties that define a service in a service topology.
      */
-    @JsonProperty(value = "properties.targetLocation", required = true)
-    private String targetLocation;
-
-    /*
-     * The subscription to which the resources in the service belong to or
-     * should be deployed to.
-     */
-    @JsonProperty(value = "properties.targetSubscriptionId", required = true)
-    private String targetSubscriptionId;
+    @JsonProperty(value = "properties", required = true)
+    private ServiceResourceProperties innerProperties = new ServiceResourceProperties();
 
     /**
-     * Get the targetLocation property: The Azure location to which the resources in the service belong to or should be
-     * deployed to.
+     * Get the innerProperties property: The properties that define a service in a service topology.
      *
-     * @return the targetLocation value.
+     * @return the innerProperties value.
      */
-    public String targetLocation() {
-        return this.targetLocation;
-    }
-
-    /**
-     * Set the targetLocation property: The Azure location to which the resources in the service belong to or should be
-     * deployed to.
-     *
-     * @param targetLocation the targetLocation value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withTargetLocation(String targetLocation) {
-        this.targetLocation = targetLocation;
-        return this;
-    }
-
-    /**
-     * Get the targetSubscriptionId property: The subscription to which the resources in the service belong to or should
-     * be deployed to.
-     *
-     * @return the targetSubscriptionId value.
-     */
-    public String targetSubscriptionId() {
-        return this.targetSubscriptionId;
-    }
-
-    /**
-     * Set the targetSubscriptionId property: The subscription to which the resources in the service belong to or should
-     * be deployed to.
-     *
-     * @param targetSubscriptionId the targetSubscriptionId value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withTargetSubscriptionId(String targetSubscriptionId) {
-        this.targetSubscriptionId = targetSubscriptionId;
-        return this;
+    private ServiceResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -96,17 +48,15 @@ public class ServiceResourceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (targetLocation() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property targetLocation in model ServiceResourceInner"));
-        }
-        if (targetSubscriptionId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetSubscriptionId in model ServiceResourceInner"));
+                        "Missing required property innerProperties in model ServiceResourceInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceResourceInner.class);
 }

@@ -33,7 +33,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout along with {@link Response}.
      */
     Response<Rollout> getByResourceGroupWithResponse(
         String resourceGroupName, String rolloutName, Integer retryAttempt, Context context);
@@ -58,7 +58,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String rolloutName, Context context);
 
@@ -83,7 +83,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response}.
      */
     Response<Rollout> cancelWithResponse(String resourceGroupName, String rolloutName, Context context);
 
@@ -111,7 +111,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response}.
      */
     Response<Rollout> restartWithResponse(
         String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context);
@@ -135,7 +135,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of rollouts.
+     * @return the list of rollouts along with {@link Response}.
      */
     Response<List<Rollout>> listWithResponse(String resourceGroupName, Context context);
 
@@ -157,7 +157,7 @@ public interface Rollouts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

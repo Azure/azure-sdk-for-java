@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.deploymentmanager.fluent.models.SasProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,18 +13,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Defines the properties to access the artifacts using an Azure Storage SAS URI. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Sas")
-@JsonFlatten
 @Fluent
-public class SasAuthentication extends Authentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SasAuthentication.class);
-
+public final class SasAuthentication extends Authentication {
     /*
-     * The SAS URI to the Azure Storage blob container. Any offset from the
-     * root of the container to where the artifacts are located can be defined
-     * in the artifactRoot.
+     * The SAS properties
      */
-    @JsonProperty(value = "properties.sasUri")
-    private String sasUri;
+    @JsonProperty(value = "properties")
+    private SasProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: The SAS properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SasProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sasUri property: The SAS URI to the Azure Storage blob container. Any offset from the root of the
@@ -35,7 +37,7 @@ public class SasAuthentication extends Authentication {
      * @return the sasUri value.
      */
     public String sasUri() {
-        return this.sasUri;
+        return this.innerProperties() == null ? null : this.innerProperties().sasUri();
     }
 
     /**
@@ -46,7 +48,10 @@ public class SasAuthentication extends Authentication {
      * @return the SasAuthentication object itself.
      */
     public SasAuthentication withSasUri(String sasUri) {
-        this.sasUri = sasUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SasProperties();
+        }
+        this.innerProperties().withSasUri(sasUri);
         return this;
     }
 
@@ -58,5 +63,8 @@ public class SasAuthentication extends Authentication {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

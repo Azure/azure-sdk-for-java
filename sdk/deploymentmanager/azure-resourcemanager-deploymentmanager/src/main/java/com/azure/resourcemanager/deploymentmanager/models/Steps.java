@@ -31,7 +31,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the step along with {@link Response}.
      */
     Response<StepResource> getByResourceGroupWithResponse(String resourceGroupName, String stepName, Context context);
 
@@ -55,7 +55,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String stepName, Context context);
 
@@ -78,7 +78,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of steps.
+     * @return the list of steps along with {@link Response}.
      */
     Response<List<StepResource>> listWithResponse(String resourceGroupName, Context context);
 
@@ -89,7 +89,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the step along with {@link Response}.
      */
     StepResource getById(String id);
 
@@ -101,7 +101,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the step.
+     * @return the step along with {@link Response}.
      */
     Response<StepResource> getByIdWithResponse(String id, Context context);
 
@@ -123,7 +123,7 @@ public interface Steps {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

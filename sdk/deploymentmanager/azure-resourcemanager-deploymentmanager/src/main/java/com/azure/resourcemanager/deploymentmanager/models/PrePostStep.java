@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that define a step. */
 @Fluent
 public final class PrePostStep {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrePostStep.class);
-
     /*
      * The resource Id of the step to be run.
      */
@@ -47,9 +44,11 @@ public final class PrePostStep {
      */
     public void validate() {
         if (stepId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property stepId in model PrePostStep"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrePostStep.class);
 }

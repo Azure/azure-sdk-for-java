@@ -47,31 +47,6 @@ public interface ArtifactSource {
     Map<String, String> tags();
 
     /**
-     * Gets the sourceType property: The type of artifact source used.
-     *
-     * @return the sourceType value.
-     */
-    String sourceType();
-
-    /**
-     * Gets the artifactRoot property: The path from the location that the 'authentication' property [say, a SAS URI to
-     * the blob container] refers to, to the location of the artifacts. This can be used to differentiate different
-     * versions of the artifacts. Or, different types of artifacts like binaries or templates. The location referenced
-     * by the authentication property concatenated with this optional artifactRoot path forms the artifact source
-     * location where the artifacts are expected to be found.
-     *
-     * @return the artifactRoot value.
-     */
-    String artifactRoot();
-
-    /**
-     * Gets the authentication property: The authentication method to use to access the artifact source.
-     *
-     * @return the authentication value.
-     */
-    Authentication authentication();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -84,6 +59,13 @@ public interface ArtifactSource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.ArtifactSourceInner object.
@@ -136,11 +118,7 @@ public interface ArtifactSource {
          * The stage of the ArtifactSource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSourceType,
-                DefinitionStages.WithArtifactRoot,
-                DefinitionStages.WithAuthentication {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -166,44 +144,6 @@ public interface ArtifactSource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ArtifactSource definition allowing to specify sourceType. */
-        interface WithSourceType {
-            /**
-             * Specifies the sourceType property: The type of artifact source used..
-             *
-             * @param sourceType The type of artifact source used.
-             * @return the next definition stage.
-             */
-            WithCreate withSourceType(String sourceType);
-        }
-        /** The stage of the ArtifactSource definition allowing to specify artifactRoot. */
-        interface WithArtifactRoot {
-            /**
-             * Specifies the artifactRoot property: The path from the location that the 'authentication' property [say,
-             * a SAS URI to the blob container] refers to, to the location of the artifacts. This can be used to
-             * differentiate different versions of the artifacts. Or, different types of artifacts like binaries or
-             * templates. The location referenced by the authentication property concatenated with this optional
-             * artifactRoot path forms the artifact source location where the artifacts are expected to be found..
-             *
-             * @param artifactRoot The path from the location that the 'authentication' property [say, a SAS URI to the
-             *     blob container] refers to, to the location of the artifacts. This can be used to differentiate
-             *     different versions of the artifacts. Or, different types of artifacts like binaries or templates. The
-             *     location referenced by the authentication property concatenated with this optional artifactRoot path
-             *     forms the artifact source location where the artifacts are expected to be found.
-             * @return the next definition stage.
-             */
-            WithCreate withArtifactRoot(String artifactRoot);
-        }
-        /** The stage of the ArtifactSource definition allowing to specify authentication. */
-        interface WithAuthentication {
-            /**
-             * Specifies the authentication property: The authentication method to use to access the artifact source..
-             *
-             * @param authentication The authentication method to use to access the artifact source.
-             * @return the next definition stage.
-             */
-            WithCreate withAuthentication(Authentication authentication);
-        }
     }
     /**
      * Begins update for the ArtifactSource resource.
@@ -213,11 +153,7 @@ public interface ArtifactSource {
     ArtifactSource.Update update();
 
     /** The template for ArtifactSource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSourceType,
-            UpdateStages.WithArtifactRoot,
-            UpdateStages.WithAuthentication {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -244,44 +180,6 @@ public interface ArtifactSource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ArtifactSource update allowing to specify sourceType. */
-        interface WithSourceType {
-            /**
-             * Specifies the sourceType property: The type of artifact source used..
-             *
-             * @param sourceType The type of artifact source used.
-             * @return the next definition stage.
-             */
-            Update withSourceType(String sourceType);
-        }
-        /** The stage of the ArtifactSource update allowing to specify artifactRoot. */
-        interface WithArtifactRoot {
-            /**
-             * Specifies the artifactRoot property: The path from the location that the 'authentication' property [say,
-             * a SAS URI to the blob container] refers to, to the location of the artifacts. This can be used to
-             * differentiate different versions of the artifacts. Or, different types of artifacts like binaries or
-             * templates. The location referenced by the authentication property concatenated with this optional
-             * artifactRoot path forms the artifact source location where the artifacts are expected to be found..
-             *
-             * @param artifactRoot The path from the location that the 'authentication' property [say, a SAS URI to the
-             *     blob container] refers to, to the location of the artifacts. This can be used to differentiate
-             *     different versions of the artifacts. Or, different types of artifacts like binaries or templates. The
-             *     location referenced by the authentication property concatenated with this optional artifactRoot path
-             *     forms the artifact source location where the artifacts are expected to be found.
-             * @return the next definition stage.
-             */
-            Update withArtifactRoot(String artifactRoot);
-        }
-        /** The stage of the ArtifactSource update allowing to specify authentication. */
-        interface WithAuthentication {
-            /**
-             * Specifies the authentication property: The authentication method to use to access the artifact source..
-             *
-             * @param authentication The authentication method to use to access the artifact source.
-             * @return the next definition stage.
-             */
-            Update withAuthentication(Authentication authentication);
         }
     }
     /**

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A REST based health check. */
 @Fluent
 public final class RestHealthCheck {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestHealthCheck.class);
-
     /*
      * A unique name for this check.
      */
@@ -103,12 +100,12 @@ public final class RestHealthCheck {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RestHealthCheck"));
         }
         if (request() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property request in model RestHealthCheck"));
         } else {
@@ -118,4 +115,6 @@ public final class RestHealthCheck {
             response().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestHealthCheck.class);
 }

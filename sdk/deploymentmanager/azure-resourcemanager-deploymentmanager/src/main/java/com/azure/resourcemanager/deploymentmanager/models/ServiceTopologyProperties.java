@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a service topology. */
 @Fluent
 public class ServiceTopologyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTopologyProperties.class);
-
     /*
      * The resource Id of the artifact source that contains the artifacts that
      * can be referenced in the service units.

@@ -47,22 +47,6 @@ public interface ServiceResource {
     Map<String, String> tags();
 
     /**
-     * Gets the targetLocation property: The Azure location to which the resources in the service belong to or should be
-     * deployed to.
-     *
-     * @return the targetLocation value.
-     */
-    String targetLocation();
-
-    /**
-     * Gets the targetSubscriptionId property: The subscription to which the resources in the service belong to or
-     * should be deployed to.
-     *
-     * @return the targetSubscriptionId value.
-     */
-    String targetSubscriptionId();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -77,6 +61,13 @@ public interface ServiceResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceResourceInner object.
      *
      * @return the inner object.
@@ -88,8 +79,6 @@ public interface ServiceResource {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
-            DefinitionStages.WithTargetLocation,
-            DefinitionStages.WithTargetSubscriptionId,
             DefinitionStages.WithCreate {
     }
     /** The ServiceResource definition stages. */
@@ -124,31 +113,7 @@ public interface ServiceResource {
              * @param serviceTopologyName The name of the service topology .
              * @return the next definition stage.
              */
-            WithTargetLocation withExistingServiceTopology(String resourceGroupName, String serviceTopologyName);
-        }
-        /** The stage of the ServiceResource definition allowing to specify targetLocation. */
-        interface WithTargetLocation {
-            /**
-             * Specifies the targetLocation property: The Azure location to which the resources in the service belong to
-             * or should be deployed to..
-             *
-             * @param targetLocation The Azure location to which the resources in the service belong to or should be
-             *     deployed to.
-             * @return the next definition stage.
-             */
-            WithTargetSubscriptionId withTargetLocation(String targetLocation);
-        }
-        /** The stage of the ServiceResource definition allowing to specify targetSubscriptionId. */
-        interface WithTargetSubscriptionId {
-            /**
-             * Specifies the targetSubscriptionId property: The subscription to which the resources in the service
-             * belong to or should be deployed to..
-             *
-             * @param targetSubscriptionId The subscription to which the resources in the service belong to or should be
-             *     deployed to.
-             * @return the next definition stage.
-             */
-            WithCreate withTargetSubscriptionId(String targetSubscriptionId);
+            WithCreate withExistingServiceTopology(String resourceGroupName, String serviceTopologyName);
         }
         /**
          * The stage of the ServiceResource definition which contains all the minimum required properties for the
@@ -189,8 +154,7 @@ public interface ServiceResource {
     ServiceResource.Update update();
 
     /** The template for ServiceResource update. */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithTargetLocation, UpdateStages.WithTargetSubscriptionId {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -217,30 +181,6 @@ public interface ServiceResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ServiceResource update allowing to specify targetLocation. */
-        interface WithTargetLocation {
-            /**
-             * Specifies the targetLocation property: The Azure location to which the resources in the service belong to
-             * or should be deployed to..
-             *
-             * @param targetLocation The Azure location to which the resources in the service belong to or should be
-             *     deployed to.
-             * @return the next definition stage.
-             */
-            Update withTargetLocation(String targetLocation);
-        }
-        /** The stage of the ServiceResource update allowing to specify targetSubscriptionId. */
-        interface WithTargetSubscriptionId {
-            /**
-             * Specifies the targetSubscriptionId property: The subscription to which the resources in the service
-             * belong to or should be deployed to..
-             *
-             * @param targetSubscriptionId The subscription to which the resources in the service belong to or should be
-             *     deployed to.
-             * @return the next definition stage.
-             */
-            Update withTargetSubscriptionId(String targetSubscriptionId);
         }
     }
     /**

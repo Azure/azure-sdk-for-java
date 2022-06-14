@@ -47,14 +47,6 @@ public interface ServiceTopologyResource {
     Map<String, String> tags();
 
     /**
-     * Gets the artifactSourceId property: The resource Id of the artifact source that contains the artifacts that can
-     * be referenced in the service units.
-     *
-     * @return the artifactSourceId value.
-     */
-    String artifactSourceId();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -67,6 +59,13 @@ public interface ServiceTopologyResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceTopologyResourceInner object.
@@ -119,7 +118,7 @@ public interface ServiceTopologyResource {
          * The stage of the ServiceTopologyResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithArtifactSourceId {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -145,18 +144,6 @@ public interface ServiceTopologyResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ServiceTopologyResource definition allowing to specify artifactSourceId. */
-        interface WithArtifactSourceId {
-            /**
-             * Specifies the artifactSourceId property: The resource Id of the artifact source that contains the
-             * artifacts that can be referenced in the service units..
-             *
-             * @param artifactSourceId The resource Id of the artifact source that contains the artifacts that can be
-             *     referenced in the service units.
-             * @return the next definition stage.
-             */
-            WithCreate withArtifactSourceId(String artifactSourceId);
-        }
     }
     /**
      * Begins update for the ServiceTopologyResource resource.
@@ -166,7 +153,7 @@ public interface ServiceTopologyResource {
     ServiceTopologyResource.Update update();
 
     /** The template for ServiceTopologyResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithArtifactSourceId {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -193,18 +180,6 @@ public interface ServiceTopologyResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ServiceTopologyResource update allowing to specify artifactSourceId. */
-        interface WithArtifactSourceId {
-            /**
-             * Specifies the artifactSourceId property: The resource Id of the artifact source that contains the
-             * artifacts that can be referenced in the service units..
-             *
-             * @param artifactSourceId The resource Id of the artifact source that contains the artifacts that can be
-             *     referenced in the service units.
-             * @return the next definition stage.
-             */
-            Update withArtifactSourceId(String artifactSourceId);
         }
     }
     /**

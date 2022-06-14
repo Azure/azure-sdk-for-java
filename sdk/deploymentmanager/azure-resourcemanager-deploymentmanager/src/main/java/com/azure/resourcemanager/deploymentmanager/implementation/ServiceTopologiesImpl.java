@@ -12,13 +12,12 @@ import com.azure.resourcemanager.deploymentmanager.fluent.ServiceTopologiesClien
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceTopologyResourceInner;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceTopologies;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceTopologyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ServiceTopologiesImpl implements ServiceTopologies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTopologiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTopologiesImpl.class);
 
     private final ServiceTopologiesClient innerClient;
 
@@ -99,7 +98,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
     public ServiceTopologyResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -107,7 +106,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +119,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
     public Response<ServiceTopologyResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,20 +148,20 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, serviceTopologyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceTopologyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -170,7 +169,7 @@ public final class ServiceTopologiesImpl implements ServiceTopologies {
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

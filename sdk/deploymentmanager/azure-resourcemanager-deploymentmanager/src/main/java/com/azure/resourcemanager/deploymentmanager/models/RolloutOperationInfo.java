@@ -6,16 +6,12 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Detailed runtime information of the rollout. */
 @Immutable
 public final class RolloutOperationInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutOperationInfo.class);
-
     /*
      * The ordinal count of the number of retry attempts on a rollout. 0 if no
      * retries of the rollout have been performed. If the rollout is updated

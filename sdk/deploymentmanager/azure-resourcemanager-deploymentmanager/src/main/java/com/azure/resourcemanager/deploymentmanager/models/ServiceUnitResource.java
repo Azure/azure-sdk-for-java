@@ -47,28 +47,6 @@ public interface ServiceUnitResource {
     Map<String, String> tags();
 
     /**
-     * Gets the targetResourceGroup property: The Azure Resource Group to which the resources in the service unit belong
-     * to or should be deployed to.
-     *
-     * @return the targetResourceGroup value.
-     */
-    String targetResourceGroup();
-
-    /**
-     * Gets the deploymentMode property: Describes the type of ARM deployment to be performed on the resource.
-     *
-     * @return the deploymentMode value.
-     */
-    DeploymentMode deploymentMode();
-
-    /**
-     * Gets the artifacts property: The artifacts for the service unit.
-     *
-     * @return the artifacts value.
-     */
-    ServiceUnitArtifacts artifacts();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -83,6 +61,13 @@ public interface ServiceUnitResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceUnitResourceInner object.
      *
      * @return the inner object.
@@ -94,8 +79,6 @@ public interface ServiceUnitResource {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
-            DefinitionStages.WithTargetResourceGroup,
-            DefinitionStages.WithDeploymentMode,
             DefinitionStages.WithCreate {
     }
     /** The ServiceUnitResource definition stages. */
@@ -131,37 +114,13 @@ public interface ServiceUnitResource {
              * @param serviceName The name of the service resource.
              * @return the next definition stage.
              */
-            WithTargetResourceGroup withExistingService(
-                String resourceGroupName, String serviceTopologyName, String serviceName);
-        }
-        /** The stage of the ServiceUnitResource definition allowing to specify targetResourceGroup. */
-        interface WithTargetResourceGroup {
-            /**
-             * Specifies the targetResourceGroup property: The Azure Resource Group to which the resources in the
-             * service unit belong to or should be deployed to..
-             *
-             * @param targetResourceGroup The Azure Resource Group to which the resources in the service unit belong to
-             *     or should be deployed to.
-             * @return the next definition stage.
-             */
-            WithDeploymentMode withTargetResourceGroup(String targetResourceGroup);
-        }
-        /** The stage of the ServiceUnitResource definition allowing to specify deploymentMode. */
-        interface WithDeploymentMode {
-            /**
-             * Specifies the deploymentMode property: Describes the type of ARM deployment to be performed on the
-             * resource..
-             *
-             * @param deploymentMode Describes the type of ARM deployment to be performed on the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withDeploymentMode(DeploymentMode deploymentMode);
+            WithCreate withExistingService(String resourceGroupName, String serviceTopologyName, String serviceName);
         }
         /**
          * The stage of the ServiceUnitResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithArtifacts {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -187,16 +146,6 @@ public interface ServiceUnitResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the ServiceUnitResource definition allowing to specify artifacts. */
-        interface WithArtifacts {
-            /**
-             * Specifies the artifacts property: The artifacts for the service unit..
-             *
-             * @param artifacts The artifacts for the service unit.
-             * @return the next definition stage.
-             */
-            WithCreate withArtifacts(ServiceUnitArtifacts artifacts);
-        }
     }
     /**
      * Begins update for the ServiceUnitResource resource.
@@ -206,11 +155,7 @@ public interface ServiceUnitResource {
     ServiceUnitResource.Update update();
 
     /** The template for ServiceUnitResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithTargetResourceGroup,
-            UpdateStages.WithDeploymentMode,
-            UpdateStages.WithArtifacts {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -237,39 +182,6 @@ public interface ServiceUnitResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the ServiceUnitResource update allowing to specify targetResourceGroup. */
-        interface WithTargetResourceGroup {
-            /**
-             * Specifies the targetResourceGroup property: The Azure Resource Group to which the resources in the
-             * service unit belong to or should be deployed to..
-             *
-             * @param targetResourceGroup The Azure Resource Group to which the resources in the service unit belong to
-             *     or should be deployed to.
-             * @return the next definition stage.
-             */
-            Update withTargetResourceGroup(String targetResourceGroup);
-        }
-        /** The stage of the ServiceUnitResource update allowing to specify deploymentMode. */
-        interface WithDeploymentMode {
-            /**
-             * Specifies the deploymentMode property: Describes the type of ARM deployment to be performed on the
-             * resource..
-             *
-             * @param deploymentMode Describes the type of ARM deployment to be performed on the resource.
-             * @return the next definition stage.
-             */
-            Update withDeploymentMode(DeploymentMode deploymentMode);
-        }
-        /** The stage of the ServiceUnitResource update allowing to specify artifacts. */
-        interface WithArtifacts {
-            /**
-             * Specifies the artifacts property: The artifacts for the service unit..
-             *
-             * @param artifacts The artifacts for the service unit.
-             * @return the next definition stage.
-             */
-            Update withArtifacts(ServiceUnitArtifacts artifacts);
         }
     }
     /**

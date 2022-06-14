@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The operations response. */
 @Fluent
 public final class OperationsListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsListInner.class);
-
     /*
      * The list of supported operations
      */

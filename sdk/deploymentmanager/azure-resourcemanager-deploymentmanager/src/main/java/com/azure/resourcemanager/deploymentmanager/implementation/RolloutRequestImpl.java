@@ -79,6 +79,10 @@ public final class RolloutRequestImpl implements RolloutRequest, RolloutRequest.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RolloutRequestInner innerModel() {
         return this.innerObject;
     }

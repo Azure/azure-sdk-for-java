@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The regular expressions to match the response content with. */
 @Fluent
 public final class RestResponseRegex {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestResponseRegex.class);
-
     /*
      * The list of regular expressions.
      */

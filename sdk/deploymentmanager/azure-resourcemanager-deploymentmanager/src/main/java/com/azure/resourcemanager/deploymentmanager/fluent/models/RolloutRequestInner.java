@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.models.Identity;
 import com.azure.resourcemanager.deploymentmanager.models.StepGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Defines the PUT rollout request body. */
-@JsonFlatten
 @Fluent
-public class RolloutRequestInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutRequestInner.class);
-
+public final class RolloutRequestInner extends Resource {
     /*
      * Identity for the resource.
      */
@@ -28,30 +23,10 @@ public class RolloutRequestInner extends Resource {
     private Identity identity;
 
     /*
-     * The version of the build being deployed.
+     * Defines the properties that make up a rollout request.
      */
-    @JsonProperty(value = "properties.buildVersion", required = true)
-    private String buildVersion;
-
-    /*
-     * The reference to the artifact source resource Id where the payload is
-     * located.
-     */
-    @JsonProperty(value = "properties.artifactSourceId")
-    private String artifactSourceId;
-
-    /*
-     * The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     */
-    @JsonProperty(value = "properties.targetServiceTopologyId", required = true)
-    private String targetServiceTopologyId;
-
-    /*
-     * The list of step groups that define the orchestration.
-     */
-    @JsonProperty(value = "properties.stepGroups", required = true)
-    private List<StepGroup> stepGroups;
+    @JsonProperty(value = "properties", required = true)
+    private RolloutRequestProperties innerProperties = new RolloutRequestProperties();
 
     /**
      * Get the identity property: Identity for the resource.
@@ -74,85 +49,12 @@ public class RolloutRequestInner extends Resource {
     }
 
     /**
-     * Get the buildVersion property: The version of the build being deployed.
+     * Get the innerProperties property: Defines the properties that make up a rollout request.
      *
-     * @return the buildVersion value.
+     * @return the innerProperties value.
      */
-    public String buildVersion() {
-        return this.buildVersion;
-    }
-
-    /**
-     * Set the buildVersion property: The version of the build being deployed.
-     *
-     * @param buildVersion the buildVersion value to set.
-     * @return the RolloutRequestInner object itself.
-     */
-    public RolloutRequestInner withBuildVersion(String buildVersion) {
-        this.buildVersion = buildVersion;
-        return this;
-    }
-
-    /**
-     * Get the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
-     *
-     * @return the artifactSourceId value.
-     */
-    public String artifactSourceId() {
-        return this.artifactSourceId;
-    }
-
-    /**
-     * Set the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
-     *
-     * @param artifactSourceId the artifactSourceId value to set.
-     * @return the RolloutRequestInner object itself.
-     */
-    public RolloutRequestInner withArtifactSourceId(String artifactSourceId) {
-        this.artifactSourceId = artifactSourceId;
-        return this;
-    }
-
-    /**
-     * Get the targetServiceTopologyId property: The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     *
-     * @return the targetServiceTopologyId value.
-     */
-    public String targetServiceTopologyId() {
-        return this.targetServiceTopologyId;
-    }
-
-    /**
-     * Set the targetServiceTopologyId property: The resource Id of the service topology from which service units are
-     * being referenced in step groups to be deployed.
-     *
-     * @param targetServiceTopologyId the targetServiceTopologyId value to set.
-     * @return the RolloutRequestInner object itself.
-     */
-    public RolloutRequestInner withTargetServiceTopologyId(String targetServiceTopologyId) {
-        this.targetServiceTopologyId = targetServiceTopologyId;
-        return this;
-    }
-
-    /**
-     * Get the stepGroups property: The list of step groups that define the orchestration.
-     *
-     * @return the stepGroups value.
-     */
-    public List<StepGroup> stepGroups() {
-        return this.stepGroups;
-    }
-
-    /**
-     * Set the stepGroups property: The list of step groups that define the orchestration.
-     *
-     * @param stepGroups the stepGroups value to set.
-     * @return the RolloutRequestInner object itself.
-     */
-    public RolloutRequestInner withStepGroups(List<StepGroup> stepGroups) {
-        this.stepGroups = stepGroups;
-        return this;
+    private RolloutRequestProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -170,36 +72,121 @@ public class RolloutRequestInner extends Resource {
     }
 
     /**
+     * Get the buildVersion property: The version of the build being deployed.
+     *
+     * @return the buildVersion value.
+     */
+    public String buildVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().buildVersion();
+    }
+
+    /**
+     * Set the buildVersion property: The version of the build being deployed.
+     *
+     * @param buildVersion the buildVersion value to set.
+     * @return the RolloutRequestInner object itself.
+     */
+    public RolloutRequestInner withBuildVersion(String buildVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutRequestProperties();
+        }
+        this.innerProperties().withBuildVersion(buildVersion);
+        return this;
+    }
+
+    /**
+     * Get the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
+     *
+     * @return the artifactSourceId value.
+     */
+    public String artifactSourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactSourceId();
+    }
+
+    /**
+     * Set the artifactSourceId property: The reference to the artifact source resource Id where the payload is located.
+     *
+     * @param artifactSourceId the artifactSourceId value to set.
+     * @return the RolloutRequestInner object itself.
+     */
+    public RolloutRequestInner withArtifactSourceId(String artifactSourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutRequestProperties();
+        }
+        this.innerProperties().withArtifactSourceId(artifactSourceId);
+        return this;
+    }
+
+    /**
+     * Get the targetServiceTopologyId property: The resource Id of the service topology from which service units are
+     * being referenced in step groups to be deployed.
+     *
+     * @return the targetServiceTopologyId value.
+     */
+    public String targetServiceTopologyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetServiceTopologyId();
+    }
+
+    /**
+     * Set the targetServiceTopologyId property: The resource Id of the service topology from which service units are
+     * being referenced in step groups to be deployed.
+     *
+     * @param targetServiceTopologyId the targetServiceTopologyId value to set.
+     * @return the RolloutRequestInner object itself.
+     */
+    public RolloutRequestInner withTargetServiceTopologyId(String targetServiceTopologyId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutRequestProperties();
+        }
+        this.innerProperties().withTargetServiceTopologyId(targetServiceTopologyId);
+        return this;
+    }
+
+    /**
+     * Get the stepGroups property: The list of step groups that define the orchestration.
+     *
+     * @return the stepGroups value.
+     */
+    public List<StepGroup> stepGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().stepGroups();
+    }
+
+    /**
+     * Set the stepGroups property: The list of step groups that define the orchestration.
+     *
+     * @param stepGroups the stepGroups value to set.
+     * @return the RolloutRequestInner object itself.
+     */
+    public RolloutRequestInner withStepGroups(List<StepGroup> stepGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RolloutRequestProperties();
+        }
+        this.innerProperties().withStepGroups(stepGroups);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property identity in model RolloutRequestInner"));
         } else {
             identity().validate();
         }
-        if (buildVersion() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property buildVersion in model RolloutRequestInner"));
-        }
-        if (targetServiceTopologyId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetServiceTopologyId in model RolloutRequestInner"));
-        }
-        if (stepGroups() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property stepGroups in model RolloutRequestInner"));
+                        "Missing required property innerProperties in model RolloutRequestInner"));
         } else {
-            stepGroups().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RolloutRequestInner.class);
 }

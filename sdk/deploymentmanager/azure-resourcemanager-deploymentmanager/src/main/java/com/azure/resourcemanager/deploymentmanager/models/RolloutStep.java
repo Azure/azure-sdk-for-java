@@ -6,15 +6,12 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a specific step on a target service unit. */
 @Fluent
 public final class RolloutStep {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutStep.class);
-
     /*
      * Name of the step.
      */
@@ -136,7 +133,7 @@ public final class RolloutStep {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model RolloutStep"));
         }
@@ -150,4 +147,6 @@ public final class RolloutStep {
             messages().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RolloutStep.class);
 }

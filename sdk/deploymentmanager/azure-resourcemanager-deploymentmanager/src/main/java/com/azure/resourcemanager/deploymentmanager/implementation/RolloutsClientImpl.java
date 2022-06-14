@@ -26,7 +26,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deploymentmanager.fluent.RolloutsClient;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RolloutsClient. */
 public final class RolloutsClientImpl implements RolloutsClient {
-    private final ClientLogger logger = new ClientLogger(RolloutsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RolloutsService service;
 
@@ -167,7 +164,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return defines the PUT rollout request body along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -222,7 +220,8 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return defines the PUT rollout request body along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -273,9 +272,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return the {@link PollerFlux} for polling of defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -287,7 +286,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
                 this.client.getHttpPipeline(),
                 RolloutRequestInner.class,
                 RolloutRequestInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -301,9 +300,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return the {@link PollerFlux} for polling of defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -325,9 +324,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return the {@link SyncPoller} for polling of defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest) {
         return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest).getSyncPoller();
@@ -344,9 +343,9 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return the {@link SyncPoller} for polling of defines the PUT rollout request body.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RolloutRequestInner>, RolloutRequestInner> beginCreateOrUpdate(
         String resourceGroupName, String rolloutName, RolloutRequestInner rolloutRequest, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, rolloutName, rolloutRequest, context).getSyncPoller();
@@ -362,7 +361,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return defines the PUT rollout request body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutRequestInner> createOrUpdateAsync(
@@ -381,7 +380,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return defines the PUT rollout request body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutRequestInner> createOrUpdateAsync(String resourceGroupName, String rolloutName) {
@@ -402,7 +401,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the PUT rollout request body.
+     * @return defines the PUT rollout request body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutRequestInner> createOrUpdateAsync(
@@ -476,7 +475,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(
@@ -528,7 +527,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> getByResourceGroupWithResponseAsync(
@@ -576,20 +575,13 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutInner> getByResourceGroupAsync(
         String resourceGroupName, String rolloutName, Integer retryAttempt) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, rolloutName, retryAttempt)
-            .flatMap(
-                (Response<RolloutInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -600,20 +592,13 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutInner> getByResourceGroupAsync(String resourceGroupName, String rolloutName) {
         final Integer retryAttempt = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, rolloutName, retryAttempt)
-            .flatMap(
-                (Response<RolloutInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -643,7 +628,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of a rollout.
+     * @return detailed information of a rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RolloutInner> getByResourceGroupWithResponse(
@@ -659,7 +644,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String rolloutName) {
@@ -707,7 +692,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -752,11 +737,11 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String rolloutName) {
-        return deleteWithResponseAsync(resourceGroupName, rolloutName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, rolloutName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -782,7 +767,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String rolloutName, Context context) {
@@ -797,7 +782,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> cancelWithResponseAsync(String resourceGroupName, String rolloutName) {
@@ -845,7 +830,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> cancelWithResponseAsync(
@@ -890,19 +875,11 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutInner> cancelAsync(String resourceGroupName, String rolloutName) {
-        return cancelWithResponseAsync(resourceGroupName, rolloutName)
-            .flatMap(
-                (Response<RolloutInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return cancelWithResponseAsync(resourceGroupName, rolloutName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -929,7 +906,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RolloutInner> cancelWithResponse(String resourceGroupName, String rolloutName, Context context) {
@@ -947,7 +924,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> restartWithResponseAsync(
@@ -1000,7 +977,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RolloutInner>> restartWithResponseAsync(
@@ -1049,19 +1026,12 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutInner> restartAsync(String resourceGroupName, String rolloutName, Boolean skipSucceeded) {
         return restartWithResponseAsync(resourceGroupName, rolloutName, skipSucceeded)
-            .flatMap(
-                (Response<RolloutInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1072,20 +1042,13 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RolloutInner> restartAsync(String resourceGroupName, String rolloutName) {
         final Boolean skipSucceeded = null;
         return restartWithResponseAsync(resourceGroupName, rolloutName, skipSucceeded)
-            .flatMap(
-                (Response<RolloutInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1116,7 +1079,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the rollout.
+     * @return defines the rollout along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RolloutInner> restartWithResponse(
@@ -1131,7 +1094,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of rollouts.
+     * @return the list of rollouts along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<RolloutInner>>> listWithResponseAsync(String resourceGroupName) {
@@ -1174,7 +1137,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of rollouts.
+     * @return the list of rollouts along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<RolloutInner>>> listWithResponseAsync(String resourceGroupName, Context context) {
@@ -1213,19 +1176,11 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of rollouts.
+     * @return the list of rollouts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<RolloutInner>> listAsync(String resourceGroupName) {
-        return listWithResponseAsync(resourceGroupName)
-            .flatMap(
-                (Response<List<RolloutInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1250,7 +1205,7 @@ public final class RolloutsClientImpl implements RolloutsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of rollouts.
+     * @return the list of rollouts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<RolloutInner>> listWithResponse(String resourceGroupName, Context context) {

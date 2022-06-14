@@ -7,8 +7,6 @@ package com.azure.resourcemanager.deploymentmanager.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceUnitResourceInner;
-import com.azure.resourcemanager.deploymentmanager.models.DeploymentMode;
-import com.azure.resourcemanager.deploymentmanager.models.ServiceUnitArtifacts;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceUnitResource;
 import java.util.Collections;
 import java.util.Map;
@@ -44,24 +42,16 @@ public final class ServiceUnitResourceImpl
         }
     }
 
-    public String targetResourceGroup() {
-        return this.innerModel().targetResourceGroup();
-    }
-
-    public DeploymentMode deploymentMode() {
-        return this.innerModel().deploymentMode();
-    }
-
-    public ServiceUnitArtifacts artifacts() {
-        return this.innerModel().artifacts();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ServiceUnitResourceInner innerModel() {
@@ -189,23 +179,8 @@ public final class ServiceUnitResourceImpl
         return this;
     }
 
-    public ServiceUnitResourceImpl withTargetResourceGroup(String targetResourceGroup) {
-        this.innerModel().withTargetResourceGroup(targetResourceGroup);
-        return this;
-    }
-
-    public ServiceUnitResourceImpl withDeploymentMode(DeploymentMode deploymentMode) {
-        this.innerModel().withDeploymentMode(deploymentMode);
-        return this;
-    }
-
     public ServiceUnitResourceImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
-        return this;
-    }
-
-    public ServiceUnitResourceImpl withArtifacts(ServiceUnitArtifacts artifacts) {
-        this.innerModel().withArtifacts(artifacts);
         return this;
     }
 }

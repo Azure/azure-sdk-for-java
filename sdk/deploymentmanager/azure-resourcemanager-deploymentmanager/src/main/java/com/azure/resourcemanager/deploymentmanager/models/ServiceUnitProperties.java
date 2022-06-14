@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the properties of a service unit. */
 @Fluent
 public class ServiceUnitProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceUnitProperties.class);
-
     /*
      * The Azure Resource Group to which the resources in the service unit
      * belong to or should be deployed to.
@@ -102,13 +99,13 @@ public class ServiceUnitProperties {
      */
     public void validate() {
         if (targetResourceGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceGroup in model ServiceUnitProperties"));
         }
         if (deploymentMode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deploymentMode in model ServiceUnitProperties"));
@@ -117,4 +114,6 @@ public class ServiceUnitProperties {
             artifacts().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceUnitProperties.class);
 }

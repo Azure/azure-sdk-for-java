@@ -36,7 +36,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response}.
      */
     Response<ServiceUnitResource> getWithResponse(
         String resourceGroupName,
@@ -69,7 +69,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,
@@ -101,7 +101,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
+     * @return the list of service units along with {@link Response}.
      */
     Response<List<ServiceUnitResource>> listWithResponse(
         String resourceGroupName, String serviceTopologyName, String serviceName, Context context);
@@ -113,7 +113,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response}.
      */
     ServiceUnitResource getById(String id);
 
@@ -125,7 +125,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response}.
      */
     Response<ServiceUnitResource> getByIdWithResponse(String id, Context context);
 
@@ -147,7 +147,7 @@ public interface ServiceUnits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

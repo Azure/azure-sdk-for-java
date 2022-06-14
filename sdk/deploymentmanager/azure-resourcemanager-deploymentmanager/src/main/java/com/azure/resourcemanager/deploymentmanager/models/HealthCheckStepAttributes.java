@@ -6,7 +6,6 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -22,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "REST", value = RestHealthCheckStepAttributes.class)})
 @Fluent
 public class HealthCheckStepAttributes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthCheckStepAttributes.class);
-
     /*
      * The duration in ISO 8601 format for which health check waits idly
      * without any checks.
@@ -125,10 +122,12 @@ public class HealthCheckStepAttributes {
      */
     public void validate() {
         if (healthyStateDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property healthyStateDuration in model HealthCheckStepAttributes"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthCheckStepAttributes.class);
 }

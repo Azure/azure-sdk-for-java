@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the artifacts of a service unit. */
 @Fluent
 public final class ServiceUnitArtifacts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceUnitArtifacts.class);
-
     /*
      * The full URI of the ARM template file with the SAS token.
      */

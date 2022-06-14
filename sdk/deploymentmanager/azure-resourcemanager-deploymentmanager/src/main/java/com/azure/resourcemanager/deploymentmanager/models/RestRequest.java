@@ -6,14 +6,11 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties that make up a REST request. */
 @Fluent
 public final class RestRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestRequest.class);
-
     /*
      * The HTTP method to use for the request.
      */
@@ -100,21 +97,23 @@ public final class RestRequest {
      */
     public void validate() {
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property method in model RestRequest"));
         }
         if (uri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property uri in model RestRequest"));
         }
         if (authentication() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property authentication in model RestRequest"));
         } else {
             authentication().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestRequest.class);
 }

@@ -12,13 +12,12 @@ import com.azure.resourcemanager.deploymentmanager.fluent.RolloutsClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.RolloutInner;
 import com.azure.resourcemanager.deploymentmanager.models.Rollout;
 import com.azure.resourcemanager.deploymentmanager.models.Rollouts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class RolloutsImpl implements Rollouts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RolloutsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RolloutsImpl.class);
 
     private final RolloutsClient innerClient;
 
@@ -139,7 +138,7 @@ public final class RolloutsImpl implements Rollouts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,18 +146,18 @@ public final class RolloutsImpl implements Rollouts {
         }
         String rolloutName = Utils.getValueFromIdByName(id, "rollouts");
         if (rolloutName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, rolloutName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, rolloutName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,7 +165,7 @@ public final class RolloutsImpl implements Rollouts {
         }
         String rolloutName = Utils.getValueFromIdByName(id, "rollouts");
         if (rolloutName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'rollouts'.", id)));

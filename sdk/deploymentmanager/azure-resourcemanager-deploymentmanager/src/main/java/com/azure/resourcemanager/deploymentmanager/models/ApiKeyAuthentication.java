@@ -6,7 +6,6 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ApiKey")
 @Fluent
 public final class ApiKeyAuthentication extends RestRequestAuthentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKeyAuthentication.class);
-
     /*
      * The key name of the authentication key/value pair.
      */
@@ -107,19 +104,21 @@ public final class ApiKeyAuthentication extends RestRequestAuthentication {
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ApiKeyAuthentication"));
         }
         if (in() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property in in model ApiKeyAuthentication"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ApiKeyAuthentication"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiKeyAuthentication.class);
 }

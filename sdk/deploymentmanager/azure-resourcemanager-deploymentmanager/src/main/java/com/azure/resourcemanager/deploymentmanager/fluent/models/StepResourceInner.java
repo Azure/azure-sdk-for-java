@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deploymentmanager.models.StepProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The resource representation of a rollout step. */
 @Fluent
 public final class StepResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StepResourceInner.class);
-
     /*
      * The properties that define the step.
      */
@@ -64,11 +61,13 @@ public final class StepResourceInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property properties in model StepResourceInner"));
         } else {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StepResourceInner.class);
 }

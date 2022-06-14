@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a service. */
 @Fluent
 public final class Service extends ServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Service.class);
-
     /*
      * Name of the service.
      */

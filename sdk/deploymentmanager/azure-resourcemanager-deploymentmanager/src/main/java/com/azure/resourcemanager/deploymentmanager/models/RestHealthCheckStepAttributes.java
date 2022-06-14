@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.deploymentmanager.fluent.models.RestParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,35 +14,21 @@ import java.util.List;
 /** Defines the REST health check step properties. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("REST")
-@JsonFlatten
 @Fluent
-public class RestHealthCheckStepAttributes extends HealthCheckStepAttributes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestHealthCheckStepAttributes.class);
-
+public final class RestHealthCheckStepAttributes extends HealthCheckStepAttributes {
     /*
-     * The list of checks that form the health check step.
+     * The REST health check parameters.
      */
-    @JsonProperty(value = "properties.healthChecks")
-    private List<RestHealthCheck> healthChecks;
+    @JsonProperty(value = "properties")
+    private RestParameters innerProperties;
 
     /**
-     * Get the healthChecks property: The list of checks that form the health check step.
+     * Get the innerProperties property: The REST health check parameters.
      *
-     * @return the healthChecks value.
+     * @return the innerProperties value.
      */
-    public List<RestHealthCheck> healthChecks() {
-        return this.healthChecks;
-    }
-
-    /**
-     * Set the healthChecks property: The list of checks that form the health check step.
-     *
-     * @param healthChecks the healthChecks value to set.
-     * @return the RestHealthCheckStepAttributes object itself.
-     */
-    public RestHealthCheckStepAttributes withHealthChecks(List<RestHealthCheck> healthChecks) {
-        this.healthChecks = healthChecks;
-        return this;
+    private RestParameters innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -69,6 +53,29 @@ public class RestHealthCheckStepAttributes extends HealthCheckStepAttributes {
     }
 
     /**
+     * Get the healthChecks property: The list of checks that form the health check step.
+     *
+     * @return the healthChecks value.
+     */
+    public List<RestHealthCheck> healthChecks() {
+        return this.innerProperties() == null ? null : this.innerProperties().healthChecks();
+    }
+
+    /**
+     * Set the healthChecks property: The list of checks that form the health check step.
+     *
+     * @param healthChecks the healthChecks value to set.
+     * @return the RestHealthCheckStepAttributes object itself.
+     */
+    public RestHealthCheckStepAttributes withHealthChecks(List<RestHealthCheck> healthChecks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestParameters();
+        }
+        this.innerProperties().withHealthChecks(healthChecks);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -76,8 +83,8 @@ public class RestHealthCheckStepAttributes extends HealthCheckStepAttributes {
     @Override
     public void validate() {
         super.validate();
-        if (healthChecks() != null) {
-            healthChecks().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

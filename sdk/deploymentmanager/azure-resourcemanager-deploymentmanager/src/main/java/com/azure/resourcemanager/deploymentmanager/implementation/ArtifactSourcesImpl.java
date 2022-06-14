@@ -12,13 +12,12 @@ import com.azure.resourcemanager.deploymentmanager.fluent.ArtifactSourcesClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ArtifactSourceInner;
 import com.azure.resourcemanager.deploymentmanager.models.ArtifactSource;
 import com.azure.resourcemanager.deploymentmanager.models.ArtifactSources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ArtifactSourcesImpl implements ArtifactSources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactSourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArtifactSourcesImpl.class);
 
     private final ArtifactSourcesClient innerClient;
 
@@ -97,7 +96,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public ArtifactSource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -105,7 +104,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public Response<ArtifactSource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +124,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +136,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,19 +144,19 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'artifactSources'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, artifactSourceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, artifactSourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +164,7 @@ public final class ArtifactSourcesImpl implements ArtifactSources {
         }
         String artifactSourceName = Utils.getValueFromIdByName(id, "artifactSources");
         if (artifactSourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

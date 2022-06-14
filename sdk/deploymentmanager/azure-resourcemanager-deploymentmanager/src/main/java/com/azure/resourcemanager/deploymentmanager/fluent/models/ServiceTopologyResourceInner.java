@@ -5,46 +5,27 @@
 package com.azure.resourcemanager.deploymentmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The resource representation of a service topology. */
-@JsonFlatten
 @Fluent
-public class ServiceTopologyResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTopologyResourceInner.class);
-
+public final class ServiceTopologyResourceInner extends Resource {
     /*
-     * The resource Id of the artifact source that contains the artifacts that
-     * can be referenced in the service units.
+     * The properties that define the service topology.
      */
-    @JsonProperty(value = "properties.artifactSourceId")
-    private String artifactSourceId;
+    @JsonProperty(value = "properties", required = true)
+    private ServiceTopologyResourceProperties innerProperties = new ServiceTopologyResourceProperties();
 
     /**
-     * Get the artifactSourceId property: The resource Id of the artifact source that contains the artifacts that can be
-     * referenced in the service units.
+     * Get the innerProperties property: The properties that define the service topology.
      *
-     * @return the artifactSourceId value.
+     * @return the innerProperties value.
      */
-    public String artifactSourceId() {
-        return this.artifactSourceId;
-    }
-
-    /**
-     * Set the artifactSourceId property: The resource Id of the artifact source that contains the artifacts that can be
-     * referenced in the service units.
-     *
-     * @param artifactSourceId the artifactSourceId value to set.
-     * @return the ServiceTopologyResourceInner object itself.
-     */
-    public ServiceTopologyResourceInner withArtifactSourceId(String artifactSourceId) {
-        this.artifactSourceId = artifactSourceId;
-        return this;
+    private ServiceTopologyResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -67,5 +48,15 @@ public class ServiceTopologyResourceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ServiceTopologyResourceInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTopologyResourceInner.class);
 }

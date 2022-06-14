@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Individual resource operation information. */
 @Fluent
 public final class ResourceOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceOperation.class);
-
     /*
      * Name of the resource as specified in the artifacts. For ARM resources,
      * this is the name of the resource specified in the template.
