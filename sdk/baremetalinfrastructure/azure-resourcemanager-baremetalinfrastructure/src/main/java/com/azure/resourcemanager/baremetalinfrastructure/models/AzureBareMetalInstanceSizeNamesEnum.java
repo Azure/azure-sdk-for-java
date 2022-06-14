@@ -151,7 +151,11 @@ public final class AzureBareMetalInstanceSizeNamesEnum
         return fromString(name, AzureBareMetalInstanceSizeNamesEnum.class);
     }
 
-    /** @return known AzureBareMetalInstanceSizeNamesEnum values. */
+    /**
+     * Gets known AzureBareMetalInstanceSizeNamesEnum values.
+     *
+     * @return known AzureBareMetalInstanceSizeNamesEnum values.
+     */
     public static Collection<AzureBareMetalInstanceSizeNamesEnum> values() {
         return values(AzureBareMetalInstanceSizeNamesEnum.class);
     }

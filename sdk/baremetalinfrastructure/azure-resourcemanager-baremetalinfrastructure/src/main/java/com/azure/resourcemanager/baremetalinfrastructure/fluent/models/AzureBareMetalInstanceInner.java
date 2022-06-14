@@ -7,22 +7,18 @@ package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstancePowerStateEnum;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalProvisioningStatesEnum;
 import com.azure.resourcemanager.baremetalinfrastructure.models.HardwareProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.NetworkProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.OSProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** AzureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties). */
 @Fluent
 public final class AzureBareMetalInstanceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBareMetalInstanceInner.class);
-
     /*
      * AzureBareMetal instance properties
      */

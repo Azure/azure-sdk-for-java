@@ -14,10 +14,9 @@ import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.AzureBare
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstance;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstances;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Tags;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AzureBareMetalInstancesImpl implements AzureBareMetalInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBareMetalInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBareMetalInstancesImpl.class);
 
     private final AzureBareMetalInstancesClient innerClient;
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the AzureBareMetal instance. */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
     /*
      * Specifies the host OS name of the AzureBareMetal instance.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the hardware settings for the AzureBareMetal instance. */
 @Immutable
 public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
     /*
      * Name of the hardware type (vendor and/or their product name)
      */

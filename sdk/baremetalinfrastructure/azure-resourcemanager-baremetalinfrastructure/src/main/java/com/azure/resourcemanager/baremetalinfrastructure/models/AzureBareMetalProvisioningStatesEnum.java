@@ -43,7 +43,11 @@ public final class AzureBareMetalProvisioningStatesEnum
         return fromString(name, AzureBareMetalProvisioningStatesEnum.class);
     }
 
-    /** @return known AzureBareMetalProvisioningStatesEnum values. */
+    /**
+     * Gets known AzureBareMetalProvisioningStatesEnum values.
+     *
+     * @return known AzureBareMetalProvisioningStatesEnum values.
+     */
     public static Collection<AzureBareMetalProvisioningStatesEnum> values() {
         return values(AzureBareMetalProvisioningStatesEnum.class);
     }

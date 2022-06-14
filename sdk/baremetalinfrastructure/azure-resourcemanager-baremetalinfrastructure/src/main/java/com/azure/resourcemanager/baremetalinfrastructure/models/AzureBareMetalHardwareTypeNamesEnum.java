@@ -28,7 +28,11 @@ public final class AzureBareMetalHardwareTypeNamesEnum
         return fromString(name, AzureBareMetalHardwareTypeNamesEnum.class);
     }
 
-    /** @return known AzureBareMetalHardwareTypeNamesEnum values. */
+    /**
+     * Gets known AzureBareMetalHardwareTypeNamesEnum values.
+     *
+     * @return known AzureBareMetalHardwareTypeNamesEnum values.
+     */
     public static Collection<AzureBareMetalHardwareTypeNamesEnum> values() {
         return values(AzureBareMetalHardwareTypeNamesEnum.class);
     }

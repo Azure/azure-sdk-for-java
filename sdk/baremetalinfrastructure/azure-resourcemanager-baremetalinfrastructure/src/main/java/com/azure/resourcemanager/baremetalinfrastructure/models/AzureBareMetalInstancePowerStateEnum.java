@@ -40,7 +40,11 @@ public final class AzureBareMetalInstancePowerStateEnum
         return fromString(name, AzureBareMetalInstancePowerStateEnum.class);
     }
 
-    /** @return known AzureBareMetalInstancePowerStateEnum values. */
+    /**
+     * Gets known AzureBareMetalInstancePowerStateEnum values.
+     *
+     * @return known AzureBareMetalInstancePowerStateEnum values.
+     */
     public static Collection<AzureBareMetalInstancePowerStateEnum> values() {
         return values(AzureBareMetalInstancePowerStateEnum.class);
     }

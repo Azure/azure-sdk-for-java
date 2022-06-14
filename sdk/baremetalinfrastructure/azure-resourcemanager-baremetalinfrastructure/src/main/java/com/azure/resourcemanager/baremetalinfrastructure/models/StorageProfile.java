@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the storage settings for the AzureBareMetal instance disks. */
 @Fluent
 public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
     /*
      * IP Address to connect to storage.
      */

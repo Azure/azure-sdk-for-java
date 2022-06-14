@@ -20,7 +20,8 @@ public interface AzureBareMetalInstancesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetal instances in the specified subscription.
+     * @return a list of AzureBareMetal instances in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBareMetalInstanceInner> list();
@@ -33,7 +34,8 @@ public interface AzureBareMetalInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetal instances in the specified subscription.
+     * @return a list of AzureBareMetal instances in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBareMetalInstanceInner> list(Context context);
@@ -46,7 +48,8 @@ public interface AzureBareMetalInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetal instances in the specified subscription and resource group.
+     * @return a list of AzureBareMetal instances in the specified subscription and resource group as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBareMetalInstanceInner> listByResourceGroup(String resourceGroupName);
@@ -60,7 +63,8 @@ public interface AzureBareMetalInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of AzureBareMetal instances in the specified subscription and resource group.
+     * @return a list of AzureBareMetal instances in the specified subscription and resource group as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureBareMetalInstanceInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -87,7 +91,8 @@ public interface AzureBareMetalInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure BareMetal instance for the specified subscription, resource group, and instance name.
+     * @return an Azure BareMetal instance for the specified subscription, resource group, and instance name along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureBareMetalInstanceInner> getByResourceGroupWithResponse(
@@ -119,7 +124,8 @@ public interface AzureBareMetalInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties).
+     * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AzureBareMetalInstanceInner> updateWithResponse(

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the disk information fo the AzureBareMetal instance. */
 @Fluent
 public final class Disk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Disk.class);
-
     /*
      * The disk name.
      */
