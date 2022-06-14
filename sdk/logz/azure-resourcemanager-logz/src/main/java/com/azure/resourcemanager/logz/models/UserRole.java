@@ -30,7 +30,11 @@ public final class UserRole extends ExpandableStringEnum<UserRole> {
         return fromString(name, UserRole.class);
     }
 
-    /** @return known UserRole values. */
+    /**
+     * Gets known UserRole values.
+     *
+     * @return known UserRole values.
+     */
     public static Collection<UserRole> values() {
         return values(UserRole.class);
     }

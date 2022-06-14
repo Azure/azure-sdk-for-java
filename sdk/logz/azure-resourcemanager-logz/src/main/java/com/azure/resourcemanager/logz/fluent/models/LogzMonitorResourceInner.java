@@ -7,18 +7,14 @@ package com.azure.resourcemanager.logz.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.models.IdentityProperties;
 import com.azure.resourcemanager.logz.models.MonitorProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The LogzMonitorResource model. */
 @Fluent
 public final class LogzMonitorResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogzMonitorResourceInner.class);
-
     /*
      * The system metadata relating to this resource
      */

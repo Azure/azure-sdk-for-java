@@ -27,7 +27,11 @@ public final class LiftrResourceCategories extends ExpandableStringEnum<LiftrRes
         return fromString(name, LiftrResourceCategories.class);
     }
 
-    /** @return known LiftrResourceCategories values. */
+    /**
+     * Gets known LiftrResourceCategories values.
+     *
+     * @return known LiftrResourceCategories values.
+     */
     public static Collection<LiftrResourceCategories> values() {
         return values(LiftrResourceCategories.class);
     }

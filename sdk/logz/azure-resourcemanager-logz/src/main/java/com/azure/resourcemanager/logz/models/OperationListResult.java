@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.models.OperationResultInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of GET request to list the Microsoft.Logz operations. */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
      * List of operations supported by the Microsoft.Logz provider.
      */

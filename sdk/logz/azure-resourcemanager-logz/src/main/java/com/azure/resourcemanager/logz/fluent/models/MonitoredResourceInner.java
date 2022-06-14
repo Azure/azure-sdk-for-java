@@ -6,15 +6,11 @@ package com.azure.resourcemanager.logz.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a resource currently being monitored by the Logz monitor resource. */
 @Fluent
 public final class MonitoredResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoredResourceInner.class);
-
     /*
      * The ARM id of the resource.
      */

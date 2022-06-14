@@ -19,7 +19,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName);
 
@@ -32,7 +32,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<LogzMonitorResource> list(String resourceGroupName, String monitorName, Context context);
 
@@ -107,7 +107,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response}.
      */
     Response<LogzMonitorResource> getWithResponse(
         String resourceGroupName, String monitorName, String subAccountName, Context context);
@@ -161,7 +161,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<LogzMonitorResource> updateWithResponse(
         String resourceGroupName,
@@ -179,7 +179,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(
         String resourceGroupName, String monitorName, String subAccountName);
@@ -194,7 +194,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(
         String resourceGroupName, String monitorName, String subAccountName, Context context);
@@ -222,7 +222,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     Response<VMExtensionPayload> vMHostPayloadWithResponse(
         String resourceGroupName, String monitorName, String subAccountName, Context context);
@@ -236,7 +236,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(String resourceGroupName, String monitorName, String subAccountName);
 
@@ -251,7 +251,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVmHostUpdate(
         String resourceGroupName, String monitorName, String subAccountName, VMHostUpdateRequest body, Context context);
@@ -265,7 +265,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(String resourceGroupName, String monitorName, String subAccountName);
 
@@ -279,7 +279,7 @@ public interface SubAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VMResources> listVMHosts(
         String resourceGroupName, String monitorName, String subAccountName, Context context);

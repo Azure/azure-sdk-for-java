@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to the monitor resource. */
 @Fluent
 public final class MonitorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorProperties.class);
-
     /*
      * Flag specifying if the resource provisioning state as tracked by ARM.
      */

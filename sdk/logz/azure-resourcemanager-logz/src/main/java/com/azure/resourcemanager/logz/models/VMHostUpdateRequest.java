@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.models.VMResourcesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Request of a list VM Host Update Operation. */
 @Fluent
 public final class VMHostUpdateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMHostUpdateRequest.class);
-
     /*
      * Request of a list vm host update operation.
      */

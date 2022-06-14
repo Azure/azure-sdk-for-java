@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logz.fluent.SubAccountsClient;
@@ -50,8 +49,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubAccountsClient. */
 public final class SubAccountsClientImpl implements SubAccountsClient {
-    private final ClientLogger logger = new ClientLogger(SubAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubAccountsService service;
 
@@ -271,7 +268,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(
@@ -329,7 +326,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(
@@ -383,7 +380,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzMonitorResourceInner> listAsync(String resourceGroupName, String monitorName) {
@@ -400,7 +397,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzMonitorResourceInner> listAsync(
@@ -418,7 +415,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzMonitorResourceInner> list(String resourceGroupName, String monitorName) {
@@ -434,7 +431,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzMonitorResourceInner> list(String resourceGroupName, String monitorName, Context context) {
@@ -451,7 +448,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -510,7 +507,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -569,7 +566,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreateAsync(
@@ -583,7 +580,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
                 this.client.getHttpPipeline(),
                 LogzMonitorResourceInner.class,
                 LogzMonitorResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -597,7 +594,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreateAsync(
@@ -629,7 +626,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
@@ -648,7 +645,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
@@ -670,7 +667,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> createAsync(
@@ -689,7 +686,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> createAsync(
@@ -711,7 +708,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> createAsync(
@@ -792,7 +789,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(
@@ -846,7 +844,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(
@@ -896,20 +895,13 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> getAsync(
         String resourceGroupName, String monitorName, String subAccountName) {
         return getWithResponseAsync(resourceGroupName, monitorName, subAccountName)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -938,7 +930,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogzMonitorResourceInner> getWithResponse(
@@ -955,7 +947,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1009,7 +1001,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1059,7 +1051,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1067,7 +1059,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, subAccountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1080,7 +1073,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1102,7 +1095,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1120,7 +1113,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1137,7 +1130,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String subAccountName) {
@@ -1156,7 +1149,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1207,7 +1200,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(
@@ -1266,7 +1259,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(
@@ -1325,20 +1318,13 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> updateAsync(
         String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceUpdateParameters body) {
         return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1350,21 +1336,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzMonitorResourceInner> updateAsync(
         String resourceGroupName, String monitorName, String subAccountName) {
         final LogzMonitorResourceUpdateParameters body = null;
         return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1395,7 +1374,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogzMonitorResourceInner> updateWithResponse(
@@ -1416,7 +1395,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
@@ -1479,7 +1458,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
@@ -1538,7 +1517,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
@@ -1558,7 +1537,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
@@ -1577,7 +1556,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(
@@ -1595,7 +1574,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(
@@ -1613,7 +1592,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(
@@ -1667,7 +1647,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(
@@ -1717,20 +1698,13 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VMExtensionPayloadInner> vMHostPayloadAsync(
         String resourceGroupName, String monitorName, String subAccountName) {
         return vMHostPayloadWithResponseAsync(resourceGroupName, monitorName, subAccountName)
-            .flatMap(
-                (Response<VMExtensionPayloadInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1759,7 +1733,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(
@@ -1777,7 +1751,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(
@@ -1845,7 +1820,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(
@@ -1913,7 +1889,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
@@ -1932,7 +1908,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
@@ -1954,7 +1930,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
@@ -1977,7 +1953,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> listVmHostUpdate(
@@ -1997,7 +1973,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> listVmHostUpdate(
@@ -2019,7 +1995,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(
@@ -2082,7 +2059,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(
@@ -2141,7 +2119,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VMResourcesInner> listVMHostsAsync(
@@ -2161,7 +2139,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VMResourcesInner> listVMHostsAsync(
@@ -2180,7 +2158,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> listVMHosts(
@@ -2198,7 +2176,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VMResourcesInner> listVMHosts(
@@ -2213,7 +2191,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2249,7 +2227,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2284,7 +2262,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink) {
@@ -2321,7 +2299,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(
@@ -2357,7 +2335,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateNextSinglePageAsync(String nextLink) {
@@ -2393,7 +2372,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateNextSinglePageAsync(
@@ -2429,7 +2409,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsNextSinglePageAsync(String nextLink) {
@@ -2465,7 +2446,8 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsNextSinglePageAsync(String nextLink, Context context) {

@@ -84,6 +84,13 @@ public interface LogzMonitorResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.logz.fluent.models.LogzMonitorResourceInner object.
      *
      * @return the inner object.
@@ -250,7 +257,7 @@ public interface LogzMonitorResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources();
 
@@ -261,7 +268,7 @@ public interface LogzMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(Context context);
 
@@ -270,7 +277,7 @@ public interface LogzMonitorResource {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list of user's role for Logz.io account.
+     * @return response for list of user's role for Logz.io account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserRoleResponse> listUserRoles();
 
@@ -282,7 +289,7 @@ public interface LogzMonitorResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list of user's role for Logz.io account.
+     * @return response for list of user's role for Logz.io account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<UserRoleResponse> listUserRoles(UserRoleRequest body, Context context);
 }

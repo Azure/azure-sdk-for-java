@@ -37,7 +37,7 @@ public interface MonitorOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(
@@ -51,7 +51,7 @@ public interface MonitorOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName);
@@ -66,7 +66,7 @@ public interface MonitorOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VMResourcesInner> listVmHostUpdate(
@@ -80,7 +80,7 @@ public interface MonitorOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VMResourcesInner> listVMHosts(String resourceGroupName, String monitorName);
@@ -94,7 +94,7 @@ public interface MonitorOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VMResourcesInner> listVMHosts(String resourceGroupName, String monitorName, Context context);

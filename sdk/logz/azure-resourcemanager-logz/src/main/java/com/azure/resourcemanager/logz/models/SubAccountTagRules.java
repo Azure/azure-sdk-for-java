@@ -20,7 +20,7 @@ public interface SubAccountTagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName, String subAccountName);
 
@@ -34,7 +34,7 @@ public interface SubAccountTagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MonitoringTagRules> list(
         String resourceGroupName, String monitorName, String subAccountName, Context context);
@@ -66,7 +66,7 @@ public interface SubAccountTagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     Response<MonitoringTagRules> createOrUpdateWithResponse(
         String resourceGroupName,
@@ -101,7 +101,7 @@ public interface SubAccountTagRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     Response<MonitoringTagRules> getWithResponse(
         String resourceGroupName, String monitorName, String subAccountName, String ruleSetName, Context context);

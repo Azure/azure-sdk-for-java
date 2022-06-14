@@ -11,6 +11,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logz.fluent.OperationsClient;
 import com.azure.resourcemanager.logz.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.logz.models.OperationListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
@@ -63,7 +61,10 @@ public final class OperationsClientImpl implements OperationsClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> list(
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
@@ -81,7 +82,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResultInner>> listSinglePageAsync() {
@@ -93,7 +95,8 @@ public final class OperationsClientImpl implements OperationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .<PagedResponse<OperationResultInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -113,7 +116,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResultInner>> listSinglePageAsync(Context context) {
@@ -126,7 +130,7 @@ public final class OperationsClientImpl implements OperationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -143,7 +147,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationResultInner> listAsync() {
@@ -157,7 +161,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationResultInner> listAsync(Context context) {
@@ -170,7 +174,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationResultInner> list() {
@@ -184,7 +189,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationResultInner> list(Context context) {
@@ -198,7 +204,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResultInner>> listNextSinglePageAsync(String nextLink) {
@@ -234,7 +241,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of GET request to list the Microsoft.Logz operations.
+     * @return result of GET request to list the Microsoft.Logz operations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationResultInner>> listNextSinglePageAsync(String nextLink, Context context) {

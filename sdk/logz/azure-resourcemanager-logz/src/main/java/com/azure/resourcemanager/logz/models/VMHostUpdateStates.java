@@ -27,7 +27,11 @@ public final class VMHostUpdateStates extends ExpandableStringEnum<VMHostUpdateS
         return fromString(name, VMHostUpdateStates.class);
     }
 
-    /** @return known VMHostUpdateStates values. */
+    /**
+     * Gets known VMHostUpdateStates values.
+     *
+     * @return known VMHostUpdateStates values.
+     */
     public static Collection<VMHostUpdateStates> values() {
         return values(VMHostUpdateStates.class);
     }

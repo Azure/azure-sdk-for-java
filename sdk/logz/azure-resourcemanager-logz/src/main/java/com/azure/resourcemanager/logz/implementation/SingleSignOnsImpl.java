@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logz.fluent.SingleSignOnsClient;
 import com.azure.resourcemanager.logz.fluent.models.LogzSingleSignOnResourceInner;
 import com.azure.resourcemanager.logz.models.LogzSingleSignOnResource;
 import com.azure.resourcemanager.logz.models.SingleSignOns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SingleSignOnsImpl implements SingleSignOns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingleSignOnsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SingleSignOnsImpl.class);
 
     private final SingleSignOnsClient innerClient;
 
@@ -67,7 +66,7 @@ public final class SingleSignOnsImpl implements SingleSignOns {
     public LogzSingleSignOnResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -75,14 +74,14 @@ public final class SingleSignOnsImpl implements SingleSignOns {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,7 +95,7 @@ public final class SingleSignOnsImpl implements SingleSignOns {
     public Response<LogzSingleSignOnResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -104,14 +103,14 @@ public final class SingleSignOnsImpl implements SingleSignOns {
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

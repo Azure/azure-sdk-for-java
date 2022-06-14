@@ -14,10 +14,9 @@ import com.azure.resourcemanager.logz.fluent.models.MonitoringTagRulesInner;
 import com.azure.resourcemanager.logz.models.MonitoringTagRules;
 import com.azure.resourcemanager.logz.models.SubAccountTagRules;
 import com.azure.resourcemanager.logz.models.SubAccountTagRulesDeleteResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubAccountTagRulesImpl implements SubAccountTagRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAccountTagRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubAccountTagRulesImpl.class);
 
     private final SubAccountTagRulesClient innerClient;
 

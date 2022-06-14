@@ -21,10 +21,9 @@ import com.azure.resourcemanager.logz.models.SubAccounts;
 import com.azure.resourcemanager.logz.models.VMExtensionPayload;
 import com.azure.resourcemanager.logz.models.VMHostUpdateRequest;
 import com.azure.resourcemanager.logz.models.VMResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubAccountsImpl implements SubAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubAccountsImpl.class);
 
     private final SubAccountsClient innerClient;
 

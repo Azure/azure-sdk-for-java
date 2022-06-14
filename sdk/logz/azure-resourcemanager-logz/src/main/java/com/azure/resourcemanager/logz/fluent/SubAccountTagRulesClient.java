@@ -23,7 +23,7 @@ public interface SubAccountTagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoringTagRulesInner> list(String resourceGroupName, String monitorName, String subAccountName);
@@ -38,7 +38,7 @@ public interface SubAccountTagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoringTagRulesInner> list(
@@ -72,7 +72,7 @@ public interface SubAccountTagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture logs and metrics of Azure resources based on ARM tags.
+     * @return capture logs and metrics of Azure resources based on ARM tags along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoringTagRulesInner> createOrUpdateWithResponse(
@@ -110,7 +110,7 @@ public interface SubAccountTagRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a tag rule set for a given monitor resource.
+     * @return a tag rule set for a given monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MonitoringTagRulesInner> getWithResponse(

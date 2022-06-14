@@ -16,10 +16,9 @@ import com.azure.resourcemanager.logz.models.MonitorOperations;
 import com.azure.resourcemanager.logz.models.VMExtensionPayload;
 import com.azure.resourcemanager.logz.models.VMHostUpdateRequest;
 import com.azure.resourcemanager.logz.models.VMResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MonitorOperationsImpl implements MonitorOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorOperationsImpl.class);
 
     private final MonitorOperationsClient innerClient;
 

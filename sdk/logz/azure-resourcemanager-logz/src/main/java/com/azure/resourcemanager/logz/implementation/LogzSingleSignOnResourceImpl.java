@@ -36,6 +36,10 @@ public final class LogzSingleSignOnResourceImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LogzSingleSignOnResourceInner innerModel() {
         return this.innerObject;
     }

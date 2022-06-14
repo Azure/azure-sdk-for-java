@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logz.fluent.SingleSignOnsClient;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SingleSignOnsClient. */
 public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
-    private final ClientLogger logger = new ClientLogger(SingleSignOnsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SingleSignOnsService service;
 
@@ -133,7 +130,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(
@@ -191,7 +188,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(
@@ -245,7 +242,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName) {
@@ -262,7 +259,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzSingleSignOnResourceInner> listAsync(
@@ -280,7 +277,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName) {
@@ -296,7 +293,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzSingleSignOnResourceInner> list(
@@ -314,7 +311,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -374,7 +371,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -434,7 +431,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
@@ -452,7 +449,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
                 this.client.getHttpPipeline(),
                 LogzSingleSignOnResourceInner.class,
                 LogzSingleSignOnResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -466,7 +463,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
@@ -499,7 +496,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
@@ -518,7 +515,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
@@ -541,7 +538,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
@@ -560,7 +557,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
@@ -582,7 +579,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
@@ -664,7 +661,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(
@@ -719,7 +717,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(
@@ -770,20 +769,13 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogzSingleSignOnResourceInner> getAsync(
         String resourceGroupName, String monitorName, String configurationName) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName)
-            .flatMap(
-                (Response<LogzSingleSignOnResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -812,7 +804,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogzSingleSignOnResourceInner> getWithResponse(
@@ -827,7 +819,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -863,7 +855,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listNextSinglePageAsync(

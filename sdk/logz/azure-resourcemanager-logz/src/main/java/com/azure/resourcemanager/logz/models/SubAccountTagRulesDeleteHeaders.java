@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SubAccountTagRulesDeleteHeaders model. */
 @Fluent
 public final class SubAccountTagRulesDeleteHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubAccountTagRulesDeleteHeaders.class);
-
     /*
      * The location property.
      */

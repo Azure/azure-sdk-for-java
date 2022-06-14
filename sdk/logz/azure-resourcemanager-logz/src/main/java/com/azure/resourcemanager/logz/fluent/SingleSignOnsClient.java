@@ -23,7 +23,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName);
@@ -37,7 +37,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName, Context context);
@@ -52,7 +52,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
@@ -69,7 +69,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
@@ -155,7 +155,7 @@ public interface SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LogzSingleSignOnResourceInner> getWithResponse(
