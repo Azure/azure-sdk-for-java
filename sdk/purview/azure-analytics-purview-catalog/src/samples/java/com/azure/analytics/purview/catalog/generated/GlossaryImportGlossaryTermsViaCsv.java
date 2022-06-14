@@ -23,7 +23,7 @@ public class GlossaryImportGlossaryTermsViaCsv {
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
                 glossaryClient.beginImportGlossaryTermsViaCsv(
-                        "a02d8eb5-a977-4ed6-85c6-63d44239471a", file, 0L, requestOptions);
+                        "a02d8eb5-a977-4ed6-85c6-63d44239471a", file, requestOptions);
         // END:com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsv.glossaryimportglossarytermsviacsv
     }
 }

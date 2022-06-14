@@ -3552,7 +3552,6 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3563,9 +3562,8 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(
-                glossaryGuid, file, contentLength, requestOptions);
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions);
     }
 
     /**
@@ -3606,7 +3604,6 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3617,9 +3614,8 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvAsync(
-                glossaryGuid, file, contentLength, requestOptions);
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions);
     }
 
     /**
@@ -3660,7 +3656,6 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3671,9 +3666,9 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
         return this.serviceClient.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                glossaryName, file, contentLength, requestOptions);
+                glossaryName, file, requestOptions);
     }
 
     /**
@@ -3714,7 +3709,6 @@ public final class GlossaryAsyncClient {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3725,9 +3719,8 @@ public final class GlossaryAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-                glossaryName, file, contentLength, requestOptions);
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions);
     }
 
     /**

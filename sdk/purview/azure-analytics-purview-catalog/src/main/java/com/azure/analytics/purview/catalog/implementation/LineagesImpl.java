@@ -220,7 +220,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -345,7 +346,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -468,7 +470,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -587,7 +590,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -716,7 +720,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -844,7 +849,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -971,7 +977,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1102,7 +1109,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1232,7 +1240,8 @@ public final class LineagesImpl {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

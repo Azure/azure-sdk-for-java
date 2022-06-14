@@ -22,7 +22,7 @@ public class GlossaryImportGlossaryTermsViaCsvByGlossaryName {
         BinaryData file = BinaryData.fromString("\"examplefile.csv\"");
         RequestOptions requestOptions = new RequestOptions().addQueryParam("includeTermHierarchy", "true");
         SyncPoller<BinaryData, BinaryData> response =
-                glossaryClient.beginImportGlossaryTermsViaCsvByGlossaryName("Glossary", file, 0L, requestOptions);
+                glossaryClient.beginImportGlossaryTermsViaCsvByGlossaryName("Glossary", file, requestOptions);
         // END:com.azure.analytics.purview.catalog.generated.glossaryimportglossarytermsviacsvbyglossaryname.glossaryimportglossarytermsviacsvbyglossaryname
     }
 }

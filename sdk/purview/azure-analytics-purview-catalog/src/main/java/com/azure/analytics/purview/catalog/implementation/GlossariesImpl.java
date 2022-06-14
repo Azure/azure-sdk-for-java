@@ -660,7 +660,6 @@ public final class GlossariesImpl {
                 @PathParam("glossaryGuid") String glossaryGuid,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -683,7 +682,6 @@ public final class GlossariesImpl {
                 @PathParam("glossaryName") String glossaryName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("multipart/form-data") BinaryData file,
-                @HeaderParam("Content-Length") long contentLength,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -11330,7 +11328,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11340,7 +11337,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -11349,7 +11346,6 @@ public final class GlossariesImpl {
                                 glossaryGuid,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
-                                contentLength,
                                 accept,
                                 requestOptions,
                                 context));
@@ -11393,7 +11389,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11404,14 +11399,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.importGlossaryTermsViaCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
                 file,
-                contentLength,
                 accept,
                 requestOptions,
                 context);
@@ -11455,7 +11449,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11465,12 +11458,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () ->
-                        this.importGlossaryTermsViaCsvWithResponseAsync(
-                                glossaryGuid, file, contentLength, requestOptions),
+                () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11519,7 +11510,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11530,12 +11520,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () ->
-                        this.importGlossaryTermsViaCsvWithResponseAsync(
-                                glossaryGuid, file, contentLength, requestOptions, context),
+                () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11584,7 +11572,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11594,9 +11581,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, contentLength, requestOptions)
-                .getSyncPoller();
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions).getSyncPoller();
     }
 
     /**
@@ -11637,7 +11623,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11647,7 +11632,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -11656,7 +11641,6 @@ public final class GlossariesImpl {
                                 glossaryName,
                                 this.client.getServiceVersion().getVersion(),
                                 file,
-                                contentLength,
                                 accept,
                                 requestOptions,
                                 context));
@@ -11700,7 +11684,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11711,14 +11694,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.importGlossaryTermsViaCsvByGlossaryName(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
                 file,
-                contentLength,
                 accept,
                 requestOptions,
                 context);
@@ -11762,7 +11744,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11772,12 +11753,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () ->
-                        this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                                glossaryName, file, contentLength, requestOptions),
+                () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(glossaryName, file, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11826,7 +11805,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11837,12 +11815,12 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions, Context context) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
                         this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                                glossaryName, file, contentLength, requestOptions, context),
+                                glossaryName, file, requestOptions, context),
                 new DefaultPollingStrategy<>(
                         this.client.getHttpPipeline(),
                         null,
@@ -11891,7 +11869,6 @@ public final class GlossariesImpl {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11901,8 +11878,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, contentLength, requestOptions)
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions)
                 .getSyncPoller();
     }
 

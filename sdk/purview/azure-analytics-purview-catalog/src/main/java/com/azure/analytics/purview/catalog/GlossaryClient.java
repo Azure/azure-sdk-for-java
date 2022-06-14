@@ -3530,7 +3530,6 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3541,10 +3540,8 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, long contentLength, RequestOptions requestOptions) {
-        return this.client
-                .beginImportGlossaryTermsViaCsv(glossaryGuid, file, contentLength, requestOptions)
-                .getSyncPoller();
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.client.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions).getSyncPoller();
     }
 
     /**
@@ -3585,7 +3582,6 @@ public final class GlossaryClient {
      *
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
-     * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3596,9 +3592,9 @@ public final class GlossaryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, long contentLength, RequestOptions requestOptions) {
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
         return this.client
-                .beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, contentLength, requestOptions)
+                .beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions)
                 .getSyncPoller();
     }
 
