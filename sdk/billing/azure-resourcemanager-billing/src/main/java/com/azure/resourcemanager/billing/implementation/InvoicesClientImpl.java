@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.InvoicesClient;
@@ -42,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InvoicesClient. */
 public final class InvoicesClientImpl implements InvoicesClient {
-    private final ClientLogger logger = new ClientLogger(InvoicesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final InvoicesService service;
 
@@ -241,7 +238,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingAccountSinglePageAsync(
@@ -300,7 +297,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingAccountSinglePageAsync(
@@ -355,7 +352,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingAccountAsync(
@@ -376,7 +373,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingAccountAsync(
@@ -396,7 +393,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingAccount(
@@ -415,7 +412,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingAccount(
@@ -435,7 +432,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingProfileSinglePageAsync(
@@ -500,7 +497,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingProfileSinglePageAsync(
@@ -565,7 +562,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingProfileAsync(
@@ -589,7 +586,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingProfileAsync(
@@ -616,7 +613,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingProfile(
@@ -637,7 +634,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingProfile(
@@ -659,7 +656,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by billing account name and ID along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getWithResponseAsync(String billingAccountName, String invoiceName) {
@@ -696,7 +694,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by billing account name and ID along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getWithResponseAsync(
@@ -729,19 +728,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by billing account name and ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceInner> getAsync(String billingAccountName, String invoiceName) {
-        return getWithResponseAsync(billingAccountName, invoiceName)
-            .flatMap(
-                (Response<InvoiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(billingAccountName, invoiceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -770,7 +761,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by billing account name and ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvoiceInner> getWithResponse(String billingAccountName, String invoiceName, Context context) {
@@ -785,7 +776,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
+     * @return an invoice by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getByIdWithResponseAsync(String invoiceName) {
@@ -815,7 +806,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
+     * @return an invoice by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getByIdWithResponseAsync(String invoiceName, Context context) {
@@ -842,19 +833,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
+     * @return an invoice by ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceInner> getByIdAsync(String invoiceName) {
-        return getByIdWithResponseAsync(invoiceName)
-            .flatMap(
-                (Response<InvoiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByIdWithResponseAsync(invoiceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -881,7 +864,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
+     * @return an invoice by ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvoiceInner> getByIdWithResponse(String invoiceName, Context context) {
@@ -898,7 +881,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadInvoiceWithResponseAsync(
@@ -947,7 +930,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadInvoiceWithResponseAsync(
@@ -986,7 +969,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link PollerFlux} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoiceAsync(
@@ -996,7 +979,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
         return this
             .client
             .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DownloadUrlInner.class,
+                DownloadUrlInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1010,7 +997,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link PollerFlux} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoiceAsync(
@@ -1034,7 +1021,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
@@ -1053,7 +1040,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadInvoice(
@@ -1071,7 +1058,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadInvoiceAsync(
@@ -1092,7 +1079,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadInvoiceAsync(
@@ -1148,7 +1135,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadMultipleBillingProfileInvoicesWithResponseAsync(
@@ -1188,7 +1176,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadMultipleBillingProfileInvoicesWithResponseAsync(
@@ -1224,7 +1213,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link PollerFlux} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoicesAsync(
@@ -1234,7 +1224,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
         return this
             .client
             .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DownloadUrlInner.class,
+                DownloadUrlInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1248,7 +1242,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link PollerFlux} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoicesAsync(
@@ -1272,7 +1267,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
@@ -1291,7 +1287,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingProfileInvoices(
@@ -1310,7 +1307,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadMultipleBillingProfileInvoicesAsync(
@@ -1331,7 +1329,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadMultipleBillingProfileInvoicesAsync(
@@ -1386,7 +1385,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingSubscriptionSinglePageAsync(
@@ -1445,7 +1444,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingSubscriptionSinglePageAsync(
@@ -1500,7 +1499,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingSubscriptionAsync(String periodStartDate, String periodEndDate) {
@@ -1518,7 +1517,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceInner> listByBillingSubscriptionAsync(
@@ -1536,7 +1535,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingSubscription(String periodStartDate, String periodEndDate) {
@@ -1552,7 +1551,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceInner> listByBillingSubscription(
@@ -1567,7 +1566,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getBySubscriptionAndInvoiceIdWithResponseAsync(String invoiceName) {
@@ -1610,7 +1610,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceInner>> getBySubscriptionAndInvoiceIdWithResponseAsync(
@@ -1645,19 +1646,12 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
+     * @return an invoice by subscription ID and invoice ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceInner> getBySubscriptionAndInvoiceIdAsync(String invoiceName) {
         return getBySubscriptionAndInvoiceIdWithResponseAsync(invoiceName)
-            .flatMap(
-                (Response<InvoiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1682,7 +1676,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvoiceInner> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context) {
@@ -1697,7 +1691,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadBillingSubscriptionInvoiceWithResponseAsync(
@@ -1746,7 +1740,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadBillingSubscriptionInvoiceWithResponseAsync(
@@ -1791,7 +1785,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link PollerFlux} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoiceAsync(
@@ -1801,7 +1795,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
         return this
             .client
             .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DownloadUrlInner.class,
+                DownloadUrlInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1813,7 +1811,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link PollerFlux} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoiceAsync(
@@ -1835,7 +1833,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
@@ -1852,7 +1850,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return the {@link SyncPoller} for polling of a URL to download an invoice.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadBillingSubscriptionInvoice(
@@ -1868,7 +1866,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadBillingSubscriptionInvoiceAsync(String invoiceName, String downloadToken) {
@@ -1886,7 +1884,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download an invoice.
+     * @return a URL to download an invoice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadBillingSubscriptionInvoiceAsync(
@@ -1935,7 +1933,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadMultipleBillingSubscriptionInvoicesWithResponseAsync(
@@ -1979,7 +1978,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadMultipleBillingSubscriptionInvoicesWithResponseAsync(
@@ -2014,7 +2014,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link PollerFlux} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -2024,7 +2025,11 @@ public final class InvoicesClientImpl implements InvoicesClient {
         return this
             .client
             .<DownloadUrlInner, DownloadUrlInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DownloadUrlInner.class, DownloadUrlInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DownloadUrlInner.class,
+                DownloadUrlInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2035,7 +2040,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link PollerFlux} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -2056,7 +2062,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(
@@ -2072,7 +2079,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return the {@link SyncPoller} for polling of a URL to download multiple invoice documents (invoice pdf, tax
+     *     receipts, credit notes) as a zip file.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner> beginDownloadMultipleBillingSubscriptionInvoices(
@@ -2087,7 +2095,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadMultipleBillingSubscriptionInvoicesAsync(List<String> downloadUrls) {
@@ -2104,7 +2113,8 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file.
+     * @return a URL to download multiple invoice documents (invoice pdf, tax receipts, credit notes) as a zip file on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadMultipleBillingSubscriptionInvoicesAsync(
@@ -2150,7 +2160,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingAccountNextSinglePageAsync(String nextLink) {
@@ -2187,7 +2197,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingAccountNextSinglePageAsync(
@@ -2223,7 +2233,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -2260,7 +2270,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingProfileNextSinglePageAsync(
@@ -2296,7 +2306,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingSubscriptionNextSinglePageAsync(String nextLink) {
@@ -2333,7 +2343,7 @@ public final class InvoicesClientImpl implements InvoicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceInner>> listByBillingSubscriptionNextSinglePageAsync(

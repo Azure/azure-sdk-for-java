@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the role assignment. */
 @Fluent
 public final class BillingRoleAssignmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleAssignmentProperties.class);
-
     /*
      * The date the role assignment was created.
      */

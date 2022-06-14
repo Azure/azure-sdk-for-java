@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error details of the transfer eligibility validation. */
 @Fluent
 public final class ValidateSubscriptionTransferEligibilityError {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateSubscriptionTransferEligibilityError.class);
-
     /*
      * Error code for the product transfer validation.
      */

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.InstructionsClient;
 import com.azure.resourcemanager.billing.fluent.models.InstructionInner;
 import com.azure.resourcemanager.billing.models.Instruction;
 import com.azure.resourcemanager.billing.models.Instructions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class InstructionsImpl implements Instructions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InstructionsImpl.class);
 
     private final InstructionsClient innerClient;
 

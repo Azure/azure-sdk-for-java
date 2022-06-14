@@ -33,7 +33,11 @@ public final class PaymentMethodFamily extends ExpandableStringEnum<PaymentMetho
         return fromString(name, PaymentMethodFamily.class);
     }
 
-    /** @return known PaymentMethodFamily values. */
+    /**
+     * Gets known PaymentMethodFamily values.
+     *
+     * @return known PaymentMethodFamily values.
+     */
     public static Collection<PaymentMethodFamily> values() {
         return values(PaymentMethodFamily.class);
     }

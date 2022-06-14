@@ -15,7 +15,7 @@ public interface EnrollmentAccounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnrollmentAccountSummary> list();
 
@@ -26,7 +26,7 @@ public interface EnrollmentAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing enrollment accounts.
+     * @return result of listing enrollment accounts as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EnrollmentAccountSummary> list(Context context);
 
@@ -49,7 +49,7 @@ public interface EnrollmentAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a enrollment account by name.
+     * @return a enrollment account by name along with {@link Response}.
      */
     Response<EnrollmentAccountSummary> getWithResponse(String name, Context context);
 }

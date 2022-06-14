@@ -30,7 +30,11 @@ public final class InvoiceType extends ExpandableStringEnum<InvoiceType> {
         return fromString(name, InvoiceType.class);
     }
 
-    /** @return known InvoiceType values. */
+    /**
+     * Gets known InvoiceType values.
+     *
+     * @return known InvoiceType values.
+     */
     public static Collection<InvoiceType> values() {
         return values(InvoiceType.class);
     }

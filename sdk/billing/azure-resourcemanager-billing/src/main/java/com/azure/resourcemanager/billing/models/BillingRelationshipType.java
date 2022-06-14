@@ -33,7 +33,11 @@ public final class BillingRelationshipType extends ExpandableStringEnum<BillingR
         return fromString(name, BillingRelationshipType.class);
     }
 
-    /** @return known BillingRelationshipType values. */
+    /**
+     * Gets known BillingRelationshipType values.
+     *
+     * @return known BillingRelationshipType values.
+     */
     public static Collection<BillingRelationshipType> values() {
         return values(BillingRelationshipType.class);
     }

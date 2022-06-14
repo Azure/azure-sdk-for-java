@@ -36,7 +36,11 @@ public final class BillingSubscriptionStatusType extends ExpandableStringEnum<Bi
         return fromString(name, BillingSubscriptionStatusType.class);
     }
 
-    /** @return known BillingSubscriptionStatusType values. */
+    /**
+     * Gets known BillingSubscriptionStatusType values.
+     *
+     * @return known BillingSubscriptionStatusType values.
+     */
     public static Collection<BillingSubscriptionStatusType> values() {
         return values(BillingSubscriptionStatusType.class);
     }

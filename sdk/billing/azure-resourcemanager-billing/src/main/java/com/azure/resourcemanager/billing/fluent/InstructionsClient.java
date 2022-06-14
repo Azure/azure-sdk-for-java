@@ -21,7 +21,8 @@ public interface InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InstructionInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -35,7 +36,8 @@ public interface InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InstructionInner> listByBillingProfile(
@@ -65,7 +67,7 @@ public interface InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
+     * @return the instruction by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<InstructionInner> getWithResponse(
@@ -100,7 +102,7 @@ public interface InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
+     * @return an instruction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<InstructionInner> putWithResponse(

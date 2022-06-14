@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The details about a participant. */
 @Immutable
 public final class Participants {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Participants.class);
-
     /*
      * The acceptance status of the participant.
      */

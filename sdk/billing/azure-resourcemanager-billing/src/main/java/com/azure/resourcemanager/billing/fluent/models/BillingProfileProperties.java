@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfileStatus;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.billing.models.InvoiceSectionsOnExpand;
 import com.azure.resourcemanager.billing.models.SpendingLimit;
 import com.azure.resourcemanager.billing.models.StatusReasonCode;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,8 +22,6 @@ import java.util.Map;
 /** The properties of the billing profile. */
 @Fluent
 public final class BillingProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfileProperties.class);
-
     /*
      * The name of the billing profile.
      */

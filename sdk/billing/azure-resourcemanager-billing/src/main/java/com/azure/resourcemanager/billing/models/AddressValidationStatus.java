@@ -27,7 +27,11 @@ public final class AddressValidationStatus extends ExpandableStringEnum<AddressV
         return fromString(name, AddressValidationStatus.class);
     }
 
-    /** @return known AddressValidationStatus values. */
+    /**
+     * Gets known AddressValidationStatus values.
+     *
+     * @return known AddressValidationStatus values.
+     */
     public static Collection<AddressValidationStatus> values() {
         return values(AddressValidationStatus.class);
     }

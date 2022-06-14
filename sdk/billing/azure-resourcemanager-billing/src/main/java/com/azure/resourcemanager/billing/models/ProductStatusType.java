@@ -45,7 +45,11 @@ public final class ProductStatusType extends ExpandableStringEnum<ProductStatusT
         return fromString(name, ProductStatusType.class);
     }
 
-    /** @return known ProductStatusType values. */
+    /**
+     * Gets known ProductStatusType values.
+     *
+     * @return known ProductStatusType values.
+     */
     public static Collection<ProductStatusType> values() {
         return values(ProductStatusType.class);
     }

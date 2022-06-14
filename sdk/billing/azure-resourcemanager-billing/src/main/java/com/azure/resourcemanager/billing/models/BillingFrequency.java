@@ -30,7 +30,11 @@ public final class BillingFrequency extends ExpandableStringEnum<BillingFrequenc
         return fromString(name, BillingFrequency.class);
     }
 
-    /** @return known BillingFrequency values. */
+    /**
+     * Gets known BillingFrequency values.
+     *
+     * @return known BillingFrequency values.
+     */
     public static Collection<BillingFrequency> values() {
         return values(BillingFrequency.class);
     }

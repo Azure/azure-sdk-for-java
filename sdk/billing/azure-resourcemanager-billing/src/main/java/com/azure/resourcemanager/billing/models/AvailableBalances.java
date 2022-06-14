@@ -34,7 +34,7 @@ public interface AvailableBalances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
+     * @return the latest Azure credit balance along with {@link Response}.
      */
     Response<AvailableBalance> getWithResponse(String billingAccountName, String billingProfileName, Context context);
 }

@@ -98,7 +98,11 @@ public final class SubscriptionTransferValidationErrorCode
         return fromString(name, SubscriptionTransferValidationErrorCode.class);
     }
 
-    /** @return known SubscriptionTransferValidationErrorCode values. */
+    /**
+     * Gets known SubscriptionTransferValidationErrorCode values.
+     *
+     * @return known SubscriptionTransferValidationErrorCode values.
+     */
     public static Collection<SubscriptionTransferValidationErrorCode> values() {
         return values(SubscriptionTransferValidationErrorCode.class);
     }

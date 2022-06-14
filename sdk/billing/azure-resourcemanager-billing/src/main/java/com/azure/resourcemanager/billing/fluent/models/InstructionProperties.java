@@ -6,15 +6,12 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A billing instruction used during invoice generation. */
 @Fluent
 public final class InstructionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionProperties.class);
-
     /*
      * The amount budgeted for this billing instruction.
      */
@@ -126,14 +123,16 @@ public final class InstructionProperties {
      */
     public void validate() {
         if (startDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property startDate in model InstructionProperties"));
         }
         if (endDate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endDate in model InstructionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(InstructionProperties.class);
 }

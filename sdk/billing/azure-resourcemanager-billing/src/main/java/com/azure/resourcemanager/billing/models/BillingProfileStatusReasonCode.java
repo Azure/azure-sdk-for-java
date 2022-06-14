@@ -30,7 +30,11 @@ public final class BillingProfileStatusReasonCode extends ExpandableStringEnum<B
         return fromString(name, BillingProfileStatusReasonCode.class);
     }
 
-    /** @return known BillingProfileStatusReasonCode values. */
+    /**
+     * Gets known BillingProfileStatusReasonCode values.
+     *
+     * @return known BillingProfileStatusReasonCode values.
+     */
     public static Collection<BillingProfileStatusReasonCode> values() {
         return values(BillingProfileStatusReasonCode.class);
     }

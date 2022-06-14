@@ -19,7 +19,7 @@ public interface BillingProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName);
 
@@ -33,7 +33,7 @@ public interface BillingProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing profiles.
+     * @return the list of billing profiles as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName, String expand, Context context);
 
@@ -61,7 +61,7 @@ public interface BillingProfiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing profile by its ID.
+     * @return a billing profile by its ID along with {@link Response}.
      */
     Response<BillingProfile> getWithResponse(
         String billingAccountName, String billingProfileName, String expand, Context context);

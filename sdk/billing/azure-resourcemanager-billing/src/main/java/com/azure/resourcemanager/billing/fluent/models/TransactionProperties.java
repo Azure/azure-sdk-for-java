@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.ReservationType;
 import com.azure.resourcemanager.billing.models.TransactionTypeKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a transaction. */
 @Fluent
 public final class TransactionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransactionProperties.class);
-
     /*
      * The kind of transaction. Options are all or reservation.
      */

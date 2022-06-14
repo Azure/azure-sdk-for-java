@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.EnrollmentAccountsClient;
 import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
 import com.azure.resourcemanager.billing.models.EnrollmentAccountSummary;
 import com.azure.resourcemanager.billing.models.EnrollmentAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnrollmentAccountsImpl implements EnrollmentAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnrollmentAccountsImpl.class);
 
     private final EnrollmentAccountsClient innerClient;
 

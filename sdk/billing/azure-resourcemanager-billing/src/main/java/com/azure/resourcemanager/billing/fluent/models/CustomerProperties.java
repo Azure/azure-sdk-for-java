@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a customer. */
 @Fluent
 public final class CustomerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerProperties.class);
-
     /*
      * The ID of the billing profile for the invoice section.
      */

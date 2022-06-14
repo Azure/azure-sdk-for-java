@@ -25,7 +25,11 @@ public final class ProductsMoveResponse extends ResponseBase<ProductsMoveHeaders
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ProductInner getValue() {
         return super.getValue();

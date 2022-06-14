@@ -21,7 +21,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingAccount(
         String billingAccountName, String periodStartDate, String periodEndDate);
@@ -37,7 +37,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingAccount(
         String billingAccountName, String periodStartDate, String periodEndDate, Context context);
@@ -53,7 +53,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingProfile(
         String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate);
@@ -70,7 +70,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingProfile(
         String billingAccountName,
@@ -102,7 +102,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by billing account name and ID.
+     * @return an invoice by billing account name and ID along with {@link Response}.
      */
     Response<Invoice> getWithResponse(String billingAccountName, String invoiceName, Context context);
 
@@ -127,7 +127,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by ID.
+     * @return an invoice by ID along with {@link Response}.
      */
     Response<Invoice> getByIdWithResponse(String invoiceName, Context context);
 
@@ -198,7 +198,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingSubscription(String periodStartDate, String periodEndDate);
 
@@ -211,7 +211,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoices.
+     * @return the list of invoices as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Invoice> listByBillingSubscription(String periodStartDate, String periodEndDate, Context context);
 
@@ -234,7 +234,7 @@ public interface Invoices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice by subscription ID and invoice ID.
+     * @return an invoice by subscription ID and invoice ID along with {@link Response}.
      */
     Response<Invoice> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context);
 

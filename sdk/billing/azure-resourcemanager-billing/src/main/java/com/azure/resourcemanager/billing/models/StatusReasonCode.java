@@ -30,7 +30,11 @@ public final class StatusReasonCode extends ExpandableStringEnum<StatusReasonCod
         return fromString(name, StatusReasonCode.class);
     }
 
-    /** @return known StatusReasonCode values. */
+    /**
+     * Gets known StatusReasonCode values.
+     *
+     * @return known StatusReasonCode values.
+     */
     public static Collection<StatusReasonCode> values() {
         return values(StatusReasonCode.class);
     }

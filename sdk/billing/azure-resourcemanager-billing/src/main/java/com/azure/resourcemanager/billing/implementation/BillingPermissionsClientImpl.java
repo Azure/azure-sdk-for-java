@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingPermissionsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
 import com.azure.resourcemanager.billing.models.BillingPermissionsListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingPermissionsClient. */
 public final class BillingPermissionsClientImpl implements BillingPermissionsClient {
-    private final ClientLogger logger = new ClientLogger(BillingPermissionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingPermissionsService service;
 
@@ -162,7 +159,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByCustomerSinglePageAsync(
@@ -209,7 +207,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByCustomerSinglePageAsync(
@@ -251,7 +250,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByCustomerAsync(
@@ -270,7 +270,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByCustomerAsync(
@@ -288,7 +289,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByCustomer(
@@ -305,7 +307,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByCustomer(
@@ -320,7 +323,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingAccountSinglePageAsync(
@@ -363,7 +367,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingAccountSinglePageAsync(
@@ -401,7 +406,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByBillingAccountAsync(String billingAccountName) {
@@ -418,7 +424,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByBillingAccountAsync(
@@ -435,7 +442,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByBillingAccount(String billingAccountName) {
@@ -450,7 +458,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByBillingAccount(
@@ -467,7 +476,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByInvoiceSectionsSinglePageAsync(
@@ -526,7 +536,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByInvoiceSectionsSinglePageAsync(
@@ -581,7 +592,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByInvoiceSectionsAsync(
@@ -601,7 +613,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByInvoiceSectionsAsync(
@@ -622,7 +635,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByInvoiceSections(
@@ -641,7 +655,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByInvoiceSections(
@@ -658,7 +673,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingProfileSinglePageAsync(
@@ -711,7 +727,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingProfileSinglePageAsync(
@@ -755,7 +772,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByBillingProfileAsync(
@@ -774,7 +792,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingPermissionsPropertiesInner> listByBillingProfileAsync(
@@ -792,7 +811,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByBillingProfile(
@@ -809,7 +829,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingPermissionsPropertiesInner> listByBillingProfile(
@@ -824,7 +845,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByCustomerNextSinglePageAsync(String nextLink) {
@@ -860,7 +882,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByCustomerNextSinglePageAsync(
@@ -896,7 +919,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingAccountNextSinglePageAsync(
@@ -934,7 +958,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingAccountNextSinglePageAsync(
@@ -970,7 +995,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByInvoiceSectionsNextSinglePageAsync(
@@ -1008,7 +1034,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByInvoiceSectionsNextSinglePageAsync(
@@ -1044,7 +1071,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingProfileNextSinglePageAsync(
@@ -1082,7 +1110,8 @@ public final class BillingPermissionsClientImpl implements BillingPermissionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of list billingPermissions a caller has on a billing account.
+     * @return result of list billingPermissions a caller has on a billing account along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingPermissionsPropertiesInner>> listByBillingProfileNextSinglePageAsync(

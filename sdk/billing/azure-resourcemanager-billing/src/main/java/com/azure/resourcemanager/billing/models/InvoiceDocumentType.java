@@ -27,7 +27,11 @@ public final class InvoiceDocumentType extends ExpandableStringEnum<InvoiceDocum
         return fromString(name, InvoiceDocumentType.class);
     }
 
-    /** @return known InvoiceDocumentType values. */
+    /**
+     * Gets known InvoiceDocumentType values.
+     *
+     * @return known InvoiceDocumentType values.
+     */
     public static Collection<InvoiceDocumentType> values() {
         return values(InvoiceDocumentType.class);
     }

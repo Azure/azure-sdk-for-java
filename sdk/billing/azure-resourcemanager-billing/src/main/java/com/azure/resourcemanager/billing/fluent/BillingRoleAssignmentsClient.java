@@ -37,7 +37,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return a role assignment for the caller on a billing account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> getByBillingAccountWithResponse(
@@ -67,7 +67,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> deleteByBillingAccountWithResponse(
@@ -105,7 +105,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return a role assignment for the caller on an invoice section along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> getByInvoiceSectionWithResponse(
@@ -147,7 +147,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> deleteByInvoiceSectionWithResponse(
@@ -184,7 +184,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return a role assignment for the caller on a billing profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> getByBillingProfileWithResponse(
@@ -217,7 +217,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingRoleAssignmentInner> deleteByBillingProfileWithResponse(
@@ -231,7 +231,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByBillingAccount(String billingAccountName);
@@ -245,7 +245,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByBillingAccount(String billingAccountName, Context context);
@@ -260,7 +260,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByInvoiceSection(
@@ -277,7 +277,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByInvoiceSection(
@@ -292,7 +292,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByBillingProfile(
@@ -308,7 +308,7 @@ public interface BillingRoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingRoleAssignmentInner> listByBillingProfile(

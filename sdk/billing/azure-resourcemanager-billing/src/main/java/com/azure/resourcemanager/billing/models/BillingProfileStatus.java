@@ -30,7 +30,11 @@ public final class BillingProfileStatus extends ExpandableStringEnum<BillingProf
         return fromString(name, BillingProfileStatus.class);
     }
 
-    /** @return known BillingProfileStatus values. */
+    /**
+     * Gets known BillingProfileStatus values.
+     *
+     * @return known BillingProfileStatus values.
+     */
     public static Collection<BillingProfileStatus> values() {
         return values(BillingProfileStatus.class);
     }

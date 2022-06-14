@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -17,8 +15,6 @@ import java.util.UUID;
 /** The billing properties of a subscription. */
 @Fluent
 public final class BillingSubscriptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionProperties.class);
-
     /*
      * The name of the subscription.
      */

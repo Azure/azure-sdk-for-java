@@ -27,7 +27,11 @@ public final class AutoRenew extends ExpandableStringEnum<AutoRenew> {
         return fromString(name, AutoRenew.class);
     }
 
-    /** @return known AutoRenew values. */
+    /**
+     * Gets known AutoRenew values.
+     *
+     * @return known AutoRenew values.
+     */
     public static Collection<AutoRenew> values() {
         return values(AutoRenew.class);
     }

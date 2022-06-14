@@ -17,10 +17,9 @@ import com.azure.resourcemanager.billing.models.Products;
 import com.azure.resourcemanager.billing.models.ProductsMoveResponse;
 import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
 import com.azure.resourcemanager.billing.models.ValidateProductTransferEligibilityResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductsImpl implements Products {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductsImpl.class);
 
     private final ProductsClient innerClient;
 

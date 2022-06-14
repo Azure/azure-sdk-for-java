@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The roll up count summary of reservations in each state. */
 @Immutable
 public final class ReservationSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSummary.class);
-
     /*
      * The number of reservation in Succeeded state
      */

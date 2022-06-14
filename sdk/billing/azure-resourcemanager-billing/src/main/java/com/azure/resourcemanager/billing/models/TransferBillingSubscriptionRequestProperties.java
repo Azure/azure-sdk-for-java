@@ -6,15 +6,11 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request parameters to transfer billing subscription. */
 @Fluent
 public final class TransferBillingSubscriptionRequestProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TransferBillingSubscriptionRequestProperties.class);
-
     /*
      * The destination invoice section id.
      */
@@ -49,11 +45,13 @@ public final class TransferBillingSubscriptionRequestProperties {
      */
     public void validate() {
         if (destinationInvoiceSectionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destinationInvoiceSectionId in model"
                             + " TransferBillingSubscriptionRequestProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TransferBillingSubscriptionRequestProperties.class);
 }

@@ -27,7 +27,11 @@ public final class SpendingLimit extends ExpandableStringEnum<SpendingLimit> {
         return fromString(name, SpendingLimit.class);
     }
 
-    /** @return known SpendingLimit values. */
+    /**
+     * Gets known SpendingLimit values.
+     *
+     * @return known SpendingLimit values.
+     */
     public static Collection<SpendingLimit> values() {
         return values(SpendingLimit.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The billing profile details of the partner of the customer for an indirect motion. */
 @Fluent
 public final class IndirectRelationshipInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IndirectRelationshipInfo.class);
-
     /*
      * The billing account name of the partner or the customer for an indirect
      * motion.

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.billing.models.BillingSubscription;
 import com.azure.resourcemanager.billing.models.BillingSubscriptions;
 import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
 import com.azure.resourcemanager.billing.models.ValidateSubscriptionTransferEligibilityResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingSubscriptionsImpl implements BillingSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingSubscriptionsImpl.class);
 
     private final BillingSubscriptionsClient innerClient;
 

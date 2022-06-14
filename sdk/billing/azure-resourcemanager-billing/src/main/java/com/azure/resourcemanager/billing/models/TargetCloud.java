@@ -30,7 +30,11 @@ public final class TargetCloud extends ExpandableStringEnum<TargetCloud> {
         return fromString(name, TargetCloud.class);
     }
 
-    /** @return known TargetCloud values. */
+    /**
+     * Gets known TargetCloud values.
+     *
+     * @return known TargetCloud values.
+     */
     public static Collection<TargetCloud> values() {
         return values(TargetCloud.class);
     }

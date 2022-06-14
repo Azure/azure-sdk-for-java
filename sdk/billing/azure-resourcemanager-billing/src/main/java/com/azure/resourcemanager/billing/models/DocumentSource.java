@@ -27,7 +27,11 @@ public final class DocumentSource extends ExpandableStringEnum<DocumentSource> {
         return fromString(name, DocumentSource.class);
     }
 
-    /** @return known DocumentSource values. */
+    /**
+     * Gets known DocumentSource values.
+     *
+     * @return known DocumentSource values.
+     */
     public static Collection<DocumentSource> values() {
         return values(DocumentSource.class);
     }

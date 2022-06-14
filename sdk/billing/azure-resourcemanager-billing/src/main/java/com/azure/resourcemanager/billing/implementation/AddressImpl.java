@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseIn
 import com.azure.resourcemanager.billing.models.Address;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.ValidateAddressResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AddressImpl implements Address {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AddressImpl.class);
 
     private final AddressClient innerClient;
 

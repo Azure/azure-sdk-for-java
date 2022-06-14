@@ -6,21 +6,17 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.AutoRenew;
 import com.azure.resourcemanager.billing.models.BillingFrequency;
 import com.azure.resourcemanager.billing.models.ProductStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A product. */
 @Fluent
 public final class ProductInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductInner.class);
-
     /*
      * The properties of a product.
      */

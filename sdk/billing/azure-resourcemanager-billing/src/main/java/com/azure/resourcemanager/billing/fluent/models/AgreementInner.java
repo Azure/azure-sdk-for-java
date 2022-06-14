@@ -6,11 +6,10 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AcceptanceMode;
+import com.azure.resourcemanager.billing.models.BillingProfileInfo;
 import com.azure.resourcemanager.billing.models.Category;
 import com.azure.resourcemanager.billing.models.Participants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 /** An agreement. */
 @Fluent
 public final class AgreementInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementInner.class);
-
     /*
      * The properties of an agreement.
      */
@@ -60,6 +57,16 @@ public final class AgreementInner extends ProxyResource {
      */
     public AcceptanceMode acceptanceMode() {
         return this.innerProperties() == null ? null : this.innerProperties().acceptanceMode();
+    }
+
+    /**
+     * Get the billingProfileInfo property: The list of billing profiles associated with agreement and present only for
+     * specific agreements.
+     *
+     * @return the billingProfileInfo value.
+     */
+    public BillingProfileInfo billingProfileInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileInfo();
     }
 
     /**

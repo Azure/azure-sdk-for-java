@@ -55,7 +55,11 @@ public final class ProductTransferValidationErrorCode extends ExpandableStringEn
         return fromString(name, ProductTransferValidationErrorCode.class);
     }
 
-    /** @return known ProductTransferValidationErrorCode values. */
+    /**
+     * Gets known ProductTransferValidationErrorCode values.
+     *
+     * @return known ProductTransferValidationErrorCode values.
+     */
     public static Collection<ProductTransferValidationErrorCode> values() {
         return values(ProductTransferValidationErrorCode.class);
     }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AccountStatus;
 import com.azure.resourcemanager.billing.models.AccountType;
 import com.azure.resourcemanager.billing.models.AddressDetails;
@@ -15,15 +14,12 @@ import com.azure.resourcemanager.billing.models.BillingProfilesOnExpand;
 import com.azure.resourcemanager.billing.models.Department;
 import com.azure.resourcemanager.billing.models.Enrollment;
 import com.azure.resourcemanager.billing.models.EnrollmentAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A billing account. */
 @Fluent
 public final class BillingAccountInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountInner.class);
-
     /*
      * The properties of the billing account.
      */

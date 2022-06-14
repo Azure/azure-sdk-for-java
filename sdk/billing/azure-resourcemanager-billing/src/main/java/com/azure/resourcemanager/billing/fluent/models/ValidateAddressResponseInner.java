@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import com.azure.resourcemanager.billing.models.AddressValidationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the address validation. */
 @Fluent
 public final class ValidateAddressResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateAddressResponseInner.class);
-
     /*
      * status of the address validation.
      */

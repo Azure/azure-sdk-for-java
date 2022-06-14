@@ -15,11 +15,10 @@ import com.azure.resourcemanager.billing.fluent.models.InvoiceInner;
 import com.azure.resourcemanager.billing.models.DownloadUrl;
 import com.azure.resourcemanager.billing.models.Invoice;
 import com.azure.resourcemanager.billing.models.Invoices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class InvoicesImpl implements Invoices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InvoicesImpl.class);
 
     private final InvoicesClient innerClient;
 

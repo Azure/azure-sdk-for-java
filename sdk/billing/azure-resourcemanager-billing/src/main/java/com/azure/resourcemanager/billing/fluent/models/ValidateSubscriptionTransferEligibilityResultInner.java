@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ValidateSubscriptionTransferEligibilityError;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of the transfer eligibility validation. */
 @Fluent
 public final class ValidateSubscriptionTransferEligibilityResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ValidateSubscriptionTransferEligibilityResultInner.class);
-
     /*
      * Specifies whether the subscription is eligible to be transferred.
      */

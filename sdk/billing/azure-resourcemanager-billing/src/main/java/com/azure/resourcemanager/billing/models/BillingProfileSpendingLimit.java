@@ -27,7 +27,11 @@ public final class BillingProfileSpendingLimit extends ExpandableStringEnum<Bill
         return fromString(name, BillingProfileSpendingLimit.class);
     }
 
-    /** @return known BillingProfileSpendingLimit values. */
+    /**
+     * Gets known BillingProfileSpendingLimit values.
+     *
+     * @return known BillingProfileSpendingLimit values.
+     */
     public static Collection<BillingProfileSpendingLimit> values() {
         return values(BillingProfileSpendingLimit.class);
     }

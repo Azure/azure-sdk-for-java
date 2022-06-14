@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ReservationPropertyUtilization;
 import com.azure.resourcemanager.billing.models.ReservationSkuProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of the reservation. */
 @Fluent
 public final class ReservationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationInner.class);
-
     /*
      * The id of the reservation.
      */

@@ -30,7 +30,11 @@ public final class AccountType extends ExpandableStringEnum<AccountType> {
         return fromString(name, AccountType.class);
     }
 
-    /** @return known AccountType values. */
+    /**
+     * Gets known AccountType values.
+     *
+     * @return known AccountType values.
+     */
     public static Collection<AccountType> values() {
         return values(AccountType.class);
     }

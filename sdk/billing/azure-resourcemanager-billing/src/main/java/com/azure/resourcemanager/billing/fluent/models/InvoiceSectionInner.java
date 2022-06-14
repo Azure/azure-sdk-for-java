@@ -6,18 +6,14 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.InvoiceSectionState;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An invoice section. */
 @Fluent
 public final class InvoiceSectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionInner.class);
-
     /*
      * The properties of an invoice section.
      */

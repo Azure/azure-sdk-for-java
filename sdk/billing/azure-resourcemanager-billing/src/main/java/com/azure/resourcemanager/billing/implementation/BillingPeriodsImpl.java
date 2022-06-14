@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.BillingPeriodsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPeriodInner;
 import com.azure.resourcemanager.billing.models.BillingPeriod;
 import com.azure.resourcemanager.billing.models.BillingPeriods;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPeriodsImpl implements BillingPeriods {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPeriodsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPeriodsImpl.class);
 
     private final BillingPeriodsClient innerClient;
 

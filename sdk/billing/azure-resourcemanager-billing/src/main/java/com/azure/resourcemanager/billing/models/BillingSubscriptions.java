@@ -20,7 +20,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByCustomer(String billingAccountName, String customerName);
 
@@ -34,7 +34,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByCustomer(String billingAccountName, String customerName, Context context);
 
@@ -46,7 +46,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByBillingAccount(String billingAccountName);
 
@@ -59,7 +59,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByBillingAccount(String billingAccountName, Context context);
 
@@ -72,7 +72,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -86,7 +86,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);
@@ -101,7 +101,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -117,7 +117,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingSubscription> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
@@ -143,7 +143,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
+     * @return a subscription by its ID along with {@link Response}.
      */
     Response<BillingSubscription> getWithResponse(String billingAccountName, Context context);
 
@@ -170,7 +170,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response}.
      */
     Response<BillingSubscription> updateWithResponse(
         String billingAccountName, BillingSubscriptionInner parameters, Context context);
@@ -229,7 +229,7 @@ public interface BillingSubscriptions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the transfer eligibility validation.
+     * @return result of the transfer eligibility validation along with {@link Response}.
      */
     Response<ValidateSubscriptionTransferEligibilityResult> validateMoveWithResponse(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context);

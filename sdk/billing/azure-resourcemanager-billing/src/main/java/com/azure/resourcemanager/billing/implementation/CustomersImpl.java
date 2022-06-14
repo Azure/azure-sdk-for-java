@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.CustomersClient;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
 import com.azure.resourcemanager.billing.models.Customer;
 import com.azure.resourcemanager.billing.models.Customers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomersImpl implements Customers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomersImpl.class);
 
     private final CustomersClient innerClient;
 

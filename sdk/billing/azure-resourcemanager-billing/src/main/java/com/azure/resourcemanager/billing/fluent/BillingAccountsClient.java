@@ -22,7 +22,7 @@ public interface BillingAccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingAccountInner> list();
@@ -35,7 +35,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing accounts.
+     * @return the list of billing accounts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingAccountInner> list(String expand, Context context);
@@ -61,7 +61,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account by its ID.
+     * @return a billing account by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingAccountInner> getWithResponse(String billingAccountName, String expand, Context context);
@@ -75,7 +75,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
@@ -91,7 +91,7 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing account.
+     * @return the {@link SyncPoller} for polling of a billing account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BillingAccountInner>, BillingAccountInner> beginUpdate(
@@ -134,7 +134,8 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(
@@ -149,7 +150,8 @@ public interface BillingAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice section properties with create subscription permission.
+     * @return the list of invoice section properties with create subscription permission as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionWithCreateSubPermissionInner> listInvoiceSectionsByCreateSubscriptionPermission(

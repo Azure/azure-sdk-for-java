@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.BillingSubscriptionsClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingSubscriptionsClient. */
 public final class BillingSubscriptionsClientImpl implements BillingSubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(BillingSubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingSubscriptionsService service;
 
@@ -230,7 +227,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByCustomerSinglePageAsync(
@@ -278,7 +276,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByCustomerSinglePageAsync(
@@ -321,7 +320,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByCustomerAsync(String billingAccountName, String customerName) {
@@ -340,7 +339,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByCustomerAsync(
@@ -359,7 +358,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByCustomer(String billingAccountName, String customerName) {
@@ -376,7 +375,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByCustomer(
@@ -392,7 +391,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingAccountSinglePageAsync(
@@ -436,7 +436,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingAccountSinglePageAsync(
@@ -475,7 +476,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByBillingAccountAsync(String billingAccountName) {
@@ -493,7 +494,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByBillingAccountAsync(String billingAccountName, Context context) {
@@ -510,7 +511,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName) {
@@ -526,7 +527,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByBillingAccount(String billingAccountName, Context context) {
@@ -542,7 +543,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingProfileSinglePageAsync(
@@ -596,7 +598,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingProfileSinglePageAsync(
@@ -641,7 +644,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByBillingProfileAsync(
@@ -661,7 +664,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByBillingProfileAsync(
@@ -680,7 +683,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByBillingProfile(
@@ -698,7 +701,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByBillingProfile(
@@ -716,7 +719,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByInvoiceSectionSinglePageAsync(
@@ -776,7 +780,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByInvoiceSectionSinglePageAsync(
@@ -832,7 +837,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByInvoiceSectionAsync(
@@ -853,7 +858,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingSubscriptionInner> listByInvoiceSectionAsync(
@@ -875,7 +880,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByInvoiceSection(
@@ -895,7 +900,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingSubscriptionInner> listByInvoiceSection(
@@ -912,7 +917,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
+     * @return a subscription by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingSubscriptionInner>> getWithResponseAsync(String billingAccountName) {
@@ -957,7 +962,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
+     * @return a subscription by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingSubscriptionInner>> getWithResponseAsync(String billingAccountName, Context context) {
@@ -998,19 +1003,11 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
+     * @return a subscription by its ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingSubscriptionInner> getAsync(String billingAccountName) {
-        return getWithResponseAsync(billingAccountName)
-            .flatMap(
-                (Response<BillingSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(billingAccountName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1037,7 +1034,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a subscription by its ID.
+     * @return a subscription by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingSubscriptionInner> getWithResponse(String billingAccountName, Context context) {
@@ -1053,7 +1050,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingSubscriptionInner>> updateWithResponseAsync(
@@ -1106,7 +1103,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingSubscriptionInner>> updateWithResponseAsync(
@@ -1155,19 +1152,11 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingSubscriptionInner> updateAsync(String billingAccountName, BillingSubscriptionInner parameters) {
-        return updateWithResponseAsync(billingAccountName, parameters)
-            .flatMap(
-                (Response<BillingSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return updateWithResponseAsync(billingAccountName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1196,7 +1185,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingSubscriptionInner> updateWithResponse(
@@ -1214,7 +1203,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> moveWithResponseAsync(
@@ -1268,7 +1257,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> moveWithResponseAsync(
@@ -1318,7 +1307,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return the {@link PollerFlux} for polling of a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMoveAsync(
@@ -1331,7 +1320,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
                 this.client.getHttpPipeline(),
                 BillingSubscriptionInner.class,
                 BillingSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1345,7 +1334,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return the {@link PollerFlux} for polling of a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMoveAsync(
@@ -1372,7 +1361,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return the {@link SyncPoller} for polling of a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
@@ -1391,7 +1380,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return the {@link SyncPoller} for polling of a billing subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingSubscriptionInner>, BillingSubscriptionInner> beginMove(
@@ -1409,7 +1398,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingSubscriptionInner> moveAsync(
@@ -1428,7 +1417,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing subscription.
+     * @return a billing subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingSubscriptionInner> moveAsync(
@@ -1484,7 +1473,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the transfer eligibility validation.
+     * @return result of the transfer eligibility validation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateSubscriptionTransferEligibilityResultInner>> validateMoveWithResponseAsync(
@@ -1537,7 +1527,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the transfer eligibility validation.
+     * @return result of the transfer eligibility validation along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateSubscriptionTransferEligibilityResultInner>> validateMoveWithResponseAsync(
@@ -1586,20 +1577,13 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the transfer eligibility validation.
+     * @return result of the transfer eligibility validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateSubscriptionTransferEligibilityResultInner> validateMoveAsync(
         String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
         return validateMoveWithResponseAsync(billingAccountName, parameters)
-            .flatMap(
-                (Response<ValidateSubscriptionTransferEligibilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1629,7 +1613,7 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the transfer eligibility validation.
+     * @return result of the transfer eligibility validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateSubscriptionTransferEligibilityResultInner> validateMoveWithResponse(
@@ -1644,7 +1628,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByCustomerNextSinglePageAsync(String nextLink) {
@@ -1680,7 +1665,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByCustomerNextSinglePageAsync(
@@ -1716,7 +1702,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingAccountNextSinglePageAsync(String nextLink) {
@@ -1753,7 +1740,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingAccountNextSinglePageAsync(
@@ -1789,7 +1777,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -1826,7 +1815,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByBillingProfileNextSinglePageAsync(
@@ -1862,7 +1852,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByInvoiceSectionNextSinglePageAsync(String nextLink) {
@@ -1899,7 +1890,8 @@ public final class BillingSubscriptionsClientImpl implements BillingSubscription
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing subscriptions.
+     * @return the list of billing subscriptions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingSubscriptionInner>> listByInvoiceSectionNextSinglePageAsync(

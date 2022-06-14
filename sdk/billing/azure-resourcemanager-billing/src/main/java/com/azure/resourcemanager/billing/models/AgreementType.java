@@ -33,7 +33,11 @@ public final class AgreementType extends ExpandableStringEnum<AgreementType> {
         return fromString(name, AgreementType.class);
     }
 
-    /** @return known AgreementType values. */
+    /**
+     * Gets known AgreementType values.
+     *
+     * @return known AgreementType values.
+     */
     public static Collection<AgreementType> values() {
         return values(AgreementType.class);
     }

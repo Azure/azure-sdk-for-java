@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.InvoiceSectionsClient;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InvoiceSectionsClient. */
 public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
-    private final ClientLogger logger = new ClientLogger(InvoiceSectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final InvoiceSectionsService service;
 
@@ -131,7 +128,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionInner>> listByBillingProfileSinglePageAsync(
@@ -185,7 +182,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionInner>> listByBillingProfileSinglePageAsync(
@@ -230,7 +227,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceSectionInner> listByBillingProfileAsync(
@@ -250,7 +247,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InvoiceSectionInner> listByBillingProfileAsync(
@@ -269,7 +266,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceSectionInner> listByBillingProfile(
@@ -287,7 +284,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InvoiceSectionInner> listByBillingProfile(
@@ -305,7 +302,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceSectionInner>> getWithResponseAsync(
@@ -356,7 +353,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InvoiceSectionInner>> getWithResponseAsync(
@@ -403,20 +400,13 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceSectionInner> getAsync(
         String billingAccountName, String billingProfileName, String invoiceSectionName) {
         return getWithResponseAsync(billingAccountName, billingProfileName, invoiceSectionName)
-            .flatMap(
-                (Response<InvoiceSectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -447,7 +437,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InvoiceSectionInner> getWithResponse(
@@ -466,7 +456,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return an invoice section along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -527,7 +517,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return an invoice section along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -585,7 +575,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link PollerFlux} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdateAsync(
@@ -602,7 +592,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
                 this.client.getHttpPipeline(),
                 InvoiceSectionInner.class,
                 InvoiceSectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -617,7 +607,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link PollerFlux} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdateAsync(
@@ -647,7 +637,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
@@ -671,7 +661,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
@@ -695,7 +685,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return an invoice section on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceSectionInner> createOrUpdateAsync(
@@ -720,7 +710,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return an invoice section on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InvoiceSectionInner> createOrUpdateAsync(
@@ -788,7 +778,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -825,7 +815,7 @@ public final class InvoiceSectionsClientImpl implements InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InvoiceSectionInner>> listByBillingProfileNextSinglePageAsync(

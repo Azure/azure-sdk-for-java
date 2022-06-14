@@ -16,10 +16,9 @@ import com.azure.resourcemanager.billing.models.BillingAccount;
 import com.azure.resourcemanager.billing.models.BillingAccountUpdateRequest;
 import com.azure.resourcemanager.billing.models.BillingAccounts;
 import com.azure.resourcemanager.billing.models.InvoiceSectionWithCreateSubPermission;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingAccountsImpl implements BillingAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingAccountsImpl.class);
 
     private final BillingAccountsClient innerClient;
 

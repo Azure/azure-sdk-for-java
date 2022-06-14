@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.AcceptanceMode;
+import com.azure.resourcemanager.billing.models.BillingProfileInfo;
 import com.azure.resourcemanager.billing.models.Category;
 import com.azure.resourcemanager.billing.models.Participants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 /** The properties of an agreement. */
 @Fluent
 public final class AgreementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementProperties.class);
-
     /*
      * The URL to download the agreement.
      */
@@ -36,6 +33,13 @@ public final class AgreementProperties {
      */
     @JsonProperty(value = "acceptanceMode", access = JsonProperty.Access.WRITE_ONLY)
     private AcceptanceMode acceptanceMode;
+
+    /*
+     * The list of billing profiles associated with agreement and present only
+     * for specific agreements.
+     */
+    @JsonProperty(value = "billingProfileInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private BillingProfileInfo billingProfileInfo;
 
     /*
      * The date from which the agreement is effective.
@@ -87,6 +91,16 @@ public final class AgreementProperties {
      */
     public AcceptanceMode acceptanceMode() {
         return this.acceptanceMode;
+    }
+
+    /**
+     * Get the billingProfileInfo property: The list of billing profiles associated with agreement and present only for
+     * specific agreements.
+     *
+     * @return the billingProfileInfo value.
+     */
+    public BillingProfileInfo billingProfileInfo() {
+        return this.billingProfileInfo;
     }
 
     /**
@@ -142,6 +156,9 @@ public final class AgreementProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (billingProfileInfo() != null) {
+            billingProfileInfo().validate();
+        }
         if (participants() != null) {
             participants().forEach(e -> e.validate());
         }

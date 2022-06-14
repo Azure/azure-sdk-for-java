@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.AgreementsClient;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
 import com.azure.resourcemanager.billing.models.Agreement;
 import com.azure.resourcemanager.billing.models.Agreements;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AgreementsImpl implements Agreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgreementsImpl.class);
 
     private final AgreementsClient innerClient;
 

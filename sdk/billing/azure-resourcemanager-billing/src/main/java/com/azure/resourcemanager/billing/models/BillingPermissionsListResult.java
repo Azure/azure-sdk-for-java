@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.BillingPermissionsPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of list billingPermissions a caller has on a billing account. */
 @Immutable
 public final class BillingPermissionsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPermissionsListResult.class);
-
     /*
      * The list of billingPermissions a caller has on a billing account.
      */

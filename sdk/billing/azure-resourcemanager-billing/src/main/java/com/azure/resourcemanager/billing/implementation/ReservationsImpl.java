@@ -11,10 +11,9 @@ import com.azure.resourcemanager.billing.fluent.ReservationsClient;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
 import com.azure.resourcemanager.billing.models.Reservation;
 import com.azure.resourcemanager.billing.models.Reservations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReservationsImpl implements Reservations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReservationsImpl.class);
 
     private final ReservationsClient innerClient;
 

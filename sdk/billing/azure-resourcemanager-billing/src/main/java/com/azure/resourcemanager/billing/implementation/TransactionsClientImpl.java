@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.TransactionsClient;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
 import com.azure.resourcemanager.billing.models.TransactionListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TransactionsClient. */
 public final class TransactionsClientImpl implements TransactionsClient {
-    private final ClientLogger logger = new ClientLogger(TransactionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TransactionsService service;
 
@@ -90,7 +87,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(
@@ -137,7 +134,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(
@@ -179,7 +176,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TransactionInner> listByInvoiceAsync(String billingAccountName, String invoiceName) {
@@ -197,7 +194,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TransactionInner> listByInvoiceAsync(
@@ -215,7 +212,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransactionInner> listByInvoice(String billingAccountName, String invoiceName) {
@@ -231,7 +228,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransactionInner> listByInvoice(
@@ -246,7 +243,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceNextSinglePageAsync(String nextLink) {
@@ -282,7 +279,7 @@ public final class TransactionsClientImpl implements TransactionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions.
+     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceNextSinglePageAsync(String nextLink, Context context) {

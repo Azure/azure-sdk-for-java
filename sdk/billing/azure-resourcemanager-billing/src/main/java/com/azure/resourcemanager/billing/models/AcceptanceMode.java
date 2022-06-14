@@ -30,7 +30,11 @@ public final class AcceptanceMode extends ExpandableStringEnum<AcceptanceMode> {
         return fromString(name, AcceptanceMode.class);
     }
 
-    /** @return known AcceptanceMode values. */
+    /**
+     * Gets known AcceptanceMode values.
+     *
+     * @return known AcceptanceMode values.
+     */
     public static Collection<AcceptanceMode> values() {
         return values(AcceptanceMode.class);
     }

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.BillingRoleDefinitionsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleDefinitionInner;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinition;
 import com.azure.resourcemanager.billing.models.BillingRoleDefinitions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingRoleDefinitionsImpl implements BillingRoleDefinitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleDefinitionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingRoleDefinitionsImpl.class);
 
     private final BillingRoleDefinitionsClient innerClient;
 

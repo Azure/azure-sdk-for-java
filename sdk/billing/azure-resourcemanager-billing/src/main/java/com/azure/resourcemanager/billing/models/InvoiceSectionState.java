@@ -27,7 +27,11 @@ public final class InvoiceSectionState extends ExpandableStringEnum<InvoiceSecti
         return fromString(name, InvoiceSectionState.class);
     }
 
-    /** @return known InvoiceSectionState values. */
+    /**
+     * Gets known InvoiceSectionState values.
+     *
+     * @return known InvoiceSectionState values.
+     */
     public static Collection<InvoiceSectionState> values() {
         return values(InvoiceSectionState.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.Document;
 import com.azure.resourcemanager.billing.models.InvoiceDocumentType;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.billing.models.InvoiceStatus;
 import com.azure.resourcemanager.billing.models.InvoiceType;
 import com.azure.resourcemanager.billing.models.PaymentProperties;
 import com.azure.resourcemanager.billing.models.RebillDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** The properties of the invoice. */
 @Immutable
 public final class InvoiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceProperties.class);
-
     /*
      * The due date for the invoice.
      */

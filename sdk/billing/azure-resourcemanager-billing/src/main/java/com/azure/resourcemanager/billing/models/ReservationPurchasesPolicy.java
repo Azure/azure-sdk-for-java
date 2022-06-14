@@ -27,7 +27,11 @@ public final class ReservationPurchasesPolicy extends ExpandableStringEnum<Reser
         return fromString(name, ReservationPurchasesPolicy.class);
     }
 
-    /** @return known ReservationPurchasesPolicy values. */
+    /**
+     * Gets known ReservationPurchasesPolicy values.
+     *
+     * @return known ReservationPurchasesPolicy values.
+     */
     public static Collection<ReservationPurchasesPolicy> values() {
         return values(ReservationPurchasesPolicy.class);
     }

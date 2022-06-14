@@ -20,7 +20,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByCustomer(String billingAccountName, String customerName);
 
@@ -34,7 +34,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByCustomer(String billingAccountName, String customerName, Context context);
 
@@ -46,7 +46,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingAccount(String billingAccountName);
 
@@ -62,7 +62,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingAccount(String billingAccountName, String filter, Context context);
 
@@ -75,7 +75,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -92,7 +92,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingProfile(
         String billingAccountName, String billingProfileName, String filter, Context context);
@@ -107,7 +107,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -126,7 +126,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByInvoiceSection(
         String billingAccountName,
@@ -158,7 +158,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product by ID.
+     * @return a product by ID along with {@link Response}.
      */
     Response<Product> getWithResponse(String billingAccountName, String productName, Context context);
 
@@ -187,7 +187,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product.
+     * @return a product along with {@link Response}.
      */
     Response<Product> updateWithResponse(
         String billingAccountName, String productName, ProductInner parameters, Context context);
@@ -252,7 +252,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the product transfer eligibility validation.
+     * @return result of the product transfer eligibility validation along with {@link Response}.
      */
     Response<ValidateProductTransferEligibilityResult> validateMoveWithResponse(
         String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);

@@ -42,7 +42,11 @@ public final class AccountStatus extends ExpandableStringEnum<AccountStatus> {
         return fromString(name, AccountStatus.class);
     }
 
-    /** @return known AccountStatus values. */
+    /**
+     * Gets known AccountStatus values.
+     *
+     * @return known AccountStatus values.
+     */
     public static Collection<AccountStatus> values() {
         return values(AccountStatus.class);
     }

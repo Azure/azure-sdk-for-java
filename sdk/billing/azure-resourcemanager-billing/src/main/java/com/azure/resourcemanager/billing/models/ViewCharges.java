@@ -27,7 +27,11 @@ public final class ViewCharges extends ExpandableStringEnum<ViewCharges> {
         return fromString(name, ViewCharges.class);
     }
 
-    /** @return known ViewCharges values. */
+    /**
+     * Gets known ViewCharges values.
+     *
+     * @return known ViewCharges values.
+     */
     public static Collection<ViewCharges> values() {
         return values(ViewCharges.class);
     }

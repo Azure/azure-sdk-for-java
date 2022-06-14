@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ReservationPropertyUtilization;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The property of reservation object. */
 @Fluent
 public final class ReservationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationProperty.class);
-
     /*
      * The array of applied scopes of a reservation. Will be null if the
      * reservation is in Shared scope

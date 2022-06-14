@@ -33,7 +33,11 @@ public final class InvoiceStatus extends ExpandableStringEnum<InvoiceStatus> {
         return fromString(name, InvoiceStatus.class);
     }
 
-    /** @return known InvoiceStatus values. */
+    /**
+     * Gets known InvoiceStatus values.
+     *
+     * @return known InvoiceStatus values.
+     */
     public static Collection<InvoiceStatus> values() {
         return values(InvoiceStatus.class);
     }

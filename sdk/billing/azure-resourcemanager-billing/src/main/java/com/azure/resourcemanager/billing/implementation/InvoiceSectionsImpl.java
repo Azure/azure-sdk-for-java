@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.InvoiceSectionsClient;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import com.azure.resourcemanager.billing.models.InvoiceSection;
 import com.azure.resourcemanager.billing.models.InvoiceSections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class InvoiceSectionsImpl implements InvoiceSections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InvoiceSectionsImpl.class);
 
     private final InvoiceSectionsClient innerClient;
 

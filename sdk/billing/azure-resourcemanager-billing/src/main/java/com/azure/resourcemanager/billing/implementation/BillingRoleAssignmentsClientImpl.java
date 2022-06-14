@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingRoleAssignmentsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleAssignmentInner;
 import com.azure.resourcemanager.billing.models.BillingRoleAssignmentListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BillingRoleAssignmentsClient. */
 public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(BillingRoleAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BillingRoleAssignmentsService service;
 
@@ -231,7 +228,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return a role assignment for the caller on a billing account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByBillingAccountWithResponseAsync(
@@ -278,7 +276,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return a role assignment for the caller on a billing account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByBillingAccountWithResponseAsync(
@@ -316,20 +315,13 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return a role assignment for the caller on a billing account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> getByBillingAccountAsync(
         String billingAccountName, String billingRoleAssignmentName) {
         return getByBillingAccountWithResponseAsync(billingAccountName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -358,7 +350,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing account.
+     * @return a role assignment for the caller on a billing account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> getByBillingAccountWithResponse(
@@ -375,7 +367,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByBillingAccountWithResponseAsync(
@@ -422,7 +414,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByBillingAccountWithResponseAsync(
@@ -460,20 +452,13 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> deleteByBillingAccountAsync(
         String billingAccountName, String billingRoleAssignmentName) {
         return deleteByBillingAccountWithResponseAsync(billingAccountName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -503,7 +488,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> deleteByBillingAccountWithResponse(
@@ -522,7 +507,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return a role assignment for the caller on an invoice section along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByInvoiceSectionWithResponseAsync(
@@ -584,7 +570,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return a role assignment for the caller on an invoice section along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByInvoiceSectionWithResponseAsync(
@@ -643,7 +630,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return a role assignment for the caller on an invoice section on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> getByInvoiceSectionAsync(
@@ -653,14 +640,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
         String billingRoleAssignmentName) {
         return getByInvoiceSectionWithResponseAsync(
                 billingAccountName, billingProfileName, invoiceSectionName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -699,7 +679,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on an invoice section.
+     * @return a role assignment for the caller on an invoice section along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> getByInvoiceSectionWithResponse(
@@ -724,7 +704,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByInvoiceSectionWithResponseAsync(
@@ -786,7 +766,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByInvoiceSectionWithResponseAsync(
@@ -845,7 +825,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> deleteByInvoiceSectionAsync(
@@ -855,14 +835,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
         String billingRoleAssignmentName) {
         return deleteByInvoiceSectionWithResponseAsync(
                 billingAccountName, billingProfileName, invoiceSectionName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -901,7 +874,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> deleteByInvoiceSectionWithResponse(
@@ -925,7 +898,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return a role assignment for the caller on a billing profile along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByBillingProfileWithResponseAsync(
@@ -978,7 +952,8 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return a role assignment for the caller on a billing profile along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> getByBillingProfileWithResponseAsync(
@@ -1027,20 +1002,13 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return a role assignment for the caller on a billing profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> getByBillingProfileAsync(
         String billingAccountName, String billingProfileName, String billingRoleAssignmentName) {
         return getByBillingProfileWithResponseAsync(billingAccountName, billingProfileName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1072,7 +1040,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role assignment for the caller on a billing profile.
+     * @return a role assignment for the caller on a billing profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> getByBillingProfileWithResponse(
@@ -1092,7 +1060,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByBillingProfileWithResponseAsync(
@@ -1145,7 +1113,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BillingRoleAssignmentInner>> deleteByBillingProfileWithResponseAsync(
@@ -1194,21 +1162,14 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BillingRoleAssignmentInner> deleteByBillingProfileAsync(
         String billingAccountName, String billingProfileName, String billingRoleAssignmentName) {
         return deleteByBillingProfileWithResponseAsync(
                 billingAccountName, billingProfileName, billingRoleAssignmentName)
-            .flatMap(
-                (Response<BillingRoleAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1240,7 +1201,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment.
+     * @return the role assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BillingRoleAssignmentInner> deleteByBillingProfileWithResponse(
@@ -1258,7 +1219,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingAccountSinglePageAsync(
@@ -1302,7 +1263,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingAccountSinglePageAsync(
@@ -1341,7 +1302,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByBillingAccountAsync(String billingAccountName) {
@@ -1359,7 +1320,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByBillingAccountAsync(
@@ -1377,7 +1338,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByBillingAccount(String billingAccountName) {
@@ -1393,7 +1354,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByBillingAccount(String billingAccountName, Context context) {
@@ -1410,7 +1371,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByInvoiceSectionSinglePageAsync(
@@ -1470,7 +1431,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByInvoiceSectionSinglePageAsync(
@@ -1526,7 +1487,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByInvoiceSectionAsync(
@@ -1547,7 +1508,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByInvoiceSectionAsync(
@@ -1569,7 +1530,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByInvoiceSection(
@@ -1589,7 +1550,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByInvoiceSection(
@@ -1607,7 +1568,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingProfileSinglePageAsync(
@@ -1661,7 +1622,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingProfileSinglePageAsync(
@@ -1706,7 +1667,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByBillingProfileAsync(
@@ -1726,7 +1687,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BillingRoleAssignmentInner> listByBillingProfileAsync(
@@ -1745,7 +1706,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByBillingProfile(
@@ -1763,7 +1724,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BillingRoleAssignmentInner> listByBillingProfile(
@@ -1778,7 +1739,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingAccountNextSinglePageAsync(String nextLink) {
@@ -1815,7 +1776,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingAccountNextSinglePageAsync(
@@ -1851,7 +1812,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByInvoiceSectionNextSinglePageAsync(String nextLink) {
@@ -1888,7 +1849,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByInvoiceSectionNextSinglePageAsync(
@@ -1924,7 +1885,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -1961,7 +1922,7 @@ public final class BillingRoleAssignmentsClientImpl implements BillingRoleAssign
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role assignments.
+     * @return the list of role assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BillingRoleAssignmentInner>> listByBillingProfileNextSinglePageAsync(

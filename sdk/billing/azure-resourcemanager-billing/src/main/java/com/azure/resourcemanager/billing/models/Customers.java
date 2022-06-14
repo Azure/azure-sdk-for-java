@@ -19,7 +19,7 @@ public interface Customers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Customer> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -36,7 +36,7 @@ public interface Customers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Customer> listByBillingProfile(
         String billingAccountName, String billingProfileName, String search, String filter, Context context);
@@ -49,7 +49,7 @@ public interface Customers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Customer> listByBillingAccount(String billingAccountName);
 
@@ -65,7 +65,7 @@ public interface Customers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of customers.
+     * @return the list of customers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Customer> listByBillingAccount(
         String billingAccountName, String search, String filter, Context context);
@@ -94,7 +94,7 @@ public interface Customers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a customer by its ID.
+     * @return a customer by its ID along with {@link Response}.
      */
     Response<Customer> getWithResponse(String billingAccountName, String customerName, String expand, Context context);
 }

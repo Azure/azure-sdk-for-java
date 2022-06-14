@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Immutable
 public final class ProductsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsListResult.class);
-
     /*
      * The list of products.
      */

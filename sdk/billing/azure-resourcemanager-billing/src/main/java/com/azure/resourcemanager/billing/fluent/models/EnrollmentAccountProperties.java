@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Department;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of an enrollment account. */
 @Fluent
 public final class EnrollmentAccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountProperties.class);
-
     /*
      * The name of the enrollment account.
      */

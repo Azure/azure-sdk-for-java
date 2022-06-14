@@ -12,10 +12,9 @@ import com.azure.resourcemanager.billing.fluent.BillingPropertiesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 import com.azure.resourcemanager.billing.models.BillingProperties;
 import com.azure.resourcemanager.billing.models.BillingProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPropertiesImpl implements BillingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPropertiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPropertiesImpl.class);
 
     private final BillingPropertiesClient innerClient;
 

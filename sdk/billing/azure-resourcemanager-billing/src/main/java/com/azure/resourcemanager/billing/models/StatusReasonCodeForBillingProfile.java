@@ -30,7 +30,11 @@ public final class StatusReasonCodeForBillingProfile extends ExpandableStringEnu
         return fromString(name, StatusReasonCodeForBillingProfile.class);
     }
 
-    /** @return known StatusReasonCodeForBillingProfile values. */
+    /**
+     * Gets known StatusReasonCodeForBillingProfile values.
+     *
+     * @return known StatusReasonCodeForBillingProfile values.
+     */
     public static Collection<StatusReasonCodeForBillingProfile> values() {
         return values(StatusReasonCodeForBillingProfile.class);
     }

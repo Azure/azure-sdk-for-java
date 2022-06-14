@@ -20,7 +20,7 @@ public interface InvoiceSections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InvoiceSection> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -34,7 +34,7 @@ public interface InvoiceSections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InvoiceSection> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);
@@ -64,7 +64,7 @@ public interface InvoiceSections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID along with {@link Response}.
      */
     Response<InvoiceSection> getWithResponse(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);

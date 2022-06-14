@@ -6,8 +6,6 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.List;
 /** A billing period resource. */
 @Fluent
 public final class BillingPeriodInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPeriodInner.class);
-
     /*
      * A billing period.
      */

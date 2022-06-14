@@ -24,7 +24,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -39,7 +39,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of invoice sections.
+     * @return the list of invoice sections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InvoiceSectionInner> listByBillingProfile(
@@ -71,7 +71,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section by its ID.
+     * @return an invoice section by its ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<InvoiceSectionInner> getWithResponse(
@@ -88,7 +88,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(
@@ -109,7 +109,7 @@ public interface InvoiceSectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an invoice section.
+     * @return the {@link SyncPoller} for polling of an invoice section.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InvoiceSectionInner>, InvoiceSectionInner> beginCreateOrUpdate(

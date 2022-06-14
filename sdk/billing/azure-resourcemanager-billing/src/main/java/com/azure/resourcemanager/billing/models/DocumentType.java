@@ -33,7 +33,11 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
         return fromString(name, DocumentType.class);
     }
 
-    /** @return known DocumentType values. */
+    /**
+     * Gets known DocumentType values.
+     *
+     * @return known DocumentType values.
+     */
     public static Collection<DocumentType> values() {
         return values(DocumentType.class);
     }

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.PoliciesClient;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
 import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PoliciesClient. */
 public final class PoliciesClientImpl implements PoliciesClient {
-    private final ClientLogger logger = new ClientLogger(PoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PoliciesService service;
 
@@ -124,7 +121,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> getByBillingProfileWithResponseAsync(
@@ -169,7 +166,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> getByBillingProfileWithResponseAsync(
@@ -205,19 +202,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyInner> getByBillingProfileAsync(String billingAccountName, String billingProfileName) {
         return getByBillingProfileWithResponseAsync(billingAccountName, billingProfileName)
-            .flatMap(
-                (Response<PolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -246,7 +236,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> getByBillingProfileWithResponse(
@@ -264,7 +254,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> updateWithResponseAsync(
@@ -316,7 +306,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyInner>> updateWithResponseAsync(
@@ -364,20 +354,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyInner> updateAsync(
         String billingAccountName, String billingProfileName, PolicyInner parameters) {
         return updateWithResponseAsync(billingAccountName, billingProfileName, parameters)
-            .flatMap(
-                (Response<PolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -408,7 +391,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyInner> updateWithResponse(
@@ -425,7 +408,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> getByCustomerWithResponseAsync(
@@ -464,7 +447,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> getByCustomerWithResponseAsync(
@@ -498,19 +481,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerPolicyInner> getByCustomerAsync(String billingAccountName, String customerName) {
         return getByCustomerWithResponseAsync(billingAccountName, customerName)
-            .flatMap(
-                (Response<CustomerPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -539,7 +515,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomerPolicyInner> getByCustomerWithResponse(
@@ -557,7 +533,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> updateCustomerWithResponseAsync(
@@ -608,7 +584,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomerPolicyInner>> updateCustomerWithResponseAsync(
@@ -649,20 +625,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomerPolicyInner> updateCustomerAsync(
         String billingAccountName, String customerName, CustomerPolicyInner parameters) {
         return updateCustomerWithResponseAsync(billingAccountName, customerName, parameters)
-            .flatMap(
-                (Response<CustomerPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -694,7 +663,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomerPolicyInner> updateCustomerWithResponse(

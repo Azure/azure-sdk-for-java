@@ -27,7 +27,11 @@ public final class ViewChargesPolicy extends ExpandableStringEnum<ViewChargesPol
         return fromString(name, ViewChargesPolicy.class);
     }
 
-    /** @return known ViewChargesPolicy values. */
+    /**
+     * Gets known ViewChargesPolicy values.
+     *
+     * @return known ViewChargesPolicy values.
+     */
     public static Collection<ViewChargesPolicy> values() {
         return values(ViewChargesPolicy.class);
     }

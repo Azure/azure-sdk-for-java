@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of the Azure plan. */
 @Fluent
 public final class AzurePlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzurePlan.class);
-
     /*
      * The sku id.
      */

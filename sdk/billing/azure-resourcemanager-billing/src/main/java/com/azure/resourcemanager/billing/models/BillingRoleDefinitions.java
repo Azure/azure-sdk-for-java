@@ -33,7 +33,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on a billing account.
+     * @return the definition for a role on a billing account along with {@link Response}.
      */
     Response<BillingRoleDefinition> getByBillingAccountWithResponse(
         String billingAccountName, String billingRoleDefinitionName, Context context);
@@ -69,7 +69,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on an invoice section.
+     * @return the definition for a role on an invoice section along with {@link Response}.
      */
     Response<BillingRoleDefinition> getByInvoiceSectionWithResponse(
         String billingAccountName,
@@ -104,7 +104,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on a billing profile.
+     * @return the definition for a role on a billing profile along with {@link Response}.
      */
     Response<BillingRoleDefinition> getByBillingProfileWithResponse(
         String billingAccountName, String billingProfileName, String billingRoleDefinitionName, Context context);
@@ -117,7 +117,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingAccount(String billingAccountName);
 
@@ -130,7 +130,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingAccount(String billingAccountName, Context context);
 
@@ -144,7 +144,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -160,7 +160,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
@@ -174,7 +174,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -188,7 +188,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);

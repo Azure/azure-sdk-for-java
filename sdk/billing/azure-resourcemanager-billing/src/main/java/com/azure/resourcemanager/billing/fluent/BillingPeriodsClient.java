@@ -20,7 +20,7 @@ public interface BillingPeriodsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingPeriodInner> list();
@@ -40,7 +40,7 @@ public interface BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BillingPeriodInner> list(String filter, String skiptoken, Integer top, Context context);
@@ -67,7 +67,7 @@ public interface BillingPeriodsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
+     * @return a named billing period along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BillingPeriodInner> getWithResponse(String billingPeriodName, Context context);

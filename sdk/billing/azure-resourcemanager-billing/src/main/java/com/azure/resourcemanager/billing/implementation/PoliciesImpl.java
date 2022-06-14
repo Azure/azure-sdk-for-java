@@ -14,10 +14,9 @@ import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
 import com.azure.resourcemanager.billing.models.CustomerPolicy;
 import com.azure.resourcemanager.billing.models.Policies;
 import com.azure.resourcemanager.billing.models.Policy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoliciesImpl implements Policies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
 
     private final PoliciesClient innerClient;
 

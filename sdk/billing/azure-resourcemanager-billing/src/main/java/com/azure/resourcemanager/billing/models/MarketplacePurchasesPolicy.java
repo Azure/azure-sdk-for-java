@@ -30,7 +30,11 @@ public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<Marke
         return fromString(name, MarketplacePurchasesPolicy.class);
     }
 
-    /** @return known MarketplacePurchasesPolicy values. */
+    /**
+     * Gets known MarketplacePurchasesPolicy values.
+     *
+     * @return known MarketplacePurchasesPolicy values.
+     */
     public static Collection<MarketplacePurchasesPolicy> values() {
         return values(MarketplacePurchasesPolicy.class);
     }

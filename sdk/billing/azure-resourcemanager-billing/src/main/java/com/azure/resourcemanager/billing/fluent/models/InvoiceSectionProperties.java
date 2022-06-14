@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.InvoiceSectionState;
 import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** The properties of an invoice section. */
 @Fluent
 public final class InvoiceSectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionProperties.class);
-
     /*
      * The name of the invoice section.
      */

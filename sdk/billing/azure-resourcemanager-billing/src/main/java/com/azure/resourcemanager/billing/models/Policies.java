@@ -34,7 +34,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response}.
      */
     Response<Policy> getByBillingProfileWithResponse(
         String billingAccountName, String billingProfileName, Context context);
@@ -64,7 +64,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy.
+     * @return a policy along with {@link Response}.
      */
     Response<Policy> updateWithResponse(
         String billingAccountName, String billingProfileName, PolicyInner parameters, Context context);
@@ -92,7 +92,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response}.
      */
     Response<CustomerPolicy> getByCustomerWithResponse(String billingAccountName, String customerName, Context context);
 
@@ -121,7 +121,7 @@ public interface Policies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the customer's Policy.
+     * @return the customer's Policy along with {@link Response}.
      */
     Response<CustomerPolicy> updateCustomerWithResponse(
         String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context);

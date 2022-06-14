@@ -27,7 +27,11 @@ public final class TransactionTypeKind extends ExpandableStringEnum<TransactionT
         return fromString(name, TransactionTypeKind.class);
     }
 
-    /** @return known TransactionTypeKind values. */
+    /**
+     * Gets known TransactionTypeKind values.
+     *
+     * @return known TransactionTypeKind values.
+     */
     public static Collection<TransactionTypeKind> values() {
         return values(TransactionTypeKind.class);
     }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.billing.fluent.AvailableBalancesClient;
 import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceInner;
 import com.azure.resourcemanager.billing.models.AvailableBalance;
 import com.azure.resourcemanager.billing.models.AvailableBalances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailableBalancesImpl implements AvailableBalances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableBalancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableBalancesImpl.class);
 
     private final AvailableBalancesClient innerClient;
 

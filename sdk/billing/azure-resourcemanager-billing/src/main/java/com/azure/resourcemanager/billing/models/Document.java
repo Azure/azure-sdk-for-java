@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a document. */
 @Immutable
 public final class Document {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Document.class);
-
     /*
      * The type of the document.
      */
