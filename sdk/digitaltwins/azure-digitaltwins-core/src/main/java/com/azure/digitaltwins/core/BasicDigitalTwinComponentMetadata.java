@@ -49,6 +49,7 @@ public final class BasicDigitalTwinComponentMetadata implements Map<String, Digi
     
     /**
      * Sets the date and time when the twin was last updated.
+     * @param lastUpdatedOn The time the twin was last updated by the service.
      * @return The BasicDigitalTwinMetadata object itself.
      */
     public BasicDigitalTwinComponentMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {

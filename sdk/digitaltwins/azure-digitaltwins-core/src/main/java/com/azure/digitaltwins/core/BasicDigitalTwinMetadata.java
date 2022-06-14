@@ -67,6 +67,7 @@ public final class BasicDigitalTwinMetadata {
     
     /**
      * Sets the date and time when the twin was last updated.
+     * @param lastUpdatedOn The time the twin was last updated by the service.
      * @return The BasicDigitalTwinMetadata object itself.
      */
     public BasicDigitalTwinMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
