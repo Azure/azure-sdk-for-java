@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/managedservices/ci.yml
+      - sdk/managedservices/azure-resourcemanager-managedservices/
+    exclude:
+      - sdk/managedservices/pom.xml
+      - sdk/managedservices/azure-resourcemanager-managedservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/managedservices/ci.yml
+      - sdk/managedservices/azure-resourcemanager-managedservices/
+    exclude:
+      - sdk/managedservices/pom.xml
+      - sdk/managedservices/azure-resourcemanager-managedservices/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: managedservices
+    Artifacts:
+      - name: azure-resourcemanager-managedservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermanagedservices
