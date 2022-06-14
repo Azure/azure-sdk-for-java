@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource provider operation details. */
 @Fluent
 public final class ResourceProviderOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationDisplay.class);
-
     /*
      * Name of the resource provider.
      */

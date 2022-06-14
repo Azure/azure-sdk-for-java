@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of detected changes. */
 @Fluent
 public final class ChangeList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeList.class);
-
     /*
      * The list of changes.
      */

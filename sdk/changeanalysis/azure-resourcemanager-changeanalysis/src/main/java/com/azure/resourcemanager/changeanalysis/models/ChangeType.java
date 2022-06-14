@@ -30,7 +30,11 @@ public final class ChangeType extends ExpandableStringEnum<ChangeType> {
         return fromString(name, ChangeType.class);
     }
 
-    /** @return known ChangeType values. */
+    /**
+     * Gets known ChangeType values.
+     *
+     * @return known ChangeType values.
+     */
     public static Collection<ChangeType> values() {
         return values(ChangeType.class);
     }

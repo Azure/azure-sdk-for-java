@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.changeanalysis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** The properties of a change. */
 @Fluent
 public final class ChangeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeProperties.class);
-
     /*
      * The resource id that the change is attached to.
      */

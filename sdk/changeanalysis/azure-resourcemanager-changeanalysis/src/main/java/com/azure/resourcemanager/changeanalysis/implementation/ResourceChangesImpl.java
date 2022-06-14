@@ -11,11 +11,10 @@ import com.azure.resourcemanager.changeanalysis.fluent.ResourceChangesClient;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
 import com.azure.resourcemanager.changeanalysis.models.Change;
 import com.azure.resourcemanager.changeanalysis.models.ResourceChanges;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 
 public final class ResourceChangesImpl implements ResourceChanges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceChangesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceChangesImpl.class);
 
     private final ResourceChangesClient innerClient;
 

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.changeanalysis.fluent.ChangesClient;
 import com.azure.resourcemanager.changeanalysis.fluent.models.ChangeInner;
 import com.azure.resourcemanager.changeanalysis.models.ChangeList;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ChangesClient. */
 public final class ChangesClientImpl implements ChangesClient {
-    private final ClientLogger logger = new ClientLogger(ChangesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ChangesService service;
 
@@ -123,7 +120,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listByResourceGroupSinglePageAsync(
@@ -190,7 +187,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listByResourceGroupSinglePageAsync(
@@ -253,7 +250,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listByResourceGroupAsync(
@@ -272,7 +269,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listByResourceGroupAsync(
@@ -296,7 +293,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listByResourceGroupAsync(
@@ -315,7 +312,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeInner> listByResourceGroup(
@@ -337,7 +334,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeInner> listByResourceGroup(
@@ -356,7 +353,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(
@@ -417,7 +414,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listSinglePageAsync(
@@ -474,7 +471,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listAsync(OffsetDateTime startTime, OffsetDateTime endTime, String skipToken) {
@@ -491,7 +488,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listAsync(OffsetDateTime startTime, OffsetDateTime endTime) {
@@ -513,7 +510,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeInner> listAsync(
@@ -531,7 +528,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeInner> list(OffsetDateTime startTime, OffsetDateTime endTime) {
@@ -551,7 +548,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeInner> list(
@@ -566,7 +563,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listChangesByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -603,7 +600,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listChangesByResourceGroupNextSinglePageAsync(
@@ -639,7 +636,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listChangesBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -676,7 +673,7 @@ public final class ChangesClientImpl implements ChangesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of detected changes.
+     * @return the list of detected changes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeInner>> listChangesBySubscriptionNextSinglePageAsync(
