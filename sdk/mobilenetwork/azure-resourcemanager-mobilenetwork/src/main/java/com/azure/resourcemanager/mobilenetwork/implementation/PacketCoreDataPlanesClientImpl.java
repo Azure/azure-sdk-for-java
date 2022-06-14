@@ -560,14 +560,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
     private Mono<PacketCoreDataPlaneInner> getAsync(
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName) {
         return getWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName)
-            .flatMap(
-                (Response<PacketCoreDataPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1106,14 +1099,7 @@ public final class PacketCoreDataPlanesClientImpl implements PacketCoreDataPlane
         TagsObject parameters) {
         return updateTagsWithResponseAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, parameters)
-            .flatMap(
-                (Response<PacketCoreDataPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

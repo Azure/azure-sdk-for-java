@@ -676,14 +676,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
         String attachedDataNetworkName) {
         return getWithResponseAsync(
                 resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName)
-            .flatMap(
-                (Response<AttachedDataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1328,14 +1321,7 @@ public final class AttachedDataNetworksClientImpl implements AttachedDataNetwork
                 packetCoreDataPlaneName,
                 attachedDataNetworkName,
                 parameters)
-            .flatMap(
-                (Response<AttachedDataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

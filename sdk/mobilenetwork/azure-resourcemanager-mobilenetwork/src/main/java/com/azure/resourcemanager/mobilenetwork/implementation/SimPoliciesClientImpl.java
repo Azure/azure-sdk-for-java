@@ -535,14 +535,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimPolicyInner> getAsync(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, simPolicyName)
-            .flatMap(
-                (Response<SimPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1028,14 +1021,7 @@ public final class SimPoliciesClientImpl implements SimPoliciesClient {
     private Mono<SimPolicyInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, simPolicyName, parameters)
-            .flatMap(
-                (Response<SimPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

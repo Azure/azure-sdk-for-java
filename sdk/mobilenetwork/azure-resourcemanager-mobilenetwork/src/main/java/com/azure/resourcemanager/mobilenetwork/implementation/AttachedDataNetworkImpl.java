@@ -85,6 +85,10 @@ public final class AttachedDataNetworkImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AttachedDataNetworkInner innerModel() {
         return this.innerObject;
     }

@@ -85,6 +85,10 @@ public final class PacketCoreControlPlaneImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PacketCoreControlPlaneInner innerModel() {
         return this.innerObject;
     }

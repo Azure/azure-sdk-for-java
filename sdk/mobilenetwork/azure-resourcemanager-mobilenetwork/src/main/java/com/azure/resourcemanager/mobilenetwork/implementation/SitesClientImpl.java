@@ -533,14 +533,7 @@ public final class SitesClientImpl implements SitesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SiteInner> getAsync(String resourceGroupName, String mobileNetworkName, String siteName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, siteName)
-            .flatMap(
-                (Response<SiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -997,14 +990,7 @@ public final class SitesClientImpl implements SitesClient {
     private Mono<SiteInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
-            .flatMap(
-                (Response<SiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

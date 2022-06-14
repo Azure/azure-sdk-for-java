@@ -534,14 +534,7 @@ public final class SlicesClientImpl implements SlicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SliceInner> getAsync(String resourceGroupName, String mobileNetworkName, String sliceName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName)
-            .flatMap(
-                (Response<SliceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -998,14 +991,7 @@ public final class SlicesClientImpl implements SlicesClient {
     private Mono<SliceInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, sliceName, parameters)
-            .flatMap(
-                (Response<SliceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

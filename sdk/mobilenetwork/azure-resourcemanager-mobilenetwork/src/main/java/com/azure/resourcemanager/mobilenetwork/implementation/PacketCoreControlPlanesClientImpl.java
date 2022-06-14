@@ -529,14 +529,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     private Mono<PacketCoreControlPlaneInner> getByResourceGroupAsync(
         String resourceGroupName, String packetCoreControlPlaneName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, packetCoreControlPlaneName)
-            .flatMap(
-                (Response<PacketCoreControlPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -993,14 +986,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     private Mono<PacketCoreControlPlaneInner> updateTagsAsync(
         String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters)
-            .flatMap(
-                (Response<PacketCoreControlPlaneInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

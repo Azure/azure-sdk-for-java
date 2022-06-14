@@ -106,6 +106,10 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SimInner innerModel() {
         return this.innerObject;
     }

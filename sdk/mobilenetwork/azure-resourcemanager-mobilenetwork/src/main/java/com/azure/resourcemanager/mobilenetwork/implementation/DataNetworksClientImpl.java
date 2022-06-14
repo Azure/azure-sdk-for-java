@@ -540,14 +540,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     private Mono<DataNetworkInner> getAsync(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName)
-            .flatMap(
-                (Response<DataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1037,14 +1030,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     private Mono<DataNetworkInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters)
-            .flatMap(
-                (Response<DataNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

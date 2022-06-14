@@ -547,14 +547,7 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceInner> getAsync(String resourceGroupName, String mobileNetworkName, String serviceName) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1050,14 +1043,7 @@ public final class ServicesClientImpl implements ServicesClient {
     private Mono<ServiceInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, String serviceName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, serviceName, parameters)
-            .flatMap(
-                (Response<ServiceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -504,14 +504,7 @@ public final class SimsClientImpl implements SimsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimInner> getByResourceGroupAsync(String resourceGroupName, String simName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, simName)
-            .flatMap(
-                (Response<SimInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -927,14 +920,7 @@ public final class SimsClientImpl implements SimsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SimInner> updateTagsAsync(String resourceGroupName, String simName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, simName, parameters)
-            .flatMap(
-                (Response<SimInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

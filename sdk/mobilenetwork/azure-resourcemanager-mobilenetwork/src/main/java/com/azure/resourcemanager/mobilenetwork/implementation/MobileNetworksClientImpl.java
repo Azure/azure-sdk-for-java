@@ -534,14 +534,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MobileNetworkInner> getByResourceGroupAsync(String resourceGroupName, String mobileNetworkName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, mobileNetworkName)
-            .flatMap(
-                (Response<MobileNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -970,14 +963,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     private Mono<MobileNetworkInner> updateTagsAsync(
         String resourceGroupName, String mobileNetworkName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, parameters)
-            .flatMap(
-                (Response<MobileNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
