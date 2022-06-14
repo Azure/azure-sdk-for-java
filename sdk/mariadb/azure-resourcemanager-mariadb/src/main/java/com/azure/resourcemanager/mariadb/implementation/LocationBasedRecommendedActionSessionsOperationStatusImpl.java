@@ -12,12 +12,10 @@ import com.azure.resourcemanager.mariadb.fluent.LocationBasedRecommendedActionSe
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendedActionSessionsOperationStatusInner;
 import com.azure.resourcemanager.mariadb.models.LocationBasedRecommendedActionSessionsOperationStatus;
 import com.azure.resourcemanager.mariadb.models.RecommendedActionSessionsOperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedRecommendedActionSessionsOperationStatusImpl
     implements LocationBasedRecommendedActionSessionsOperationStatus {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(LocationBasedRecommendedActionSessionsOperationStatusImpl.class);
 
     private final LocationBasedRecommendedActionSessionsOperationStatusClient innerClient;

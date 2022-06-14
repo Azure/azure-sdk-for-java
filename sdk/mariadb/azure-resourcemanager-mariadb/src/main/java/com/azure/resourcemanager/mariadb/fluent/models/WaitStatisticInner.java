@@ -5,72 +5,27 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents a Wait Statistic. */
-@JsonFlatten
 @Fluent
-public class WaitStatisticInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticInner.class);
-
+public final class WaitStatisticInner extends ProxyResource {
     /*
-     * Observation start time.
+     * The properties of a wait statistic.
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    @JsonProperty(value = "properties")
+    private WaitStatisticProperties innerProperties;
 
-    /*
-     * Observation end time.
+    /**
+     * Get the innerProperties property: The properties of a wait statistic.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
-
-    /*
-     * Wait event name.
-     */
-    @JsonProperty(value = "properties.eventName")
-    private String eventName;
-
-    /*
-     * Wait event type name.
-     */
-    @JsonProperty(value = "properties.eventTypeName")
-    private String eventTypeName;
-
-    /*
-     * Database query identifier.
-     */
-    @JsonProperty(value = "properties.queryId")
-    private Long queryId;
-
-    /*
-     * Database Name.
-     */
-    @JsonProperty(value = "properties.databaseName")
-    private String databaseName;
-
-    /*
-     * Database user identifier.
-     */
-    @JsonProperty(value = "properties.userId")
-    private Long userId;
-
-    /*
-     * Wait event count observed in this time interval.
-     */
-    @JsonProperty(value = "properties.count")
-    private Long count;
-
-    /*
-     * Total time of wait in milliseconds in this time interval.
-     */
-    @JsonProperty(value = "properties.totalTimeInMs")
-    private Double totalTimeInMs;
+    private WaitStatisticProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startTime property: Observation start time.
@@ -78,7 +33,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -88,7 +43,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -98,7 +56,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -108,7 +66,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -118,7 +79,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the eventName value.
      */
     public String eventName() {
-        return this.eventName;
+        return this.innerProperties() == null ? null : this.innerProperties().eventName();
     }
 
     /**
@@ -128,7 +89,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEventName(String eventName) {
-        this.eventName = eventName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEventName(eventName);
         return this;
     }
 
@@ -138,7 +102,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the eventTypeName value.
      */
     public String eventTypeName() {
-        return this.eventTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeName();
     }
 
     /**
@@ -148,7 +112,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEventTypeName(String eventTypeName) {
-        this.eventTypeName = eventTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEventTypeName(eventTypeName);
         return this;
     }
 
@@ -158,7 +125,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the queryId value.
      */
     public Long queryId() {
-        return this.queryId;
+        return this.innerProperties() == null ? null : this.innerProperties().queryId();
     }
 
     /**
@@ -168,7 +135,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withQueryId(Long queryId) {
-        this.queryId = queryId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withQueryId(queryId);
         return this;
     }
 
@@ -178,7 +148,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
@@ -188,7 +158,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withDatabaseName(databaseName);
         return this;
     }
 
@@ -198,7 +171,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the userId value.
      */
     public Long userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -208,7 +181,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withUserId(Long userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
@@ -218,7 +194,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the count value.
      */
     public Long count() {
-        return this.count;
+        return this.innerProperties() == null ? null : this.innerProperties().count();
     }
 
     /**
@@ -228,7 +204,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withCount(Long count) {
-        this.count = count;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withCount(count);
         return this;
     }
 
@@ -238,7 +217,7 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the totalTimeInMs value.
      */
     public Double totalTimeInMs() {
-        return this.totalTimeInMs;
+        return this.innerProperties() == null ? null : this.innerProperties().totalTimeInMs();
     }
 
     /**
@@ -248,7 +227,10 @@ public class WaitStatisticInner extends ProxyResource {
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withTotalTimeInMs(Double totalTimeInMs) {
-        this.totalTimeInMs = totalTimeInMs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withTotalTimeInMs(totalTimeInMs);
         return this;
     }
 
@@ -258,5 +240,8 @@ public class WaitStatisticInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

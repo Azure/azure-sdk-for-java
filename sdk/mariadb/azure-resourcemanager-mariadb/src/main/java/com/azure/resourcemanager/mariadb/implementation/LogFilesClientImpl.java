@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.LogFilesClient;
 import com.azure.resourcemanager.mariadb.fluent.models.LogFileInner;
 import com.azure.resourcemanager.mariadb.models.LogFileListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LogFilesClient. */
 public final class LogFilesClientImpl implements LogFilesClient {
-    private final ClientLogger logger = new ClientLogger(LogFilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LogFilesService service;
 
@@ -60,7 +57,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
     private interface LogFilesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/logFiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -82,7 +79,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
@@ -135,7 +132,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(
@@ -185,7 +182,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -201,7 +198,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogFileInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
@@ -216,7 +213,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> listByServer(String resourceGroupName, String serverName) {
@@ -232,7 +229,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogFileInner> listByServer(String resourceGroupName, String serverName, Context context) {

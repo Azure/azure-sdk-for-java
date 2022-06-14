@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointProperty model. */
 @Fluent
 public final class PrivateEndpointProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointProperty.class);
-
     /*
      * Resource id of the private endpoint.
      */

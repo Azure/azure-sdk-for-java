@@ -33,7 +33,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a configuration of server along with {@link Response}.
      */
     Response<Configuration> getWithResponse(
         String resourceGroupName, String serverName, String configurationName, Context context);
@@ -46,7 +46,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName);
 
@@ -59,7 +59,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context);
 
@@ -70,7 +70,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a configuration of server along with {@link Response}.
      */
     Configuration getById(String id);
 
@@ -82,7 +82,7 @@ public interface Configurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration of server.
+     * @return information about a configuration of server along with {@link Response}.
      */
     Response<Configuration> getByIdWithResponse(String id, Context context);
 

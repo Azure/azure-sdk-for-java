@@ -33,7 +33,7 @@ public interface WaitStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Wait Statistic.
+     * @return represents a Wait Statistic along with {@link Response}.
      */
     Response<WaitStatistic> getWithResponse(
         String resourceGroupName, String serverName, String waitStatisticsId, Context context);
@@ -47,7 +47,7 @@ public interface WaitStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WaitStatistic> listByServer(
         String resourceGroupName, String serverName, WaitStatisticsInput parameters);
@@ -62,7 +62,7 @@ public interface WaitStatistics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WaitStatistic> listByServer(
         String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);

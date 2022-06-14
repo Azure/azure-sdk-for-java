@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private endpoint connections. */
 @Immutable
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
-
     /*
      * Array of results.
      */

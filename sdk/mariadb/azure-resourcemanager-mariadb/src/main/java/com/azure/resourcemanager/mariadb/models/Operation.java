@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** REST API operation definition. */
 @Immutable
 public final class Operation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);
-
     /*
      * The name of the operation being performed on this particular object.
      */
@@ -38,6 +35,7 @@ public final class Operation {
      * Additional descriptions for the operation.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
     /**

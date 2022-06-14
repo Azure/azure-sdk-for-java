@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Query Text. */
-@JsonFlatten
 @Fluent
-public class QueryTextInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextInner.class);
-
+public final class QueryTextInner extends ProxyResource {
     /*
-     * Query identifier unique to the server.
+     * The properties of a query text.
      */
-    @JsonProperty(value = "properties.queryId")
-    private String queryId;
+    @JsonProperty(value = "properties")
+    private QueryTextProperties innerProperties;
 
-    /*
-     * Query text.
+    /**
+     * Get the innerProperties property: The properties of a query text.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.queryText")
-    private String queryText;
+    private QueryTextProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the queryId property: Query identifier unique to the server.
@@ -35,7 +32,7 @@ public class QueryTextInner extends ProxyResource {
      * @return the queryId value.
      */
     public String queryId() {
-        return this.queryId;
+        return this.innerProperties() == null ? null : this.innerProperties().queryId();
     }
 
     /**
@@ -45,7 +42,10 @@ public class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryId(String queryId) {
-        this.queryId = queryId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryTextProperties();
+        }
+        this.innerProperties().withQueryId(queryId);
         return this;
     }
 
@@ -55,7 +55,7 @@ public class QueryTextInner extends ProxyResource {
      * @return the queryText value.
      */
     public String queryText() {
-        return this.queryText;
+        return this.innerProperties() == null ? null : this.innerProperties().queryText();
     }
 
     /**
@@ -65,7 +65,10 @@ public class QueryTextInner extends ProxyResource {
      * @return the QueryTextInner object itself.
      */
     public QueryTextInner withQueryText(String queryText) {
-        this.queryText = queryText;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryTextProperties();
+        }
+        this.innerProperties().withQueryText(queryText);
         return this;
     }
 
@@ -75,5 +78,8 @@ public class QueryTextInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

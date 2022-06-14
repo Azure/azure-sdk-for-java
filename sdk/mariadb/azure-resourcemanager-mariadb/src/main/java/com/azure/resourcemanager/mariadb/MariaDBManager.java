@@ -8,15 +8,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -75,6 +78,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to MariaDBManager. The Microsoft Azure management API provides create, read, update, and delete
@@ -158,6 +162,19 @@ public final class MariaDBManager {
     }
 
     /**
+     * Creates an instance of MariaDB service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the MariaDB service API instance.
+     */
+    public static MariaDBManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new MariaDBManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create MariaDBManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -168,12 +185,14 @@ public final class MariaDBManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -213,6 +232,17 @@ public final class MariaDBManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -224,15 +254,30 @@ public final class MariaDBManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -268,20 +313,38 @@ public final class MariaDBManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -293,7 +356,11 @@ public final class MariaDBManager {
         }
     }
 
-    /** @return Resource collection API of Servers. */
+    /**
+     * Gets the resource collection API of Servers. It manages Server.
+     *
+     * @return Resource collection API of Servers.
+     */
     public Servers servers() {
         if (this.servers == null) {
             this.servers = new ServersImpl(clientObject.getServers(), this);
@@ -301,7 +368,11 @@ public final class MariaDBManager {
         return servers;
     }
 
-    /** @return Resource collection API of Replicas. */
+    /**
+     * Gets the resource collection API of Replicas.
+     *
+     * @return Resource collection API of Replicas.
+     */
     public Replicas replicas() {
         if (this.replicas == null) {
             this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
@@ -309,7 +380,11 @@ public final class MariaDBManager {
         return replicas;
     }
 
-    /** @return Resource collection API of FirewallRules. */
+    /**
+     * Gets the resource collection API of FirewallRules. It manages FirewallRule.
+     *
+     * @return Resource collection API of FirewallRules.
+     */
     public FirewallRules firewallRules() {
         if (this.firewallRules == null) {
             this.firewallRules = new FirewallRulesImpl(clientObject.getFirewallRules(), this);
@@ -317,7 +392,11 @@ public final class MariaDBManager {
         return firewallRules;
     }
 
-    /** @return Resource collection API of VirtualNetworkRules. */
+    /**
+     * Gets the resource collection API of VirtualNetworkRules. It manages VirtualNetworkRule.
+     *
+     * @return Resource collection API of VirtualNetworkRules.
+     */
     public VirtualNetworkRules virtualNetworkRules() {
         if (this.virtualNetworkRules == null) {
             this.virtualNetworkRules = new VirtualNetworkRulesImpl(clientObject.getVirtualNetworkRules(), this);
@@ -325,7 +404,11 @@ public final class MariaDBManager {
         return virtualNetworkRules;
     }
 
-    /** @return Resource collection API of Databases. */
+    /**
+     * Gets the resource collection API of Databases. It manages Database.
+     *
+     * @return Resource collection API of Databases.
+     */
     public Databases databases() {
         if (this.databases == null) {
             this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
@@ -333,7 +416,11 @@ public final class MariaDBManager {
         return databases;
     }
 
-    /** @return Resource collection API of Configurations. */
+    /**
+     * Gets the resource collection API of Configurations. It manages Configuration.
+     *
+     * @return Resource collection API of Configurations.
+     */
     public Configurations configurations() {
         if (this.configurations == null) {
             this.configurations = new ConfigurationsImpl(clientObject.getConfigurations(), this);
@@ -341,7 +428,11 @@ public final class MariaDBManager {
         return configurations;
     }
 
-    /** @return Resource collection API of ServerParameters. */
+    /**
+     * Gets the resource collection API of ServerParameters.
+     *
+     * @return Resource collection API of ServerParameters.
+     */
     public ServerParameters serverParameters() {
         if (this.serverParameters == null) {
             this.serverParameters = new ServerParametersImpl(clientObject.getServerParameters(), this);
@@ -349,7 +440,11 @@ public final class MariaDBManager {
         return serverParameters;
     }
 
-    /** @return Resource collection API of LogFiles. */
+    /**
+     * Gets the resource collection API of LogFiles.
+     *
+     * @return Resource collection API of LogFiles.
+     */
     public LogFiles logFiles() {
         if (this.logFiles == null) {
             this.logFiles = new LogFilesImpl(clientObject.getLogFiles(), this);
@@ -357,7 +452,11 @@ public final class MariaDBManager {
         return logFiles;
     }
 
-    /** @return Resource collection API of RecoverableServers. */
+    /**
+     * Gets the resource collection API of RecoverableServers.
+     *
+     * @return Resource collection API of RecoverableServers.
+     */
     public RecoverableServers recoverableServers() {
         if (this.recoverableServers == null) {
             this.recoverableServers = new RecoverableServersImpl(clientObject.getRecoverableServers(), this);
@@ -365,7 +464,11 @@ public final class MariaDBManager {
         return recoverableServers;
     }
 
-    /** @return Resource collection API of ServerBasedPerformanceTiers. */
+    /**
+     * Gets the resource collection API of ServerBasedPerformanceTiers.
+     *
+     * @return Resource collection API of ServerBasedPerformanceTiers.
+     */
     public ServerBasedPerformanceTiers serverBasedPerformanceTiers() {
         if (this.serverBasedPerformanceTiers == null) {
             this.serverBasedPerformanceTiers =
@@ -374,7 +477,11 @@ public final class MariaDBManager {
         return serverBasedPerformanceTiers;
     }
 
-    /** @return Resource collection API of LocationBasedPerformanceTiers. */
+    /**
+     * Gets the resource collection API of LocationBasedPerformanceTiers.
+     *
+     * @return Resource collection API of LocationBasedPerformanceTiers.
+     */
     public LocationBasedPerformanceTiers locationBasedPerformanceTiers() {
         if (this.locationBasedPerformanceTiers == null) {
             this.locationBasedPerformanceTiers =
@@ -383,7 +490,11 @@ public final class MariaDBManager {
         return locationBasedPerformanceTiers;
     }
 
-    /** @return Resource collection API of CheckNameAvailabilities. */
+    /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     *
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
     public CheckNameAvailabilities checkNameAvailabilities() {
         if (this.checkNameAvailabilities == null) {
             this.checkNameAvailabilities =
@@ -392,7 +503,11 @@ public final class MariaDBManager {
         return checkNameAvailabilities;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -400,7 +515,11 @@ public final class MariaDBManager {
         return operations;
     }
 
-    /** @return Resource collection API of QueryTexts. */
+    /**
+     * Gets the resource collection API of QueryTexts.
+     *
+     * @return Resource collection API of QueryTexts.
+     */
     public QueryTexts queryTexts() {
         if (this.queryTexts == null) {
             this.queryTexts = new QueryTextsImpl(clientObject.getQueryTexts(), this);
@@ -408,7 +527,11 @@ public final class MariaDBManager {
         return queryTexts;
     }
 
-    /** @return Resource collection API of TopQueryStatistics. */
+    /**
+     * Gets the resource collection API of TopQueryStatistics.
+     *
+     * @return Resource collection API of TopQueryStatistics.
+     */
     public TopQueryStatistics topQueryStatistics() {
         if (this.topQueryStatistics == null) {
             this.topQueryStatistics = new TopQueryStatisticsImpl(clientObject.getTopQueryStatistics(), this);
@@ -416,7 +539,11 @@ public final class MariaDBManager {
         return topQueryStatistics;
     }
 
-    /** @return Resource collection API of WaitStatistics. */
+    /**
+     * Gets the resource collection API of WaitStatistics.
+     *
+     * @return Resource collection API of WaitStatistics.
+     */
     public WaitStatistics waitStatistics() {
         if (this.waitStatistics == null) {
             this.waitStatistics = new WaitStatisticsImpl(clientObject.getWaitStatistics(), this);
@@ -424,7 +551,11 @@ public final class MariaDBManager {
         return waitStatistics;
     }
 
-    /** @return Resource collection API of ResourceProviders. */
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
     public ResourceProviders resourceProviders() {
         if (this.resourceProviders == null) {
             this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
@@ -432,7 +563,11 @@ public final class MariaDBManager {
         return resourceProviders;
     }
 
-    /** @return Resource collection API of Advisors. */
+    /**
+     * Gets the resource collection API of Advisors.
+     *
+     * @return Resource collection API of Advisors.
+     */
     public Advisors advisors() {
         if (this.advisors == null) {
             this.advisors = new AdvisorsImpl(clientObject.getAdvisors(), this);
@@ -440,7 +575,11 @@ public final class MariaDBManager {
         return advisors;
     }
 
-    /** @return Resource collection API of RecommendedActions. */
+    /**
+     * Gets the resource collection API of RecommendedActions.
+     *
+     * @return Resource collection API of RecommendedActions.
+     */
     public RecommendedActions recommendedActions() {
         if (this.recommendedActions == null) {
             this.recommendedActions = new RecommendedActionsImpl(clientObject.getRecommendedActions(), this);
@@ -448,7 +587,11 @@ public final class MariaDBManager {
         return recommendedActions;
     }
 
-    /** @return Resource collection API of LocationBasedRecommendedActionSessionsOperationStatus. */
+    /**
+     * Gets the resource collection API of LocationBasedRecommendedActionSessionsOperationStatus.
+     *
+     * @return Resource collection API of LocationBasedRecommendedActionSessionsOperationStatus.
+     */
     public LocationBasedRecommendedActionSessionsOperationStatus
         locationBasedRecommendedActionSessionsOperationStatus() {
         if (this.locationBasedRecommendedActionSessionsOperationStatus == null) {
@@ -459,7 +602,11 @@ public final class MariaDBManager {
         return locationBasedRecommendedActionSessionsOperationStatus;
     }
 
-    /** @return Resource collection API of LocationBasedRecommendedActionSessionsResults. */
+    /**
+     * Gets the resource collection API of LocationBasedRecommendedActionSessionsResults.
+     *
+     * @return Resource collection API of LocationBasedRecommendedActionSessionsResults.
+     */
     public LocationBasedRecommendedActionSessionsResults locationBasedRecommendedActionSessionsResults() {
         if (this.locationBasedRecommendedActionSessionsResults == null) {
             this.locationBasedRecommendedActionSessionsResults =
@@ -469,7 +616,11 @@ public final class MariaDBManager {
         return locationBasedRecommendedActionSessionsResults;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -478,7 +629,11 @@ public final class MariaDBManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
@@ -486,7 +641,11 @@ public final class MariaDBManager {
         return privateLinkResources;
     }
 
-    /** @return Resource collection API of ServerSecurityAlertPolicies. */
+    /**
+     * Gets the resource collection API of ServerSecurityAlertPolicies. It manages ServerSecurityAlertPolicy.
+     *
+     * @return Resource collection API of ServerSecurityAlertPolicies.
+     */
     public ServerSecurityAlertPolicies serverSecurityAlertPolicies() {
         if (this.serverSecurityAlertPolicies == null) {
             this.serverSecurityAlertPolicies =

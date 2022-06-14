@@ -39,6 +39,10 @@ public final class VirtualNetworkRuleImpl
         return this.innerModel().state();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public VirtualNetworkRuleInner innerModel() {
         return this.innerObject;
     }

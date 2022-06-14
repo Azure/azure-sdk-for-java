@@ -14,10 +14,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.QueryStatisticInner;
 import com.azure.resourcemanager.mariadb.models.QueryStatistic;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatistics;
 import com.azure.resourcemanager.mariadb.models.TopQueryStatisticsInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopQueryStatisticsImpl implements TopQueryStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopQueryStatisticsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopQueryStatisticsImpl.class);
 
     private final TopQueryStatisticsClient innerClient;
 

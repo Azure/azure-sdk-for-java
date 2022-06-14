@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Database. */
-@JsonFlatten
 @Fluent
-public class DatabaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseInner.class);
-
+public final class DatabaseInner extends ProxyResource {
     /*
-     * The charset of the database.
+     * The properties of a database.
      */
-    @JsonProperty(value = "properties.charset")
-    private String charset;
+    @JsonProperty(value = "properties")
+    private DatabaseProperties innerProperties;
 
-    /*
-     * The collation of the database.
+    /**
+     * Get the innerProperties property: The properties of a database.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
+    private DatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the charset property: The charset of the database.
@@ -35,7 +32,7 @@ public class DatabaseInner extends ProxyResource {
      * @return the charset value.
      */
     public String charset() {
-        return this.charset;
+        return this.innerProperties() == null ? null : this.innerProperties().charset();
     }
 
     /**
@@ -45,7 +42,10 @@ public class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCharset(String charset) {
-        this.charset = charset;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withCharset(charset);
         return this;
     }
 
@@ -55,7 +55,7 @@ public class DatabaseInner extends ProxyResource {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -65,7 +65,10 @@ public class DatabaseInner extends ProxyResource {
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -75,5 +78,8 @@ public class DatabaseInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -27,7 +27,11 @@ public final class StorageAutogrow extends ExpandableStringEnum<StorageAutogrow>
         return fromString(name, StorageAutogrow.class);
     }
 
-    /** @return known StorageAutogrow values. */
+    /**
+     * Gets known StorageAutogrow values.
+     *
+     * @return known StorageAutogrow values.
+     */
     public static Collection<StorageAutogrow> values() {
         return values(StorageAutogrow.class);
     }

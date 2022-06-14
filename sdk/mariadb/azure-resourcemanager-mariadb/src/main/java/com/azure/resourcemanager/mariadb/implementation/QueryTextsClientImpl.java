@@ -25,19 +25,16 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.mariadb.fluent.QueryTextsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryTextInner;
 import com.azure.resourcemanager.mariadb.models.QueryTextsResultList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueryTextsClient. */
 public final class QueryTextsClientImpl implements QueryTextsClient {
-    private final ClientLogger logger = new ClientLogger(QueryTextsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final QueryTextsService service;
 
@@ -90,7 +87,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @QueryParam("queryIds") String queryIds,
+            @QueryParam(value = "queryIds", multipleQueryParams = true) List<String> queryIds,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -114,7 +111,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Text.
+     * @return represents a Query Text along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryTextInner>> getWithResponseAsync(
@@ -169,7 +166,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Text.
+     * @return represents a Query Text along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryTextInner>> getWithResponseAsync(
@@ -220,19 +217,12 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Text.
+     * @return represents a Query Text on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryTextInner> getAsync(String resourceGroupName, String serverName, String queryId) {
         return getWithResponseAsync(resourceGroupName, serverName, queryId)
-            .flatMap(
-                (Response<QueryTextInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -261,7 +251,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Text.
+     * @return represents a Query Text along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryTextInner> getWithResponse(
@@ -278,7 +268,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(
@@ -307,8 +297,8 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         }
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
-        String queryIdsConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(queryIds, CollectionFormat.CSV);
+        List<String> queryIdsConverted =
+            queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
                 context ->
@@ -344,7 +334,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryTextInner>> listByServerSinglePageAsync(
@@ -373,8 +363,8 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
         }
         final String apiVersion = "2018-06-01";
         final String accept = "application/json";
-        String queryIdsConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(queryIds, CollectionFormat.CSV);
+        List<String> queryIdsConverted =
+            queryIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -406,7 +396,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QueryTextInner> listByServerAsync(
@@ -426,7 +416,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QueryTextInner> listByServerAsync(
@@ -445,7 +435,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryTextInner> listByServer(
@@ -463,7 +453,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueryTextInner> listByServer(
@@ -478,7 +468,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryTextInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -514,7 +504,7 @@ public final class QueryTextsClientImpl implements QueryTextsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query texts.
+     * @return a list of query texts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryTextInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {

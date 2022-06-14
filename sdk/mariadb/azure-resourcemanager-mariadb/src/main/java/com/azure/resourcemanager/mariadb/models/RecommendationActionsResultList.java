@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of recommendation actions. */
 @Immutable
 public final class RecommendationActionsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionsResultList.class);
-
     /*
      * The list of recommendation action advisors.
      */

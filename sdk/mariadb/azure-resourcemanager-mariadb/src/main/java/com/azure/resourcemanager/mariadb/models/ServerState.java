@@ -30,7 +30,11 @@ public final class ServerState extends ExpandableStringEnum<ServerState> {
         return fromString(name, ServerState.class);
     }
 
-    /** @return known ServerState values. */
+    /**
+     * Gets known ServerState values.
+     *
+     * @return known ServerState values.
+     */
     public static Collection<ServerState> values() {
         return values(ServerState.class);
     }

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.mariadb.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryPerformanceInsightResetDataResultInner;
 import com.azure.resourcemanager.mariadb.models.QueryPerformanceInsightResetDataResult;
 import com.azure.resourcemanager.mariadb.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 

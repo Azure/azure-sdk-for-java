@@ -73,6 +73,13 @@ public interface Configuration {
     String source();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mariadb.fluent.models.ConfigurationInner object.
      *
      * @return the inner object.

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mariadb.fluent.RecommendedActionsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mariadb.models.RecommendationAction;
 import com.azure.resourcemanager.mariadb.models.RecommendedActions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecommendedActionsImpl implements RecommendedActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedActionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendedActionsImpl.class);
 
     private final RecommendedActionsClient innerClient;
 

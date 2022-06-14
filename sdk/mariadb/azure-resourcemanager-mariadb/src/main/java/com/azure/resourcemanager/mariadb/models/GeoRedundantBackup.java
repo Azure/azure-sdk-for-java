@@ -27,7 +27,11 @@ public final class GeoRedundantBackup extends ExpandableStringEnum<GeoRedundantB
         return fromString(name, GeoRedundantBackup.class);
     }
 
-    /** @return known GeoRedundantBackup values. */
+    /**
+     * Gets known GeoRedundantBackup values.
+     *
+     * @return known GeoRedundantBackup values.
+     */
     public static Collection<GeoRedundantBackup> values() {
         return values(GeoRedundantBackup.class);
     }

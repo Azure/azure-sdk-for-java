@@ -14,10 +14,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mariadb.models.WaitStatistic;
 import com.azure.resourcemanager.mariadb.models.WaitStatistics;
 import com.azure.resourcemanager.mariadb.models.WaitStatisticsInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WaitStatisticsImpl implements WaitStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WaitStatisticsImpl.class);
 
     private final WaitStatisticsClient innerClient;
 

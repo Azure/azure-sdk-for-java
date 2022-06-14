@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.FirewallRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of firewall rules. */
 @Fluent
 public final class FirewallRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleListResult.class);
-
     /*
      * The list of firewall rules in a server.
      */

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.mariadb.fluent.RecoverableServersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.RecoverableServerResourceInner;
 import com.azure.resourcemanager.mariadb.models.RecoverableServerResource;
 import com.azure.resourcemanager.mariadb.models.RecoverableServers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoverableServersImpl implements RecoverableServers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoverableServersImpl.class);
 
     private final RecoverableServersClient innerClient;
 

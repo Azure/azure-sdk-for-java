@@ -33,7 +33,11 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
         return fromString(name, CreateMode.class);
     }
 
-    /** @return known CreateMode values. */
+    /**
+     * Gets known CreateMode values.
+     *
+     * @return known CreateMode values.
+     */
     public static Collection<CreateMode> values() {
         return values(CreateMode.class);
     }

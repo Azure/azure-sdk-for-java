@@ -33,7 +33,11 @@ public final class MinimalTlsVersionEnum extends ExpandableStringEnum<MinimalTls
         return fromString(name, MinimalTlsVersionEnum.class);
     }
 
-    /** @return known MinimalTlsVersionEnum values. */
+    /**
+     * Gets known MinimalTlsVersionEnum values.
+     *
+     * @return known MinimalTlsVersionEnum values.
+     */
     public static Collection<MinimalTlsVersionEnum> values() {
         return values(MinimalTlsVersionEnum.class);
     }

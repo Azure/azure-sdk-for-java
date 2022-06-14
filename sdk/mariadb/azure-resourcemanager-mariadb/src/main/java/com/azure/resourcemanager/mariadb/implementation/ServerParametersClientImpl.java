@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.ServerParametersClient;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerParametersClient. */
 public final class ServerParametersClientImpl implements ServerParametersClient {
-    private final ClientLogger logger = new ClientLogger(ServerParametersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerParametersService service;
 
@@ -62,7 +59,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
     private interface ServerParametersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMariaDB"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMariaDB"
                 + "/servers/{serverName}/updateConfigurations")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -86,7 +83,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listUpdateConfigurationsWithResponseAsync(
@@ -143,7 +140,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listUpdateConfigurationsWithResponseAsync(
@@ -196,9 +193,9 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return the {@link PollerFlux} for polling of a list of server configurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
         beginListUpdateConfigurationsAsync(
             String resourceGroupName, String serverName, ConfigurationListResultInner value) {
@@ -211,7 +208,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
                 this.client.getHttpPipeline(),
                 ConfigurationListResultInner.class,
                 ConfigurationListResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -224,9 +221,9 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return the {@link PollerFlux} for polling of a list of server configurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
         beginListUpdateConfigurationsAsync(
             String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context) {
@@ -252,9 +249,9 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return the {@link SyncPoller} for polling of a list of server configurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
         beginListUpdateConfigurations(String resourceGroupName, String serverName, ConfigurationListResultInner value) {
         return beginListUpdateConfigurationsAsync(resourceGroupName, serverName, value).getSyncPoller();
@@ -270,9 +267,9 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return the {@link SyncPoller} for polling of a list of server configurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationListResultInner>, ConfigurationListResultInner>
         beginListUpdateConfigurations(
             String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context) {
@@ -288,7 +285,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationListResultInner> listUpdateConfigurationsAsync(
@@ -308,7 +305,7 @@ public final class ServerParametersClientImpl implements ServerParametersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server configurations.
+     * @return a list of server configurations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationListResultInner> listUpdateConfigurationsAsync(

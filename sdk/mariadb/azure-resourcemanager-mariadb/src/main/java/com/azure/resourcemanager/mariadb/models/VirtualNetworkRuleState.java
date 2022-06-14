@@ -36,7 +36,11 @@ public final class VirtualNetworkRuleState extends ExpandableStringEnum<VirtualN
         return fromString(name, VirtualNetworkRuleState.class);
     }
 
-    /** @return known VirtualNetworkRuleState values. */
+    /**
+     * Gets known VirtualNetworkRuleState values.
+     *
+     * @return known VirtualNetworkRuleState values.
+     */
     public static Collection<VirtualNetworkRuleState> values() {
         return values(VirtualNetworkRuleState.class);
     }

@@ -13,11 +13,10 @@ import com.azure.resourcemanager.mariadb.fluent.QueryTextsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.QueryTextInner;
 import com.azure.resourcemanager.mariadb.models.QueryText;
 import com.azure.resourcemanager.mariadb.models.QueryTexts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class QueryTextsImpl implements QueryTexts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QueryTextsImpl.class);
 
     private final QueryTextsClient innerClient;
 

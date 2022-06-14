@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mariadb.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.mariadb.models.Configuration;
 import com.azure.resourcemanager.mariadb.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
@@ -66,7 +65,7 @@ public final class ConfigurationsImpl implements Configurations {
     public Configuration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -74,14 +73,14 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String serverName = Utils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class ConfigurationsImpl implements Configurations {
     public Response<Configuration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,14 +100,14 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String serverName = Utils.getValueFromIdByName(id, "servers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

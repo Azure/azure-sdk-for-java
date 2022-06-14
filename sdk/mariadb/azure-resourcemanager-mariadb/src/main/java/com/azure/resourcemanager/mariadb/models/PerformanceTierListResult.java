@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.models.PerformanceTierPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of performance tiers. */
 @Fluent
 public final class PerformanceTierListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceTierListResult.class);
-
     /*
      * The list of performance tiers
      */

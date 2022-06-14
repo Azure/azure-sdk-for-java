@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Storage Profile properties of a server. */
 @Fluent
 public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
     /*
      * Backup retention days for the server.
      */

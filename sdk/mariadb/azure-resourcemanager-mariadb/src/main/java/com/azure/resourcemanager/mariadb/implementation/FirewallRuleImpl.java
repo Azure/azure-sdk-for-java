@@ -33,6 +33,10 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         return this.innerModel().endIpAddress();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public FirewallRuleInner innerModel() {
         return this.innerObject;
     }

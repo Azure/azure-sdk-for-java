@@ -27,7 +27,11 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
         return fromString(name, ServerVersion.class);
     }
 
-    /** @return known ServerVersion values. */
+    /**
+     * Gets known ServerVersion values.
+     *
+     * @return known ServerVersion values.
+     */
     public static Collection<ServerVersion> values() {
         return values(ServerVersion.class);
     }

@@ -27,7 +27,11 @@ public final class PublicNetworkAccessEnum extends ExpandableStringEnum<PublicNe
         return fromString(name, PublicNetworkAccessEnum.class);
     }
 
-    /** @return known PublicNetworkAccessEnum values. */
+    /**
+     * Gets known PublicNetworkAccessEnum values.
+     *
+     * @return known PublicNetworkAccessEnum values.
+     */
     public static Collection<PublicNetworkAccessEnum> values() {
         return values(PublicNetworkAccessEnum.class);
     }

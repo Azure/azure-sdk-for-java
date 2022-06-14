@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Default")
 @Fluent
 public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForDefaultCreate.class);
-
     /*
      * The administrator's login name of a server. Can only be specified when
      * the server is being created (and is required for creation).
@@ -117,17 +114,19 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
     public void validate() {
         super.validate();
         if (administratorLogin() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property administratorLogin in model ServerPropertiesForDefaultCreate"));
         }
         if (administratorLoginPassword() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property administratorLoginPassword in model"
                             + " ServerPropertiesForDefaultCreate"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForDefaultCreate.class);
 }

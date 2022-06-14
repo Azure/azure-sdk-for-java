@@ -54,7 +54,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about a server along with {@link Response}.
      */
     Response<Server> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
 
@@ -65,7 +65,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers.
+     * @return a list of servers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Server> listByResourceGroup(String resourceGroupName);
 
@@ -77,7 +77,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers.
+     * @return a list of servers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Server> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -86,7 +86,7 @@ public interface Servers {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers.
+     * @return a list of servers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Server> list();
 
@@ -97,7 +97,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers.
+     * @return a list of servers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Server> list(Context context);
 
@@ -177,7 +177,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about a server along with {@link Response}.
      */
     Server getById(String id);
 
@@ -189,7 +189,7 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about a server along with {@link Response}.
      */
     Response<Server> getByIdWithResponse(String id, Context context);
 

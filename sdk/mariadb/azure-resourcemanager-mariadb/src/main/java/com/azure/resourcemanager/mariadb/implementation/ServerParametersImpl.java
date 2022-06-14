@@ -10,10 +10,9 @@ import com.azure.resourcemanager.mariadb.fluent.ServerParametersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.mariadb.models.ConfigurationListResult;
 import com.azure.resourcemanager.mariadb.models.ServerParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServerParametersImpl implements ServerParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerParametersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServerParametersImpl.class);
 
     private final ServerParametersClient innerClient;
 

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.fluent.LocationBasedPerformanceTiersClient;
 import com.azure.resourcemanager.mariadb.fluent.models.PerformanceTierPropertiesInner;
 import com.azure.resourcemanager.mariadb.models.PerformanceTierListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationBasedPerformanceTiersClient. */
 public final class LocationBasedPerformanceTiersClientImpl implements LocationBasedPerformanceTiersClient {
-    private final ClientLogger logger = new ClientLogger(LocationBasedPerformanceTiersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationBasedPerformanceTiersService service;
 
@@ -65,7 +62,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
     private interface LocationBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForMariaDB/locations/{locationName}"
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMariaDB/locations/{locationName}"
                 + "/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -85,7 +82,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(String locationName) {
@@ -132,7 +129,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PerformanceTierPropertiesInner>> listSinglePageAsync(
@@ -170,7 +167,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PerformanceTierPropertiesInner> listAsync(String locationName) {
@@ -185,7 +182,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PerformanceTierPropertiesInner> listAsync(String locationName, Context context) {
@@ -199,7 +196,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PerformanceTierPropertiesInner> list(String locationName) {
@@ -214,7 +211,7 @@ public final class LocationBasedPerformanceTiersClientImpl implements LocationBa
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of performance tiers.
+     * @return a list of performance tiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PerformanceTierPropertiesInner> list(String locationName, Context context) {

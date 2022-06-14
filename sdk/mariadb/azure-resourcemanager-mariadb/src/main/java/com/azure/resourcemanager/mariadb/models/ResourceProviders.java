@@ -31,7 +31,7 @@ public interface ResourceProviders {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of Query Performance Insight data reset.
+     * @return result of Query Performance Insight data reset along with {@link Response}.
      */
     Response<QueryPerformanceInsightResetDataResult> resetQueryPerformanceInsightDataWithResponse(
         String resourceGroupName, String serverName, Context context);

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mariadb.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of resource provider operations. */
 @Fluent
 public final class OperationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
-
     /*
      * The list of resource provider operations.
      */

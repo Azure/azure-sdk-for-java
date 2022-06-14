@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a resource name availability. */
 @Fluent
 public final class NameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
-
     /*
      * Error Message.
      */

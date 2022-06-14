@@ -28,7 +28,11 @@ public final class QueryPerformanceInsightResetDataResultState
         return fromString(name, QueryPerformanceInsightResetDataResultState.class);
     }
 
-    /** @return known QueryPerformanceInsightResetDataResultState values. */
+    /**
+     * Gets known QueryPerformanceInsightResetDataResultState values.
+     *
+     * @return known QueryPerformanceInsightResetDataResultState values.
+     */
     public static Collection<QueryPerformanceInsightResetDataResultState> values() {
         return values(QueryPerformanceInsightResetDataResultState.class);
     }

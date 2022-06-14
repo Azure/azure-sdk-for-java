@@ -25,7 +25,11 @@ public final class PrivateLinkServiceConnectionStateActionsRequire
         return fromString(name, PrivateLinkServiceConnectionStateActionsRequire.class);
     }
 
-    /** @return known PrivateLinkServiceConnectionStateActionsRequire values. */
+    /**
+     * Gets known PrivateLinkServiceConnectionStateActionsRequire values.
+     *
+     * @return known PrivateLinkServiceConnectionStateActionsRequire values.
+     */
     public static Collection<PrivateLinkServiceConnectionStateActionsRequire> values() {
         return values(PrivateLinkServiceConnectionStateActionsRequire.class);
     }
