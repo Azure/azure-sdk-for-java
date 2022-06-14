@@ -891,6 +891,7 @@
         <module>sdk/desktopvirtualization</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
+        <module>sdk/devops</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
