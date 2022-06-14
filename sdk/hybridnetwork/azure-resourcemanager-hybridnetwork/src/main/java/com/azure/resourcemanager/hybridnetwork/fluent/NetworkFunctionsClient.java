@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInner;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
 import com.azure.resourcemanager.hybridnetwork.models.TagsObject;
 
 /** An instance of this class provides access to all the operations defined in NetworkFunctionsClient. */
@@ -25,9 +26,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFunctionName);
 
     /**
@@ -40,9 +41,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkFunctionName, Context context);
 
@@ -95,7 +96,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkFunctionInner> getByResourceGroupWithResponse(
@@ -111,9 +112,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters);
 
@@ -128,9 +129,9 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context);
 
@@ -191,7 +192,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkFunctionInner> updateTagsWithResponse(
@@ -202,7 +203,7 @@ public interface NetworkFunctionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> list();
@@ -214,7 +215,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> list(Context context);
@@ -226,7 +227,7 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName);
@@ -239,8 +240,67 @@ public interface NetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context);
 }

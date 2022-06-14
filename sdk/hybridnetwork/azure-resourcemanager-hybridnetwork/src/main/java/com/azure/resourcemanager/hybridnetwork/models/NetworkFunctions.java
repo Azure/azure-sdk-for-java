@@ -56,7 +56,7 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response}.
      */
     Response<NetworkFunction> getByResourceGroupWithResponse(
         String resourceGroupName, String networkFunctionName, Context context);
@@ -66,7 +66,7 @@ public interface NetworkFunctions {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunction> list();
 
@@ -77,7 +77,7 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunction> list(Context context);
 
@@ -88,7 +88,7 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunction> listByResourceGroup(String resourceGroupName);
 
@@ -100,9 +100,35 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFunction> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeRequest(String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters);
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context);
 
     /**
      * Gets information about the specified network function resource.
@@ -111,7 +137,7 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response}.
      */
     NetworkFunction getById(String id);
 
@@ -123,7 +149,7 @@ public interface NetworkFunctions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response}.
      */
     Response<NetworkFunction> getByIdWithResponse(String id, Context context);
 

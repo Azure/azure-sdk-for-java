@@ -61,10 +61,6 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         return this.innerModel().provisioningState();
     }
 
-    public SubResource azureStackEdge() {
-        return this.innerModel().azureStackEdge();
-    }
-
     public List<SubResource> networkFunctions() {
         List<SubResource> inner = this.innerModel().networkFunctions();
         if (inner != null) {
@@ -80,6 +76,10 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DeviceInner innerModel() {
@@ -203,11 +203,6 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public DeviceImpl withAzureStackEdge(SubResource azureStackEdge) {
-        this.innerModel().withAzureStackEdge(azureStackEdge);
-        return this;
     }
 
     private boolean isInCreateMode() {

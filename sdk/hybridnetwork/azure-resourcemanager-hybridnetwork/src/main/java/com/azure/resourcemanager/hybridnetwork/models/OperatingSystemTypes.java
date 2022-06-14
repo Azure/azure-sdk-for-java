@@ -30,7 +30,11 @@ public final class OperatingSystemTypes extends ExpandableStringEnum<OperatingSy
         return fromString(name, OperatingSystemTypes.class);
     }
 
-    /** @return known OperatingSystemTypes values. */
+    /**
+     * Gets known OperatingSystemTypes values.
+     *
+     * @return known OperatingSystemTypes values.
+     */
     public static Collection<OperatingSystemTypes> values() {
         return values(OperatingSystemTypes.class);
     }

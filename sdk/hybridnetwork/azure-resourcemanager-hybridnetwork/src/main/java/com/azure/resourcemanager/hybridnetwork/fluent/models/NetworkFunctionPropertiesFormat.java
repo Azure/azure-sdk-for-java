@@ -6,20 +6,16 @@ package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionUserConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network function properties. */
 @Fluent
 public final class NetworkFunctionPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionPropertiesFormat.class);
-
     /*
      * The provisioning state of the network function resource.
      */

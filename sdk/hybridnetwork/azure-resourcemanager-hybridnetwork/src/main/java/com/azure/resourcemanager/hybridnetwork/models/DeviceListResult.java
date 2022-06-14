@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for devices API service call. */
 @Fluent
 public final class DeviceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceListResult.class);
-
     /*
      * A list of devices.
      */

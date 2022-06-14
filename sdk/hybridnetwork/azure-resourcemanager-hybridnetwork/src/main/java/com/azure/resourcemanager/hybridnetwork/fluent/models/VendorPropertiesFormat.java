@@ -6,17 +6,13 @@ package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vendor properties. */
 @Immutable
 public final class VendorPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorPropertiesFormat.class);
-
     /*
      * The provisioning state of the vendor resource.
      */

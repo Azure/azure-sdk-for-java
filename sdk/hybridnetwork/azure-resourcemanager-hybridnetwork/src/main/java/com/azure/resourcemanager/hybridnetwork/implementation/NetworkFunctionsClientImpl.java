@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -30,11 +31,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridnetwork.fluent.NetworkFunctionsClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInner;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionListResult;
 import com.azure.resourcemanager.hybridnetwork.models.TagsObject;
 import java.nio.ByteBuffer;
@@ -43,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetworkFunctionsClient. */
 public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkFunctionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetworkFunctionsService service;
 
@@ -157,6 +156,22 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridNetwork"
+                + "/networkFunctions/{networkFunctionName}/executeRequest")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> executeRequest(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkFunctionName") String networkFunctionName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ExecuteRequestParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -186,7 +201,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -237,7 +252,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -284,14 +299,15 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkFunctionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkFunctionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -304,9 +320,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkFunctionName, Context context) {
         context = this.client.mergeContext(context);
@@ -326,9 +342,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkFunctionName) {
         return beginDeleteAsync(resourceGroupName, networkFunctionName).getSyncPoller();
     }
@@ -343,9 +359,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkFunctionName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkFunctionName, context).getSyncPoller();
@@ -360,7 +376,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFunctionName) {
@@ -379,7 +395,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkFunctionName, Context context) {
@@ -427,7 +443,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFunctionInner>> getByResourceGroupWithResponseAsync(
@@ -477,7 +494,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFunctionInner>> getByResourceGroupWithResponseAsync(
@@ -523,19 +541,12 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFunctionInner> getByResourceGroupAsync(String resourceGroupName, String networkFunctionName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkFunctionName)
-            .flatMap(
-                (Response<NetworkFunctionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -562,7 +573,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network function resource.
+     * @return information about the specified network function resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFunctionInner> getByResourceGroupWithResponse(
@@ -580,7 +591,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -638,7 +649,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -692,9 +703,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link PollerFlux} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -706,7 +717,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
                 this.client.getHttpPipeline(),
                 NetworkFunctionInner.class,
                 NetworkFunctionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -720,9 +731,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link PollerFlux} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -744,9 +755,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkFunctionName, parameters).getSyncPoller();
@@ -763,9 +774,9 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return the {@link SyncPoller} for polling of network function resource response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFunctionInner>, NetworkFunctionInner> beginCreateOrUpdate(
         String resourceGroupName, String networkFunctionName, NetworkFunctionInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkFunctionName, parameters, context).getSyncPoller();
@@ -781,7 +792,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFunctionInner> createOrUpdateAsync(
@@ -802,7 +813,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFunctionInner> createOrUpdateAsync(
@@ -858,7 +869,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFunctionInner>> updateTagsWithResponseAsync(
@@ -915,7 +926,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkFunctionInner>> updateTagsWithResponseAsync(
@@ -968,20 +979,13 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFunctionInner> updateTagsAsync(
         String resourceGroupName, String networkFunctionName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, networkFunctionName, parameters)
-            .flatMap(
-                (Response<NetworkFunctionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1011,7 +1015,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network function resource response.
+     * @return network function resource response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFunctionInner> updateTagsWithResponse(
@@ -1024,7 +1028,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listSinglePageAsync() {
@@ -1070,7 +1075,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listSinglePageAsync(Context context) {
@@ -1111,7 +1117,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionInner> listAsync() {
@@ -1126,7 +1132,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionInner> listAsync(Context context) {
@@ -1139,7 +1145,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionInner> list() {
@@ -1153,7 +1159,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionInner> list(Context context) {
@@ -1167,7 +1173,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1219,7 +1226,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listByResourceGroupSinglePageAsync(
@@ -1268,7 +1276,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1285,7 +1293,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1301,7 +1309,7 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName) {
@@ -1316,11 +1324,273 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> executeRequestWithResponseAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFunctionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFunctionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .executeRequest(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            networkFunctionName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> executeRequestWithResponseAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkFunctionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkFunctionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .executeRequest(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                networkFunctionName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginExecuteRequestAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            executeRequestWithResponseAsync(resourceGroupName, networkFunctionName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginExecuteRequestAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            executeRequestWithResponseAsync(resourceGroupName, networkFunctionName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        return beginExecuteRequestAsync(resourceGroupName, networkFunctionName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        return beginExecuteRequestAsync(resourceGroupName, networkFunctionName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> executeRequestAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        return beginExecuteRequestAsync(resourceGroupName, networkFunctionName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> executeRequestAsync(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        return beginExecuteRequestAsync(resourceGroupName, networkFunctionName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        executeRequestAsync(resourceGroupName, networkFunctionName, parameters).block();
+    }
+
+    /**
+     * Execute a request to services on a network function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFunctionName The name of the network function.
+     * @param parameters Payload for execute request post call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        executeRequestAsync(resourceGroupName, networkFunctionName, parameters, context).block();
     }
 
     /**
@@ -1330,7 +1600,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1367,7 +1638,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listBySubscriptionNextSinglePageAsync(
@@ -1403,7 +1675,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1440,7 +1713,8 @@ public final class NetworkFunctionsClientImpl implements NetworkFunctionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for network function API service call.
+     * @return response for network function API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionInner>> listByResourceGroupNextSinglePageAsync(

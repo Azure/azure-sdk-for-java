@@ -15,10 +15,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceRegistrationK
 import com.azure.resourcemanager.hybridnetwork.models.Device;
 import com.azure.resourcemanager.hybridnetwork.models.DeviceRegistrationKey;
 import com.azure.resourcemanager.hybridnetwork.models.Devices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DevicesImpl implements Devices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DevicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DevicesImpl.class);
 
     private final DevicesClient innerClient;
 
@@ -109,7 +108,7 @@ public final class DevicesImpl implements Devices {
     public Device getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +116,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -128,7 +127,7 @@ public final class DevicesImpl implements Devices {
     public Response<Device> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -147,7 +146,7 @@ public final class DevicesImpl implements Devices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));
@@ -166,7 +165,7 @@ public final class DevicesImpl implements Devices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class DevicesImpl implements Devices {
         }
         String deviceName = Utils.getValueFromIdByName(id, "devices");
         if (deviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'devices'.", id)));

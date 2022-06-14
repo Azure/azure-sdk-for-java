@@ -45,6 +45,13 @@ public interface HybridNetworkManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the DevicesClient object to access its operations.
+     *
+     * @return the DevicesClient object.
+     */
+    DevicesClient getDevices();
+
+    /**
      * Gets the NetworkFunctionsClient object to access its operations.
      *
      * @return the NetworkFunctionsClient object.
@@ -52,11 +59,18 @@ public interface HybridNetworkManagementClient {
     NetworkFunctionsClient getNetworkFunctions();
 
     /**
-     * Gets the DevicesClient object to access its operations.
+     * Gets the NetworkFunctionVendorsClient object to access its operations.
      *
-     * @return the DevicesClient object.
+     * @return the NetworkFunctionVendorsClient object.
      */
-    DevicesClient getDevices();
+    NetworkFunctionVendorsClient getNetworkFunctionVendors();
+
+    /**
+     * Gets the NetworkFunctionVendorSkusClient object to access its operations.
+     *
+     * @return the NetworkFunctionVendorSkusClient object.
+     */
+    NetworkFunctionVendorSkusClient getNetworkFunctionVendorSkus();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -85,20 +99,6 @@ public interface HybridNetworkManagementClient {
      * @return the VendorSkuPreviewsClient object.
      */
     VendorSkuPreviewsClient getVendorSkuPreviews();
-
-    /**
-     * Gets the NetworkFunctionVendorsClient object to access its operations.
-     *
-     * @return the NetworkFunctionVendorsClient object.
-     */
-    NetworkFunctionVendorsClient getNetworkFunctionVendors();
-
-    /**
-     * Gets the NetworkFunctionVendorSkusClient object to access its operations.
-     *
-     * @return the NetworkFunctionVendorSkusClient object.
-     */
-    NetworkFunctionVendorSkusClient getNetworkFunctionVendorSkus();
 
     /**
      * Gets the VendorNetworkFunctionsClient object to access its operations.

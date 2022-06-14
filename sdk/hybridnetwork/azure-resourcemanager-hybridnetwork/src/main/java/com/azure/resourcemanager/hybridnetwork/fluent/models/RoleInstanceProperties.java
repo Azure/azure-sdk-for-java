@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.OperationalState;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The role instance properties of the network function. */
 @Fluent
 public final class RoleInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstanceProperties.class);
-
     /*
      * The provisioning state of the RoleInstance resource.
      */

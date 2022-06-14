@@ -7,20 +7,16 @@ package com.azure.resourcemanager.hybridnetwork.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendorConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vendor network function sub resource. */
 @Fluent
 public final class VendorNetworkFunctionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorNetworkFunctionInner.class);
-
     /*
      * Network function details.
      */

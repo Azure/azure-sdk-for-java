@@ -11,12 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.NetworkFunctionsClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInner;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunction;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetworkFunctionsImpl implements NetworkFunctions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkFunctionsImpl.class);
 
     private final NetworkFunctionsClient innerClient;
 
@@ -82,10 +82,20 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
         return Utils.mapPage(inner, inner1 -> new NetworkFunctionImpl(inner1, this.manager()));
     }
 
+    public void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters) {
+        this.serviceClient().executeRequest(resourceGroupName, networkFunctionName, parameters);
+    }
+
+    public void executeRequest(
+        String resourceGroupName, String networkFunctionName, ExecuteRequestParameters parameters, Context context) {
+        this.serviceClient().executeRequest(resourceGroupName, networkFunctionName, parameters, context);
+    }
+
     public NetworkFunction getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +103,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
         }
         String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +116,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     public Response<NetworkFunction> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +124,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
         }
         String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +137,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +145,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
         }
         String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +158,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,7 +166,7 @@ public final class NetworkFunctionsImpl implements NetworkFunctions {
         }
         String networkFunctionName = Utils.getValueFromIdByName(id, "networkFunctions");
         if (networkFunctionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

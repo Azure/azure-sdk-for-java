@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the Linux operating system settings on the virtual machine. */
 @Fluent
 public final class LinuxConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxConfiguration.class);
-
     /*
      * Specifies the ssh key configuration for a Linux OS.
      */

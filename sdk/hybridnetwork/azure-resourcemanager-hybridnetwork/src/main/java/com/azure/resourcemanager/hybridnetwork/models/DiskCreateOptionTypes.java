@@ -27,7 +27,11 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
         return fromString(name, DiskCreateOptionTypes.class);
     }
 
-    /** @return known DiskCreateOptionTypes values. */
+    /**
+     * Gets known DiskCreateOptionTypes values.
+     *
+     * @return known DiskCreateOptionTypes values.
+     */
     public static Collection<DiskCreateOptionTypes> values() {
         return values(DiskCreateOptionTypes.class);
     }

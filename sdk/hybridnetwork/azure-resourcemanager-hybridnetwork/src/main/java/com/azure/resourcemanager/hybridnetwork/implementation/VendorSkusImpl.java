@@ -10,13 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.VendorSkusClient;
+import com.azure.resourcemanager.hybridnetwork.fluent.models.SkuCredentialInner;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorSkuInner;
+import com.azure.resourcemanager.hybridnetwork.models.SkuCredential;
 import com.azure.resourcemanager.hybridnetwork.models.VendorSku;
 import com.azure.resourcemanager.hybridnetwork.models.VendorSkus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VendorSkusImpl implements VendorSkus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorSkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VendorSkusImpl.class);
 
     private final VendorSkusClient innerClient;
 
@@ -68,17 +69,40 @@ public final class VendorSkusImpl implements VendorSkus {
         return Utils.mapPage(inner, inner1 -> new VendorSkuImpl(inner1, this.manager()));
     }
 
+    public SkuCredential listCredential(String vendorName, String skuName) {
+        SkuCredentialInner inner = this.serviceClient().listCredential(vendorName, skuName);
+        if (inner != null) {
+            return new SkuCredentialImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SkuCredential> listCredentialWithResponse(String vendorName, String skuName, Context context) {
+        Response<SkuCredentialInner> inner =
+            this.serviceClient().listCredentialWithResponse(vendorName, skuName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SkuCredentialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public VendorSku getById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
@@ -89,14 +113,14 @@ public final class VendorSkusImpl implements VendorSkus {
     public Response<VendorSku> getByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
@@ -107,14 +131,14 @@ public final class VendorSkusImpl implements VendorSkus {
     public void deleteById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
@@ -125,14 +149,14 @@ public final class VendorSkusImpl implements VendorSkus {
     public void deleteByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));

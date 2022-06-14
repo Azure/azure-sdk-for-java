@@ -72,13 +72,6 @@ public interface Device {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @return the azureStackEdge value.
-     */
-    SubResource azureStackEdge();
-
-    /**
      * Gets the networkFunctions property: The list of network functions deployed on the device.
      *
      * @return the networkFunctions value.
@@ -98,6 +91,13 @@ public interface Device {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceInner object.
@@ -150,7 +150,7 @@ public interface Device {
          * The stage of the Device definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAzureStackEdge {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -175,17 +175,6 @@ public interface Device {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Device definition allowing to specify azureStackEdge. */
-        interface WithAzureStackEdge {
-            /**
-             * Specifies the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot
-             * be updated..
-             *
-             * @param azureStackEdge The reference to the Azure stack edge device. Once set, it cannot be updated.
-             * @return the next definition stage.
-             */
-            WithCreate withAzureStackEdge(SubResource azureStackEdge);
         }
     }
     /**
@@ -256,7 +245,7 @@ public interface Device {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device registration key.
+     * @return the device registration key along with {@link Response}.
      */
     Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(Context context);
 }

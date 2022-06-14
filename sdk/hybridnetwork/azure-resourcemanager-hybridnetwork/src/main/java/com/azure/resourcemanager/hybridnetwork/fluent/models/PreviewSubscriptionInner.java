@@ -7,16 +7,12 @@ package com.azure.resourcemanager.hybridnetwork.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer subscription which can use a sku. */
 @Fluent
 public final class PreviewSubscriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreviewSubscriptionInner.class);
-
     /*
      * The Preview Subscription properties.
      */

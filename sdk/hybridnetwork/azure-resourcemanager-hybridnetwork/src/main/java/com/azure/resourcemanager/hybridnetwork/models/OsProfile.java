@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the role instance. */
 @Fluent
 public final class OsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OsProfile.class);
-
     /*
      * Specifies the name of the administrator account. <br><br> **Windows-only
      * restriction:** Cannot end in "." <br><br> **Disallowed values:**

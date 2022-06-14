@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** PreviewSubscription properties. */
 @Immutable
 public final class PreviewSubscriptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreviewSubscriptionProperties.class);
-
     /*
      * The provisioning state of the PreviewSubscription resource.
      */

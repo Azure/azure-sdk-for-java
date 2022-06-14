@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.PreviewSubscriptionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of customer subscriptions which can use a sku. */
 @Fluent
 public final class PreviewSubscriptionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreviewSubscriptionsList.class);
-
     /*
      * A list of preview subscriptions.
      */

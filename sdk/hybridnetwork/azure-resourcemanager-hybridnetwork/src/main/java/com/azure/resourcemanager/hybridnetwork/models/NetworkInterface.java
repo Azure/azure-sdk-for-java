@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network interface properties. */
 @Fluent
 public final class NetworkInterface {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterface.class);
-
     /*
      * The name of the network interface.
      */

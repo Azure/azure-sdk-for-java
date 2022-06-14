@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.RoleInstancesClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.RoleInstanceInner;
 import com.azure.resourcemanager.hybridnetwork.models.RoleInstance;
 import com.azure.resourcemanager.hybridnetwork.models.RoleInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RoleInstancesImpl implements RoleInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RoleInstancesImpl.class);
 
     private final RoleInstancesClient innerClient;
 

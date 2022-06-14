@@ -30,7 +30,11 @@ public final class SkuDeploymentMode extends ExpandableStringEnum<SkuDeploymentM
         return fromString(name, SkuDeploymentMode.class);
     }
 
-    /** @return known SkuDeploymentMode values. */
+    /**
+     * Gets known SkuDeploymentMode values.
+     *
+     * @return known SkuDeploymentMode values.
+     */
     public static Collection<SkuDeploymentMode> values() {
         return values(SkuDeploymentMode.class);
     }

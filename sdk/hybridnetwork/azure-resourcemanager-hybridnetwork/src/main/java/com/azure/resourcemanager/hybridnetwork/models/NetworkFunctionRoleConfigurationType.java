@@ -28,7 +28,11 @@ public final class NetworkFunctionRoleConfigurationType
         return fromString(name, NetworkFunctionRoleConfigurationType.class);
     }
 
-    /** @return known NetworkFunctionRoleConfigurationType values. */
+    /**
+     * Gets known NetworkFunctionRoleConfigurationType values.
+     *
+     * @return known NetworkFunctionRoleConfigurationType values.
+     */
     public static Collection<NetworkFunctionRoleConfigurationType> values() {
         return values(NetworkFunctionRoleConfigurationType.class);
     }

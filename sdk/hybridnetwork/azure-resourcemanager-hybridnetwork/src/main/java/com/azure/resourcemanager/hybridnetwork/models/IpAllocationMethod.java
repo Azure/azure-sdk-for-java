@@ -30,7 +30,11 @@ public final class IpAllocationMethod extends ExpandableStringEnum<IpAllocationM
         return fromString(name, IpAllocationMethod.class);
     }
 
-    /** @return known IpAllocationMethod values. */
+    /**
+     * Gets known IpAllocationMethod values.
+     *
+     * @return known IpAllocationMethod values.
+     */
     public static Collection<IpAllocationMethod> values() {
         return values(IpAllocationMethod.class);
     }

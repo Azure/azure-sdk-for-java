@@ -27,7 +27,11 @@ public final class IpVersion extends ExpandableStringEnum<IpVersion> {
         return fromString(name, IpVersion.class);
     }
 
-    /** @return known IpVersion values. */
+    /**
+     * Gets known IpVersion values.
+     *
+     * @return known IpVersion values.
+     */
     public static Collection<IpVersion> values() {
         return values(IpVersion.class);
     }

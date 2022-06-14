@@ -24,6 +24,7 @@
 
 - [CreateOrUpdate](#networkfunctions_createorupdate)
 - [Delete](#networkfunctions_delete)
+- [ExecuteRequest](#networkfunctions_executerequest)
 - [GetByResourceGroup](#networkfunctions_getbyresourcegroup)
 - [List](#networkfunctions_list)
 - [ListByResourceGroup](#networkfunctions_listbyresourcegroup)
@@ -60,6 +61,7 @@
 - [Delete](#vendorskus_delete)
 - [Get](#vendorskus_get)
 - [List](#vendorskus_list)
+- [ListCredential](#vendorskus_listcredential)
 
 ## Vendors
 
@@ -70,26 +72,18 @@
 ### Devices_CreateOrUpdate
 
 ```java
-import com.azure.core.management.SubResource;
-
 /** Samples for Devices CreateOrUpdate. */
 public final class DevicesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceCreate.json
+     */
     /**
      * Sample code: Create or update device.
      *
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void createOrUpdateDevice(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager
-            .devices()
-            .define("TestDevice")
-            .withRegion("eastus")
-            .withExistingResourceGroup("rg1")
-            .withAzureStackEdge(
-                new SubResource()
-                    .withId(
-                        "/subscriptions/subid1/resourcegroups/rg2/providers/Microsoft.DataboxEdge/DataboxEdgeDevices/TestDataboxEdgeDeviceName"))
-            .create();
+        manager.devices().define("TestDevice").withRegion("eastus").withExistingResourceGroup("rg1").create();
     }
 }
 ```
@@ -101,6 +95,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Devices Delete. */
 public final class DevicesDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceDelete.json
+     */
     /**
      * Sample code: Delete device resource.
      *
@@ -119,6 +116,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Devices GetByResourceGroup. */
 public final class DevicesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceGet.json
+     */
     /**
      * Sample code: Get device resource.
      *
@@ -137,6 +137,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Devices List. */
 public final class DevicesListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceListBySubscription.json
+     */
     /**
      * Sample code: List all devices in a subscription.
      *
@@ -156,6 +159,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Devices ListByResourceGroup. */
 public final class DevicesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceListByResourceGroup.json
+     */
     /**
      * Sample code: List all devices in resource group.
      *
@@ -175,6 +181,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Devices ListRegistrationKey. */
 public final class DevicesListRegistrationKeySamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceListRegistrationKey.json
+     */
     /**
      * Sample code: Get device registration key.
      *
@@ -196,6 +205,9 @@ import java.util.Map;
 
 /** Samples for Devices UpdateTags. */
 public final class DevicesUpdateTagsSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/DeviceUpdateTags.json
+     */
     /**
      * Sample code: Update hybrid network device tags.
      *
@@ -228,6 +240,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctionVendorSkus ListBySku. */
 public final class NetworkFunctionVendorSkusListBySkuSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionSkuDetailsGet.json
+     */
     /**
      * Sample code: Get network function sku details.
      *
@@ -247,6 +262,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctionVendorSkus ListByVendor. */
 public final class NetworkFunctionVendorSkusListByVendorSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionSkuListByVendor.json
+     */
     /**
      * Sample code: List vendors and skus.
      *
@@ -265,12 +283,16 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctionVendors List. */
 public final class NetworkFunctionVendorsListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionVendorAndSkuListBySubscription.json
+     */
     /**
-     * Sample code: List vendors and skus.
+     * Sample code: List vendors and skus by subscription.
      *
      * @param manager Entry point to HybridNetworkManager.
      */
-    public static void listVendorsAndSkus(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+    public static void listVendorsAndSkusBySubscription(
+        com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
         manager.networkFunctionVendors().list(Context.NONE);
     }
 }
@@ -293,6 +315,9 @@ import java.util.Arrays;
 
 /** Samples for NetworkFunctions CreateOrUpdate. */
 public final class NetworkFunctionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionCreate.json
+     */
     /**
      * Sample code: Create network function resource.
      *
@@ -365,6 +390,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctions Delete. */
 public final class NetworkFunctionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionDelete.json
+     */
     /**
      * Sample code: Delete network function resource.
      *
@@ -377,6 +405,45 @@ public final class NetworkFunctionsDeleteSamples {
 }
 ```
 
+### NetworkFunctions_ExecuteRequest
+
+```java
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
+import com.azure.resourcemanager.hybridnetwork.models.HttpMethod;
+import com.azure.resourcemanager.hybridnetwork.models.RequestMetadata;
+
+/** Samples for NetworkFunctions ExecuteRequest. */
+public final class NetworkFunctionsExecuteRequestSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionsExecuteRequest.json
+     */
+    /**
+     * Sample code: Send request to network function services.
+     *
+     * @param manager Entry point to HybridNetworkManager.
+     */
+    public static void sendRequestToNetworkFunctionServices(
+        com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+        manager
+            .networkFunctions()
+            .executeRequest(
+                "rg",
+                "testNetworkfunction",
+                new ExecuteRequestParameters()
+                    .withServiceEndpoint("serviceEndpoint")
+                    .withRequestMetadata(
+                        new RequestMetadata()
+                            .withRelativePath("/simProfiles/testSimProfile")
+                            .withHttpMethod(HttpMethod.POST)
+                            .withSerializedBody(
+                                "{\"subscriptionProfile\":\"ChantestSubscription15\",\"permanentKey\":\"00112233445566778899AABBCCDDEEFF\",\"opcOperatorCode\":\"63bfa50ee6523365ff14c1f45f88737d\",\"staticIpAddresses\":{\"internet\":{\"ipv4Addr\":\"198.51.100.1\",\"ipv6Prefix\":\"2001:db8:abcd:12::0/64\"},\"another_network\":{\"ipv6Prefix\":\"2001:111:cdef:22::0/64\"}}}")
+                            .withApiVersion("apiVersionQueryString")),
+                Context.NONE);
+    }
+}
+```
+
 ### NetworkFunctions_GetByResourceGroup
 
 ```java
@@ -384,6 +451,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctions GetByResourceGroup. */
 public final class NetworkFunctionsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionGet.json
+     */
     /**
      * Sample code: Get network function resource.
      *
@@ -403,6 +473,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctions List. */
 public final class NetworkFunctionsListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionListBySubscription.json
+     */
     /**
      * Sample code: List all network function resources in subscription.
      *
@@ -422,6 +495,9 @@ import com.azure.core.util.Context;
 
 /** Samples for NetworkFunctions ListByResourceGroup. */
 public final class NetworkFunctionsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionListByResourceGroup.json
+     */
     /**
      * Sample code: List network function in resource group.
      *
@@ -444,6 +520,9 @@ import java.util.Map;
 
 /** Samples for NetworkFunctions UpdateTags. */
 public final class NetworkFunctionsUpdateTagsSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/NetworkFunctionUpdateTags.json
+     */
     /**
      * Sample code: Update tags for network function resource.
      *
@@ -476,6 +555,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Operations List. */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/GetOperations.json
+     */
     /**
      * Sample code: Get Registration Operations.
      *
@@ -494,6 +576,9 @@ import com.azure.core.util.Context;
 
 /** Samples for RoleInstances Get. */
 public final class RoleInstancesGetSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceGet.json
+     */
     /**
      * Sample code: Get the operational state of role instance of vendor network function.
      *
@@ -513,6 +598,9 @@ import com.azure.core.util.Context;
 
 /** Samples for RoleInstances List. */
 public final class RoleInstancesListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceListByVendorNetworkFunction.json
+     */
     /**
      * Sample code: List all role instances of vendor network function.
      *
@@ -532,6 +620,9 @@ import com.azure.core.util.Context;
 
 /** Samples for RoleInstances Restart. */
 public final class RoleInstancesRestartSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceRestart.json
+     */
     /**
      * Sample code: Restart a role instance of a vendor network function.
      *
@@ -551,6 +642,9 @@ import com.azure.core.util.Context;
 
 /** Samples for RoleInstances Start. */
 public final class RoleInstancesStartSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceStart.json
+     */
     /**
      * Sample code: Start a role instance of a vendor network function.
      *
@@ -570,6 +664,9 @@ import com.azure.core.util.Context;
 
 /** Samples for RoleInstances Stop. */
 public final class RoleInstancesStopSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/RoleInstanceStop.json
+     */
     /**
      * Sample code: Stop a role instance of a vendor network function.
      *
@@ -600,6 +697,9 @@ import java.util.Arrays;
 
 /** Samples for VendorNetworkFunctions CreateOrUpdate. */
 public final class VendorNetworkFunctionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfCreate.json
+     */
     /**
      * Sample code: Create or update vendor network function sub resource.
      *
@@ -675,6 +775,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorNetworkFunctions Get. */
 public final class VendorNetworkFunctionsGetSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfGet.json
+     */
     /**
      * Sample code: Get vendor network function sub resource by service key of network function.
      *
@@ -694,6 +797,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorNetworkFunctions List. */
 public final class VendorNetworkFunctionsListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorNfListByVendor.json
+     */
     /**
      * Sample code: List all nfs of vendor resource.
      *
@@ -711,6 +817,9 @@ public final class VendorNetworkFunctionsListSamples {
 ```java
 /** Samples for VendorSkuPreview CreateOrUpdate. */
 public final class VendorSkuPreviewCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuPreviewCreate.json
+     */
     /**
      * Sample code: Create or update preview subscription of vendor sku sub resource.
      *
@@ -730,6 +839,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkuPreview Delete. */
 public final class VendorSkuPreviewDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuPreviewDelete.json
+     */
     /**
      * Sample code: Delete preview subscription of vendor sku sub resource.
      *
@@ -749,6 +861,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkuPreview Get. */
 public final class VendorSkuPreviewGetSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuPreviewGet.json
+     */
     /**
      * Sample code: Get preview subscription of vendor sku sub resource.
      *
@@ -768,6 +883,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkuPreview List. */
 public final class VendorSkuPreviewListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuPreviewListBySku.json
+     */
     /**
      * Sample code: List all preview subscriptions of vendor sku sub resource.
      *
@@ -795,6 +913,7 @@ import com.azure.resourcemanager.hybridnetwork.models.LinuxConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionRoleConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionRoleConfigurationType;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionTemplate;
+import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionType;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkInterface;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkInterfaceIpConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.OperatingSystemTypes;
@@ -812,6 +931,9 @@ import java.util.Arrays;
 
 /** Samples for VendorSkus CreateOrUpdate. */
 public final class VendorSkusCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuCreate.json
+     */
     /**
      * Sample code: Create or update the sku of vendor resource.
      *
@@ -824,6 +946,7 @@ public final class VendorSkusCreateOrUpdateSamples {
             .define("TestSku")
             .withExistingVendor("TestVendor")
             .withDeploymentMode(SkuDeploymentMode.PRIVATE_EDGE_ZONE)
+            .withNetworkFunctionType(NetworkFunctionType.VIRTUAL_NETWORK_FUNCTION)
             .withPreview(true)
             .withManagedApplicationTemplate(
                 SerializerFactory
@@ -922,6 +1045,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkus Delete. */
 public final class VendorSkusDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuDelete.json
+     */
     /**
      * Sample code: Delete the sku of vendor resource.
      *
@@ -941,6 +1067,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkus Get. */
 public final class VendorSkusGetSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuGet.json
+     */
     /**
      * Sample code: Get the sku of vendor resource.
      *
@@ -959,6 +1088,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VendorSkus List. */
 public final class VendorSkusListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuListByVendor.json
+     */
     /**
      * Sample code: List all the vendor skus of vendor resource.
      *
@@ -971,11 +1103,36 @@ public final class VendorSkusListSamples {
 }
 ```
 
+### VendorSkus_ListCredential
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for VendorSkus ListCredential. */
+public final class VendorSkusListCredentialSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorSkuListCredential.json
+     */
+    /**
+     * Sample code: Generate a credential for vendor sku.
+     *
+     * @param manager Entry point to HybridNetworkManager.
+     */
+    public static void generateACredentialForVendorSku(
+        com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+        manager.vendorSkus().listCredentialWithResponse("TestVendor", "TestSku", Context.NONE);
+    }
+}
+```
+
 ### Vendors_CreateOrUpdate
 
 ```java
 /** Samples for Vendors CreateOrUpdate. */
 public final class VendorsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorCreate.json
+     */
     /**
      * Sample code: Create or update Vendor resource.
      *
@@ -995,6 +1152,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Vendors Delete. */
 public final class VendorsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorDelete.json
+     */
     /**
      * Sample code: Delete vendor resource.
      *
@@ -1013,6 +1173,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Vendors Get. */
 public final class VendorsGetSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorGet.json
+     */
     /**
      * Sample code: Get Vendor resource.
      *
@@ -1031,6 +1194,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Vendors List. */
 public final class VendorsListSamples {
+    /*
+     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/preview/2022-01-01-preview/examples/VendorListBySubscription.json
+     */
     /**
      * Sample code: List all vendor resources in subscription.
      *

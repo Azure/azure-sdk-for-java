@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridnetwork.fluent.VendorSkuPreviewsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VendorSkuPreviewsClient. */
 public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClient {
-    private final ClientLogger logger = new ClientLogger(VendorSkuPreviewsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VendorSkuPreviewsService service;
 
@@ -150,7 +147,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PreviewSubscriptionInner>> listSinglePageAsync(String vendorName, String skuName) {
@@ -206,7 +204,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PreviewSubscriptionInner>> listSinglePageAsync(
@@ -259,7 +258,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PreviewSubscriptionInner> listAsync(String vendorName, String skuName) {
@@ -276,7 +275,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PreviewSubscriptionInner> listAsync(String vendorName, String skuName, Context context) {
@@ -293,7 +292,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreviewSubscriptionInner> list(String vendorName, String skuName) {
@@ -309,7 +308,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PreviewSubscriptionInner> list(String vendorName, String skuName, Context context) {
@@ -326,7 +325,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return customer subscription which can use a sku along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -387,7 +387,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return customer subscription which can use a sku along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -448,9 +449,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link PollerFlux} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdateAsync(
         String vendorName, String skuName, String previewSubscription, PreviewSubscriptionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -462,7 +463,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
                 this.client.getHttpPipeline(),
                 PreviewSubscriptionInner.class,
                 PreviewSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -476,9 +477,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link PollerFlux} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdateAsync(
         String vendorName,
         String skuName,
@@ -508,9 +509,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link SyncPoller} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdate(
         String vendorName, String skuName, String previewSubscription, PreviewSubscriptionInner parameters) {
         return beginCreateOrUpdateAsync(vendorName, skuName, previewSubscription, parameters).getSyncPoller();
@@ -527,9 +528,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return the {@link SyncPoller} for polling of customer subscription which can use a sku.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PreviewSubscriptionInner>, PreviewSubscriptionInner> beginCreateOrUpdate(
         String vendorName,
         String skuName,
@@ -549,7 +550,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return customer subscription which can use a sku on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreviewSubscriptionInner> createOrUpdateAsync(
@@ -570,7 +571,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription which can use a sku.
+     * @return customer subscription which can use a sku on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreviewSubscriptionInner> createOrUpdateAsync(
@@ -634,7 +635,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PreviewSubscriptionInner>> getWithResponseAsync(
@@ -688,7 +690,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PreviewSubscriptionInner>> getWithResponseAsync(
@@ -738,19 +741,12 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreviewSubscriptionInner> getAsync(String vendorName, String skuName, String previewSubscription) {
         return getWithResponseAsync(vendorName, skuName, previewSubscription)
-            .flatMap(
-                (Response<PreviewSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -779,7 +775,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview information of a vendor sku.
+     * @return the preview information of a vendor sku along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreviewSubscriptionInner> getWithResponse(
@@ -796,7 +792,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -850,7 +846,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -900,15 +896,16 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vendorName, String skuName, String previewSubscription) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(vendorName, skuName, previewSubscription);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -921,9 +918,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String vendorName, String skuName, String previewSubscription, Context context) {
         context = this.client.mergeContext(context);
@@ -943,9 +940,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vendorName, String skuName, String previewSubscription) {
         return beginDeleteAsync(vendorName, skuName, previewSubscription).getSyncPoller();
@@ -961,9 +958,9 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String vendorName, String skuName, String previewSubscription, Context context) {
         return beginDeleteAsync(vendorName, skuName, previewSubscription, context).getSyncPoller();
@@ -978,7 +975,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vendorName, String skuName, String previewSubscription) {
@@ -997,7 +994,7 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vendorName, String skuName, String previewSubscription, Context context) {
@@ -1044,7 +1041,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PreviewSubscriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1080,7 +1078,8 @@ public final class VendorSkuPreviewsClientImpl implements VendorSkuPreviewsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of customer subscriptions which can use a sku.
+     * @return a list of customer subscriptions which can use a sku along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PreviewSubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {

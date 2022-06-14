@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.VendorsClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorInner;
 import com.azure.resourcemanager.hybridnetwork.models.Vendor;
 import com.azure.resourcemanager.hybridnetwork.models.Vendors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VendorsImpl implements Vendors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VendorsImpl.class);
 
     private final VendorsClient innerClient;
 
@@ -71,7 +70,7 @@ public final class VendorsImpl implements Vendors {
     public Vendor getById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
@@ -82,7 +81,7 @@ public final class VendorsImpl implements Vendors {
     public Response<Vendor> getByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
@@ -93,7 +92,7 @@ public final class VendorsImpl implements Vendors {
     public void deleteById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
@@ -104,7 +103,7 @@ public final class VendorsImpl implements Vendors {
     public void deleteByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));

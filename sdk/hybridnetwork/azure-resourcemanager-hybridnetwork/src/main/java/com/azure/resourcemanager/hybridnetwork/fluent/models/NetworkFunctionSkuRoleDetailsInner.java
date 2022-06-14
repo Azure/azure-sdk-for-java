@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkInterface;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network function user configuration. */
 @Fluent
 public final class NetworkFunctionSkuRoleDetailsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionSkuRoleDetailsInner.class);
-
     /*
      * The name of the network function role.
      */

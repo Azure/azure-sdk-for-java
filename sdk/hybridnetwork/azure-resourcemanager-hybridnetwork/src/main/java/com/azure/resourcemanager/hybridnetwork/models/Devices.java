@@ -54,7 +54,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified device.
+     * @return information about the specified device along with {@link Response}.
      */
     Response<Device> getByResourceGroupWithResponse(String resourceGroupName, String deviceName, Context context);
 
@@ -63,7 +63,7 @@ public interface Devices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for devices API service call.
+     * @return response for devices API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Device> list();
 
@@ -74,7 +74,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for devices API service call.
+     * @return response for devices API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Device> list(Context context);
 
@@ -85,7 +85,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for devices API service call.
+     * @return response for devices API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Device> listByResourceGroup(String resourceGroupName);
 
@@ -97,7 +97,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for devices API service call.
+     * @return response for devices API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Device> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -122,7 +122,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device registration key.
+     * @return the device registration key along with {@link Response}.
      */
     Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(
         String resourceGroupName, String deviceName, Context context);
@@ -134,7 +134,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified device.
+     * @return information about the specified device along with {@link Response}.
      */
     Device getById(String id);
 
@@ -146,7 +146,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified device.
+     * @return information about the specified device along with {@link Response}.
      */
     Response<Device> getByIdWithResponse(String id, Context context);
 

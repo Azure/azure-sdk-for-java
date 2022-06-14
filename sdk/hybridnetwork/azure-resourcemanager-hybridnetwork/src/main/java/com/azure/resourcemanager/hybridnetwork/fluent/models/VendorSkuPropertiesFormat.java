@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionTemplate;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionType;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.SkuDeploymentMode;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sku properties. */
 @Fluent
 public final class VendorSkuPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorSkuPropertiesFormat.class);
-
     /*
      * The provisioning state of the vendor sku sub resource.
      */

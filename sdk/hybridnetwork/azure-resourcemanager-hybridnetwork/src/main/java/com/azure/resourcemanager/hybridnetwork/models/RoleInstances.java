@@ -116,7 +116,7 @@ public interface RoleInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the information of role instance of vendor network function.
+     * @return the information of role instance of vendor network function along with {@link Response}.
      */
     Response<RoleInstance> getWithResponse(
         String locationName, String vendorName, String serviceKey, String roleInstanceName, Context context);
@@ -130,7 +130,7 @@ public interface RoleInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of role instances of vendor network function.
+     * @return list of role instances of vendor network function as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RoleInstance> list(String locationName, String vendorName, String serviceKey);
 
@@ -144,7 +144,7 @@ public interface RoleInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of role instances of vendor network function.
+     * @return list of role instances of vendor network function as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RoleInstance> list(String locationName, String vendorName, String serviceKey, Context context);
 }

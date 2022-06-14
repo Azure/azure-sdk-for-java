@@ -102,7 +102,11 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
         return fromString(name, VirtualMachineSizeTypes.class);
     }
 
-    /** @return known VirtualMachineSizeTypes values. */
+    /**
+     * Gets known VirtualMachineSizeTypes values.
+     *
+     * @return known VirtualMachineSizeTypes values.
+     */
     public static Collection<VirtualMachineSizeTypes> values() {
         return values(VirtualMachineSizeTypes.class);
     }

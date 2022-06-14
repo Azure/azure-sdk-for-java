@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SshPublicKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKey.class);
-
     /*
      * Specifies the full path on the created VM where ssh public key is
      * stored. If the file already exists, the specified key is appended to the

@@ -4,24 +4,27 @@
 
 package com.azure.resourcemanager.hybridnetwork.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.hybridnetwork.models.AzureStackEdgeFormat;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Device properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "deviceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "deviceType",
+    defaultImpl = DevicePropertiesFormat.class)
 @JsonTypeName("DevicePropertiesFormat")
-@Fluent
-public final class DevicePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DevicePropertiesFormat.class);
-
+@JsonSubTypes({@JsonSubTypes.Type(name = "AzureStackEdge", value = AzureStackEdgeFormat.class)})
+@Immutable
+public class DevicePropertiesFormat {
     /*
      * The current device status.
      */
@@ -33,13 +36,6 @@ public final class DevicePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
-
-    /*
-     * The reference to the Azure stack edge device. Once set, it cannot be
-     * updated.
-     */
-    @JsonProperty(value = "azureStackEdge")
-    private SubResource azureStackEdge;
 
     /*
      * The list of network functions deployed on the device.
@@ -63,26 +59,6 @@ public final class DevicePropertiesFormat {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @return the azureStackEdge value.
-     */
-    public SubResource azureStackEdge() {
-        return this.azureStackEdge;
-    }
-
-    /**
-     * Set the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @param azureStackEdge the azureStackEdge value to set.
-     * @return the DevicePropertiesFormat object itself.
-     */
-    public DevicePropertiesFormat withAzureStackEdge(SubResource azureStackEdge) {
-        this.azureStackEdge = azureStackEdge;
-        return this;
     }
 
     /**

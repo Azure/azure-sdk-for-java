@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network function role configuration. */
 @Fluent
 public final class NetworkFunctionRoleConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionRoleConfiguration.class);
-
     /*
      * The name of the network function role.
      */

@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.hybridnetwork.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorSkuInner;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionTemplate;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionType;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
+import com.azure.resourcemanager.hybridnetwork.models.SkuCredential;
 import com.azure.resourcemanager.hybridnetwork.models.SkuDeploymentMode;
 import com.azure.resourcemanager.hybridnetwork.models.SkuType;
 import com.azure.resourcemanager.hybridnetwork.models.VendorSku;
@@ -152,6 +154,14 @@ public final class VendorSkuImpl implements VendorSku, VendorSku.Definition, Ven
         this.innerObject =
             serviceManager.serviceClient().getVendorSkus().getWithResponse(vendorName, skuName, context).getValue();
         return this;
+    }
+
+    public SkuCredential listCredential() {
+        return serviceManager.vendorSkus().listCredential(vendorName, skuName);
+    }
+
+    public Response<SkuCredential> listCredentialWithResponse(Context context) {
+        return serviceManager.vendorSkus().listCredentialWithResponse(vendorName, skuName, context);
     }
 
     public VendorSkuImpl withSkuType(SkuType skuType) {

@@ -8,10 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
 import com.azure.resourcemanager.hybridnetwork.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +17,6 @@ import java.util.Map;
 /** Device resource. */
 @Fluent
 public final class DeviceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceInner.class);
-
     /*
      * Device properties.
      */
@@ -81,29 +77,6 @@ public final class DeviceInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @return the azureStackEdge value.
-     */
-    public SubResource azureStackEdge() {
-        return this.innerProperties() == null ? null : this.innerProperties().azureStackEdge();
-    }
-
-    /**
-     * Set the azureStackEdge property: The reference to the Azure stack edge device. Once set, it cannot be updated.
-     *
-     * @param azureStackEdge the azureStackEdge value to set.
-     * @return the DeviceInner object itself.
-     */
-    public DeviceInner withAzureStackEdge(SubResource azureStackEdge) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DevicePropertiesFormat();
-        }
-        this.innerProperties().withAzureStackEdge(azureStackEdge);
-        return this;
     }
 
     /**

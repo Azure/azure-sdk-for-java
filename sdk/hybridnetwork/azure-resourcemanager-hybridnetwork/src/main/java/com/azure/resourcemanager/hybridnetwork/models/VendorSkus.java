@@ -54,7 +54,7 @@ public interface VendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sku.
+     * @return information about the specified sku along with {@link Response}.
      */
     Response<VendorSku> getWithResponse(String vendorName, String skuName, Context context);
 
@@ -65,7 +65,7 @@ public interface VendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list vendor sku API service call.
+     * @return response for list vendor sku API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VendorSku> list(String vendorName);
 
@@ -77,9 +77,34 @@ public interface VendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list vendor sku API service call.
+     * @return response for list vendor sku API service call as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VendorSku> list(String vendorName, Context context);
+
+    /**
+     * Generate credentials for publishing SKU images.
+     *
+     * @param vendorName The name of the vendor.
+     * @param skuName The name of the sku.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Sku credential definition.
+     */
+    SkuCredential listCredential(String vendorName, String skuName);
+
+    /**
+     * Generate credentials for publishing SKU images.
+     *
+     * @param vendorName The name of the vendor.
+     * @param skuName The name of the sku.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Sku credential definition along with {@link Response}.
+     */
+    Response<SkuCredential> listCredentialWithResponse(String vendorName, String skuName, Context context);
 
     /**
      * Gets information about the specified sku.
@@ -88,7 +113,7 @@ public interface VendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sku.
+     * @return information about the specified sku along with {@link Response}.
      */
     VendorSku getById(String id);
 
@@ -100,7 +125,7 @@ public interface VendorSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified sku.
+     * @return information about the specified sku along with {@link Response}.
      */
     Response<VendorSku> getByIdWithResponse(String id, Context context);
 

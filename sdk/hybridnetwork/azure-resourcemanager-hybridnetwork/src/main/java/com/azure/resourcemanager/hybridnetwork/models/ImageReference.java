@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The image reference properties. */
 @Fluent
 public final class ImageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
-
     /*
      * The image publisher.
      */

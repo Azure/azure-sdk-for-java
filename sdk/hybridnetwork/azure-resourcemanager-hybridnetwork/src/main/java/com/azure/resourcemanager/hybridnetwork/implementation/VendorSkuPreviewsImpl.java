@@ -13,10 +13,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.VendorSkuPreviewsClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.PreviewSubscriptionInner;
 import com.azure.resourcemanager.hybridnetwork.models.PreviewSubscription;
 import com.azure.resourcemanager.hybridnetwork.models.VendorSkuPreviews;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VendorSkuPreviewsImpl implements VendorSkuPreviews {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VendorSkuPreviewsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VendorSkuPreviewsImpl.class);
 
     private final VendorSkuPreviewsClient innerClient;
 
@@ -74,21 +73,21 @@ public final class VendorSkuPreviewsImpl implements VendorSkuPreviews {
     public PreviewSubscription getById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
         }
         String previewSubscription = Utils.getValueFromIdByName(id, "previewSubscriptions");
         if (previewSubscription == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -102,21 +101,21 @@ public final class VendorSkuPreviewsImpl implements VendorSkuPreviews {
     public Response<PreviewSubscription> getByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
         }
         String previewSubscription = Utils.getValueFromIdByName(id, "previewSubscriptions");
         if (previewSubscription == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,21 +129,21 @@ public final class VendorSkuPreviewsImpl implements VendorSkuPreviews {
     public void deleteById(String id) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
         }
         String previewSubscription = Utils.getValueFromIdByName(id, "previewSubscriptions");
         if (previewSubscription == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,21 +157,21 @@ public final class VendorSkuPreviewsImpl implements VendorSkuPreviews {
     public void deleteByIdWithResponse(String id, Context context) {
         String vendorName = Utils.getValueFromIdByName(id, "vendors");
         if (vendorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendors'.", id)));
         }
         String skuName = Utils.getValueFromIdByName(id, "vendorSkus");
         if (skuName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vendorSkus'.", id)));
         }
         String previewSubscription = Utils.getValueFromIdByName(id, "previewSubscriptions");
         if (previewSubscription == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

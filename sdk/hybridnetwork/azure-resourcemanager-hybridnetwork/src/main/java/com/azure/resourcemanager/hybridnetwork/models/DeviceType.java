@@ -27,7 +27,11 @@ public final class DeviceType extends ExpandableStringEnum<DeviceType> {
         return fromString(name, DeviceType.class);
     }
 
-    /** @return known DeviceType values. */
+    /**
+     * Gets known DeviceType values.
+     *
+     * @return known DeviceType values.
+     */
     public static Collection<DeviceType> values() {
         return values(DeviceType.class);
     }

@@ -8,12 +8,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -47,15 +50,20 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Entry point to HybridNetworkManager. The definitions in this swagger specification will be used to manage the Hybrid
  * Network resources.
  */
 public final class HybridNetworkManager {
+    private Devices devices;
+
     private NetworkFunctions networkFunctions;
 
-    private Devices devices;
+    private NetworkFunctionVendors networkFunctionVendors;
+
+    private NetworkFunctionVendorSkus networkFunctionVendorSkus;
 
     private Operations operations;
 
@@ -64,10 +72,6 @@ public final class HybridNetworkManager {
     private VendorSkus vendorSkus;
 
     private VendorSkuPreviews vendorSkuPreviews;
-
-    private NetworkFunctionVendors networkFunctionVendors;
-
-    private NetworkFunctionVendorSkus networkFunctionVendorSkus;
 
     private VendorNetworkFunctions vendorNetworkFunctions;
 
@@ -101,6 +105,19 @@ public final class HybridNetworkManager {
     }
 
     /**
+     * Creates an instance of HybridNetwork service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the HybridNetwork service API instance.
+     */
+    public static HybridNetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new HybridNetworkManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create HybridNetworkManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -111,13 +128,14 @@ public final class HybridNetworkManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -179,15 +197,30 @@ public final class HybridNetworkManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -227,16 +260,34 @@ public final class HybridNetworkManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -248,15 +299,11 @@ public final class HybridNetworkManager {
         }
     }
 
-    /** @return Resource collection API of NetworkFunctions. */
-    public NetworkFunctions networkFunctions() {
-        if (this.networkFunctions == null) {
-            this.networkFunctions = new NetworkFunctionsImpl(clientObject.getNetworkFunctions(), this);
-        }
-        return networkFunctions;
-    }
-
-    /** @return Resource collection API of Devices. */
+    /**
+     * Gets the resource collection API of Devices. It manages Device.
+     *
+     * @return Resource collection API of Devices.
+     */
     public Devices devices() {
         if (this.devices == null) {
             this.devices = new DevicesImpl(clientObject.getDevices(), this);
@@ -264,39 +311,23 @@ public final class HybridNetworkManager {
         return devices;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /**
+     * Gets the resource collection API of NetworkFunctions. It manages NetworkFunction.
+     *
+     * @return Resource collection API of NetworkFunctions.
+     */
+    public NetworkFunctions networkFunctions() {
+        if (this.networkFunctions == null) {
+            this.networkFunctions = new NetworkFunctionsImpl(clientObject.getNetworkFunctions(), this);
         }
-        return operations;
+        return networkFunctions;
     }
 
-    /** @return Resource collection API of Vendors. */
-    public Vendors vendors() {
-        if (this.vendors == null) {
-            this.vendors = new VendorsImpl(clientObject.getVendors(), this);
-        }
-        return vendors;
-    }
-
-    /** @return Resource collection API of VendorSkus. */
-    public VendorSkus vendorSkus() {
-        if (this.vendorSkus == null) {
-            this.vendorSkus = new VendorSkusImpl(clientObject.getVendorSkus(), this);
-        }
-        return vendorSkus;
-    }
-
-    /** @return Resource collection API of VendorSkuPreviews. */
-    public VendorSkuPreviews vendorSkuPreviews() {
-        if (this.vendorSkuPreviews == null) {
-            this.vendorSkuPreviews = new VendorSkuPreviewsImpl(clientObject.getVendorSkuPreviews(), this);
-        }
-        return vendorSkuPreviews;
-    }
-
-    /** @return Resource collection API of NetworkFunctionVendors. */
+    /**
+     * Gets the resource collection API of NetworkFunctionVendors.
+     *
+     * @return Resource collection API of NetworkFunctionVendors.
+     */
     public NetworkFunctionVendors networkFunctionVendors() {
         if (this.networkFunctionVendors == null) {
             this.networkFunctionVendors =
@@ -305,7 +336,11 @@ public final class HybridNetworkManager {
         return networkFunctionVendors;
     }
 
-    /** @return Resource collection API of NetworkFunctionVendorSkus. */
+    /**
+     * Gets the resource collection API of NetworkFunctionVendorSkus.
+     *
+     * @return Resource collection API of NetworkFunctionVendorSkus.
+     */
     public NetworkFunctionVendorSkus networkFunctionVendorSkus() {
         if (this.networkFunctionVendorSkus == null) {
             this.networkFunctionVendorSkus =
@@ -314,7 +349,59 @@ public final class HybridNetworkManager {
         return networkFunctionVendorSkus;
     }
 
-    /** @return Resource collection API of VendorNetworkFunctions. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
+     * Gets the resource collection API of Vendors. It manages Vendor.
+     *
+     * @return Resource collection API of Vendors.
+     */
+    public Vendors vendors() {
+        if (this.vendors == null) {
+            this.vendors = new VendorsImpl(clientObject.getVendors(), this);
+        }
+        return vendors;
+    }
+
+    /**
+     * Gets the resource collection API of VendorSkus. It manages VendorSku.
+     *
+     * @return Resource collection API of VendorSkus.
+     */
+    public VendorSkus vendorSkus() {
+        if (this.vendorSkus == null) {
+            this.vendorSkus = new VendorSkusImpl(clientObject.getVendorSkus(), this);
+        }
+        return vendorSkus;
+    }
+
+    /**
+     * Gets the resource collection API of VendorSkuPreviews. It manages PreviewSubscription.
+     *
+     * @return Resource collection API of VendorSkuPreviews.
+     */
+    public VendorSkuPreviews vendorSkuPreviews() {
+        if (this.vendorSkuPreviews == null) {
+            this.vendorSkuPreviews = new VendorSkuPreviewsImpl(clientObject.getVendorSkuPreviews(), this);
+        }
+        return vendorSkuPreviews;
+    }
+
+    /**
+     * Gets the resource collection API of VendorNetworkFunctions. It manages VendorNetworkFunction.
+     *
+     * @return Resource collection API of VendorNetworkFunctions.
+     */
     public VendorNetworkFunctions vendorNetworkFunctions() {
         if (this.vendorNetworkFunctions == null) {
             this.vendorNetworkFunctions =
@@ -323,7 +410,11 @@ public final class HybridNetworkManager {
         return vendorNetworkFunctions;
     }
 
-    /** @return Resource collection API of RoleInstances. */
+    /**
+     * Gets the resource collection API of RoleInstances.
+     *
+     * @return Resource collection API of RoleInstances.
+     */
     public RoleInstances roleInstances() {
         if (this.roleInstances == null) {
             this.roleInstances = new RoleInstancesImpl(clientObject.getRoleInstances(), this);

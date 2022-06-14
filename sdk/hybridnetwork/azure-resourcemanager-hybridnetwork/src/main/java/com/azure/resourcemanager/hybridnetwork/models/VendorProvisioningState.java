@@ -39,7 +39,11 @@ public final class VendorProvisioningState extends ExpandableStringEnum<VendorPr
         return fromString(name, VendorProvisioningState.class);
     }
 
-    /** @return known VendorProvisioningState values. */
+    /**
+     * Gets known VendorProvisioningState values.
+     *
+     * @return known VendorProvisioningState values.
+     */
     public static Collection<VendorProvisioningState> values() {
         return values(VendorProvisioningState.class);
     }

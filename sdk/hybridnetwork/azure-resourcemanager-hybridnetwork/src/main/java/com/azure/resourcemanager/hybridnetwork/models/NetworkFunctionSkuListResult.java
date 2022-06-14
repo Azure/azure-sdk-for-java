@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.SkuOverviewInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of available network function skus. */
 @Fluent
 public final class NetworkFunctionSkuListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionSkuListResult.class);
-
     /*
      * The network function vendor sku overview properties.
      */

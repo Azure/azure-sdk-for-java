@@ -33,7 +33,11 @@ public final class VMSwitchType extends ExpandableStringEnum<VMSwitchType> {
         return fromString(name, VMSwitchType.class);
     }
 
-    /** @return known VMSwitchType values. */
+    /**
+     * Gets known VMSwitchType values.
+     *
+     * @return known VMSwitchType values.
+     */
     public static Collection<VMSwitchType> values() {
         return values(VMSwitchType.class);
     }

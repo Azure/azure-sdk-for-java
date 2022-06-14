@@ -30,7 +30,11 @@ public final class NetworkFunctionType extends ExpandableStringEnum<NetworkFunct
         return fromString(name, NetworkFunctionType.class);
     }
 
-    /** @return known NetworkFunctionType values. */
+    /**
+     * Gets known NetworkFunctionType values.
+     *
+     * @return known NetworkFunctionType values.
+     */
     public static Collection<NetworkFunctionType> values() {
         return values(NetworkFunctionType.class);
     }

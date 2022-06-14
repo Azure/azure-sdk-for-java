@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridnetwork.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.VendorSkuInner;
@@ -341,4 +342,24 @@ public interface VendorSku {
      * @return the refreshed resource.
      */
     VendorSku refresh(Context context);
+
+    /**
+     * Generate credentials for publishing SKU images.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Sku credential definition.
+     */
+    SkuCredential listCredential();
+
+    /**
+     * Generate credentials for publishing SKU images.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Sku credential definition along with {@link Response}.
+     */
+    Response<SkuCredential> listCredentialWithResponse(Context context);
 }

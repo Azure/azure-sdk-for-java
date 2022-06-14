@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionInner;
+import com.azure.resourcemanager.hybridnetwork.models.ExecuteRequestParameters;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunction;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionUserConfiguration;
 import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
@@ -114,6 +115,10 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NetworkFunctionInner innerModel() {
         return this.innerObject;
     }
@@ -208,6 +213,14 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
                 .getByResourceGroupWithResponse(resourceGroupName, networkFunctionName, context)
                 .getValue();
         return this;
+    }
+
+    public void executeRequest(ExecuteRequestParameters parameters) {
+        serviceManager.networkFunctions().executeRequest(resourceGroupName, networkFunctionName, parameters);
+    }
+
+    public void executeRequest(ExecuteRequestParameters parameters, Context context) {
+        serviceManager.networkFunctions().executeRequest(resourceGroupName, networkFunctionName, parameters, context);
     }
 
     public NetworkFunctionImpl withRegion(Region location) {

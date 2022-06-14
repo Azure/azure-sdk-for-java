@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the role instance. */
 @Fluent
 public final class NetworkFunctionUserConfigurationOsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionUserConfigurationOsProfile.class);
-
     /*
      * Specifies a base-64 encoded string of custom data. The base-64 encoded
      * string is decoded to a binary array that is saved as a file on the

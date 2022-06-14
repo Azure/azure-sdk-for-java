@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionVendorInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network function vendor list result. */
 @Fluent
 public final class NetworkFunctionVendorListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorListResult.class);
-
     /*
      * A list of available network function vendors and skus.
      */

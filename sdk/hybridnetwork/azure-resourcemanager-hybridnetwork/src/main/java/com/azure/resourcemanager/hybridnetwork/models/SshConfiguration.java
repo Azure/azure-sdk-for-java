@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSH configuration for Linux based VMs running on Azure. */
 @Fluent
 public final class SshConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshConfiguration.class);
-
     /*
      * The list of SSH public keys used to authenticate with linux based VMs.
      */
