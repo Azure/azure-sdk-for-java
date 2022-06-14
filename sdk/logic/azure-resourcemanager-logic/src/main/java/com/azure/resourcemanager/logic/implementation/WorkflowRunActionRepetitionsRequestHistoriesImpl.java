@@ -13,12 +13,10 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunActionRepetitionsReques
 import com.azure.resourcemanager.logic.fluent.models.RequestHistoryInner;
 import com.azure.resourcemanager.logic.models.RequestHistory;
 import com.azure.resourcemanager.logic.models.WorkflowRunActionRepetitionsRequestHistories;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunActionRepetitionsRequestHistoriesImpl
     implements WorkflowRunActionRepetitionsRequestHistories {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionRepetitionsRequestHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionRepetitionsRequestHistoriesImpl.class);
 
     private final WorkflowRunActionRepetitionsRequestHistoriesClient innerClient;
 

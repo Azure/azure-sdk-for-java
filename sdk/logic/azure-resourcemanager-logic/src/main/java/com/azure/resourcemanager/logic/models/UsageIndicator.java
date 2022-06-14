@@ -33,7 +33,11 @@ public final class UsageIndicator extends ExpandableStringEnum<UsageIndicator> {
         return fromString(name, UsageIndicator.class);
     }
 
-    /** @return known UsageIndicator values. */
+    /**
+     * Gets known UsageIndicator values.
+     *
+     * @return known UsageIndicator values.
+     */
     public static Collection<UsageIndicator> values() {
         return values(UsageIndicator.class);
     }

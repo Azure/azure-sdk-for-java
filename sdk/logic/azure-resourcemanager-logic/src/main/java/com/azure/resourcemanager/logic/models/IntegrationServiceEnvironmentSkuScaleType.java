@@ -31,7 +31,11 @@ public final class IntegrationServiceEnvironmentSkuScaleType
         return fromString(name, IntegrationServiceEnvironmentSkuScaleType.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentSkuScaleType values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentSkuScaleType values.
+     *
+     * @return known IntegrationServiceEnvironmentSkuScaleType values.
+     */
     public static Collection<IntegrationServiceEnvironmentSkuScaleType> values() {
         return values(IntegrationServiceEnvironmentSkuScaleType.class);
     }

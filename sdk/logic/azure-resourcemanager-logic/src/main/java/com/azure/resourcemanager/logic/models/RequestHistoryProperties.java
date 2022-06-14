@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The request history. */
 @Fluent
 public final class RequestHistoryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestHistoryProperties.class);
-
     /*
      * The time the request started.
      */

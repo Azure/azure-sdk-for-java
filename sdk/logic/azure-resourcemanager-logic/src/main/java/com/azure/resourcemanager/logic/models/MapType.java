@@ -36,7 +36,11 @@ public final class MapType extends ExpandableStringEnum<MapType> {
         return fromString(name, MapType.class);
     }
 
-    /** @return known MapType values. */
+    /**
+     * Gets known MapType values.
+     *
+     * @return known MapType values.
+     */
     public static Collection<MapType> values() {
         return values(MapType.class);
     }

@@ -19,7 +19,7 @@ public interface WorkflowTriggerHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow trigger histories.
+     * @return a list of workflow trigger histories as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowTriggerHistory> list(String resourceGroupName, String workflowName, String triggerName);
 
@@ -36,7 +36,7 @@ public interface WorkflowTriggerHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow trigger histories.
+     * @return a list of workflow trigger histories as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowTriggerHistory> list(
         String resourceGroupName, String workflowName, String triggerName, Integer top, String filter, Context context);
@@ -68,7 +68,7 @@ public interface WorkflowTriggerHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger history.
+     * @return a workflow trigger history along with {@link Response}.
      */
     Response<WorkflowTriggerHistory> getWithResponse(
         String resourceGroupName, String workflowName, String triggerName, String historyName, Context context);
@@ -99,7 +99,7 @@ public interface WorkflowTriggerHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> resubmitWithResponse(
         String resourceGroupName, String workflowName, String triggerName, String historyName, Context context);

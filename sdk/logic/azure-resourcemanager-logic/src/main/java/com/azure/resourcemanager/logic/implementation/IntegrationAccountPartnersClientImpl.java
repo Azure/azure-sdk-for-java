@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountPartnersClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountPartnerInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountPartnersClient. */
 public final class IntegrationAccountPartnersClientImpl implements IntegrationAccountPartnersClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountPartnersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountPartnersService service;
 
@@ -171,7 +168,8 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountPartnerInner>> listSinglePageAsync(
@@ -235,7 +233,8 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountPartnerInner>> listSinglePageAsync(
@@ -295,7 +294,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountPartnerInner> listAsync(
@@ -313,7 +312,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountPartnerInner> listAsync(
@@ -336,7 +335,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountPartnerInner> listAsync(
@@ -354,7 +353,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountPartnerInner> list(String resourceGroupName, String integrationAccountName) {
@@ -374,7 +373,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountPartnerInner> list(
@@ -391,7 +390,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountPartnerInner>> getWithResponseAsync(
@@ -447,7 +446,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountPartnerInner>> getWithResponseAsync(
@@ -499,20 +498,13 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountPartnerInner> getAsync(
         String resourceGroupName, String integrationAccountName, String partnerName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, partnerName)
-            .flatMap(
-                (Response<IntegrationAccountPartnerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -542,7 +534,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountPartnerInner> getWithResponse(
@@ -560,7 +552,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account partner.
+     * @return the integration account partner along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountPartnerInner>> createOrUpdateWithResponseAsync(
@@ -626,7 +618,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account partner.
+     * @return the integration account partner along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountPartnerInner>> createOrUpdateWithResponseAsync(
@@ -689,7 +681,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account partner.
+     * @return the integration account partner on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountPartnerInner> createOrUpdateAsync(
@@ -698,14 +690,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
         String partnerName,
         IntegrationAccountPartnerInner partner) {
         return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, partnerName, partner)
-            .flatMap(
-                (Response<IntegrationAccountPartnerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -740,7 +725,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account partner.
+     * @return the integration account partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountPartnerInner> createOrUpdateWithResponse(
@@ -762,7 +747,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -818,7 +803,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -870,12 +855,12 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, partnerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -903,7 +888,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -921,7 +906,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -989,7 +974,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -1054,7 +1039,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(
@@ -1064,14 +1049,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
         GetCallbackUrlParameters listContentCallbackUrl) {
         return listContentCallbackUrlWithResponseAsync(
                 resourceGroupName, integrationAccountName, partnerName, listContentCallbackUrl)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1108,7 +1086,7 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
@@ -1129,7 +1107,8 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account partners.
+     * @return the list of integration account partners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountPartnerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1165,7 +1144,8 @@ public final class IntegrationAccountPartnersClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account partners.
+     * @return the list of integration account partners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountPartnerInner>> listNextSinglePageAsync(

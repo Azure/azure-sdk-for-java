@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact agreement validation settings. */
 @Fluent
 public final class EdifactValidationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactValidationSettings.class);
-
     /*
      * The value indicating whether to validate character set in the message.
      */
@@ -301,10 +298,12 @@ public final class EdifactValidationSettings {
      */
     public void validate() {
         if (trailingSeparatorPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trailingSeparatorPolicy in model EdifactValidationSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactValidationSettings.class);
 }

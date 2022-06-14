@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The API deployment parameters metadata. */
 @Fluent
 public final class ApiDeploymentParameterMetadataSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiDeploymentParameterMetadataSet.class);
-
     /*
      * The package content link parameter.
      */

@@ -5,197 +5,31 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMapPropertiesParametersSchema;
 import com.azure.resourcemanager.logic.models.MapType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The integration account map. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountMapInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountMapInner.class);
-
+public final class IntegrationAccountMapInner extends Resource {
     /*
-     * The map type.
+     * The integration account map properties.
      */
-    @JsonProperty(value = "properties.mapType", required = true)
-    private MapType mapType;
-
-    /*
-     * The parameters schema of integration account map.
-     */
-    @JsonProperty(value = "properties.parametersSchema")
-    private IntegrationAccountMapPropertiesParametersSchema parametersSchema;
-
-    /*
-     * The created time.
-     */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The content.
-     */
-    @JsonProperty(value = "properties.content")
-    private String content;
-
-    /*
-     * The content type.
-     */
-    @JsonProperty(value = "properties.contentType")
-    private String contentType;
-
-    /*
-     * The content link.
-     */
-    @JsonProperty(value = "properties.contentLink", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentLink contentLink;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
+    @JsonProperty(value = "properties", required = true)
+    private IntegrationAccountMapProperties innerProperties = new IntegrationAccountMapProperties();
 
     /**
-     * Get the mapType property: The map type.
+     * Get the innerProperties property: The integration account map properties.
      *
-     * @return the mapType value.
+     * @return the innerProperties value.
      */
-    public MapType mapType() {
-        return this.mapType;
-    }
-
-    /**
-     * Set the mapType property: The map type.
-     *
-     * @param mapType the mapType value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withMapType(MapType mapType) {
-        this.mapType = mapType;
-        return this;
-    }
-
-    /**
-     * Get the parametersSchema property: The parameters schema of integration account map.
-     *
-     * @return the parametersSchema value.
-     */
-    public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
-        return this.parametersSchema;
-    }
-
-    /**
-     * Set the parametersSchema property: The parameters schema of integration account map.
-     *
-     * @param parametersSchema the parametersSchema value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withParametersSchema(
-        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
-        this.parametersSchema = parametersSchema;
-        return this;
-    }
-
-    /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
-     */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the content property: The content.
-     *
-     * @return the content value.
-     */
-    public String content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
-     * Get the contentType property: The content type.
-     *
-     * @return the contentType value.
-     */
-    public String contentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The content type.
-     *
-     * @param contentType the contentType value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Get the contentLink property: The content link.
-     *
-     * @return the contentLink value.
-     */
-    public ContentLink contentLink() {
-        return this.contentLink;
-    }
-
-    /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
+    private IntegrationAccountMapProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -213,22 +47,163 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
+     * Get the mapType property: The map type.
+     *
+     * @return the mapType value.
+     */
+    public MapType mapType() {
+        return this.innerProperties() == null ? null : this.innerProperties().mapType();
+    }
+
+    /**
+     * Set the mapType property: The map type.
+     *
+     * @param mapType the mapType value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withMapType(MapType mapType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withMapType(mapType);
+        return this;
+    }
+
+    /**
+     * Get the parametersSchema property: The parameters schema of integration account map.
+     *
+     * @return the parametersSchema value.
+     */
+    public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
+        return this.innerProperties() == null ? null : this.innerProperties().parametersSchema();
+    }
+
+    /**
+     * Set the parametersSchema property: The parameters schema of integration account map.
+     *
+     * @param parametersSchema the parametersSchema value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withParametersSchema(
+        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withParametersSchema(parametersSchema);
+        return this;
+    }
+
+    /**
+     * Get the createdTime property: The created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the content property: The content.
+     *
+     * @return the content value.
+     */
+    public String content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The content.
+     *
+     * @param content the content value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withContent(String content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The content type.
+     *
+     * @return the contentType value.
+     */
+    public String contentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentType();
+    }
+
+    /**
+     * Set the contentType property: The content type.
+     *
+     * @param contentType the contentType value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withContentType(String contentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withContentType(contentType);
+        return this;
+    }
+
+    /**
+     * Get the contentLink property: The content link.
+     *
+     * @return the contentLink value.
+     */
+    public ContentLink contentLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentLink();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     *
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mapType() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property mapType in model IntegrationAccountMapInner"));
-        }
-        if (parametersSchema() != null) {
-            parametersSchema().validate();
-        }
-        if (contentLink() != null) {
-            contentLink().validate();
+                        "Missing required property innerProperties in model IntegrationAccountMapInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountMapInner.class);
 }

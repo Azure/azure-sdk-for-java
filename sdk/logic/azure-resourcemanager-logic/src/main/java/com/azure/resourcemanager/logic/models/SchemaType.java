@@ -27,7 +27,11 @@ public final class SchemaType extends ExpandableStringEnum<SchemaType> {
         return fromString(name, SchemaType.class);
     }
 
-    /** @return known SchemaType values. */
+    /**
+     * Gets known SchemaType values.
+     *
+     * @return known SchemaType values.
+     */
     public static Collection<SchemaType> values() {
         return values(SchemaType.class);
     }

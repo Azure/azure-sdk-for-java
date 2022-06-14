@@ -48,7 +48,11 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
         return fromString(name, ParameterType.class);
     }
 
-    /** @return known ParameterType values. */
+    /**
+     * Gets known ParameterType values.
+     *
+     * @return known ParameterType values.
+     */
     public static Collection<ParameterType> values() {
         return values(ParameterType.class);
     }

@@ -33,7 +33,11 @@ public final class X12CharacterSet extends ExpandableStringEnum<X12CharacterSet>
         return fromString(name, X12CharacterSet.class);
     }
 
-    /** @return known X12CharacterSet values. */
+    /**
+     * Gets known X12CharacterSet values.
+     *
+     * @return known X12CharacterSet values.
+     */
     public static Collection<X12CharacterSet> values() {
         return values(X12CharacterSet.class);
     }

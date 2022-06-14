@@ -57,6 +57,10 @@ public final class AssemblyDefinitionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AssemblyDefinitionInner innerModel() {
         return this.innerObject;
     }

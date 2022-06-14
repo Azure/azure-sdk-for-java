@@ -39,7 +39,11 @@ public final class SigningAlgorithm extends ExpandableStringEnum<SigningAlgorith
         return fromString(name, SigningAlgorithm.class);
     }
 
-    /** @return known SigningAlgorithm values. */
+    /**
+     * Gets known SigningAlgorithm values.
+     *
+     * @return known SigningAlgorithm values.
+     */
     public static Collection<SigningAlgorithm> values() {
         return values(SigningAlgorithm.class);
     }

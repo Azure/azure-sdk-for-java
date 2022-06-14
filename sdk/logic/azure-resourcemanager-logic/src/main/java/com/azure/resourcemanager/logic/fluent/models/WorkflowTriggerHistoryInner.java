@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.Correlation;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The workflow trigger history. */
-@JsonFlatten
 @Fluent
-public class WorkflowTriggerHistoryInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerHistoryInner.class);
+public final class WorkflowTriggerHistoryInner extends SubResource {
+    /*
+     * Gets the workflow trigger history properties.
+     */
+    @JsonProperty(value = "properties")
+    private WorkflowTriggerHistoryProperties innerProperties;
 
     /*
      * Gets the workflow trigger history name.
@@ -34,77 +34,14 @@ public class WorkflowTriggerHistoryInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Gets the start time.
+    /**
+     * Get the innerProperties property: Gets the workflow trigger history properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * Gets the end time.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * The scheduled time.
-     */
-    @JsonProperty(value = "properties.scheduledTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime scheduledTime;
-
-    /*
-     * Gets the status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowStatus status;
-
-    /*
-     * Gets the code.
-     */
-    @JsonProperty(value = "properties.code", access = JsonProperty.Access.WRITE_ONLY)
-    private String code;
-
-    /*
-     * Gets the error.
-     */
-    @JsonProperty(value = "properties.error", access = JsonProperty.Access.WRITE_ONLY)
-    private Object error;
-
-    /*
-     * Gets the tracking id.
-     */
-    @JsonProperty(value = "properties.trackingId", access = JsonProperty.Access.WRITE_ONLY)
-    private String trackingId;
-
-    /*
-     * The run correlation.
-     */
-    @JsonProperty(value = "properties.correlation")
-    private Correlation correlation;
-
-    /*
-     * Gets the link to input parameters.
-     */
-    @JsonProperty(value = "properties.inputsLink", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentLink inputsLink;
-
-    /*
-     * Gets the link to output parameters.
-     */
-    @JsonProperty(value = "properties.outputsLink", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentLink outputsLink;
-
-    /*
-     * The value indicating whether trigger was fired.
-     */
-    @JsonProperty(value = "properties.fired", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean fired;
-
-    /*
-     * Gets the reference to workflow run.
-     */
-    @JsonProperty(value = "properties.run", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference run;
+    private WorkflowTriggerHistoryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets the workflow trigger history name.
@@ -124,13 +61,20 @@ public class WorkflowTriggerHistoryInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public WorkflowTriggerHistoryInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the startTime property: Gets the start time.
      *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -139,7 +83,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -148,7 +92,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
-        return this.scheduledTime;
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledTime();
     }
 
     /**
@@ -157,7 +101,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the status value.
      */
     public WorkflowStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -166,7 +110,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the code value.
      */
     public String code() {
-        return this.code;
+        return this.innerProperties() == null ? null : this.innerProperties().code();
     }
 
     /**
@@ -175,7 +119,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the error value.
      */
     public Object error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -184,7 +128,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the trackingId value.
      */
     public String trackingId() {
-        return this.trackingId;
+        return this.innerProperties() == null ? null : this.innerProperties().trackingId();
     }
 
     /**
@@ -193,7 +137,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the correlation value.
      */
     public Correlation correlation() {
-        return this.correlation;
+        return this.innerProperties() == null ? null : this.innerProperties().correlation();
     }
 
     /**
@@ -203,7 +147,10 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the WorkflowTriggerHistoryInner object itself.
      */
     public WorkflowTriggerHistoryInner withCorrelation(Correlation correlation) {
-        this.correlation = correlation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowTriggerHistoryProperties();
+        }
+        this.innerProperties().withCorrelation(correlation);
         return this;
     }
 
@@ -213,7 +160,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
-        return this.inputsLink;
+        return this.innerProperties() == null ? null : this.innerProperties().inputsLink();
     }
 
     /**
@@ -222,7 +169,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
-        return this.outputsLink;
+        return this.innerProperties() == null ? null : this.innerProperties().outputsLink();
     }
 
     /**
@@ -231,7 +178,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the fired value.
      */
     public Boolean fired() {
-        return this.fired;
+        return this.innerProperties() == null ? null : this.innerProperties().fired();
     }
 
     /**
@@ -240,14 +187,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @return the run value.
      */
     public ResourceReference run() {
-        return this.run;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WorkflowTriggerHistoryInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().run();
     }
 
     /**
@@ -256,17 +196,8 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (correlation() != null) {
-            correlation().validate();
-        }
-        if (inputsLink() != null) {
-            inputsLink().validate();
-        }
-        if (outputsLink() != null) {
-            outputsLink().validate();
-        }
-        if (run() != null) {
-            run().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.logic.fluent.models.ManagedApiInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentManagedApiInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of managed APIs. */
+/** The list of integration service environment managed APIs. */
 @Fluent
-public final class ManagedApiListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedApiListResult.class);
-
+public final class IntegrationServiceEnvironmentManagedApiListResult {
     /*
-     * The managed APIs.
+     * The integration service environment managed APIs.
      */
     @JsonProperty(value = "value")
-    private List<ManagedApiInner> value;
+    private List<IntegrationServiceEnvironmentManagedApiInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -29,21 +25,22 @@ public final class ManagedApiListResult {
     private String nextLink;
 
     /**
-     * Get the value property: The managed APIs.
+     * Get the value property: The integration service environment managed APIs.
      *
      * @return the value value.
      */
-    public List<ManagedApiInner> value() {
+    public List<IntegrationServiceEnvironmentManagedApiInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: The managed APIs.
+     * Set the value property: The integration service environment managed APIs.
      *
      * @param value the value value to set.
-     * @return the ManagedApiListResult object itself.
+     * @return the IntegrationServiceEnvironmentManagedApiListResult object itself.
      */
-    public ManagedApiListResult withValue(List<ManagedApiInner> value) {
+    public IntegrationServiceEnvironmentManagedApiListResult withValue(
+        List<IntegrationServiceEnvironmentManagedApiInner> value) {
         this.value = value;
         return this;
     }
@@ -61,9 +58,9 @@ public final class ManagedApiListResult {
      * Set the nextLink property: The URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the ManagedApiListResult object itself.
+     * @return the IntegrationServiceEnvironmentManagedApiListResult object itself.
      */
-    public ManagedApiListResult withNextLink(String nextLink) {
+    public IntegrationServiceEnvironmentManagedApiListResult withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The set trigger state action definition. */
 @Fluent
 public final class SetTriggerStateActionDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetTriggerStateActionDefinition.class);
-
     /*
      * The source.
      */
@@ -47,7 +44,7 @@ public final class SetTriggerStateActionDefinition {
      */
     public void validate() {
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property source in model SetTriggerStateActionDefinition"));
@@ -55,4 +52,6 @@ public final class SetTriggerStateActionDefinition {
             source().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SetTriggerStateActionDefinition.class);
 }

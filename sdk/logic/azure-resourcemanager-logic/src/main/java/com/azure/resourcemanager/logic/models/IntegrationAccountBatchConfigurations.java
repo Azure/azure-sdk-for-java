@@ -18,7 +18,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BatchConfiguration> list(String resourceGroupName, String integrationAccountName);
 
@@ -31,7 +31,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BatchConfiguration> list(String resourceGroupName, String integrationAccountName, Context context);
 
@@ -58,7 +58,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response}.
      */
     Response<BatchConfiguration> getWithResponse(
         String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
@@ -85,7 +85,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
@@ -97,7 +97,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response}.
      */
     BatchConfiguration getById(String id);
 
@@ -109,7 +109,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response}.
      */
     Response<BatchConfiguration> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +131,7 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowVersionsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowVersionInner;
 import com.azure.resourcemanager.logic.models.WorkflowVersionListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkflowVersionsClient. */
 public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowVersionsService service;
 
@@ -111,7 +108,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listSinglePageAsync(
@@ -171,7 +168,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listSinglePageAsync(
@@ -227,7 +224,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowVersionInner> listAsync(String resourceGroupName, String workflowName, Integer top) {
@@ -244,7 +241,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowVersionInner> listAsync(String resourceGroupName, String workflowName) {
@@ -264,7 +261,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowVersionInner> listAsync(
@@ -282,7 +279,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowVersionInner> list(String resourceGroupName, String workflowName) {
@@ -300,7 +297,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowVersionInner> list(
@@ -317,7 +314,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
+     * @return a workflow version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowVersionInner>> getWithResponseAsync(
@@ -371,7 +368,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
+     * @return a workflow version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowVersionInner>> getWithResponseAsync(
@@ -421,19 +418,12 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
+     * @return a workflow version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowVersionInner> getAsync(String resourceGroupName, String workflowName, String versionId) {
         return getWithResponseAsync(resourceGroupName, workflowName, versionId)
-            .flatMap(
-                (Response<WorkflowVersionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -462,7 +452,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
+     * @return a workflow version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowVersionInner> getWithResponse(
@@ -477,7 +467,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow versions.
+     * @return the list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listNextSinglePageAsync(String nextLink) {
@@ -513,7 +503,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow versions.
+     * @return the list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listNextSinglePageAsync(String nextLink, Context context) {

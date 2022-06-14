@@ -24,7 +24,11 @@ public final class OpenAuthenticationProviderType extends ExpandableStringEnum<O
         return fromString(name, OpenAuthenticationProviderType.class);
     }
 
-    /** @return known OpenAuthenticationProviderType values. */
+    /**
+     * Gets known OpenAuthenticationProviderType values.
+     *
+     * @return known OpenAuthenticationProviderType values.
+     */
     public static Collection<OpenAuthenticationProviderType> values() {
         return values(OpenAuthenticationProviderType.class);
     }

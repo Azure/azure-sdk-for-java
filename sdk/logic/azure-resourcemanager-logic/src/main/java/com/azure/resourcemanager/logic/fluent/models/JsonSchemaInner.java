@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON schema. */
 @Fluent
 public final class JsonSchemaInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSchemaInner.class);
-
     /*
      * The JSON title.
      */

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentSkusClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuList;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationServiceEnvironmentSkusClient.
  */
 public final class IntegrationServiceEnvironmentSkusClientImpl implements IntegrationServiceEnvironmentSkusClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationServiceEnvironmentSkusService service;
 
@@ -99,7 +96,8 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listSinglePageAsync(
@@ -159,7 +157,8 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listSinglePageAsync(
@@ -215,7 +214,7 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(
@@ -234,7 +233,7 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationServiceEnvironmentSkuDefinitionInner> listAsync(
@@ -252,7 +251,7 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(
@@ -269,7 +268,7 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environment Skus.
+     * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> list(
@@ -284,7 +283,8 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environment skus.
+     * @return the list of integration service environment skus along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listNextSinglePageAsync(
@@ -321,7 +321,8 @@ public final class IntegrationServiceEnvironmentSkusClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration service environment skus.
+     * @return the list of integration service environment skus along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationServiceEnvironmentSkuDefinitionInner>> listNextSinglePageAsync(

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.AssemblyDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of assembly definitions. */
 @Fluent
 public final class AssemblyCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssemblyCollection.class);
-
     /*
      * The value property.
      */

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The azure resource error info. */
 @Fluent
 public final class AzureResourceErrorInfo extends ErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureResourceErrorInfo.class);
-
     /*
      * The error message.
      */
@@ -83,7 +80,7 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     public void validate() {
         super.validate();
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property message in model AzureResourceErrorInfo"));
         }
@@ -91,4 +88,6 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
             details().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureResourceErrorInfo.class);
 }

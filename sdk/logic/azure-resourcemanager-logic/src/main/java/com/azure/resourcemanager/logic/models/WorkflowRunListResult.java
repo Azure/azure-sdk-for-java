@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of workflow runs. */
 @Fluent
 public final class WorkflowRunListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunListResult.class);
-
     /*
      * A list of workflow runs.
      */

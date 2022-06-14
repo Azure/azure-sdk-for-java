@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account sku. */
 @Fluent
 public final class IntegrationAccountSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSku.class);
-
     /*
      * The sku name.
      */
@@ -47,9 +44,11 @@ public final class IntegrationAccountSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model IntegrationAccountSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSku.class);
 }

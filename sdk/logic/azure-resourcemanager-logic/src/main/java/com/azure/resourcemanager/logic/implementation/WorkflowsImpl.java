@@ -19,10 +19,9 @@ import com.azure.resourcemanager.logic.models.Workflow;
 import com.azure.resourcemanager.logic.models.WorkflowReference;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
 import com.azure.resourcemanager.logic.models.Workflows;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowsImpl implements Workflows {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowsImpl.class);
 
     private final WorkflowsClient innerClient;
 
@@ -218,7 +217,7 @@ public final class WorkflowsImpl implements Workflows {
     public Workflow getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -226,7 +225,7 @@ public final class WorkflowsImpl implements Workflows {
         }
         String workflowName = Utils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
@@ -237,7 +236,7 @@ public final class WorkflowsImpl implements Workflows {
     public Response<Workflow> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -245,7 +244,7 @@ public final class WorkflowsImpl implements Workflows {
         }
         String workflowName = Utils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
@@ -256,7 +255,7 @@ public final class WorkflowsImpl implements Workflows {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -264,18 +263,18 @@ public final class WorkflowsImpl implements Workflows {
         }
         String workflowName = Utils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, workflowName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -283,7 +282,7 @@ public final class WorkflowsImpl implements Workflows {
         }
         String workflowName = Utils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));

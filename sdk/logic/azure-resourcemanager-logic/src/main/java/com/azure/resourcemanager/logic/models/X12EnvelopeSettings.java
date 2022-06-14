@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement envelope settings. */
 @Fluent
 public final class X12EnvelopeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12EnvelopeSettings.class);
-
     /*
      * The controls standards id.
      */
@@ -658,52 +655,54 @@ public final class X12EnvelopeSettings {
      */
     public void validate() {
         if (senderApplicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property senderApplicationId in model X12EnvelopeSettings"));
         }
         if (receiverApplicationId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiverApplicationId in model X12EnvelopeSettings"));
         }
         if (controlVersionNumber() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property controlVersionNumber in model X12EnvelopeSettings"));
         }
         if (groupHeaderAgencyCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupHeaderAgencyCode in model X12EnvelopeSettings"));
         }
         if (groupHeaderVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupHeaderVersion in model X12EnvelopeSettings"));
         }
         if (groupHeaderDateFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupHeaderDateFormat in model X12EnvelopeSettings"));
         }
         if (groupHeaderTimeFormat() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property groupHeaderTimeFormat in model X12EnvelopeSettings"));
         }
         if (usageIndicator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property usageIndicator in model X12EnvelopeSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12EnvelopeSettings.class);
 }

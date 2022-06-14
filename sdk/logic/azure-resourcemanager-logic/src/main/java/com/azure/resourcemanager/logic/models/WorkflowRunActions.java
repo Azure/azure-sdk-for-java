@@ -19,7 +19,7 @@ public interface WorkflowRunActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunAction> list(String resourceGroupName, String workflowName, String runName);
 
@@ -35,7 +35,7 @@ public interface WorkflowRunActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow run actions.
+     * @return a list of workflow run actions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunAction> list(
         String resourceGroupName, String workflowName, String runName, Integer top, String filter, Context context);
@@ -65,7 +65,7 @@ public interface WorkflowRunActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action.
+     * @return a workflow run action along with {@link Response}.
      */
     Response<WorkflowRunAction> getWithResponse(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context);
@@ -80,7 +80,7 @@ public interface WorkflowRunActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExpressionRoot> listExpressionTraces(
         String resourceGroupName, String workflowName, String runName, String actionName);
@@ -96,7 +96,7 @@ public interface WorkflowRunActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExpressionRoot> listExpressionTraces(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context);

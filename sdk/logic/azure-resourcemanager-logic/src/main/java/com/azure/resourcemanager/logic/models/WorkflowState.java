@@ -39,7 +39,11 @@ public final class WorkflowState extends ExpandableStringEnum<WorkflowState> {
         return fromString(name, WorkflowState.class);
     }
 
-    /** @return known WorkflowState values. */
+    /**
+     * Gets known WorkflowState values.
+     *
+     * @return known WorkflowState values.
+     */
     public static Collection<WorkflowState> values() {
         return values(WorkflowState.class);
     }

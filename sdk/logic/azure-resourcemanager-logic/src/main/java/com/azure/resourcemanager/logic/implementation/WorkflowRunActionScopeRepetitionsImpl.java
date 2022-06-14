@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunActionScopeRepetitionsC
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner;
 import com.azure.resourcemanager.logic.models.WorkflowRunActionRepetitionDefinition;
 import com.azure.resourcemanager.logic.models.WorkflowRunActionScopeRepetitions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunActionScopeRepetitionsImpl implements WorkflowRunActionScopeRepetitions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunActionScopeRepetitionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionScopeRepetitionsImpl.class);
 
     private final WorkflowRunActionScopeRepetitionsClient innerClient;
 

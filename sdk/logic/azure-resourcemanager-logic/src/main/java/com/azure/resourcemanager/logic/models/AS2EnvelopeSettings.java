@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement envelope settings. */
 @Fluent
 public final class AS2EnvelopeSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2EnvelopeSettings.class);
-
     /*
      * The message content type.
      */
@@ -155,16 +152,18 @@ public final class AS2EnvelopeSettings {
      */
     public void validate() {
         if (messageContentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageContentType in model AS2EnvelopeSettings"));
         }
         if (fileNameTemplate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property fileNameTemplate in model AS2EnvelopeSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2EnvelopeSettings.class);
 }

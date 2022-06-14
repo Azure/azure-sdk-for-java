@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Open authentication policy claim. */
 @Fluent
 public final class OpenAuthenticationPolicyClaim {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenAuthenticationPolicyClaim.class);
-
     /*
      * The name of the claim.
      */

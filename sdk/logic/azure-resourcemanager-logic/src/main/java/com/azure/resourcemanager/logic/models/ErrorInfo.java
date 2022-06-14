@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The error info. */
 @Fluent
 public class ErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorInfo.class);
-
     /*
      * The error code.
      */
@@ -47,8 +44,10 @@ public class ErrorInfo {
      */
     public void validate() {
         if (code() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property code in model ErrorInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ErrorInfo.class);
 }

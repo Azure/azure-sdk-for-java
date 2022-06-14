@@ -96,6 +96,10 @@ public final class IntegrationAccountSchemaImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountSchemaInner innerModel() {
         return this.innerObject;
     }

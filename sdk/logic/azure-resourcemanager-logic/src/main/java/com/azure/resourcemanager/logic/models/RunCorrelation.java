@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The correlation properties. */
 @Fluent
 public class RunCorrelation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCorrelation.class);
-
     /*
      * The client tracking identifier.
      */

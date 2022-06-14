@@ -42,7 +42,11 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
         return fromString(name, EncryptionAlgorithm.class);
     }
 
-    /** @return known EncryptionAlgorithm values. */
+    /**
+     * Gets known EncryptionAlgorithm values.
+     *
+     * @return known EncryptionAlgorithm values.
+     */
     public static Collection<EncryptionAlgorithm> values() {
         return values(EncryptionAlgorithm.class);
     }

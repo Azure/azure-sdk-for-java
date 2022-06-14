@@ -30,7 +30,11 @@ public final class WsdlImportMethod extends ExpandableStringEnum<WsdlImportMetho
         return fromString(name, WsdlImportMethod.class);
     }
 
-    /** @return known WsdlImportMethod values. */
+    /**
+     * Gets known WsdlImportMethod values.
+     *
+     * @return known WsdlImportMethod values.
+     */
     public static Collection<WsdlImportMethod> values() {
         return values(WsdlImportMethod.class);
     }

@@ -63,6 +63,10 @@ public final class IntegrationAccountSessionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountSessionInner innerModel() {
         return this.innerObject;
     }

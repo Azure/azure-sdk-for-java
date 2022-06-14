@@ -66,7 +66,11 @@ public final class EdifactCharacterSet extends ExpandableStringEnum<EdifactChara
         return fromString(name, EdifactCharacterSet.class);
     }
 
-    /** @return known EdifactCharacterSet values. */
+    /**
+     * Gets known EdifactCharacterSet values.
+     *
+     * @return known EdifactCharacterSet values.
+     */
     public static Collection<EdifactCharacterSet> values() {
         return values(EdifactCharacterSet.class);
     }

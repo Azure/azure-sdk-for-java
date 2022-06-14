@@ -31,7 +31,11 @@ public final class IntegrationServiceEnvironmentAccessEndpointType
         return fromString(name, IntegrationServiceEnvironmentAccessEndpointType.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentAccessEndpointType values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentAccessEndpointType values.
+     *
+     * @return known IntegrationServiceEnvironmentAccessEndpointType values.
+     */
     public static Collection<IntegrationServiceEnvironmentAccessEndpointType> values() {
         return values(IntegrationServiceEnvironmentAccessEndpointType.class);
     }

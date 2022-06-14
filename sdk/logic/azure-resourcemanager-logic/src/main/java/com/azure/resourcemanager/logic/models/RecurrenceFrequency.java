@@ -45,7 +45,11 @@ public final class RecurrenceFrequency extends ExpandableStringEnum<RecurrenceFr
         return fromString(name, RecurrenceFrequency.class);
     }
 
-    /** @return known RecurrenceFrequency values. */
+    /**
+     * Gets known RecurrenceFrequency values.
+     *
+     * @return known RecurrenceFrequency values.
+     */
     public static Collection<RecurrenceFrequency> values() {
         return values(RecurrenceFrequency.class);
     }

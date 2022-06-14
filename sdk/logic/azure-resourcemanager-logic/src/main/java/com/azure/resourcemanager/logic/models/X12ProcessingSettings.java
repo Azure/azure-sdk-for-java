@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 processing settings. */
 @Fluent
 public final class X12ProcessingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12ProcessingSettings.class);
-
     /*
      * The value indicating whether to mask security information.
      */

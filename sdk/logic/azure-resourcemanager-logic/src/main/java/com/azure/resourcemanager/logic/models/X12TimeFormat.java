@@ -36,7 +36,11 @@ public final class X12TimeFormat extends ExpandableStringEnum<X12TimeFormat> {
         return fromString(name, X12TimeFormat.class);
     }
 
-    /** @return known X12TimeFormat values. */
+    /**
+     * Gets known X12TimeFormat values.
+     *
+     * @return known X12TimeFormat values.
+     */
     public static Collection<X12TimeFormat> values() {
         return values(X12TimeFormat.class);
     }

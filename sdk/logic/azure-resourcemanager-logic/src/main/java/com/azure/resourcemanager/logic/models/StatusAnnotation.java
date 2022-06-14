@@ -30,7 +30,11 @@ public final class StatusAnnotation extends ExpandableStringEnum<StatusAnnotatio
         return fromString(name, StatusAnnotation.class);
     }
 
-    /** @return known StatusAnnotation values. */
+    /**
+     * Gets known StatusAnnotation values.
+     *
+     * @return known StatusAnnotation values.
+     */
     public static Collection<StatusAnnotation> values() {
         return values(StatusAnnotation.class);
     }

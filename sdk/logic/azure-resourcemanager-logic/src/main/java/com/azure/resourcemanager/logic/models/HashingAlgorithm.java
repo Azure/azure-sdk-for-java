@@ -42,7 +42,11 @@ public final class HashingAlgorithm extends ExpandableStringEnum<HashingAlgorith
         return fromString(name, HashingAlgorithm.class);
     }
 
-    /** @return known HashingAlgorithm values. */
+    /**
+     * Gets known HashingAlgorithm values.
+     *
+     * @return known HashingAlgorithm values.
+     */
     public static Collection<HashingAlgorithm> values() {
         return values(HashingAlgorithm.class);
     }

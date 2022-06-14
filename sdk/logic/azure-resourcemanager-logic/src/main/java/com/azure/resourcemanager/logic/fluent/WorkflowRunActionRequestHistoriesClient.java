@@ -25,7 +25,7 @@ public interface WorkflowRunActionRequestHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RequestHistoryInner> list(
@@ -42,7 +42,7 @@ public interface WorkflowRunActionRequestHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RequestHistoryInner> list(
@@ -77,7 +77,7 @@ public interface WorkflowRunActionRequestHistoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run request history.
+     * @return a workflow run request history along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RequestHistoryInner> getWithResponse(

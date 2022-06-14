@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountSessionsClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSessionListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountSessionsClient. */
 public final class IntegrationAccountSessionsClientImpl implements IntegrationAccountSessionsClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountSessionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountSessionsService service;
 
@@ -151,7 +148,8 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSessionInner>> listSinglePageAsync(
@@ -215,7 +213,8 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSessionInner>> listSinglePageAsync(
@@ -275,7 +274,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSessionInner> listAsync(
@@ -293,7 +292,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSessionInner> listAsync(
@@ -316,7 +315,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSessionInner> listAsync(
@@ -334,7 +333,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountSessionInner> list(String resourceGroupName, String integrationAccountName) {
@@ -354,7 +353,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account sessions.
+     * @return a list of integration account sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountSessionInner> list(
@@ -371,7 +370,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account session.
+     * @return an integration account session along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSessionInner>> getWithResponseAsync(
@@ -427,7 +426,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account session.
+     * @return an integration account session along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSessionInner>> getWithResponseAsync(
@@ -479,20 +478,13 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account session.
+     * @return an integration account session on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountSessionInner> getAsync(
         String resourceGroupName, String integrationAccountName, String sessionName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, sessionName)
-            .flatMap(
-                (Response<IntegrationAccountSessionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -522,7 +514,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account session.
+     * @return an integration account session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountSessionInner> getWithResponse(
@@ -540,7 +532,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account session.
+     * @return the integration account session along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSessionInner>> createOrUpdateWithResponseAsync(
@@ -606,7 +598,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account session.
+     * @return the integration account session along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSessionInner>> createOrUpdateWithResponseAsync(
@@ -669,7 +661,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account session.
+     * @return the integration account session on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountSessionInner> createOrUpdateAsync(
@@ -678,14 +670,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
         String sessionName,
         IntegrationAccountSessionInner session) {
         return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, sessionName, session)
-            .flatMap(
-                (Response<IntegrationAccountSessionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -720,7 +705,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account session.
+     * @return the integration account session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountSessionInner> createOrUpdateWithResponse(
@@ -742,7 +727,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -798,7 +783,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -850,12 +835,12 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, sessionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -883,7 +868,7 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -898,7 +883,8 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account sessions.
+     * @return the list of integration account sessions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSessionInner>> listNextSinglePageAsync(String nextLink) {
@@ -934,7 +920,8 @@ public final class IntegrationAccountSessionsClientImpl implements IntegrationAc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account sessions.
+     * @return the list of integration account sessions along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSessionInner>> listNextSinglePageAsync(

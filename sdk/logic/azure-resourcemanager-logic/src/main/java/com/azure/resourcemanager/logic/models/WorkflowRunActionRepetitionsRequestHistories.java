@@ -21,7 +21,7 @@ public interface WorkflowRunActionRepetitionsRequestHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RequestHistory> list(
         String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
@@ -38,7 +38,7 @@ public interface WorkflowRunActionRepetitionsRequestHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories.
+     * @return the list of workflow request histories as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RequestHistory> list(
         String resourceGroupName,
@@ -83,7 +83,7 @@ public interface WorkflowRunActionRepetitionsRequestHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history.
+     * @return a workflow run repetition request history along with {@link Response}.
      */
     Response<RequestHistory> getWithResponse(
         String resourceGroupName,

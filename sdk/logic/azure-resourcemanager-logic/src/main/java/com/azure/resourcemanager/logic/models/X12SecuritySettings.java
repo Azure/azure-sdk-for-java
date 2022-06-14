@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement security settings. */
 @Fluent
 public final class X12SecuritySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12SecuritySettings.class);
-
     /*
      * The authorization qualifier.
      */
@@ -125,16 +122,18 @@ public final class X12SecuritySettings {
      */
     public void validate() {
         if (authorizationQualifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authorizationQualifier in model X12SecuritySettings"));
         }
         if (securityQualifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property securityQualifier in model X12SecuritySettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12SecuritySettings.class);
 }

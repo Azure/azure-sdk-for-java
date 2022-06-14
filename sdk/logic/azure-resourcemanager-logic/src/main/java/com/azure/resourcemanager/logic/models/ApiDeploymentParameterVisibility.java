@@ -30,7 +30,11 @@ public final class ApiDeploymentParameterVisibility extends ExpandableStringEnum
         return fromString(name, ApiDeploymentParameterVisibility.class);
     }
 
-    /** @return known ApiDeploymentParameterVisibility values. */
+    /**
+     * Gets known ApiDeploymentParameterVisibility values.
+     *
+     * @return known ApiDeploymentParameterVisibility values.
+     */
     public static Collection<ApiDeploymentParameterVisibility> values() {
         return values(ApiDeploymentParameterVisibility.class);
     }

@@ -93,6 +93,10 @@ public final class IntegrationAccountAgreementImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountAgreementInner innerModel() {
         return this.innerObject;
     }

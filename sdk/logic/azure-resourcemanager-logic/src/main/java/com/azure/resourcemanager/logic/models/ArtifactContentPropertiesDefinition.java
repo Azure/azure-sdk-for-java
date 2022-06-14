@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The artifact content properties definition. */
 @Fluent
 public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactContentPropertiesDefinition.class);
-
     /*
-     * Any object
+     * Anything
      */
     @JsonProperty(value = "content")
     private Object content;
@@ -34,7 +30,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     private ContentLink contentLink;
 
     /**
-     * Get the content property: Any object.
+     * Get the content property: Anything.
      *
      * @return the content value.
      */
@@ -43,7 +39,7 @@ public class ArtifactContentPropertiesDefinition extends ArtifactProperties {
     }
 
     /**
-     * Set the content property: Any object.
+     * Set the content property: Anything.
      *
      * @param content the content value to set.
      * @return the ArtifactContentPropertiesDefinition object itself.

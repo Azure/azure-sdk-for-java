@@ -24,7 +24,7 @@ public interface WorkflowRunActionRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
@@ -41,7 +41,7 @@ public interface WorkflowRunActionRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
@@ -76,7 +76,7 @@ public interface WorkflowRunActionRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(
@@ -98,7 +98,7 @@ public interface WorkflowRunActionRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressionRoot> listExpressionTraces(
@@ -116,7 +116,7 @@ public interface WorkflowRunActionRepetitionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressionRoot> listExpressionTraces(

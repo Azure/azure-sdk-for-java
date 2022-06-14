@@ -18,10 +18,9 @@ import com.azure.resourcemanager.logic.models.SetTriggerStateActionDefinition;
 import com.azure.resourcemanager.logic.models.WorkflowTrigger;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
 import com.azure.resourcemanager.logic.models.WorkflowTriggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowTriggersImpl implements WorkflowTriggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowTriggersImpl.class);
 
     private final WorkflowTriggersClient innerClient;
 

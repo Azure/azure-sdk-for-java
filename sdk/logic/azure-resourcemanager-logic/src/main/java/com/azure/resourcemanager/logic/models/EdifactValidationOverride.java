@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact validation override settings. */
 @Fluent
 public final class EdifactValidationOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactValidationOverride.class);
-
     /*
      * The message id on which the validation settings has to be applied.
      */
@@ -211,16 +208,18 @@ public final class EdifactValidationOverride {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageId in model EdifactValidationOverride"));
         }
         if (trailingSeparatorPolicy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trailingSeparatorPolicy in model EdifactValidationOverride"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactValidationOverride.class);
 }

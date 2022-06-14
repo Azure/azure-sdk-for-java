@@ -45,7 +45,11 @@ public final class SwaggerSchemaType extends ExpandableStringEnum<SwaggerSchemaT
         return fromString(name, SwaggerSchemaType.class);
     }
 
-    /** @return known SwaggerSchemaType values. */
+    /**
+     * Gets known SwaggerSchemaType values.
+     *
+     * @return known SwaggerSchemaType values.
+     */
     public static Collection<SwaggerSchemaType> values() {
         return values(SwaggerSchemaType.class);
     }

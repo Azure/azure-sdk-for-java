@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement validation settings. */
 @Fluent
 public final class AS2ValidationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2ValidationSettings.class);
-
     /*
      * The value indicating whether to override incoming message properties
      * with those in agreement.
@@ -292,10 +289,12 @@ public final class AS2ValidationSettings {
      */
     public void validate() {
         if (encryptionAlgorithm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property encryptionAlgorithm in model AS2ValidationSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2ValidationSettings.class);
 }

@@ -34,7 +34,11 @@ public final class ErrorResponseCode extends ExpandableStringEnum<ErrorResponseC
         return fromString(name, ErrorResponseCode.class);
     }
 
-    /** @return known ErrorResponseCode values. */
+    /**
+     * Gets known ErrorResponseCode values.
+     *
+     * @return known ErrorResponseCode values.
+     */
     public static Collection<ErrorResponseCode> values() {
         return values(ErrorResponseCode.class);
     }

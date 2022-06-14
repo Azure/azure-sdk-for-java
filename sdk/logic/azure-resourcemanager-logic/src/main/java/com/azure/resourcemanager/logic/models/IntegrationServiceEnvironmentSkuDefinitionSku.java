@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The sku. */
 @Fluent
 public final class IntegrationServiceEnvironmentSkuDefinitionSku {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkuDefinitionSku.class);
-
     /*
      * The sku name.
      */

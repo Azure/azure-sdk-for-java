@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Api reference. */
 @Fluent
 public final class ApiReference extends ResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiReference.class);
-
     /*
      * The display name of the api.
      */

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 message filter for odata query. */
 @Fluent
 public final class X12MessageFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12MessageFilter.class);
-
     /*
      * The message filter type.
      */
@@ -47,10 +44,12 @@ public final class X12MessageFilter {
      */
     public void validate() {
         if (messageFilterType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageFilterType in model X12MessageFilter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12MessageFilter.class);
 }

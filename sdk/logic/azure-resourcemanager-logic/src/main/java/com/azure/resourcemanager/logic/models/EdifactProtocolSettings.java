@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Edifact agreement protocol settings. */
 @Fluent
 public final class EdifactProtocolSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactProtocolSettings.class);
-
     /*
      * The EDIFACT validation settings.
      */
@@ -309,7 +306,7 @@ public final class EdifactProtocolSettings {
      */
     public void validate() {
         if (validationSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property validationSettings in model EdifactProtocolSettings"));
@@ -317,7 +314,7 @@ public final class EdifactProtocolSettings {
             validationSettings().validate();
         }
         if (framingSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property framingSettings in model EdifactProtocolSettings"));
@@ -325,7 +322,7 @@ public final class EdifactProtocolSettings {
             framingSettings().validate();
         }
         if (envelopeSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property envelopeSettings in model EdifactProtocolSettings"));
@@ -333,7 +330,7 @@ public final class EdifactProtocolSettings {
             envelopeSettings().validate();
         }
         if (acknowledgementSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property acknowledgementSettings in model EdifactProtocolSettings"));
@@ -341,7 +338,7 @@ public final class EdifactProtocolSettings {
             acknowledgementSettings().validate();
         }
         if (messageFilter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageFilter in model EdifactProtocolSettings"));
@@ -349,7 +346,7 @@ public final class EdifactProtocolSettings {
             messageFilter().validate();
         }
         if (processingSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property processingSettings in model EdifactProtocolSettings"));
@@ -363,7 +360,7 @@ public final class EdifactProtocolSettings {
             messageFilterList().forEach(e -> e.validate());
         }
         if (schemaReferences() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaReferences in model EdifactProtocolSettings"));
@@ -377,4 +374,6 @@ public final class EdifactProtocolSettings {
             edifactDelimiterOverrides().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactProtocolSettings.class);
 }

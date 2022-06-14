@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logic.fluent.WorkflowsClient;
@@ -48,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkflowsClient. */
 public final class WorkflowsClientImpl implements WorkflowsClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowsService service;
 
@@ -334,7 +331,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listSinglePageAsync(Integer top, String filter) {
@@ -385,7 +383,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listSinglePageAsync(Integer top, String filter, Context context) {
@@ -432,7 +431,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listAsync(Integer top, String filter) {
@@ -445,7 +444,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listAsync() {
@@ -465,7 +464,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listAsync(Integer top, String filter, Context context) {
@@ -479,7 +478,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> list() {
@@ -498,7 +497,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by subscription.
+     * @return a list of workflows by subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> list(Integer top, String filter, Context context) {
@@ -515,7 +514,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupSinglePageAsync(
@@ -573,7 +573,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupSinglePageAsync(
@@ -627,7 +628,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listByResourceGroupAsync(String resourceGroupName, Integer top, String filter) {
@@ -643,7 +644,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -665,7 +666,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listByResourceGroupAsync(
@@ -682,7 +683,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByResourceGroup(String resourceGroupName) {
@@ -702,7 +703,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows by resource group.
+     * @return a list of workflows by resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> listByResourceGroup(
@@ -718,7 +719,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
+     * @return a workflow along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> getByResourceGroupWithResponseAsync(
@@ -767,7 +768,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
+     * @return a workflow along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> getByResourceGroupWithResponseAsync(
@@ -812,19 +813,12 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
+     * @return a workflow on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowInner> getByResourceGroupAsync(String resourceGroupName, String workflowName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, workflowName)
-            .flatMap(
-                (Response<WorkflowInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -851,7 +845,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow.
+     * @return a workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowInner> getByResourceGroupWithResponse(
@@ -868,7 +862,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> createOrUpdateWithResponseAsync(
@@ -924,7 +918,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> createOrUpdateWithResponseAsync(
@@ -976,20 +970,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowInner> createOrUpdateAsync(
         String resourceGroupName, String workflowName, WorkflowInner workflow) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workflowName, workflow)
-            .flatMap(
-                (Response<WorkflowInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1018,7 +1005,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowInner> createOrUpdateWithResponse(
@@ -1034,7 +1021,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> updateWithResponseAsync(String resourceGroupName, String workflowName) {
@@ -1082,7 +1069,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowInner>> updateWithResponseAsync(
@@ -1127,19 +1114,12 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowInner> updateAsync(String resourceGroupName, String workflowName) {
         return updateWithResponseAsync(resourceGroupName, workflowName)
-            .flatMap(
-                (Response<WorkflowInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1166,7 +1146,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow type.
+     * @return the workflow type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowInner> updateWithResponse(String resourceGroupName, String workflowName, Context context) {
@@ -1181,7 +1161,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workflowName) {
@@ -1229,7 +1209,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1274,11 +1254,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workflowName) {
-        return deleteWithResponseAsync(resourceGroupName, workflowName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, workflowName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1304,7 +1284,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workflowName, Context context) {
@@ -1319,7 +1299,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableWithResponseAsync(String resourceGroupName, String workflowName) {
@@ -1367,7 +1347,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableWithResponseAsync(
@@ -1412,11 +1392,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disableAsync(String resourceGroupName, String workflowName) {
-        return disableWithResponseAsync(resourceGroupName, workflowName).flatMap((Response<Void> res) -> Mono.empty());
+        return disableWithResponseAsync(resourceGroupName, workflowName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1442,7 +1422,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(String resourceGroupName, String workflowName, Context context) {
@@ -1457,7 +1437,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableWithResponseAsync(String resourceGroupName, String workflowName) {
@@ -1505,7 +1485,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableWithResponseAsync(
@@ -1550,11 +1530,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> enableAsync(String resourceGroupName, String workflowName) {
-        return enableWithResponseAsync(resourceGroupName, workflowName).flatMap((Response<Void> res) -> Mono.empty());
+        return enableWithResponseAsync(resourceGroupName, workflowName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1580,7 +1560,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(String resourceGroupName, String workflowName, Context context) {
@@ -1596,7 +1576,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> generateUpgradedDefinitionWithResponseAsync(
@@ -1652,7 +1632,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> generateUpgradedDefinitionWithResponseAsync(
@@ -1707,20 +1687,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Object> generateUpgradedDefinitionAsync(
         String resourceGroupName, String workflowName, GenerateUpgradedDefinitionParameters parameters) {
         return generateUpgradedDefinitionWithResponseAsync(resourceGroupName, workflowName, parameters)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1750,7 +1723,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> generateUpgradedDefinitionWithResponse(
@@ -1771,7 +1744,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow callback Url.
+     * @return the workflow callback Url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
@@ -1828,7 +1801,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow callback Url.
+     * @return the workflow callback Url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
@@ -1881,20 +1854,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow callback Url.
+     * @return the workflow callback Url on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
         String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, workflowName, listCallbackUrl)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1924,7 +1890,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow callback Url.
+     * @return the workflow callback Url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
@@ -1940,7 +1906,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OpenAPI definition for the workflow.
+     * @return an OpenAPI definition for the workflow along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> listSwaggerWithResponseAsync(String resourceGroupName, String workflowName) {
@@ -1988,7 +1955,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OpenAPI definition for the workflow.
+     * @return an OpenAPI definition for the workflow along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> listSwaggerWithResponseAsync(
@@ -2033,19 +2001,12 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OpenAPI definition for the workflow.
+     * @return an OpenAPI definition for the workflow on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Object> listSwaggerAsync(String resourceGroupName, String workflowName) {
         return listSwaggerWithResponseAsync(resourceGroupName, workflowName)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2072,7 +2033,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OpenAPI definition for the workflow.
+     * @return an OpenAPI definition for the workflow along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> listSwaggerWithResponse(String resourceGroupName, String workflowName, Context context) {
@@ -2088,7 +2049,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> moveWithResponseAsync(
@@ -2144,7 +2105,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> moveWithResponseAsync(
@@ -2196,15 +2157,16 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveAsync(
         String resourceGroupName, String workflowName, WorkflowReference move) {
         Mono<Response<Flux<ByteBuffer>>> mono = moveWithResponseAsync(resourceGroupName, workflowName, move);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2217,9 +2179,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveAsync(
         String resourceGroupName, String workflowName, WorkflowReference move, Context context) {
         context = this.client.mergeContext(context);
@@ -2238,9 +2200,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMove(
         String resourceGroupName, String workflowName, WorkflowReference move) {
         return beginMoveAsync(resourceGroupName, workflowName, move).getSyncPoller();
@@ -2256,9 +2218,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMove(
         String resourceGroupName, String workflowName, WorkflowReference move, Context context) {
         return beginMoveAsync(resourceGroupName, workflowName, move, context).getSyncPoller();
@@ -2273,7 +2235,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> moveAsync(String resourceGroupName, String workflowName, WorkflowReference move) {
@@ -2292,7 +2254,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> moveAsync(
@@ -2342,7 +2304,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(
@@ -2398,7 +2360,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateAccessKeyWithResponseAsync(
@@ -2450,13 +2412,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regenerateAccessKeyAsync(
         String resourceGroupName, String workflowName, RegenerateActionParameter keyType) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, workflowName, keyType)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2484,7 +2446,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regenerateAccessKeyWithResponse(
@@ -2501,7 +2463,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> validateByResourceGroupWithResponseAsync(
@@ -2557,7 +2519,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> validateByResourceGroupWithResponseAsync(
@@ -2609,13 +2571,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> validateByResourceGroupAsync(
         String resourceGroupName, String workflowName, WorkflowInner validate) {
         return validateByResourceGroupWithResponseAsync(resourceGroupName, workflowName, validate)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2643,7 +2605,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> validateByResourceGroupWithResponse(
@@ -2661,7 +2623,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> validateByLocationWithResponseAsync(
@@ -2722,7 +2684,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> validateByLocationWithResponseAsync(
@@ -2779,13 +2741,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> validateByLocationAsync(
         String resourceGroupName, String location, String workflowName, WorkflowInner validate) {
         return validateByLocationWithResponseAsync(resourceGroupName, location, workflowName, validate)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2816,7 +2778,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> validateByLocationWithResponse(
@@ -2832,7 +2794,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflows.
+     * @return the list of workflows along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2869,7 +2831,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflows.
+     * @return the list of workflows along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -2904,7 +2866,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflows.
+     * @return the list of workflows along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2941,7 +2903,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflows.
+     * @return the list of workflows along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupNextSinglePageAsync(

@@ -30,7 +30,11 @@ public final class X12DateFormat extends ExpandableStringEnum<X12DateFormat> {
         return fromString(name, X12DateFormat.class);
     }
 
-    /** @return known X12DateFormat values. */
+    /**
+     * Gets known X12DateFormat values.
+     *
+     * @return known X12DateFormat values.
+     */
     public static Collection<X12DateFormat> values() {
         return values(X12DateFormat.class);
     }

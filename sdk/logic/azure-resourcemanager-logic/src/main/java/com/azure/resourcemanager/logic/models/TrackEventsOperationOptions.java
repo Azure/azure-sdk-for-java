@@ -27,7 +27,11 @@ public final class TrackEventsOperationOptions extends ExpandableStringEnum<Trac
         return fromString(name, TrackEventsOperationOptions.class);
     }
 
-    /** @return known TrackEventsOperationOptions values. */
+    /**
+     * Gets known TrackEventsOperationOptions values.
+     *
+     * @return known TrackEventsOperationOptions values.
+     */
     public static Collection<TrackEventsOperationOptions> values() {
         return values(TrackEventsOperationOptions.class);
     }

@@ -15,7 +15,8 @@ public interface IntegrationServiceEnvironments {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> list();
 
@@ -27,7 +28,8 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by subscription.
+     * @return a list of integration service environments by subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> list(Integer top, Context context);
 
@@ -38,7 +40,8 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(String resourceGroup);
 
@@ -51,7 +54,8 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration service environments by resource group.
+     * @return a list of integration service environments by resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<IntegrationServiceEnvironment> listByResourceGroup(
         String resourceGroup, Integer top, Context context);
@@ -77,7 +81,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment along with {@link Response}.
      */
     Response<IntegrationServiceEnvironment> getByResourceGroupWithResponse(
         String resourceGroup, String integrationServiceEnvironmentName, Context context);
@@ -102,7 +106,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroup, String integrationServiceEnvironmentName, Context context);
 
@@ -126,7 +130,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> restartWithResponse(String resourceGroup, String integrationServiceEnvironmentName, Context context);
 
@@ -137,7 +141,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment along with {@link Response}.
      */
     IntegrationServiceEnvironment getById(String id);
 
@@ -149,7 +153,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration service environment.
+     * @return an integration service environment along with {@link Response}.
      */
     Response<IntegrationServiceEnvironment> getByIdWithResponse(String id, Context context);
 
@@ -171,7 +175,7 @@ public interface IntegrationServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

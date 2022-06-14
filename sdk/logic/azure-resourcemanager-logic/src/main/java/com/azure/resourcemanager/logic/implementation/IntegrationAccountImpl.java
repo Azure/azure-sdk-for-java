@@ -9,15 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountInner;
-import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner;
 import com.azure.resourcemanager.logic.models.CallbackUrl;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.IntegrationAccount;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSku;
-import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironment;
 import com.azure.resourcemanager.logic.models.KeyVaultKey;
 import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
+import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import java.util.Collections;
@@ -58,13 +57,8 @@ public final class IntegrationAccountImpl
         return this.innerModel().sku();
     }
 
-    public IntegrationServiceEnvironment integrationServiceEnvironment() {
-        IntegrationServiceEnvironmentInner inner = this.innerModel().integrationServiceEnvironment();
-        if (inner != null) {
-            return new IntegrationServiceEnvironmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public ResourceReference integrationServiceEnvironment() {
+        return this.innerModel().integrationServiceEnvironment();
     }
 
     public WorkflowState state() {
@@ -77,6 +71,10 @@ public final class IntegrationAccountImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public IntegrationAccountInner innerModel() {
@@ -243,8 +241,7 @@ public final class IntegrationAccountImpl
         return this;
     }
 
-    public IntegrationAccountImpl withIntegrationServiceEnvironment(
-        IntegrationServiceEnvironmentInner integrationServiceEnvironment) {
+    public IntegrationAccountImpl withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
         this.innerModel().withIntegrationServiceEnvironment(integrationServiceEnvironment);
         return this;
     }

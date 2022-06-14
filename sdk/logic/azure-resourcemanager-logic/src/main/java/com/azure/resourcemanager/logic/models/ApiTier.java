@@ -33,7 +33,11 @@ public final class ApiTier extends ExpandableStringEnum<ApiTier> {
         return fromString(name, ApiTier.class);
     }
 
-    /** @return known ApiTier values. */
+    /**
+     * Gets known ApiTier values.
+     *
+     * @return known ApiTier values.
+     */
     public static Collection<ApiTier> values() {
         return values(ApiTier.class);
     }

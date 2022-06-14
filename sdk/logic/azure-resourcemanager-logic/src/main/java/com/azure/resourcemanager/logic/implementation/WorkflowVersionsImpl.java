@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowVersionsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowVersionInner;
 import com.azure.resourcemanager.logic.models.WorkflowVersion;
 import com.azure.resourcemanager.logic.models.WorkflowVersions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowVersionsImpl implements WorkflowVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowVersionsImpl.class);
 
     private final WorkflowVersionsClient innerClient;
 

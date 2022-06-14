@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.Correlation;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowOutputParameter;
 import com.azure.resourcemanager.logic.models.WorkflowRunTrigger;
 import com.azure.resourcemanager.logic.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The workflow run. */
-@JsonFlatten
 @Fluent
-public class WorkflowRunInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunInner.class);
+public final class WorkflowRunInner extends SubResource {
+    /*
+     * The workflow run properties.
+     */
+    @JsonProperty(value = "properties")
+    private WorkflowRunProperties innerProperties;
 
     /*
      * Gets the workflow run name.
@@ -36,77 +36,14 @@ public class WorkflowRunInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Gets the wait end time.
+    /**
+     * Get the innerProperties property: The workflow run properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.waitEndTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime waitEndTime;
-
-    /*
-     * Gets the start time.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * Gets the end time.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Gets the status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowStatus status;
-
-    /*
-     * Gets the code.
-     */
-    @JsonProperty(value = "properties.code", access = JsonProperty.Access.WRITE_ONLY)
-    private String code;
-
-    /*
-     * Gets the error.
-     */
-    @JsonProperty(value = "properties.error", access = JsonProperty.Access.WRITE_ONLY)
-    private Object error;
-
-    /*
-     * Gets the correlation id.
-     */
-    @JsonProperty(value = "properties.correlationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String correlationId;
-
-    /*
-     * The run correlation.
-     */
-    @JsonProperty(value = "properties.correlation")
-    private Correlation correlation;
-
-    /*
-     * Gets the reference to workflow version.
-     */
-    @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference workflow;
-
-    /*
-     * Gets the fired trigger.
-     */
-    @JsonProperty(value = "properties.trigger", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowRunTrigger trigger;
-
-    /*
-     * Gets the outputs.
-     */
-    @JsonProperty(value = "properties.outputs", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, WorkflowOutputParameter> outputs;
-
-    /*
-     * Gets the response of the flow run.
-     */
-    @JsonProperty(value = "properties.response", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowRunTrigger response;
+    private WorkflowRunProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Gets the workflow run name.
@@ -126,13 +63,20 @@ public class WorkflowRunInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public WorkflowRunInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the waitEndTime property: Gets the wait end time.
      *
      * @return the waitEndTime value.
      */
     public OffsetDateTime waitEndTime() {
-        return this.waitEndTime;
+        return this.innerProperties() == null ? null : this.innerProperties().waitEndTime();
     }
 
     /**
@@ -141,7 +85,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -150,7 +94,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -159,7 +103,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the status value.
      */
     public WorkflowStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -168,7 +112,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the code value.
      */
     public String code() {
-        return this.code;
+        return this.innerProperties() == null ? null : this.innerProperties().code();
     }
 
     /**
@@ -177,7 +121,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the error value.
      */
     public Object error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -186,7 +130,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the correlationId value.
      */
     public String correlationId() {
-        return this.correlationId;
+        return this.innerProperties() == null ? null : this.innerProperties().correlationId();
     }
 
     /**
@@ -195,7 +139,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the correlation value.
      */
     public Correlation correlation() {
-        return this.correlation;
+        return this.innerProperties() == null ? null : this.innerProperties().correlation();
     }
 
     /**
@@ -205,7 +149,10 @@ public class WorkflowRunInner extends SubResource {
      * @return the WorkflowRunInner object itself.
      */
     public WorkflowRunInner withCorrelation(Correlation correlation) {
-        this.correlation = correlation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowRunProperties();
+        }
+        this.innerProperties().withCorrelation(correlation);
         return this;
     }
 
@@ -215,7 +162,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the workflow value.
      */
     public ResourceReference workflow() {
-        return this.workflow;
+        return this.innerProperties() == null ? null : this.innerProperties().workflow();
     }
 
     /**
@@ -224,7 +171,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the trigger value.
      */
     public WorkflowRunTrigger trigger() {
-        return this.trigger;
+        return this.innerProperties() == null ? null : this.innerProperties().trigger();
     }
 
     /**
@@ -233,7 +180,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the outputs value.
      */
     public Map<String, WorkflowOutputParameter> outputs() {
-        return this.outputs;
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
     }
 
     /**
@@ -242,14 +189,7 @@ public class WorkflowRunInner extends SubResource {
      * @return the response value.
      */
     public WorkflowRunTrigger response() {
-        return this.response;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WorkflowRunInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().response();
     }
 
     /**
@@ -258,27 +198,8 @@ public class WorkflowRunInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (correlation() != null) {
-            correlation().validate();
-        }
-        if (workflow() != null) {
-            workflow().validate();
-        }
-        if (trigger() != null) {
-            trigger().validate();
-        }
-        if (outputs() != null) {
-            outputs()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (response() != null) {
-            response().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

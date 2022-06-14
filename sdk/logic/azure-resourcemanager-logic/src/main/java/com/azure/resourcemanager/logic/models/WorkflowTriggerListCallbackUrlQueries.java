@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gets the workflow trigger callback URL query parameters. */
 @Fluent
 public final class WorkflowTriggerListCallbackUrlQueries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerListCallbackUrlQueries.class);
-
     /*
      * The api version.
      */

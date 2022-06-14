@@ -20,7 +20,7 @@ public interface WorkflowRunActionScopeRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of workflow run action repetitions.
+     * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunActionRepetitionDefinition> list(
         String resourceGroupName, String workflowName, String runName, String actionName);
@@ -36,7 +36,7 @@ public interface WorkflowRunActionScopeRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of workflow run action repetitions.
+     * @return a collection of workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunActionRepetitionDefinition> list(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context);
@@ -69,7 +69,7 @@ public interface WorkflowRunActionScopeRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action scoped repetition.
+     * @return a workflow run action scoped repetition along with {@link Response}.
      */
     Response<WorkflowRunActionRepetitionDefinition> getWithResponse(
         String resourceGroupName,

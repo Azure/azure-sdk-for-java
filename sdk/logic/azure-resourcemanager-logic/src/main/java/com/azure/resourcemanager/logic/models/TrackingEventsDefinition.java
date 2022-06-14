@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The tracking events definition. */
 @Fluent
 public final class TrackingEventsDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackingEventsDefinition.class);
-
     /*
      * The source type.
      */
@@ -100,17 +97,19 @@ public final class TrackingEventsDefinition {
      */
     public void validate() {
         if (sourceType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceType in model TrackingEventsDefinition"));
         }
         if (events() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property events in model TrackingEventsDefinition"));
         } else {
             events().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TrackingEventsDefinition.class);
 }

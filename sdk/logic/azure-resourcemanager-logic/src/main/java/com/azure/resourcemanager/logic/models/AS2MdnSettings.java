@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement mdn settings. */
 @Fluent
 public final class AS2MdnSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2MdnSettings.class);
-
     /*
      * The value indicating whether to send or request a MDN.
      */
@@ -255,10 +252,12 @@ public final class AS2MdnSettings {
      */
     public void validate() {
         if (micHashingAlgorithm() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property micHashingAlgorithm in model AS2MdnSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2MdnSettings.class);
 }

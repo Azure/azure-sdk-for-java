@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement message connection settings. */
 @Fluent
 public final class AS2MessageConnectionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2MessageConnectionSettings.class);
-
     /*
      * The value indicating whether to ignore mismatch in certificate name.
      */

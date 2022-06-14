@@ -33,7 +33,11 @@ public final class TrailingSeparatorPolicy extends ExpandableStringEnum<Trailing
         return fromString(name, TrailingSeparatorPolicy.class);
     }
 
-    /** @return known TrailingSeparatorPolicy values. */
+    /**
+     * Gets known TrailingSeparatorPolicy values.
+     *
+     * @return known TrailingSeparatorPolicy values.
+     */
     public static Collection<TrailingSeparatorPolicy> values() {
         return values(TrailingSeparatorPolicy.class);
     }

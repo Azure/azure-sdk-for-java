@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountSchemasClient;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSchemaInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountSchemasClient. */
 public final class IntegrationAccountSchemasClientImpl implements IntegrationAccountSchemasClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountSchemasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountSchemasService service;
 
@@ -171,7 +168,8 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSchemaInner>> listSinglePageAsync(
@@ -235,7 +233,8 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSchemaInner>> listSinglePageAsync(
@@ -295,7 +294,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSchemaInner> listAsync(
@@ -313,7 +312,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSchemaInner> listAsync(
@@ -336,7 +335,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IntegrationAccountSchemaInner> listAsync(
@@ -354,7 +353,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountSchemaInner> list(String resourceGroupName, String integrationAccountName) {
@@ -374,7 +373,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IntegrationAccountSchemaInner> list(
@@ -391,7 +390,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSchemaInner>> getWithResponseAsync(
@@ -447,7 +446,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSchemaInner>> getWithResponseAsync(
@@ -499,20 +498,13 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountSchemaInner> getAsync(
         String resourceGroupName, String integrationAccountName, String schemaName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, schemaName)
-            .flatMap(
-                (Response<IntegrationAccountSchemaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -542,7 +534,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return an integration account schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountSchemaInner> getWithResponse(
@@ -560,7 +552,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account schema.
+     * @return the integration account schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSchemaInner>> createOrUpdateWithResponseAsync(
@@ -626,7 +618,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account schema.
+     * @return the integration account schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationAccountSchemaInner>> createOrUpdateWithResponseAsync(
@@ -689,7 +681,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account schema.
+     * @return the integration account schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IntegrationAccountSchemaInner> createOrUpdateAsync(
@@ -698,14 +690,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
         String schemaName,
         IntegrationAccountSchemaInner schema) {
         return createOrUpdateWithResponseAsync(resourceGroupName, integrationAccountName, schemaName, schema)
-            .flatMap(
-                (Response<IntegrationAccountSchemaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -740,7 +725,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account schema.
+     * @return the integration account schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IntegrationAccountSchemaInner> createOrUpdateWithResponse(
@@ -762,7 +747,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -818,7 +803,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -870,12 +855,12 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String integrationAccountName, String schemaName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, schemaName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -903,7 +888,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -921,7 +906,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -989,7 +974,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -1054,7 +1039,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(
@@ -1064,14 +1049,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
         GetCallbackUrlParameters listContentCallbackUrl) {
         return listContentCallbackUrlWithResponseAsync(
                 resourceGroupName, integrationAccountName, schemaName, listContentCallbackUrl)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1108,7 +1086,7 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
@@ -1129,7 +1107,8 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account schemas.
+     * @return the list of integration account schemas along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSchemaInner>> listNextSinglePageAsync(String nextLink) {
@@ -1165,7 +1144,8 @@ public final class IntegrationAccountSchemasClientImpl implements IntegrationAcc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of integration account schemas.
+     * @return the list of integration account schemas along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IntegrationAccountSchemaInner>> listNextSinglePageAsync(

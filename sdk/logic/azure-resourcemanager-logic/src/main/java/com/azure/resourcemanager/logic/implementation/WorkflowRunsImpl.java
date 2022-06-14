@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 import com.azure.resourcemanager.logic.models.WorkflowRun;
 import com.azure.resourcemanager.logic.models.WorkflowRuns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunsImpl implements WorkflowRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunsImpl.class);
 
     private final WorkflowRunsClient innerClient;
 

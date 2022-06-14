@@ -21,7 +21,7 @@ public interface WorkflowVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowVersionInner> list(String resourceGroupName, String workflowName);
@@ -36,7 +36,7 @@ public interface WorkflowVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow versions.
+     * @return a list of workflow versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkflowVersionInner> list(
@@ -66,7 +66,7 @@ public interface WorkflowVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow version.
+     * @return a workflow version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowVersionInner> getWithResponse(

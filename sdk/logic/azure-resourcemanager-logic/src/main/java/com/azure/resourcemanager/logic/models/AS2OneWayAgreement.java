@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account AS2 one-way agreement. */
 @Fluent
 public final class AS2OneWayAgreement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2OneWayAgreement.class);
-
     /*
      * The sender business identity
      */
@@ -99,7 +96,7 @@ public final class AS2OneWayAgreement {
      */
     public void validate() {
         if (senderBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property senderBusinessIdentity in model AS2OneWayAgreement"));
@@ -107,7 +104,7 @@ public final class AS2OneWayAgreement {
             senderBusinessIdentity().validate();
         }
         if (receiverBusinessIdentity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiverBusinessIdentity in model AS2OneWayAgreement"));
@@ -115,7 +112,7 @@ public final class AS2OneWayAgreement {
             receiverBusinessIdentity().validate();
         }
         if (protocolSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocolSettings in model AS2OneWayAgreement"));
@@ -123,4 +120,6 @@ public final class AS2OneWayAgreement {
             protocolSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2OneWayAgreement.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The expression. */
 @Fluent
 public class Expression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Expression.class);
-
     /*
      * The text.
      */
@@ -22,7 +18,7 @@ public class Expression {
     private String text;
 
     /*
-     * Any object
+     * Anything
      */
     @JsonProperty(value = "value")
     private Object value;
@@ -60,7 +56,7 @@ public class Expression {
     }
 
     /**
-     * Get the value property: Any object.
+     * Get the value property: Anything.
      *
      * @return the value value.
      */
@@ -69,7 +65,7 @@ public class Expression {
     }
 
     /**
-     * Set the value property: Any object.
+     * Set the value property: Anything.
      *
      * @param value the value value to set.
      * @return the Expression object itself.

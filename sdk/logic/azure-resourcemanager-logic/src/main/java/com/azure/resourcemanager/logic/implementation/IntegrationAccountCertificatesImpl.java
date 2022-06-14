@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.IntegrationAccountCertificatesClie
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountCertificateInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountCertificate;
 import com.azure.resourcemanager.logic.models.IntegrationAccountCertificates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountCertificatesImpl implements IntegrationAccountCertificates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountCertificatesImpl.class);
 
     private final IntegrationAccountCertificatesClient innerClient;
 
@@ -81,7 +80,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
     public IntegrationAccountCertificate getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,7 +88,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -98,7 +97,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -111,7 +110,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
     public Response<IntegrationAccountCertificate> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +118,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -128,7 +127,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -139,7 +138,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,7 +146,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -156,18 +155,18 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +174,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -184,7 +183,7 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
         String certificateName = Utils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

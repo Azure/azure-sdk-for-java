@@ -30,7 +30,11 @@ public final class MessageFilterType extends ExpandableStringEnum<MessageFilterT
         return fromString(name, MessageFilterType.class);
     }
 
-    /** @return known MessageFilterType values. */
+    /**
+     * Gets known MessageFilterType values.
+     *
+     * @return known MessageFilterType values.
+     */
     public static Collection<MessageFilterType> values() {
         return values(MessageFilterType.class);
     }

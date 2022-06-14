@@ -23,7 +23,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IntegrationAccountPartnerInner> list(String resourceGroupName, String integrationAccountName);
@@ -39,7 +39,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account partners.
+     * @return a list of integration account partners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IntegrationAccountPartnerInner> list(
@@ -69,7 +69,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account partner.
+     * @return an integration account partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationAccountPartnerInner> getWithResponse(
@@ -105,7 +105,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account partner.
+     * @return the integration account partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationAccountPartnerInner> createOrUpdateWithResponse(
@@ -138,7 +138,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -174,7 +174,7 @@ public interface IntegrationAccountPartnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
+     * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The recurrence schedule. */
 @Fluent
 public final class RecurrenceSchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecurrenceSchedule.class);
-
     /*
      * The minutes.
      */

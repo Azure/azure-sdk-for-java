@@ -89,6 +89,10 @@ public final class IntegrationAccountMapImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountMapInner innerModel() {
         return this.innerObject;
     }

@@ -30,7 +30,11 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
         return fromString(name, ApiType.class);
     }
 
-    /** @return known ApiType values. */
+    /**
+     * Gets known ApiType values.
+     *
+     * @return known ApiType values.
+     */
     public static Collection<ApiType> values() {
         return values(ApiType.class);
     }

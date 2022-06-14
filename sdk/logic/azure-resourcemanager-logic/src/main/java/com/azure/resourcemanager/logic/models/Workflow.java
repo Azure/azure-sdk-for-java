@@ -49,6 +49,13 @@ public interface Workflow {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Managed service identity properties.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
@@ -154,6 +161,13 @@ public interface Workflow {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.WorkflowInner object.
      *
      * @return the inner object.
@@ -206,6 +220,7 @@ public interface Workflow {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithState,
                 DefinitionStages.WithEndpointsConfiguration,
                 DefinitionStages.WithAccessControl,
@@ -237,6 +252,16 @@ public interface Workflow {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Workflow definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity properties..
+             *
+             * @param identity Managed service identity properties.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
         }
         /** The stage of the Workflow definition allowing to specify state. */
         interface WithState {
@@ -319,6 +344,7 @@ public interface Workflow {
     /** The template for Workflow update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithState,
             UpdateStages.WithEndpointsConfiguration,
             UpdateStages.WithAccessControl,
@@ -352,6 +378,16 @@ public interface Workflow {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Workflow update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity properties..
+             *
+             * @param identity Managed service identity properties.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
         }
         /** The stage of the Workflow update allowing to specify state. */
         interface WithState {
@@ -454,7 +490,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> disableWithResponse(Context context);
 
@@ -473,7 +509,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> enableWithResponse(Context context);
 
@@ -496,7 +532,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     Response<Object> generateUpgradedDefinitionWithResponse(
         GenerateUpgradedDefinitionParameters parameters, Context context);
@@ -520,7 +556,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workflow callback Url.
+     * @return the workflow callback Url along with {@link Response}.
      */
     Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
         GetCallbackUrlParameters listCallbackUrl, Context context);
@@ -541,7 +577,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an OpenAPI definition for the workflow.
+     * @return an OpenAPI definition for the workflow along with {@link Response}.
      */
     Response<Object> listSwaggerWithResponse(Context context);
 
@@ -584,7 +620,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> regenerateAccessKeyWithResponse(RegenerateActionParameter keyType, Context context);
 
@@ -606,7 +642,7 @@ public interface Workflow {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> validateByResourceGroupWithResponse(WorkflowInner validate, Context context);
 }

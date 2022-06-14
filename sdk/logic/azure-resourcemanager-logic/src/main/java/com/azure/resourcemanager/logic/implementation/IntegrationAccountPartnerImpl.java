@@ -76,6 +76,10 @@ public final class IntegrationAccountPartnerImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationAccountPartnerInner innerModel() {
         return this.innerObject;
     }

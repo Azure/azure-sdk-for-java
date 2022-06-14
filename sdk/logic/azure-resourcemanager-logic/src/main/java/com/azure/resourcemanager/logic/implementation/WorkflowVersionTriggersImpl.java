@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlI
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
 import com.azure.resourcemanager.logic.models.WorkflowVersionTriggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowVersionTriggersImpl implements WorkflowVersionTriggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowVersionTriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowVersionTriggersImpl.class);
 
     private final WorkflowVersionTriggersClient innerClient;
 

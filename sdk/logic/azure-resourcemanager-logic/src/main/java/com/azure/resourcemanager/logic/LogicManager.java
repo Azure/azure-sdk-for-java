@@ -8,15 +8,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -81,6 +84,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to LogicManager. REST API for Azure Logic Apps. */
 public final class LogicManager {
@@ -166,6 +170,19 @@ public final class LogicManager {
     }
 
     /**
+     * Creates an instance of Logic service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Logic service API instance.
+     */
+    public static LogicManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new LogicManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create LogicManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -176,12 +193,14 @@ public final class LogicManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -221,6 +240,17 @@ public final class LogicManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -232,15 +262,30 @@ public final class LogicManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -276,20 +321,38 @@ public final class LogicManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -301,7 +364,11 @@ public final class LogicManager {
         }
     }
 
-    /** @return Resource collection API of Workflows. */
+    /**
+     * Gets the resource collection API of Workflows. It manages Workflow.
+     *
+     * @return Resource collection API of Workflows.
+     */
     public Workflows workflows() {
         if (this.workflows == null) {
             this.workflows = new WorkflowsImpl(clientObject.getWorkflows(), this);
@@ -309,7 +376,11 @@ public final class LogicManager {
         return workflows;
     }
 
-    /** @return Resource collection API of WorkflowVersions. */
+    /**
+     * Gets the resource collection API of WorkflowVersions.
+     *
+     * @return Resource collection API of WorkflowVersions.
+     */
     public WorkflowVersions workflowVersions() {
         if (this.workflowVersions == null) {
             this.workflowVersions = new WorkflowVersionsImpl(clientObject.getWorkflowVersions(), this);
@@ -317,7 +388,11 @@ public final class LogicManager {
         return workflowVersions;
     }
 
-    /** @return Resource collection API of WorkflowTriggers. */
+    /**
+     * Gets the resource collection API of WorkflowTriggers.
+     *
+     * @return Resource collection API of WorkflowTriggers.
+     */
     public WorkflowTriggers workflowTriggers() {
         if (this.workflowTriggers == null) {
             this.workflowTriggers = new WorkflowTriggersImpl(clientObject.getWorkflowTriggers(), this);
@@ -325,7 +400,11 @@ public final class LogicManager {
         return workflowTriggers;
     }
 
-    /** @return Resource collection API of WorkflowVersionTriggers. */
+    /**
+     * Gets the resource collection API of WorkflowVersionTriggers.
+     *
+     * @return Resource collection API of WorkflowVersionTriggers.
+     */
     public WorkflowVersionTriggers workflowVersionTriggers() {
         if (this.workflowVersionTriggers == null) {
             this.workflowVersionTriggers =
@@ -334,7 +413,11 @@ public final class LogicManager {
         return workflowVersionTriggers;
     }
 
-    /** @return Resource collection API of WorkflowTriggerHistories. */
+    /**
+     * Gets the resource collection API of WorkflowTriggerHistories.
+     *
+     * @return Resource collection API of WorkflowTriggerHistories.
+     */
     public WorkflowTriggerHistories workflowTriggerHistories() {
         if (this.workflowTriggerHistories == null) {
             this.workflowTriggerHistories =
@@ -343,7 +426,11 @@ public final class LogicManager {
         return workflowTriggerHistories;
     }
 
-    /** @return Resource collection API of WorkflowRuns. */
+    /**
+     * Gets the resource collection API of WorkflowRuns.
+     *
+     * @return Resource collection API of WorkflowRuns.
+     */
     public WorkflowRuns workflowRuns() {
         if (this.workflowRuns == null) {
             this.workflowRuns = new WorkflowRunsImpl(clientObject.getWorkflowRuns(), this);
@@ -351,7 +438,11 @@ public final class LogicManager {
         return workflowRuns;
     }
 
-    /** @return Resource collection API of WorkflowRunActions. */
+    /**
+     * Gets the resource collection API of WorkflowRunActions.
+     *
+     * @return Resource collection API of WorkflowRunActions.
+     */
     public WorkflowRunActions workflowRunActions() {
         if (this.workflowRunActions == null) {
             this.workflowRunActions = new WorkflowRunActionsImpl(clientObject.getWorkflowRunActions(), this);
@@ -359,7 +450,11 @@ public final class LogicManager {
         return workflowRunActions;
     }
 
-    /** @return Resource collection API of WorkflowRunActionRepetitions. */
+    /**
+     * Gets the resource collection API of WorkflowRunActionRepetitions.
+     *
+     * @return Resource collection API of WorkflowRunActionRepetitions.
+     */
     public WorkflowRunActionRepetitions workflowRunActionRepetitions() {
         if (this.workflowRunActionRepetitions == null) {
             this.workflowRunActionRepetitions =
@@ -368,7 +463,11 @@ public final class LogicManager {
         return workflowRunActionRepetitions;
     }
 
-    /** @return Resource collection API of WorkflowRunActionRepetitionsRequestHistories. */
+    /**
+     * Gets the resource collection API of WorkflowRunActionRepetitionsRequestHistories.
+     *
+     * @return Resource collection API of WorkflowRunActionRepetitionsRequestHistories.
+     */
     public WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories() {
         if (this.workflowRunActionRepetitionsRequestHistories == null) {
             this.workflowRunActionRepetitionsRequestHistories =
@@ -378,7 +477,11 @@ public final class LogicManager {
         return workflowRunActionRepetitionsRequestHistories;
     }
 
-    /** @return Resource collection API of WorkflowRunActionRequestHistories. */
+    /**
+     * Gets the resource collection API of WorkflowRunActionRequestHistories.
+     *
+     * @return Resource collection API of WorkflowRunActionRequestHistories.
+     */
     public WorkflowRunActionRequestHistories workflowRunActionRequestHistories() {
         if (this.workflowRunActionRequestHistories == null) {
             this.workflowRunActionRequestHistories =
@@ -387,7 +490,11 @@ public final class LogicManager {
         return workflowRunActionRequestHistories;
     }
 
-    /** @return Resource collection API of WorkflowRunActionScopeRepetitions. */
+    /**
+     * Gets the resource collection API of WorkflowRunActionScopeRepetitions.
+     *
+     * @return Resource collection API of WorkflowRunActionScopeRepetitions.
+     */
     public WorkflowRunActionScopeRepetitions workflowRunActionScopeRepetitions() {
         if (this.workflowRunActionScopeRepetitions == null) {
             this.workflowRunActionScopeRepetitions =
@@ -396,7 +503,11 @@ public final class LogicManager {
         return workflowRunActionScopeRepetitions;
     }
 
-    /** @return Resource collection API of WorkflowRunOperations. */
+    /**
+     * Gets the resource collection API of WorkflowRunOperations.
+     *
+     * @return Resource collection API of WorkflowRunOperations.
+     */
     public WorkflowRunOperations workflowRunOperations() {
         if (this.workflowRunOperations == null) {
             this.workflowRunOperations = new WorkflowRunOperationsImpl(clientObject.getWorkflowRunOperations(), this);
@@ -404,7 +515,11 @@ public final class LogicManager {
         return workflowRunOperations;
     }
 
-    /** @return Resource collection API of IntegrationAccounts. */
+    /**
+     * Gets the resource collection API of IntegrationAccounts. It manages IntegrationAccount.
+     *
+     * @return Resource collection API of IntegrationAccounts.
+     */
     public IntegrationAccounts integrationAccounts() {
         if (this.integrationAccounts == null) {
             this.integrationAccounts = new IntegrationAccountsImpl(clientObject.getIntegrationAccounts(), this);
@@ -412,7 +527,11 @@ public final class LogicManager {
         return integrationAccounts;
     }
 
-    /** @return Resource collection API of IntegrationAccountAssemblies. */
+    /**
+     * Gets the resource collection API of IntegrationAccountAssemblies. It manages AssemblyDefinition.
+     *
+     * @return Resource collection API of IntegrationAccountAssemblies.
+     */
     public IntegrationAccountAssemblies integrationAccountAssemblies() {
         if (this.integrationAccountAssemblies == null) {
             this.integrationAccountAssemblies =
@@ -421,7 +540,11 @@ public final class LogicManager {
         return integrationAccountAssemblies;
     }
 
-    /** @return Resource collection API of IntegrationAccountBatchConfigurations. */
+    /**
+     * Gets the resource collection API of IntegrationAccountBatchConfigurations. It manages BatchConfiguration.
+     *
+     * @return Resource collection API of IntegrationAccountBatchConfigurations.
+     */
     public IntegrationAccountBatchConfigurations integrationAccountBatchConfigurations() {
         if (this.integrationAccountBatchConfigurations == null) {
             this.integrationAccountBatchConfigurations =
@@ -431,7 +554,11 @@ public final class LogicManager {
         return integrationAccountBatchConfigurations;
     }
 
-    /** @return Resource collection API of IntegrationAccountSchemas. */
+    /**
+     * Gets the resource collection API of IntegrationAccountSchemas. It manages IntegrationAccountSchema.
+     *
+     * @return Resource collection API of IntegrationAccountSchemas.
+     */
     public IntegrationAccountSchemas integrationAccountSchemas() {
         if (this.integrationAccountSchemas == null) {
             this.integrationAccountSchemas =
@@ -440,7 +567,11 @@ public final class LogicManager {
         return integrationAccountSchemas;
     }
 
-    /** @return Resource collection API of IntegrationAccountMaps. */
+    /**
+     * Gets the resource collection API of IntegrationAccountMaps. It manages IntegrationAccountMap.
+     *
+     * @return Resource collection API of IntegrationAccountMaps.
+     */
     public IntegrationAccountMaps integrationAccountMaps() {
         if (this.integrationAccountMaps == null) {
             this.integrationAccountMaps =
@@ -449,7 +580,11 @@ public final class LogicManager {
         return integrationAccountMaps;
     }
 
-    /** @return Resource collection API of IntegrationAccountPartners. */
+    /**
+     * Gets the resource collection API of IntegrationAccountPartners. It manages IntegrationAccountPartner.
+     *
+     * @return Resource collection API of IntegrationAccountPartners.
+     */
     public IntegrationAccountPartners integrationAccountPartners() {
         if (this.integrationAccountPartners == null) {
             this.integrationAccountPartners =
@@ -458,7 +593,11 @@ public final class LogicManager {
         return integrationAccountPartners;
     }
 
-    /** @return Resource collection API of IntegrationAccountAgreements. */
+    /**
+     * Gets the resource collection API of IntegrationAccountAgreements. It manages IntegrationAccountAgreement.
+     *
+     * @return Resource collection API of IntegrationAccountAgreements.
+     */
     public IntegrationAccountAgreements integrationAccountAgreements() {
         if (this.integrationAccountAgreements == null) {
             this.integrationAccountAgreements =
@@ -467,7 +606,11 @@ public final class LogicManager {
         return integrationAccountAgreements;
     }
 
-    /** @return Resource collection API of IntegrationAccountCertificates. */
+    /**
+     * Gets the resource collection API of IntegrationAccountCertificates. It manages IntegrationAccountCertificate.
+     *
+     * @return Resource collection API of IntegrationAccountCertificates.
+     */
     public IntegrationAccountCertificates integrationAccountCertificates() {
         if (this.integrationAccountCertificates == null) {
             this.integrationAccountCertificates =
@@ -476,7 +619,11 @@ public final class LogicManager {
         return integrationAccountCertificates;
     }
 
-    /** @return Resource collection API of IntegrationAccountSessions. */
+    /**
+     * Gets the resource collection API of IntegrationAccountSessions. It manages IntegrationAccountSession.
+     *
+     * @return Resource collection API of IntegrationAccountSessions.
+     */
     public IntegrationAccountSessions integrationAccountSessions() {
         if (this.integrationAccountSessions == null) {
             this.integrationAccountSessions =
@@ -485,7 +632,11 @@ public final class LogicManager {
         return integrationAccountSessions;
     }
 
-    /** @return Resource collection API of IntegrationServiceEnvironments. */
+    /**
+     * Gets the resource collection API of IntegrationServiceEnvironments. It manages IntegrationServiceEnvironment.
+     *
+     * @return Resource collection API of IntegrationServiceEnvironments.
+     */
     public IntegrationServiceEnvironments integrationServiceEnvironments() {
         if (this.integrationServiceEnvironments == null) {
             this.integrationServiceEnvironments =
@@ -494,7 +645,11 @@ public final class LogicManager {
         return integrationServiceEnvironments;
     }
 
-    /** @return Resource collection API of IntegrationServiceEnvironmentSkus. */
+    /**
+     * Gets the resource collection API of IntegrationServiceEnvironmentSkus.
+     *
+     * @return Resource collection API of IntegrationServiceEnvironmentSkus.
+     */
     public IntegrationServiceEnvironmentSkus integrationServiceEnvironmentSkus() {
         if (this.integrationServiceEnvironmentSkus == null) {
             this.integrationServiceEnvironmentSkus =
@@ -503,7 +658,11 @@ public final class LogicManager {
         return integrationServiceEnvironmentSkus;
     }
 
-    /** @return Resource collection API of IntegrationServiceEnvironmentNetworkHealths. */
+    /**
+     * Gets the resource collection API of IntegrationServiceEnvironmentNetworkHealths.
+     *
+     * @return Resource collection API of IntegrationServiceEnvironmentNetworkHealths.
+     */
     public IntegrationServiceEnvironmentNetworkHealths integrationServiceEnvironmentNetworkHealths() {
         if (this.integrationServiceEnvironmentNetworkHealths == null) {
             this.integrationServiceEnvironmentNetworkHealths =
@@ -513,7 +672,12 @@ public final class LogicManager {
         return integrationServiceEnvironmentNetworkHealths;
     }
 
-    /** @return Resource collection API of IntegrationServiceEnvironmentManagedApis. */
+    /**
+     * Gets the resource collection API of IntegrationServiceEnvironmentManagedApis. It manages
+     * IntegrationServiceEnvironmentManagedApi.
+     *
+     * @return Resource collection API of IntegrationServiceEnvironmentManagedApis.
+     */
     public IntegrationServiceEnvironmentManagedApis integrationServiceEnvironmentManagedApis() {
         if (this.integrationServiceEnvironmentManagedApis == null) {
             this.integrationServiceEnvironmentManagedApis =
@@ -523,7 +687,11 @@ public final class LogicManager {
         return integrationServiceEnvironmentManagedApis;
     }
 
-    /** @return Resource collection API of IntegrationServiceEnvironmentManagedApiOperations. */
+    /**
+     * Gets the resource collection API of IntegrationServiceEnvironmentManagedApiOperations.
+     *
+     * @return Resource collection API of IntegrationServiceEnvironmentManagedApiOperations.
+     */
     public IntegrationServiceEnvironmentManagedApiOperations integrationServiceEnvironmentManagedApiOperations() {
         if (this.integrationServiceEnvironmentManagedApiOperations == null) {
             this.integrationServiceEnvironmentManagedApiOperations =
@@ -533,7 +701,11 @@ public final class LogicManager {
         return integrationServiceEnvironmentManagedApiOperations;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuCapacity;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuDefinitionSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration service environment sku definition. */
 @Fluent
 public final class IntegrationServiceEnvironmentSkuDefinitionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkuDefinitionInner.class);
-
     /*
      * The resource type.
      */

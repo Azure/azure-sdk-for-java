@@ -18,7 +18,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountCertificate> list(String resourceGroupName, String integrationAccountName);
 
@@ -32,7 +32,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account certificates.
+     * @return a list of integration account certificates as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccountCertificate> list(
         String resourceGroupName, String integrationAccountName, Integer top, Context context);
@@ -60,7 +60,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate along with {@link Response}.
      */
     Response<IntegrationAccountCertificate> getWithResponse(
         String resourceGroupName, String integrationAccountName, String certificateName, Context context);
@@ -87,7 +87,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String integrationAccountName, String certificateName, Context context);
@@ -99,7 +99,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate along with {@link Response}.
      */
     IntegrationAccountCertificate getById(String id);
 
@@ -111,7 +111,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account certificate.
+     * @return an integration account certificate along with {@link Response}.
      */
     Response<IntegrationAccountCertificate> getByIdWithResponse(String id, Context context);
 
@@ -133,7 +133,7 @@ public interface IntegrationAccountCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

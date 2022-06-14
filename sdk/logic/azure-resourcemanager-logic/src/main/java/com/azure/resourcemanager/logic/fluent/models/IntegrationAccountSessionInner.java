@@ -5,74 +5,28 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The integration account session. */
-@JsonFlatten
 @Fluent
-public class IntegrationAccountSessionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSessionInner.class);
-
+public final class IntegrationAccountSessionInner extends Resource {
     /*
-     * The created time.
+     * The integration account session properties.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The session content.
-     */
-    @JsonProperty(value = "properties.content")
-    private Object content;
+    @JsonProperty(value = "properties", required = true)
+    private IntegrationAccountSessionProperties innerProperties = new IntegrationAccountSessionProperties();
 
     /**
-     * Get the createdTime property: The created time.
+     * Get the innerProperties property: The integration account session properties.
      *
-     * @return the createdTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the content property: The session content.
-     *
-     * @return the content value.
-     */
-    public Object content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The session content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountSessionInner object itself.
-     */
-    public IntegrationAccountSessionInner withContent(Object content) {
-        this.content = content;
-        return this;
+    private IntegrationAccountSessionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -90,10 +44,61 @@ public class IntegrationAccountSessionInner extends Resource {
     }
 
     /**
+     * Get the createdTime property: The created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the content property: The session content.
+     *
+     * @return the content value.
+     */
+    public Object content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The session content.
+     *
+     * @param content the content value to set.
+     * @return the IntegrationAccountSessionInner object itself.
+     */
+    public IntegrationAccountSessionInner withContent(Object content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountSessionProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model IntegrationAccountSessionInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSessionInner.class);
 }

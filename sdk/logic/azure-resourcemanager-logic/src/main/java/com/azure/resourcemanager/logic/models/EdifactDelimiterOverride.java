@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact delimiter override settings. */
 @Fluent
 public final class EdifactDelimiterOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactDelimiterOverride.class);
-
     /*
      * The message id.
      */
@@ -333,16 +330,18 @@ public final class EdifactDelimiterOverride {
      */
     public void validate() {
         if (segmentTerminatorSuffix() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property segmentTerminatorSuffix in model EdifactDelimiterOverride"));
         }
         if (decimalPointIndicator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property decimalPointIndicator in model EdifactDelimiterOverride"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactDelimiterOverride.class);
 }

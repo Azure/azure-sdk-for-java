@@ -16,10 +16,9 @@ import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSchema;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSchemas;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountSchemasImpl implements IntegrationAccountSchemas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSchemasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSchemasImpl.class);
 
     private final IntegrationAccountSchemasClient innerClient;
 
@@ -119,7 +118,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
     public IntegrationAccountSchema getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
@@ -147,7 +146,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
     public Response<IntegrationAccountSchema> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
@@ -175,7 +174,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -183,7 +182,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,18 +191,18 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, schemaName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, schemaName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,7 +210,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -220,7 +219,7 @@ public final class IntegrationAccountSchemasImpl implements IntegrationAccountSc
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.IntegrationAccountBatchConfigurati
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 import com.azure.resourcemanager.logic.models.BatchConfiguration;
 import com.azure.resourcemanager.logic.models.IntegrationAccountBatchConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountBatchConfigurationsImpl implements IntegrationAccountBatchConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountBatchConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountBatchConfigurationsImpl.class);
 
     private final IntegrationAccountBatchConfigurationsClient innerClient;
 
@@ -84,7 +83,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
     public BatchConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -92,7 +91,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -101,7 +100,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,7 +115,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
     public Response<BatchConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -124,7 +123,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +132,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +145,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,22 +162,20 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
         }
-        this
-            .deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +183,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -195,7 +192,7 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
         String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

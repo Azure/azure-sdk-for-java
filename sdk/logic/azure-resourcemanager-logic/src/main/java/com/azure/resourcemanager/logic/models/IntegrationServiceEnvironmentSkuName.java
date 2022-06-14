@@ -31,7 +31,11 @@ public final class IntegrationServiceEnvironmentSkuName
         return fromString(name, IntegrationServiceEnvironmentSkuName.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentSkuName values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentSkuName values.
+     *
+     * @return known IntegrationServiceEnvironmentSkuName values.
+     */
     public static Collection<IntegrationServiceEnvironmentSkuName> values() {
         return values(IntegrationServiceEnvironmentSkuName.class);
     }

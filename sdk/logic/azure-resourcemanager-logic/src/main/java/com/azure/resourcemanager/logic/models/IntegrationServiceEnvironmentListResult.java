@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of integration service environments. */
 @Fluent
 public final class IntegrationServiceEnvironmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentListResult.class);
-
     /*
      * The value property.
      */

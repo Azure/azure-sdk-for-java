@@ -16,10 +16,9 @@ import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.IntegrationAccountPartner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountPartners;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountPartnersImpl implements IntegrationAccountPartners {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountPartnersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountPartnersImpl.class);
 
     private final IntegrationAccountPartnersClient innerClient;
 
@@ -119,7 +118,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
     public IntegrationAccountPartner getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -127,7 +126,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String partnerName = Utils.getValueFromIdByName(id, "partners");
         if (partnerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'partners'.", id)));
@@ -147,7 +146,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
     public Response<IntegrationAccountPartner> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,7 +163,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String partnerName = Utils.getValueFromIdByName(id, "partners");
         if (partnerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'partners'.", id)));
@@ -175,7 +174,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -183,7 +182,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,18 +191,18 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String partnerName = Utils.getValueFromIdByName(id, "partners");
         if (partnerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'partners'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, partnerName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, partnerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,7 +210,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -220,7 +219,7 @@ public final class IntegrationAccountPartnersImpl implements IntegrationAccountP
         }
         String partnerName = Utils.getValueFromIdByName(id, "partners");
         if (partnerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'partners'.", id)));

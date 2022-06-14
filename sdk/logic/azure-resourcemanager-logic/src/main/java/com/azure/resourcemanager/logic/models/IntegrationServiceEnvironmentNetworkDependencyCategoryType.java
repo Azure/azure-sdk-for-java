@@ -72,7 +72,11 @@ public final class IntegrationServiceEnvironmentNetworkDependencyCategoryType
         return fromString(name, IntegrationServiceEnvironmentNetworkDependencyCategoryType.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentNetworkDependencyCategoryType values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentNetworkDependencyCategoryType values.
+     *
+     * @return known IntegrationServiceEnvironmentNetworkDependencyCategoryType values.
+     */
     public static Collection<IntegrationServiceEnvironmentNetworkDependencyCategoryType> values() {
         return values(IntegrationServiceEnvironmentNetworkDependencyCategoryType.class);
     }

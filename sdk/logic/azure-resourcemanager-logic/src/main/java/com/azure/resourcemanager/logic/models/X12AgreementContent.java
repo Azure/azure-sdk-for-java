@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X12 agreement content. */
 @Fluent
 public final class X12AgreementContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(X12AgreementContent.class);
-
     /*
      * The X12 one-way receive agreement.
      */
@@ -73,7 +70,7 @@ public final class X12AgreementContent {
      */
     public void validate() {
         if (receiveAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiveAgreement in model X12AgreementContent"));
@@ -81,7 +78,7 @@ public final class X12AgreementContent {
             receiveAgreement().validate();
         }
         if (sendAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sendAgreement in model X12AgreementContent"));
@@ -89,4 +86,6 @@ public final class X12AgreementContent {
             sendAgreement().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(X12AgreementContent.class);
 }

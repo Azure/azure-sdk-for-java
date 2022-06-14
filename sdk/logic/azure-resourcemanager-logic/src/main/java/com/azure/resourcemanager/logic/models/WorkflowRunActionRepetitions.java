@@ -20,7 +20,7 @@ public interface WorkflowRunActionRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunActionRepetitionDefinition> list(
         String resourceGroupName, String workflowName, String runName, String actionName);
@@ -36,7 +36,7 @@ public interface WorkflowRunActionRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowRunActionRepetitionDefinition> list(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context);
@@ -69,7 +69,7 @@ public interface WorkflowRunActionRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition along with {@link Response}.
      */
     Response<WorkflowRunActionRepetitionDefinition> getWithResponse(
         String resourceGroupName,
@@ -90,7 +90,7 @@ public interface WorkflowRunActionRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExpressionRoot> listExpressionTraces(
         String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
@@ -107,7 +107,7 @@ public interface WorkflowRunActionRepetitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExpressionRoot> listExpressionTraces(
         String resourceGroupName,

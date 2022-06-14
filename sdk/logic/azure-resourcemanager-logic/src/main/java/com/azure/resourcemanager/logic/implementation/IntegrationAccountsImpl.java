@@ -21,10 +21,9 @@ import com.azure.resourcemanager.logic.models.KeyVaultKey;
 import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountsImpl implements IntegrationAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountsImpl.class);
 
     private final IntegrationAccountsClient innerClient;
 
@@ -186,7 +185,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
     public IntegrationAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -194,7 +193,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,7 +206,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
     public Response<IntegrationAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -215,7 +214,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -228,7 +227,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -236,20 +235,20 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -257,7 +256,7 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
         String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

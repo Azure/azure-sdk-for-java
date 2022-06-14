@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowTriggersClient;
 import com.azure.resourcemanager.logic.fluent.models.JsonSchemaInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WorkflowTriggersClient. */
 public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowTriggersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final WorkflowTriggersService service;
 
@@ -199,7 +196,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(
@@ -261,7 +258,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listSinglePageAsync(
@@ -319,7 +316,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowTriggerInner> listAsync(
@@ -337,7 +334,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowTriggerInner> listAsync(String resourceGroupName, String workflowName) {
@@ -359,7 +356,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowTriggerInner> listAsync(
@@ -377,7 +374,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowTriggerInner> list(String resourceGroupName, String workflowName) {
@@ -397,7 +394,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowTriggerInner> list(
@@ -414,7 +411,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
+     * @return a workflow trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(
@@ -468,7 +465,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
+     * @return a workflow trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerInner>> getWithResponseAsync(
@@ -518,19 +515,12 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
+     * @return a workflow trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerInner> getAsync(String resourceGroupName, String workflowName, String triggerName) {
         return getWithResponseAsync(resourceGroupName, workflowName, triggerName)
-            .flatMap(
-                (Response<WorkflowTriggerInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -559,7 +549,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
+     * @return a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerInner> getWithResponse(
@@ -576,7 +566,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetWithResponseAsync(
@@ -630,7 +620,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetWithResponseAsync(
@@ -680,12 +670,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resetAsync(String resourceGroupName, String workflowName, String triggerName) {
-        return resetWithResponseAsync(resourceGroupName, workflowName, triggerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return resetWithResponseAsync(resourceGroupName, workflowName, triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -713,7 +702,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetWithResponse(
@@ -730,7 +719,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> runWithResponseAsync(
@@ -784,7 +773,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> runWithResponseAsync(
@@ -834,12 +823,11 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runAsync(String resourceGroupName, String workflowName, String triggerName) {
-        return runWithResponseAsync(resourceGroupName, workflowName, triggerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return runWithResponseAsync(resourceGroupName, workflowName, triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -867,7 +855,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runWithResponse(
@@ -884,7 +872,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
+     * @return the trigger schema as JSON along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(
@@ -938,7 +926,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
+     * @return the trigger schema as JSON along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JsonSchemaInner>> getSchemaJsonWithResponseAsync(
@@ -988,20 +976,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
+     * @return the trigger schema as JSON on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JsonSchemaInner> getSchemaJsonAsync(
         String resourceGroupName, String workflowName, String triggerName) {
         return getSchemaJsonWithResponseAsync(resourceGroupName, workflowName, triggerName)
-            .flatMap(
-                (Response<JsonSchemaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1030,7 +1011,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
+     * @return the trigger schema as JSON along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JsonSchemaInner> getSchemaJsonWithResponse(
@@ -1048,7 +1029,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setStateWithResponseAsync(
@@ -1109,7 +1090,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setStateWithResponseAsync(
@@ -1170,13 +1151,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> setStateAsync(
         String resourceGroupName, String workflowName, String triggerName, SetTriggerStateActionDefinition setState) {
         return setStateWithResponseAsync(resourceGroupName, workflowName, triggerName, setState)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1207,7 +1188,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setStateWithResponse(
@@ -1228,7 +1209,8 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
+     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
@@ -1282,7 +1264,8 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
+     * @return the callback URL for a workflow trigger along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
@@ -1332,20 +1315,13 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
+     * @return the callback URL for a workflow trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
         String resourceGroupName, String workflowName, String triggerName) {
         return listCallbackUrlWithResponseAsync(resourceGroupName, workflowName, triggerName)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1375,7 +1351,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
+     * @return the callback URL for a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
@@ -1390,7 +1366,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow triggers.
+     * @return the list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listNextSinglePageAsync(String nextLink) {
@@ -1426,7 +1402,7 @@ public final class WorkflowTriggersClientImpl implements WorkflowTriggersClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow triggers.
+     * @return the list of workflow triggers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowTriggerInner>> listNextSinglePageAsync(String nextLink, Context context) {

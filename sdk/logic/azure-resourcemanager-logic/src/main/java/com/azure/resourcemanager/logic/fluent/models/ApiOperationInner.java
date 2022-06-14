@@ -6,17 +6,13 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.ApiOperationPropertiesDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The api operation. */
 @Fluent
 public final class ApiOperationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiOperationInner.class);
-
     /*
      * The api operations properties
      */

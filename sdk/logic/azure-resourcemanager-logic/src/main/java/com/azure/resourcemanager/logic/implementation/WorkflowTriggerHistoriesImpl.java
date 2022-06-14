@@ -13,10 +13,9 @@ import com.azure.resourcemanager.logic.fluent.WorkflowTriggerHistoriesClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerHistoryInner;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerHistories;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerHistory;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowTriggerHistoriesImpl implements WorkflowTriggerHistories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggerHistoriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowTriggerHistoriesImpl.class);
 
     private final WorkflowTriggerHistoriesClient innerClient;
 

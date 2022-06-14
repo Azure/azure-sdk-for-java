@@ -12,6 +12,7 @@ import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
 import com.azure.resourcemanager.logic.models.GenerateUpgradedDefinitionParameters;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
+import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.Sku;
@@ -53,6 +54,10 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public WorkflowProvisioningState provisioningState() {
@@ -118,6 +123,10 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WorkflowInner innerModel() {
@@ -300,6 +309,11 @@ public final class WorkflowImpl implements Workflow, Workflow.Definition, Workfl
 
     public WorkflowImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
+        return this;
+    }
+
+    public WorkflowImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 

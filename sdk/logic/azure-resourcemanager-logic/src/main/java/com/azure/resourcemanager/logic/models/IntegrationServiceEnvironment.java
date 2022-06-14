@@ -62,6 +62,13 @@ public interface IntegrationServiceEnvironment {
     IntegrationServiceEnvironmentSku sku();
 
     /**
+     * Gets the identity property: Managed service identity properties.
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -74,6 +81,13 @@ public interface IntegrationServiceEnvironment {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner object.
@@ -127,7 +141,10 @@ public interface IntegrationServiceEnvironment {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithSku {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithProperties,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              *
@@ -173,6 +190,16 @@ public interface IntegrationServiceEnvironment {
              */
             WithCreate withSku(IntegrationServiceEnvironmentSku sku);
         }
+        /** The stage of the IntegrationServiceEnvironment definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity properties..
+             *
+             * @param identity Managed service identity properties.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
     }
     /**
      * Begins update for the IntegrationServiceEnvironment resource.
@@ -182,7 +209,8 @@ public interface IntegrationServiceEnvironment {
     IntegrationServiceEnvironment.Update update();
 
     /** The template for IntegrationServiceEnvironment update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithSku {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithSku, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          *
@@ -230,6 +258,16 @@ public interface IntegrationServiceEnvironment {
              */
             Update withSku(IntegrationServiceEnvironmentSku sku);
         }
+        /** The stage of the IntegrationServiceEnvironment update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity properties..
+             *
+             * @param identity Managed service identity properties.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -261,7 +299,7 @@ public interface IntegrationServiceEnvironment {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> restartWithResponse(Context context);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account agreement content. */
 @Fluent
 public final class AgreementContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementContent.class);
-
     /*
      * The AS2 agreement content.
      */

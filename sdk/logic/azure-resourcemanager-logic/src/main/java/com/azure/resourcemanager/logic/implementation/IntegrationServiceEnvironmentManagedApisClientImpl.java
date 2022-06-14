@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.logic.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -28,12 +29,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentManagedApisClient;
-import com.azure.resourcemanager.logic.fluent.models.ManagedApiInner;
-import com.azure.resourcemanager.logic.models.ManagedApiListResult;
+import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentManagedApiInner;
+import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentManagedApiListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -44,8 +44,6 @@ import reactor.core.publisher.Mono;
  */
 public final class IntegrationServiceEnvironmentManagedApisClientImpl
     implements IntegrationServiceEnvironmentManagedApisClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentManagedApisClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationServiceEnvironmentManagedApisService service;
 
@@ -80,7 +78,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
                 + "/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedApiListResult>> list(
+        Mono<Response<IntegrationServiceEnvironmentManagedApiListResult>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroup") String resourceGroup,
@@ -95,7 +93,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
                 + "/integrationServiceEnvironments/{integrationServiceEnvironmentName}/managedApis/{apiName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedApiInner>> get(
+        Mono<Response<IntegrationServiceEnvironmentManagedApiInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroup") String resourceGroup,
@@ -118,6 +116,8 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
             @PathParam("integrationServiceEnvironmentName") String integrationServiceEnvironmentName,
             @PathParam("apiName") String apiName,
             @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -141,7 +141,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedApiListResult>> listNext(
+        Mono<Response<IntegrationServiceEnvironmentManagedApiListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -156,10 +156,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedApiInner>> listSinglePageAsync(
+    private Mono<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>> listSinglePageAsync(
         String resourceGroup, String integrationServiceEnvironmentName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -195,7 +196,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<ManagedApiInner>>map(
+            .<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -216,10 +217,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedApiInner>> listSinglePageAsync(
+    private Mono<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>> listSinglePageAsync(
         String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -272,10 +274,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedApiInner> listAsync(String resourceGroup, String integrationServiceEnvironmentName) {
+    private PagedFlux<IntegrationServiceEnvironmentManagedApiInner> listAsync(
+        String resourceGroup, String integrationServiceEnvironmentName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -290,10 +293,10 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedApiInner> listAsync(
+    private PagedFlux<IntegrationServiceEnvironmentManagedApiInner> listAsync(
         String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroup, integrationServiceEnvironmentName, context),
@@ -308,10 +311,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedApiInner> list(String resourceGroup, String integrationServiceEnvironmentName) {
+    public PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(
+        String resourceGroup, String integrationServiceEnvironmentName) {
         return new PagedIterable<>(listAsync(resourceGroup, integrationServiceEnvironmentName));
     }
 
@@ -324,10 +328,10 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedApiInner> list(
+    public PagedIterable<IntegrationServiceEnvironmentManagedApiInner> list(
         String resourceGroup, String integrationServiceEnvironmentName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroup, integrationServiceEnvironmentName, context));
     }
@@ -341,10 +345,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Api.
+     * @return the integration service environment managed Api along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedApiInner>> getWithResponseAsync(
+    private Mono<Response<IntegrationServiceEnvironmentManagedApiInner>> getWithResponseAsync(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -397,10 +402,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Api.
+     * @return the integration service environment managed Api along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedApiInner>> getWithResponseAsync(
+    private Mono<Response<IntegrationServiceEnvironmentManagedApiInner>> getWithResponseAsync(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -449,20 +455,13 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Api.
+     * @return the integration service environment managed Api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedApiInner> getAsync(
+    private Mono<IntegrationServiceEnvironmentManagedApiInner> getAsync(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
         return getWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, apiName)
-            .flatMap(
-                (Response<ManagedApiInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -477,7 +476,8 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @return the integration service environment managed Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedApiInner get(String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
+    public IntegrationServiceEnvironmentManagedApiInner get(
+        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
         return getAsync(resourceGroup, integrationServiceEnvironmentName, apiName).block();
     }
 
@@ -491,10 +491,10 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Api.
+     * @return the integration service environment managed Api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedApiInner> getWithResponse(
+    public Response<IntegrationServiceEnvironmentManagedApiInner> getWithResponse(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
         return getWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context).block();
     }
@@ -505,14 +505,19 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -536,6 +541,14 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
         }
         if (apiName == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
+        }
+        if (integrationServiceEnvironmentManagedApi == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter integrationServiceEnvironmentManagedApi is required and cannot be null."));
+        } else {
+            integrationServiceEnvironmentManagedApi.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -549,6 +562,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
                             integrationServiceEnvironmentName,
                             apiName,
                             this.client.getApiVersion(),
+                            integrationServiceEnvironmentManagedApi,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -560,15 +574,21 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -593,6 +613,14 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
         if (apiName == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiName is required and cannot be null."));
         }
+        if (integrationServiceEnvironmentManagedApi == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter integrationServiceEnvironmentManagedApi is required and cannot be null."));
+        } else {
+            integrationServiceEnvironmentManagedApi.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -603,6 +631,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
                 integrationServiceEnvironmentName,
                 apiName,
                 this.client.getApiVersion(),
+                integrationServiceEnvironmentManagedApi,
                 accept,
                 context);
     }
@@ -613,20 +642,31 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the {@link PollerFlux} for polling of the integration service environment managed api.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ManagedApiInner>, ManagedApiInner> beginPutAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
+        beginPutAsync(
+            String resourceGroup,
+            String integrationServiceEnvironmentName,
+            String apiName,
+            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            putWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, apiName);
+            putWithResponseAsync(
+                resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedApi);
         return this
             .client
-            .<ManagedApiInner, ManagedApiInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ManagedApiInner.class, ManagedApiInner.class, Context.NONE);
+            .<IntegrationServiceEnvironmentManagedApiInner, IntegrationServiceEnvironmentManagedApiInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IntegrationServiceEnvironmentManagedApiInner.class,
+                IntegrationServiceEnvironmentManagedApiInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -635,22 +675,38 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the {@link PollerFlux} for polling of the integration service environment managed api.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ManagedApiInner>, ManagedApiInner> beginPutAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<
+            PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
+        beginPutAsync(
+            String resourceGroup,
+            String integrationServiceEnvironmentName,
+            String apiName,
+            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            putWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context);
+            putWithResponseAsync(
+                resourceGroup,
+                integrationServiceEnvironmentName,
+                apiName,
+                integrationServiceEnvironmentManagedApi,
+                context);
         return this
             .client
-            .<ManagedApiInner, ManagedApiInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ManagedApiInner.class, ManagedApiInner.class, context);
+            .<IntegrationServiceEnvironmentManagedApiInner, IntegrationServiceEnvironmentManagedApiInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IntegrationServiceEnvironmentManagedApiInner.class,
+                IntegrationServiceEnvironmentManagedApiInner.class,
+                context);
     }
 
     /**
@@ -659,15 +715,23 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the {@link SyncPoller} for polling of the integration service environment managed api.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedApiInner>, ManagedApiInner> beginPut(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
-        return beginPutAsync(resourceGroup, integrationServiceEnvironmentName, apiName).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
+        beginPut(
+            String resourceGroup,
+            String integrationServiceEnvironmentName,
+            String apiName,
+            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi) {
+        return beginPutAsync(
+                resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedApi)
+            .getSyncPoller();
     }
 
     /**
@@ -676,16 +740,29 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the {@link SyncPoller} for polling of the integration service environment managed api.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedApiInner>, ManagedApiInner> beginPut(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
-        return beginPutAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<
+            PollResult<IntegrationServiceEnvironmentManagedApiInner>, IntegrationServiceEnvironmentManagedApiInner>
+        beginPut(
+            String resourceGroup,
+            String integrationServiceEnvironmentName,
+            String apiName,
+            IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+            Context context) {
+        return beginPutAsync(
+                resourceGroup,
+                integrationServiceEnvironmentName,
+                apiName,
+                integrationServiceEnvironmentManagedApi,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -694,15 +771,20 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedApiInner> putAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
-        return beginPutAsync(resourceGroup, integrationServiceEnvironmentName, apiName)
+    private Mono<IntegrationServiceEnvironmentManagedApiInner> putAsync(
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi) {
+        return beginPutAsync(
+                resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedApi)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -713,16 +795,26 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedApiInner> putAsync(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
-        return beginPutAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context)
+    private Mono<IntegrationServiceEnvironmentManagedApiInner> putAsync(
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+        Context context) {
+        return beginPutAsync(
+                resourceGroup,
+                integrationServiceEnvironmentName,
+                apiName,
+                integrationServiceEnvironmentManagedApi,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -733,14 +825,21 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedApiInner put(String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
-        return putAsync(resourceGroup, integrationServiceEnvironmentName, apiName).block();
+    public IntegrationServiceEnvironmentManagedApiInner put(
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi) {
+        return putAsync(
+                resourceGroup, integrationServiceEnvironmentName, apiName, integrationServiceEnvironmentManagedApi)
+            .block();
     }
 
     /**
@@ -749,16 +848,27 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
+     * @param integrationServiceEnvironmentManagedApi The integration service environment managed api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
+     * @return the integration service environment managed api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedApiInner put(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
-        return putAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context).block();
+    public IntegrationServiceEnvironmentManagedApiInner put(
+        String resourceGroup,
+        String integrationServiceEnvironmentName,
+        String apiName,
+        IntegrationServiceEnvironmentManagedApiInner integrationServiceEnvironmentManagedApi,
+        Context context) {
+        return putAsync(
+                resourceGroup,
+                integrationServiceEnvironmentName,
+                apiName,
+                integrationServiceEnvironmentManagedApi,
+                context)
+            .block();
     }
 
     /**
@@ -770,7 +880,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -826,7 +936,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -878,16 +988,17 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroup, integrationServiceEnvironmentName, apiName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -900,9 +1011,9 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
         context = this.client.mergeContext(context);
@@ -922,9 +1033,9 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
         return beginDeleteAsync(resourceGroup, integrationServiceEnvironmentName, apiName).getSyncPoller();
@@ -940,9 +1051,9 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context) {
         return beginDeleteAsync(resourceGroup, integrationServiceEnvironmentName, apiName, context).getSyncPoller();
@@ -957,7 +1068,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroup, String integrationServiceEnvironmentName, String apiName) {
@@ -976,7 +1087,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1025,10 +1136,11 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of managed APIs.
+     * @return the list of integration service environment managed APIs along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedApiInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1041,7 +1153,7 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedApiInner>>map(
+            .<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1061,10 +1173,12 @@ public final class IntegrationServiceEnvironmentManagedApisClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of managed APIs.
+     * @return the list of integration service environment managed APIs along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedApiInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<IntegrationServiceEnvironmentManagedApiInner>> listNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

@@ -22,7 +22,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AssemblyDefinitionInner> list(String resourceGroupName, String integrationAccountName);
@@ -36,7 +36,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AssemblyDefinitionInner> list(
@@ -66,7 +66,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AssemblyDefinitionInner> getWithResponse(
@@ -102,7 +102,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the assembly definition.
+     * @return the assembly definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AssemblyDefinitionInner> createOrUpdateWithResponse(
@@ -135,7 +135,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -166,7 +166,7 @@ public interface IntegrationAccountAssembliesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
+     * @return the content callback url for an integration account assembly along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(

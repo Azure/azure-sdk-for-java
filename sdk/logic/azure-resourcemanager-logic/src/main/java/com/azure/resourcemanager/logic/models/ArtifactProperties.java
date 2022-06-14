@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The artifact properties definition. */
 @Fluent
 public class ArtifactProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArtifactProperties.class);
-
     /*
      * The artifact creation time.
      */
@@ -28,7 +24,7 @@ public class ArtifactProperties {
     private OffsetDateTime changedTime;
 
     /*
-     * Any object
+     * Anything
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
@@ -74,7 +70,7 @@ public class ArtifactProperties {
     }
 
     /**
-     * Get the metadata property: Any object.
+     * Get the metadata property: Anything.
      *
      * @return the metadata value.
      */
@@ -83,7 +79,7 @@ public class ArtifactProperties {
     }
 
     /**
-     * Set the metadata property: Any object.
+     * Set the metadata property: Anything.
      *
      * @param metadata the metadata value to set.
      * @return the ArtifactProperties object itself.

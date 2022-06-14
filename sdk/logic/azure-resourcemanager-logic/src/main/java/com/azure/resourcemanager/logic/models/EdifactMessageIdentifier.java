@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact message identifier. */
 @Fluent
 public final class EdifactMessageIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactMessageIdentifier.class);
-
     /*
      * The message id on which this envelope settings has to be applied.
      */
@@ -47,10 +44,12 @@ public final class EdifactMessageIdentifier {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageId in model EdifactMessageIdentifier"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactMessageIdentifier.class);
 }

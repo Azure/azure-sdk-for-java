@@ -75,7 +75,11 @@ public final class WorkflowTriggerProvisioningState extends ExpandableStringEnum
         return fromString(name, WorkflowTriggerProvisioningState.class);
     }
 
-    /** @return known WorkflowTriggerProvisioningState values. */
+    /**
+     * Gets known WorkflowTriggerProvisioningState values.
+     *
+     * @return known WorkflowTriggerProvisioningState values.
+     */
     public static Collection<WorkflowTriggerProvisioningState> values() {
         return values(WorkflowTriggerProvisioningState.class);
     }

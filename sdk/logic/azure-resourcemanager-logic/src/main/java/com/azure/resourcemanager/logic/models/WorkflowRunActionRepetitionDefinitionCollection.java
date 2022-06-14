@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of workflow run action repetitions. */
 @Fluent
 public final class WorkflowRunActionRepetitionDefinitionCollection {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionRepetitionDefinitionCollection.class);
-
     /*
      * The link used to get the next page of recommendations.
      */

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.KeyVaultKeyAttributes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The key vault key. */
 @Fluent
 public final class KeyVaultKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyInner.class);
-
     /*
      * The key id.
      */

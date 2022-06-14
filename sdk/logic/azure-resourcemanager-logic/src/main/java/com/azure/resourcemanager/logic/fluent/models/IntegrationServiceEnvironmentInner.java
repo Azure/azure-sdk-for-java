@@ -6,18 +6,15 @@ package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentProperties;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The integration service environment. */
 @Fluent
 public final class IntegrationServiceEnvironmentInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentInner.class);
-
     /*
      * The integration service environment properties.
      */
@@ -29,6 +26,12 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private IntegrationServiceEnvironmentSku sku;
+
+    /*
+     * Managed service identity properties.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
      * Get the properties property: The integration service environment properties.
@@ -70,6 +73,26 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the identity property: Managed service identity properties.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity properties.
+     *
+     * @param identity the identity value to set.
+     * @return the IntegrationServiceEnvironmentInner object itself.
+     */
+    public IntegrationServiceEnvironmentInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public IntegrationServiceEnvironmentInner withLocation(String location) {
@@ -95,6 +118,9 @@ public final class IntegrationServiceEnvironmentInner extends Resource {
         }
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

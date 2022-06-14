@@ -11,10 +11,9 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentSkusC
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuDefinition;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationServiceEnvironmentSkusImpl implements IntegrationServiceEnvironmentSkus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationServiceEnvironmentSkusImpl.class);
 
     private final IntegrationServiceEnvironmentSkusClient innerClient;
 

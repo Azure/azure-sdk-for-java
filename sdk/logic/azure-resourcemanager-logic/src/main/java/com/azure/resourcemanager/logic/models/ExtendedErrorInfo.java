@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The extended error info. */
 @Fluent
 public final class ExtendedErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedErrorInfo.class);
-
     /*
      * The error code.
      */
@@ -126,12 +123,12 @@ public final class ExtendedErrorInfo {
      */
     public void validate() {
         if (code() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property code in model ExtendedErrorInfo"));
         }
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property message in model ExtendedErrorInfo"));
         }
@@ -139,4 +136,6 @@ public final class ExtendedErrorInfo {
             details().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExtendedErrorInfo.class);
 }

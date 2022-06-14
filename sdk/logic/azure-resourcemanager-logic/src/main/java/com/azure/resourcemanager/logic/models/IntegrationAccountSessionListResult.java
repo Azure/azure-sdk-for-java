@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of integration account sessions. */
 @Fluent
 public final class IntegrationAccountSessionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountSessionListResult.class);
-
     /*
      * The list of integration account sessions.
      */

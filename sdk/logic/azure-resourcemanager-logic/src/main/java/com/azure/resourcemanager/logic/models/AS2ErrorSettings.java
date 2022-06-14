@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AS2 agreement error settings. */
 @Fluent
 public final class AS2ErrorSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2ErrorSettings.class);
-
     /*
      * The value indicating whether to suspend duplicate message.
      */

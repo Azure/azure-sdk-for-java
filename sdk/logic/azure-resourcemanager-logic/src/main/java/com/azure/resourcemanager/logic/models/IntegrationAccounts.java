@@ -15,7 +15,7 @@ public interface IntegrationAccounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration accounts by subscription.
+     * @return a list of integration accounts by subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccount> list();
 
@@ -27,7 +27,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration accounts by subscription.
+     * @return a list of integration accounts by subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccount> list(Integer top, Context context);
 
@@ -38,7 +38,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration accounts by resource group.
+     * @return a list of integration accounts by resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccount> listByResourceGroup(String resourceGroupName);
 
@@ -51,7 +51,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration accounts by resource group.
+     * @return a list of integration accounts by resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IntegrationAccount> listByResourceGroup(String resourceGroupName, Integer top, Context context);
 
@@ -76,7 +76,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account.
+     * @return an integration account along with {@link Response}.
      */
     Response<IntegrationAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String integrationAccountName, Context context);
@@ -101,7 +101,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, Context context);
 
@@ -129,7 +129,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account callback URL.
+     * @return the integration account callback URL along with {@link Response}.
      */
     Response<CallbackUrl> listCallbackUrlWithResponse(
         String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters, Context context);
@@ -143,7 +143,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account's Key Vault keys.
+     * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyVaultKey> listKeyVaultKeys(
         String resourceGroupName, String integrationAccountName, ListKeyVaultKeysDefinition listKeyVaultKeys);
@@ -158,7 +158,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account's Key Vault keys.
+     * @return the integration account's Key Vault keys as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KeyVaultKey> listKeyVaultKeys(
         String resourceGroupName,
@@ -189,7 +189,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> logTrackingEventsWithResponse(
         String resourceGroupName,
@@ -221,7 +221,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account.
+     * @return the integration account along with {@link Response}.
      */
     Response<IntegrationAccount> regenerateAccessKeyWithResponse(
         String resourceGroupName,
@@ -236,7 +236,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account.
+     * @return an integration account along with {@link Response}.
      */
     IntegrationAccount getById(String id);
 
@@ -248,7 +248,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account.
+     * @return an integration account along with {@link Response}.
      */
     Response<IntegrationAccount> getByIdWithResponse(String id, Context context);
 
@@ -270,7 +270,7 @@ public interface IntegrationAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

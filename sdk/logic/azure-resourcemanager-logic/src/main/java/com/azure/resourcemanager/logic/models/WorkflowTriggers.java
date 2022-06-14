@@ -18,7 +18,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowTrigger> list(String resourceGroupName, String workflowName);
 
@@ -33,7 +33,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflow triggers.
+     * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<WorkflowTrigger> list(
         String resourceGroupName, String workflowName, Integer top, String filter, Context context);
@@ -61,7 +61,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
+     * @return a workflow trigger along with {@link Response}.
      */
     Response<WorkflowTrigger> getWithResponse(
         String resourceGroupName, String workflowName, String triggerName, Context context);
@@ -88,7 +88,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> resetWithResponse(
         String resourceGroupName, String workflowName, String triggerName, Context context);
@@ -115,7 +115,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> runWithResponse(String resourceGroupName, String workflowName, String triggerName, Context context);
 
@@ -142,7 +142,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
+     * @return the trigger schema as JSON along with {@link Response}.
      */
     Response<JsonSchema> getSchemaJsonWithResponse(
         String resourceGroupName, String workflowName, String triggerName, Context context);
@@ -172,7 +172,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> setStateWithResponse(
         String resourceGroupName,
@@ -204,7 +204,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
+     * @return the callback URL for a workflow trigger along with {@link Response}.
      */
     Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
         String resourceGroupName, String workflowName, String triggerName, Context context);

@@ -33,7 +33,11 @@ public final class IntegrationAccountSkuName extends ExpandableStringEnum<Integr
         return fromString(name, IntegrationAccountSkuName.class);
     }
 
-    /** @return known IntegrationAccountSkuName values. */
+    /**
+     * Gets known IntegrationAccountSkuName values.
+     *
+     * @return known IntegrationAccountSkuName values.
+     */
     public static Collection<IntegrationAccountSkuName> values() {
         return values(IntegrationAccountSkuName.class);
     }

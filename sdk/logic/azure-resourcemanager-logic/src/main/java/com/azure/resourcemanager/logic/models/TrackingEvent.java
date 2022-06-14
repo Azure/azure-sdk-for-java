@@ -6,15 +6,12 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The tracking event. */
 @Fluent
 public final class TrackingEvent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackingEvent.class);
-
     /*
      * The event level.
      */
@@ -152,17 +149,17 @@ public final class TrackingEvent {
      */
     public void validate() {
         if (eventLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property eventLevel in model TrackingEvent"));
         }
         if (eventTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property eventTime in model TrackingEvent"));
         }
         if (recordType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property recordType in model TrackingEvent"));
         }
@@ -170,4 +167,6 @@ public final class TrackingEvent {
             error().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TrackingEvent.class);
 }

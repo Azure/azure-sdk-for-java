@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact envelope override settings. */
 @Fluent
 public final class EdifactEnvelopeOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactEnvelopeOverride.class);
-
     /*
      * The message id on which this envelope settings has to be applied.
      */

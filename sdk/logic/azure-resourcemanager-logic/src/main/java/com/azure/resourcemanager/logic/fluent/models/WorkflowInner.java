@@ -5,296 +5,60 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
+import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.Sku;
 import com.azure.resourcemanager.logic.models.WorkflowParameter;
 import com.azure.resourcemanager.logic.models.WorkflowProvisioningState;
 import com.azure.resourcemanager.logic.models.WorkflowState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** The workflow type. */
-@JsonFlatten
 @Fluent
-public class WorkflowInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowInner.class);
+public final class WorkflowInner extends Resource {
+    /*
+     * The workflow properties.
+     */
+    @JsonProperty(value = "properties")
+    private WorkflowProperties innerProperties;
 
     /*
-     * Gets the provisioning state.
+     * Managed service identity properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkflowProvisioningState provisioningState;
-
-    /*
-     * Gets the created time.
-     */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * Gets the changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The state.
-     */
-    @JsonProperty(value = "properties.state")
-    private WorkflowState state;
-
-    /*
-     * Gets the version.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Gets the access endpoint.
-     */
-    @JsonProperty(value = "properties.accessEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String accessEndpoint;
-
-    /*
-     * The endpoints configuration.
-     */
-    @JsonProperty(value = "properties.endpointsConfiguration")
-    private FlowEndpointsConfiguration endpointsConfiguration;
-
-    /*
-     * The access control configuration.
-     */
-    @JsonProperty(value = "properties.accessControl")
-    private FlowAccessControlConfiguration accessControl;
-
-    /*
-     * The sku.
-     */
-    @JsonProperty(value = "properties.sku", access = JsonProperty.Access.WRITE_ONLY)
-    private Sku sku;
-
-    /*
-     * The integration account.
-     */
-    @JsonProperty(value = "properties.integrationAccount")
-    private ResourceReference integrationAccount;
-
-    /*
-     * The integration service environment.
-     */
-    @JsonProperty(value = "properties.integrationServiceEnvironment")
-    private ResourceReference integrationServiceEnvironment;
-
-    /*
-     * The definition.
-     */
-    @JsonProperty(value = "properties.definition")
-    private Object definition;
-
-    /*
-     * The parameters.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, WorkflowParameter> parameters;
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
-     * Get the provisioningState property: Gets the provisioning state.
+     * Get the innerProperties property: The workflow properties.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public WorkflowProvisioningState provisioningState() {
-        return this.provisioningState;
+    private WorkflowProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the createdTime property: Gets the created time.
+     * Get the identity property: Managed service identity properties.
      *
-     * @return the createdTime value.
+     * @return the identity value.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    public ManagedServiceIdentity identity() {
+        return this.identity;
     }
 
     /**
-     * Get the changedTime property: Gets the changed time.
+     * Set the identity property: Managed service identity properties.
      *
-     * @return the changedTime value.
-     */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the state property: The state.
-     *
-     * @return the state value.
-     */
-    public WorkflowState state() {
-        return this.state;
-    }
-
-    /**
-     * Set the state property: The state.
-     *
-     * @param state the state value to set.
+     * @param identity the identity value to set.
      * @return the WorkflowInner object itself.
      */
-    public WorkflowInner withState(WorkflowState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the version property: Gets the version.
-     *
-     * @return the version value.
-     */
-    public String version() {
-        return this.version;
-    }
-
-    /**
-     * Get the accessEndpoint property: Gets the access endpoint.
-     *
-     * @return the accessEndpoint value.
-     */
-    public String accessEndpoint() {
-        return this.accessEndpoint;
-    }
-
-    /**
-     * Get the endpointsConfiguration property: The endpoints configuration.
-     *
-     * @return the endpointsConfiguration value.
-     */
-    public FlowEndpointsConfiguration endpointsConfiguration() {
-        return this.endpointsConfiguration;
-    }
-
-    /**
-     * Set the endpointsConfiguration property: The endpoints configuration.
-     *
-     * @param endpointsConfiguration the endpointsConfiguration value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withEndpointsConfiguration(FlowEndpointsConfiguration endpointsConfiguration) {
-        this.endpointsConfiguration = endpointsConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the accessControl property: The access control configuration.
-     *
-     * @return the accessControl value.
-     */
-    public FlowAccessControlConfiguration accessControl() {
-        return this.accessControl;
-    }
-
-    /**
-     * Set the accessControl property: The access control configuration.
-     *
-     * @param accessControl the accessControl value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withAccessControl(FlowAccessControlConfiguration accessControl) {
-        this.accessControl = accessControl;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The sku.
-     *
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Get the integrationAccount property: The integration account.
-     *
-     * @return the integrationAccount value.
-     */
-    public ResourceReference integrationAccount() {
-        return this.integrationAccount;
-    }
-
-    /**
-     * Set the integrationAccount property: The integration account.
-     *
-     * @param integrationAccount the integrationAccount value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withIntegrationAccount(ResourceReference integrationAccount) {
-        this.integrationAccount = integrationAccount;
-        return this;
-    }
-
-    /**
-     * Get the integrationServiceEnvironment property: The integration service environment.
-     *
-     * @return the integrationServiceEnvironment value.
-     */
-    public ResourceReference integrationServiceEnvironment() {
-        return this.integrationServiceEnvironment;
-    }
-
-    /**
-     * Set the integrationServiceEnvironment property: The integration service environment.
-     *
-     * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
-        this.integrationServiceEnvironment = integrationServiceEnvironment;
-        return this;
-    }
-
-    /**
-     * Get the definition property: The definition.
-     *
-     * @return the definition value.
-     */
-    public Object definition() {
-        return this.definition;
-    }
-
-    /**
-     * Set the definition property: The definition.
-     *
-     * @param definition the definition value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withDefinition(Object definition) {
-        this.definition = definition;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: The parameters.
-     *
-     * @return the parameters value.
-     */
-    public Map<String, WorkflowParameter> parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The parameters.
-     *
-     * @param parameters the parameters value to set.
-     * @return the WorkflowInner object itself.
-     */
-    public WorkflowInner withParameters(Map<String, WorkflowParameter> parameters) {
-        this.parameters = parameters;
+    public WorkflowInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -313,35 +77,231 @@ public class WorkflowInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Gets the provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public WorkflowProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the createdTime property: Gets the created time.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: Gets the changed time.
+     *
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the state property: The state.
+     *
+     * @return the state value.
+     */
+    public WorkflowState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: The state.
+     *
+     * @param state the state value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withState(WorkflowState state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
+    }
+
+    /**
+     * Get the version property: Gets the version.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the accessEndpoint property: Gets the access endpoint.
+     *
+     * @return the accessEndpoint value.
+     */
+    public String accessEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessEndpoint();
+    }
+
+    /**
+     * Get the endpointsConfiguration property: The endpoints configuration.
+     *
+     * @return the endpointsConfiguration value.
+     */
+    public FlowEndpointsConfiguration endpointsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpointsConfiguration();
+    }
+
+    /**
+     * Set the endpointsConfiguration property: The endpoints configuration.
+     *
+     * @param endpointsConfiguration the endpointsConfiguration value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withEndpointsConfiguration(FlowEndpointsConfiguration endpointsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withEndpointsConfiguration(endpointsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the accessControl property: The access control configuration.
+     *
+     * @return the accessControl value.
+     */
+    public FlowAccessControlConfiguration accessControl() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessControl();
+    }
+
+    /**
+     * Set the accessControl property: The access control configuration.
+     *
+     * @param accessControl the accessControl value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withAccessControl(FlowAccessControlConfiguration accessControl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withAccessControl(accessControl);
+        return this;
+    }
+
+    /**
+     * Get the sku property: The sku.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
+    }
+
+    /**
+     * Get the integrationAccount property: The integration account.
+     *
+     * @return the integrationAccount value.
+     */
+    public ResourceReference integrationAccount() {
+        return this.innerProperties() == null ? null : this.innerProperties().integrationAccount();
+    }
+
+    /**
+     * Set the integrationAccount property: The integration account.
+     *
+     * @param integrationAccount the integrationAccount value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withIntegrationAccount(ResourceReference integrationAccount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withIntegrationAccount(integrationAccount);
+        return this;
+    }
+
+    /**
+     * Get the integrationServiceEnvironment property: The integration service environment.
+     *
+     * @return the integrationServiceEnvironment value.
+     */
+    public ResourceReference integrationServiceEnvironment() {
+        return this.innerProperties() == null ? null : this.innerProperties().integrationServiceEnvironment();
+    }
+
+    /**
+     * Set the integrationServiceEnvironment property: The integration service environment.
+     *
+     * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withIntegrationServiceEnvironment(integrationServiceEnvironment);
+        return this;
+    }
+
+    /**
+     * Get the definition property: The definition.
+     *
+     * @return the definition value.
+     */
+    public Object definition() {
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
+    }
+
+    /**
+     * Set the definition property: The definition.
+     *
+     * @param definition the definition value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withDefinition(Object definition) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withDefinition(definition);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: The parameters.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, WorkflowParameter> parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: The parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the WorkflowInner object itself.
+     */
+    public WorkflowInner withParameters(Map<String, WorkflowParameter> parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkflowProperties();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (endpointsConfiguration() != null) {
-            endpointsConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (accessControl() != null) {
-            accessControl().validate();
-        }
-        if (sku() != null) {
-            sku().validate();
-        }
-        if (integrationAccount() != null) {
-            integrationAccount().validate();
-        }
-        if (integrationServiceEnvironment() != null) {
-            integrationServiceEnvironment().validate();
-        }
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

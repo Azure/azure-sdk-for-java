@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The integration account AS2 agreement content. */
 @Fluent
 public final class AS2AgreementContent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AS2AgreementContent.class);
-
     /*
      * The AS2 one-way receive agreement.
      */
@@ -73,7 +70,7 @@ public final class AS2AgreementContent {
      */
     public void validate() {
         if (receiveAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property receiveAgreement in model AS2AgreementContent"));
@@ -81,7 +78,7 @@ public final class AS2AgreementContent {
             receiveAgreement().validate();
         }
         if (sendAgreement() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sendAgreement in model AS2AgreementContent"));
@@ -89,4 +86,6 @@ public final class AS2AgreementContent {
             sendAgreement().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AS2AgreementContent.class);
 }

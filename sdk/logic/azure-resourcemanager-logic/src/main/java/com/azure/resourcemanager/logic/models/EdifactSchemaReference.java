@@ -6,14 +6,11 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Edifact schema reference. */
 @Fluent
 public final class EdifactSchemaReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdifactSchemaReference.class);
-
     /*
      * The message id.
      */
@@ -203,28 +200,30 @@ public final class EdifactSchemaReference {
      */
     public void validate() {
         if (messageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageId in model EdifactSchemaReference"));
         }
         if (messageVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageVersion in model EdifactSchemaReference"));
         }
         if (messageRelease() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property messageRelease in model EdifactSchemaReference"));
         }
         if (schemaName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schemaName in model EdifactSchemaReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EdifactSchemaReference.class);
 }

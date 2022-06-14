@@ -74,7 +74,11 @@ public final class TrackingRecordType extends ExpandableStringEnum<TrackingRecor
         return fromString(name, TrackingRecordType.class);
     }
 
-    /** @return known TrackingRecordType values. */
+    /**
+     * Gets known TrackingRecordType values.
+     *
+     * @return known TrackingRecordType values.
+     */
     public static Collection<TrackingRecordType> values() {
         return values(TrackingRecordType.class);
     }

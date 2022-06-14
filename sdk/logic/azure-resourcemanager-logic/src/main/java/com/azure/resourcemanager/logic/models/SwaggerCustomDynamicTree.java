@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The swagger custom dynamic tree. */
 @Fluent
 public final class SwaggerCustomDynamicTree {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwaggerCustomDynamicTree.class);
-
     /*
      * The tree settings
      */

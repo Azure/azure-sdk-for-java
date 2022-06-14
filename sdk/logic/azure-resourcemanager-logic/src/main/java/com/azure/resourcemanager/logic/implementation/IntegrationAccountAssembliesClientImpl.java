@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.IntegrationAccountAssembliesClient;
 import com.azure.resourcemanager.logic.fluent.models.AssemblyDefinitionInner;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationAccountAssembliesClient. */
 public final class IntegrationAccountAssembliesClientImpl implements IntegrationAccountAssembliesClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationAccountAssembliesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationAccountAssembliesService service;
 
@@ -156,7 +153,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(
@@ -211,7 +209,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssemblyDefinitionInner>> listSinglePageAsync(
@@ -262,7 +261,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AssemblyDefinitionInner> listAsync(String resourceGroupName, String integrationAccountName) {
@@ -278,7 +277,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AssemblyDefinitionInner> listAsync(
@@ -294,7 +293,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssemblyDefinitionInner> list(String resourceGroupName, String integrationAccountName) {
@@ -310,7 +309,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of assembly definitions.
+     * @return a collection of assembly definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssemblyDefinitionInner> list(
@@ -327,7 +326,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(
@@ -384,7 +384,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssemblyDefinitionInner>> getWithResponseAsync(
@@ -437,20 +438,13 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssemblyDefinitionInner> getAsync(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
         return getWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
-            .flatMap(
-                (Response<AssemblyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -480,7 +474,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an assembly for an integration account.
+     * @return an assembly for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssemblyDefinitionInner> getWithResponse(
@@ -498,7 +492,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the assembly definition.
+     * @return the assembly definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(
@@ -566,7 +560,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the assembly definition.
+     * @return the assembly definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssemblyDefinitionInner>> createOrUpdateWithResponseAsync(
@@ -631,7 +625,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the assembly definition.
+     * @return the assembly definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssemblyDefinitionInner> createOrUpdateAsync(
@@ -641,14 +635,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
         AssemblyDefinitionInner assemblyArtifact) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, integrationAccountName, assemblyArtifactName, assemblyArtifact)
-            .flatMap(
-                (Response<AssemblyDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -684,7 +671,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the assembly definition.
+     * @return the assembly definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssemblyDefinitionInner> createOrUpdateWithResponse(
@@ -707,7 +694,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -764,7 +751,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -817,13 +804,13 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
         return deleteWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -851,7 +838,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -869,7 +856,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
+     * @return the content callback url for an integration account assembly along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -926,7 +914,8 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
+     * @return the content callback url for an integration account assembly along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkflowTriggerCallbackUrlInner>> listContentCallbackUrlWithResponseAsync(
@@ -979,20 +968,13 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
+     * @return the content callback url for an integration account assembly on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlAsync(
         String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
         return listContentCallbackUrlWithResponseAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1022,7 +1004,7 @@ public final class IntegrationAccountAssembliesClientImpl implements Integration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url for an integration account assembly.
+     * @return the content callback url for an integration account assembly along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(

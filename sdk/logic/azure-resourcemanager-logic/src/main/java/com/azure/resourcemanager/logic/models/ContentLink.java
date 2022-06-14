@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The content link. */
 @Fluent
 public final class ContentLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentLink.class);
-
     /*
      * The content link URI.
      */
@@ -23,25 +19,25 @@ public final class ContentLink {
     /*
      * The content version.
      */
-    @JsonProperty(value = "contentVersion")
+    @JsonProperty(value = "contentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String contentVersion;
 
     /*
      * The content size.
      */
-    @JsonProperty(value = "contentSize")
+    @JsonProperty(value = "contentSize", access = JsonProperty.Access.WRITE_ONLY)
     private Long contentSize;
 
     /*
      * The content hash.
      */
-    @JsonProperty(value = "contentHash")
+    @JsonProperty(value = "contentHash", access = JsonProperty.Access.WRITE_ONLY)
     private ContentHash contentHash;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
+    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private Object metadata;
 
     /**
@@ -74,34 +70,12 @@ public final class ContentLink {
     }
 
     /**
-     * Set the contentVersion property: The content version.
-     *
-     * @param contentVersion the contentVersion value to set.
-     * @return the ContentLink object itself.
-     */
-    public ContentLink withContentVersion(String contentVersion) {
-        this.contentVersion = contentVersion;
-        return this;
-    }
-
-    /**
      * Get the contentSize property: The content size.
      *
      * @return the contentSize value.
      */
     public Long contentSize() {
         return this.contentSize;
-    }
-
-    /**
-     * Set the contentSize property: The content size.
-     *
-     * @param contentSize the contentSize value to set.
-     * @return the ContentLink object itself.
-     */
-    public ContentLink withContentSize(Long contentSize) {
-        this.contentSize = contentSize;
-        return this;
     }
 
     /**
@@ -114,34 +88,12 @@ public final class ContentLink {
     }
 
     /**
-     * Set the contentHash property: The content hash.
-     *
-     * @param contentHash the contentHash value to set.
-     * @return the ContentLink object itself.
-     */
-    public ContentLink withContentHash(ContentHash contentHash) {
-        this.contentHash = contentHash;
-        return this;
-    }
-
-    /**
      * Get the metadata property: The metadata.
      *
      * @return the metadata value.
      */
     public Object metadata() {
         return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the ContentLink object itself.
-     */
-    public ContentLink withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
     }
 
     /**

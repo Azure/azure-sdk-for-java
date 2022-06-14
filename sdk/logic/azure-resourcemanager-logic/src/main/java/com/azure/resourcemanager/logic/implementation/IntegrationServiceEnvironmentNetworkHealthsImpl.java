@@ -12,15 +12,13 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentNetwo
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSubnetNetworkHealthInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkHealths;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSubnetNetworkHealth;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class IntegrationServiceEnvironmentNetworkHealthsImpl
     implements IntegrationServiceEnvironmentNetworkHealths {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentNetworkHealthsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationServiceEnvironmentNetworkHealthsImpl.class);
 
     private final IntegrationServiceEnvironmentNetworkHealthsClient innerClient;
 

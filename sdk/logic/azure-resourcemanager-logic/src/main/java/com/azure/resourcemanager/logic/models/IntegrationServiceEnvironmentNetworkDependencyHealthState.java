@@ -35,7 +35,11 @@ public final class IntegrationServiceEnvironmentNetworkDependencyHealthState
         return fromString(name, IntegrationServiceEnvironmentNetworkDependencyHealthState.class);
     }
 
-    /** @return known IntegrationServiceEnvironmentNetworkDependencyHealthState values. */
+    /**
+     * Gets known IntegrationServiceEnvironmentNetworkDependencyHealthState values.
+     *
+     * @return known IntegrationServiceEnvironmentNetworkDependencyHealthState values.
+     */
     public static Collection<IntegrationServiceEnvironmentNetworkDependencyHealthState> values() {
         return values(IntegrationServiceEnvironmentNetworkDependencyHealthState.class);
     }

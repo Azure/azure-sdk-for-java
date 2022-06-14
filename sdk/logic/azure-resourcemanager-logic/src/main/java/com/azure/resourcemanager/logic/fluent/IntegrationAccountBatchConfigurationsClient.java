@@ -24,7 +24,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BatchConfigurationInner> list(String resourceGroupName, String integrationAccountName);
@@ -38,7 +38,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BatchConfigurationInner> list(
@@ -68,7 +68,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
+     * @return a batch configuration for an integration account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BatchConfigurationInner> getWithResponse(
@@ -104,7 +104,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
+     * @return the batch configuration resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BatchConfigurationInner> createOrUpdateWithResponse(
@@ -137,7 +137,7 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

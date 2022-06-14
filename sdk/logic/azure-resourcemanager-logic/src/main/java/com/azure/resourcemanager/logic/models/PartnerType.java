@@ -27,7 +27,11 @@ public final class PartnerType extends ExpandableStringEnum<PartnerType> {
         return fromString(name, PartnerType.class);
     }
 
-    /** @return known PartnerType values. */
+    /**
+     * Gets known PartnerType values.
+     *
+     * @return known PartnerType values.
+     */
     public static Collection<PartnerType> values() {
         return values(PartnerType.class);
     }
