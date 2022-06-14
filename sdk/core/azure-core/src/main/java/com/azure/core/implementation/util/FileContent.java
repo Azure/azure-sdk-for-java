@@ -195,6 +195,11 @@ public final class FileContent extends BinaryDataContent {
         return chunkSize;
     }
 
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
