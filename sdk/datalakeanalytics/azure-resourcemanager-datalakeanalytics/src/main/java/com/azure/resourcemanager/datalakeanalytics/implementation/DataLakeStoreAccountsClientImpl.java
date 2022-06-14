@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.DataLakeStoreAccountsClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeStoreAccountInformationInner;
 import com.azure.resourcemanager.datalakeanalytics.models.AddDataLakeStoreParameters;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataLakeStoreAccountsClient. */
 public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccountsClient {
-    private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataLakeStoreAccountsService service;
 
@@ -122,7 +119,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics"
                 + "/accounts/{accountName}/dataLakeStoreAccounts/{dataLakeStoreAccountName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
@@ -164,7 +161,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountInformationInner>> listByAccountSinglePageAsync(
@@ -246,7 +244,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountInformationInner>> listByAccountSinglePageAsync(
@@ -325,7 +324,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataLakeStoreAccountInformationInner> listByAccountAsync(
@@ -352,7 +352,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataLakeStoreAccountInformationInner> listByAccountAsync(
@@ -389,7 +390,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataLakeStoreAccountInformationInner> listByAccountAsync(
@@ -418,7 +420,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(
@@ -453,7 +456,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(
@@ -480,7 +484,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addWithResponseAsync(
@@ -544,7 +548,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> addWithResponseAsync(
@@ -605,7 +609,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> addAsync(
@@ -614,7 +618,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
         String dataLakeStoreAccountName,
         AddDataLakeStoreParameters parameters) {
         return addWithResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -626,13 +630,13 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> addAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
         final AddDataLakeStoreParameters parameters = null;
         return addWithResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -662,7 +666,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addWithResponse(
@@ -684,7 +688,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataLakeStoreAccountInformationInner>> getWithResponseAsync(
@@ -740,7 +745,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataLakeStoreAccountInformationInner>> getWithResponseAsync(
@@ -792,20 +798,14 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataLakeStoreAccountInformationInner> getAsync(
         String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
         return getWithResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName)
-            .flatMap(
-                (Response<DataLakeStoreAccountInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -835,7 +835,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeStoreAccountInformationInner> getWithResponse(
@@ -852,7 +853,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -908,7 +909,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -960,12 +961,12 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -993,7 +994,7 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1008,7 +1009,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information.
+     * @return data Lake Store account list information along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountInformationInner>> listByAccountNextSinglePageAsync(
@@ -1045,7 +1047,8 @@ public final class DataLakeStoreAccountsClientImpl implements DataLakeStoreAccou
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information.
+     * @return data Lake Store account list information along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountInformationInner>> listByAccountNextSinglePageAsync(

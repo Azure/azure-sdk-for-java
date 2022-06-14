@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data Lake Analytics account name availability result information. */
 @Immutable
 public final class NameAvailabilityInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInformationInner.class);
-
     /*
      * The Boolean value of true or false to indicate whether the Data Lake
      * Analytics account name is available or not.

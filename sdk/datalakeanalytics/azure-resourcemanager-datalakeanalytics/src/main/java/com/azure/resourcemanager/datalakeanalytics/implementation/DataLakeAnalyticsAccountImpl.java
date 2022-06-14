@@ -72,28 +72,8 @@ public final class DataLakeAnalyticsAccountImpl
         }
     }
 
-    public UUID accountId() {
-        return this.innerModel().accountId();
-    }
-
-    public DataLakeAnalyticsAccountStatus provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public DataLakeAnalyticsAccountState state() {
-        return this.innerModel().state();
-    }
-
-    public OffsetDateTime creationTime() {
-        return this.innerModel().creationTime();
-    }
-
-    public OffsetDateTime lastModifiedTime() {
-        return this.innerModel().lastModifiedTime();
-    }
-
-    public String endpoint() {
-        return this.innerModel().endpoint();
+    public String defaultDataLakeStoreAccountType() {
+        return this.innerModel().defaultDataLakeStoreAccountType();
     }
 
     public String defaultDataLakeStoreAccount() {
@@ -208,6 +188,18 @@ public final class DataLakeAnalyticsAccountImpl
         return this.innerModel().maxJobCount();
     }
 
+    public Integer maxActiveJobCountPerUser() {
+        return this.innerModel().maxActiveJobCountPerUser();
+    }
+
+    public Integer maxQueuedJobCountPerUser() {
+        return this.innerModel().maxQueuedJobCountPerUser();
+    }
+
+    public Integer maxJobRunningTimeInMin() {
+        return this.innerModel().maxJobRunningTimeInMin();
+    }
+
     public Integer systemMaxJobCount() {
         return this.innerModel().systemMaxJobCount();
     }
@@ -236,12 +228,40 @@ public final class DataLakeAnalyticsAccountImpl
         return this.innerModel().debugDataAccessLevel();
     }
 
+    public UUID accountId() {
+        return this.innerModel().accountId();
+    }
+
+    public DataLakeAnalyticsAccountStatus provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public DataLakeAnalyticsAccountState state() {
+        return this.innerModel().state();
+    }
+
+    public OffsetDateTime creationTime() {
+        return this.innerModel().creationTime();
+    }
+
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerModel().lastModifiedTime();
+    }
+
+    public String endpoint() {
+        return this.innerModel().endpoint();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DataLakeAnalyticsAccountInner innerModel() {

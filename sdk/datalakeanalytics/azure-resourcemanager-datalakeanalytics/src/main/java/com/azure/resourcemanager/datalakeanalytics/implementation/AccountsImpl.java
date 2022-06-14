@@ -18,10 +18,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.CheckNameAvailabilityP
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccount;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeAnalyticsAccountBasic;
 import com.azure.resourcemanager.datalakeanalytics.models.NameAvailabilityInformation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -128,7 +127,7 @@ public final class AccountsImpl implements Accounts {
     public DataLakeAnalyticsAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -136,7 +135,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -147,7 +146,7 @@ public final class AccountsImpl implements Accounts {
     public Response<DataLakeAnalyticsAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,7 +154,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -166,7 +165,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
@@ -185,7 +184,7 @@ public final class AccountsImpl implements Accounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -193,7 +192,7 @@ public final class AccountsImpl implements Accounts {
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));

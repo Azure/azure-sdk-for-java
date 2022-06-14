@@ -19,7 +19,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ComputePolicy> listByAccount(String resourceGroupName, String accountName);
 
@@ -33,7 +33,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of compute policies in the account.
+     * @return the list of compute policies in the account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ComputePolicy> listByAccount(String resourceGroupName, String accountName, Context context);
 
@@ -60,7 +60,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response}.
      */
     Response<ComputePolicy> getWithResponse(
         String resourceGroupName, String accountName, String computePolicyName, Context context);
@@ -87,7 +87,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String computePolicyName, Context context);
@@ -99,7 +99,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response}.
      */
     ComputePolicy getById(String id);
 
@@ -111,7 +111,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Analytics compute policy.
+     * @return the specified Data Lake Analytics compute policy along with {@link Response}.
      */
     Response<ComputePolicy> getByIdWithResponse(String id, Context context);
 
@@ -133,7 +133,7 @@ public interface ComputePolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

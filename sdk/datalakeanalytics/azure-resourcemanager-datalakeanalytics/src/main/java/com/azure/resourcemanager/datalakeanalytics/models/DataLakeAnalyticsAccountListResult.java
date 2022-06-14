@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeAnalyticsAccountBasicInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data Lake Analytics account list information. */
 @Immutable
 public final class DataLakeAnalyticsAccountListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsAccountListResult.class);
-
     /*
      * The results of the list operation.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataLakeAnalyticsAccountBasicInner> value;
+
+    /*
+     * The current number of data lake analytics accounts under this
+     * subscription.
+     */
+    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer count;
 
     /*
      * The link (url) to the next page of results.
@@ -35,6 +38,15 @@ public final class DataLakeAnalyticsAccountListResult {
      */
     public List<DataLakeAnalyticsAccountBasicInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the count property: The current number of data lake analytics accounts under this subscription.
+     *
+     * @return the count value.
+     */
+    public Integer count() {
+        return this.count;
     }
 
     /**

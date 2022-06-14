@@ -19,10 +19,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.StorageAccountInformat
 import com.azure.resourcemanager.datalakeanalytics.models.StorageAccounts;
 import com.azure.resourcemanager.datalakeanalytics.models.StorageContainer;
 import com.azure.resourcemanager.datalakeanalytics.models.UpdateStorageAccountParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StorageAccountsImpl implements StorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountsImpl.class);
 
     private final StorageAccountsClient innerClient;
 

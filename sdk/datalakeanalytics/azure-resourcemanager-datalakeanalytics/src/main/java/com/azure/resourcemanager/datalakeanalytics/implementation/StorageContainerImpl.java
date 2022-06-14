@@ -24,16 +24,16 @@ public final class StorageContainerImpl implements StorageContainer {
         return this.innerModel().id();
     }
 
-    public OffsetDateTime lastModifiedTime() {
-        return this.innerModel().lastModifiedTime();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerModel().lastModifiedTime();
     }
 
     public StorageContainerInner innerModel() {

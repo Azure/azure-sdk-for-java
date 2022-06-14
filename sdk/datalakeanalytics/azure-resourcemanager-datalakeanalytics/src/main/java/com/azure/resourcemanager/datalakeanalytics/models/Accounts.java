@@ -16,7 +16,8 @@ public interface Accounts {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription.
+     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeAnalyticsAccountBasic> list();
 
@@ -38,7 +39,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription.
+     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeAnalyticsAccountBasic> list(
         String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
@@ -51,7 +53,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group.
+     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeAnalyticsAccountBasic> listByResourceGroup(String resourceGroupName);
 
@@ -74,7 +77,8 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group.
+     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group as paginated
+     *     response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeAnalyticsAccountBasic> listByResourceGroup(
         String resourceGroupName,
@@ -107,7 +111,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified Data Lake Analytics account.
+     * @return details of the specified Data Lake Analytics account along with {@link Response}.
      */
     Response<DataLakeAnalyticsAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -156,7 +160,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics account name availability result information.
+     * @return data Lake Analytics account name availability result information along with {@link Response}.
      */
     Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
         String location, CheckNameAvailabilityParameters parameters, Context context);
@@ -168,7 +172,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified Data Lake Analytics account.
+     * @return details of the specified Data Lake Analytics account along with {@link Response}.
      */
     DataLakeAnalyticsAccount getById(String id);
 
@@ -180,7 +184,7 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified Data Lake Analytics account.
+     * @return details of the specified Data Lake Analytics account along with {@link Response}.
      */
     Response<DataLakeAnalyticsAccount> getByIdWithResponse(String id, Context context);
 

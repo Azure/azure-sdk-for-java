@@ -50,46 +50,12 @@ public interface DataLakeAnalyticsAccount {
     Map<String, String> tags();
 
     /**
-     * Gets the accountId property: The unique identifier associated with this Data Lake Analytics account.
+     * Gets the defaultDataLakeStoreAccountType property: The type of the default Data Lake Store account associated
+     * with this account.
      *
-     * @return the accountId value.
+     * @return the defaultDataLakeStoreAccountType value.
      */
-    UUID accountId();
-
-    /**
-     * Gets the provisioningState property: The provisioning status of the Data Lake Analytics account.
-     *
-     * @return the provisioningState value.
-     */
-    DataLakeAnalyticsAccountStatus provisioningState();
-
-    /**
-     * Gets the state property: The state of the Data Lake Analytics account.
-     *
-     * @return the state value.
-     */
-    DataLakeAnalyticsAccountState state();
-
-    /**
-     * Gets the creationTime property: The account creation time.
-     *
-     * @return the creationTime value.
-     */
-    OffsetDateTime creationTime();
-
-    /**
-     * Gets the lastModifiedTime property: The account last modified time.
-     *
-     * @return the lastModifiedTime value.
-     */
-    OffsetDateTime lastModifiedTime();
-
-    /**
-     * Gets the endpoint property: The full CName endpoint for this account.
-     *
-     * @return the endpoint value.
-     */
-    String endpoint();
+    String defaultDataLakeStoreAccountType();
 
     /**
      * Gets the defaultDataLakeStoreAccount property: The default Data Lake Store account associated with this account.
@@ -184,6 +150,27 @@ public interface DataLakeAnalyticsAccount {
     Integer maxJobCount();
 
     /**
+     * Gets the maxActiveJobCountPerUser property: The maximum supported active jobs under the account at the same time.
+     *
+     * @return the maxActiveJobCountPerUser value.
+     */
+    Integer maxActiveJobCountPerUser();
+
+    /**
+     * Gets the maxQueuedJobCountPerUser property: The maximum supported jobs queued under the account at the same time.
+     *
+     * @return the maxQueuedJobCountPerUser value.
+     */
+    Integer maxQueuedJobCountPerUser();
+
+    /**
+     * Gets the maxJobRunningTimeInMin property: The maximum supported active jobs under the account at the same time.
+     *
+     * @return the maxJobRunningTimeInMin value.
+     */
+    Integer maxJobRunningTimeInMin();
+
+    /**
      * Gets the systemMaxJobCount property: The system defined maximum supported jobs running under the account at the
      * same time, which restricts the maximum number of running jobs the user can set for the account.
      *
@@ -236,6 +223,48 @@ public interface DataLakeAnalyticsAccount {
     DebugDataAccessLevel debugDataAccessLevel();
 
     /**
+     * Gets the accountId property: The unique identifier associated with this Data Lake Analytics account.
+     *
+     * @return the accountId value.
+     */
+    UUID accountId();
+
+    /**
+     * Gets the provisioningState property: The provisioning status of the Data Lake Analytics account.
+     *
+     * @return the provisioningState value.
+     */
+    DataLakeAnalyticsAccountStatus provisioningState();
+
+    /**
+     * Gets the state property: The state of the Data Lake Analytics account.
+     *
+     * @return the state value.
+     */
+    DataLakeAnalyticsAccountState state();
+
+    /**
+     * Gets the creationTime property: The account creation time.
+     *
+     * @return the creationTime value.
+     */
+    OffsetDateTime creationTime();
+
+    /**
+     * Gets the lastModifiedTime property: The account last modified time.
+     *
+     * @return the lastModifiedTime value.
+     */
+    OffsetDateTime lastModifiedTime();
+
+    /**
+     * Gets the endpoint property: The full CName endpoint for this account.
+     *
+     * @return the endpoint value.
+     */
+    String endpoint();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -248,6 +277,13 @@ public interface DataLakeAnalyticsAccount {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeAnalyticsAccountInner object.

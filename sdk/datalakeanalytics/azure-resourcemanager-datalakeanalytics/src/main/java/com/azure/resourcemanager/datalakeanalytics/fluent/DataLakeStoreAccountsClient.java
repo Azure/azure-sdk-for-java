@@ -23,7 +23,8 @@ public interface DataLakeStoreAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(String resourceGroupName, String accountName);
@@ -48,7 +49,8 @@ public interface DataLakeStoreAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeStoreAccountInformationInner> listByAccount(
@@ -86,7 +88,7 @@ public interface DataLakeStoreAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> addWithResponse(
@@ -121,7 +123,8 @@ public interface DataLakeStoreAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataLakeStoreAccountInformationInner> getWithResponse(
@@ -150,7 +153,7 @@ public interface DataLakeStoreAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

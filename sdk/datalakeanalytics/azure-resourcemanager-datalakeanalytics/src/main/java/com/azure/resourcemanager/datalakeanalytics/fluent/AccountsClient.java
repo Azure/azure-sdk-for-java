@@ -26,7 +26,8 @@ public interface AccountsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription.
+     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeAnalyticsAccountBasicInner> list();
@@ -49,7 +50,8 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription.
+     * @return the first page of Data Lake Analytics accounts, if any, within the current subscription as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeAnalyticsAccountBasicInner> list(
@@ -63,7 +65,8 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group.
+     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeAnalyticsAccountBasicInner> listByResourceGroup(String resourceGroupName);
@@ -87,7 +90,8 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group.
+     * @return the first page of Data Lake Analytics accounts, if any, within a specific resource group as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataLakeAnalyticsAccountBasicInner> listByResourceGroup(
@@ -110,10 +114,10 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Data Lake Analytics account object, containing all information associated with the named Data Lake
-     *     Analytics account.
+     * @return the {@link SyncPoller} for polling of a Data Lake Analytics account object, containing all information
+     *     associated with the named Data Lake Analytics account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeAnalyticsAccountInner>, DataLakeAnalyticsAccountInner> beginCreate(
         String resourceGroupName, String accountName, CreateDataLakeAnalyticsAccountParameters parameters);
 
@@ -128,10 +132,10 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Data Lake Analytics account object, containing all information associated with the named Data Lake
-     *     Analytics account.
+     * @return the {@link SyncPoller} for polling of a Data Lake Analytics account object, containing all information
+     *     associated with the named Data Lake Analytics account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeAnalyticsAccountInner>, DataLakeAnalyticsAccountInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -198,7 +202,7 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified Data Lake Analytics account.
+     * @return details of the specified Data Lake Analytics account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataLakeAnalyticsAccountInner> getByResourceGroupWithResponse(
@@ -214,10 +218,10 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Data Lake Analytics account object, containing all information associated with the named Data Lake
-     *     Analytics account.
+     * @return the {@link SyncPoller} for polling of a Data Lake Analytics account object, containing all information
+     *     associated with the named Data Lake Analytics account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeAnalyticsAccountInner>, DataLakeAnalyticsAccountInner> beginUpdate(
         String resourceGroupName, String accountName, UpdateDataLakeAnalyticsAccountParameters parameters);
 
@@ -232,10 +236,10 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Data Lake Analytics account object, containing all information associated with the named Data Lake
-     *     Analytics account.
+     * @return the {@link SyncPoller} for polling of a Data Lake Analytics account object, containing all information
+     *     associated with the named Data Lake Analytics account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataLakeAnalyticsAccountInner>, DataLakeAnalyticsAccountInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -303,9 +307,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName);
 
     /**
@@ -317,9 +321,9 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, Context context);
 
     /**
@@ -369,7 +373,7 @@ public interface AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Analytics account name availability result information.
+     * @return data Lake Analytics account name availability result information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(

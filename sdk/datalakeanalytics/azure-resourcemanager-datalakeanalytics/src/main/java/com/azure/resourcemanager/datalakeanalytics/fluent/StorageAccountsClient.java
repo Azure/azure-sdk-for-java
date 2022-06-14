@@ -26,7 +26,8 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageAccountInformationInner> listByAccount(String resourceGroupName, String accountName);
@@ -51,7 +52,8 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageAccountInformationInner> listByAccount(
@@ -94,7 +96,7 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> addWithResponse(
@@ -128,7 +130,8 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StorageAccountInformationInner> getWithResponse(
@@ -161,7 +164,7 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateWithResponse(
@@ -194,7 +197,7 @@ public interface StorageAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -211,7 +214,7 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageContainerInner> listStorageContainers(
@@ -229,7 +232,7 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     *     account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageContainerInner> listStorageContainers(
@@ -266,7 +269,7 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
+     *     accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StorageContainerInner> getStorageContainerWithResponse(
@@ -284,7 +287,7 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SasTokenInformationInner> listSasTokens(
@@ -303,7 +306,7 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     *     combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SasTokenInformationInner> listSasTokens(

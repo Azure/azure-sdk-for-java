@@ -14,10 +14,9 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.DataLakeStoreAc
 import com.azure.resourcemanager.datalakeanalytics.models.AddDataLakeStoreParameters;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeStoreAccountInformation;
 import com.azure.resourcemanager.datalakeanalytics.models.DataLakeStoreAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeStoreAccountsImpl.class);
 
     private final DataLakeStoreAccountsClient innerClient;
 

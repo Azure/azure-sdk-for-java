@@ -12,10 +12,9 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.LocationsClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.CapabilityInformationInner;
 import com.azure.resourcemanager.datalakeanalytics.models.CapabilityInformation;
 import com.azure.resourcemanager.datalakeanalytics.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 

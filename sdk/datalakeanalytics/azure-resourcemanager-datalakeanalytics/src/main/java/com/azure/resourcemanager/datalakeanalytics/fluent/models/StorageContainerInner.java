@@ -4,25 +4,19 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Azure Storage blob container information. */
-@JsonFlatten
-@Immutable
-public class StorageContainerInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageContainerInner.class);
-
+@Fluent
+public final class StorageContainerInner extends SubResource {
     /*
-     * The last modified time of the blob container.
+     * The properties of the blob container.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private StorageContainerProperties innerProperties;
 
     /*
      * The resource name.
@@ -37,12 +31,12 @@ public class StorageContainerInner extends SubResource {
     private String type;
 
     /**
-     * Get the lastModifiedTime property: The last modified time of the blob container.
+     * Get the innerProperties property: The properties of the blob container.
      *
-     * @return the lastModifiedTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+    private StorageContainerProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -71,10 +65,22 @@ public class StorageContainerInner extends SubResource {
     }
 
     /**
+     * Get the lastModifiedTime property: The last modified time of the blob container.
+     *
+     * @return the lastModifiedTime value.
+     */
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

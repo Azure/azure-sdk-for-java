@@ -4,24 +4,18 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Storage account information. */
-@JsonFlatten
-@Immutable
-public class StorageAccountInformationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInformationInner.class);
-
+@Fluent
+public final class StorageAccountInformationInner extends SubResource {
     /*
-     * The optional suffix for the storage account.
+     * The Azure Storage account properties.
      */
-    @JsonProperty(value = "properties.suffix", access = JsonProperty.Access.WRITE_ONLY)
-    private String suffix;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private StorageAccountInformationProperties innerProperties;
 
     /*
      * The resource name.
@@ -36,12 +30,12 @@ public class StorageAccountInformationInner extends SubResource {
     private String type;
 
     /**
-     * Get the suffix property: The optional suffix for the storage account.
+     * Get the innerProperties property: The Azure Storage account properties.
      *
-     * @return the suffix value.
+     * @return the innerProperties value.
      */
-    public String suffix() {
-        return this.suffix;
+    private StorageAccountInformationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -70,10 +64,22 @@ public class StorageAccountInformationInner extends SubResource {
     }
 
     /**
+     * Get the suffix property: The optional suffix for the storage account.
+     *
+     * @return the suffix value.
+     */
+    public String suffix() {
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

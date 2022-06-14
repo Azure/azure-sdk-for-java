@@ -30,7 +30,11 @@ public final class AadObjectType extends ExpandableStringEnum<AadObjectType> {
         return fromString(name, AadObjectType.class);
     }
 
-    /** @return known AadObjectType values. */
+    /**
+     * Gets known AadObjectType values.
+     *
+     * @return known AadObjectType values.
+     */
     public static Collection<AadObjectType> values() {
         return values(AadObjectType.class);
     }
