@@ -1,0 +1,250 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.communication.jobrouter;
+
+import com.azure.communication.jobrouter.models.AzureFunctionRule;
+import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
+import com.azure.communication.jobrouter.models.BestWorkerMode;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.LongestIdleMode;
+import com.azure.communication.jobrouter.models.QueueSelector;
+import com.azure.communication.jobrouter.models.QueueSelectorAttachment;
+import com.azure.communication.jobrouter.models.RoundRobinMode;
+import com.azure.communication.jobrouter.models.StaticQueueSelector;
+import com.azure.communication.jobrouter.models.StaticRule;
+import com.azure.communication.jobrouter.models.StaticWorkerSelector;
+import com.azure.communication.jobrouter.models.WorkerSelector;
+import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
+import com.azure.core.http.rest.Response;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class JobRouterLiveTests extends JobRouterClientTestBase {
+    private RouterClient routerClient;
+
+    @Override
+    protected void beforeTest() {
+        routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createDistributionPolicy_BestWorker_DefaultScoringRule() {
+        // Setup
+        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
+        String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
+        DistributionPolicy distributionPolicy = new DistributionPolicy();
+        BestWorkerMode bestWorkerMode = new BestWorkerMode();
+        bestWorkerMode.setMinConcurrentOffers(1);
+        bestWorkerMode.setMaxConcurrentOffers(10);
+
+        distributionPolicy.setMode(bestWorkerMode);
+        distributionPolicy.setName(bestWorkerModeDistributionPolicyName);
+        distributionPolicy.setOfferTtlSeconds(10.0);
+
+        // Action
+        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createDistributionPolicy_BestWorker_AzureFunctionRule() {
+        // Setup
+        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
+        String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
+        DistributionPolicy distributionPolicy = new DistributionPolicy();
+        BestWorkerMode bestWorkerMode = new BestWorkerMode();
+
+
+        AzureFunctionRule azureFunctionRule = new AzureFunctionRule();
+        azureFunctionRule.setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==");
+        AzureFunctionRuleCredential azureFunctionRuleCredential = new AzureFunctionRuleCredential();
+        azureFunctionRuleCredential.setAppKey("MyAppKey");
+        azureFunctionRuleCredential.setClientId("MyClientId");
+        azureFunctionRule.setCredential(azureFunctionRuleCredential);
+
+        bestWorkerMode.setScoringRule(azureFunctionRule);
+        bestWorkerMode.setMinConcurrentOffers(1);
+        bestWorkerMode.setMaxConcurrentOffers(10);
+
+        distributionPolicy.setMode(bestWorkerMode);
+        distributionPolicy.setName(bestWorkerModeDistributionPolicyName);
+        distributionPolicy.setOfferTtlSeconds(10.0);
+
+        // Action
+        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void CreateDistributionPolicy_LongestIdle() {
+        // Setup
+        String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", UUID.randomUUID());
+        String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
+        DistributionPolicy distributionPolicy = new DistributionPolicy();
+        LongestIdleMode longestIdleMode = new LongestIdleMode();
+
+        longestIdleMode.setMinConcurrentOffers(1);
+        longestIdleMode.setMaxConcurrentOffers(10);
+
+        distributionPolicy.setMode(longestIdleMode);
+        distributionPolicy.setName(longestIdleModeDistributionPolicyName);
+        distributionPolicy.setOfferTtlSeconds(10.0);
+
+        // Action
+        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(longestIdleModeDistributionPolicyId, distributionPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteDistributionPolicy(longestIdleModeDistributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void CreateDistributionPolicy_RoundRobin() {
+        // Setup
+        String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", UUID.randomUUID());
+        String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
+        DistributionPolicy distributionPolicy = new DistributionPolicy();
+        RoundRobinMode roundRobinMode = new RoundRobinMode();
+
+        roundRobinMode.setMinConcurrentOffers(1);
+        roundRobinMode.setMaxConcurrentOffers(10);
+
+        distributionPolicy.setMode(roundRobinMode);
+        distributionPolicy.setName(roundRobinModeDistributionPolicyName);
+        distributionPolicy.setOfferTtlSeconds(10.0);
+
+        // Action
+        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(roundRobinModeDistributionPolicyId, distributionPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteDistributionPolicy(roundRobinModeDistributionPolicyId);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void CreateClassificationPolicy() {
+        // Setup
+        String distributionPolicyId = String.format("%s-DistributionPolicy", UUID.randomUUID());
+        DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
+
+        String queueId = String.format("%s-Queue", UUID.randomUUID());
+        JobQueue jobQueue = createQueue(queueId, distributionPolicyId);
+
+        String classificationPolicyId = String.format("%s-ClassificationPolicy", UUID.randomUUID());
+        String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
+
+        /**
+         * Create queue selectors.
+         */
+        QueueSelector queueSelector = new QueueSelector();
+        queueSelector.setKey("queueId");
+        queueSelector.setLabelOperator(LabelOperator.EQUAL);
+        queueSelector.setValue(queueId);
+
+        StaticQueueSelector staticQueueSelector = new StaticQueueSelector();
+        staticQueueSelector.setLabelSelector(queueSelector);
+
+        List<QueueSelectorAttachment> queueSelectors = new ArrayList<>() {{
+            add(staticQueueSelector);
+        }};
+
+
+        /**
+         * Create worker selectors.
+         */
+        WorkerSelector workerSelector = new WorkerSelector();
+        workerSelector.setKey("key");
+        workerSelector.setLabelOperator(LabelOperator.EQUAL);
+        workerSelector.setValue("value");
+
+        StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector();
+        staticWorkerSelector.setLabelSelector(workerSelector);
+
+        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<>() {{
+            add(staticWorkerSelector);
+        }};
+
+        StaticRule prioritizationRule = new StaticRule();
+        prioritizationRule.setValue(1);
+
+        ClassificationPolicy classificationPolicy = new ClassificationPolicy();
+        classificationPolicy.setName(classificationPolicyName);
+        classificationPolicy.setPrioritizationRule(prioritizationRule);
+        classificationPolicy.setFallbackQueueId(jobQueue.getId());
+        classificationPolicy.setQueueSelectors(queueSelectors);
+        classificationPolicy.setWorkerSelectors(workerSelectors);
+
+        // Action
+        Response<ClassificationPolicy> response = routerClient.upsertClassificationPolicy(classificationPolicyId, classificationPolicy);
+
+        // Verify
+        assertEquals(200, response.getStatusCode());
+
+        // Cleanup
+        routerClient.deleteClassificationPolicy(classificationPolicyId);
+        routerClient.deleteQueue(queueId);
+        routerClient.deleteDistributionPolicy(distributionPolicyId);
+    }
+
+    private DistributionPolicy createDistributionPolicy(String id) {
+        String distributionPolicyName = String.format("%s-Name", id);
+
+        LongestIdleMode longestIdleMode = new LongestIdleMode();
+
+        longestIdleMode.setMinConcurrentOffers(1);
+        longestIdleMode.setMaxConcurrentOffers(10);
+
+        DistributionPolicy distributionPolicy = new DistributionPolicy();
+        distributionPolicy.setMode(longestIdleMode);
+        distributionPolicy.setName(distributionPolicyName);
+        distributionPolicy.setOfferTtlSeconds(10.0);
+
+        return routerClient.upsertDistributionPolicy(id, distributionPolicy).getValue();
+    }
+
+    private JobQueue createQueue(String queueId, String distributionPolicyId) {
+        String queueName = String.format("%s-Name", queueId);
+        Map queueLabels = new HashMap() {{ put("Label_1", "Value_1"); }};
+
+        JobQueue jobQueue = new JobQueue();
+        jobQueue.setDistributionPolicyId(distributionPolicyId);
+        jobQueue.setLabels(queueLabels);
+        jobQueue.setName(queueName);
+
+        return routerClient.upsertQueue(queueId, jobQueue).getValue();
+    }
+}

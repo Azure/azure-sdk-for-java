@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/d8d79b16-a1af-4cef-a8be-ede6993f8bcf-Longest-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "724b6d86-dc43-425f-a7f7-882919aff3d5",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "Last-Modified" : "Tue, 14 Jun 2022 21:24:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 14 Jun 2022 21:24:00 GMT",
+      "ETag" : "\"8002204a-0000-0700-0000-62a8fc700000\"",
+      "trace-id" : "f09ec61110ca70e03e6ad0a1729061a6",
+      "X-Azure-Ref" : "0cPyoYgAAAABFD+0h7S3nSbCYC9MywWXjWVZSMzExMDAwMTE1MDM1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "Body" : "{\"id\":\"d8d79b16-a1af-4cef-a8be-ede6993f8bcf-Longest-DistributionPolicy\",\"name\":\"d8d79b16-a1af-4cef-a8be-ede6993f8bcf-Longest-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/d8d79b16-a1af-4cef-a8be-ede6993f8bcf-Longest-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "a2f1453f-44cc-4319-8b13-6ed69d03f8c7"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "845be032c38cd734789b1f2a860e3b0b",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0cPyoYgAAAAAdjyuigzlOQJkNtjb+gLyvWVZSMzExMDAwMTE1MDM1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "StatusCode" : "204",
+      "Date" : "Tue, 14 Jun 2022 21:24:00 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

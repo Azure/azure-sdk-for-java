@@ -1,6 +1,5 @@
 package com.azure.communication.jobrouter.options;
 
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
 import com.azure.communication.jobrouter.models.RouterRule;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;

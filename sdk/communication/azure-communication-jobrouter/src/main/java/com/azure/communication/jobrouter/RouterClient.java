@@ -828,7 +828,7 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteQueueWithResponse(String id) {
+    public Response<Void> deleteQueue(String id) {
         return this.deleteQueueWithResponse(id, null);
     }
 
