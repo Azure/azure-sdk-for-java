@@ -495,7 +495,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list -->
      *
-     * @param componentModelIDs The list of component models to compose.
+     * @param componentModelIds The list of component models to compose.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModel composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
@@ -504,8 +504,8 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> componentModelIDs) {
-        return beginCreateComposedModel(componentModelIDs, null);
+        List<String> componentModelIds) {
+        return beginCreateComposedModel(componentModelIds, null);
     }
 
     /**
@@ -549,7 +549,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-createComposedModelOptions -->
      *
-     * @param componentModelIDs The list of component models to compose.
+     * @param componentModelIds The list of component models to compose.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
@@ -559,16 +559,16 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
+    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIds,
         CreateComposedModelOptions createComposedModelOptions) {
-        return beginCreateComposedModel(componentModelIDs, createComposedModelOptions, Context.NONE);
+        return beginCreateComposedModel(componentModelIds, createComposedModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
+    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIds,
         CreateComposedModelOptions createComposedModelOptions, Context context) {
         try {
-            if (CoreUtils.isNullOrEmpty(componentModelIDs)) {
-                throw logger.logExceptionAsError(new NullPointerException("'componentModelIDs' cannot be null or empty"));
+            if (CoreUtils.isNullOrEmpty(componentModelIds)) {
+                throw logger.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
             }
             createComposedModelOptions =  createComposedModelOptions == null
                 ? new CreateComposedModelOptions() : createComposedModelOptions;
@@ -579,7 +579,7 @@ public final class DocumentModelAdministrationAsyncClient {
             createComposedModelOptions = getCreateComposeModelOptions(createComposedModelOptions);
 
             final ComposeDocumentModelRequest composeRequest = new ComposeDocumentModelRequest()
-                .setComponentModels(componentModelIDs.stream()
+                .setComponentModels(componentModelIds.stream()
                     .map(modelIdString -> new ComponentModelInfo().setModelId(modelIdString))
                     .collect(Collectors.toList()))
                 .setModelId(modelId)

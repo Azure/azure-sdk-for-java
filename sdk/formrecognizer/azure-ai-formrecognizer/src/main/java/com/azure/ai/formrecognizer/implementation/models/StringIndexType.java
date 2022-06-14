@@ -30,7 +30,11 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
         return fromString(name, StringIndexType.class);
     }
 
-    /** @return known StringIndexType values. */
+    /**
+     * Gets known StringIndexType values.
+     *
+     * @return known StringIndexType values.
+     */
     public static Collection<StringIndexType> values() {
         return values(StringIndexType.class);
     }

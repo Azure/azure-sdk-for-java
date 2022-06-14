@@ -48,6 +48,9 @@ def generate(
         'sdk/{0}'.format(service),
         module,
     )
+
+    require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
+
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
         # samples contains hand-written code
@@ -80,8 +83,9 @@ def generate(
         return False
 
     group = GROUP_ID
-    update_service_ci_and_pom(sdk_root, service, group, module)
-    update_root_pom(sdk_root, service)
+    if require_sdk_integration:
+        update_service_ci_and_pom(sdk_root, service, group, module)
+        update_root_pom(sdk_root, service)
     update_version(sdk_root, output_folder)
 
     return True
@@ -153,13 +157,25 @@ def update_changelog(changelog_file, changelog):
     logging.info('[Changelog][Success] Write to changelog')
 
 
-def compare_with_maven_package(sdk_root, service, stable_version,
-                               current_version, module):
-    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
-
+def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
+                               current_version: str, module: str):
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return
+
+    if '-beta.' in current_version and '-beta.' not in stable_version:
+        # if current version is preview, try compare it with a previous preview release
+
+        version_pattern = r'\d+\.\d+\.\d+-beta\.(\d+)?'
+        beta_version_int = int(re.match(version_pattern, current_version).group(1))
+        if beta_version_int > 1:
+            previous_beta_version_int = beta_version_int - 1
+            previous_beta_version = current_version.replace(
+                '-beta.' + str(beta_version_int),
+                '-beta.' + str(previous_beta_version_int))
+            stable_version = previous_beta_version
+
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
 
     r = requests.get(
         MAVEN_URL.format(group_id = GROUP_ID.replace('.', '/'),

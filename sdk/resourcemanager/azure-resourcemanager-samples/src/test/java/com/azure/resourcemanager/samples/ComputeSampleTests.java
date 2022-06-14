@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.samples;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.Configuration;
+import com.azure.resourcemanager.compute.samples.CreateVirtualMachineEncryptedUsingCustomerManagedKey;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVHD;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingCustomImageFromVM;
 import com.azure.resourcemanager.compute.samples.CreateVirtualMachineUsingSpecializedDiskFromSnapshot;
@@ -15,6 +17,7 @@ import com.azure.resourcemanager.compute.samples.ListComputeSkus;
 import com.azure.resourcemanager.compute.samples.ListVirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.samples.ListVirtualMachineImages;
 import com.azure.resourcemanager.compute.samples.ManageAvailabilitySet;
+import com.azure.resourcemanager.compute.samples.ManageDiskEncryptionSet;
 import com.azure.resourcemanager.compute.samples.ManageManagedDisks;
 import com.azure.resourcemanager.compute.samples.ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup;
 import com.azure.resourcemanager.compute.samples.ManageStorageFromMSIEnabledVirtualMachine;
@@ -172,5 +175,21 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Test
     public void testManageZonalVirtualMachineScaleSet() {
         Assertions.assertTrue(ManageZonalVirtualMachineScaleSet.runSample(azureResourceManager));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testManageDiskEncryptionSet() {
+        final Configuration configuration = Configuration.getGlobalConfiguration();
+        String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertTrue(ManageDiskEncryptionSet.runSample(azureResourceManager, clientId));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testCreateVirtualMachineEncryptedUsingCustomerManagedKey() {
+        final Configuration configuration = Configuration.getGlobalConfiguration();
+        String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 }

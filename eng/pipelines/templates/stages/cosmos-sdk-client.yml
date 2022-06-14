@@ -21,6 +21,9 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: UseEsrpRelease
+  type: boolean
+  default: true
 
 stages:
   - stage: Build
@@ -41,6 +44,7 @@ stages:
           - TestFromSource=^$|false
         MatrixReplace:
           - AZURE_TEST.*=.*/
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         BuildParallelization: 1
         AdditionalBuildOptions: '-DsparkShading'
         TestOptions: '-Punit'
@@ -57,6 +61,8 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixReplace:
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         AdditionalParameters:
           BuildParallelization: 1
           AdditionalBuildOptions: '-DsparkShading'
@@ -125,3 +131,4 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+        UseEsrpRelease: ${{ parameters.UseEsrpRelease }}

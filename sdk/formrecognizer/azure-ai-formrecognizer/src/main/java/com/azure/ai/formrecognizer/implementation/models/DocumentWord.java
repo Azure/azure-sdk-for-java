@@ -21,10 +21,10 @@ public final class DocumentWord {
     private String content;
 
     /*
-     * Bounding box of the word.
+     * Bounding polygon of the word.
      */
-    @JsonProperty(value = "boundingBox")
-    private List<Float> boundingBox;
+    @JsonProperty(value = "polygon")
+    private List<Float> polygon;
 
     /*
      * Location of the word in the reading order concatenated content.
@@ -59,22 +59,22 @@ public final class DocumentWord {
     }
 
     /**
-     * Get the boundingBox property: Bounding box of the word.
+     * Get the polygon property: Bounding polygon of the word.
      *
-     * @return the boundingBox value.
+     * @return the polygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Float> getPolygon() {
+        return this.polygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box of the word.
+     * Set the polygon property: Bounding polygon of the word.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param polygon the polygon value to set.
      * @return the DocumentWord object itself.
      */
-    public DocumentWord setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    public DocumentWord setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
         return this;
     }
 

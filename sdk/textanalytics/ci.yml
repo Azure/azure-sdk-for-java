@@ -32,7 +32,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: textanalytics
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-textanalytics
         groupId: com.azure
         safeName: azureaitextanalytics
+    AdditionalModules:
+      - name: azure-ai-textanalytics-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

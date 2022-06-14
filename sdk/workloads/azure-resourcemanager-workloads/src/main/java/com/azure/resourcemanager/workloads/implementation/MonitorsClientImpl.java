@@ -36,7 +36,7 @@ import com.azure.resourcemanager.workloads.fluent.MonitorsClient;
 import com.azure.resourcemanager.workloads.fluent.models.MonitorInner;
 import com.azure.resourcemanager.workloads.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloads.models.MonitorListResult;
-import com.azure.resourcemanager.workloads.models.Tags;
+import com.azure.resourcemanager.workloads.models.UpdateMonitorRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -148,7 +148,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("monitorName") String monitorName,
-            @BodyParam("application/json") Tags tagsParameter,
+            @BodyParam("application/json") UpdateMonitorRequest body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -637,7 +637,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -694,7 +694,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -749,7 +749,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -772,7 +772,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,7 +797,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -815,7 +815,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -834,7 +834,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -854,7 +854,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -875,7 +875,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -891,7 +891,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param monitorParameter Request body representing a SAP Monitor.
+     * @param monitorParameter Request body representing a SAP monitor.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,7 +905,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -953,7 +953,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1000,7 +1000,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1024,7 +1024,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1050,7 +1050,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1066,7 +1066,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1083,7 +1083,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1098,7 +1098,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1117,7 +1117,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1132,7 +1132,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1148,11 +1148,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1161,7 +1161,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitorInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, Tags tagsParameter) {
+        String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1181,10 +1181,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
-        if (tagsParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tagsParameter is required and cannot be null."));
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
-            tagsParameter.validate();
+            body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1197,18 +1197,18 @@ public final class MonitorsClientImpl implements MonitorsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             monitorName,
-                            tagsParameter,
+                            body,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param body The Update SAP workload monitor request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1218,7 +1218,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitorInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, Tags tagsParameter, Context context) {
+        String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1238,10 +1238,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
         if (monitorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
-        if (tagsParameter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tagsParameter is required and cannot be null."));
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         } else {
-            tagsParameter.validate();
+            body.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1252,17 +1252,17 @@ public final class MonitorsClientImpl implements MonitorsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 monitorName,
-                tagsParameter,
+                body,
                 accept,
                 context);
     }
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1270,33 +1270,33 @@ public final class MonitorsClientImpl implements MonitorsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitorInner> updateAsync(String resourceGroupName, String monitorName, Tags tagsParameter) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, tagsParameter)
+    private Mono<MonitorInner> updateAsync(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
+        return updateWithResponseAsync(resourceGroupName, monitorName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param body The Update SAP workload monitor request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sAP monitor info on Azure (ARM properties and SAP monitor properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitorInner update(String resourceGroupName, String monitorName, Tags tagsParameter) {
-        return updateAsync(resourceGroupName, monitorName, tagsParameter).block();
+    public MonitorInner update(String resourceGroupName, String monitorName, UpdateMonitorRequest body) {
+        return updateAsync(resourceGroupName, monitorName, body).block();
     }
 
     /**
-     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
-     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param body The Update SAP workload monitor request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1305,8 +1305,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitorInner> updateWithResponse(
-        String resourceGroupName, String monitorName, Tags tagsParameter, Context context) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, tagsParameter, context).block();
+        String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context) {
+        return updateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**
