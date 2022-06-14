@@ -6,22 +6,19 @@ package com.azure.resourcemanager.healthbot.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource model definition representing SKU. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
-     * The name of the HealthBot SKU
+     * The name of the Azure Health Bot SKU
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**
-     * Get the name property: The name of the HealthBot SKU.
+     * Get the name property: The name of the Azure Health Bot SKU.
      *
      * @return the name value.
      */
@@ -30,7 +27,7 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The name of the HealthBot SKU.
+     * Set the name property: The name of the Azure Health Bot SKU.
      *
      * @param name the name value to set.
      * @return the Sku object itself.
@@ -47,8 +44,10 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

@@ -5,30 +5,40 @@
 package com.azure.resourcemanager.healthbot.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters for updating a HealthBot. */
+/** Parameters for updating a Azure Health Bot. */
 @Fluent
 public final class HealthBotUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthBotUpdateParameters.class);
-
     /*
-     * Tags for a HealthBot.
+     * Tags for a Azure Health Bot.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * SKU of the HealthBot.
+     * SKU of the Azure Health Bot.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /*
+     * The identity of the Azure Health Bot.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /*
+     * The location property.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
     /**
-     * Get the tags property: Tags for a HealthBot.
+     * Get the tags property: Tags for a Azure Health Bot.
      *
      * @return the tags value.
      */
@@ -37,7 +47,7 @@ public final class HealthBotUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags for a HealthBot.
+     * Set the tags property: Tags for a Azure Health Bot.
      *
      * @param tags the tags value to set.
      * @return the HealthBotUpdateParameters object itself.
@@ -48,7 +58,7 @@ public final class HealthBotUpdateParameters {
     }
 
     /**
-     * Get the sku property: SKU of the HealthBot.
+     * Get the sku property: SKU of the Azure Health Bot.
      *
      * @return the sku value.
      */
@@ -57,13 +67,53 @@ public final class HealthBotUpdateParameters {
     }
 
     /**
-     * Set the sku property: SKU of the HealthBot.
+     * Set the sku property: SKU of the Azure Health Bot.
      *
      * @param sku the sku value to set.
      * @return the HealthBotUpdateParameters object itself.
      */
     public HealthBotUpdateParameters withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The identity of the Azure Health Bot.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the Azure Health Bot.
+     *
+     * @param identity the identity value to set.
+     * @return the HealthBotUpdateParameters object itself.
+     */
+    public HealthBotUpdateParameters withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: The location property.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location property.
+     *
+     * @param location the location value to set.
+     * @return the HealthBotUpdateParameters object itself.
+     */
+    public HealthBotUpdateParameters withLocation(String location) {
+        this.location = location;
         return this;
     }
 
@@ -75,6 +125,9 @@ public final class HealthBotUpdateParameters {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

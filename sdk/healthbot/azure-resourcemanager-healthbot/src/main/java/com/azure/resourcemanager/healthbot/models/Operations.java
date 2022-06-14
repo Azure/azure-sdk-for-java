@@ -10,22 +10,22 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Lists all the available HealthBot operations.
+     * Lists all the available Azure Health Bot operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available operations of the service.
+     * @return available operations of the service as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationDetail> list();
 
     /**
-     * Lists all the available HealthBot operations.
+     * Lists all the available Azure Health Bot operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available operations of the service.
+     * @return available operations of the service as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationDetail> list(Context context);
 }

@@ -6,11 +6,11 @@ package com.azure.resourcemanager.healthbot.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.healthbot.HealthbotManager;
 import com.azure.resourcemanager.healthbot.fluent.models.HealthBotInner;
 import com.azure.resourcemanager.healthbot.models.HealthBot;
 import com.azure.resourcemanager.healthbot.models.HealthBotProperties;
 import com.azure.resourcemanager.healthbot.models.HealthBotUpdateParameters;
+import com.azure.resourcemanager.healthbot.models.Identity;
 import com.azure.resourcemanager.healthbot.models.Sku;
 import java.util.Collections;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
 public final class HealthBotImpl implements HealthBot, HealthBot.Definition, HealthBot.Update {
     private HealthBotInner innerObject;
 
-    private final HealthbotManager serviceManager;
+    private final com.azure.resourcemanager.healthbot.HealthbotManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -49,6 +49,10 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
         return this.innerModel().sku();
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
     public HealthBotProperties properties() {
         return this.innerModel().properties();
     }
@@ -61,11 +65,15 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HealthBotInner innerModel() {
         return this.innerObject;
     }
 
-    private HealthbotManager manager() {
+    private com.azure.resourcemanager.healthbot.HealthbotManager manager() {
         return this.serviceManager;
     }
 
@@ -95,7 +103,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
         return this;
     }
 
-    HealthBotImpl(String name, HealthbotManager serviceManager) {
+    HealthBotImpl(String name, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = new HealthBotInner();
         this.serviceManager = serviceManager;
         this.botName = name;
@@ -126,7 +134,7 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
         return this;
     }
 
-    HealthBotImpl(HealthBotInner innerObject, HealthbotManager serviceManager) {
+    HealthBotImpl(HealthBotInner innerObject, com.azure.resourcemanager.healthbot.HealthbotManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -179,6 +187,16 @@ public final class HealthBotImpl implements HealthBot, HealthBot.Definition, Hea
             return this;
         } else {
             this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public HealthBotImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
             return this;
         }
     }

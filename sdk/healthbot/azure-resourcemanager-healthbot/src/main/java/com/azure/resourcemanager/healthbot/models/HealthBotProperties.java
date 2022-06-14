@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.healthbot.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The properties of a HealthBot. The Health Bot Service is a cloud platform that empowers developers in Healthcare
- * organizations to build and deploy their compliant, AI-powered virtual health assistants and health bots, that help
- * them improve processes and reduce costs.
+ * HealthBotProperties The properties of a Azure Health Bot. The Health Bot Service is a cloud platform that empowers
+ * developers in Healthcare organizations to build and deploy their compliant, AI-powered virtual health assistants and
+ * health bots, that help them improve processes and reduce costs.
  */
 @Immutable
 public final class HealthBotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthBotProperties.class);
-
     /*
-     * The provisioning state of the Healthbot resource.
+     * The provisioning state of the Azure Health Bot resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -31,7 +27,7 @@ public final class HealthBotProperties {
     private String botManagementPortalLink;
 
     /**
-     * Get the provisioningState property: The provisioning state of the Healthbot resource.
+     * Get the provisioningState property: The provisioning state of the Azure Health Bot resource.
      *
      * @return the provisioningState value.
      */

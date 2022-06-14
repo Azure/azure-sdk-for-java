@@ -8,30 +8,35 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.models.HealthBotProperties;
+import com.azure.resourcemanager.healthbot.models.Identity;
 import com.azure.resourcemanager.healthbot.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** HealthBot resource definition. */
+/** Azure Health Bot resource definition. */
 @Fluent
 public final class HealthBotInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthBotInner.class);
-
     /*
-     * SKU of the HealthBot.
+     * SKU of the Azure Health Bot.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * The set of properties specific to Healthbot resource.
+     * The identity of the Azure Health Bot.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /*
+     * HealthBotProperties The set of properties specific to Azure Health Bot
+     * resource.
      */
     @JsonProperty(value = "properties")
     private HealthBotProperties properties;
 
     /**
-     * Get the sku property: SKU of the HealthBot.
+     * Get the sku property: SKU of the Azure Health Bot.
      *
      * @return the sku value.
      */
@@ -40,7 +45,7 @@ public final class HealthBotInner extends Resource {
     }
 
     /**
-     * Set the sku property: SKU of the HealthBot.
+     * Set the sku property: SKU of the Azure Health Bot.
      *
      * @param sku the sku value to set.
      * @return the HealthBotInner object itself.
@@ -51,7 +56,27 @@ public final class HealthBotInner extends Resource {
     }
 
     /**
-     * Get the properties property: The set of properties specific to Healthbot resource.
+     * Get the identity property: The identity of the Azure Health Bot.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the Azure Health Bot.
+     *
+     * @param identity the identity value to set.
+     * @return the HealthBotInner object itself.
+     */
+    public HealthBotInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the properties property: HealthBotProperties The set of properties specific to Azure Health Bot resource.
      *
      * @return the properties value.
      */
@@ -60,7 +85,7 @@ public final class HealthBotInner extends Resource {
     }
 
     /**
-     * Set the properties property: The set of properties specific to Healthbot resource.
+     * Set the properties property: HealthBotProperties The set of properties specific to Azure Health Bot resource.
      *
      * @param properties the properties value to set.
      * @return the HealthBotInner object itself.
@@ -91,14 +116,19 @@ public final class HealthBotInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model HealthBotInner"));
         } else {
             sku().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthBotInner.class);
 }
