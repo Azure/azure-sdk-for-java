@@ -26,7 +26,7 @@ public final class BasicDigitalTwinMetadata {
 
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_MODEL, required = true)
     private String modelId;
-    
+
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME)
     private OffsetDateTime lastUpdatedOn;
 
@@ -56,7 +56,7 @@ public final class BasicDigitalTwinMetadata {
         this.modelId = modelId;
         return this;
     }
-    
+
     /**
      * Gets the date and time when the twin was last updated.
      * @return The date and time the twin was last updated.
@@ -64,17 +64,17 @@ public final class BasicDigitalTwinMetadata {
     public OffsetDateTime getLastUpdatedOn() {
         return lastUpdatedOn;
     }
-    
+
     /**
      * Sets the date and time when the twin was last updated.
      * @param lastUpdatedOn The time the twin was last updated by the service.
      * @return The BasicDigitalTwinMetadata object itself.
      */
     public BasicDigitalTwinMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-    	this.lastUpdatedOn = lastUpdatedOn;
+        this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }
-    
+
     /**
      * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link DigitalTwinPropertyMetadata}
      * @return The metadata about changes on properties on a component.

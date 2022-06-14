@@ -103,9 +103,9 @@ public class ComponentSyncSamples {
                 new BasicDigitalTwinMetadata()
                     .setModelId(modelId)
                     .addPropertyMetadata(
-                    	"Prop2",
-                    	new DigitalTwinPropertyMetadata()
-                    		.setSourceTime(OffsetDateTime.now(Clock.systemUTC())))
+                        "Prop2",
+                        new DigitalTwinPropertyMetadata()
+                            .setSourceTime(OffsetDateTime.now(Clock.systemUTC())))
             )
             .addToContents("Prop1", "Value1")
             .addToContents("Prop2", 987)
@@ -115,11 +115,11 @@ public class ComponentSyncSamples {
                     .addToContents("ComponentProp1", "Component value 1")
                     .addToContents("ComponentProp2", 123)
                     .setMetadata(
-                    	new BasicDigitalTwinComponentMetadata()
-                    		.addPropertyMetadata(
-                            	"ComponentProp2",
-                            	new DigitalTwinPropertyMetadata()
-                            		.setSourceTime(OffsetDateTime.now(Clock.systemUTC()))))
+                        new BasicDigitalTwinComponentMetadata()
+                            .addPropertyMetadata(
+                                "ComponentProp2",
+                                new DigitalTwinPropertyMetadata()
+                                    .setSourceTime(OffsetDateTime.now(Clock.systemUTC()))))
             );
 
         BasicDigitalTwin basicTwinResponse = client.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
@@ -145,7 +145,7 @@ public class ComponentSyncSamples {
             String component1RawText = MAPPER.writeValueAsString(basicDigitalTwin.getContents().get("Component1"));
 
             HashMap component1 = MAPPER.readValue(component1RawText, HashMap.class);
-            
+
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
                 + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
                 + "Prop1: " + basicDigitalTwin.getContents().get("Prop1") + "\n\t"

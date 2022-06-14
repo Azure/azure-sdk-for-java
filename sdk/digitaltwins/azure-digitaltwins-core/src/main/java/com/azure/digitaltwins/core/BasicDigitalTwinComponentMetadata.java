@@ -39,24 +39,24 @@ public final class BasicDigitalTwinComponentMetadata implements Map<String, Digi
     public BasicDigitalTwinComponentMetadata() {
     }
 
-	/**
+    /**
      * Gets the date and time when the twin was last updated.
      * @return The date and time the twin was last updated.
      */
     public OffsetDateTime getLastUpdatedOn() {
         return lastUpdatedOn;
     }
-    
+
     /**
      * Sets the date and time when the twin was last updated.
      * @param lastUpdatedOn The time the twin was last updated by the service.
      * @return The BasicDigitalTwinMetadata object itself.
      */
     public BasicDigitalTwinComponentMetadata setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
-    	this.lastUpdatedOn = lastUpdatedOn;
+        this.lastUpdatedOn = lastUpdatedOn;
         return this;
     }
-    
+
     /**
      * Gets the metadata about changes on properties on a component. The values can be deserialized into {@link DigitalTwinPropertyMetadata}
      * @return The metadata about changes on properties on a component.
@@ -80,62 +80,62 @@ public final class BasicDigitalTwinComponentMetadata implements Map<String, Digi
     }
 
     @Override
-	public int size() {
-		return propertyMetadata.size();
-	}
+    public int size() {
+        return propertyMetadata.size();
+    }
 
-	@Override
-	public boolean isEmpty() {
-		return propertyMetadata.isEmpty();
-	}
+    @Override
+    public boolean isEmpty() {
+        return propertyMetadata.isEmpty();
+    }
 
-	@Override
-	public boolean containsKey(Object key) {
-		return propertyMetadata.containsKey(key);
-	}
+    @Override
+    public boolean containsKey(Object key) {
+        return propertyMetadata.containsKey(key);
+    }
 
-	@Override
-	public boolean containsValue(Object value) {
-		return propertyMetadata.containsValue(value);
-	}
+    @Override
+    public boolean containsValue(Object value) {
+        return propertyMetadata.containsValue(value);
+    }
 
-	@Override
-	public DigitalTwinPropertyMetadata get(Object key) {
-		return propertyMetadata.get(key);
-	}
+    @Override
+    public DigitalTwinPropertyMetadata get(Object key) {
+        return propertyMetadata.get(key);
+    }
 
-	@Override
-	public DigitalTwinPropertyMetadata put(String key, DigitalTwinPropertyMetadata value) {
-		return propertyMetadata.put(key, value);
-	}
+    @Override
+    public DigitalTwinPropertyMetadata put(String key, DigitalTwinPropertyMetadata value) {
+        return propertyMetadata.put(key, value);
+    }
 
-	@Override
-	public DigitalTwinPropertyMetadata remove(Object key) {
-		return propertyMetadata.remove(key);
-	}
+    @Override
+    public DigitalTwinPropertyMetadata remove(Object key) {
+        return propertyMetadata.remove(key);
+    }
 
-	@Override
-	public void putAll(Map<? extends String, ? extends DigitalTwinPropertyMetadata> m) {
-		propertyMetadata.putAll(m);
-	}
+    @Override
+    public void putAll(Map<? extends String, ? extends DigitalTwinPropertyMetadata> m) {
+        propertyMetadata.putAll(m);
+    }
 
-	@Override
-	public void clear() {
-		propertyMetadata.clear();
-	}
+    @Override
+    public void clear() {
+        propertyMetadata.clear();
+    }
 
-	@Override
-	public Set<String> keySet() {
-		return propertyMetadata.keySet();
-	}
+    @Override
+    public Set<String> keySet() {
+        return propertyMetadata.keySet();
+    }
 
-	@Override
-	public Collection<DigitalTwinPropertyMetadata> values() {
-		return propertyMetadata.values();
-	}
+    @Override
+    public Collection<DigitalTwinPropertyMetadata> values() {
+        return propertyMetadata.values();
+    }
 
-	@Override
-	public Set<Entry<String, DigitalTwinPropertyMetadata>> entrySet() {
-		return propertyMetadata.entrySet();
-	}
+    @Override
+    public Set<Entry<String, DigitalTwinPropertyMetadata>> entrySet() {
+        return propertyMetadata.entrySet();
+    }
 }
