@@ -37,32 +37,18 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
-import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
-import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
-import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
-import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.NEW_ZIP_CODE;
-import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
-import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
-import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
-import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ID;
-import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ZIP_CODE;
-import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
-import static com.azure.spring.data.cosmos.common.TestConstants.ZIP_CODE;
+import static com.azure.spring.data.cosmos.common.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -72,6 +58,9 @@ public class CosmosTemplatePartitionIT {
 
     private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(ID_2, NEW_FIRST_NAME,
         NEW_ZIP_CODE, HOBBIES, ADDRESSES);
+
+    private static final PartitionPerson TEST_PERSON_3 = new PartitionPerson(ID_3, FIRST_NAME, NEW_ZIP_CODE,
+        HOBBIES, ADDRESSES);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -333,6 +322,36 @@ public class CosmosTemplatePartitionIT {
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateLastPage(page, page.getContent().size());
+    }
+
+    @Test
+    public void testPartitionedPaginationQueryWithOneOffset() {
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(TEST_PERSON_3.getZipCode()));
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2,
+            null, Sort.by(ASC, "firstName"));
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
+        assertThat(page.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateLastPage(page, page.getContent().size());
+    }
+
+    @Test
+    public void testPartitionedPaginationQueryWithZeroOffset() {
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(TEST_PERSON_3.getZipCode()));
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = CosmosPageRequest.of(0, 0, PAGE_SIZE_2,
+            null, Sort.by(ASC, "firstName"));
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
+        assertThat(page.getContent().size()).isEqualTo(2);
         PageTestUtils.validateLastPage(page, page.getContent().size());
     }
 

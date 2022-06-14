@@ -268,9 +268,26 @@ public abstract class AbstractQueryGenerator {
                                                          toCosmosDbValue(p.getSecond())))
                                                      .collect(Collectors.toList());
 
-        if (query.getLimit() > 0) {
+
+        long offset = 0;
+        long pageSize = 0;
+        try {
+                offset = query.getPageable().getOffset();
+                pageSize = query.getPageable().getPageSize();
+        } catch (UnsupportedOperationException ex) {
+            // Ignore
+        }
+
+        if (offset > 0 && pageSize > 0 && !queryString.contains("COUNT")) {
             queryString = new StringBuilder(queryString)
-                .append(" OFFSET 0 LIMIT ")
+                .append(" OFFSET ")
+                .append(offset)
+                .append(" LIMIT ")
+                .append(pageSize).toString();
+        }
+        else if (query.getLimit() > 0) {
+            queryString = new StringBuilder(queryString)
+                .append(" LIMIT ")
                 .append(query.getLimit()).toString();
         }
 
