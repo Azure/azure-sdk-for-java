@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+
 ### Breaking Changes
 
 ### Bugs Fixed
