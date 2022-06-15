@@ -65,10 +65,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         distributionPolicy.setOfferTtlSeconds(10.0);
 
         // Action
-        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
@@ -100,10 +100,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         distributionPolicy.setOfferTtlSeconds(10.0);
 
         // Action
-        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(bestWorkerModeDistributionPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteDistributionPolicy(bestWorkerModeDistributionPolicyId);
@@ -126,10 +126,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         distributionPolicy.setOfferTtlSeconds(10.0);
 
         // Action
-        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(longestIdleModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.upsertDistributionPolicy(longestIdleModeDistributionPolicyId, distributionPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(longestIdleModeDistributionPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteDistributionPolicy(longestIdleModeDistributionPolicyId);
@@ -152,10 +152,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         distributionPolicy.setOfferTtlSeconds(10.0);
 
         // Action
-        Response<DistributionPolicy> response = routerClient.upsertDistributionPolicy(roundRobinModeDistributionPolicyId, distributionPolicy);
+        DistributionPolicy result = routerClient.upsertDistributionPolicy(roundRobinModeDistributionPolicyId, distributionPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(roundRobinModeDistributionPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteDistributionPolicy(roundRobinModeDistributionPolicyId);
@@ -216,10 +216,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         classificationPolicy.setWorkerSelectors(workerSelectors);
 
         // Action
-        Response<ClassificationPolicy> response = routerClient.upsertClassificationPolicy(classificationPolicyId, classificationPolicy);
+        ClassificationPolicy result = routerClient.upsertClassificationPolicy(classificationPolicyId, classificationPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(classificationPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteClassificationPolicy(classificationPolicyId);
@@ -258,10 +258,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         exceptionPolicy.setExceptionRules(exceptionRules);
 
         // Action
-        Response<ExceptionPolicy> response = routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
+        ExceptionPolicy result = routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(exceptionPolicyId, result.getId());
 
         // Cleanup
         routerClient.deleteExceptionPolicy(exceptionPolicyId);
@@ -312,10 +312,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         routerWorker.setQueueAssignments(queueAssignments);
 
         // Action
-        Response<RouterWorker> response = routerClient.upsertWorker(workerId, routerWorker);
+        RouterWorker result = routerClient.upsertWorker(workerId, routerWorker);
 
         // Verify
-        assertEquals(200, response.getStatusCode());
+        assertEquals(workerId, result.getId());
 
         // Cleanup
         routerClient.deleteWorker(workerId);
@@ -336,7 +336,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         distributionPolicy.setName(distributionPolicyName);
         distributionPolicy.setOfferTtlSeconds(10.0);
 
-        return routerClient.upsertDistributionPolicy(id, distributionPolicy).getValue();
+        return routerClient.upsertDistributionPolicy(id, distributionPolicy);
     }
 
     private JobQueue createQueue(String queueId, String distributionPolicyId) {
@@ -348,6 +348,6 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         jobQueue.setLabels(queueLabels);
         jobQueue.setName(queueName);
 
-        return routerClient.upsertQueue(queueId, jobQueue).getValue();
+        return routerClient.upsertQueue(queueId, jobQueue);
     }
 }

@@ -92,10 +92,8 @@ public class ExceptionPolicyExample {
             .connectionString(connectionString)
             .buildClient();
 
-        Response<ExceptionPolicy> exceptionPolicyResponse = routerClient.getExceptionPolicy(exceptionPolicyId);
-        System.out.printf("Response headers are %s. Url %s  and status code %d %n", exceptionPolicyResponse.getHeaders(),
-            exceptionPolicyResponse.getRequest().getUrl(), exceptionPolicyResponse.getStatusCode());
-        System.out.printf("Successfully fetched exception policy with id: %s %n", exceptionPolicyResponse.getValue().getId());
+        ExceptionPolicy exceptionPolicyResult = routerClient.getExceptionPolicy(exceptionPolicyId);
+        System.out.printf("Successfully fetched exception policy with id: %s %n", exceptionPolicyResult.getId());
     }
 
     private void listExceptionPolicies() {

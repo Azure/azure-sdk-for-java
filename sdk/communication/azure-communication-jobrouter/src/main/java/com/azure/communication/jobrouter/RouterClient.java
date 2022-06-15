@@ -75,8 +75,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> upsertClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
-        return this.upsertClassificationPolicyWithResponse(id, classificationPolicy, null);
+    public ClassificationPolicy upsertClassificationPolicy(String id, ClassificationPolicy classificationPolicy) {
+        return this.client.upsertClassificationPolicy(id, classificationPolicy).block();
     }
 
     /**
@@ -105,8 +105,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> getClassificationPolicy(String id) {
-        return this.getClassificationPolicyWithResponse(id, null);
+    public ClassificationPolicy getClassificationPolicy(String id) {
+        return this.client.getClassificationPolicy(id).block();
     }
 
     /**
@@ -134,8 +134,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteClassificationPolicy(String id) {
-        return this.deleteClassificationPolicyWithResponse(id, null);
+    public Void deleteClassificationPolicy(String id) {
+        return this.client.deleteClassificationPolicy(id).block();
     }
 
     /**
@@ -190,8 +190,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
-        return this.upsertDistributionPolicyWithResponse(id, distributionPolicy, null);
+    public DistributionPolicy upsertDistributionPolicy(String id, DistributionPolicy distributionPolicy) {
+        return this.client.upsertDistributionPolicy(id, distributionPolicy).block();
     }
 
     /**
@@ -220,8 +220,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> getDistributionPolicy(String id) {
-        return this.getDistributionPolicyWithResponse(id, null);
+    public DistributionPolicy getDistributionPolicy(String id) {
+        return this.client.getDistributionPolicy(id).block();
     }
 
     /**
@@ -249,8 +249,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDistributionPolicy(String id) {
-        return this.deleteDistributionPolicyWithResponse(id, null);
+    public Void deleteDistributionPolicy(String id) {
+        return this.client.deleteDistributionPolicy(id).block();
     }
 
     /**
@@ -295,7 +295,7 @@ public final class RouterClient {
     }
 
     /**
-     * Upsert a exception policy.
+     * Upsert an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -305,12 +305,12 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> upsertExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
-        return this.upsertExceptionPolicyWithResponse(id, exceptionPolicy, null);
+    public ExceptionPolicy upsertExceptionPolicy(String id, ExceptionPolicy exceptionPolicy) {
+        return this.client.upsertExceptionPolicy(id, exceptionPolicy).block();
     }
 
     /**
-     * Upsert a exception policy.
+     * Upsert an exception policy.
      *
      * @param id Id of the exception policy.
      * @param exceptionPolicy Model of exception policy properties to be patched.
@@ -335,8 +335,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> getExceptionPolicy(String id) {
-        return this.getExceptionPolicyWithResponse(id, null);
+    public ExceptionPolicy getExceptionPolicy(String id) {
+        return this.client.getExceptionPolicy(id).block();
     }
 
     /**
@@ -364,8 +364,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteExceptionPolicy(String id) {
-        return this.deleteExceptionPolicyWithResponse(id, null);
+    public Void deleteExceptionPolicy(String id) {
+        return this.client.deleteExceptionPolicy(id).block();
     }
 
     /**
@@ -420,8 +420,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> upsertJob(String id, RouterJob routerJob) {
-        return this.upsertJobWithResponse(id, routerJob, null);
+    public RouterJob upsertJob(String id, RouterJob routerJob) {
+        return this.client.upsertJob(id, routerJob).block();
     }
 
     /**
@@ -450,8 +450,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> getJob(String id) {
-        return this.getJobWithResponse(id, null);
+    public RouterJob getJob(String id) {
+        return this.client.getJob(id).block();
     }
 
     /**
@@ -479,8 +479,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJob(String id) {
-        return this.deleteJobWithResponse(id, null);
+    public Void deleteJob(String id) {
+        return this.client.deleteJob(id).block();
     }
 
     /**
@@ -509,8 +509,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> reclassifyJobAction(String id, Object reclassifyJobRequest) {
-        return this.reclassifyJobActionWithResponse(id, reclassifyJobRequest, null);
+    public Object reclassifyJobAction(String id, Object reclassifyJobRequest) {
+        return this.client.reclassifyJobAction(id, reclassifyJobRequest).block();
     }
 
     /**
@@ -542,8 +542,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> cancelJobAction(String id, String note, String dispositionCode) {
-        return this.cancelJobActionWithResponse(id, note, dispositionCode, null);
+    public Object cancelJobAction(String id, String note, String dispositionCode) {
+        return this.client.cancelJobAction(id, note, dispositionCode).block();
     }
 
     /**
@@ -576,8 +576,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> completeJobAction(String id, String assignmentId, String note) {
-        return this.completeJobActionWithResponse(id, assignmentId, note, null);
+    public Object completeJobAction(String id, String assignmentId, String note) {
+        return this.client.completeJobAction(id, assignmentId, note).block();
     }
 
     /**
@@ -613,8 +613,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> closeJobAction(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
-        return this.closeJobActionWithResponse(id, assignmentId, dispositionCode, closeTime, note, null);
+    public Object closeJobAction(String id, String assignmentId, String dispositionCode, OffsetDateTime closeTime, String note) {
+        return this.client.closeJobAction(id, assignmentId, dispositionCode, closeTime, note).block();
     }
 
     /**
@@ -677,8 +677,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobPositionDetails> getInQueuePosition(String id) {
-        return this.getInQueuePositionWithResponse(id, null);
+    public JobPositionDetails getInQueuePosition(String id) {
+        return this.client.getInQueuePosition(id).block();
     }
 
     /**
@@ -707,8 +707,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResponse> acceptJobAction(String offerId, String workerId) {
-        return this.acceptJobActionWithResponse(offerId, workerId, null);
+    public AcceptJobOfferResponse acceptJobAction(String offerId, String workerId) {
+        return this.client.acceptJobAction(offerId, workerId).block();
     }
 
     /**
@@ -738,8 +738,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> declineJobAction(String offerId, String workerId) {
-        return this.declineJobActionWithResponse(offerId, workerId, null);
+    public Object declineJobAction(String offerId, String workerId) {
+        return this.client.declineJobAction(offerId, workerId).block();
     }
 
     /**
@@ -769,8 +769,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> upsertQueue(String id, JobQueue jobQueue) {
-        return this.upsertQueueWithResponse(id, jobQueue, null);
+    public JobQueue upsertQueue(String id, JobQueue jobQueue) {
+        return this.client.upsertQueue(id, jobQueue).block();
     }
 
     /**
@@ -799,8 +799,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> getQueue(String id) {
-        return this.getQueueWithResponse(id, null);
+    public JobQueue getQueue(String id) {
+        return this.client.getQueue(id).block();
     }
 
     /**
@@ -828,8 +828,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteQueue(String id) {
-        return this.deleteQueueWithResponse(id, null);
+    public Void deleteQueue(String id) {
+        return this.client.deleteQueue(id).block();
     }
 
     /**
@@ -883,8 +883,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<QueueStatistics> getQueueStatistics(String id) {
-        return this.getQueueStatisticsWithResponse(id, null);
+    public QueueStatistics getQueueStatistics(String id) {
+        return this.client.getQueueStatistics(id).block();
     }
 
     /**
@@ -913,8 +913,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> upsertWorker(String id, RouterWorker routerWorker) {
-        return this.upsertWorkerWithResponse(id, routerWorker, null);
+    public RouterWorker upsertWorker(String id, RouterWorker routerWorker) {
+        return this.client.upsertWorker(id, routerWorker).block();
     }
 
     /**
@@ -943,8 +943,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> getWorker(String id) {
-        return this.getWorkerWithResponse(id, null);
+    public RouterWorker getWorker(String id) {
+        return this.client.getWorker(id).block();
     }
 
     /**
@@ -972,8 +972,8 @@ public final class RouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWorker(String id) {
-        return this.deleteWorkerWithResponse(id, null);
+    public Void deleteWorker(String id) {
+        return this.client.deleteWorker(id).block();
     }
 
     /**
