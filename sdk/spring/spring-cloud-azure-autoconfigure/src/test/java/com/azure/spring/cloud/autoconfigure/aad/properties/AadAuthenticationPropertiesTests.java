@@ -15,6 +15,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplica
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 
 class AadAuthenticationPropertiesTests {
 
@@ -32,7 +33,7 @@ class AadAuthenticationPropertiesTests {
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 assertTrue(authorizationClients.containsKey("test"));
                 assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
-                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AadAuthorizationGrantType.AUTHORIZATION_CODE);
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AUTHORIZATION_CODE);
 
                 Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
                 assertEquals(authenticateAdditionalParameters.size(), 1);

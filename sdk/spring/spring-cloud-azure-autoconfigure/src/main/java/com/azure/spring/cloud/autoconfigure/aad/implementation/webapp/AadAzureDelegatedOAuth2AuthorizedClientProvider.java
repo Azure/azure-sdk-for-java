@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.ClientAuthorizationRequiredException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.util.Assert;
@@ -26,14 +27,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
 
 /**
  * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementation implement {@link
- * AadAuthorizationGrantType "azure_delegated" authorization grant type}.
+ * Constants#AZURE_DELEGATED "azure_delegated" authorization grant type}.
  *
  * @see OAuth2AuthorizedClient
  * @see OAuth2AuthorizationContext
- * @see AadAuthorizationGrantType
+ * @see AuthorizationGrantType
  * @see <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Section 1.3 Authorization Grant</a>
  * @since 3.8.0
  */
@@ -74,8 +76,7 @@ public class AadAzureDelegatedOAuth2AuthorizedClientProvider implements OAuth2Au
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
         Assert.notNull(context, "context cannot be null");
         ClientRegistration clientRegistration = context.getClientRegistration();
-        if (!AadAuthorizationGrantType.AZURE_DELEGATED.isSameGrantType(
-            clientRegistration.getAuthorizationGrantType())) {
+        if (!AZURE_DELEGATED.equals(clientRegistration.getAuthorizationGrantType())) {
             return null;
         }
         OAuth2AuthorizedClient authorizedClient = context.getAuthorizedClient();

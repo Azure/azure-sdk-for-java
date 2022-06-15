@@ -331,7 +331,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.12.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[9.22]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[1.2.4]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->

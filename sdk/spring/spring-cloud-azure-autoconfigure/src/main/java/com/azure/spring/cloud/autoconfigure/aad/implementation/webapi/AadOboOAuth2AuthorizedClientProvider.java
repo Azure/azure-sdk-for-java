@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
@@ -24,6 +23,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
@@ -45,17 +45,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.ON_BEHALF_OF;
+
 /**
  * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementations implement {@link
- * AadAuthorizationGrantType "on_behalf_of" authorization grant type}.
+ * Constants#ON_BEHALF_OF "on_behalf_of" authorization grant type}.
  *
- * @see AadAuthorizationGrantType
+ * @see AuthorizationGrantType
  * @see OAuth2AuthorizedClientProvider
  */
 public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadOboOAuth2AuthorizedClientProvider.class);
-
 
     private final Clock clock = Clock.systemUTC();
 
@@ -78,8 +79,7 @@ public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         Assert.notNull(context, "context cannot be null");
         ClientRegistration clientRegistration = context.getClientRegistration();
 
-        if (!AadAuthorizationGrantType.ON_BEHALF_OF
-            .isSameGrantType(clientRegistration.getAuthorizationGrantType())) {
+        if (!ON_BEHALF_OF.equals(clientRegistration.getAuthorizationGrantType())) {
             return null;
         }
 

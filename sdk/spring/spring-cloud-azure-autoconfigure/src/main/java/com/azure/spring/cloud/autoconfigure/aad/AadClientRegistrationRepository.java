@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AuthorizationClientProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType.AZURE_DELEGATED;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.AZURE_DELEGATED;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 
 
 /**
@@ -68,11 +68,23 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
                       .stream()
                       .collect(Collectors.toMap(
                           Map.Entry::getKey,
-                          entry -> toClientRegistration(entry.getKey(), entry.getValue().getAuthorizationGrantType(),
-                              entry.getValue().getScopes(), properties)));
+                          entry -> toClientRegistration(entry.getKey(),
+                              entry.getValue().getAuthorizationGrantType(),
+                              entry.getValue().getScopes(),
+                              entry.getValue().getClientAuthenticationMethod(),
+                              properties)));
+        ClientAuthenticationMethod azureClientAuthMethod = getAzureDefaultClientAuthenticationMethod();
         ClientRegistration azureClient =
-            toClientRegistration(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE, authorizationCodeScopes, properties);
+            toClientRegistration(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE,
+                authorizationCodeScopes, azureClientAuthMethod, properties);
         allClients.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
+    }
+
+    private ClientAuthenticationMethod getAzureDefaultClientAuthenticationMethod() {
+        if (this.allClients.containsKey(AZURE_CLIENT_REGISTRATION_ID)) {
+            return this.allClients.get(AZURE_CLIENT_REGISTRATION_ID).getClientAuthenticationMethod();
+        }
+        return ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
     }
 
     /**
@@ -95,7 +107,7 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
         return allClients.values()
                          .stream()
                          .filter(client ->
-                             client.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue()))
+                             client.getAuthorizationGrantType().equals(AUTHORIZATION_CODE))
                          .iterator();
     }
 
@@ -132,19 +144,22 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
     }
 
     private ClientRegistration toClientRegistration(String registrationId,
-                                                    AadAuthorizationGrantType aadAuthorizationGrantType,
+                                                    AuthorizationGrantType authorizationGrantType,
                                                     Collection<String> scopes,
+                                                    ClientAuthenticationMethod clientAuthenticationMethod,
                                                     AadAuthenticationProperties properties) {
         AadAuthorizationServerEndpoints endpoints =
-            new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
+            new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                properties.getProfile().getTenantId());
         return ClientRegistration.withRegistrationId(registrationId)
                                  .clientName(registrationId)
-                                 .authorizationGrantType(new AuthorizationGrantType((aadAuthorizationGrantType.getValue())))
+                                 .authorizationGrantType(authorizationGrantType)
                                  .scope(scopes)
                                  .redirectUri(properties.getRedirectUriTemplate())
                                  .userNameAttributeName(properties.getUserNameAttribute())
                                  .clientId(properties.getCredential().getClientId())
                                  .clientSecret(properties.getCredential().getClientSecret())
+                                 .clientAuthenticationMethod(clientAuthenticationMethod)
                                  .authorizationUri(endpoints.getAuthorizationEndpoint())
                                  .tokenUri(endpoints.getTokenEndpoint())
                                  .jwkSetUri(endpoints.getJwkSetEndpoint())
