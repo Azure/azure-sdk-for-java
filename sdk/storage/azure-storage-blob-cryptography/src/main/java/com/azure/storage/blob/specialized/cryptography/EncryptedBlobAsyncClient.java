@@ -665,11 +665,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 .concatWith(Flux.defer(stagingArea::flush))
                 .index()
                 .flatMapSequential(tuple -> {
-                    Cipher gmcCipher;
+                    Cipher gcmCipher;
                     try {
                         // We use the index as the nonce as a counter guarantees each nonce is used
                         // only once with a given key.
-                        gmcCipher = generateGCMCipher(aesKey, tuple.getT1());
+                        gcmCipher = generateGCMCipher(aesKey, tuple.getT1());
                     } catch (NoSuchPaddingException | NoSuchAlgorithmException
                         | InvalidAlgorithmParameterException | InvalidKeyException e) {
                         throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
@@ -686,7 +686,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         .map(buffer -> {
                             // Write into the preallocated buffer and always return this buffer.
                             try {
-                                gmcCipher.update(buffer, encryptedRegion);
+                                gcmCipher.update(buffer, encryptedRegion);
                             } catch (ShortBufferException e) {
                                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                             }
@@ -695,12 +695,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         .then(Mono.fromCallable(() -> {
                             // We have already written all the data to the cipher. Passing in a final
                             // empty buffer allows us to force completion and return the filled buffer.
-                            gmcCipher.doFinal(ByteBuffer.allocate(0), encryptedRegion);
+                            gcmCipher.doFinal(ByteBuffer.allocate(0), encryptedRegion);
                             encryptedRegion.flip();
                             return encryptedRegion;
                         })).flux();
 
-                    return Flux.concat(Flux.just(ByteBuffer.wrap(gmcCipher.getIV())),
+                    return Flux.concat(Flux.just(ByteBuffer.wrap(gcmCipher.getIV())),
                         cipherTextWithTag);
                 }, 1, 1);
         return encryptedTextFlux;

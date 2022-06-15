@@ -29,6 +29,9 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
+    static final String ENCRYPTION_METADATA_HEADER = Constants.HeaderConstants.X_MS_META + "-"
+        + ENCRYPTION_DATA_KEY;
+
     static final String ENCRYPTION_MODE = "FullBlob";
 
     static final int ENCRYPTION_BLOCK_SIZE = 16;

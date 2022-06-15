@@ -95,7 +95,7 @@ final class EncryptionData {
      *
      * @return encryption mode
      */
-    public String getEncryptionMode() {
+    String getEncryptionMode() {
         return this.encryptionMode;
     }
 
@@ -105,7 +105,7 @@ final class EncryptionData {
      * @return A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted
      *         key bytes.
      */
-    public WrappedKey getWrappedContentKey() {
+    WrappedKey getWrappedContentKey() {
         return this.wrappedContentKey;
     }
 
@@ -114,7 +114,7 @@ final class EncryptionData {
      *
      * @return an {@link EncryptionAgent}.
      */
-    public EncryptionAgent getEncryptionAgent() {
+    EncryptionAgent getEncryptionAgent() {
         return this.encryptionAgent;
     }
 
@@ -141,7 +141,7 @@ final class EncryptionData {
      *
      * @return A HashMap containing the encryption metadata in a key-value format.
      */
-    public Map<String, String> getKeyWrappingMetadata() {
+    Map<String, String> getKeyWrappingMetadata() {
         return this.keyWrappingMetadata;
     }
 

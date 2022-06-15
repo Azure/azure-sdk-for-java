@@ -47,6 +47,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_RANGE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
@@ -124,8 +125,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * didn't expand the range at all.
                      */
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                            httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
-                                + ENCRYPTION_DATA_KEY), requiresEncryption);
+                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
+                            + ENCRYPTION_DATA_KEY), requiresEncryption);
                     // If there was no encryption data, it was either an error response, or the blob is not decrypted.
                     if (encryptionData == null) {
                         return Mono.just(httpResponse);
@@ -163,51 +164,53 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // Apply the request conditions from the download to the getProperties.
             BlobRequestConditions rc = extractRequestConditionsFromRequest(requestHeaders);
             return this.blobClient.getPropertiesWithResponse(rc).flatMap(response -> {
-                EncryptionData data = EncryptionData.getAndValidateEncryptionData(
+                EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
                     response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
                     requiresEncryption);
 
+                // Apply the etag from the getProperties to the download to ensure consistency
+                String etag = response.getValue().getETag();
+                requestHeaders.set("ETag", etag);
+
                 // If there is no encryption data, then the blob is not encrypted. Pass the request through.
-                return data == null ? next.process() : Mono.just(data)
-                    .flatMap(encryptionData -> {
-                        EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                            initialRangeHeader, encryptionData);
-                        if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null
-                            && encryptionData != null) {
-                            requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
+                if (encryptionData == null) {
+                    return next.process();
+                }
+                EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
+                    initialRangeHeader, encryptionData);
+                if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
+                    requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
+                }
+                return next.process().map(httpResponse -> {
+                    if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody()
+                        != null) {
+                        HttpHeaders responseHeaders = httpResponse.getHeaders();
+                        // Checking that encryption data at least exists on the download call even if we didn't use
+                        // it for deserialization ensures that the download response was not an error response.
+                        if (httpResponse.getHeaderValue(ENCRYPTION_METADATA_HEADER) == null) {
+                            return httpResponse;
                         }
-                        return Mono.zip(Mono.just(encryptionData), Mono.just(encryptedRange));
-                    })
-                    .flatMap(tuple2 -> next.process().flatMap(httpResponse -> {
-                        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.GET && httpResponse.getBody()
-                            != null) {
-                            HttpHeaders responseHeaders = httpResponse.getHeaders();
-                            // Checking that encryption data at least exists on the download call even if we didn't use
-                            // it for deserialization ensures that the download response was not an error response.
-                            if (httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
-                                + ENCRYPTION_DATA_KEY) == null) {
-                                return Mono.just(httpResponse);
-                            }
-                            tuple2.getT2().setAdjustedDownloadCount(
-                                Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+                        encryptedRange.setAdjustedDownloadCount(
+                            Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
 
-                            /*
-                             * We expect padding only if we are at the end of a blob and it is not a multiple of the
-                             * encryption block size. Padding is only ever present in track 1.
-                             */
-                            boolean padding = tuple2.getT1().getEncryptionAgent().getProtocol()
-                                .equals(ENCRYPTION_PROTOCOL_V1)
-                                && (tuple2.getT2().toBlobRange().getOffset() + tuple2.getT2().toBlobRange().getCount()
-                                > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
+                        /*
+                         * We expect padding only if we are at the end of a blob and it is not a multiple of the
+                         * encryption block size. Padding is only ever present in track 1.
+                         */
+                        boolean padding = encryptionData.getEncryptionAgent().getProtocol()
+                            .equals(ENCRYPTION_PROTOCOL_V1)
+                            && (encryptedRange.toBlobRange().getOffset() + encryptedRange.toBlobRange().getCount()
+                            > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
 
-                            Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), tuple2.getT2(), padding,
-                                tuple2.getT1(), httpResponse.getRequest().getUrl().toString());
+                        Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
+                            encryptedRange, padding, encryptionData,
+                            httpResponse.getRequest().getUrl().toString());
 
-                            return Mono.just(new DecryptedResponse(httpResponse, plainTextData));
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    }));
+                        return new DecryptedResponse(httpResponse, plainTextData);
+                    } else {
+                        return httpResponse;
+                    }
+                });
             });
         }
     }
@@ -255,7 +258,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                             return decryptV2(encryptedFlux, encryptionData, contentEncryptionKey);
                         default:
                             throw LOGGER.logExceptionAsError(
-                                new IllegalStateException("Encryption protocol not recognized"));
+                                new IllegalStateException("Encryption protocol not recognized: "
+                                    + encryptionData.getEncryptionAgent().getProtocol()));
                     }
                 });
         }
@@ -385,7 +389,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         try {
                             gmcCipher.update(buffer, decryptedRegion);
                         } catch (ShortBufferException e) {
-                            return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
+                            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                         }
                         return decryptedRegion;
                     }).then(Mono.fromCallable(() -> {
@@ -545,7 +549,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "Invalid Encryption Algorithm found on the resource. This version of the client library "
-                            + "does not support the specified encryption algorithm."));
+                            + "does not support the specified encryption algorithm: "
+                            + encryptionData.getEncryptionAgent().getAlgorithm()));
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
