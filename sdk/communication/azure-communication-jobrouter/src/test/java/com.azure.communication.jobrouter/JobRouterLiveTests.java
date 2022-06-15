@@ -26,7 +26,6 @@ import com.azure.communication.jobrouter.models.StaticRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
-import com.azure.core.http.rest.Response;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -51,7 +50,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createDistributionPolicy_BestWorker_DefaultScoringRule() {
+    public void createDistributionPolicyBestWorkerDefaultScoringRule() {
         // Setup
         String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
@@ -76,7 +75,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createDistributionPolicy_BestWorker_AzureFunctionRule() {
+    public void createDistributionPolicyBestWorkerAzureFunctionRule() {
         // Setup
         String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
@@ -111,7 +110,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateDistributionPolicy_LongestIdle() {
+    public void createDistributionPolicyLongestIdle() {
         // Setup
         String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", UUID.randomUUID());
         String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
@@ -137,7 +136,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateDistributionPolicy_RoundRobin() {
+    public void createDistributionPolicyRoundRobin() {
         // Setup
         String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", UUID.randomUUID());
         String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
@@ -163,7 +162,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateClassificationPolicy() {
+    public void createClassificationPolicy() {
         // Setup
         String distributionPolicyId = String.format("%s-DistributionPolicy", UUID.randomUUID());
         DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
@@ -229,7 +228,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateExceptionPolicy() {
+    public void createExceptionPolicy() {
         // Setup
         String exceptionPolicyId = String.format("%s-ExceptionPolicy", UUID.randomUUID());
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
@@ -269,7 +268,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void CreateWorker() {
+    public void createWorker() {
         // Setup
         /**
          * Setup queue

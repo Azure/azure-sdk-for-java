@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "1e58239b-0fae-422f-a2a4-b61bbfef1e6c",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "Last-Modified" : "Wed, 15 Jun 2022 18:11:48 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
+      "ETag" : "\"9402531c-0000-0700-0000-62aa20e40000\"",
+      "trace-id" : "81cf4993258c119e25b78193c1e33c8e",
+      "X-Azure-Ref" : "05CCqYgAAAAAKEMnoIUEzS5GYmicJ+MZ+WVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "Body" : "{\"id\":\"b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy\",\"name\":\"b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"round-robin\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Headers" : {
+      "x-ms-client-request-id" : "975e0ab7-f367-4c73-af36-cf04b52e019b"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "60f487810b56856ab8aebc5e5df53029",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05CCqYgAAAABGzTEyEYmyS6tJZsAuWZkjWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "StatusCode" : "204",
+      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
