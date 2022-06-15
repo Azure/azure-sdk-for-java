@@ -6,28 +6,22 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The request payload for create call. */
+/** The CreateCallRequestInternal model. */
 @Fluent
 public final class CreateCallRequestInternal {
     /*
-     * The alternate identity of the source of the call if dialing out to a
-     * pstn number
-     */
-    @JsonProperty(value = "alternateCallerId")
-    private PhoneNumberIdentifierModel alternateCallerId;
-
-    /*
      * The targets of the call.
      */
-    @JsonProperty(value = "target", required = true)
-    private CommunicationIdentifierModel target;
+    @JsonProperty(value = "targets", required = true)
+    private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source of the call.
+     * The source property.
      */
     @JsonProperty(value = "source", required = true)
-    private CommunicationIdentifierModel source;
+    private CallSourceDto source;
 
     /*
      * The subject.
@@ -38,67 +32,45 @@ public final class CreateCallRequestInternal {
     /*
      * The callback URI.
      */
-    @JsonProperty(value = "callbackUri")
+    @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
 
     /**
-     * Get the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
-     * number.
+     * Get the targets property: The targets of the call.
      *
-     * @return the alternateCallerId value.
+     * @return the targets value.
      */
-    public PhoneNumberIdentifierModel getAlternateCallerId() {
-        return this.alternateCallerId;
+    public List<CommunicationIdentifierModel> getTargets() {
+        return this.targets;
     }
 
     /**
-     * Set the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
-     * number.
+     * Set the targets property: The targets of the call.
      *
-     * @param alternateCallerId the alternateCallerId value to set.
+     * @param targets the targets value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
-        this.alternateCallerId = alternateCallerId;
+    public CreateCallRequestInternal setTargets(List<CommunicationIdentifierModel> targets) {
+        this.targets = targets;
         return this;
     }
 
     /**
-     * Get the target property: The targets of the call.
-     *
-     * @return the target value.
-     */
-    public CommunicationIdentifierModel getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: The targets of the call.
-     *
-     * @param target the target value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setTarget(CommunicationIdentifierModel target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the source property: The source of the call.
+     * Get the source property: The source property.
      *
      * @return the source value.
      */
-    public CommunicationIdentifierModel getSource() {
+    public CallSourceDto getSource() {
         return this.source;
     }
 
     /**
-     * Set the source property: The source of the call.
+     * Set the source property: The source property.
      *
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSource(CommunicationIdentifierModel source) {
+    public CreateCallRequestInternal setSource(CallSourceDto source) {
         this.source = source;
         return this;
     }

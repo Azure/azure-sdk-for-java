@@ -4,24 +4,18 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.CallConnectionState;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The CallConnectionPropertiesInternal model. */
+/** The GetCallResponseInternal model. */
 @Fluent
-public final class CallConnectionPropertiesInternal {
+public final class GetCallResponseInternal {
     /*
-     * The call leg id.
+     * The call connection id.
      */
-    @JsonProperty(value = "callLegId")
-    private String callLegId;
-
-    /*
-     * The server call id.
-     */
-    @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /*
      * The source of the call.
@@ -39,14 +33,14 @@ public final class CallConnectionPropertiesInternal {
     /*
      * The targets of the call.
      */
-    @JsonProperty(value = "target")
-    private CommunicationIdentifierModel target;
+    @JsonProperty(value = "targets")
+    private List<CommunicationIdentifierModel> targets;
 
     /*
      * The state of the call connection.
      */
     @JsonProperty(value = "callConnectionState")
-    private CallConnectionState callConnectionState;
+    private CallConnectionStateModel callConnectionState;
 
     /*
      * The subject.
@@ -61,42 +55,22 @@ public final class CallConnectionPropertiesInternal {
     private String callbackUri;
 
     /**
-     * Get the callLegId property: The call leg id.
+     * Get the callConnectionId property: The call connection id.
      *
-     * @return the callLegId value.
+     * @return the callConnectionId value.
      */
-    public String getCallLegId() {
-        return this.callLegId;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the callLegId property: The call leg id.
+     * Set the callConnectionId property: The call connection id.
      *
-     * @param callLegId the callLegId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
-        return this;
-    }
-
-    /**
-     * Get the serverCallId property: The server call id.
-     *
-     * @return the serverCallId value.
-     */
-    public String getServerCallId() {
-        return this.serverCallId;
-    }
-
-    /**
-     * Set the serverCallId property: The server call id.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
+    public GetCallResponseInternal setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 
@@ -113,9 +87,9 @@ public final class CallConnectionPropertiesInternal {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setSource(CommunicationIdentifierModel source) {
+    public GetCallResponseInternal setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -135,30 +109,30 @@ public final class CallConnectionPropertiesInternal {
      * number.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public GetCallResponseInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
 
     /**
-     * Get the target property: The targets of the call.
+     * Get the targets property: The targets of the call.
      *
-     * @return the target value.
+     * @return the targets value.
      */
-    public CommunicationIdentifierModel getTarget() {
-        return this.target;
+    public List<CommunicationIdentifierModel> getTargets() {
+        return this.targets;
     }
 
     /**
-     * Set the target property: The targets of the call.
+     * Set the targets property: The targets of the call.
      *
-     * @param target the target value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @param targets the targets value to set.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setTarget(CommunicationIdentifierModel target) {
-        this.target = target;
+    public GetCallResponseInternal setTargets(List<CommunicationIdentifierModel> targets) {
+        this.targets = targets;
         return this;
     }
 
@@ -167,7 +141,7 @@ public final class CallConnectionPropertiesInternal {
      *
      * @return the callConnectionState value.
      */
-    public CallConnectionState getCallConnectionState() {
+    public CallConnectionStateModel getCallConnectionState() {
         return this.callConnectionState;
     }
 
@@ -175,9 +149,9 @@ public final class CallConnectionPropertiesInternal {
      * Set the callConnectionState property: The state of the call connection.
      *
      * @param callConnectionState the callConnectionState value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(CallConnectionState callConnectionState) {
+    public GetCallResponseInternal setCallConnectionState(CallConnectionStateModel callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
@@ -195,9 +169,9 @@ public final class CallConnectionPropertiesInternal {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setSubject(String subject) {
+    public GetCallResponseInternal setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -215,9 +189,9 @@ public final class CallConnectionPropertiesInternal {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
+     * @return the GetCallResponseInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
+    public GetCallResponseInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

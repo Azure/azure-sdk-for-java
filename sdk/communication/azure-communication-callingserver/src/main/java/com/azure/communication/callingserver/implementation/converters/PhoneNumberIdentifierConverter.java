@@ -7,7 +7,7 @@ import com.azure.communication.callingserver.implementation.models.PhoneNumberId
 import com.azure.communication.common.PhoneNumberIdentifier;
 
 /**
- * A converter for {@link PhoneNumberIdentifier}
+ * A converter for {@link PhoneNumberIdentifier} and {@link PhoneNumberIdentifierModel}
  */
 public final class PhoneNumberIdentifierConverter {
 
@@ -23,6 +23,17 @@ public final class PhoneNumberIdentifierConverter {
         return phoneNumberIdentifierModel;
     }
 
+    /**
+     * Converts to {@link PhoneNumberIdentifier}.
+     */
+    public static PhoneNumberIdentifier convert(PhoneNumberIdentifierModel phoneNumberIdentifierModel) {
+
+        PhoneNumberIdentifier phoneNumberIdentifier =
+            (phoneNumberIdentifierModel == null || phoneNumberIdentifierModel.getValue().isEmpty()) ? null
+                : new PhoneNumberIdentifier(phoneNumberIdentifierModel.getValue());
+
+        return phoneNumberIdentifier;
+    }
     private PhoneNumberIdentifierConverter() {
     }
 }

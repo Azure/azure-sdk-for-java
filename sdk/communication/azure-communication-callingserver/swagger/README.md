@@ -49,68 +49,38 @@ context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
 - rename-model:
-    from: CallRecordingStateChangeEvent
-    to: CallRecordingStateChangeEventInternal    
+    from: CreateCallResponse
+    to: CreateCallResponseInternal
 - rename-model:
-    from: AddParticipantResultEvent
-    to: AddParticipantResultEventInternal
+    from: AddParticipantsRequest
+    to: AddParticipantsRequestInternal    
 - rename-model:
-    from: TransferCallResultEvent
-    to: TransferCallResultEventInternal
-- rename-model:
-    from: PlayAudioResultEvent
-    to: PlayAudioResultEventInternal   
-- rename-model:
-    from: ToneReceivedEvent
-    to: ToneReceivedEventInternal      
-- rename-model:
-    from: CallConnectionStateChangedEvent
-    to: CallConnectionStateChangedEventInternal
-- rename-model:
-    from: ParticipantsUpdatedEvent
-    to: ParticipantsUpdatedEventInternal
-- rename-model:
-    from: CallParticipant
-    to: CallParticipantInternal
-- rename-model:
-    from: AudioGroupResult
-    to: AudioGroupResultInternal
-- rename-model:
-    from: CreateAudioGroupResult
-    to: CreateAudioGroupResultInternal
-- rename-model:
-    from: JoinCallResult
-    to: JoinCallResultInternal
-- rename-model:
-    from: PlayAudioResult
-    to: PlayAudioResultInternal
-- rename-model:
-    from: CallRecordingProperties
-    to: CallRecordingPropertiesInternal
-- rename-model:
-    from: StartCallRecordingResult
-    to: StartCallRecordingResultInternal
-- rename-model:
-    from: CreateCallResult
-    to: CreateCallResultInternal
-- rename-model:
-    from: AddParticipantResult
-    to: AddParticipantResultInternal
-- rename-model:
-    from: TransferCallResult
-    to: TransferCallResultInternal
-- rename-model:
-    from: CallingOperationResultDetails
-    to: CallingOperationResultDetailsInternal
-- rename-model:
-    from: ToneInfo
-    to: ToneInfoInternal
+    from: AddParticipantsResponse
+    to: AddParticipantsResponseInternal
 - rename-model:
     from: AnswerCallResult
     to: AnswerCallResultInternal
 - rename-model:
-    from: CallConnectionProperties
-    to: CallConnectionPropertiesInternal
+    from: AnswerCallResponse
+    to: AnswerCallResponseInternal   
+- rename-model:
+    from: GetCallResponse
+    to: GetCallResponseInternal      
+- rename-model:
+    from: GetParticipantRequest
+    to: GetParticipantRequestInternal
+- rename-model:
+    from: RemoveParticipantsRequest
+    to: RemoveParticipantsRequestInternal
+- rename-model:
+    from: RemoveParticipantsResponse
+    to: RemoveParticipantsResponseInternal
+- rename-model:
+    from: TransferCallResponse
+    to: TransferCallResponseInternal
+- rename-model:
+    from: TransferToParticipantRequest
+    to: TransferToParticipantRequestInternal
 - rename-model:
     from: CreateCallRequest
     to: CreateCallRequestInternal

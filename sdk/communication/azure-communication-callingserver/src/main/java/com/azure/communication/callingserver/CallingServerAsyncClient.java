@@ -6,17 +6,18 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallingsImpl;
-import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.CallSourceConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallSource;
+import com.azure.communication.callingserver.models.AnswerCallOptions;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -28,6 +29,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+
+import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -62,48 +65,52 @@ public final class CallingServerAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source identity.
-     * @param target The target identity.
+     * @param source The source property.
+     * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call options.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param createCallOptions The call option.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> createCall(CommunicationIdentifier source, CommunicationIdentifier target,
-                                                String callbackUri, CreateCallOptions createCallOptions) {
-        return createCall(source, target, callbackUri, createCallOptions, null);
+    public Mono<CallConnectionAsync> createCall(CallSource source, List<CommunicationIdentifier> targets,
+                                 String callbackUri, CreateCallOptions createCallOptions) {
+        return createCall(source, targets, callbackUri, createCallOptions, null);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source identity.
-     * @param target The target identity.
+     * @param source The source property.
+     * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call options.
+     * @param createCallOptions The call option.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> createCall(CommunicationIdentifier source, CommunicationIdentifier target,
-                                                String callbackUri, CreateCallOptions createCallOptions, Context context) {
+    public Mono<CallConnectionAsync> createCall(CallSource source, List<CommunicationIdentifier> targets,
+                                 String callbackUri, CreateCallOptions createCallOptions,
+                                 Context context) {
         try {
+            List<CommunicationIdentifierModel> targetsModel = null;
+            for (CommunicationIdentifier target : targets) {
+                targetsModel.add(CommunicationIdentifierConverter.convert(target));
+            }
+
             CreateCallRequestInternal request = new CreateCallRequestInternal()
-                .setSource(CommunicationIdentifierConverter.convert(source))
-                .setTarget(CommunicationIdentifierConverter.convert(target))
+                .setSource(CallSourceConverter.convert(source))
+                .setTargets(targetsModel)
                 .setCallbackUri(callbackUri);
             if (createCallOptions != null) {
-                request.setAlternateCallerId(PhoneNumberIdentifierConverter.convert(createCallOptions.getAlternateCallerId()))
-                    .setSubject(createCallOptions.getSubject());
+                request.setSubject(createCallOptions.getSubject());
             }
+
             return (context == null ? serverCallingInternal.createCallAsync(request)
-                : serverCallingInternal.createCallAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallLegId(), callConnectionInternal)));
+                : serverCallingInternal.createCallAsync(request, context)).flatMap(
+                    result -> Mono.just(new CallConnectionAsync(result.getCallConnectionId(), callConnectionInternal)));
+
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -112,49 +119,54 @@ public final class CallingServerAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source identity.
-     * @param target The target identity.
+     * @param source The source property.
+     * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call options.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param createCallOptions The call option.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CommunicationIdentifier source, CommunicationIdentifier target,
-                                                String callbackUri, CreateCallOptions createCallOptions) {
-        return createCallWithResponse(source, target, callbackUri, createCallOptions, null);
+    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CallSource source, List<CommunicationIdentifier> targets,
+                                                       String callbackUri, CreateCallOptions createCallOptions) {
+        return createCallWithResponse(source, targets, callbackUri, createCallOptions, null);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The source identity.
-     * @param target The target identity.
+     * @param source The source property.
+     * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call options.
+     * @param createCallOptions The call option.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CommunicationIdentifier source, CommunicationIdentifier target,
-                                                 String callbackUri, CreateCallOptions createCallOptions, Context context) {
+    public Mono<Response<CallConnectionAsync>> createCallWithResponse(CallSource source,
+                                                                      List<CommunicationIdentifier> targets,
+                                                                      String callbackUri,
+                                                                      CreateCallOptions createCallOptions,
+                                                                      Context context) {
         try {
+            List<CommunicationIdentifierModel> targetsModel = null;
+            for (CommunicationIdentifier target : targets) {
+                targetsModel.add(CommunicationIdentifierConverter.convert(target));
+            }
+
             CreateCallRequestInternal request = new CreateCallRequestInternal()
-                .setSource(CommunicationIdentifierConverter.convert(source))
-                .setTarget(CommunicationIdentifierConverter.convert(target))
+                .setSource(CallSourceConverter.convert(source))
+                .setTargets(targetsModel)
                 .setCallbackUri(callbackUri);
             if (createCallOptions != null) {
-                request.setAlternateCallerId(PhoneNumberIdentifierConverter.convert(createCallOptions.getAlternateCallerId()))
-                    .setSubject(createCallOptions.getSubject());
+                request.setSubject(createCallOptions.getSubject());
             }
+
             return (context == null ? serverCallingInternal.createCallWithResponseAsync(request)
-                : serverCallingInternal.createCallWithResponseAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .map(response -> new SimpleResponse<>(response,
-                    new CallConnectionAsync(response.getValue().getCallLegId(), callConnectionInternal)));
+                : serverCallingInternal.createCallWithResponseAsync(request, context)).map(
+                    response -> new SimpleResponse<>(response, new CallConnectionAsync(response.getValue().getCallConnectionId(),
+                        callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -164,36 +176,35 @@ public final class CallingServerAsyncClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param answerCallOptions The option of answering a call
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, String callbackUri) {
-        return answerCall(incomingCallContext, callbackUri, null);
+    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, AnswerCallOptions answerCallOptions) {
+        return answerCall(incomingCallContext, answerCallOptions, null);
     }
 
     /**
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back URI.
+     * @param answerCallOptions The option of answering a call
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, String callbackUri, Context context) {
+    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, AnswerCallOptions answerCallOptions, Context context) {
         try {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUri);
+                .setIncomingCallContext(incomingCallContext);
+            if (answerCallOptions != null) {
+                request.setCallbackUri(answerCallOptions.getCallbackUri());
+            }
             return (context == null ? serverCallingInternal.answerCallAsync(request)
                 : serverCallingInternal.answerCallAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallLegId(), callConnectionInternal)));
+                .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -203,37 +214,38 @@ public final class CallingServerAsyncClient {
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param answerCallOptions The option of answering a call
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>> answerCallWithResponse(String incomingCallContext, String callbackUri) {
-        return answerCallWithResponse(incomingCallContext, callbackUri, null);
+    public Mono<Response<CallConnectionAsync>> answerCallWithResponse(String incomingCallContext,
+                                                                      AnswerCallOptions answerCallOptions) {
+        return answerCallWithResponse(incomingCallContext, answerCallOptions, null);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUri The call back URI.
+     * @param answerCallOptions The option of answering a call
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>> answerCallWithResponse(String incomingCallContext, String callbackUri, Context context) {
+    public Mono<Response<CallConnectionAsync>> answerCallWithResponse(String incomingCallContext,
+                                                                      AnswerCallOptions answerCallOptions, Context context) {
         try {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallbackUri(callbackUri);
+                .setIncomingCallContext(incomingCallContext);
+            if (answerCallOptions != null) {
+                request.setCallbackUri(answerCallOptions.getCallbackUri());
+            }
             return (context == null ? serverCallingInternal.answerCallWithResponseAsync(request)
                 : serverCallingInternal.answerCallWithResponseAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response,
-                    new CallConnectionAsync(response.getValue().getCallLegId(), callConnectionInternal)));
+                    new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -244,14 +256,12 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target, String callbackUri) {
-        return redirectCall(incomingCallContext, target, callbackUri, null);
+    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target) {
+        return redirectCall(incomingCallContext, target, null);
     }
 
     /**
@@ -259,23 +269,18 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
-     * @param callbackUri The call back URI.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target, String callbackUri, Context context) {
+    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target, Context context) {
         try {
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(incomingCallContext)
-                .setTarget(CommunicationIdentifierConverter.convert(target))
-                .setCallbackUri(callbackUri);
+                .setTarget(CommunicationIdentifierConverter.convert(target));
             return (context == null ? serverCallingInternal.redirectCallAsync(request)
-                : serverCallingInternal.redirectCallAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
+                : serverCallingInternal.redirectCallAsync(request, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -286,14 +291,12 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, String callbackUri) {
-        return redirectCallWithResponse(incomingCallContext, target, callbackUri, null);
+    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target) {
+        return redirectCallWithResponse(incomingCallContext, target, null);
     }
 
     /**
@@ -301,22 +304,19 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param target The target identity.
-     * @param callbackUri The call back URI.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, String callbackUri, Context context) {
+    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext,
+                                                         CommunicationIdentifier target, Context context) {
         try {
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(incomingCallContext)
-                .setTarget(CommunicationIdentifierConverter.convert(target))
-                .setCallbackUri(callbackUri);
+                .setTarget(CommunicationIdentifierConverter.convert(target));
             return (context == null ? serverCallingInternal.redirectCallWithResponseAsync(request)
-                : serverCallingInternal.redirectCallWithResponseAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                : serverCallingInternal.redirectCallWithResponseAsync(request, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -326,40 +326,35 @@ public final class CallingServerAsyncClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason for rejecting call.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param rejectCallOptions Options of the reject call.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, String callRejectReason, String callbackUri) {
-        return rejectCall(incomingCallContext, callRejectReason, callbackUri, null);
+    public Mono<Void> rejectCall(String incomingCallContext, RejectCallOptions rejectCallOptions) {
+        return rejectCall(incomingCallContext, rejectCallOptions, null);
     }
 
     /**
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason for rejecting call.
-     * @param callbackUri The call back URI.
+     * @param rejectCallOptions Options of the reject call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, String callRejectReason,
-                                 String callbackUri, Context context) {
+    public Mono<Void> rejectCall(String incomingCallContext, RejectCallOptions rejectCallOptions, Context context) {
         try {
             RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallRejectReason(CallRejectReason.fromString(callRejectReason))
-                .setCallbackUri(callbackUri);
+                .setIncomingCallContext(incomingCallContext);
+            if (rejectCallOptions != null) {
+                request.setCallRejectReason(CallRejectReason.fromString(rejectCallOptions.getCallRejectReason()));
+            }
+
             return (context == null ? serverCallingInternal.rejectCallAsync(request)
-                : serverCallingInternal.rejectCallAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
+                : serverCallingInternal.rejectCallAsync(request, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -369,40 +364,36 @@ public final class CallingServerAsyncClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason for rejecting call.
-     * @param callbackUri The call back URI.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param rejectCallOptions Options of the reject call.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
-                                                       String callbackUri) {
-        return rejectCallWithResponse(incomingCallContext, callRejectReason, callbackUri, null);
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, RejectCallOptions rejectCallOptions) {
+        return rejectCallWithResponse(incomingCallContext, rejectCallOptions, null);
     }
 
     /**
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param callRejectReason The reason for rejecting call.
-     * @param callbackUri The call back URI.
+     * @param rejectCallOptions Options of the reject call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
-                                                       String callbackUri, Context context) {
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, RejectCallOptions rejectCallOptions,
+                                                       Context context) {
         try {
             RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext)
-                .setCallRejectReason(CallRejectReason.fromString(callRejectReason))
-                .setCallbackUri(callbackUri);
+                .setIncomingCallContext(incomingCallContext);
+            if (rejectCallOptions != null) {
+                request.setCallRejectReason(CallRejectReason.fromString(rejectCallOptions.getCallRejectReason()));
+            }
+
             return (context == null ? serverCallingInternal.rejectCallWithResponseAsync(request)
-                : serverCallingInternal.rejectCallWithResponseAsync(request, context))
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                : serverCallingInternal.rejectCallWithResponseAsync(request, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

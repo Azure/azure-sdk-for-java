@@ -17,12 +17,6 @@ public final class RejectCallRequestInternal {
     private String incomingCallContext;
 
     /*
-     * The callback uri.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
-
-    /*
      * The rejection reason.
      */
     @JsonProperty(value = "callRejectReason")
@@ -45,26 +39,6 @@ public final class RejectCallRequestInternal {
      */
     public RejectCallRequestInternal setIncomingCallContext(String incomingCallContext) {
         this.incomingCallContext = incomingCallContext;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback uri.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback uri.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the RejectCallRequestInternal object itself.
-     */
-    public RejectCallRequestInternal setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 

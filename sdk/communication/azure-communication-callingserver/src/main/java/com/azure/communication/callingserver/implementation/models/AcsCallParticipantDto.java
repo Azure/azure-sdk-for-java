@@ -7,26 +7,20 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A participant in a call. */
+/** The AcsCallParticipantDto model. */
 @Fluent
-public final class CallParticipantInternal {
+public final class AcsCallParticipantDto {
     /*
      * Communication identifier of the participant
      */
-    @JsonProperty(value = "identifier", required = true)
+    @JsonProperty(value = "identifier")
     private CommunicationIdentifierModel identifier;
-
-    /*
-     * Participant id
-     */
-    @JsonProperty(value = "participantId")
-    private String participantId;
 
     /*
      * Is participant muted
      */
-    @JsonProperty(value = "isMuted", required = true)
-    private boolean isMuted;
+    @JsonProperty(value = "isMuted")
+    private Boolean isMuted;
 
     /**
      * Get the identifier property: Communication identifier of the participant.
@@ -41,30 +35,10 @@ public final class CallParticipantInternal {
      * Set the identifier property: Communication identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the CallParticipantInternal object itself.
+     * @return the AcsCallParticipantDto object itself.
      */
-    public CallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
+    public AcsCallParticipantDto setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
-        return this;
-    }
-
-    /**
-     * Get the participantId property: Participant id.
-     *
-     * @return the participantId value.
-     */
-    public String getParticipantId() {
-        return this.participantId;
-    }
-
-    /**
-     * Set the participantId property: Participant id.
-     *
-     * @param participantId the participantId value to set.
-     * @return the CallParticipantInternal object itself.
-     */
-    public CallParticipantInternal setParticipantId(String participantId) {
-        this.participantId = participantId;
         return this;
     }
 
@@ -73,7 +47,7 @@ public final class CallParticipantInternal {
      *
      * @return the isMuted value.
      */
-    public boolean isMuted() {
+    public Boolean isMuted() {
         return this.isMuted;
     }
 
@@ -81,9 +55,9 @@ public final class CallParticipantInternal {
      * Set the isMuted property: Is participant muted.
      *
      * @param isMuted the isMuted value to set.
-     * @return the CallParticipantInternal object itself.
+     * @return the AcsCallParticipantDto object itself.
      */
-    public CallParticipantInternal setIsMuted(boolean isMuted) {
+    public AcsCallParticipantDto setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }

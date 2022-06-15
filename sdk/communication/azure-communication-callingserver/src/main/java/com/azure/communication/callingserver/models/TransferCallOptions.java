@@ -13,10 +13,14 @@ public final class TransferCallOptions {
     private String userToUserInformation;
 
     /*
-     * The alternate identity of the source of the call if dialing out to a
-     * pstn number
+     * The caller ID of the transferee if transferring to a pstn number.
      */
-    private PhoneNumberIdentifier alternateCallerId;
+    private PhoneNumberIdentifier transfereeCallerId;
+
+    /*
+     * The operation context.
+     */
+    private String operationContext;
 
     /**
      * Get the userToUserInformation.
@@ -43,18 +47,38 @@ public final class TransferCallOptions {
      *
      * @return the alternateCaller value.
      */
-    public PhoneNumberIdentifier getAlternateCallerId() {
-        return this.alternateCallerId;
+    public PhoneNumberIdentifier getTransfereeCallerId() {
+        return this.transfereeCallerId;
     }
 
     /**
      * Set the alternateCallerId property.
      *
-     * @param alternateCallerId the alternateCallerId value to set.
+     * @param transfereeCallerId the alternateCallerId value to set.
      * @return the TransferCallOptions object itself.
      */
-    public TransferCallOptions setAlternateCallerId(PhoneNumberIdentifier alternateCallerId) {
-        this.alternateCallerId = alternateCallerId;
+    public TransferCallOptions setTransfereeCallerId(PhoneNumberIdentifier transfereeCallerId) {
+        this.transfereeCallerId = transfereeCallerId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The operation context.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The operation context.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the TransferToParticipantRequest object itself.
+     */
+    public TransferCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }
