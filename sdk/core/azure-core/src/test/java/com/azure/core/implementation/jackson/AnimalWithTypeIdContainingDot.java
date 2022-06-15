@@ -36,10 +36,14 @@ public abstract class AnimalWithTypeIdContainingDot implements JsonSerializable<
                 String json = JsonUtils.bufferJsonObject(jsonReader);
                 JsonReader replayReader = DefaultJsonReader.fromString(json);
                 while (replayReader.nextToken() != JsonToken.END_OBJECT) {
-                    if ("@odata.type".equals(replayReader.getFieldName())) {
-                        replayReader.nextToken();
+                    String fieldName = replayReader.getFieldName();
+                    replayReader.nextToken();
+
+                    if ("@odata.type".equals(fieldName)) {
                         discriminatorValue = replayReader.getStringValue();
                         break;
+                    } else {
+                        replayReader.skipChildren();
                     }
                 }
 

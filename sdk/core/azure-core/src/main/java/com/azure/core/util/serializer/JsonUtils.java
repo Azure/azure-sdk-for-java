@@ -86,6 +86,32 @@ public final class JsonUtils {
     }
 
     /**
+     * Serializes a map.
+     *
+     * @param jsonWriter The {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the map.
+     * @param map The map.
+     * @param entryWriterFunc Function that writes the map entry value.
+     * @param <T> Type of map value.
+     * @return The updated {@link JsonWriter} object.
+     */
+    public static <T> JsonWriter writeMap(JsonWriter jsonWriter, String fieldName, Map<String, T> map,
+        BiConsumer<JsonWriter, T> entryWriterFunc) {
+        if (map == null) {
+            return jsonWriter.writeNullField(fieldName).flush();
+        }
+
+        jsonWriter.writeStartObject(fieldName);
+
+        for (Map.Entry<String, T> entry : map.entrySet()) {
+            jsonWriter.writeFieldName(entry.getKey());
+            entryWriterFunc.accept(jsonWriter, entry.getValue());
+        }
+
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Handles basic logic for deserializing an object before passing it into the deserialization function.
      * <p>
      * This will initialize the {@link JsonReader} for object reading and then check if the current token is

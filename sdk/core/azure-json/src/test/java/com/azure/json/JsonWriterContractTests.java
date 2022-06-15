@@ -79,6 +79,9 @@ public abstract class JsonWriterContractTests {
             // Boolean
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(true)), "true"),
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(false)), "false"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null, true)), "null"),
+            Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeBoolean(null, false)), ""),
 
             // Double
             Arguments.of(createJsonConsumer(jsonWriter -> jsonWriter.writeDouble(-42D)), "-42.0"),
