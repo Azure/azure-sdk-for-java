@@ -141,7 +141,7 @@ stages:
             - ${{ each artifact in parameters.Artifacts }}:
               - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                 - ${{ artifact }}
-          TestPipeline: ${{ parameters.TestPipeline }}
+          TestPipeline: false
           ArtifactName: packages
           TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
           UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
