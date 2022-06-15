@@ -26,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OutputCaptureExtension.class)
 public class KeyVaultCertificateUserAgentTests {
 
-    private final String format1 = String.format("User-Agent:%s",
+    private static final String format1 = String.format("User-Agent:%s",
         AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
-    private final String format2 = String.format("\"User-Agent\":\"%s",
+    private static final String format2 = String.format("\"User-Agent\":\"%s",
         AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
 
     @Test

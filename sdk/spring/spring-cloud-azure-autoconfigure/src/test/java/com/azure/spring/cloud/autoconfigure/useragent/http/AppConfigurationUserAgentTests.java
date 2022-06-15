@@ -33,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OutputCaptureExtension.class)
 public class AppConfigurationUserAgentTests {
 
-    String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
-    String format2 = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+    private static final String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+    private static final String format2 = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
 
     @Test
     public void userAgentTest(CapturedOutput output) {
