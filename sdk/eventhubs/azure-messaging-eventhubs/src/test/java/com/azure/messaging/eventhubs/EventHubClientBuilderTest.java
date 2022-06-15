@@ -130,7 +130,6 @@ public class EventHubClientBuilderTest {
                 .buildAsyncConsumerClient();
             clientCreated = true;
         } catch (Exception ex) {
-            System.out.println(ex);
         }
         Assertions.assertEquals(expectedClientCreation, clientCreated);
     }
