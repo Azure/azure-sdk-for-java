@@ -184,9 +184,11 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         StaticQueueSelector staticQueueSelector = new StaticQueueSelector();
         staticQueueSelector.setLabelSelector(queueSelector);
 
-        List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {{
-            add(staticQueueSelector);
-        }};
+        List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
+            {
+                add(staticQueueSelector);
+            }
+        };
 
 
         /**
@@ -200,9 +202,11 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector();
         staticWorkerSelector.setLabelSelector(workerSelector);
 
-        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {{
-            add(staticWorkerSelector);
-        }};
+        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
+            {
+                add(staticWorkerSelector);
+            }
+        };
 
         StaticRule prioritizationRule = new StaticRule();
         prioritizationRule.setValue(1);
@@ -240,17 +244,21 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         exceptionAction.setDispositionCode("CancelledDueToMaxQueueLengthReached");
         exceptionAction.setNote("Job Cancelled as maximum queue length is reached.");
 
-        Map<String, ExceptionAction> exceptionActions = new HashMap<String, ExceptionAction>() {{
-            put("CancelledDueToMaxQueueLengthReached", exceptionAction);
-        }};
+        Map<String, ExceptionAction> exceptionActions = new HashMap<String, ExceptionAction>() {
+            {
+                put("CancelledDueToMaxQueueLengthReached", exceptionAction);
+            }
+        };
 
         ExceptionRule exceptionRule = new ExceptionRule();
         exceptionRule.setTrigger(queueLengthExceptionTrigger);
         exceptionRule.setActions(exceptionActions);
 
-        Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {{
-            put(exceptionPolicyId, exceptionRule);
-        }};
+        Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {
+            {
+                put(exceptionPolicyId, exceptionRule);
+            }
+        };
 
         ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
         exceptionPolicy.setName(exceptionPolicyName);
@@ -284,23 +292,31 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
          */
         String workerId = String.format("%s-Worker", UUID.randomUUID());
 
-        Map<String, Object> labels = new HashMap<String, Object>() {{
-            put("Label", "Value");
-        }};
+        Map<String, Object> labels = new HashMap<String, Object>() {
+            {
+                put("Label", "Value");
+            }
+        };
 
-        Map<String, Object> tags = new HashMap<String, Object>() {{
-            put("Tag", "Value");
-        }};
+        Map<String, Object> tags = new HashMap<String, Object>() {
+            {
+                put("Tag", "Value");
+            }
+        };
 
         ChannelConfiguration channelConfiguration = new ChannelConfiguration();
         channelConfiguration.setCapacityCostPerJob(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {{
-            put("channel1", channelConfiguration);
-        }};
+        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {
+            {
+                put("channel1", channelConfiguration);
+            }
+        };
 
-        Map<String, Object> queueAssignments = new HashMap<String, Object>() {{
-            put(jobQueue.getId(), new Object());
-        }};
+        Map<String, Object> queueAssignments = new HashMap<String, Object>() {
+            {
+                put(jobQueue.getId(), new Object());
+            }
+        };
 
         RouterWorker routerWorker = new RouterWorker();
         routerWorker.setAvailableForOffers(false);
@@ -340,7 +356,11 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     private JobQueue createQueue(String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, Object> queueLabels = new HashMap<String, Object>() {{ put("Label_1", "Value_1"); }};
+        Map<String, Object> queueLabels = new HashMap<String, Object>() {
+            {
+                put("Label_1", "Value_1");
+            }
+        };
 
         JobQueue jobQueue = new JobQueue();
         jobQueue.setDistributionPolicyId(distributionPolicyId);

@@ -20,7 +20,6 @@ import com.azure.communication.jobrouter.models.PagedExceptionPolicy;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 
 import java.util.Collections;
 
