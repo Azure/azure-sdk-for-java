@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added ability to track progress by passing `ProgressReporter` in the `Context`. 
+  I.e., `Contexts.with(context).setProgressReporter(progressReporter)`
+  before calling `HttpClient.send(HttpRequest, Context)` API.
+
 ### Breaking Changes
 
 ### Bugs Fixed
