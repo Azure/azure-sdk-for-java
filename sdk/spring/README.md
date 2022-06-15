@@ -3,7 +3,7 @@
 Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
 
  - [Reference doc](https://aka.ms/spring/docs).
- - [Migration guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0/reference/html/index.html#migration-guide-for-4-0).
+ - [Migration guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.2.0/reference/html/index.html#migration-guide-for-4-0).
 
 ## Build from Source
 
@@ -136,7 +136,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.0.0</version>
+            <version>4.2.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
