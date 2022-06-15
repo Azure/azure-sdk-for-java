@@ -1,6 +1,6 @@
 # Release History
 
-## 12.18.0-beta.1 (Unreleased)
+## 12.18.0-beta.1 (2022-06-15)
 
 ### Features Added
 - Introducing a new field isMultipleClosedAllowed for BlobOutputStream and BlockBlobOutputStream, which allows users to
@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Added support for 2021-08-06 service version.
 
 ## 12.17.1 (2022-06-08)
 
