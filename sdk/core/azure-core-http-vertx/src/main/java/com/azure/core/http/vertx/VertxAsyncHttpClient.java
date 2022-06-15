@@ -11,6 +11,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -53,6 +55,7 @@ class VertxAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        ProgressReporter progressReporter = Contexts.with(context).getProgressReporter();
         return Mono.create(sink ->
             toVertxHttpRequest(request).subscribe(vertxHttpRequest -> {
                 vertxHttpRequest.exceptionHandler(sink::error);
@@ -86,7 +89,7 @@ class VertxAsyncHttpClient implements HttpClient {
                     }
                 });
 
-                getRequestBody(request)
+                getRequestBody(request, progressReporter)
                     .subscribeOn(scheduler)
                     .map(Unpooled::wrappedBuffer)
                     .map(Buffer::buffer)
@@ -104,10 +107,19 @@ class VertxAsyncHttpClient implements HttpClient {
         return Mono.fromCompletionStage(client.request(options).toCompletionStage());
     }
 
-    private Flux<ByteBuffer> getRequestBody(HttpRequest request) {
-        if (request.getBody() == null) {
+    private Flux<ByteBuffer> getRequestBody(HttpRequest request, ProgressReporter progressReporter) {
+        Flux<ByteBuffer> body = request.getBody();
+        if (body == null) {
             return Flux.empty();
         }
-        return request.getBody();
+
+        if (progressReporter != null) {
+            body = body.map(buffer -> {
+               progressReporter.reportProgress(buffer.remaining());
+               return buffer;
+            });
+        }
+
+        return body;
     }
 }
