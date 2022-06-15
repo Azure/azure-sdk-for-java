@@ -25,7 +25,6 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private final JedisPool jedisPool;
     private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
     JedisRedisCheckpointStore(JedisPool jedisPool) {
-
         this.jedisPool = jedisPool;
     }
     /**
@@ -55,13 +54,10 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
             return Flux.fromStream(members.stream().map(json ->
             {
                 try {
-                    return jacksonAdapter.deserialize(json, Checkpoint.class, SerializerEncoding.JSON);
-                }
+                    return jacksonAdapter.deserialize(json, Checkpoint.class, SerializerEncoding.JSON); }
                 catch (IOException e) {
                     throw LOGGER.logExceptionAsError(Exceptions
-                        .propagate(new IOException(
-                            "Checkpoint is incorrectly stored and cannot be deserialized.")));
-                }
+                        .propagate(e)); }
             }));
         }
     }
@@ -90,19 +86,18 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     "Checkpoint is either null, or both the offset and the sequence number are null.")));
         }
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-        String key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
         try (Jedis jedis = jedisPool.getResource()) {
-            //Serialize a checkpoint before updating
+            jedis.sadd(prefix, jacksonAdapter.serialize(checkpoint, SerializerEncoding.JSON));
             jedisPool.returnResource(jedis);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(Exceptions
+                .propagate(e));
         }
         return null;
     }
 
     private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
         return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
-    }
-    private String keyBuilder(String fullyQualifiedNamespace, String eventHubName,  String consumerGroup, String partitionId) {
-        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId;
     }
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
