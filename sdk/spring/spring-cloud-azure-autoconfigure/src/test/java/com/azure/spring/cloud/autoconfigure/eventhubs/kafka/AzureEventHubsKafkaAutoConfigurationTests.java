@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.eventhubs;
+package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.KafkaPropertiesBeanPostProcessor;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
@@ -29,7 +28,6 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
@@ -39,9 +37,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsKafkaAutoConfigurationTests {
 
+    private static final String CONNECTION_STRING_FORMAT =
+        "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class, KafkaAutoConfiguration.class));
-
     @Test
     void shouldNotConfigureWhenAzureEventHubsKafkaDisabled() {
         this.contextRunner
@@ -202,12 +202,12 @@ class AzureEventHubsKafkaAutoConfigurationTests {
                     assertThat(properties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
                     assertThat(properties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
 
-                    DefaultKafkaConsumerFactory<Object, Object> consumerFactory = (DefaultKafkaConsumerFactory<Object, Object>) context.getBean(ConsumerFactory.class);
+                    DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                     assertThat(consumerFactory.getConfigurationProperties().get(BOOTSTRAP_SERVERS_CONFIG)).isEqualTo(Collections.singletonList("test.servicebus.windows.net:9093"));
                     assertThat(consumerFactory.getConfigurationProperties().get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
                     assertThat(consumerFactory.getConfigurationProperties().get(SASL_MECHANISM)).isEqualTo("PLAIN");
 
-                    DefaultKafkaProducerFactory<Object, Object> producerFactory = (DefaultKafkaProducerFactory<Object, Object>) context.getBean(ProducerFactory.class);
+                    DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
                     assertThat(producerFactory.getConfigurationProperties().get(BOOTSTRAP_SERVERS_CONFIG)).isEqualTo(Collections.singletonList("test.servicebus.windows.net:9093"));
                     assertThat(producerFactory.getConfigurationProperties().get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
                     assertThat(producerFactory.getConfigurationProperties().get(SASL_MECHANISM)).isEqualTo("PLAIN");

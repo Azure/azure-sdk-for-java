@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.core.provider;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -85,9 +86,8 @@ public interface AzureProfileOptionsProvider {
         private static final Map<String, CloudType> CLOUD_TYPE_MAP = initMap();
 
         private static Map<String, CloudType> initMap() {
-            return Arrays.stream(CloudType.values())
-                         .collect(Collectors.toUnmodifiableMap(
-                             c -> c.name(), Function.identity()));
+            return Collections.unmodifiableMap(Arrays.stream(CloudType.values())
+                         .collect(Collectors.toMap(c -> c.name(), Function.identity())));
         }
 
         /**

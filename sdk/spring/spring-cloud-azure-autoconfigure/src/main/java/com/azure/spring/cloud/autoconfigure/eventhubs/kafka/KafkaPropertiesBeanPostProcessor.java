@@ -22,14 +22,14 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 /**
  * {@link BeanPostProcessor} for {@link KafkaProperties} to configure connection string credentials.
  */
-public class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
+class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
     private final ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider;
 
-    public KafkaPropertiesBeanPostProcessor(ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+    KafkaPropertiesBeanPostProcessor(ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
     }
 
