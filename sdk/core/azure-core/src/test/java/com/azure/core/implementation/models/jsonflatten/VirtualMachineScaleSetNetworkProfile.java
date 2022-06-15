@@ -33,10 +33,8 @@ public final class VirtualMachineScaleSetNetworkProfile implements JsonSerializa
     public JsonWriter toJson(JsonWriter jsonWriter) {
         jsonWriter.writeStartObject();
 
-        if (networkInterfaceConfigurations != null) {
-            JsonUtils.writeArray(jsonWriter, "networkInterfaceConfigurations", networkInterfaceConfigurations,
-                JsonWriter::writeJson);
-        }
+        JsonUtils.writeArray(jsonWriter, "networkInterfaceConfigurations", networkInterfaceConfigurations,
+            JsonWriter::writeJson);
 
         return jsonWriter.writeEndObject().flush();
     }

@@ -3,11 +3,15 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,10 +26,35 @@ public final class JsonUtils {
     /**
      * Serializes an array.
      * <p>
+     * Handles two scenarios for the array:
+     *
+     * <ul>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * If a null array should be written as JSON null use
+     * {@link #writeArray(JsonWriter, String, Object[], boolean, BiConsumer)} and pass true for {@code writeNull}.
+     *
+     * @param jsonWriter {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code array} is null
+     */
+    public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, T[] array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArray(jsonWriter, fieldName, array, false, elementWriterFunc);
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
      * Handles three scenarios for the array:
      *
      * <ul>
-     *     <li>null {@code array} writes JSON null</li>
+     *     <li>null {@code array} writes JSON null, iff {@code writeNull} is true</li>
      *     <li>empty {@code array} writes {@code []}</li>
      *     <li>non-empty {@code array} writes a populated JSON array</li>
      * </ul>
@@ -33,14 +62,16 @@ public final class JsonUtils {
      * @param jsonWriter {@link JsonWriter} where JSON will be written.
      * @param fieldName Field name for the array.
      * @param array The array.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
      * @param elementWriterFunc Function that writes the array element.
      * @param <T> Type of array element.
-     * @return The updated {@link JsonWriter} object.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code array} is null and {@code writeNull} is
+     * false.
      */
-    public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, T[] array,
+    public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, T[] array, boolean writeNull,
         BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return jsonWriter.writeNullField(fieldName).flush();
+            return writeNull ? jsonWriter.writeNullField(fieldName).flush() : jsonWriter;
         }
 
         jsonWriter.writeStartArray(fieldName);
@@ -55,10 +86,35 @@ public final class JsonUtils {
     /**
      * Serializes an array.
      * <p>
+     * Handles two scenarios for the array:
+     *
+     * <ul>
+     *     <li>empty {@code array} writes {@code []}</li>
+     *     <li>non-empty {@code array} writes a populated JSON array</li>
+     * </ul>
+     *
+     * If a null array should be written as JSON null use
+     * {@link #writeArray(JsonWriter, String, Iterable, boolean, BiConsumer)} and pass true for {@code writeNull}.
+     *
+     * @param jsonWriter {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the array.
+     * @param array The array.
+     * @param elementWriterFunc Function that writes the array element.
+     * @param <T> Type of array element.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code array} is null
+     */
+    public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, Iterable<T> array,
+        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        return writeArray(jsonWriter, fieldName, array, false, elementWriterFunc);
+    }
+
+    /**
+     * Serializes an array.
+     * <p>
      * Handles three scenarios for the array:
      *
      * <ul>
-     *     <li>null {@code array} writes JSON null</li>
+     *     <li>null {@code array} writes JSON null, iff {@code writeNull} is true</li>
      *     <li>empty {@code array} writes {@code []}</li>
      *     <li>non-empty {@code array} writes a populated JSON array</li>
      * </ul>
@@ -66,14 +122,16 @@ public final class JsonUtils {
      * @param jsonWriter {@link JsonWriter} where JSON will be written.
      * @param fieldName Field name for the array.
      * @param array The array.
+     * @param writeNull Whether JSON null should be written if {@code array} is null.
      * @param elementWriterFunc Function that writes the array element.
      * @param <T> Type of array element.
-     * @return The updated {@link JsonWriter} object.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code array} is null and {@code writeNull} is
+     * false.
      */
     public static <T> JsonWriter writeArray(JsonWriter jsonWriter, String fieldName, Iterable<T> array,
-        BiConsumer<JsonWriter, T> elementWriterFunc) {
+        boolean writeNull, BiConsumer<JsonWriter, T> elementWriterFunc) {
         if (array == null) {
-            return jsonWriter.writeNullField(fieldName).flush();
+            return writeNull ? jsonWriter.writeNullField(fieldName).flush() : jsonWriter;
         }
 
         jsonWriter.writeStartArray(fieldName);
@@ -87,18 +145,39 @@ public final class JsonUtils {
 
     /**
      * Serializes a map.
+     * <p>
+     * If the map is null this method is a no-op. Use {@link #writeMap(JsonWriter, String, Map, boolean, BiConsumer)}
+     * and passed true for {@code writeNull} if JSON null should be written.
      *
      * @param jsonWriter The {@link JsonWriter} where JSON will be written.
      * @param fieldName Field name for the map.
      * @param map The map.
      * @param entryWriterFunc Function that writes the map entry value.
      * @param <T> Type of map value.
-     * @return The updated {@link JsonWriter} object.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code map} is null
      */
     public static <T> JsonWriter writeMap(JsonWriter jsonWriter, String fieldName, Map<String, T> map,
         BiConsumer<JsonWriter, T> entryWriterFunc) {
+        return writeMap(jsonWriter, fieldName, map, false, entryWriterFunc);
+    }
+
+    /**
+     * Serializes a map.
+     * <p>
+     * If {@code map} is null and {@code writeNull} is false this method is effectively a no-op.
+     *
+     * @param jsonWriter The {@link JsonWriter} where JSON will be written.
+     * @param fieldName Field name for the map.
+     * @param map The map.
+     * @param writeNull Whether JSON null should be written if {@code map} is null.
+     * @param entryWriterFunc Function that writes the map entry value.
+     * @param <T> Type of map value.
+     * @return The updated {@link JsonWriter} object, or a no-op if {@code map} is null and {@code writeNull} is false.
+     */
+    public static <T> JsonWriter writeMap(JsonWriter jsonWriter, String fieldName, Map<String, T> map,
+        boolean writeNull, BiConsumer<JsonWriter, T> entryWriterFunc) {
         if (map == null) {
-            return jsonWriter.writeNullField(fieldName).flush();
+            return writeNull ? jsonWriter.writeNullField(fieldName).flush() : jsonWriter;
         }
 
         jsonWriter.writeStartObject(fieldName);
@@ -285,6 +364,16 @@ public final class JsonUtils {
             return jsonWriter.writeBinary((byte[]) value).flush();
         } else if (value instanceof CharSequence) {
             return jsonWriter.writeString(String.valueOf(value)).flush();
+        } else if (value instanceof Character) {
+            return jsonWriter.writeString(String.valueOf(((Character) value).charValue())).flush();
+        } else if (value instanceof DateTimeRfc1123) {
+            return jsonWriter.writeString(value.toString()).flush();
+        } else if (value instanceof OffsetDateTime) {
+            return jsonWriter.writeString(value.toString()).flush();
+        } else if (value instanceof LocalDate) {
+            return jsonWriter.writeString(value.toString()).flush();
+        } else if (value instanceof Duration) {
+            return jsonWriter.writeString(value.toString()).flush();
         } else if (value instanceof JsonSerializable<?>) {
             return ((JsonSerializable<?>) value).toJson(jsonWriter).flush();
         } else if (value.getClass() == Object.class) {

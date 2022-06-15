@@ -106,9 +106,7 @@ public class NewFoo implements JsonSerializable<NewFoo> {
             if (baz != null || qux != null) {
                 jsonWriter.writeStartObject("props");
 
-                if (baz != null) {
-                    JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
-                }
+                JsonUtils.writeArray(jsonWriter, "baz", baz, JsonWriter::writeString);
 
                 if (qux != null) {
                     jsonWriter.writeStartObject("q")
