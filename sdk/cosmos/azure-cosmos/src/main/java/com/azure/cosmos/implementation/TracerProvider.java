@@ -321,14 +321,14 @@ public class TracerProvider {
         Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracer);
         return tracerMono
             .doOnSuccess(response -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
+                if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosItemResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
-                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosBatchResponse) {
+                } else if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosBatchResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
                     fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
@@ -337,7 +337,7 @@ public class TracerProvider {
                         (float) cosmosBatchResponse.getRequestCharge());
                 }
             }).doOnError(throwable -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {
+                if (BridgeInternal.isClientTelemetryEnabled(client) && throwable instanceof CosmosException) {
                     CosmosException cosmosException = (CosmosException) throwable;
                     fillClientTelemetry(client, cosmosException.getDiagnostics(), cosmosException.getStatusCode(),
                         null, containerId,

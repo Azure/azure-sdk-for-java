@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.workloads.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.workloads.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.workloads.models.Monitor;
+import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,11 @@ public final class MonitorsUpdateSamples {
                 .monitors()
                 .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf()).apply();
+        resource
+            .update()
+            .withTags(mapOf())
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .apply();
     }
 
     /*
@@ -42,7 +48,11 @@ public final class MonitorsUpdateSamples {
                 .monitors()
                 .getByResourceGroupWithResponse("myResourceGroup", "mySapMonitor", Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("testkey", "testvalue")).apply();
+        resource
+            .update()
+            .withTags(mapOf("testkey", "testvalue"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .apply();
     }
 
     @SuppressWarnings("unchecked")

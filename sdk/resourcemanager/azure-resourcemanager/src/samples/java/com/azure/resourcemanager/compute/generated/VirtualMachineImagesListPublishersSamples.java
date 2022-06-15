@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachineImages ListPublishers. */
 public final class VirtualMachineImagesListPublishersSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_ListPublishers_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineImageExamples/VirtualMachineImages_ListPublishers_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_ListPublishers_MaximumSet_Gen.
@@ -27,7 +27,7 @@ public final class VirtualMachineImagesListPublishersSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineImages_ListPublishers_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineImageExamples/VirtualMachineImages_ListPublishers_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImages_ListPublishers_MinimumSet_Gen.

@@ -210,7 +210,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,7 +283,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -586,7 +586,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -659,7 +659,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         } else {
             galleryApplication.validate();
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -947,7 +947,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1006,7 +1006,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1117,7 +1117,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1175,7 +1175,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 .error(
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1381,7 +1381,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1442,7 +1442,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         if (galleryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

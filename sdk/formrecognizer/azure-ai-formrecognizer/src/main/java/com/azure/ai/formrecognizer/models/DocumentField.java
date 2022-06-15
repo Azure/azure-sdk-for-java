@@ -99,6 +99,11 @@ public final class DocumentField {
      */
     private Float confidence;
 
+    /*
+     * Currency value.
+     */
+    private AddressValue valueAddress;
+
     /**
      * Get the type property: Data type of the field value.
      *
@@ -342,6 +347,24 @@ public final class DocumentField {
     }
 
     /**
+     * Get the valueAddress property: Address value.
+     *
+     * @return the valueAddress value.
+     */
+    public AddressValue getValueAddress() {
+        return this.valueAddress;
+    }
+
+    /**
+     * Set the valueAddress property: Address value.
+     *
+     * @param valueAddress the valueAddress value to set.
+     */
+    void setValueAddress(AddressValue valueAddress) {
+        this.valueAddress = valueAddress;
+    }
+
+    /**
      * Get the content property: Field content.
      *
      * @return the content value.
@@ -483,6 +506,12 @@ public final class DocumentField {
             public void setValueCurrency(DocumentField documentField,
                                         CurrencyValue valueCurrency) {
                 documentField.setValueCurrency(valueCurrency);
+            }
+
+            @Override
+            public void setValueAddress(DocumentField documentField,
+                                         AddressValue valueAddress) {
+                documentField.setValueAddress(valueAddress);
             }
 
             @Override

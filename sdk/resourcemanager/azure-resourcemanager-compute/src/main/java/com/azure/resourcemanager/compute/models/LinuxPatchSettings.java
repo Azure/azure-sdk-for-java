@@ -32,6 +32,13 @@ public final class LinuxPatchSettings {
     @JsonProperty(value = "assessmentMode")
     private LinuxPatchAssessmentMode assessmentMode;
 
+    /*
+     * Specifies additional settings for patch mode AutomaticByPlatform in VM
+     * Guest Patching on Linux.
+     */
+    @JsonProperty(value = "automaticByPlatformSettings")
+    private LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
+
     /**
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible
@@ -87,10 +94,36 @@ public final class LinuxPatchSettings {
     }
 
     /**
+     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Linux.
+     *
+     * @return the automaticByPlatformSettings value.
+     */
+    public LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings() {
+        return this.automaticByPlatformSettings;
+    }
+
+    /**
+     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
+     * VM Guest Patching on Linux.
+     *
+     * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
+     * @return the LinuxPatchSettings object itself.
+     */
+    public LinuxPatchSettings withAutomaticByPlatformSettings(
+        LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
+        this.automaticByPlatformSettings = automaticByPlatformSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (automaticByPlatformSettings() != null) {
+            automaticByPlatformSettings().validate();
+        }
     }
 }

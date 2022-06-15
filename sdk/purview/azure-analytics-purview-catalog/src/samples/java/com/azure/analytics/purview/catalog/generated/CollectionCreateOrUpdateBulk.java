@@ -13,19 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionCreateOrUpdateBulk {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
         CollectionClient collectionClient =
                 new CollectionClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
         BinaryData entities =
                 BinaryData.fromString(
                         "{\"entities\":[{\"attributes\":{\"name\":\"exampleaccount\",\"description\":\"Example Description\",\"qualifiedName\":\"exampleaccount\"},\"typeName\":\"azure_storage_account\"},{\"attributes\":{\"name\":\"exampleaccount2\",\"qualifiedName\":\"exampleaccount2\"},\"typeName\":\"azure_storage_account\"}],\"referredEntities\":{}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 collectionClient.createOrUpdateBulkWithResponse("ExampleCollection", entities, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
+        // END:com.azure.analytics.purview.catalog.generated.collectioncreateorupdatebulk.collectioncreateorupdatebulk
     }
 }

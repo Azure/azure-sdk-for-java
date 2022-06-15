@@ -20,6 +20,8 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
+  - name: UseEsrpRelease
+    type: boolean
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -210,18 +212,33 @@ stages:
                   - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                   - ${{ each artifact in parameters.Artifacts }}:
                     - ${{if ne(artifact.skipPublishPackage, 'true')}}:
-                      - template: /eng/pipelines/templates/steps/java-publishing.yml
-                        parameters:
-                          ArtifactID: ${{artifact.name}}
-                          GroupID: ${{artifact.groupId}}
-                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          Target: MavenCentral
-                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-                        parameters:
-                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
-                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                      - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
+                        - template: /eng/pipelines/templates/steps/java-publishing.yml
+                          parameters:
+                            ArtifactID: ${{artifact.name}}
+                            GroupID: ${{artifact.groupId}}
+                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                            OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+                            Target: EsrpRelease
+                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                          parameters:
+                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
+                            ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
+                      - ${{ else }}:
+                        - template: /eng/pipelines/templates/steps/java-publishing.yml
+                          parameters:
+                            ArtifactID: ${{artifact.name}}
+                            GroupID: ${{artifact.groupId}}
+                            ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                            Target: MavenCentral
+                            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                            JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                          parameters:
+                            ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
+                            ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.

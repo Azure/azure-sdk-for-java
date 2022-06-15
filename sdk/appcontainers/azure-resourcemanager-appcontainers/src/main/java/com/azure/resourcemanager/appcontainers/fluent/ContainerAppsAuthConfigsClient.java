@@ -48,7 +48,7 @@ public interface ContainerAppsAuthConfigsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
@@ -56,14 +56,14 @@ public interface ContainerAppsAuthConfigsClient {
      * @return a AuthConfig of a Container App.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthConfigInner get(String resourceGroupName, String containerAppName, String name);
+    AuthConfigInner get(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
      * Get a AuthConfig of a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -73,14 +73,14 @@ public interface ContainerAppsAuthConfigsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AuthConfigInner> getWithResponse(
-        String resourceGroupName, String containerAppName, String name, Context context);
+        String resourceGroupName, String containerAppName, String authConfigName, Context context);
 
     /**
-     * Description for Create or update the AuthConfig for a Container App.
+     * Create or update the AuthConfig for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -90,14 +90,14 @@ public interface ContainerAppsAuthConfigsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AuthConfigInner createOrUpdate(
-        String resourceGroupName, String containerAppName, String name, AuthConfigInner authConfigEnvelope);
+        String resourceGroupName, String containerAppName, String authConfigName, AuthConfigInner authConfigEnvelope);
 
     /**
-     * Description for Create or update the AuthConfig for a Container App.
+     * Create or update the AuthConfig for a Container App.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param authConfigEnvelope Properties used to create a Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,30 +111,30 @@ public interface ContainerAppsAuthConfigsClient {
     Response<AuthConfigInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String containerAppName,
-        String name,
+        String authConfigName,
         AuthConfigInner authConfigEnvelope,
         Context context);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String containerAppName, String name);
+    void delete(String resourceGroupName, String containerAppName, String authConfigName);
 
     /**
-     * Description for Delete a Container App AuthConfig.
+     * Delete a Container App AuthConfig.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param name Name of the Container App AuthConfig.
+     * @param authConfigName Name of the Container App AuthConfig.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -143,5 +143,6 @@ public interface ContainerAppsAuthConfigsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String name, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String containerAppName, String authConfigName, Context context);
 }

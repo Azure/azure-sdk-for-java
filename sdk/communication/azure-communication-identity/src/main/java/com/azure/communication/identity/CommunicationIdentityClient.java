@@ -10,14 +10,14 @@ import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -28,7 +28,26 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
- * Synchronous client interface for Communication Service identity operations
+ * Synchronous client interface for Azure Communication Service Identity operations
+ *
+ * <p><strong>Instantiating a synchronous Azure Communication Service Identity Client</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationIdentityClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationIdentityClient -->
+ *
+ *<p>View {@link CommunicationIdentityClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CommunicationIdentityClientBuilder
  */
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
@@ -228,33 +247,29 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     * Exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken getTokenForTeamsUser(String teamsUserAadToken) {
-        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsUserAadToken);
-        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
+    public AccessToken getTokenForTeamsUser(GetTokenForTeamsUserOptions options) {
+        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(options);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
     /**
-     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     * Exchanges an Azure AD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param options {@link GetTokenForTeamsUserOptions} request options used to exchange an Azure AD access token of a Teams User for a new Communication Identity access token.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, Context context) {
+    public Response<AccessToken> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsUserAadToken);
-        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(options, context)
             .block();
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
@@ -264,7 +279,5 @@ public final class CommunicationIdentityClient {
             response,
             new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
     }
-
-
 
 }

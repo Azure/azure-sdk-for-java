@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.workloads.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.fluent.models.ProviderInstanceInner;
 
@@ -29,6 +30,20 @@ public interface ProviderInstance {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the identity property: Managed service identity (user assigned identities).
+     *
+     * @return the identity value.
+     */
+    UserAssignedServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the provisioningState property: State of provisioning of the provider instance.
@@ -82,7 +97,7 @@ public interface ProviderInstance {
          * The stage of the ProviderInstance definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProviderSettings {
+        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithProviderSettings {
             /**
              * Executes the create request.
              *
@@ -97,6 +112,16 @@ public interface ProviderInstance {
              * @return the created resource.
              */
             ProviderInstance create(Context context);
+        }
+        /** The stage of the ProviderInstance definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (user assigned identities).
+             *
+             * @param identity Managed service identity (user assigned identities).
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(UserAssignedServiceIdentity identity);
         }
         /** The stage of the ProviderInstance definition allowing to specify providerSettings. */
         interface WithProviderSettings {

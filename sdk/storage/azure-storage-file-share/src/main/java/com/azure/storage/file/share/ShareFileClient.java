@@ -33,6 +33,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -369,7 +370,8 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata,
         Duration pollInterval) {
-        return this.beginCopy(sourceUrl, null, null, null, null, null, metadata, pollInterval, null);
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setMetadata(metadata);
+        return this.beginCopy(sourceUrl, pollInterval, options);
     }
 
     /**
@@ -424,9 +426,71 @@ public class ShareFileClient {
         String filePermission, PermissionCopyModeType filePermissionCopyMode, Boolean ignoreReadOnly,
         Boolean setArchiveAttribute, Map<String, String> metadata, Duration pollInterval,
         ShareRequestConditions destinationRequestConditions) {
-        return shareFileAsyncClient.beginCopy(sourceUrl, smbProperties, filePermission, filePermissionCopyMode,
-            ignoreReadOnly, setArchiveAttribute, metadata, pollInterval, destinationRequestConditions)
-                .getSyncPoller();
+        ShareFileCopyOptions options = new ShareFileCopyOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setPermissionCopyModeType(filePermissionCopyMode)
+            .setIgnoreReadOnly(ignoreReadOnly)
+            .setSetArchiveAttribute(setArchiveAttribute)
+            .setMetadata(metadata)
+            .setDestinationRequestConditions(destinationRequestConditions);
+
+        return beginCopy(sourceUrl, pollInterval, options);
+    }
+
+    /**
+     * Copies a blob or file to a destination file within the storage account.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Copy file from source getDirectoryUrl to the {@code resourcePath} </p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
+     * boolean ignoreReadOnly = false; &#47;&#47; Default value
+     * boolean setArchiveAttribute = true; &#47;&#47; Default value
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList&#40;&#41;.setCreatedOn&#40;true&#41;.setLastWrittenOn&#40;true&#41;;
+     * &#47;&#47; NOTE: FileSmbProperties and CopyableFileSmbPropertiesList should never be both set
+     *
+     * ShareFileCopyOptions options = new ShareFileCopyOptions&#40;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;
+     *     .setIgnoreReadOnly&#40;ignoreReadOnly&#41;
+     *     .setSetArchiveAttribute&#40;setArchiveAttribute&#41;
+     *     .setDestinationRequestConditions&#40;requestConditions&#41;
+     *     .setSmbPropertiesToCopy&#40;list&#41;
+     *     .setPermissionCopyModeType&#40;PermissionCopyModeType.SOURCE&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;file&quot;, &quot;metadata&quot;&#41;&#41;;
+     *
+     * SyncPoller&lt;ShareFileCopyInfo, Void&gt; poller = fileClient.beginCopy&#40;
+     *     &quot;https:&#47;&#47;&#123;accountName&#125;.file.core.windows.net?&#123;SASToken&#125;&quot;, Duration.ofSeconds&#40;2&#41;, options&#41;;
+     *
+     * final PollResponse&lt;ShareFileCopyInfo&gt; pollResponse = poller.poll&#40;&#41;;
+     * final ShareFileCopyInfo value = pollResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Copy source: %s. Status: %s.%n&quot;, value.getCopySourceUrl&#40;&#41;, value.getCopyStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.beginCopy#String-Duration-ShareFileCopyOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
+     *
+     * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
+     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
+     * is used.
+     * @param options {@link ShareFileCopyOptions}
+     * @return A {@link SyncPoller} to poll the progress of copy operation.
+     * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
+     */
+    public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval, ShareFileCopyOptions options) {
+        return shareFileAsyncClient.beginCopy(sourceUrl, pollInterval, options).getSyncPoller();
     }
 
     /**
@@ -903,39 +967,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
-    }
-
-    /**
-     * Deletes the file associate with the client if it exists.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the file</p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
-     * <pre>
-     * Response&lt;Boolean&gt; response = fileClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
-     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
-     * &#125; else &#123;
-     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#duration-context -->
-     *
-     * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
-     *
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
-     * was successfully deleted. If status code is 404, the file does not exist.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
-        return this.deleteIfExistsWithResponse(null, timeout, context);
+        return deleteIfExistsWithResponse(null, null, Context.NONE).getValue();
     }
 
     /**
@@ -948,9 +980,9 @@ public class ShareFileClient {
      * <!-- src_embed com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context -->
      * <pre>
      * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Boolean&gt; res = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
+     * Response&lt;Boolean&gt; response = fileClient.deleteIfExistsWithResponse&#40;requestConditions, Duration.ofSeconds&#40;1&#41;,
      *     new Context&#40;key1, value1&#41;&#41;;
-     * if &#40;res.getStatusCode&#40;&#41; == 404&#41; &#123;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
      *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;

@@ -10,7 +10,6 @@ import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -23,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.rest.RestProxyUtils;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
@@ -63,9 +63,6 @@ import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.s
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
-    private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
-    private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
     private static final String MUST_IMPLEMENT_PAGE_ERROR =
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
 
@@ -140,11 +137,9 @@ public final class RestProxy implements InvocationHandler {
                 options.getRequestCallback().accept(request);
             }
 
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
-
-            final Mono<HttpResponse> asyncResponse = send(request, context);
+            Context finalContext = context;
+            final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
+                .flatMap(r -> send(r, finalContext));
 
             Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
 
@@ -175,43 +170,6 @@ public final class RestProxy implements InvocationHandler {
         }
 
         return context;
-    }
-
-    static Flux<ByteBuffer> validateLength(final HttpRequest request) {
-        final Flux<ByteBuffer> bbFlux = request.getBody();
-        if (bbFlux == null) {
-            return Flux.empty();
-        }
-
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue("Content-Length"));
-
-        return Flux.defer(() -> {
-            final long[] currentTotalLength = new long[1];
-            return Flux.concat(bbFlux, Flux.just(VALIDATION_BUFFER)).handle((buffer, sink) -> {
-                if (buffer == null) {
-                    return;
-                }
-
-                if (buffer == VALIDATION_BUFFER) {
-                    if (expectedLength != currentTotalLength[0]) {
-                        sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    } else {
-                        sink.complete();
-                    }
-                    return;
-                }
-
-                currentTotalLength[0] += buffer.remaining();
-                if (currentTotalLength[0] > expectedLength) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
-                    return;
-                }
-
-                sink.next(buffer);
-            });
-        });
     }
 
     /**
@@ -321,7 +279,7 @@ public final class RestProxy implements InvocationHandler {
                 // sending the request to the service. There is no memory copy that happens here. Sources like
                 // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
                 // by the HttpClient implementations.
-                request.setBody(binaryData.toFluxByteBuffer());
+                request.setBody(binaryData);
                 return request;
             }
 
@@ -509,11 +467,7 @@ public final class RestProxy implements InvocationHandler {
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
         // body as an Object.
         MethodHandle constructorHandle = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
-        if (constructorHandle == null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + cls));
-        } else {
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
-        }
+        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
     }
 
     private static Mono<?> handleBodyReturnType(final HttpDecodedResponse response,

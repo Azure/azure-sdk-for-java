@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
@@ -51,6 +52,7 @@ abstract class LinkHandler extends Handler {
 
         addErrorCondition(logger.atVerbose(), condition)
             .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkLocalClose");
     }
 
@@ -71,6 +73,7 @@ abstract class LinkHandler extends Handler {
             : NOT_APPLICABLE;
         logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
@@ -95,11 +98,13 @@ abstract class LinkHandler extends Handler {
 
         addErrorCondition(logger.atInfo(), condition)
             .addKeyValue(LINK_NAME_KEY, link.getName())
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log(eventName);
 
         if (link.getLocalState() != EndpointState.CLOSED) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("state", link.getLocalState())
                 .log("Local link state is not closed.");
 

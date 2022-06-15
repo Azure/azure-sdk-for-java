@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -165,6 +166,10 @@ public class ReflectionUtils {
         return get(GatewayServiceConfigurationReader.class, rxDocumentClient, "gatewayConfigurationReader");
     }
 
+    public static GlobalAddressResolver getGlobalAddressResolver(RxDocumentClientImpl rxDocumentClient) {
+        return get(GlobalAddressResolver.class, rxDocumentClient, "addressResolver");
+    }
+
     public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
@@ -175,6 +180,10 @@ public class ReflectionUtils {
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
+    }
+
+    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
     }
 
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {

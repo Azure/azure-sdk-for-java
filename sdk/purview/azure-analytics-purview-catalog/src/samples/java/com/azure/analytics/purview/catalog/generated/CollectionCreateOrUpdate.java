@@ -13,18 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CollectionCreateOrUpdate {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.collectioncreateorupdate.collectioncreateorupdate
         CollectionClient collectionClient =
                 new CollectionClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.collectioncreateorupdate.collectioncreateorupdate
         BinaryData entity =
                 BinaryData.fromString(
                         "{\"entity\":{\"attributes\":{\"name\":\"exampleaccount\",\"qualifiedName\":\"https://exampleaccount.core.windows.net\"},\"typeName\":\"azure_storage_account\"},\"referredEntities\":{}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 collectionClient.createOrUpdateWithResponse("ExampleCollection", entity, requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.collectioncreateorupdate.collectioncreateorupdate
+        // END:com.azure.analytics.purview.catalog.generated.collectioncreateorupdate.collectioncreateorupdate
     }
 }

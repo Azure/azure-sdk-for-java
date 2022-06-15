@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
-  <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
+  <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
 
   <name>Spring Cloud Azure Starter App Configuration</name>
   <description>Spring Cloud Azure Starter App Configuration</description>
@@ -88,12 +88,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter</artifactId>
-      <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
     </dependency>
   </dependencies>
 

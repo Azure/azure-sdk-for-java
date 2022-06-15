@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-servicebus</artifactId>
-  <version>7.9.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+  <version>7.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
   <name>Microsoft Azure client library for Service Bus</name>
   <description>This package contains the Microsoft Azure Service Bus client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -48,36 +48,36 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.28.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.29.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.5.0</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.5.2</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
