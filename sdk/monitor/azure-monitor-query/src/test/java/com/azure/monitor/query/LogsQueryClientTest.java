@@ -257,9 +257,9 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "server timeout is "
-    + " not readily reproducible and because the service caches query results, the queries that require extended time "
-    + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
-    + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
+            + " not readily reproducible and because the service caches query results, the queries that require extended time "
+            + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
+            + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
     public void testServerTimeout() {
         // The server does not always stop processing the request and return a 504 before the client times out
         // so, retry until a 504 response is returned
