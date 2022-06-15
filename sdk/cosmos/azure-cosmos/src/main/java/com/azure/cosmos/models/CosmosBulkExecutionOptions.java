@@ -249,8 +249,7 @@ public final class CosmosBulkExecutionOptions {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
 
@@ -342,4 +341,6 @@ public final class CosmosBulkExecutionOptions {
 
             });
     }
+
+    static { initialize(); }
 }

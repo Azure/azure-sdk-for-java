@@ -24,7 +24,11 @@ public final class Name extends ExpandableStringEnum<Name> {
         return fromString(name, Name.class);
     }
 
-    /** @return known Name values. */
+    /**
+     * Gets known Name values.
+     *
+     * @return known Name values.
+     */
     public static Collection<Name> values() {
         return values(Name.class);
     }

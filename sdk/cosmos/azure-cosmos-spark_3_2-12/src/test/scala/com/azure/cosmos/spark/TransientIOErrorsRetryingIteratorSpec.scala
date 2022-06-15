@@ -26,7 +26,11 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
 
   private val rnd = scala.util.Random
   private val pageSize = 2
-  private val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+  private val cosmosSerializationConfig = CosmosSerializationConfig(
+    SerializationInclusionModes.Always,
+    SerializationDateTimeConversionModes.Default
+  )
+
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   "TransientIOErrors" should "be retried without duplicates or missing records" in {

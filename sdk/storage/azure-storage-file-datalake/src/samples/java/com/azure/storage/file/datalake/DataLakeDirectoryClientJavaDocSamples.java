@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeDirectoryClient}
@@ -97,6 +98,40 @@ public class DataLakeDirectoryClientJavaDocSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakeDirectoryClient#createFileWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createFileWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        Response<DataLakeFileClient> newFileClient = client.createFileWithResponse(fileName, options, timeout,
+            new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context
+
+    }
+
+    /**
      * Code snippets for {@link DataLakeDirectoryClient#deleteFile(String)} and
      * {@link DataLakeDirectoryClient#deleteFileWithResponse(String, DataLakeRequestConditions, Duration, Context)}
      */
@@ -142,6 +177,41 @@ public class DataLakeDirectoryClientJavaDocSamples {
             permissions, umask, httpHeaders, Collections.singletonMap("metadata", "value"), requestConditions, timeout,
             new Context(key1, value1));
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeDirectoryClient#createSubdirectoryWithResponse(String, DataLakePathCreateOptions, Duration, Context)}
+     */
+    public void createSubdirectoryWithOptionsCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        String permissions = "permissions";
+        String umask = "umask";
+        String owner = "rwx";
+        String group = "r--";
+        String leaseId = UUID.randomUUID().toString();
+        Integer duration = 15;
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setOwner(owner)
+            .setGroup(group)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setMetadata(metadata)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(duration);
+
+        Response<DataLakeDirectoryClient> newDirectoryClient = client.createSubdirectoryWithResponse(directoryName,
+            options, timeout, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context
+
+
     }
 
     /**
@@ -218,7 +288,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
+        Response<Boolean> response = client.deleteIfExistsWithResponse(options, timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
         } else {
@@ -240,8 +310,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
         PathHttpHeaders headers = new PathHttpHeaders().setContentLanguage("en-US").setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeFileClient> response = client.createFileIfNotExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
@@ -269,7 +342,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(false)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout,
+        Response<Boolean> response = client.deleteFileIfExistsWithResponse(fileName, options, timeout,
             new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");
@@ -294,8 +367,11 @@ public class DataLakeDirectoryClientJavaDocSamples {
             .setContentType("binary");
         String permissions = "permissions";
         String umask = "umask";
-        DataLakePathCreateOptions options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
-            .setPermissions(permissions).setUmask(umask).setMetadata(Collections.singletonMap("metadata", "value"));
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(Collections.singletonMap("metadata", "value"));
 
         Response<DataLakeDirectoryClient> response = client.createSubdirectoryIfNotExistsWithResponse(directoryName,
             options, timeout, new Context(key1, value1));
@@ -324,7 +400,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         DataLakePathDeleteOptions options = new DataLakePathDeleteOptions().setIsRecursive(recursive)
             .setRequestConditions(requestConditions);
 
-        Response<Void> response = client.deleteSubdirectoryIfExistsWithResponse(directoryName, options,
+        Response<Boolean> response = client.deleteSubdirectoryIfExistsWithResponse(directoryName, options,
             timeout, new Context(key1, value1));
         if (response.getStatusCode() == 404) {
             System.out.println("Does not exist.");

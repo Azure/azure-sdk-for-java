@@ -10,9 +10,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.models.ArcIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ArcSettingInner;
+import com.azure.resourcemanager.azurestackhci.fluent.models.PasswordCredentialInner;
+import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
+import com.azure.resourcemanager.azurestackhci.models.PasswordCredential;
 
 public final class ArcSettingsImpl implements ArcSettings {
     private static final ClientLogger LOGGER = new ClientLogger(ArcSettingsImpl.class);
@@ -68,6 +72,52 @@ public final class ArcSettingsImpl implements ArcSettings {
 
     public void delete(String resourceGroupName, String clusterName, String arcSettingName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public PasswordCredential generatePassword(String resourceGroupName, String clusterName, String arcSettingName) {
+        PasswordCredentialInner inner =
+            this.serviceClient().generatePassword(resourceGroupName, clusterName, arcSettingName);
+        if (inner != null) {
+            return new PasswordCredentialImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<PasswordCredential> generatePasswordWithResponse(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        Response<PasswordCredentialInner> inner =
+            this.serviceClient().generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new PasswordCredentialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ArcIdentityResponse createIdentity(String resourceGroupName, String clusterName, String arcSettingName) {
+        ArcIdentityResponseInner inner =
+            this.serviceClient().createIdentity(resourceGroupName, clusterName, arcSettingName);
+        if (inner != null) {
+            return new ArcIdentityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ArcIdentityResponse createIdentity(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        ArcIdentityResponseInner inner =
+            this.serviceClient().createIdentity(resourceGroupName, clusterName, arcSettingName, context);
+        if (inner != null) {
+            return new ArcIdentityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ArcSetting getById(String id) {

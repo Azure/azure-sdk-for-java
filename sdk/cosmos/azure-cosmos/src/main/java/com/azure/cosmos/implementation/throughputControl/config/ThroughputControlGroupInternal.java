@@ -13,6 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public abstract class ThroughputControlGroupInternal {
     private final String groupName;
+    private final String idPrefix;
     private final String id;
     private final boolean isDefault;
     private final boolean continueOnInitError;
@@ -42,11 +43,37 @@ public abstract class ThroughputControlGroupInternal {
         this.isDefault = isDefault;
         this.continueOnInitError = continueOnInitError;
 
-        this.id = String.format(
+        this.idPrefix = String.format(
             "%s/%s/%s",
             this.targetContainer.getDatabase().getId(),
             this.targetContainer.getId(),
             this.groupName);
+
+        this.id = String.format(
+            "%s/%s",
+            this.idPrefix,
+            getThroughputIdSuffix(targetThroughput, targetThroughputThreshold));
+    }
+
+    public static String getThroughputIdSuffix(Integer throughput, Double throughputThreshold) {
+        StringBuilder sb = new StringBuilder();
+        if (throughput != null) {
+            sb.append("t-");
+            sb.append(throughput);
+
+            if (throughputThreshold == null) {
+                return sb.toString();
+            }
+
+            sb.append("_");
+        }
+
+        if (throughputThreshold != null) {
+            sb.append("tt-");
+            sb.append(throughputThreshold);
+        }
+
+        return sb.toString();
     }
 
     /**
@@ -113,6 +140,10 @@ public abstract class ThroughputControlGroupInternal {
      */
     public boolean isContinueOnInitError() {
         return continueOnInitError;
+    }
+
+    public String getIdPrefix() {
+        return this.idPrefix;
     }
 
     public String getId() {

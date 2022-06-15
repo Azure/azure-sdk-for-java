@@ -296,8 +296,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
-        Response<Void> response = createIfNotExistsWithResponse(null, null, null, Context.NONE);
-        return response.getStatusCode() == 201;
+        return createIfNotExistsWithResponse(null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -311,7 +310,8 @@ public class DataLakeFileSystemClient {
      * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
      *
-     * Response&lt;Void&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;;
+     * Response&lt;Boolean&gt; response = client.createIfNotExistsWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout,
+     *     context&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
      *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
      * &#125; else &#123;
@@ -330,7 +330,7 @@ public class DataLakeFileSystemClient {
      * file system was successfully created. If status code is 409, a file system already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+    public Response<Boolean> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
             .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
@@ -411,8 +411,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteIfExists() {
-        Response<Void> response = deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE);
-        return response.getStatusCode() == 202;
+        return deleteIfExistsWithResponse(new DataLakePathDeleteOptions(), null, Context.NONE).getValue();
     }
 
     /**
@@ -431,7 +430,7 @@ public class DataLakeFileSystemClient {
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;false&#41;
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, context&#41;;
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;options, timeout, context&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -447,7 +446,7 @@ public class DataLakeFileSystemClient {
      * file system was deleted successfully, {@code null} indicates the file system does not exist at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
+    public Response<Boolean> deleteIfExistsWithResponse(DataLakePathDeleteOptions options, Duration timeout,
         Context context) {
         DataLakeRequestConditions requestConditions = options == null ? new DataLakeRequestConditions()
             : options.getRequestConditions();
@@ -718,7 +717,8 @@ public class DataLakeFileSystemClient {
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return createFileWithResponse(fileName, null, null, null, null, requestConditions, null, Context.NONE)
+        return createFileWithResponse(fileName, new DataLakePathCreateOptions().setRequestConditions(requestConditions),
+            null, Context.NONE)
             .getValue();
     }
 
@@ -760,11 +760,68 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileWithResponse(String fileName, String permissions, String umask,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
+                                                               Duration timeout, Context context) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
+        return createFileWithResponse(fileName, options, timeout, context);
+    }
+
+    /**
+     * Creates a new file within a file system. If a file with the same name already exists, the file will be
+     * overwritten. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
+     *
+     * Response&lt;DataLakeFileClient&gt; newFileClient = client.createFileWithResponse&#40;fileName, options, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param options {@link DataLakePathCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileClient} used
+     * to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeFileClient> createFileWithResponse(String fileName, DataLakePathCreateOptions options,
         Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
 
-        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(permissions, umask, headers, metadata,
-            requestConditions, timeout, context), dataLakeFileClient);
+        return new SimpleResponse<>(dataLakeFileClient.createWithResponse(options, timeout, context), dataLakeFileClient);
     }
 
     /**
@@ -800,8 +857,11 @@ public class DataLakeFileSystemClient {
      * PathHttpHeaders headers = new PathHttpHeaders&#40;&#41;.setContentLanguage&#40;&quot;en-US&quot;&#41;.setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * Response&lt;DataLakeFileClient&gt; response = client.createFileIfNotExistsWithResponse&#40;fileName, options, timeout,
      *     new Context&#40;key1, value1&#41;&#41;;
@@ -904,9 +964,8 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteFileIfExists(String fileName) {
-        Response<Void> response = deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions(), null,
-            Context.NONE);
-        return response.getStatusCode() == 200;
+        return deleteFileIfExistsWithResponse(fileName, new DataLakePathDeleteOptions(), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -922,7 +981,8 @@ public class DataLakeFileSystemClient {
      *     .setLeaseId&#40;leaseId&#41;;
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteFileIfExistsWithResponse&#40;fileName, options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Boolean&gt; response = client.deleteFileIfExistsWithResponse&#40;fileName, options, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
      * &#125; else &#123;
@@ -940,7 +1000,7 @@ public class DataLakeFileSystemClient {
      * was successfully deleted. If status code is 404, the file does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, DataLakePathDeleteOptions options,
         Duration timeout, Context context) {
         return getFileClient(fileName).deleteIfExistsWithResponse(options, timeout, context);
     }
@@ -1034,10 +1094,68 @@ public class DataLakeFileSystemClient {
     public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+            .setPathHttpHeaders(headers)
+            .setMetadata(metadata)
+            .setRequestConditions(requestConditions);
+
+        return createDirectoryWithResponse(directoryName, options, timeout, context);
+    }
+
+    /**
+     * Creates a new directory within a file system. If a directory with the same name already exists, the directory
+     * will be overwritten. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
+     * <pre>
+     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * String permissions = &quot;permissions&quot;;
+     * String umask = &quot;umask&quot;;
+     * String owner = &quot;rwx&quot;;
+     * String group = &quot;r--&quot;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
+     * Integer duration = 15;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setOwner&#40;owner&#41;
+     *     .setGroup&#40;group&#41;
+     *     .setPathHttpHeaders&#40;httpHeaders&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setMetadata&#40;metadata&#41;
+     *     .setProposedLeaseId&#40;leaseId&#41;
+     *     .setLeaseDuration&#40;duration&#41;;
+     *
+     * Response&lt;DataLakeDirectoryClient&gt; newDirectoryClient = client.createDirectoryWithResponse&#40;directoryName,
+     *     options, timeout, new Context&#40;key1, value1&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-DataLakePathCreateOptions-Duration-Context -->
+     *
+     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param options {@link DataLakePathCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a {@link DataLakeDirectoryClient}
+     * used to interact with the directory created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeDirectoryClient> createDirectoryWithResponse(String directoryName, DataLakePathCreateOptions options,
+        Duration timeout, Context context) {
         DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
 
-        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
-            requestConditions, timeout, context), dataLakeDirectoryClient);
+        return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(options, timeout, context), dataLakeDirectoryClient);
     }
 
     /**
@@ -1076,8 +1194,11 @@ public class DataLakeFileSystemClient {
      *     .setContentType&#40;&quot;binary&quot;&#41;;
      * String permissions = &quot;permissions&quot;;
      * String umask = &quot;umask&quot;;
-     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;.setPathHttpHeaders&#40;headers&#41;
-     *     .setPermissions&#40;permissions&#41;.setUmask&#40;umask&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
+     *     .setPermissions&#40;permissions&#41;
+     *     .setUmask&#40;umask&#41;
+     *     .setPathHttpHeaders&#40;headers&#41;
+     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
      *
      * Response&lt;DataLakeDirectoryClient&gt; response = client.createDirectoryIfNotExistsWithResponse&#40;directoryName,
      *     options, timeout, new Context&#40;key1, value1&#41;&#41;;
@@ -1183,8 +1304,7 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean deleteDirectoryIfExists(String directoryName) {
-        Response<Void> response = deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE);
-        return response.getStatusCode() == 200;
+        return deleteDirectoryIfExistsWithResponse(directoryName,  new DataLakePathDeleteOptions(), null, Context.NONE).getValue();
     }
 
     /**
@@ -1202,7 +1322,7 @@ public class DataLakeFileSystemClient {
      * DataLakePathDeleteOptions options = new DataLakePathDeleteOptions&#40;&#41;.setIsRecursive&#40;recursive&#41;
      *     .setRequestConditions&#40;requestConditions&#41;;
      *
-     * Response&lt;Void&gt; response = client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options,
+     * Response&lt;Boolean&gt; response = client.deleteDirectoryIfExistsWithResponse&#40;directoryName, options,
      *     timeout, new Context&#40;key1, value1&#41;&#41;;
      * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
      *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
@@ -1221,7 +1341,7 @@ public class DataLakeFileSystemClient {
      * was successfully deleted. If status code is 404, the directory does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDirectoryIfExistsWithResponse(String directoryName, DataLakePathDeleteOptions options,
+    public Response<Boolean> deleteDirectoryIfExistsWithResponse(String directoryName, DataLakePathDeleteOptions options,
         Duration timeout, Context context) {
         return getDirectoryClient(directoryName).deleteIfExistsWithResponse(options, timeout, context);
     }

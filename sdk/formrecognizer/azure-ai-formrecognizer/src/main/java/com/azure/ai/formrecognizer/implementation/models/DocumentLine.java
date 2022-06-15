@@ -18,10 +18,10 @@ public final class DocumentLine {
     private String content;
 
     /*
-     * Bounding box of the line.
+     * Bounding polygon of the line.
      */
-    @JsonProperty(value = "boundingBox")
-    private List<Float> boundingBox;
+    @JsonProperty(value = "polygon")
+    private List<Float> polygon;
 
     /*
      * Location of the line in the reading order concatenated content.
@@ -50,22 +50,22 @@ public final class DocumentLine {
     }
 
     /**
-     * Get the boundingBox property: Bounding box of the line.
+     * Get the polygon property: Bounding polygon of the line.
      *
-     * @return the boundingBox value.
+     * @return the polygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Float> getPolygon() {
+        return this.polygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box of the line.
+     * Set the polygon property: Bounding polygon of the line.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param polygon the polygon value to set.
      * @return the DocumentLine object itself.
      */
-    public DocumentLine setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    public DocumentLine setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
         return this;
     }
 

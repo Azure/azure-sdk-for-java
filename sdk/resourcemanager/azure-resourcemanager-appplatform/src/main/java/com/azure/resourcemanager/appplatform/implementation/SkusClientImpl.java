@@ -82,8 +82,8 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSku>> listSinglePageAsync() {
@@ -129,8 +129,8 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSku>> listSinglePageAsync(Context context) {
@@ -171,7 +171,7 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set as paginated
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -186,7 +186,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set as paginated
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -200,7 +200,7 @@ public final class SkusClientImpl implements SkusClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set as paginated
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -215,7 +215,7 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set as paginated
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -230,8 +230,8 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSku>> listNextSinglePageAsync(String nextLink) {
@@ -267,8 +267,8 @@ public final class SkusClientImpl implements SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSku>> listNextSinglePageAsync(String nextLink, Context context) {

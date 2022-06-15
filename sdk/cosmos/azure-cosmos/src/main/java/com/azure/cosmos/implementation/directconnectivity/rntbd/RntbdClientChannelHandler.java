@@ -13,7 +13,6 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +75,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
      */
     @Override
     public void channelReleased(final Channel channel) {
-        logger.debug("{} CHANNEL RELEASED", channel);
+        if (logger.isDebugEnabled()) {
+            logger.debug("{} CHANNEL RELEASED", channel);
+        }
     }
 
     /**
@@ -105,9 +106,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
             this.config.maxRequestsPerChannel(),
-            this.connectionStateListener);
+            this.connectionStateListener,
+            this.config.idleConnectionTimerResolutionInNanos());
 
-        final long idleConnectionTimerResolutionInNanos = config.idleConnectionTimerResolutionInNanos();
         final ChannelPipeline pipeline = channel.pipeline();
 
         pipeline.addFirst(
@@ -121,16 +122,11 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
             pipeline.addFirst(new LoggingHandler(this.config.wireLogLevel()));
         }
 
-        pipeline.addFirst(
-            // TODO (DANOBLE) Log an issue with netty
-            // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
-            new SslHandler(this.config.sslContext().newEngine(channel.alloc())),
-            new IdleStateHandler(
-                idleConnectionTimerResolutionInNanos,
-                idleConnectionTimerResolutionInNanos,
-                0,
-                TimeUnit.NANOSECONDS));
+        // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
+        SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
+        sslHandler.setHandshakeTimeout(config.connectTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
+        pipeline.addFirst(SslHandler.class.toString(), sslHandler);
         channel.attr(REQUEST_MANAGER).set(requestManager);
     }
 }

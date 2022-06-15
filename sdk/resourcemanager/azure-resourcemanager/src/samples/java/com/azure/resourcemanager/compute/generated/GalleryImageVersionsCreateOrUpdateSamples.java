@@ -23,7 +23,7 @@ import java.util.Arrays;
 /** Samples for GalleryImageVersions CreateOrUpdate. */
 public final class GalleryImageVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithShallowReplicationMode.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithShallowReplicationMode.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using shallow replication mode.
@@ -59,7 +59,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithVHD.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithVHD.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using vhd as a source.
@@ -132,7 +132,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithVMAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithVmAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using VM as source.
@@ -160,7 +160,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                     .asList(
                                         new TargetRegion()
                                             .withName("West US")
-                                            .withRegionalReplicaCount(1)
+                                            .withRegionalReplicaCount(2)
                                             .withEncryption(
                                                 new EncryptionImages()
                                                     .withOsDiskImage(
@@ -209,7 +209,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithImageVersionAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithImageVersionAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using shared image as source.
@@ -286,7 +286,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithSnapshotsAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using mix of disks and snapshots as a source.
@@ -368,7 +368,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithSnapshotsAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using snapshots as a source.
@@ -450,7 +450,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersionWithTargetExtendedLocations.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create_WithTargetExtendedLocations.json
      */
     /**
      * Sample code: Create or update a simple gallery image version with target extended locations specified.
@@ -527,7 +527,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/CreateOrUpdateASimpleGalleryImageVersion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/galleryExamples/GalleryImageVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using managed image as source.

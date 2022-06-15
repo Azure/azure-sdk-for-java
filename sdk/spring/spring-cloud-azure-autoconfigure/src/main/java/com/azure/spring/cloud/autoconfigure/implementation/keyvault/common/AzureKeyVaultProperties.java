@@ -12,6 +12,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.Abstr
  */
 public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.keyvault";
+
     /**
      * Azure Key Vault endpoint.
      */

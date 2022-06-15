@@ -182,6 +182,33 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long)}.
+     */
+    public void fromFileSegment() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+        long position = 1024;
+        long length = 100 * 1048;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, Long, Long, int)}.
+     */
+    public void fromFileSegmentWithChunkSize() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
+        long position = 1024;
+        long length = 100 * 1048;
+        int chunkSize = 8092;
+        BinaryData binaryData = BinaryData.fromFile(
+            new File("path/to/file").toPath(), position, length, chunkSize);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-Long-Long-int
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromObject(Object)}.
      */
     public void fromObjectDefaultJsonSerializers() {

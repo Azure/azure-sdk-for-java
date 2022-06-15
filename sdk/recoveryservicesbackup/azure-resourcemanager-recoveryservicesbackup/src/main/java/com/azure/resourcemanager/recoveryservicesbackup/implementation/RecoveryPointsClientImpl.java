@@ -575,14 +575,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String recoveryPointId) {
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId)
-            .flatMap(
-                (Response<RecoveryPointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

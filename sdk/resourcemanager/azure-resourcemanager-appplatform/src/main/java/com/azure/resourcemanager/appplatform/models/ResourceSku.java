@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes an available Azure Spring Cloud SKU. */
+/** Describes an available Azure Spring Apps SKU. */
 @Fluent
 public final class ResourceSku {
     /*

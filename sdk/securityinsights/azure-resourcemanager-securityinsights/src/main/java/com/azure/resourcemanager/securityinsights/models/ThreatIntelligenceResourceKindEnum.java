@@ -24,7 +24,11 @@ public final class ThreatIntelligenceResourceKindEnum extends ExpandableStringEn
         return fromString(name, ThreatIntelligenceResourceKindEnum.class);
     }
 
-    /** @return known ThreatIntelligenceResourceKindEnum values. */
+    /**
+     * Gets known ThreatIntelligenceResourceKindEnum values.
+     *
+     * @return known ThreatIntelligenceResourceKindEnum values.
+     */
     public static Collection<ThreatIntelligenceResourceKindEnum> values() {
         return values(ThreatIntelligenceResourceKindEnum.class);
     }

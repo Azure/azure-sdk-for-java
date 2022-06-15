@@ -1,14 +1,42 @@
 # Release History
 
-## 12.13.0-beta.2 (Unreleased)
+## 12.14.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for the 2021-08-06 service version.
+- Added new overload of ShareFileClient.BeginCopy() and ShareFileAsyncClient.BeginCopy(), added new parameters allowing the copying of the source file's CreatedOn, LastWrittenOn, FileAttributes and ChangedOn properties.
+
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.13.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-common` from `12.16.0` to version `12.16.1`.
+
+## 12.13.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.12.2 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-common` from `12.15.1` to version `12.15.2`.
 
 ## 12.13.0-beta.1 (2022-05-06)
 

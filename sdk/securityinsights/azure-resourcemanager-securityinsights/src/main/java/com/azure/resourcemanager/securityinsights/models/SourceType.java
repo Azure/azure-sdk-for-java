@@ -27,7 +27,11 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
         return fromString(name, SourceType.class);
     }
 
-    /** @return known SourceType values. */
+    /**
+     * Gets known SourceType values.
+     *
+     * @return known SourceType values.
+     */
     public static Collection<SourceType> values() {
         return values(SourceType.class);
     }

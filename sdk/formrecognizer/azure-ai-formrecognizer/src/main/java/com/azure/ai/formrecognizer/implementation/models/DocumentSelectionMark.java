@@ -18,10 +18,10 @@ public final class DocumentSelectionMark {
     private SelectionMarkState state;
 
     /*
-     * Bounding box of the selection mark.
+     * Bounding polygon of the selection mark.
      */
-    @JsonProperty(value = "boundingBox")
-    private List<Float> boundingBox;
+    @JsonProperty(value = "polygon")
+    private List<Float> polygon;
 
     /*
      * Location of the selection mark in the reading order concatenated
@@ -57,22 +57,22 @@ public final class DocumentSelectionMark {
     }
 
     /**
-     * Get the boundingBox property: Bounding box of the selection mark.
+     * Get the polygon property: Bounding polygon of the selection mark.
      *
-     * @return the boundingBox value.
+     * @return the polygon value.
      */
-    public List<Float> getBoundingBox() {
-        return this.boundingBox;
+    public List<Float> getPolygon() {
+        return this.polygon;
     }
 
     /**
-     * Set the boundingBox property: Bounding box of the selection mark.
+     * Set the polygon property: Bounding polygon of the selection mark.
      *
-     * @param boundingBox the boundingBox value to set.
+     * @param polygon the polygon value to set.
      * @return the DocumentSelectionMark object itself.
      */
-    public DocumentSelectionMark setBoundingBox(List<Float> boundingBox) {
-        this.boundingBox = boundingBox;
+    public DocumentSelectionMark setPolygon(List<Float> polygon) {
+        this.polygon = polygon;
         return this;
     }
 

@@ -44,20 +44,25 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -97,6 +102,8 @@ public class EventHubProducerClientTest {
         when(sendLink.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
+        when(sendLink.getHostname()).thenReturn(HOSTNAME);
+        when(sendLink.getEntityPath()).thenReturn(EVENT_HUB_NAME);
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
@@ -175,26 +182,37 @@ public class EventHubProducerClientTest {
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value");
             }
         );
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "value")
+                    .addData(DIAGNOSTIC_ID_KEY, "diag-id")
+                    .addData(SPAN_CONTEXT_KEY, "span-context");
             }
         );
         when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
+                return passed.addData(SPAN_BUILDER_KEY, "span-builder");
             }
         );
+
+        doAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(0, Context.class);
+                assertEquals("span-builder", passed.getData(SPAN_BUILDER_KEY).orElseGet(null));
+                assertEquals("span-context", passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
+                return null;
+            }).when(tracer1).addLink(any());
 
         //Act
         try {
             producer.send(eventData);
+            assertEquals("diag-id", eventData.getProperties().get(DIAGNOSTIC_ID_KEY));
         } finally {
             producer.close();
         }
@@ -205,6 +223,8 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
+        verify(tracer1, times(1)).addLink(any());
 
         verifyNoInteractions(onClientClosed);
     }
@@ -227,26 +247,30 @@ public class EventHubProducerClientTest {
             connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
-            .addContext(SPAN_CONTEXT_KEY, Context.NONE);
+            .addContext(SPAN_CONTEXT_KEY, "span-context");
 
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
-                return passed.addData(PARENT_SPAN_KEY, "value");
+                assertEquals(AZ_NAMESPACE_VALUE, passed.getData(AZ_TRACING_NAMESPACE_KEY).get());
+                assertEquals(HOSTNAME, passed.getData(HOST_NAME_KEY).get());
+                assertEquals(EVENT_HUB_NAME, passed.getData(ENTITY_PATH_KEY).get());
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "trace-context");
             }
         );
 
         when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(SPAN_BUILDER_KEY, "value");
+                assertEquals("span-context", passed.getData("span-context").orElseGet(null));
+                return passed.addData(SPAN_BUILDER_KEY, "span-builder");
             }
         );
 
         //Act
         try {
             producer.send(eventData);
+            assertFalse(eventData.getProperties().containsKey(DIAGNOSTIC_ID_KEY));
         } finally {
             producer.close();
         }
@@ -255,6 +279,7 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1)).addLink(any());
+        verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
@@ -385,18 +410,56 @@ public class EventHubProducerClientTest {
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any()))
             .thenReturn(Mono.just(sendLink));
 
+        final AtomicReference<Integer> eventInd = new AtomicReference<>(0);
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "span")
+                    .addData(DIAGNOSTIC_ID_KEY, eventInd.get().toString())
+                    .addData(SPAN_CONTEXT_KEY, eventInd.get());
+            }
+        );
+
+        when(tracer1.getSharedSpanBuilder(eq("EventHubs.send"), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(0, passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
+                return passed.addData(SPAN_BUILDER_KEY, "span-builder");
+            }
+        );
+
+        final AtomicReference<Integer> linkNumber = new AtomicReference<>(0);
+        doAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(0, Context.class);
+                assertEquals("span-builder", passed.getData(SPAN_BUILDER_KEY).orElseGet(null));
+                assertEquals(linkNumber.get(), passed.getData(SPAN_CONTEXT_KEY).orElseGet(null));
+                linkNumber.set(linkNumber.get() + 1);
+                return null;
+            }).when(tracer1).addLink(any());
+
+        when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(EVENT_HUB_NAME, passed.getData(ENTITY_PATH_KEY).orElseGet(null));
+                assertEquals(HOSTNAME, passed.getData(HOST_NAME_KEY).orElseGet(null));
+                assertEquals(AZ_NAMESPACE_VALUE, passed.getData(AZ_TRACING_NAMESPACE_KEY).orElseGet(null));
+                return passed.addData(PARENT_TRACE_CONTEXT_KEY, "span");
             }
         );
 
         // Act & Assert
         try {
             final EventDataBatch batch = producer.createBatch();
-            Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
-            Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+            final EventData data0 = new EventData("Hello World".getBytes(UTF_8));
+            Assertions.assertTrue(batch.tryAdd(data0));
+            assertEquals("0", data0.getProperties().get(DIAGNOSTIC_ID_KEY));
+
+            eventInd.set(1);
+            final EventData data1 = new EventData("Hello World".getBytes(UTF_8));
+            Assertions.assertTrue(batch.tryAdd(data1));
+            assertEquals("1", data1.getProperties().get(DIAGNOSTIC_ID_KEY));
+            producer.send(batch);
         } finally {
             producer.close();
         }
@@ -404,7 +467,11 @@ public class EventHubProducerClientTest {
 
         verify(tracer1, times(2))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
-        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).getSharedSpanBuilder(eq("EventHubs.send"), any());
+        verify(tracer1, times(2)).addLink(any());
+        verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
+        verify(tracer1, times(2)).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
 
         verifyNoInteractions(onClientClosed);
     }

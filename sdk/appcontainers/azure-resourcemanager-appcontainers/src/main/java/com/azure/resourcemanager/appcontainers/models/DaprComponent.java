@@ -90,6 +90,13 @@ public interface DaprComponent {
     List<String> scopes();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner object.
      *
      * @return the inner object.

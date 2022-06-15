@@ -471,14 +471,7 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     public Mono<BuildServiceAgentPoolResourceInner> getAsync(
         String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName)
-            .flatMap(
-                (Response<BuildServiceAgentPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

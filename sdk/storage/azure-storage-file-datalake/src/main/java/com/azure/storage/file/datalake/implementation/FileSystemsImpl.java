@@ -19,23 +19,26 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateResponse;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteResponse;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesResponse;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesResponse;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsHeaders;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsSetPropertiesHeaders;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsIncludeItem;
 import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.models.PathList;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSystems. */
@@ -67,7 +70,7 @@ public final class FileSystemsImpl {
         @Put("/{filesystem}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsCreateResponse> create(
+        Mono<ResponseBase<FileSystemsCreateHeaders, Void>> create(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -81,7 +84,7 @@ public final class FileSystemsImpl {
         @Patch("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsSetPropertiesResponse> setProperties(
+        Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -97,7 +100,7 @@ public final class FileSystemsImpl {
         @Head("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<FileSystemsGetPropertiesHeaders, Void>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -110,7 +113,7 @@ public final class FileSystemsImpl {
         @Delete("/{filesystem}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsDeleteResponse> delete(
+        Mono<ResponseBase<FileSystemsDeleteHeaders, Void>> delete(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -125,7 +128,7 @@ public final class FileSystemsImpl {
         @Get("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsListPathsResponse> listPaths(
+        Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPaths(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -143,22 +146,23 @@ public final class FileSystemsImpl {
         @Get("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
-        Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(
-                @HostParam("url") String url,
-                @PathParam("filesystem") String fileSystem,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("prefix") String prefix,
-                @QueryParam("delimiter") String delimiter,
-                @QueryParam("marker") String marker,
-                @QueryParam("maxResults") Integer maxResults,
-                @QueryParam("include") String include,
-                @QueryParam("showonly") ListBlobsShowOnly showonly,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
+                listBlobHierarchySegment(
+                        @HostParam("url") String url,
+                        @PathParam("filesystem") String fileSystem,
+                        @QueryParam("restype") String restype,
+                        @QueryParam("comp") String comp,
+                        @QueryParam("prefix") String prefix,
+                        @QueryParam("delimiter") String delimiter,
+                        @QueryParam("marker") String marker,
+                        @QueryParam("maxResults") Integer maxResults,
+                        @QueryParam("include") String include,
+                        @QueryParam("showonly") ListBlobsShowOnly showonly,
+                        @QueryParam("timeout") Integer timeout,
+                        @HeaderParam("x-ms-version") String version,
+                        @HeaderParam("x-ms-client-request-id") String requestId,
+                        @HeaderParam("Accept") String accept,
+                        Context context);
     }
 
     /**
@@ -180,10 +184,10 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsCreateResponse> createWithResponseAsync(
+    public Mono<ResponseBase<FileSystemsCreateHeaders, Void>> createWithResponseAsync(
             String requestId, Integer timeout, String properties, Context context) {
         final String accept = "application/json";
         return service.create(
@@ -219,10 +223,10 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsSetPropertiesResponse> setPropertiesWithResponseAsync(
+    public Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
             String requestId,
             Integer timeout,
             String properties,
@@ -269,10 +273,10 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<FileSystemsGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
             String requestId, Integer timeout, Context context) {
         final String accept = "application/json";
         return service.getProperties(
@@ -306,10 +310,10 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsDeleteResponse> deleteWithResponseAsync(
+    public Mono<ResponseBase<FileSystemsDeleteHeaders, Void>> deleteWithResponseAsync(
             String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
         final String accept = "application/json";
         OffsetDateTime ifModifiedSinceInternal = null;
@@ -365,10 +369,10 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsListPathsResponse> listPathsWithResponseAsync(
+    public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(
             boolean recursive,
             String requestId,
             Integer timeout,
@@ -419,24 +423,27 @@ public final class FileSystemsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     * @return an enumeration of blobs along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegmentWithResponseAsync(
-            String prefix,
-            String delimiter,
-            String marker,
-            Integer maxResults,
-            List<ListBlobsIncludeItem> include,
-            ListBlobsShowOnly showonly,
-            Integer timeout,
-            String requestId,
-            Context context) {
+    public Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
+            listBlobHierarchySegmentWithResponseAsync(
+                    String prefix,
+                    String delimiter,
+                    String marker,
+                    Integer maxResults,
+                    List<ListBlobsIncludeItem> include,
+                    ListBlobsShowOnly showonly,
+                    Integer timeout,
+                    String requestId,
+                    Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
                 this.client.getFileSystem(),

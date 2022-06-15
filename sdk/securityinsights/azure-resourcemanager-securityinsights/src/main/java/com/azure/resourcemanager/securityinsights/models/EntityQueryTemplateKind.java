@@ -24,7 +24,11 @@ public final class EntityQueryTemplateKind extends ExpandableStringEnum<EntityQu
         return fromString(name, EntityQueryTemplateKind.class);
     }
 
-    /** @return known EntityQueryTemplateKind values. */
+    /**
+     * Gets known EntityQueryTemplateKind values.
+     *
+     * @return known EntityQueryTemplateKind values.
+     */
     public static Collection<EntityQueryTemplateKind> values() {
         return values(EntityQueryTemplateKind.class);
     }

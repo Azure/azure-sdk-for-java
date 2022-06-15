@@ -213,14 +213,7 @@ public final class PrivateEndpointsClientImpl implements PrivateEndpointsClient 
         String vaultName, String resourceGroupName, String privateEndpointConnectionName, String operationId) {
         return getOperationStatusWithResponseAsync(
                 vaultName, resourceGroupName, privateEndpointConnectionName, operationId)
-            .flatMap(
-                (Response<OperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -33,7 +33,11 @@ public final class IncidentSeverity extends ExpandableStringEnum<IncidentSeverit
         return fromString(name, IncidentSeverity.class);
     }
 
-    /** @return known IncidentSeverity values. */
+    /**
+     * Gets known IncidentSeverity values.
+     *
+     * @return known IncidentSeverity values.
+     */
     public static Collection<IncidentSeverity> values() {
         return values(IncidentSeverity.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Desired outbound IP resources for Azure Spring Cloud instance. */
+/** Desired outbound IP resources for Azure Spring Apps resource. */
 @Immutable
 public final class NetworkProfileOutboundIPs {
     /*

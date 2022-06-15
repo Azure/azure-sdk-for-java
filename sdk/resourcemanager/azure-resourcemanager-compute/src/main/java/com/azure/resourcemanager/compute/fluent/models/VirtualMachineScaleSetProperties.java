@@ -134,7 +134,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /*
      * Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.<br><br>Minimum api-version: 2021-11-01.
+     * created.<br><br>Minimum api-version: 2022-03-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
@@ -463,7 +463,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
      *
      * @return the timeCreated value.
      */
