@@ -82,7 +82,7 @@ public class ThreadDumper implements BeforeAllCallback {
         String output = dump.toString();
 
         // Log to both console and logs
-        System.out.println(output);
+        System.err.println(output);
         LOGGER.info(output);
     }
 
