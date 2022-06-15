@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Jedis;
-import org.json.JSONObject;
 
 /**
  * Implementation of {@link CheckpointStore} that uses Azure Redis Cache, specifically Jedis.
@@ -26,6 +25,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private final JedisPool jedisPool;
     private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
     JedisRedisCheckpointStore(JedisPool jedisPool) {
+
         this.jedisPool = jedisPool;
     }
     /**
@@ -58,9 +58,10 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
                     return jacksonAdapter.deserialize(json, Checkpoint.class, SerializerEncoding.JSON);
                 }
                 catch (IOException e) {
-                    LOGGER.error("String could not be deserialized into Checkpoint object"); //Look into ideal way to log this error
+                    throw LOGGER.logExceptionAsError(Exceptions
+                        .propagate(new IOException(
+                            "Checkpoint is incorrectly stored and cannot be deserialized.")));
                 }
-                return null; //Unsure about what to return at this point
             }));
         }
     }
@@ -90,17 +91,8 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
         }
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         String key = keyBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
-        JSONObject checkpointInformation = new JSONObject();
         try (Jedis jedis = jedisPool.getResource()) {
-            checkpointInformation.put("CHECKPOINT_NAME", key);
-            String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
-                : String.valueOf(checkpoint.getSequenceNumber());
-            checkpointInformation.put("SEQUENCE_NUMBER", sequenceNumber);
-            String offset = checkpoint.getOffset() == null ? null
-                : String.valueOf(checkpoint.getOffset());
-            checkpointInformation.put("OFFSET", offset);
-            //Before adding this checkpoint to the list of Checkpoints, check if it is the most updated version of the checkpoint.
-            jedis.sadd(prefix, checkpointInformation.toString());
+            //Serialize a checkpoint before updating
             jedisPool.returnResource(jedis);
         }
         return null;
