@@ -1,41 +1,41 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TEST-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
     "Headers" : {
-      "x-ms-client-request-id" : "1e58239b-0fae-422f-a2a4-b61bbfef1e6c",
+      "x-ms-client-request-id" : "d7d484b6-fcfd-4345-b363-ba9fb3f0bd3a",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
-      "Last-Modified" : "Wed, 15 Jun 2022 18:11:48 GMT",
+      "Last-Modified" : "Wed, 15 Jun 2022 22:16:23 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
-      "ETag" : "\"9402531c-0000-0700-0000-62aa20e40000\"",
-      "trace-id" : "81cf4993258c119e25b78193c1e33c8e",
-      "X-Azure-Ref" : "05CCqYgAAAAAKEMnoIUEzS5GYmicJ+MZ+WVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
-      "Body" : "{\"id\":\"b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy\",\"name\":\"b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"round-robin\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Date" : "Wed, 15 Jun 2022 22:16:22 GMT",
+      "ETag" : "\"9c02e1fd-0000-0700-0000-62aa5a370000\"",
+      "trace-id" : "c41eab03fe8f52668f0f9dcdadeaa845",
+      "X-Azure-Ref" : "0N1qqYgAAAADM5vubVmbTRaczFcNwOWnVWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "Body" : "{\"id\":\"JAVA_LIVE_TEST-RoundRobin-DistributionPolicy\",\"name\":\"JAVA_LIVE_TEST-RoundRobin-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"round-robin\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/b37a9b22-302a-4de6-b465-4e665f10f324-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TEST-RoundRobin-DistributionPolicy?api-version=2021-10-20-preview2",
     "Headers" : {
-      "x-ms-client-request-id" : "975e0ab7-f367-4c73-af36-cf04b52e019b"
+      "x-ms-client-request-id" : "7d3e9d13-754d-42da-b53a-ca0acbdd6011"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "trace-id" : "60f487810b56856ab8aebc5e5df53029",
+      "trace-id" : "6dcb9ca0b8eed0f2c701d63e4e6270c2",
       "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
       "retry-after" : "0",
-      "X-Azure-Ref" : "05CCqYgAAAABGzTEyEYmyS6tJZsAuWZkjWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "X-Azure-Ref" : "0N1qqYgAAAACmCq+xQ1f1SYxOv95E//h4WVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
+      "Date" : "Wed, 15 Jun 2022 22:16:23 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null

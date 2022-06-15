@@ -22,7 +22,7 @@ import java.util.function.Function;
 class JobRouterClientTestBase extends TestBase {
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
-            ? "connectionString=https://localhost:8080;accesskey=secret"
+            ? "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret"
             : Configuration.getGlobalConfiguration().get("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         Objects.requireNonNull(connectionString);
         return connectionString;

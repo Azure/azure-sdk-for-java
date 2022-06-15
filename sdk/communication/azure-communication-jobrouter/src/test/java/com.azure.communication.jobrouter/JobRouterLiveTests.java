@@ -33,11 +33,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobRouterLiveTests extends JobRouterClientTestBase {
+    private static final String JAVA_LIVE_TEST = "JAVA_LIVE_TEST";
+
     private RouterClient routerClient;
 
     @Override
@@ -52,7 +53,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createDistributionPolicyBestWorkerDefaultScoringRule() {
         // Setup
-        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
+        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", JAVA_LIVE_TEST);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
         DistributionPolicy distributionPolicy = new DistributionPolicy();
         BestWorkerMode bestWorkerMode = new BestWorkerMode();
@@ -77,7 +78,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createDistributionPolicyBestWorkerAzureFunctionRule() {
         // Setup
-        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", UUID.randomUUID());
+        String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", JAVA_LIVE_TEST);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
         DistributionPolicy distributionPolicy = new DistributionPolicy();
         BestWorkerMode bestWorkerMode = new BestWorkerMode();
@@ -112,7 +113,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createDistributionPolicyLongestIdle() {
         // Setup
-        String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", UUID.randomUUID());
+        String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", JAVA_LIVE_TEST);
         String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
         DistributionPolicy distributionPolicy = new DistributionPolicy();
         LongestIdleMode longestIdleMode = new LongestIdleMode();
@@ -138,7 +139,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createDistributionPolicyRoundRobin() {
         // Setup
-        String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", UUID.randomUUID());
+        String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", JAVA_LIVE_TEST);
         String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
         DistributionPolicy distributionPolicy = new DistributionPolicy();
         RoundRobinMode roundRobinMode = new RoundRobinMode();
@@ -164,13 +165,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createClassificationPolicy() {
         // Setup
-        String distributionPolicyId = String.format("%s-DistributionPolicy", UUID.randomUUID());
+        String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TEST);
         DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
 
-        String queueId = String.format("%s-Queue", UUID.randomUUID());
+        String queueId = String.format("%s-Queue", JAVA_LIVE_TEST);
         JobQueue jobQueue = createQueue(queueId, distributionPolicy.getId());
 
-        String classificationPolicyId = String.format("%s-ClassificationPolicy", UUID.randomUUID());
+        String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TEST);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
 
         /**
@@ -234,7 +235,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createExceptionPolicy() {
         // Setup
-        String exceptionPolicyId = String.format("%s-ExceptionPolicy", UUID.randomUUID());
+        String exceptionPolicyId = String.format("%s-ExceptionPolicy", JAVA_LIVE_TEST);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
         QueueLengthExceptionTrigger queueLengthExceptionTrigger = new QueueLengthExceptionTrigger();
@@ -281,16 +282,16 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         /**
          * Setup queue
          */
-        String distributionPolicyId = String.format("%s-DistributionPolicy", UUID.randomUUID());
+        String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TEST);
         DistributionPolicy distributionPolicy = createDistributionPolicy(distributionPolicyId);
 
-        String queueId = String.format("%s-Queue", UUID.randomUUID());
+        String queueId = String.format("%s-Queue", JAVA_LIVE_TEST);
         JobQueue jobQueue = createQueue(queueId, distributionPolicy.getId());
 
         /**
          * Setup worker
          */
-        String workerId = String.format("%s-Worker", UUID.randomUUID());
+        String workerId = String.format("%s-Worker", JAVA_LIVE_TEST);
 
         Map<String, Object> labels = new HashMap<String, Object>() {
             {

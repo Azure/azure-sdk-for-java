@@ -1,41 +1,41 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/d048ff8d-1168-4880-a141-7c014eca8aa5-Best-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TEST-Best-DistributionPolicy?api-version=2021-10-20-preview2",
     "Headers" : {
-      "x-ms-client-request-id" : "fff90e2b-31b6-4e9d-9d22-53be01c4cac1",
+      "x-ms-client-request-id" : "9138facf-6e42-4748-98a6-ee03893537a7",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
-      "Last-Modified" : "Wed, 15 Jun 2022 18:11:48 GMT",
+      "Last-Modified" : "Wed, 15 Jun 2022 22:16:23 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
-      "ETag" : "\"9402541c-0000-0700-0000-62aa20e40000\"",
-      "trace-id" : "590924ed679c401c9ab56a2622daa5d6",
-      "X-Azure-Ref" : "05CCqYgAAAADlNo8ZeNjAQLuaMcmx7oTBWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
-      "Body" : "{\"id\":\"d048ff8d-1168-4880-a141-7c014eca8aa5-Best-DistributionPolicy\",\"name\":\"d048ff8d-1168-4880-a141-7c014eca8aa5-Best-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"best-worker\",\"scoringRule\":{\"kind\":\"azure-function-rule\",\"functionUrl\":\"https://my.function.app/api/myfunction?code=Kg==\",\"credential\":{\"appKey\":\"MyAppKey\",\"clientId\":\"MyClientId\"}},\"scoringRuleOptions\":{\"scoringParameters\":[\"jobLabels\",\"workerSelectors\"],\"allowScoringBatchOfWorkers\":false,\"descendingOrder\":true},\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Date" : "Wed, 15 Jun 2022 22:16:23 GMT",
+      "ETag" : "\"9c02ecfd-0000-0700-0000-62aa5a370000\"",
+      "trace-id" : "7c352e307ea59011b5b927e5404f3226",
+      "X-Azure-Ref" : "0N1qqYgAAAABZDQ/ohVAKR6eMSAdlHmbUWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "Body" : "{\"id\":\"JAVA_LIVE_TEST-Best-DistributionPolicy\",\"name\":\"JAVA_LIVE_TEST-Best-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"best-worker\",\"scoringRule\":{\"kind\":\"azure-function-rule\",\"functionUrl\":\"https://my.function.app/api/myfunction?code=Kg==\",\"credential\":{\"appKey\":\"MyAppKey\",\"clientId\":\"MyClientId\"}},\"scoringRuleOptions\":{\"scoringParameters\":[\"jobLabels\",\"workerSelectors\"],\"allowScoringBatchOfWorkers\":false,\"descendingOrder\":true},\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/d048ff8d-1168-4880-a141-7c014eca8aa5-Best-DistributionPolicy?api-version=2021-10-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TEST-Best-DistributionPolicy?api-version=2021-10-20-preview2",
     "Headers" : {
-      "x-ms-client-request-id" : "b5a3cad3-3a9b-482c-908b-f697a1240ff5"
+      "x-ms-client-request-id" : "5eaa4ecc-8abe-4e52-80e8-5b33848237ba"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "trace-id" : "7acdf7fe380e8bc120a18f53c3cc9d0c",
+      "trace-id" : "2eed01d23b723d8770845edf639ccf32",
       "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2",
       "retry-after" : "0",
-      "X-Azure-Ref" : "05CCqYgAAAAAsgDIOYlbrTI11uB6zJq3XWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
+      "X-Azure-Ref" : "0N1qqYgAAAACf8Jz3qKbAQLluOc8eFBJzWVZSMzExMDAwMTE2MDQ1AGNjOTI3NThkLTA1ZjctNGFkNi1hYTVlLTBmYTk3MThkODk4NQ==",
       "StatusCode" : "204",
-      "Date" : "Wed, 15 Jun 2022 18:11:47 GMT",
+      "Date" : "Wed, 15 Jun 2022 22:16:23 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null
