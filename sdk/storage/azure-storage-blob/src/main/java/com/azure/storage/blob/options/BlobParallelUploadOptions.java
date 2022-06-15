@@ -71,7 +71,7 @@ public class BlobParallelUploadOptions {
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
-     * Note: the {@link InputStream} must be closed manually by the user.
+     * Note: the {@link InputStream} must be closed by the user.
      *
      * @param dataStream The data to write to the blob.
      */
