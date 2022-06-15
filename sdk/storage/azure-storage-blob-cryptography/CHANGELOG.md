@@ -1,14 +1,10 @@
 # Release History
 
-## 12.17.0-beta.1 (Unreleased)
+## 12.17.0-beta.1 (2022-06-15)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for encryption protocol version 2, using AES/GCM/NoPadding.
+- Added support for 2021-08-06 service version.
 
 ## 12.16.1 (2022-06-08)
 
