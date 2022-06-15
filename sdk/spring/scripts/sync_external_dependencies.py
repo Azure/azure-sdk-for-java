@@ -4,9 +4,9 @@
 #
 # How to use this script.
 #  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
-#  2. Make sure file(`.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
+#  2. Make sure file(`.\sdk\spring\spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-#  3. Run command, sample: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
+#  3. Run command: `python .\sdk\spring\scripts\sync_external_dependencies.py -b 2.7.0`.
 #     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
@@ -50,7 +50,7 @@ def get_args():
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     sync_external_dependencies(get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version), EXTERNAL_DEPENDENCIES_FILE)
@@ -58,7 +58,7 @@ def main():
     log.info('elapsed_time = {}'.format(elapsed_time))
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 

@@ -77,7 +77,7 @@ class DirectoryAPITest extends APISpec {
         createResponse.getStatusCode() == 201
         validateBasicHeaders(createResponse.getHeaders())
     }
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create defaults with options"() {
         setup:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -262,6 +262,7 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create options with ACL"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())
@@ -276,6 +277,7 @@ class DirectoryAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create options with owner and group"() {
         when:
         dc = fsc.getDirectoryClient(generatePathName())

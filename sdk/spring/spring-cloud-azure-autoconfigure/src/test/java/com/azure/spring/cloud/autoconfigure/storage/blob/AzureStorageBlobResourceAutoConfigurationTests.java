@@ -59,4 +59,15 @@ class AzureStorageBlobResourceAutoConfigurationTests {
                 "spring.cloud.azure.storage.blob.enabled:false")
             .run((context) -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithStorageGlobalDisabled(String accoutNameProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.enabled=false",
+                accoutNameProperty
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobResourceAutoConfiguration.class));
+    }
 }

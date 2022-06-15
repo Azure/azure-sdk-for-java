@@ -13,7 +13,7 @@ import os
 import json
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
@@ -43,7 +43,7 @@ def get_supported_spring_boot_version(filepath):
 
 def main():
     start_time = time.time()
-    change_to_root_dir()
+    change_to_repo_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     suppoerted_spring_boot_version = get_supported_spring_boot_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
     update_supported_version_matrix_json_file("./sdk/spring/supported-version-matrix.json", suppoerted_spring_boot_version)
