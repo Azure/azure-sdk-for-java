@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 5.1.10 (2022-06-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
 ## 5.2.0-beta.3 (2022-05-18)
 Note that this is the first version of the client library that targets the Azure Cognitive Service for Language APIs
 which includes the existing text analysis and natural language processing features found in the Text Analytics client

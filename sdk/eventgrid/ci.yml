@@ -37,17 +37,36 @@ pr:
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
       - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
 
+parameters:
+- name: release_azuremessagingeventgrid
+  displayName: 'azure-messaging-eventgrid'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventgridcloudnativecloudevents
+  displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagereventgrid
+  displayName: 'azure-resourcemanager-eventgrid'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventgrid
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventgrid
         groupId: com.azure
         safeName: azuremessagingeventgrid
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgrid }}
       - name: azure-messaging-eventgrid-cloudnative-cloudevents
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgridcloudnativecloudevents }}
       - name: azure-resourcemanager-eventgrid
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventgrid
+        releaseInBatch: ${{ parameters.release_azureresourcemanagereventgrid }}
+
