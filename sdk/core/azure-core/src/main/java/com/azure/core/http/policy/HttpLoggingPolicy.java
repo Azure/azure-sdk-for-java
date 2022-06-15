@@ -194,24 +194,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                                 throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                             }
                         })
-                        .doFinally(ignored -> {
-<<<<<<< HEAD
-                            requestLogMessage.append(contentLength)
-                                .append("-byte body:")
-                                .append(System.lineSeparator())
-                                .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    stream.toString(StandardCharsets.UTF_8)))
-                                .append(System.lineSeparator())
-                                .append("--> END ")
-                                .append(request.getHttpMethod())
-                                .append(System.lineSeparator());
-=======
-                            logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                    new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                                .log(REQUEST_LOG_MESSAGE);
->>>>>>> e57afecb73164986aadbfd9af1af363454ebd812
-
-                        }));
+                        .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger,
+                                prettyPrintBody, contentType, stream.toString(StandardCharsets.UTF_8)))
+                            .log(REQUEST_LOG_MESSAGE)));
                 return;
             }
 
@@ -276,9 +261,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // setQuery() could have full-replacement semantics, but some SDKs are
         // using it as an appending mechanism.
         return builder
-                .clearQuery()
-                .setQuery(allowedQueryString)
-                .toString();
+            .clearQuery()
+            .setQuery(allowedQueryString)
+            .toString();
     }
 
     /*
@@ -487,22 +472,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
                 })
-                .doFinally(ignored -> {
-<<<<<<< HEAD
-                    responseLogMessage.append("Response body:")
-                        .append(System.lineSeparator())
-                        .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            stream.toString(StandardCharsets.UTF_8)))
-                        .append(System.lineSeparator())
-                        .append("<-- END HTTP");
-
-                    logMessage(logger, logLevel, responseLogMessage);
-=======
-                    logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
-                            new String(stream.toByteArray(), 0, stream.count(), StandardCharsets.UTF_8)))
-                        .log(RESPONSE_LOG_MESSAGE);
->>>>>>> e57afecb73164986aadbfd9af1af363454ebd812
-                });
+                .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger,
+                        prettyPrintBody, contentTypeHeader, stream.toString(StandardCharsets.UTF_8)))
+                    .log(RESPONSE_LOG_MESSAGE));
         }
 
         @Override
