@@ -1,17 +1,10 @@
 # Release History
 
-## 12.14.0-beta.1 (Unreleased)
+## 12.14.0-beta.1 (2022-06-15)
 
 ### Features Added
 - Added support for the 2021-08-06 service version.
 - Added new overload of ShareFileClient.BeginCopy() and ShareFileAsyncClient.BeginCopy(), added new parameters allowing the copying of the source file's CreatedOn, LastWrittenOn, FileAttributes and ChangedOn properties.
-
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 12.13.1 (2022-06-08)
 
