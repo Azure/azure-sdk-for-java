@@ -1,6 +1,28 @@
 # Release History
 
-## 1.29.0-beta.1 (Unreleased)
+## 1.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
+## 1.29.0 (2022-06-03)
 
 ### Features Added
 
@@ -11,12 +33,6 @@
   - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
 - Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
   that represents slice of the file.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.28.0 (2022-05-06)
 

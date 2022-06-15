@@ -32,9 +32,15 @@ import javax.servlet.Filter;
  */
 public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    /**
+     * A repository for OAuth 2.0 / OpenID Connect 1.0 ClientRegistration(s).
+     */
     @Autowired
     protected ClientRegistrationRepository repo;
 
+    /**
+     * OIDC user service.
+     */
     @Autowired
     protected OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 

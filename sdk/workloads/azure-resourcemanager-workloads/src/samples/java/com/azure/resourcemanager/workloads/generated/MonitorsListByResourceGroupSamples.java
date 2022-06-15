@@ -12,7 +12,7 @@ public final class MonitorsListByResourceGroupSamples {
      * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/monitors_ListByRG.json
      */
     /**
-     * Sample code: List all SAP Monitors in a resource group.
+     * Sample code: List all SAP monitors in a resource group.
      *
      * @param manager Entry point to WorkloadsManager.
      */

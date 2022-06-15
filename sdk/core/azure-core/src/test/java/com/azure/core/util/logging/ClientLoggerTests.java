@@ -48,7 +48,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @ResourceLock(Resources.SYSTEM_OUT)
 public class ClientLoggerTests {
-    private String originalLogLevel;
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
     private Map<String, Object> globalContext;
@@ -72,7 +71,7 @@ public class ClientLoggerTests {
 
     @AfterEach
     public void revertLoggingConfiguration() {
-        setPropertyToOriginalOrClear(originalLogLevel);
+        clearTestLogLevel();
         System.setOut(originalSystemOut);
     }
 
@@ -927,16 +926,11 @@ public class ClientLoggerTests {
     }
 
     private void setupLogLevel(int logLevelToSet) {
-        originalLogLevel = EnvironmentConfiguration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
         EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
-    private void setPropertyToOriginalOrClear(String originalValue) {
-        if (CoreUtils.isNullOrEmpty(originalValue)) {
-            EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
-        }
+    private void clearTestLogLevel() {
+        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, Object... arguments) {

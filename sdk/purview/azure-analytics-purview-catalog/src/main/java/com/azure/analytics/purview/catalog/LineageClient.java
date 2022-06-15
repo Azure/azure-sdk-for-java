@@ -19,16 +19,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = LineageClientBuilder.class)
 public final class LineageClient {
-    @Generated private final LineageAsyncClient asyncClient;
+    @Generated private final LineageAsyncClient client;
 
     /**
      * Initializes an instance of LineageClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    LineageClient(LineageAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    LineageClient(LineageAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -39,11 +39,10 @@ public final class LineageClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>String</td><td>No</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>String</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>includeParent</td><td>String</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -86,6 +85,10 @@ public final class LineageClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -134,6 +137,8 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -143,8 +148,9 @@ public final class LineageClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.getLineageGraphWithResponse(guid, requestOptions).block();
+    public Response<BinaryData> getLineageGraphWithResponse(
+            String guid, String direction, RequestOptions requestOptions) {
+        return this.client.getLineageGraphWithResponse(guid, direction, requestOptions).block();
     }
 
     /**
@@ -155,11 +161,9 @@ public final class LineageClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -202,6 +206,10 @@ public final class LineageClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -250,6 +258,8 @@ public final class LineageClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -259,7 +269,137 @@ public final class LineageClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
-        return this.asyncClient.nextPageLineageWithResponse(guid, requestOptions).block();
+    public Response<BinaryData> nextPageLineageWithResponse(
+            String guid, String direction, RequestOptions requestOptions) {
+        return this.client.nextPageLineageWithResponse(guid, direction, requestOptions).block();
+    }
+
+    /**
+     * Returns lineage info about entity.
+     *
+     * <p>In addition to the typeName path parameter, attribute key-value pair(s) can be provided in the following
+     * format
+     *
+     * <p>attr:[attrName]=[attrValue]
+     *
+     * <p>NOTE: The attrName and attrValue should be unique across entities, eg. qualifiedName.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>depth</td><td>Integer</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>Integer</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>includeParent</td><td>Boolean</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     baseEntityGuid: String
+     *     guidEntityMap: {
+     *         String: {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             classificationNames: [
+     *                 String
+     *             ]
+     *             classifications: [
+     *                 {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                     entityGuid: String
+     *                     entityStatus: String(ACTIVE/DELETED)
+     *                     removePropagationsOnEntityDelete: Boolean
+     *                     validityPeriods: [
+     *                         {
+     *                             endTime: String
+     *                             startTime: String
+     *                             timeZone: String
+     *                         }
+     *                     ]
+     *                     source: String
+     *                     sourceDetails: {
+     *                         String: Object
+     *                     }
+     *                 }
+     *             ]
+     *             displayText: String
+     *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
+     *             meaningNames: [
+     *                 String
+     *             ]
+     *             meanings: [
+     *                 {
+     *                     confidence: Integer
+     *                     createdBy: String
+     *                     description: String
+     *                     displayText: String
+     *                     expression: String
+     *                     relationGuid: String
+     *                     source: String
+     *                     status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                     steward: String
+     *                     termGuid: String
+     *                 }
+     *             ]
+     *             status: String(ACTIVE/DELETED)
+     *         }
+     *     }
+     *     widthCounts: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     lineageDepth: Integer
+     *     lineageWidth: Integer
+     *     includeParent: Boolean
+     *     childrenCount: Integer
+     *     lineageDirection: String(INPUT/OUTPUT/BOTH)
+     *     parentRelations: [
+     *         {
+     *             childEntityId: String
+     *             relationshipId: String
+     *             parentEntityId: String
+     *         }
+     *     ]
+     *     relations: [
+     *         {
+     *             fromEntityId: String
+     *             relationshipId: String
+     *             toEntityId: String
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: BOTH, INPUT,
+     *     OUTPUT.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return atlasLineageInfo along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLineageByUniqueAttributeWithResponse(
+            String typeName, String direction, RequestOptions requestOptions) {
+        return this.client.getLineageByUniqueAttributeWithResponse(typeName, direction, requestOptions).block();
     }
 }

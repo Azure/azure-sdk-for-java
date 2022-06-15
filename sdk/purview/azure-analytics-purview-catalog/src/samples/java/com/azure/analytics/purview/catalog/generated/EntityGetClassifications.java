@@ -13,15 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityGetClassifications {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitygetclassifications.entitygetclassifications
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitygetclassifications.entitygetclassifications
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 entityClient.getClassificationsWithResponse("67d26de6-771d-1a2d-cb2b-dec4dbd2a9bd", requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitygetclassifications.entitygetclassifications
+        // END:com.azure.analytics.purview.catalog.generated.entitygetclassifications.entitygetclassifications
     }
 }

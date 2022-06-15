@@ -13,6 +13,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -29,20 +31,33 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class));
 
-    @Test
-    void withoutCertificateClientBuilderShouldNotConfigure() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void withoutCertificateClientBuilderShouldNotConfigure(String endpointProperty) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(CertificateClientBuilder.class))
-            .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withPropertyValues(endpointProperty + "=" + String.format(ENDPOINT, "mykv"))
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
     }
 
-    @Test
-    void disableKeyVaultCertificateShouldNotConfigure() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void disableKeyVaultCertificateShouldNotConfigure(String endpointProperty) {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.certificate.enabled=false",
-                "spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv")
+                endpointProperty + "=" + String.format(ENDPOINT, "mykv")
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void disableKeyVaultShouldNotConfigure(String endpointProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.enabled=false",
+                endpointProperty + "=" + String.format(ENDPOINT, "mykv")
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
     }
@@ -53,10 +68,11 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class));
     }
 
-    @Test
-    void withVaultEndpointShouldConfigure() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void withVaultEndpointShouldConfigure(String endpointProperty) {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withPropertyValues(endpointProperty + "=" + String.format(ENDPOINT, "mykv"))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateProperties.class);
@@ -67,22 +83,24 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
             });
     }
 
-    @Test
-    void customizerShouldBeCalled() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void customizerShouldBeCalled(String endpointProperty) {
         CertificateBuilderCustomizer customizer = new CertificateBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withPropertyValues(endpointProperty + "=" + String.format(ENDPOINT, "mykv"))
             .withBean("customizer1", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CertificateBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
     }
 
-    @Test
-    void otherCustomizerShouldNotBeCalled() {
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.keyvault.certificate.endpoint", "spring.cloud.azure.keyvault.endpoint" })
+    void otherCustomizerShouldNotBeCalled(String endpointProperty) {
         CertificateBuilderCustomizer customizer = new CertificateBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withPropertyValues(endpointProperty + "=" + String.format(ENDPOINT, "mykv"))
             .withBean("customizer1", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", CertificateBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)

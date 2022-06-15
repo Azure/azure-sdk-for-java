@@ -55,7 +55,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
     private final int prefetch;
     private final String entityPath;
-    private final Disposable parentConnection;
+    private final Disposable connectionProcessor;
     private final int maxQueueSize;
 
     private volatile Throwable lastError;
@@ -82,14 +82,17 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
      *
      * @param prefetch The number if messages to initially fetch.
-     * @param parentConnection Represents the parent connection.
+     * @param connectionProcessor A {@link Disposable} reference to the connection-processor which produces
+     *                           the connection on which receive-links are hosted. It is used to eagerly check
+     *                           if the connection-processor is disposed so that this link-processor can self dispose.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, Disposable parentConnection) {
+    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, Disposable connectionProcessor) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
+            "'connectionProcessor' cannot be null.");
 
         if (prefetch < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
@@ -258,7 +261,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         onError(error);
                     },
                     () -> {
-                        if (parentConnection.isDisposed() || isTerminated()
+                        if (connectionProcessor.isDisposed() || isTerminated()
                             || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
 
                             LOGGER.atInfo()
@@ -289,9 +292,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                             drain();
                         },
                         error -> {
-                            // When the receive on AmqpReceiveLink (e.g., ReactorReceiver) terminates
-                            // with an error, we expect the recovery to happen in response to the terminal events
-                            // in link EndpointState Flux.
+                            // If the receive() on upstream ReactorReceiver (the var 'next' here) terminates with an
+                            // error, the ReceiveLinkProcessor (RLP) will not propagate the error to the downstream
+                            // subscriber; for the downstream subscriber, an error is a terminal event.
+                            // The purpose of RLP is to recover transparently.
+                            // Given the ReactorReceiver completes the getEndpointStates() Flux upon it's termination,
+                            // the RLP will recover by obtaining a new ReactorReceiver; this way, the downstream
+                            // continues to be served using later ReactorReceiver rather than terminating from
+                            // intermediate errors.
+                            //
                             LOGGER.atVerbose()
                                 .addKeyValue(LINK_NAME_KEY, linkName)
                                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -370,7 +379,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        if (parentConnection.isDisposed()) {
+        if (connectionProcessor.isDisposed()) {
             LOGGER.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
                 .log("Parent connection is disposed. Not reopening on error.");

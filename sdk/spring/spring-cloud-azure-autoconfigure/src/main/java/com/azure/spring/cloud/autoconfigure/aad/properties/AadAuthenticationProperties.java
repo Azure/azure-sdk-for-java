@@ -41,6 +41,9 @@ import static org.springframework.security.oauth2.core.ClientAuthenticationMetho
  */
 public class AadAuthenticationProperties implements InitializingBean {
 
+    /**
+     * Properties prefix.
+     */
     public static final String PREFIX = "spring.cloud.azure.active-directory";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationProperties.class);
@@ -238,10 +241,20 @@ public class AadAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        /**
+         * Whether transitive members are used.
+         *
+         * @return Whether transitive members are used.
+         */
         public boolean isUseTransitiveMembers() {
             return useTransitiveMembers;
         }
 
+        /**
+         * Sets whether transitive members are used.
+         *
+         * @param useTransitiveMembers Whether transitive members are used.
+         */
         public void setUseTransitiveMembers(boolean useTransitiveMembers) {
             this.useTransitiveMembers = useTransitiveMembers;
         }

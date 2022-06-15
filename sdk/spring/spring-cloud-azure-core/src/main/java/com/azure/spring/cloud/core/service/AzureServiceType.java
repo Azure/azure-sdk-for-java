@@ -11,11 +11,34 @@ import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionSt
  */
 public final class AzureServiceType {
 
+    /**
+     * The Service Bus service.
+     */
     public static final ServiceBus SERVICE_BUS = new ServiceBus();
+
+    /**
+     * The Event Hub service.
+     */
     public static final EventHubs EVENT_HUBS = new EventHubs();
+
+    /**
+     * The Storage Blob service.
+     */
     public static final StorageBlob STORAGE_BLOB = new StorageBlob();
+
+    /**
+     * The Storage File Share service.
+     */
     public static final StorageFileShare STORAGE_FILE_SHARE = new StorageFileShare();
+
+    /**
+     * The Storage Queue service.
+     */
     public static final StorageQueue STORAGE_QUEUE = new StorageQueue();
+
+    /**
+     * The App Configuration service.
+     */
     public static final AppConfiguration APP_CONFIGURATION = new AppConfiguration();
 
     private AzureServiceType() {

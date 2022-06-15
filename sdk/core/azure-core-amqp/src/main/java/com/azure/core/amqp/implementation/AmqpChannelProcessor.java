@@ -37,7 +37,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         AtomicReferenceFieldUpdater.newUpdater(AmqpChannelProcessor.class, Subscription.class,
             "upstream");
 
-    private static final String RETRY_NUMBER_KEY = "retry";
+    private static final String TRY_COUNT_KEY = "tryCount";
 
     private final ClientLogger logger;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -158,6 +158,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         final int attemptsMade = retryAttempts.incrementAndGet();
+        final int tryCount = attemptsMade - 1;
         final int attempts;
         final Duration retryInterval;
 
@@ -196,18 +197,18 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             }
 
             logger.atInfo()
-                .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                .addKeyValue(TRY_COUNT_KEY, tryCount)
                 .addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
                 .log("Transient error occurred. Retrying.", throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
                     logger.atInfo()
-                        .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                        .addKeyValue(TRY_COUNT_KEY, tryCount)
                         .log("Not requesting from upstream. Processor is disposed.");
                 } else {
                     logger.atInfo()
-                        .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                        .addKeyValue(TRY_COUNT_KEY, tryCount)
                         .log("Requesting from upstream.");
 
                     requestUpstream();
@@ -216,7 +217,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             });
         } else {
             logger.atWarning()
-                .addKeyValue(RETRY_NUMBER_KEY, attempts)
+                .addKeyValue(TRY_COUNT_KEY, tryCount)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
             lastError = throwable;

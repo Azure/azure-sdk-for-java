@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.fluent.models.MonitorInner;
 import java.util.Map;
@@ -47,7 +48,21 @@ public interface Monitor {
     Map<String, String> tags();
 
     /**
-     * Gets the provisioningState property: State of provisioning of the monitor.
+     * Gets the identity property: Managed service identity (user assigned identities).
+     *
+     * @return the identity value.
+     */
+    UserAssignedServiceIdentity identity();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: State of provisioning of the SAP monitor.
      *
      * @return the provisioningState value.
      */
@@ -61,16 +76,16 @@ public interface Monitor {
     MonitorPropertiesErrors errors();
 
     /**
-     * Gets the appLocation property: The monitor resources will be deployed in the monitoring region. The subnet region
-     * should be same as the monitoring region.
+     * Gets the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring region. The
+     * subnet region should be same as the SAP monitoring region.
      *
      * @return the appLocation value.
      */
     String appLocation();
 
     /**
-     * Gets the routingPreference property: Sets the routing preference of the monitor. By default only RFC1918 traffic
-     * is routed to the customer VNET.
+     * Gets the routingPreference property: Sets the routing preference of the SAP monitor. By default only RFC1918
+     * traffic is routed to the customer VNET.
      *
      * @return the routingPreference value.
      */
@@ -84,7 +99,7 @@ public interface Monitor {
     ManagedRGConfiguration managedResourceGroupConfiguration();
 
     /**
-     * Gets the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for
+     * Gets the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used for SAP
      * monitoring.
      *
      * @return the logAnalyticsWorkspaceArmId value.
@@ -99,7 +114,7 @@ public interface Monitor {
     String monitorSubnet();
 
     /**
-     * Gets the msiArmId property: The ARM ID of the MSI used for monitoring.
+     * Gets the msiArmId property: The ARM ID of the MSI used for SAP monitoring.
      *
      * @return the msiArmId value.
      */
@@ -179,6 +194,7 @@ public interface Monitor {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithAppLocation,
                 DefinitionStages.WithRoutingPreference,
                 DefinitionStages.WithManagedResourceGroupConfiguration,
@@ -209,14 +225,24 @@ public interface Monitor {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the Monitor definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (user assigned identities).
+             *
+             * @param identity Managed service identity (user assigned identities).
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(UserAssignedServiceIdentity identity);
+        }
         /** The stage of the Monitor definition allowing to specify appLocation. */
         interface WithAppLocation {
             /**
-             * Specifies the appLocation property: The monitor resources will be deployed in the monitoring region. The
-             * subnet region should be same as the monitoring region..
+             * Specifies the appLocation property: The SAP monitor resources will be deployed in the SAP monitoring
+             * region. The subnet region should be same as the SAP monitoring region..
              *
-             * @param appLocation The monitor resources will be deployed in the monitoring region. The subnet region
-             *     should be same as the monitoring region.
+             * @param appLocation The SAP monitor resources will be deployed in the SAP monitoring region. The subnet
+             *     region should be same as the SAP monitoring region.
              * @return the next definition stage.
              */
             WithCreate withAppLocation(String appLocation);
@@ -224,11 +250,11 @@ public interface Monitor {
         /** The stage of the Monitor definition allowing to specify routingPreference. */
         interface WithRoutingPreference {
             /**
-             * Specifies the routingPreference property: Sets the routing preference of the monitor. By default only
+             * Specifies the routingPreference property: Sets the routing preference of the SAP monitor. By default only
              * RFC1918 traffic is routed to the customer VNET..
              *
-             * @param routingPreference Sets the routing preference of the monitor. By default only RFC1918 traffic is
-             *     routed to the customer VNET.
+             * @param routingPreference Sets the routing preference of the SAP monitor. By default only RFC1918 traffic
+             *     is routed to the customer VNET.
              * @return the next definition stage.
              */
             WithCreate withRoutingPreference(RoutingPreference routingPreference);
@@ -247,9 +273,10 @@ public interface Monitor {
         interface WithLogAnalyticsWorkspaceArmId {
             /**
              * Specifies the logAnalyticsWorkspaceArmId property: The ARM ID of the Log Analytics Workspace that is used
-             * for monitoring..
+             * for SAP monitoring..
              *
-             * @param logAnalyticsWorkspaceArmId The ARM ID of the Log Analytics Workspace that is used for monitoring.
+             * @param logAnalyticsWorkspaceArmId The ARM ID of the Log Analytics Workspace that is used for SAP
+             *     monitoring.
              * @return the next definition stage.
              */
             WithCreate withLogAnalyticsWorkspaceArmId(String logAnalyticsWorkspaceArmId);
@@ -273,7 +300,7 @@ public interface Monitor {
     Monitor.Update update();
 
     /** The template for Monitor update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
         /**
          * Executes the update request.
          *
@@ -294,12 +321,22 @@ public interface Monitor {
         /** The stage of the Monitor update allowing to specify tags. */
         interface WithTags {
             /**
-             * Specifies the tags property: Tags field of the resource..
+             * Specifies the tags property: Gets or sets the Resource tags..
              *
-             * @param tags Tags field of the resource.
+             * @param tags Gets or sets the Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Monitor update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (user assigned identities).
+             *
+             * @param identity Managed service identity (user assigned identities).
+             * @return the next definition stage.
+             */
+            Update withIdentity(UserAssignedServiceIdentity identity);
         }
     }
     /**

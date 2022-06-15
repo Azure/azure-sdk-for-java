@@ -4,11 +4,13 @@
 
 package com.azure.resourcemanager.workloads.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloads.fluent.models.ProviderInstanceInner;
 import com.azure.resourcemanager.workloads.models.ProviderInstance;
 import com.azure.resourcemanager.workloads.models.ProviderInstancePropertiesErrors;
 import com.azure.resourcemanager.workloads.models.ProviderSpecificProperties;
+import com.azure.resourcemanager.workloads.models.UserAssignedServiceIdentity;
 import com.azure.resourcemanager.workloads.models.WorkloadMonitorProvisioningState;
 
 public final class ProviderInstanceImpl implements ProviderInstance, ProviderInstance.Definition {
@@ -32,6 +34,14 @@ public final class ProviderInstanceImpl implements ProviderInstance, ProviderIns
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public UserAssignedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public WorkloadMonitorProvisioningState provisioningState() {
@@ -107,6 +117,11 @@ public final class ProviderInstanceImpl implements ProviderInstance, ProviderIns
                 .getProviderInstances()
                 .getWithResponse(resourceGroupName, monitorName, providerInstanceName, context)
                 .getValue();
+        return this;
+    }
+
+    public ProviderInstanceImpl withIdentity(UserAssignedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 

@@ -74,4 +74,11 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
+
+    /**
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     * @return a flag indicating whether the content can be repeatedly consumed.
+     */
+    public abstract boolean isReplayable();
 }

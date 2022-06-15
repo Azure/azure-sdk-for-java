@@ -19,28 +19,20 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = DiscoveryClientBuilder.class)
 public final class DiscoveryClient {
-    @Generated private final DiscoveryAsyncClient asyncClient;
+    @Generated private final DiscoveryAsyncClient client;
 
     /**
      * Initializes an instance of DiscoveryClient class.
      *
-     * @param asyncClient the async client.
+     * @param client the async client.
      */
     @Generated
-    DiscoveryClient(DiscoveryAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    DiscoveryClient(DiscoveryAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Gets data using search.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -163,19 +155,11 @@ public final class DiscoveryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
-        return this.asyncClient.queryWithResponse(searchRequest, requestOptions).block();
+        return this.client.queryWithResponse(searchRequest, requestOptions).block();
     }
 
     /**
      * Get search suggestions by query criteria.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -240,19 +224,11 @@ public final class DiscoveryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
-        return this.asyncClient.suggestWithResponse(suggestRequest, requestOptions).block();
+        return this.client.suggestWithResponse(suggestRequest, requestOptions).block();
     }
 
     /**
      * Browse entities by path or entity type.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -302,19 +278,11 @@ public final class DiscoveryClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
-        return this.asyncClient.browseWithResponse(browseRequest, requestOptions).block();
+        return this.client.browseWithResponse(browseRequest, requestOptions).block();
     }
 
     /**
      * Get auto complete options.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -351,6 +319,6 @@ public final class DiscoveryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autoCompleteWithResponse(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {
-        return this.asyncClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions).block();
+        return this.client.autoCompleteWithResponse(autoCompleteRequest, requestOptions).block();
     }
 }

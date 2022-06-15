@@ -3,6 +3,10 @@
 ## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support to build a custom Teams endpoint using Microsoft 365 Teams identities:
+    - Added `getTokenForTeamsUser(GetTokenForTeamsUserOptions options)` method that provides the ability to exchange an Azure AD access token of a Teams user for a Communication Identity access token to `CommunicationIdentityClient`.
+- Removed `CommunicationIdentityServiceVersion.V2021_10_31_PREVIEW`.
+- Added a new API version `CommunicationIdentityServiceVersion.V2022_06_01` that is now the default API version.
 - Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
 - Added `retryOptions` to `CommunicationIdentityClientBuilder`.
 
@@ -11,6 +15,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.10 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-communication-common` from `1.1.3` to version `1.1.4`.
 
 ## 1.1.9 (2022-05-10)
 

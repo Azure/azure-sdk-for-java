@@ -24,7 +24,15 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.workloads.fluent.MonitorsClient;
 import com.azure.resourcemanager.workloads.fluent.OperationsClient;
+import com.azure.resourcemanager.workloads.fluent.PhpWorkloadsClient;
 import com.azure.resourcemanager.workloads.fluent.ProviderInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.workloads.fluent.SapApplicationServerInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.SapCentralInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.SapDatabaseInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.SapVirtualInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.SkusClient;
+import com.azure.resourcemanager.workloads.fluent.WordpressInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.WorkloadsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -110,6 +118,90 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         return this.defaultPollInterval;
     }
 
+    /** The PhpWorkloadsClient object to access its operations. */
+    private final PhpWorkloadsClient phpWorkloads;
+
+    /**
+     * Gets the PhpWorkloadsClient object to access its operations.
+     *
+     * @return the PhpWorkloadsClient object.
+     */
+    public PhpWorkloadsClient getPhpWorkloads() {
+        return this.phpWorkloads;
+    }
+
+    /** The WordpressInstancesClient object to access its operations. */
+    private final WordpressInstancesClient wordpressInstances;
+
+    /**
+     * Gets the WordpressInstancesClient object to access its operations.
+     *
+     * @return the WordpressInstancesClient object.
+     */
+    public WordpressInstancesClient getWordpressInstances() {
+        return this.wordpressInstances;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
+    /** The SapVirtualInstancesClient object to access its operations. */
+    private final SapVirtualInstancesClient sapVirtualInstances;
+
+    /**
+     * Gets the SapVirtualInstancesClient object to access its operations.
+     *
+     * @return the SapVirtualInstancesClient object.
+     */
+    public SapVirtualInstancesClient getSapVirtualInstances() {
+        return this.sapVirtualInstances;
+    }
+
+    /** The SapCentralInstancesClient object to access its operations. */
+    private final SapCentralInstancesClient sapCentralInstances;
+
+    /**
+     * Gets the SapCentralInstancesClient object to access its operations.
+     *
+     * @return the SapCentralInstancesClient object.
+     */
+    public SapCentralInstancesClient getSapCentralInstances() {
+        return this.sapCentralInstances;
+    }
+
+    /** The SapDatabaseInstancesClient object to access its operations. */
+    private final SapDatabaseInstancesClient sapDatabaseInstances;
+
+    /**
+     * Gets the SapDatabaseInstancesClient object to access its operations.
+     *
+     * @return the SapDatabaseInstancesClient object.
+     */
+    public SapDatabaseInstancesClient getSapDatabaseInstances() {
+        return this.sapDatabaseInstances;
+    }
+
+    /** The SapApplicationServerInstancesClient object to access its operations. */
+    private final SapApplicationServerInstancesClient sapApplicationServerInstances;
+
+    /**
+     * Gets the SapApplicationServerInstancesClient object to access its operations.
+     *
+     * @return the SapApplicationServerInstancesClient object.
+     */
+    public SapApplicationServerInstancesClient getSapApplicationServerInstances() {
+        return this.sapApplicationServerInstances;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -146,6 +238,18 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         return this.providerInstances;
     }
 
+    /** The SkusClient object to access its operations. */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
+    }
+
     /**
      * Initializes an instance of WorkloadsClient client.
      *
@@ -169,9 +273,17 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2021-12-01-preview";
+        this.phpWorkloads = new PhpWorkloadsClientImpl(this);
+        this.wordpressInstances = new WordpressInstancesClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.sapVirtualInstances = new SapVirtualInstancesClientImpl(this);
+        this.sapCentralInstances = new SapCentralInstancesClientImpl(this);
+        this.sapDatabaseInstances = new SapDatabaseInstancesClientImpl(this);
+        this.sapApplicationServerInstances = new SapApplicationServerInstancesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.providerInstances = new ProviderInstancesClientImpl(this);
+        this.skus = new SkusClientImpl(this);
     }
 
     /**

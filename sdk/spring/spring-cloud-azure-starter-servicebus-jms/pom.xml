@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.19</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.20</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>

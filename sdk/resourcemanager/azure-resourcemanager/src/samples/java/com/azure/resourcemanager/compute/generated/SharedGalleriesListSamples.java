@@ -9,14 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for SharedGalleries List. */
 public final class SharedGalleriesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/sharedGallery/ListSharedGalleries.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2022-01-03/GalleryRP/examples/sharedGalleryExamples/SharedGallery_List.json
      */
     /**
-     * Sample code: Get a gallery.
+     * Sample code: List shared galleries.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listSharedGalleries(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines().manager().serviceClient().getSharedGalleries().list("myLocation", null, Context.NONE);
     }
 }

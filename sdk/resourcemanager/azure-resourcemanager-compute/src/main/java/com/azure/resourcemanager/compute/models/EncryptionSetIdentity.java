@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * The managed identity for the disk encryption set. It should be given permission on the key vault before it can be
@@ -38,6 +40,16 @@ public class EncryptionSetIdentity {
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
+
+    /*
+     * The list of user identities associated with the disk encryption set. The
+     * user identity dictionary key references will be ARM resource ids in the
+     * form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
      * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
@@ -87,10 +99,45 @@ public class EncryptionSetIdentity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
+     * user identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
+     * user identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the EncryptionSetIdentity object itself.
+     */
+    public EncryptionSetIdentity withUserAssignedIdentities(
+        Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

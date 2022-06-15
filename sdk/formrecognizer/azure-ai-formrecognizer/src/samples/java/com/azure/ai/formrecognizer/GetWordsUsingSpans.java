@@ -59,7 +59,7 @@ public class GetWordsUsingSpans {
             documentPage.getLines().forEach(documentLine -> {
                 System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString());
+                    documentLine.getBoundingPolygon().toString());
 
                 List<DocumentWord> containedWords = getWordsInALine(documentLine, documentPage.getWords());
 
@@ -78,7 +78,7 @@ public class GetWordsUsingSpans {
         pageWords.forEach(documentWord -> {
             documentLine.getSpans().forEach(documentSpan -> {
                 if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
-                    && ((documentWord.getSpan().getOffset() 
+                    && ((documentWord.getSpan().getOffset()
                          + documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
                     containedWords.add(documentWord);
                 }

@@ -23,6 +23,7 @@ import spock.lang.Unroll
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
@@ -213,7 +214,7 @@ class DirectoryAPITests extends APISpec {
             null, null)
 
         then:
-        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     @Unroll
@@ -491,7 +492,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null)
 
         then:
-        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime() == changeTime
+        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     @Unroll
@@ -959,7 +960,7 @@ class DirectoryAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
-        destProperties.getSmbProperties().getFileChangeTime() == fileChangeTime
+        compareDatesWithPrecision(destProperties.getSmbProperties().getFileChangeTime(), fileChangeTime)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")

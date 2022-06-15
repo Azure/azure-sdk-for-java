@@ -54,7 +54,7 @@ public class AnalyzeCustomDocumentFromUrl {
             documentPage.getLines().forEach(documentLine ->
                 System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingPolygon().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
