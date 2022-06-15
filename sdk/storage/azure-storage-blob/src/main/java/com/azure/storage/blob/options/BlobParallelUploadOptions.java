@@ -73,6 +73,7 @@ public class BlobParallelUploadOptions {
      * Constructs a new {@link BlobParallelUploadOptions}.
      *
      * @param dataStream The data to write to the blob.
+     * Note: the {@link InputStream} must be closed manually.
      */
     public BlobParallelUploadOptions(InputStream dataStream) {
         this(dataStream, null);
