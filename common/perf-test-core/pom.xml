@@ -81,5 +81,10 @@
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-apache</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-apache;dependency} -->
+    </dependency>
   </dependencies>
 </project>

@@ -1,6 +1,6 @@
 # Azure Core Apache Component HTTP plugin library for Java
 
-Azure Core Apache Component HTTP client is a plugin for the `azure-core` HTTP client API.
+Azure Core Apache HTTP client is a plugin for the `azure-core` HTTP client API.
 
 ## Getting started
 
@@ -76,4 +76,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-vertx%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-apache%2FREADME.png)

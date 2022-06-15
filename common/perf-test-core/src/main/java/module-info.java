@@ -16,4 +16,7 @@ module com.azure.core.test.perf {
     requires reactor.netty.core;
     requires io.netty.codec.http;
     requires okhttp3;
+    requires org.apache.httpcomponents.client5.httpclient5;
+    requires org.apache.httpcomponents.core5.httpcore5.reactive;
+    requires azure.core.http.apache;
 }

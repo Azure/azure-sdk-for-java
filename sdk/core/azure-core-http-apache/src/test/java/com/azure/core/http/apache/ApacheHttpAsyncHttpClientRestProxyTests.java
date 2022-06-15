@@ -39,7 +39,7 @@ public class ApacheHttpAsyncHttpClientRestProxyTests extends RestProxyTests {
         return new ApacheHttpAsyncHttpClientBuilder().build();
     }
 
-
+    // TODO: fix this proxy test
     @Disabled
     @Override
     @Test

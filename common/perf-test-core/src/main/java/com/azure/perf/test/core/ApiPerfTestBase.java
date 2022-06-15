@@ -5,6 +5,7 @@ package com.azure.perf.test.core;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.apache.ApacheHttpAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -14,6 +15,8 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import okhttp3.OkHttpClient;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -99,6 +102,24 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                                 (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
                             .build();
                         return new OkHttpAsyncHttpClientBuilder(okHttpClient).build();
+                    } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                        throw new IllegalStateException(e);
+                    }
+                } else {
+                    return new OkHttpAsyncClientProvider().createInstance();
+                }
+            case APACHE:
+                if (options.isInsecure()) {
+                    try {
+                        SSLContext sslContext = SSLContext.getInstance("SSL");
+                        sslContext.init(
+                            null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
+                        CloseableHttpAsyncClient okHttpClient = HttpAsyncClientBuilder.create()
+                                                             // TODO: set the socket
+//                                                        .sslSocketFactory(sslContext.getSocketFactory(),
+//                                                            (X509TrustManager) InsecureTrustManagerFactory.INSTANCE.getTrustManagers()[0])
+                                                        .build();
+                        return new ApacheHttpAsyncHttpClientBuilder(okHttpClient).build();
                     } catch (NoSuchAlgorithmException | KeyManagementException e) {
                         throw new IllegalStateException(e);
                     }
