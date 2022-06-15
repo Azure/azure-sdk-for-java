@@ -66,7 +66,7 @@ import java.util.function.Function;
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
 /**
- * DO NOT USE.
+ * DO NOT USE.test
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos
  **/
