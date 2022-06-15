@@ -341,7 +341,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
 
     private JobQueue createQueue(String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, Object> queueLabels = new HashMap() {{ put("Label_1", "Value_1"); }};
+        Map<String, Object> queueLabels = new HashMap<String, Object>() {{ put("Label_1", "Value_1"); }};
 
         JobQueue jobQueue = new JobQueue();
         jobQueue.setDistributionPolicyId(distributionPolicyId);
