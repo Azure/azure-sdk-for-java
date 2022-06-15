@@ -6,7 +6,7 @@ parameters:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      ServiceDirectory: storage
+      ServiceDirectory: ''
       Artifacts:
         - name: azure-storage-common
           groupId: com.azure
