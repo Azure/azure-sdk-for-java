@@ -7,8 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
-import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
-import com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
@@ -22,14 +20,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 
 /**
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
  */
 public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallbackHandler {
-    private final AzureThirdPartyServiceProperties properties = new AzureThirdPartyServiceProperties();
+    private final AzureKafkaProperties properties = new AzureKafkaProperties();
     private final DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory =
         new DefaultAzureCredentialBuilderFactory(properties);
     private TokenCredential credential;
@@ -45,7 +43,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         URI uri = URI.create("https://" + bootstrapServer);
         this.tokenAudience = uri.getScheme() + "://" + uri.getHost();
         credential = (TokenCredential) configs.get(AZURE_TOKEN_CREDENTIAL);
-        AzureIdentityCustomConfigUtils.convertConfigMapToAzureProperties(configs, properties);
+        AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
     }
 
     @Override

@@ -11,10 +11,10 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
- * Store the constants for customized Azure properties in other third party services.
+ * Store the constants for customized Azure properties with Kafka.
  */
-public final class AzureKafkaConfigUtils {
-    private AzureKafkaConfigUtils() {
+public final class AzureKafkaPropertiesUtils {
+    private AzureKafkaPropertiesUtils() {
     }
 
     public static final String AZURE_TOKEN_CREDENTIAL = "azure.token.credential";
@@ -23,6 +23,20 @@ public final class AzureKafkaConfigUtils {
     static final String CREDENTIAL_PREFIX = "azure.credential.";
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
+
+    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
+                                                         AzureKafkaProperties target) {
+        for (Mapping m : Mapping.values()) {
+            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
+        }
+    }
+
+    public static void convertAzurePropertiesToConfigMap(AzureKafkaProperties source,
+                                                         Map<String, String> target) {
+        for (Mapping m : Mapping.values()) {
+            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
+        }
+    }
 
     enum Mapping {
 
@@ -164,20 +178,6 @@ public final class AzureKafkaConfigUtils {
             return setter;
         }
 
-    }
-
-    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-                                                         AzureKafkaProperties target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
-        }
-    }
-
-    public static void convertAzurePropertiesToConfigMap(AzureKafkaProperties source,
-                                                         Map<String, String> target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
-        }
     }
 
 }

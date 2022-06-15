@@ -7,7 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.azure.spring.cloud.core.implementation.properties.AzureThirdPartyServiceProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -16,8 +15,8 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.AZURE_TOKEN_CREDENTIAL;
-import static com.azure.spring.cloud.core.implementation.util.AzureIdentityCustomConfigUtils.MANAGED_IDENTITY_ENABLED;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -73,10 +72,10 @@ public class KafkaOAuth2AuthenticateCallbackHandlerTest {
 
     @Test
     void createTokenCredentialByResolver() {
-        configs.put(MANAGED_IDENTITY_ENABLED, "true");
+        configs.put(managedIdentityEnabled.propertyKey(), "true");
         handler.configure(configs, null, null);
 
-        AzureThirdPartyServiceProperties properties = (AzureThirdPartyServiceProperties) ReflectionTestUtils
+        AzureKafkaProperties properties = (AzureKafkaProperties) ReflectionTestUtils
             .getField(handler, AZURE_THIRD_PARTY_SERVICE_PROPERTIES_FIELD_NAME);
         assertTrue(properties.getCredential().isManagedIdentityEnabled());
         TokenCredential tokenCredential = (TokenCredential) ReflectionTestUtils.getField(handler, TOKEN_CREDENTIAL_FIELD_NAME);

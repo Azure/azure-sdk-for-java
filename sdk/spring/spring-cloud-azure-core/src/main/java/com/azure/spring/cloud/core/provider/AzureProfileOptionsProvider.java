@@ -3,10 +3,12 @@
 
 package com.azure.spring.cloud.core.provider;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Interface to be implemented by classes that wish to provide the Azure profile options.
@@ -80,14 +82,12 @@ public interface AzureProfileOptionsProvider {
          */
         OTHER;
 
-        private static final Map<String, CloudType> CLOUD_TYPE_MAP;
+        private static final Map<String, CloudType> CLOUD_TYPE_MAP = initMap();
 
-        static {
-            Map<String, CloudType> map = new HashMap<>();
-            for (CloudType c : CloudType.values()) {
-                map.put(c.name().toLowerCase(Locale.ROOT), c);
-            }
-            CLOUD_TYPE_MAP = Collections.unmodifiableMap(map);
+        private static Map<String, CloudType> initMap() {
+            return Arrays.stream(CloudType.values())
+                         .collect(Collectors.toUnmodifiableMap(
+                             c -> c.name(), Function.identity()));
         }
 
         /**
@@ -96,7 +96,7 @@ public interface AzureProfileOptionsProvider {
          * @return the {@link CloudType}
          */
         public static CloudType get(String cloudType) {
-            return CLOUD_TYPE_MAP.get(cloudType.toLowerCase(Locale.ROOT));
+            return CLOUD_TYPE_MAP.get(cloudType.toUpperCase(Locale.ROOT));
         }
     }
 

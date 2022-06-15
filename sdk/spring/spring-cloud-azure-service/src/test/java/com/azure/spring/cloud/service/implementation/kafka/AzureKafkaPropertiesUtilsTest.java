@@ -10,22 +10,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigUtils.Mapping.cloudType;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigUtils.Mapping.managedIdentityEnabled;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigUtils.convertAzurePropertiesToConfigMap;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaConfigUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.cloudType;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AzureKafkaConfigUtilsTest {
+class AzureKafkaPropertiesUtilsTest {
 
     private final Map<String, Object> configs = new HashMap<>();
 
     @BeforeEach
     void setup() {
         configs.clear();
-        Arrays.stream(AzureKafkaConfigUtils.Mapping.values()).forEach(mapping ->
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping ->
             configs.put(mapping.propertyKey(), mapping.propertyKey() + ".test"));
         configs.put(managedIdentityEnabled.propertyKey(), "true");
         configs.put(cloudType.propertyKey(), "AZURE_CHINA");
@@ -36,10 +36,10 @@ class AzureKafkaConfigUtilsTest {
         AzureKafkaProperties properties = new AzureKafkaProperties();
         convertConfigMapToAzureProperties(configs, properties);
 
-        Arrays.stream(AzureKafkaConfigUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(mapping.getter().apply(properties)));
-            } else if (mapping == AzureKafkaConfigUtils.Mapping.cloudType) {
+            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
                     AzureProfileOptionsProvider.CloudType.get(mapping.getter().apply(properties)));
             } else {
@@ -52,17 +52,17 @@ class AzureKafkaConfigUtilsTest {
     void testConvertAzurePropertiesToConfigMapWithCustomValues() {
         AzureKafkaProperties properties = new AzureKafkaProperties();
         Map<String, String> configs = new HashMap<>();
-        Arrays.stream(AzureKafkaConfigUtils.Mapping.values()).forEach(mapping ->
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping ->
             configs.put(mapping.propertyKey(), mapping.propertyKey() + ".override"));
         configs.put(managedIdentityEnabled.propertyKey(), "false");
         configs.put(cloudType.propertyKey(), "AZURE");
         convertConfigMapToAzureProperties(this.configs, properties);
         convertAzurePropertiesToConfigMap(properties, configs);
 
-        Arrays.stream(AzureKafkaConfigUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertFalse(Boolean.valueOf(configs.get(mapping.propertyKey())));
-            } else if (mapping == AzureKafkaConfigUtils.Mapping.cloudType) {
+            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE,
                     AzureProfileOptionsProvider.CloudType.get(configs.get(mapping.propertyKey())));
             } else {
@@ -78,10 +78,10 @@ class AzureKafkaConfigUtilsTest {
         convertConfigMapToAzureProperties(this.configs, properties);
         convertAzurePropertiesToConfigMap(properties, configs);
 
-        Arrays.stream(AzureKafkaConfigUtils.Mapping.values()).forEach(mapping -> {
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values()).forEach(mapping -> {
             if (mapping == managedIdentityEnabled) {
                 assertTrue(Boolean.valueOf(configs.get(mapping.propertyKey())));
-            } else if (mapping == AzureKafkaConfigUtils.Mapping.cloudType) {
+            } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
                 assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_CHINA,
                     AzureProfileOptionsProvider.CloudType.get(configs.get(mapping.propertyKey())));
             } else {

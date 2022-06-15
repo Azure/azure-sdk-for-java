@@ -20,12 +20,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 
 /**
@@ -42,7 +38,6 @@ import java.util.Collections;
 public class AzureEventHubsKafkaAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
-    private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
     /**
      * The static connection string provider to provide the connection string for an Event Hubs instance.
@@ -66,31 +61,17 @@ public class AzureEventHubsKafkaAutoConfiguration {
     }
 
     /**
-     * The Azure {@link KafkaProperties} instance will be created if an Azure Event Hubs connection string is provided
+     * The {@link KafkaPropertiesBeanPostProcessor} will be created if an Azure Event Hubs connection string is provided
      * and the Kafka dependency is detected from the classpath.
      * @param connectionStringProvider the Azure Event Hubs connection string provider.
-     * @return the {@link KafkaProperties} with an Azure Event Hubs connection information.
+     * @return the {@link KafkaPropertiesBeanPostProcessor} to configure Azure Event Hubs connection information
+     * to {@link KafkaProperties}.
      */
-    @Primary
     @Bean
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
-    public KafkaProperties azureKafkaProperties(
+    static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor(
             ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
-
-        LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager"
-            + " has been deprecated, please use OAuth2 instead.");
-
-        KafkaProperties kafkaProperties = new KafkaProperties();
-
-        String connectionString = connectionStringProvider.getConnectionString();
-
-        String bootstrapServer = new EventHubsConnectionString(connectionString).getFullyQualifiedNamespace() + ":9093";
-        kafkaProperties.setBootstrapServers(new ArrayList<>(Collections.singletonList(bootstrapServer)));
-        kafkaProperties.getProperties().put("security.protocol", "SASL_SSL");
-        kafkaProperties.getProperties().put("sasl.mechanism", "PLAIN");
-        kafkaProperties.getProperties().put("sasl.jaas.config", String.format(SASL_CONFIG_VALUE,
-                connectionString, System.getProperty("line.separator")));
-        return kafkaProperties;
+        return new KafkaPropertiesBeanPostProcessor(connectionStringProvider);
     }
 
 }
