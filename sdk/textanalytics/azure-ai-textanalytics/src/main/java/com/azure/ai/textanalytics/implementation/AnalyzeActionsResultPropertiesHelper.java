@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.models.SingleCategoryClassifyActionResult;
 import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
@@ -40,8 +39,6 @@ public final class AnalyzeActionsResultPropertiesHelper {
             IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults);
         void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults);
-        void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ExtractSummaryActionResult> extractSummaryResults);
         void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
         void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
@@ -88,11 +85,6 @@ public final class AnalyzeActionsResultPropertiesHelper {
     public static void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
         accessor.setAnalyzeSentimentResults(analyzeActionsResult, analyzeSentimentResults);
-    }
-
-    public static void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
-        accessor.setExtractSummaryResults(analyzeActionsResult, extractSummaryResults);
     }
 
     public static void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,

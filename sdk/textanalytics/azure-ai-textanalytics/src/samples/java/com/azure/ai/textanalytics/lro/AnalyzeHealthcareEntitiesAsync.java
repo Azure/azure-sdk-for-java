@@ -22,7 +22,6 @@ import com.azure.core.http.rest.PagedResponse;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -121,11 +120,6 @@ public class AnalyzeHealthcareEntitiesAsync {
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
                     }
-                }
-                // FHIR bundle in JSON format
-                final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
-                if (fhirBundle != null) {
-                    System.out.printf("FHIR bundle: %s%n", fhirBundle);
                 }
             }
         }

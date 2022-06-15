@@ -18,10 +18,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
-import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -47,7 +43,6 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
 import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -60,7 +55,6 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -99,7 +93,6 @@ import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
@@ -624,10 +617,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Test
-    abstract void analyzeHealthcareEntitiesForFhirBundle(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-
     // Healthcare LRO - Cancellation
 
     @Test
@@ -670,31 +659,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    // Extractive Summarization
-//    @Test
-//    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
-//        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
@@ -1054,14 +1018,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(false));
     }
 
-    void analyzeHealthcareEntitiesForFhirBundleRunner(
-        BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
-        testRunner.accept(asList(
-            "All female participants that are premenopausal will be required to have a pregnancy test; "
-                + "any participant who is pregnant or breastfeeding will not be included"),
-            new AnalyzeHealthcareEntitiesOptions().setFhirVersion(FhirVersion.V4_0_1));
-    }
-
     // Healthcare LRO runner- Cancellation
     void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -1100,8 +1056,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                     new RecognizePiiEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME),
                     new ExtractKeyPhrasesAction())
-                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
-                    new ExtractSummaryAction())
                 .setRecognizeLinkedEntitiesActions(
                     new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
                     new RecognizeLinkedEntitiesAction())
@@ -1137,7 +1091,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
-                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
             // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
@@ -1233,16 +1186,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             SENTIMENT_INPUTS,
             new TextAnalyticsActions()
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
-    }
-
-    void analyzeExtractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
-        Integer maxSentenceCount, SummarySentencesOrder summarySentencesOrder) {
-        testRunner.accept(SUMMARY_INPUTS,
-            new TextAnalyticsActions()
-                .setExtractSummaryActions(
-                    new ExtractSummaryAction()
-                        .setMaxSentenceCount(maxSentenceCount)
-                        .setOrderBy(summarySentencesOrder)));
     }
 
     void recognizeCustomEntitiesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
@@ -1387,12 +1330,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateDocumentSentiment(includeOpinionMining, expectedItem.getDocumentSentiment(),
                 actualItem.getDocumentSentiment()));
-    }
-
-    static void validateExtractSummaryResultCollection(boolean showStatistics,
-        ExtractSummaryResultCollection expected, ExtractSummaryResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual,
-            (expectedItem, actualItem) -> validateDocumentExtractSummaryResult(expectedItem, actualItem));
     }
 
     static void validateHealthcareEntitiesResult(boolean showStatistics,
@@ -1647,16 +1584,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
-    static void validateDocumentExtractSummaryResult(ExtractSummaryResult expect,
-        ExtractSummaryResult actual) {
-
-        validateSummarySentenceList(
-            expect.getSentences().stream().collect(Collectors.toList()),
-            actual.getSentences().stream().collect(Collectors.toList())
-        );
-
-    }
-
     static void validateCustomSingleCategory(SingleCategoryClassifyResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
@@ -1803,9 +1730,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateAnalyzeSentimentActionResults(showStatistics, includeOpinionMining,
             expected.getAnalyzeSentimentResults().stream().collect(Collectors.toList()),
             actual.getAnalyzeSentimentResults().stream().collect(Collectors.toList()));
-        validateExtractSummaryActionResults(showStatistics,
-            expected.getExtractSummaryResults().stream().collect(Collectors.toList()),
-            actual.getExtractSummaryResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
@@ -1847,15 +1771,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             validateAnalyzeSentimentActionResult(showStatistics, includeOpinionMining, expected.get(i), actual.get(i));
         }
     }
-
-    static void validateExtractSummaryActionResults(boolean showStatistics,
-        List<ExtractSummaryActionResult> expected, List<ExtractSummaryActionResult> actual) {
-        assertEquals(expected.size(), actual.size());
-        for (int i = 0; i < actual.size(); i++) {
-            validateExtractSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
-        }
-    }
-
 
     // Action result validation
     static void validateRecognizeEntitiesActionResult(boolean showStatistics,
@@ -1930,22 +1845,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         } else {
             validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining,
-                expected.getDocumentsResults(), actual.getDocumentsResults());
-        }
-    }
-
-    static void validateExtractSummaryActionResult(boolean showStatistics,
-        ExtractSummaryActionResult expected, ExtractSummaryActionResult actual) {
-        assertEquals(expected.isError(), actual.isError());
-        if (actual.isError()) {
-            if (expected.getError() == null) {
-                assertNull(actual.getError());
-            } else {
-                assertNotNull(actual.getError());
-                validateErrorDocument(expected.getError(), actual.getError());
-            }
-        } else {
-            validateExtractSummaryResultCollection(showStatistics,
                 expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }

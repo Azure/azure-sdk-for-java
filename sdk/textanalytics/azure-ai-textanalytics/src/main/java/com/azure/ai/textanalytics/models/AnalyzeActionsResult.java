@@ -18,7 +18,6 @@ public final class AnalyzeActionsResult {
     private IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
-    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
     private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
     private IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults;
     private IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults;
@@ -62,12 +61,6 @@ public final class AnalyzeActionsResult {
                 public void setAnalyzeSentimentResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
                     analyzeActionsResult.setAnalyzeSentimentResults(analyzeSentimentResults);
-                }
-
-                @Override
-                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
-                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
                 }
 
                 @Override
@@ -149,15 +142,6 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
-     *
-     * @return the extractSummaryResults value.
-     */
-    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
-        return extractSummaryResults;
-    }
-
-    /**
      * Gets the {@code recognizeCustomEntitiesResults} property: the custom recognize entities actions results property.
      *
      * @return the recognizeCustomEntitiesResults value.
@@ -212,10 +196,6 @@ public final class AnalyzeActionsResult {
 
     private void setAnalyzeSentimentResults(IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
         this.analyzeSentimentResults = analyzeSentimentResults;
-    }
-
-    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
-        this.extractSummaryResults = extractSummaryResults;
     }
 
     private void setRecognizeCustomEntitiesResults(
