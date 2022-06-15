@@ -26,11 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OutputCaptureExtension.class)
 public class KeyVaultCertificateUserAgentTests {
 
-    private static final String format1 = String.format("User-Agent:%s",
-        AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
-    private static final String format2 = String.format("\"User-Agent\":\"%s",
-        AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
-
     @Test
     public void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
@@ -63,6 +58,10 @@ public class KeyVaultCertificateUserAgentTests {
                     // Eat it because we just want the log.
                 }
                 String allOutput = output.getAll();
+                String format1 = String.format("User-Agent:%s",
+                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
+                String format2 = String.format("\"User-Agent\":\"%s",
+                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
                 assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }
