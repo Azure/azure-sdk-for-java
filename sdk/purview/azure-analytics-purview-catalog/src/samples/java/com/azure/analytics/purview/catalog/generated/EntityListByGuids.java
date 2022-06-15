@@ -10,19 +10,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.Arrays;
 
 public class EntityListByGuids {
     public static void main(String[] args) {
-        // BEGIN: com.azure.analytics.purview.catalog.generated.entitylistbyguids.entitylistbyguids
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitylistbyguids.entitylistbyguids
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("guid", "784c0f2f-afd2-e26b-f9cb-984f6c2c5021");
-        requestOptions.addQueryParam("guid", "b4ebc8be-cef4-860a-bee9-28cc34cb5caa");
-        Response<BinaryData> response = entityClient.listByGuidsWithResponse(requestOptions);
-        // END: com.azure.analytics.purview.catalog.generated.entitylistbyguids.entitylistbyguids
+        Response<BinaryData> response =
+                entityClient.listByGuidsWithResponse(
+                        Arrays.asList("784c0f2f-afd2-e26b-f9cb-984f6c2c5021", "b4ebc8be-cef4-860a-bee9-28cc34cb5caa"),
+                        requestOptions);
+        // END:com.azure.analytics.purview.catalog.generated.entitylistbyguids.entitylistbyguids
     }
 }

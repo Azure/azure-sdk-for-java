@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -55,6 +56,44 @@ public final class TypesImpl {
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
     public interface TypesService {
+        @Get("/atlas/v2/types/businessmetadatadef/guid/{guid}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getBusinessMetadataDefByGuid(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/types/businessmetadatadef/name/{name}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getBusinessMetadataDefByName(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/atlas/v2/types/classificationdef/guid/{guid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -70,6 +109,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getClassificationDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -88,6 +128,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getClassificationDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -106,6 +147,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEntityDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -124,6 +166,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEntityDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -142,6 +185,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEnumDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -160,6 +204,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getEnumDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -178,6 +223,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getRelationshipDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -196,6 +242,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getRelationshipDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -214,6 +261,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getStructDefByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -232,6 +280,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getStructDefByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -250,6 +299,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getTypeDefinitionByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -268,6 +318,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> getTypeDefinitionByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -286,6 +337,7 @@ public final class TypesImpl {
         Mono<Response<Void>> deleteTypeByName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -302,7 +354,10 @@ public final class TypesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAllTypeDefinitions(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/types/typedefs")
         @ExpectedResponses({200})
@@ -319,6 +374,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> createTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -337,6 +393,7 @@ public final class TypesImpl {
         Mono<Response<BinaryData>> updateAtlasTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -355,6 +412,7 @@ public final class TypesImpl {
         Mono<Response<Void>> deleteTypeDefinitions(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData typesDef,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -371,7 +429,10 @@ public final class TypesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listTypeDefinitionHeaders(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/types/termtemplatedef/guid/{guid}")
         @ExpectedResponses({200})
@@ -389,6 +450,7 @@ public final class TypesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -408,8 +470,647 @@ public final class TypesImpl {
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("name") String name,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+    }
+
+    /**
+     * Get the businessMetadata definition for the given guid.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param guid businessMetadata guid.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByGuidWithResponseAsync(
+            String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getBusinessMetadataDefByGuid(
+                                this.client.getEndpoint(), guid, accept, requestOptions, context));
+    }
+
+    /**
+     * Get the businessMetadata definition for the given guid.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param guid businessMetadata guid.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByGuidWithResponseAsync(
+            String guid, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.getBusinessMetadataDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
+    }
+
+    /**
+     * Get the businessMetadata definition for the given guid.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param guid businessMetadata guid.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition for the given guid along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBusinessMetadataDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getBusinessMetadataDefByGuidWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Get the businessMetadata definition by it's name (unique).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param name businessMetadata name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByNameWithResponseAsync(
+            String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getBusinessMetadataDefByName(
+                                this.client.getEndpoint(), name, accept, requestOptions, context));
+    }
+
+    /**
+     * Get the businessMetadata definition by it's name (unique).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param name businessMetadata name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByNameWithResponseAsync(
+            String name, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.getBusinessMetadataDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
+    }
+
+    /**
+     * Get the businessMetadata definition by it's name (unique).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param name businessMetadata name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getBusinessMetadataDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return getBusinessMetadataDefByNameWithResponseAsync(name, requestOptions).block();
     }
 
     /**
@@ -523,9 +1224,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getClassificationDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                        service.getClassificationDefByGuid(
+                                this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -640,7 +1343,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getClassificationDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassificationDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -866,9 +1570,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getClassificationDefByName(this.client.getEndpoint(), name, requestOptions, context));
+                        service.getClassificationDefByName(
+                                this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -983,7 +1689,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getClassificationDefByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassificationDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -1229,8 +1936,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getEntityDefinitionByGuid(
+                                this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -1365,7 +2075,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEntityDefinitionByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -1631,8 +2342,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEntityDefinitionByName(this.client.getEndpoint(), name, requestOptions, context));
+                context ->
+                        service.getEntityDefinitionByName(
+                                this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -1767,7 +2481,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getEntityDefinitionByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEntityDefinitionByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -1985,8 +2700,9 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEnumDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.getEnumDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2074,7 +2790,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getEnumDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEnumDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -2245,8 +2962,9 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getEnumDefByName(this.client.getEndpoint(), name, requestOptions, context));
+                context -> service.getEnumDefByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -2334,7 +3052,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getEnumDefByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEnumDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -2535,8 +3254,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getRelationshipDefByGuid(
+                                this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2653,7 +3375,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getRelationshipDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -2883,8 +3606,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getRelationshipDefByName(this.client.getEndpoint(), name, requestOptions, context));
+                context ->
+                        service.getRelationshipDefByName(
+                                this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3001,7 +3727,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getRelationshipDefByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getRelationshipDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -3219,8 +3946,10 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getStructDefByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getStructDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3326,7 +4055,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getStructDefByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getStructDefByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -3533,8 +4263,10 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getStructDefByName(this.client.getEndpoint(), name, requestOptions, context));
+                context ->
+                        service.getStructDefByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -3640,7 +4372,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getStructDefByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getStructDefByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -3899,8 +4632,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getTypeDefinitionByGuid(
+                                this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -4057,7 +4793,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getTypeDefinitionByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -4367,8 +5104,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getTypeDefinitionByName(this.client.getEndpoint(), name, requestOptions, context));
+                context ->
+                        service.getTypeDefinitionByName(
+                                this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -4525,7 +5265,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.getTypeDefinitionByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.getTypeDefinitionByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -4695,8 +5436,9 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeByNameWithResponseAsync(String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteTypeByName(this.client.getEndpoint(), name, requestOptions, context));
+                context -> service.deleteTypeByName(this.client.getEndpoint(), name, accept, requestOptions, context));
     }
 
     /**
@@ -4714,7 +5456,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
-        return service.deleteTypeByName(this.client.getEndpoint(), name, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteTypeByName(this.client.getEndpoint(), name, accept, requestOptions, context);
     }
 
     /**
@@ -4741,16 +5484,16 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -4831,6 +5574,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -5016,8 +5782,9 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getAllTypeDefinitions(this.client.getEndpoint(), requestOptions, context));
+                context -> service.getAllTypeDefinitions(this.client.getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -5028,16 +5795,16 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -5118,6 +5885,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -5305,7 +6095,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        return service.getAllTypeDefinitions(this.client.getEndpoint(), requestOptions, context);
+        final String accept = "application/json";
+        return service.getAllTypeDefinitions(this.client.getEndpoint(), accept, requestOptions, context);
     }
 
     /**
@@ -5316,16 +6107,16 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -5406,6 +6197,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -5601,7 +6415,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -5682,6 +6496,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -5861,7 +6698,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -5942,6 +6779,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -6128,8 +6988,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context));
+                context ->
+                        service.createTypeDefinitions(
+                                this.client.getEndpoint(), typesDef, accept, requestOptions, context));
     }
 
     /**
@@ -6140,7 +7003,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -6221,6 +7084,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -6400,7 +7286,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -6481,6 +7367,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -6668,7 +7577,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return service.createTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context);
+        final String accept = "application/json";
+        return service.createTypeDefinitions(this.client.getEndpoint(), typesDef, accept, requestOptions, context);
     }
 
     /**
@@ -6679,7 +7589,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -6760,6 +7670,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -6939,7 +7872,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -7020,6 +7953,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -7215,7 +8171,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -7296,6 +8252,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -7475,7 +8454,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -7556,6 +8535,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -7742,10 +8744,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateAtlasTypeDefinitions(
-                                this.client.getEndpoint(), typesDef, requestOptions, context));
+                                this.client.getEndpoint(), typesDef, accept, requestOptions, context));
     }
 
     /**
@@ -7755,7 +8758,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -7836,6 +8839,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -8015,7 +9041,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -8096,6 +9122,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -8283,7 +9332,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return service.updateAtlasTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context);
+        final String accept = "application/json";
+        return service.updateAtlasTypeDefinitions(this.client.getEndpoint(), typesDef, accept, requestOptions, context);
     }
 
     /**
@@ -8293,7 +9343,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -8374,6 +9424,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -8553,7 +9626,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -8634,6 +9707,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -8830,7 +9926,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -8911,6 +10007,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -9097,8 +10216,11 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context));
+                context ->
+                        service.deleteTypeDefinitions(
+                                this.client.getEndpoint(), typesDef, accept, requestOptions, context));
     }
 
     /**
@@ -9108,7 +10230,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -9189,6 +10311,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -9376,7 +10521,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeDefinitionsWithResponseAsync(
             BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return service.deleteTypeDefinitions(this.client.getEndpoint(), typesDef, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteTypeDefinitions(this.client.getEndpoint(), typesDef, accept, requestOptions, context);
     }
 
     /**
@@ -9386,7 +10532,7 @@ public final class TypesImpl {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -9467,6 +10613,29 @@ public final class TypesImpl {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -9663,9 +10832,9 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -9690,8 +10859,10 @@ public final class TypesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.listTypeDefinitionHeaders(this.client.getEndpoint(), requestOptions, context));
+                context ->
+                        service.listTypeDefinitionHeaders(this.client.getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -9702,9 +10873,9 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -9731,7 +10902,8 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponseAsync(
             RequestOptions requestOptions, Context context) {
-        return service.listTypeDefinitionHeaders(this.client.getEndpoint(), requestOptions, context);
+        final String accept = "application/json";
+        return service.listTypeDefinitionHeaders(this.client.getEndpoint(), accept, requestOptions, context);
     }
 
     /**
@@ -9742,9 +10914,9 @@ public final class TypesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -9774,14 +10946,6 @@ public final class TypesImpl {
 
     /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -9882,26 +11046,20 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByGuid(
                                 this.client.getEndpoint(),
                                 guid,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -10003,20 +11161,18 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getTermTemplateDefByGuid(
-                this.client.getEndpoint(), guid, this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                guid,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -10121,14 +11277,6 @@ public final class TypesImpl {
     /**
      * Get the term template definition by its name (unique).
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -10228,26 +11376,20 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTermTemplateDefByName(
                                 this.client.getEndpoint(),
                                 name,
                                 this.client.getServiceVersion().getVersion(),
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Get the term template definition by its name (unique).
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -10349,20 +11491,18 @@ public final class TypesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponseAsync(
             String name, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.getTermTemplateDefByName(
-                this.client.getEndpoint(), name, this.client.getServiceVersion().getVersion(), requestOptions, context);
+                this.client.getEndpoint(),
+                name,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                context);
     }
 
     /**
      * Get the term template definition by its name (unique).
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
