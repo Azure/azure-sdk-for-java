@@ -107,12 +107,4 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
     private Boolean isCheckpointValid(Checkpoint checkpoint) {
         return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
     }
-//    private JedisPoolConfig createPoolConfig(RedisClientConfig config) {
-//        JedisPoolConfig poolConfig = new JedisPoolConfig();
-//        poolConfig.setMaxTotal(config.getPoolMaxTotal());
-//        poolConfig.setMaxIdle(config.getPoolMaxIdle());
-//        poolConfig.setBlockWhenExhausted(config.getPoolBlockWhenExhausted());
-//        poolConfig.setMinIdle(config.getPoolMinIdle());
-//        return poolConfig;
-//    }
 }
