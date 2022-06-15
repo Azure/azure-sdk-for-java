@@ -19,12 +19,6 @@ final class EncryptedRegionInfo {
     @JsonProperty(value = "NonceLength")
     private int nonceLength;
 
-    /**
-     * The tag length
-     */
-    @JsonProperty(value = "TagLength")
-    private int tagLength;
-
     EncryptedRegionInfo() {
     }
 
@@ -34,10 +28,9 @@ final class EncryptedRegionInfo {
      * @param ciphertextLength The length of the cipher text.
      * @param nonceLength The length of the nonce.
      */
-    EncryptedRegionInfo(int ciphertextLength, int nonceLength, int tagLength) {
+    EncryptedRegionInfo(int ciphertextLength, int nonceLength) {
         this.dataLength = ciphertextLength;
         this.nonceLength = nonceLength;
-        this.tagLength = tagLength;
     }
 
     /**
@@ -56,14 +49,5 @@ final class EncryptedRegionInfo {
      */
     public int getNonceLength() {
         return nonceLength;
-    }
-
-    /**
-     * Gets the tagLength property.
-     *
-     * @return The tagLength property.
-     */
-    public int getTagLength() {
-        return tagLength;
     }
 }

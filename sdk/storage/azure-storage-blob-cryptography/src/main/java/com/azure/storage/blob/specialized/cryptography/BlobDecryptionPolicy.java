@@ -31,12 +31,16 @@ import javax.crypto.ShortBufferException;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
@@ -509,9 +513,41 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
 
         return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
-            encryptionData.getWrappedContentKey().getAlgorithm(),
-            encryptionData.getWrappedContentKey().getEncryptedKey()
-        ));
+                encryptionData.getWrappedContentKey().getAlgorithm(),
+                encryptionData.getWrappedContentKey().getEncryptedKey()
+            ))
+            .flatMap(keyBytes -> {
+                switch (encryptionData.getEncryptionAgent().getProtocol()) {
+                    case ENCRYPTION_PROTOCOL_V2:
+                        ByteArrayInputStream keyStream = new ByteArrayInputStream(keyBytes);
+                        byte[] protocolBytes = new byte[3];
+                        try {
+                            keyStream.read(protocolBytes);
+                            if (Arrays.compare(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8),
+                                protocolBytes) != 0) {
+                                return Mono.error(LOGGER.logExceptionAsError(
+                                    new IllegalStateException("Padded wrapped key did not match protocol version")));
+                            }
+                            for (int i = 0; i < 5; i++) {
+                                keyStream.read();
+                            }
+                            if (keyStream.available() != (256 / 8)) {
+                                return Mono.error(LOGGER.logExceptionAsError(
+                                    new IllegalStateException("Wrapped key bytes were incorrect length")));
+                            }
+                            byte[] strippedKeyBytes = new byte[256 / 8];
+                            keyStream.read(strippedKeyBytes);
+                            return Mono.just(strippedKeyBytes);
+                        } catch (IOException e) {
+                            return Mono.error(LOGGER.logThrowableAsError(e));
+                        }
+                    case ENCRYPTION_PROTOCOL_V1:
+                        return Mono.just(keyBytes);
+                    default:
+                        return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException("Invalid protocol version: "
+                            + encryptionData.getEncryptionAgent().getProtocol())));
+                }
+            });
     }
 
     /**

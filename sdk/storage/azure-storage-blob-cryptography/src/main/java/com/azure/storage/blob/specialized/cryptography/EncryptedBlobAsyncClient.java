@@ -42,9 +42,11 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 import javax.crypto.spec.GCMParameterSpec;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -601,7 +603,29 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
                 CryptographyConstants.AGENT_METADATA_VALUE);
 
-            return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, aesKey.getEncoded())
+            byte[] keyToWrap;
+            switch (this.encryptionVersion) {
+                case V2:
+                    /*
+                     * Prevent a downgrade attack by prepending the protocol version to the key (padded to 8 bytes) before
+                     * wrapping.
+                     */
+                    ByteArrayOutputStream keyStream = new ByteArrayOutputStream((256 / 8) + 8);
+                    keyStream.write(CryptographyConstants.ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
+                    for (int i = 0; i < 5; i++) {
+                        keyStream.write(0);
+                    }
+                    keyStream.write(aesKey.getEncoded());
+                    keyToWrap = keyStream.toByteArray();
+                    break;
+                case V1:
+                    keyToWrap = aesKey.getEncoded();
+                    break;
+                default:
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
+                        + this.encryptionVersion));
+            }
+            return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, keyToWrap)
                 .map(encryptedKey -> {
                     WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
@@ -634,7 +658,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                                     EncryptionAlgorithm.AES_GCM_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setEncryptedRegionInfo(new EncryptedRegionInfo(
-                                    GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH, TAG_LENGTH))
+                                    GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH))
                                 .setWrappedContentKey(wrappedKey);
 
                             encryptedTextFlux = encryptV2(plainTextFlux, aesKey);
@@ -646,7 +670,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
                 }));
-        } catch (GeneralSecurityException e) {
+        } catch (GeneralSecurityException | IOException e) {
             // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

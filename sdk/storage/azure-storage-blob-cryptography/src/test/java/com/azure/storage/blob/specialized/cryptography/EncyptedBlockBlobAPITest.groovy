@@ -141,9 +141,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         encryptedBlobClient.downloadStream(plaintextOut)
 
         then:
-        // TODO:
-        // Shouldn't have to duplicate data, but something weird was happening around having to flip the data when I used the original source
-        // <= 4mb and I had to flip. Otherwise I had to not flip?
         data == ByteBuffer.wrap(plaintextOut.toByteArray())
 
         where:
@@ -324,7 +321,15 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def cek = fakeKey.unwrapKey(
             encryptionData.getWrappedContentKey().getAlgorithm(),
             encryptionData.getWrappedContentKey().getEncryptedKey()).block()
-        def keySpec = new SecretKeySpec(cek, CryptographyConstants.AES)
+        ByteArrayInputStream keyStream = new ByteArrayInputStream(cek)
+        byte[] protocolBytes = new byte[3]
+        keyStream.read(protocolBytes)
+        for (int i = 0; i < 5; i++) {
+            keyStream.read()
+        }
+        byte[] strippedKeyBytes = new byte[256]
+        keyStream.read(strippedKeyBytes)
+        def keySpec = new SecretKeySpec(strippedKeyBytes, CryptographyConstants.AES)
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding")
 
@@ -375,8 +380,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
         return compareListToBuffer(byteBufferList, outputByteBuffer)
     }
 
+    // Requires specific container set up coordinated between languages. Should only be run manually.
     @Ignore
-    def "Temp test for cross plat"() {
+    def "Test for cross plat"() {
         setup:
         def kek = new NoOpKey()
 
@@ -657,6 +663,25 @@ class EncyptedBlockBlobAPITest extends APISpec {
         version              | _
         EncryptionVersion.V1 | _
         EncryptionVersion.V2 | _
+    }
+
+    def "Encryption v2 downgrade attack"() {
+        setup:
+        def blobName = generateBlobName()
+        bec = getEncryptionClient(EncryptionVersion.V2, blobName)
+        bec.upload(data.defaultInputStream, data.defaultDataSize)
+
+        def metadata = bec.getProperties().getMetadata()
+        def encryptionDataStr = metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY)
+        encryptionDataStr = encryptionDataStr.replace("2.0", "1.0")
+        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionDataStr)
+        bec.setMetadata(metadata)
+
+        when:
+        bec.downloadStream(new ByteArrayOutputStream())
+
+        then:
+        thrown(Exception)
     }
 
     def "Download unencrypted data"() {
