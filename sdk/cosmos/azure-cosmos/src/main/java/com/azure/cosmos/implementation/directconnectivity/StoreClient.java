@@ -16,15 +16,14 @@ import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionsHandler;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
@@ -33,8 +32,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -152,7 +151,8 @@ public class StoreClient implements IStoreClient {
         StoreResponse storeResponse,
         RxDocumentServiceRequest request) throws InternalServerErrorException {
 
-        Map<String, String> responseHeaders = new HashMap<>(storeResponse.getResponseHeaders());
+        Map<String, String> responseHeaders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        responseHeaders.putAll(storeResponse.getResponseHeaders());
 
         this.updateResponseHeader(request, responseHeaders);
         this.captureSessionToken(request, responseHeaders);

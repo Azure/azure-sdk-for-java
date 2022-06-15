@@ -3,10 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
-import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
+import com.azure.spring.cloud.autoconfigure.storage.AzureStorageConfiguration;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
@@ -27,7 +28,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
@@ -37,19 +41,20 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
  *
  * @since 4.0.0
  */
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties
 @ConditionalOnClass(BlobServiceClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.storage.blob.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.blob", name = { "account-name", "endpoint", "connection-string" })
-public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
-
-    AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
-    }
+@ConditionalOnProperty(value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
+    name = { "account-name", "endpoint", "connection-string" })
+@Import(AzureStorageConfiguration.class)
+public class AzureStorageBlobAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    AzureStorageBlobProperties azureStorageBlobProperties() {
-        return loadProperties(getAzureGlobalProperties(), new AzureStorageBlobProperties());
+    AzureStorageBlobProperties azureStorageBlobProperties(AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
     }
 
     @Bean
@@ -130,7 +135,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     }
 
     @Bean
-    @ConditionalOnProperty("spring.cloud.azure.storage.blob.connection-string")
+    @ConditionalOnAnyProperty(prefixes = { AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());

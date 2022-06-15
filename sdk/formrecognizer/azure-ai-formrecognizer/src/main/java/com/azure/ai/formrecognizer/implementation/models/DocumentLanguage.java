@@ -15,8 +15,8 @@ public final class DocumentLanguage {
      * Detected language.  Value may an ISO 639-1 language code (ex. "en",
      * "fr") or BCP 47 language tag (ex. "zh-Hans").
      */
-    @JsonProperty(value = "languageCode", required = true)
-    private String languageCode;
+    @JsonProperty(value = "locale", required = true)
+    private String locale;
 
     /*
      * Location of the text elements in the concatenated content the language
@@ -32,24 +32,24 @@ public final class DocumentLanguage {
     private float confidence;
 
     /**
-     * Get the languageCode property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
+     * Get the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
      * language tag (ex. "zh-Hans").
      *
-     * @return the languageCode value.
+     * @return the locale value.
      */
-    public String getLanguageCode() {
-        return this.languageCode;
+    public String getLocale() {
+        return this.locale;
     }
 
     /**
-     * Set the languageCode property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
+     * Set the locale property: Detected language. Value may an ISO 639-1 language code (ex. "en", "fr") or BCP 47
      * language tag (ex. "zh-Hans").
      *
-     * @param languageCode the languageCode value to set.
+     * @param locale the locale value to set.
      * @return the DocumentLanguage object itself.
      */
-    public DocumentLanguage setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
+    public DocumentLanguage setLocale(String locale) {
+        this.locale = locale;
         return this;
     }
 

@@ -37,7 +37,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: containerregistry
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+    AdditionalModules:
+      - name: azure-containers-containerregistry-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

@@ -33,14 +33,33 @@ pr:
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
 
+parameters:
+- name: release_azuremonitoropentelemetryexporter
+  displayName: 'azure-monitor-opentelemetry-exporter'
+  type: boolean
+  default: true
+- name: release_azuremonitorquery
+  displayName: 'azure-monitor-query'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: monitor
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-monitor-opentelemetry-exporter
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
+        releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
+        releaseInBatch: ${{ parameters.release_azuremonitorquery }}
+    AdditionalModules:
+      - name: azure-monitor-query-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

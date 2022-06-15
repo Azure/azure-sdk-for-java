@@ -57,7 +57,7 @@ public class CosmosConfig {
      * @param maxDegreeOfParallelism must not be {@literal null}
      */
     @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism"})
-    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+    CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         DatabaseThroughputConfig databaseThroughputConfig,
                         boolean queryMetricsEnabled,
                         int maxDegreeOfParallelism) {

@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -70,6 +71,7 @@ public final class CollectionsImpl {
                 @PathParam("collection") String collection,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData entity,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -90,6 +92,7 @@ public final class CollectionsImpl {
                 @PathParam("collection") String collection,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData entities,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -110,6 +113,7 @@ public final class CollectionsImpl {
                 @PathParam("collection") String collection,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData moveEntitiesRequest,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -118,14 +122,6 @@ public final class CollectionsImpl {
      * Creates or updates an entity to a collection. Existing entity is matched using its unique guid if supplied or by
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -138,6 +134,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -163,8 +162,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -249,6 +255,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -288,6 +298,7 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdate(
@@ -295,6 +306,7 @@ public final class CollectionsImpl {
                                 collection,
                                 this.client.getServiceVersion().getVersion(),
                                 entity,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -303,14 +315,6 @@ public final class CollectionsImpl {
      * Creates or updates an entity to a collection. Existing entity is matched using its unique guid if supplied or by
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -323,6 +327,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -348,8 +355,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -434,6 +448,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -474,11 +492,13 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdate(
                 this.client.getEndpoint(),
                 collection,
                 this.client.getServiceVersion().getVersion(),
                 entity,
+                accept,
                 requestOptions,
                 context);
     }
@@ -487,14 +507,6 @@ public final class CollectionsImpl {
      * Creates or updates an entity to a collection. Existing entity is matched using its unique guid if supplied or by
      * its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -507,6 +519,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -532,8 +547,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -618,6 +640,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -665,14 +691,6 @@ public final class CollectionsImpl {
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -684,6 +702,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -709,8 +730,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -797,6 +825,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -836,6 +868,7 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
             String collection, BinaryData entities, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateBulk(
@@ -843,6 +876,7 @@ public final class CollectionsImpl {
                                 collection,
                                 this.client.getServiceVersion().getVersion(),
                                 entities,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -851,14 +885,6 @@ public final class CollectionsImpl {
      * Creates or updates entities in bulk to a collection. Existing entity is matched using its unique guid if supplied
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -871,6 +897,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -896,8 +925,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -984,6 +1020,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1024,11 +1064,13 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateBulkWithResponseAsync(
             String collection, BinaryData entities, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateBulk(
                 this.client.getEndpoint(),
                 collection,
                 this.client.getServiceVersion().getVersion(),
                 entities,
+                accept,
                 requestOptions,
                 context);
     }
@@ -1037,14 +1079,6 @@ public final class CollectionsImpl {
      * Creates or updates entities in bulk to a collection. Existing entity is matched using its unique guid if supplied
      * or by its unique attributes eg: qualifiedName. Map and array of collections are not well supported. E.g.,
      * array&lt;array&lt;int&gt;&gt;, array&lt;map&lt;string, int&gt;&gt;.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1057,6 +1091,9 @@ public final class CollectionsImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1082,8 +1119,15 @@ public final class CollectionsImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1170,6 +1214,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1215,14 +1263,6 @@ public final class CollectionsImpl {
     /**
      * Move existing entities to the target collection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1276,6 +1316,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1315,6 +1359,7 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.moveEntitiesToCollection(
@@ -1322,20 +1367,13 @@ public final class CollectionsImpl {
                                 collection,
                                 this.client.getServiceVersion().getVersion(),
                                 moveEntitiesRequest,
+                                accept,
                                 requestOptions,
                                 context));
     }
 
     /**
      * Move existing entities to the target collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1390,6 +1428,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1430,25 +1472,19 @@ public final class CollectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponseAsync(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.moveEntitiesToCollection(
                 this.client.getEndpoint(),
                 collection,
                 this.client.getServiceVersion().getVersion(),
                 moveEntitiesRequest,
+                accept,
                 requestOptions,
                 context);
     }
 
     /**
      * Move existing entities to the target collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1503,6 +1539,10 @@ public final class CollectionsImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]

@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Instant
@@ -68,7 +69,7 @@ private[cosmos] case class PartitionMetadata
   endLsn: Option[Long],
   lastRetrieved: AtomicLong,
   lastUpdated: AtomicLong
-) {
+)  extends BasicLoggingTrait {
 
   requireNotNull(feedRange, "feedRange")
   requireNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -114,7 +115,7 @@ private[cosmos] case class PartitionMetadata
   }
 
   def getWeightedLsnGap: Long = {
-    val progressFactor = math.max(this.latestLsn - this.startLsn, 0)
+    val progressFactor = math.max(this.getAndValidateLatestLsn - this.startLsn, 0)
     if (progressFactor == 0) {
       0
     } else {
@@ -128,11 +129,32 @@ private[cosmos] case class PartitionMetadata
 
   def getAvgItemsPerLsn: Double = {
     if (this.firstLsn.isEmpty) {
-      math.max(1d, this.documentCount.toDouble / this.latestLsn)
-    } else if (this.documentCount == 0 || (this.latestLsn - this.firstLsn.get) <= 0) {
+      math.max(1d, this.documentCount.toDouble / this.getAndValidateLatestLsn)
+    } else if (this.documentCount == 0 || (this.getAndValidateLatestLsn - this.firstLsn.get) <= 0) {
       1d
     } else {
-      this.documentCount.toDouble / (this.latestLsn - this.firstLsn.get)
+      this.documentCount.toDouble / (this.getAndValidateLatestLsn- this.firstLsn.get)
+    }
+  }
+
+  def getAndValidateLatestLsn(): Long = {
+    if (this.latestLsn == 0) {
+      // latestLsn == 0 but startLsn > 0 means there was an issue where change feed continuation
+      // was null - endLsn created here will be used as the startLsn for the next micro batch iteration
+      // so it should never be smaller than startLsn
+      this.startLsn
+    } else {
+      if (this.latestLsn < this.startLsn) {
+        logInfo(s"Received LatestLSN '${this.latestLsn}' for range '${this.feedRange}' is smaller than the " +
+          s"StartLSN from last offset '${this.startLsn}'. This can happen when there is a lagging replica with " +
+          s"eventual consistency - and is not a problem when it happens temporarily - the next attempt to drain the " +
+          s"change feed will hit other replica or replica has caught up in the meantime. So eventually all " +
+          s"events will be processed.")
+
+        this.startLsn
+      } else {
+        this.latestLsn
+      }
     }
   }
 }

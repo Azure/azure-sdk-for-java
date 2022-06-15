@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -212,9 +213,18 @@ public class ConnectionConfigTest extends TestSuiteBase {
         String proxyHost = "127.0.0.0";
         int proxyPort = 8080;
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+        String username = UUID.randomUUID().toString();
+        String password = UUID.randomUUID().toString();
+        proxyOptions.setCredentials(username, password);
         System.setProperty(
                 "COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG",
-                String.format("{\"type\":\"%s\", \"host\": \"%s\", \"port\": %d}", proxyOptions.getType().toString(), proxyHost, proxyPort));
+                String.format(
+                    "{\"type\":\"%s\", \"host\": \"%s\", \"port\": %d, \"username\": \"%s\", \"password\":\"%s\"}",
+                    proxyOptions.getType().toString(),
+                    proxyHost,
+                    proxyPort,
+                    username,
+                    password));
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -232,6 +242,8 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(clientTelemetryConfig.isClientTelemetryEnabled()).isTrue();
         assertThat(clientTelemetryConfig.getProxy().getType()).isEqualTo(proxyOptions.getType());
         assertThat(clientTelemetryConfig.getProxy().getAddress()).isEqualTo(proxyOptions.getAddress());
+        assertThat(clientTelemetryConfig.getProxy().getUsername()).isEqualTo(proxyOptions.getUsername());
+        assertThat(clientTelemetryConfig.getProxy().getPassword()).isEqualTo(proxyOptions.getPassword());
     }
 
     private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,

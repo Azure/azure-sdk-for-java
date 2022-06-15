@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentPage;
+import com.azure.ai.formrecognizer.models.DocumentPageKind;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
@@ -26,14 +27,15 @@ public final class DocumentPageHelper {
      */
     public interface DocumentPageAccessor {
         void setPageNumber(DocumentPage documentPage, int pageNumber);
-        void setAngle(DocumentPage documentPage, float angle);
-        void setWidth(DocumentPage documentPage, float width);
-        void setHeight(DocumentPage documentPage, float height);
+        void setAngle(DocumentPage documentPage, Float angle);
+        void setWidth(DocumentPage documentPage, Float width);
+        void setHeight(DocumentPage documentPage, Float height);
         void setUnit(DocumentPage documentPage, LengthUnit unit);
         void setSpans(DocumentPage documentPage, List<DocumentSpan> spans);
         void setWords(DocumentPage documentPage, List<DocumentWord> words);
         void setSelectionMarks(DocumentPage documentPage, List<DocumentSelectionMark> selectionMarks);
         void setLines(DocumentPage documentPage, List<DocumentLine> lines);
+        void setKind(DocumentPage documentPage, DocumentPageKind kind);
     }
 
     /**
@@ -49,15 +51,15 @@ public final class DocumentPageHelper {
         accessor.setPageNumber(documentPage, pageNumber);
     }
 
-    static void setAngle(DocumentPage documentPage, float angle) {
+    static void setAngle(DocumentPage documentPage, Float angle) {
         accessor.setAngle(documentPage, angle);
     }
 
-    static void setWidth(DocumentPage documentPage, float width) {
+    static void setWidth(DocumentPage documentPage, Float width) {
         accessor.setWidth(documentPage, width);
     }
 
-    static void setHeight(DocumentPage documentPage, float height) {
+    static void setHeight(DocumentPage documentPage, Float height) {
         accessor.setHeight(documentPage, height);
     }
 
@@ -79,5 +81,9 @@ public final class DocumentPageHelper {
 
     static void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
         accessor.setLines(documentPage, lines);
+    }
+
+    static void setKind(DocumentPage documentPage, DocumentPageKind kind) {
+        accessor.setKind(documentPage, kind);
     }
 }

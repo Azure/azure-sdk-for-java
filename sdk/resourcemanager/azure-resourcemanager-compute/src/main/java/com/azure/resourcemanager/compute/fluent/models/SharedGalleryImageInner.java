@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -259,6 +260,29 @@ public final class SharedGalleryImageInner extends PirSharedGalleryResource {
             this.innerProperties = new SharedGalleryImageProperties();
         }
         this.innerProperties().withPurchasePlan(purchasePlan);
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.innerProperties() == null ? null : this.innerProperties().architecture();
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the SharedGalleryImageInner object itself.
+     */
+    public SharedGalleryImageInner withArchitecture(Architecture architecture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withArchitecture(architecture);
         return this;
     }
 

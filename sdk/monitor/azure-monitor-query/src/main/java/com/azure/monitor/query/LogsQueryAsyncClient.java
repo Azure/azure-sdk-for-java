@@ -349,9 +349,11 @@ public final class LogsQueryAsyncClient {
                 })
                 .map(this::convertToLogQueryResult)
                 .handle((Response<LogsQueryResult> response, SynchronousSink<Response<LogsQueryResult>> sink) -> {
-                    if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE) {
+                    if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE
+                        && !options.isAllowPartialErrors()) {
+
                         sink.error(new ServiceResponseException("Query execution returned partial errors. To "
-                                + "disable exceptions on partial errors, set disableExceptionOnPartialErrors in "
+                                + "disable exceptions on partial errors, set setAllowPartialErrors in "
                                 + "LogsQueryOptions to true."));
                     } else {
                         sink.next(response);
