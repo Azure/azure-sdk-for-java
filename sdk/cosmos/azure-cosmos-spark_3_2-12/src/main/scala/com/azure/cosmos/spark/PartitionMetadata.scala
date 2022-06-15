@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 
 import java.time.Instant
@@ -68,7 +69,7 @@ private[cosmos] case class PartitionMetadata
   endLsn: Option[Long],
   lastRetrieved: AtomicLong,
   lastUpdated: AtomicLong
-) {
+)  extends BasicLoggingTrait {
 
   requireNotNull(feedRange, "feedRange")
   requireNotNull(cosmosClientConfig, "cosmosClientConfig")
@@ -144,10 +145,16 @@ private[cosmos] case class PartitionMetadata
       this.startLsn
     } else {
       if (this.latestLsn < this.startLsn) {
-        throw new IllegalStateException(
-          s"Latest LSN ${this.latestLsn} must not be smaller than start LSN ${this.startLsn}")
+        logInfo(s"Received LatestLSN '${this.latestLsn}' for range '${this.feedRange}' is smaller than the " +
+          s"StartLSN from last offset '${this.startLsn}'. This can happen when there is a lagging replica with " +
+          s"eventual consistency - and is not a problem when it happens temporarily - the next attempt to drain the " +
+          s"change feed will hit other replica or replica has caught up in the meantime. So eventually all " +
+          s"events will be processed.")
+
+        this.startLsn
+      } else {
+        this.latestLsn
       }
-      this.latestLsn
     }
   }
 }
