@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 class AzureStorageBlobAutoConfigurationTests {
 
@@ -186,6 +187,10 @@ class AzureStorageBlobAutoConfigurationTests {
                 "spring.cloud.azure.storage.blob.blob-name=test-blob"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(BlobServiceAsyncClient.class, () -> mock(BlobServiceAsyncClient.class))
+            .withBean(BlobServiceClient.class, () -> mock(BlobServiceClient.class))
+            .withBean(BlobAsyncClient.class, () -> mock(BlobAsyncClient.class))
+            .withBean(BlobClient.class, () -> mock(BlobClient.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageBlobProperties.class);
                 AzureStorageBlobProperties properties = context.getBean(AzureStorageBlobProperties.class);

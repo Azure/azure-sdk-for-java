@@ -10,10 +10,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.service.implementation.AzureAmqpClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
+import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBaseTests<
@@ -21,11 +24,44 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
     AzureEventHubsTestProperties,
     EventHubsClientBuilderFactoryTests.EventHubClientBuilderFactoryExt> {
 
+    @Test
+    void consumerClientPropertiesConfigured() {
+        AzureEventHubsTestProperties.Consumer properties = new AzureEventHubsTestProperties.Consumer();
+        properties.setNamespace("test-namespace");
+        properties.setEventHubName("test-event-hub");
+        properties.setCustomEndpointAddress("test-custom-endpoint-address");
+        properties.setConsumerGroup("test-consumer-group");
+        properties.setPrefetchCount(10);
+
+        EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(builder, times(1)).eventHubName("test-event-hub");
+        verify(builder, times(1)).customEndpointAddress("test-custom-endpoint-address");
+        verify(builder, times(1)).consumerGroup("test-consumer-group");
+        verify(builder, times(1)).prefetchCount(10);
+    }
+
+    @Test
+    void producerClientPropertiesConfigured() {
+        AzureEventHubsTestProperties.Producer properties = new AzureEventHubsTestProperties.Producer();
+        properties.setNamespace("test-namespace");
+        properties.setEventHubName("test-event-hub");
+        properties.setCustomEndpointAddress("test-custom-endpoint-address");
+
+        EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(builder, times(1)).eventHubName("test-event-hub");
+        verify(builder, times(1)).customEndpointAddress("test-custom-endpoint-address");
+    }
+
     @Override
     protected AzureEventHubsTestProperties createMinimalServiceProperties() {
         AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
         properties.setNamespace("test-namespace");
-        properties.setEventHubName("test-eventhub");
         return properties;
     }
 
@@ -43,7 +79,7 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
     protected void verifyCredentialCalled(EventHubClientBuilder builder,
                                           Class<? extends TokenCredential> tokenCredentialClass,
                                           VerificationMode mode) {
-        verify(builder, mode).credential(any(String.class), any(String.class), any(tokenCredentialClass));
+        verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     @Override
@@ -61,9 +97,26 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
         verify(builder, mode).transportType(any(AmqpTransportType.class));
     }
 
+    @Override
+    protected void verifyServicePropertiesConfigured() {
+        AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
+        properties.setNamespace("test-namespace");
+        properties.setEventHubName("test-event-hub");
+        properties.setCustomEndpointAddress("test-custom-endpoint-address");
+        properties.setSharedConnection(true);
+
+        EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(builder, times(1)).eventHubName("test-event-hub");
+        verify(builder, times(1)).customEndpointAddress("test-custom-endpoint-address");
+        verify(builder, times(1)).shareConnection();
+    }
+
     static class EventHubClientBuilderFactoryExt extends EventHubClientBuilderFactory {
 
-        EventHubClientBuilderFactoryExt(AzureEventHubsTestProperties properties) {
+        EventHubClientBuilderFactoryExt(EventHubClientCommonProperties properties) {
             super(properties);
         }
 

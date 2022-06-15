@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.service.implementation.keyvault.secret;
+package com.azure.spring.cloud.service.implementation.keyvault.secrets;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
-import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientProperties;
 
 /**
  * Properties for Azure Storage File Share service.
