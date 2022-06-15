@@ -115,8 +115,8 @@ class VertxAsyncHttpClient implements HttpClient {
 
         if (progressReporter != null) {
             body = body.map(buffer -> {
-               progressReporter.reportProgress(buffer.remaining());
-               return buffer;
+                progressReporter.reportProgress(buffer.remaining());
+                return buffer;
             });
         }
 

@@ -60,10 +60,10 @@ public class OkHttpProgressReportingRequestBody extends RequestBody {
         bufferedSink.flush();
     }
 
-    private final static class CountingSink extends ForwardingSink {
+    private static final class CountingSink extends ForwardingSink {
         private final ProgressReporter progressReporter;
 
-        public CountingSink(Sink delegate, ProgressReporter progressReporter) {
+        CountingSink(Sink delegate, ProgressReporter progressReporter) {
             super(delegate);
             this.progressReporter = progressReporter;
         }
