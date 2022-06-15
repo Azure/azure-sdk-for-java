@@ -33,6 +33,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(OutputCaptureExtension.class)
 public class AppConfigurationUserAgentTests {
 
+    String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+    String format2 = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+
     @Test
     public void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
@@ -67,9 +70,7 @@ public class AppConfigurationUserAgentTests {
                     // Eat it because we just want the log.
                 }
                 String allOutput = output.getAll();
-                assertTrue(allOutput.contains(String.format("User-Agent:%s",
-                    AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG)) || allOutput.contains(String.format("\"User-Agent"
-                    + "\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG)));
+                assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }
 }
