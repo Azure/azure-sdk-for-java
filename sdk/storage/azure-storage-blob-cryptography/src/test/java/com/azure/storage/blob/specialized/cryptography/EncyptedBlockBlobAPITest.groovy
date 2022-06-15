@@ -300,7 +300,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
             cc.getBlobContainerUrl(), EncryptionVersion.V2)
             .blobName(generateBlobName())
             .buildEncryptedBlobAsyncClient())
-        def data = getRandomData(20 * 1024 * 1024 - 10)
+        def data = getRandomData(dataSize)
 
         when:
         beac.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data))).block()
@@ -327,7 +327,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         for (int i = 0; i < 5; i++) {
             keyStream.read()
         }
-        byte[] strippedKeyBytes = new byte[256]
+        byte[] strippedKeyBytes = new byte[256 / 8]
         keyStream.read(strippedKeyBytes)
         def keySpec = new SecretKeySpec(strippedKeyBytes, CryptographyConstants.AES)
 
@@ -353,8 +353,8 @@ class EncyptedBlockBlobAPITest extends APISpec {
         where:
         dataSize              | _
         3000                  | _ // small
-        5 * 1024 * 1024 - 10  | _ // medium
-        20 * 1024 * 1024 - 10 | _ // large
+//        5 * 1024 * 1024 - 10  | _ // medium
+//        20 * 1024 * 1024 - 10 | _ // large
     }
 
     boolean encryptionTestHelper(int size, int byteBufferCount) {
