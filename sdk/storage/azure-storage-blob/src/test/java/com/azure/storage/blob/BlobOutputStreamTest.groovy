@@ -6,6 +6,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -40,7 +41,9 @@ class BlobOutputStreamTest extends APISpec {
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
 
         when:
-        def outputStream = blockBlobClient.getBlobOutputStream()
+        // set option for allowing multiple close() calls
+        def outputStream = blockBlobClient.getBlobOutputStream(new BlockBlobOutputStreamOptions(true))
+
         outputStream.write(data)
         outputStream.close()
         // call again, no exceptions should be thrown
