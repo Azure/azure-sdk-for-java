@@ -523,8 +523,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         byte[] protocolBytes = new byte[3];
                         try {
                             keyStream.read(protocolBytes);
-                            if (Arrays.compare(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8),
-                                protocolBytes) != 0) {
+                            if (ByteBuffer.wrap(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8))
+                                .compareTo(ByteBuffer.wrap(protocolBytes)) != 0) {
                                 return Mono.error(LOGGER.logExceptionAsError(
                                     new IllegalStateException("Padded wrapped key did not match protocol version")));
                             }
