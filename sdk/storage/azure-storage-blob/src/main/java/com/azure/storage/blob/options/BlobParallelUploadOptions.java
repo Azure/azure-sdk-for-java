@@ -71,9 +71,9 @@ public class BlobParallelUploadOptions {
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
+     * Note: the {@link InputStream} must be closed manually by the user.
      *
      * @param dataStream The data to write to the blob.
-     * Note: the {@link InputStream} must be closed manually by the user.
      */
     public BlobParallelUploadOptions(InputStream dataStream) {
         this(dataStream, null);
@@ -81,10 +81,10 @@ public class BlobParallelUploadOptions {
 
     /**
      * Common constructor for building options from InputStream.
+     * Note: the {@link InputStream} must be closed manually by the user.
      *
      * @param dataStream The data to write to the blob.
      * @param length Optional known length of the data, affects reactive behavior for backwards compatibility.
-     * Note: the {@link InputStream} must be closed manually by the user.
      */
     private BlobParallelUploadOptions(InputStream dataStream, Long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
