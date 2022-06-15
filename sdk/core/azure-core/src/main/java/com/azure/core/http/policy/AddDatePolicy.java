@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.DateTimeRfc1123;
 import reactor.core.publisher.Mono;
@@ -23,16 +24,25 @@ public class AddDatePolicy implements HttpPipelinePolicy {
             .withZone(ZoneOffset.UTC)
             .withLocale(Locale.US);
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.defer(() -> {
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
             OffsetDateTime now = OffsetDateTime.now();
             try {
                 context.getHttpRequest().getHeaders().set("Date", DateTimeRfc1123.toRfc1123String(now));
             } catch (IllegalArgumentException ignored) {
                 context.getHttpRequest().getHeaders().set("Date", FORMATTER.format(now));
             }
-            return next.process();
-        });
+        }
+    };
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return inner.process(context, next);
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

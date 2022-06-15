@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,18 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
 
     private final String name;
     private final AzureKeyCredential credential;
+
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+            }
+
+            context.getHttpRequest().setHeader(name, credential.getKey());
+        }
+    };
 
     /**
      * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
@@ -46,11 +59,11 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-        }
+        return inner.process(context, next);
+    }
 
-        context.getHttpRequest().setHeader(name, credential.getKey());
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }
