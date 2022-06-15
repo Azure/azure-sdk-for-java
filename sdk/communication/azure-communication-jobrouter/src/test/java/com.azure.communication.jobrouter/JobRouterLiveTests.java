@@ -185,7 +185,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         StaticQueueSelector staticQueueSelector = new StaticQueueSelector();
         staticQueueSelector.setLabelSelector(queueSelector);
 
-        List<QueueSelectorAttachment> queueSelectors = new ArrayList<>() {{
+        List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {{
             add(staticQueueSelector);
         }};
 
@@ -201,7 +201,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector();
         staticWorkerSelector.setLabelSelector(workerSelector);
 
-        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<>() {{
+        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {{
             add(staticWorkerSelector);
         }};
 
@@ -241,7 +241,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         exceptionAction.setDispositionCode("CancelledDueToMaxQueueLengthReached");
         exceptionAction.setNote("Job Cancelled as maximum queue length is reached.");
 
-        Map<String, ExceptionAction> exceptionActions = new HashMap<>() {{
+        Map<String, ExceptionAction> exceptionActions = new HashMap<String, ExceptionAction>() {{
             put("CancelledDueToMaxQueueLengthReached", exceptionAction);
         }};
 
@@ -249,7 +249,7 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         exceptionRule.setTrigger(queueLengthExceptionTrigger);
         exceptionRule.setActions(exceptionActions);
 
-        Map<String, ExceptionRule> exceptionRules = new HashMap<>() {{
+        Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {{
             put(exceptionPolicyId, exceptionRule);
         }};
 
@@ -285,21 +285,21 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
          */
         String workerId = String.format("%s-Worker", UUID.randomUUID());
 
-        Map<String, Object> labels = new HashMap<>() {{
+        Map<String, Object> labels = new HashMap<String, Object>() {{
             put("Label", "Value");
         }};
 
-        Map<String, Object> tags = new HashMap<>() {{
+        Map<String, Object> tags = new HashMap<String, Object>() {{
             put("Tag", "Value");
         }};
 
         ChannelConfiguration channelConfiguration = new ChannelConfiguration();
         channelConfiguration.setCapacityCostPerJob(1);
-        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<>() {{
+        Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, ChannelConfiguration>() {{
             put("channel1", channelConfiguration);
         }};
 
-        Map<String, Object> queueAssignments = new HashMap<>() {{
+        Map<String, Object> queueAssignments = new HashMap<String, Object>() {{
             put(jobQueue.getId(), new Object());
         }};
 
