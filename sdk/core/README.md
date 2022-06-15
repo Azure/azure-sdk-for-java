@@ -13,7 +13,7 @@ The main shared concepts of Azure Core (and therefore all Azure client libraries
 - Calling long running operations (`Poller<T>`).
 - Paging and asynchronous streams (`PagedFlux<T>`).
 - Exceptions for reporting errors from service requests in a consistent fashion.
-- Abstractions for representing Azure SDK credentials.
+- Abstractions for representing Azure SDK credentials.test
 
 ## Sub-projects
 
