@@ -56,7 +56,9 @@ public class KeyVaultSecretUserAgentTests {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains(String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS));
+                String allOutput = output.getAll();
+                assertTrue(allOutput.contains(String.format("User-Agent:%s",
+                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS)) || allOutput.contains(String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS)));
             });
     }
 }

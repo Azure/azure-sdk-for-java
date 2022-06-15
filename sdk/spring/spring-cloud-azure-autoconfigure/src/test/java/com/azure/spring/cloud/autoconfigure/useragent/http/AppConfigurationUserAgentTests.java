@@ -66,7 +66,10 @@ public class AppConfigurationUserAgentTests {
                 } catch (Exception exception) {
                     // Eat it because we just want the log.
                 }
-                assertThat(output).contains(String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG));
+                String allOutput = output.getAll();
+                assertTrue(allOutput.contains(String.format("User-Agent:%s",
+                    AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG)) || allOutput.contains(String.format("\"User-Agent"
+                    + "\":\"%s", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG)));
             });
     }
 }
