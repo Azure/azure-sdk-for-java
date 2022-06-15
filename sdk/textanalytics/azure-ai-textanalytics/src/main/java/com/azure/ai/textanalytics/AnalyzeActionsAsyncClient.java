@@ -502,7 +502,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
-        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
         return (HealthcareTaskParameters) new HealthcareTaskParameters()
                                               .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                               .setModelVersion(action.getModelVersion())

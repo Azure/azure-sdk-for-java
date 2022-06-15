@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -50,7 +49,6 @@ public class AnalyzeHealthcareEntitiesAsync {
                     + "if diarrhea worsen."));
 
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
-                                                       .setFhirVersion(FhirVersion.V4_0_1)
                                                        .setIncludeStatistics(true);
 
         client.beginAnalyzeHealthcareEntities(documents, options)

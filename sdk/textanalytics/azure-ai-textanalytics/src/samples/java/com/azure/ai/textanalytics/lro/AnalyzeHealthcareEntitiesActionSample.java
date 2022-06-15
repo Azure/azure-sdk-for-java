@@ -12,7 +12,6 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -53,7 +52,7 @@ public class AnalyzeHealthcareEntitiesActionSample {
                 new TextAnalyticsActions()
                     .setDisplayName("{tasks_display_name}")
                     .setAnalyzeHealthcareEntitiesActions(
-                        new AnalyzeHealthcareEntitiesAction().setFhirVersion(FhirVersion.V4_0_1)),
+                        new AnalyzeHealthcareEntitiesAction()),
                 "en",
                 new AnalyzeActionsOptions());
 
