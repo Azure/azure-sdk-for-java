@@ -752,6 +752,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createFileWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -766,6 +767,7 @@ class FileSystemAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -862,6 +864,7 @@ class FileSystemAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -883,6 +886,7 @@ class FileSystemAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -899,6 +903,7 @@ class FileSystemAPITest extends APISpec {
         fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with time expires on absolute and never expire"() {
         when:
         def options = new DataLakePathCreateOptions()
@@ -915,6 +920,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create file options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -928,7 +934,7 @@ class FileSystemAPITest extends APISpec {
         def fileProps = fsc.getFileClient(fileName).getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        expireTime == expectedExpire
+        compareDatesWithPrecision(expireTime, expectedExpire)
     }
 
     def "Create if not exists file min"() {
@@ -1026,6 +1032,7 @@ class FileSystemAPITest extends APISpec {
             null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -1039,6 +1046,7 @@ class FileSystemAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -1133,6 +1141,7 @@ class FileSystemAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -1154,6 +1163,7 @@ class FileSystemAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -1171,6 +1181,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with time expires on absolute and never expire"() {
         when:
         def options = new DataLakePathCreateOptions()
@@ -1187,6 +1198,7 @@ class FileSystemAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists file options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -1200,7 +1212,7 @@ class FileSystemAPITest extends APISpec {
         def fileProps = fsc.getFileClient(fileName).getProperties()
         def expireTime = fileProps.getExpiresOn()
         def expectedExpire = fileProps.getCreationTime().plusDays(6)
-        expireTime == expectedExpire
+        compareDatesWithPrecision(expireTime, expectedExpire)
     }
 
     def "Delete file min"() {
@@ -1547,6 +1559,7 @@ class FileSystemAPITest extends APISpec {
         fsc.createDirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create dir options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -1560,6 +1573,7 @@ class FileSystemAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create dir options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -1799,6 +1813,7 @@ class FileSystemAPITest extends APISpec {
             null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists dir options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -1812,6 +1827,7 @@ class FileSystemAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
     def "Create if not exists dir options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
