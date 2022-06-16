@@ -43,7 +43,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 ```
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
-#### Synchronous clients
+#### Synchronous Logs Ingestion client
 
 ```java readme-sample-createLogsIngestionClient
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -54,7 +54,7 @@ LogsIngestionClient client = new LogsIngestionClientBuilder()
         .buildClient();
 ```
 
-#### Asynchronous clients
+#### Asynchronous Logs Ingestion client
 
 ```java readme-sample-createLogsIngestionAsyncClient
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -161,16 +161,19 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 <!-- LINKS -->
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[azure_subscription]: https://azure.microsoft.com/free
-[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
 [data_collection_endpoint]: https://docs.microsoft.com//azure/azure-monitor/essentials/data-collection-endpoint-overview
 [data_collection_rule]: https://docs.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [log_analytics_workspace]: https://docs.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
+[logging]: https://docs.microsoft.com//azure/developer/java/sdk/logging-overview
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-ingestion%2FREADME.png)
