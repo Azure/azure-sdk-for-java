@@ -252,7 +252,7 @@ public abstract class HttpClientTests {
         Context context = Contexts.empty()
             .setProgressReporter(
                 ProgressReporter.withProgressReceiver(progress::set))
-            .context();
+            .getContext();
 
         StepVerifier.create(createHttpClient()
                 .send(request, context)

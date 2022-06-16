@@ -15,7 +15,7 @@ public class ContextsTest {
     public void createFromEmpty() {
         Contexts contexts = Contexts.empty();
 
-        assertSame(Context.NONE, contexts.context());
+        assertSame(Context.NONE, contexts.getContext());
     }
 
     @Test
@@ -23,7 +23,7 @@ public class ContextsTest {
         Context context = Context.NONE.addData("foo", "bar");
         Contexts contexts = Contexts.with(context);
 
-        assertSame(context, contexts.context());
+        assertSame(context, contexts.getContext());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ContextsTest {
 
         assertSame(progressReporter, contexts.getProgressReporter());
 
-        Context newContext = contexts.context();
+        Context newContext = contexts.getContext();
         assertSame(progressReporter, Contexts.with(newContext).getProgressReporter());
     }
 
@@ -50,9 +50,9 @@ public class ContextsTest {
         Contexts contexts = Contexts.empty();
         ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(
             bytesTransferred -> { });
-        Context newContext = contexts.setProgressReporter(progressReporter).context();
+        Context newContext = contexts.setProgressReporter(progressReporter).getContext();
 
-        Context newNewContext = Contexts.with(newContext).setProgressReporter(null).context();
+        Context newNewContext = Contexts.with(newContext).setProgressReporter(null).getContext();
 
         assertNull(Contexts.with(newNewContext).getProgressReporter());
     }

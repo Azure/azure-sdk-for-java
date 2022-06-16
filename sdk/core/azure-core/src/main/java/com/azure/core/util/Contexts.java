@@ -58,7 +58,7 @@ public final class Contexts {
      * Returns a version of the {@link Context} reflecting mutations.
      * @return The version of the {@link Context} reflecting mutations.
      */
-    public Context context() {
+    public Context getContext() {
         return context;
     }
 }
