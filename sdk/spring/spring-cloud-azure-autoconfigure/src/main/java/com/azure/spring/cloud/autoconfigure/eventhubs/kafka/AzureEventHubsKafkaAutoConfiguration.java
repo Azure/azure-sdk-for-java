@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -28,7 +29,7 @@ import org.springframework.kafka.core.KafkaTemplate;
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support.
  *
  * @since 4.0.0
- * @deprecated 4.3.0
+ * @deprecated 4.3.0 in favor of {@link AzureEventHubsKafkaOAuth2AutoConfiguration}.
  */
 @Deprecated
 @Configuration(proxyBeanMethods = false)

@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryC
 import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
+import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -57,12 +58,7 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
     DefaultKafkaConsumerFactoryCustomizer azureOAuth2KafkaConsumerFactoryCustomizer() {
         Map<String, Object> updateConfigs = new HashMap<>();
         Map<String, Object> consumerProperties = kafkaProperties.buildConsumerProperties();
-        if (needConfigureSaslOAuth(consumerProperties)) {
-            AzureKafkaProperties azureKafkaConsumerProperties = buildAzureProperties(consumerProperties,
-                azureGlobalProperties);
-            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, buildCredentialFromProperties(azureKafkaConsumerProperties));
-            updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
-        }
+        configureOAuth2Properties(updateConfigs, consumerProperties);
         return factory -> factory.updateConfigs(updateConfigs);
     }
 
@@ -70,13 +66,17 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
     DefaultKafkaProducerFactoryCustomizer azureOAuth2KafkaProducerFactoryCustomizer() {
         Map<String, Object> updateConfigs = new HashMap<>();
         Map<String, Object> producerProperties = kafkaProperties.buildProducerProperties();
-        if (needConfigureSaslOAuth(producerProperties)) {
-            AzureKafkaProperties azureKafkaProducerProperties = buildAzureProperties(producerProperties,
-                azureGlobalProperties);
-            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, buildCredentialFromProperties(azureKafkaProducerProperties));
+        configureOAuth2Properties(updateConfigs, producerProperties);
+        return factory -> factory.updateConfigs(updateConfigs);
+    }
+
+    private void configureOAuth2Properties(Map<String, Object> updateConfigs, Map<String, Object> sourceKafkaProperties) {
+        if (needConfigureSaslOAuth(sourceKafkaProperties)) {
+            AzureKafkaProperties azureKafkaProperties = buildAzureProperties(sourceKafkaProperties,
+                    azureGlobalProperties);
+            updateConfigs.put(AZURE_TOKEN_CREDENTIAL, buildCredentialFromProperties(azureKafkaProperties));
             updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
         }
-        return factory -> factory.updateConfigs(updateConfigs);
     }
 
     private TokenCredential buildCredentialFromProperties(AzureKafkaProperties azureKafkaConsumerProperties) {
@@ -86,6 +86,7 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
     @ConditionalOnClass(KafkaMessageChannelBinder.class)
     @Configuration(proxyBeanMethods = false)
+    @Import(KafkaBinderConfiguration.class)
     static class AzureKafkaSpringCloudStreamConfiguration {
         @Bean
         KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(

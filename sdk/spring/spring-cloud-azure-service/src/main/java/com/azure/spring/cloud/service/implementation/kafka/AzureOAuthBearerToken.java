@@ -8,7 +8,6 @@ import com.nimbusds.jwt.JWTParser;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerToken;
 
 import java.text.ParseException;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -23,9 +22,11 @@ public class AzureOAuthBearerToken implements OAuthBearerToken {
     private final long lifetimeMs;
     private final Set<String> scope;
     private final String principalName;
+    private final AccessToken accessToken;
 
     public AzureOAuthBearerToken(AccessToken accessToken) {
         this.token = accessToken.getToken();
+        this.accessToken = accessToken;
         JWTClaimsSet claims;
         try {
             claims = JWTParser.parse(token).getJWTClaimsSet();
@@ -68,6 +69,6 @@ public class AzureOAuthBearerToken implements OAuthBearerToken {
     }
 
     public boolean isExpired() {
-        return Instant.now().toEpochMilli() > lifetimeMs;
+        return accessToken.isExpired();
     }
 }

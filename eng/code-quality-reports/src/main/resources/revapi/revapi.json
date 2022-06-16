@@ -250,8 +250,8 @@
           "justification": "To support for storage services and keyvault services to share values of common properties."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.removed",
+          "ignore": true,
+          "code": "java.method.removed",
           "old": "method org.springframework.boot.autoconfigure.kafka.KafkaProperties com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration::azureKafkaProperties(com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider<com.azure.spring.cloud.core.service.AzureServiceType.EventHubs>)",
           "justification": "To move kafka properties customization to bean post processor."
         },

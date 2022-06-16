@@ -2,18 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.kafka;
 
+import java.time.OffsetDateTime;
+
 import com.azure.core.credential.AccessToken;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 public class AzureOAuthBearerTokenTest {
 
@@ -29,23 +26,11 @@ public class AzureOAuthBearerTokenTest {
         + "tFjY7EVNW9plWUvRrTgVk7lYLprvfzw-CIqw3gHC-T7IK_m_xkr08INERBtaecwhTeN4chPC4W3jdmw_lIxzC48YoQ0dB1L9-ImX98Egypfr"
         + "lbm0IBL5spFzL6JDZIRRJOu8vecJvj1mq-IUhGt0MacxX8jdxYLP-KUu2d9MbNKpCKJuZ7p8gwTL5B7NlUdh_dmSviPWrw";
 
-    @Mock
-    private AccessToken azureToken;
     private KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
-    private AutoCloseable closeable;
 
-    @BeforeEach
-    public void setup() {
-        closeable = MockitoAnnotations.openMocks(this);
-        when(azureToken.getToken()).thenReturn(FAKE_TOKEN);
-    }
-
-    @AfterEach
-    public void close() throws Exception {
-        closeable.close();
-    }
     @Test
     void testConvertAzureTokenToKafka() {
+        AccessToken azureToken = new AccessToken(FAKE_TOKEN, OffsetDateTime.now());
         AzureOAuthBearerToken azureOAuthBearerToken = new AzureOAuthBearerToken(azureToken);
         assertEquals(azureOAuthBearerToken.value(), FAKE_TOKEN);
         assertNull(azureOAuthBearerToken.scope());
