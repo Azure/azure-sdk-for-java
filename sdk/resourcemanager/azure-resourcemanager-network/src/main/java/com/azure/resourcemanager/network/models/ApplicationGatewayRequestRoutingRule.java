@@ -48,6 +48,10 @@ public interface ApplicationGatewayRequestRoutingRule
     /** @return the associated URL path map */
     ApplicationGatewayUrlPathMap urlPathMap();
 
+    /** @return the priority of the rule
+                only for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} */
+    Integer priority();
+
     /** Grouping of application gateway request routing rule definition stages. */
     interface DefinitionStages {
         /**
@@ -70,7 +74,8 @@ public interface ApplicationGatewayRequestRoutingRule
             extends Attachable.InDefinition<ParentT>,
                 WithHostname<ParentT>,
                 WithCookieBasedAffinity<ParentT>,
-                WithUrlPathMap<ParentT> {
+                WithUrlPathMap<ParentT>,
+                WithPriority<ParentT> {
         }
 
         /**
@@ -389,6 +394,27 @@ public interface ApplicationGatewayRequestRoutingRule
              */
             WithAttach<ParentT> withUrlPathMap(String urlPathMapName);
         }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate the rule with a
+         * priority.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithPriority<ParentT> {
+            /**
+             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
+             * Specifies a unique priority value for the request routing rule.
+             * <p>If you don't assign the priority, SDK will auto-assign a unique value for you (ranging from 10010 to
+             * 20000) in the ordering of definition. For rules with auto-assigned priorities, those which defined later
+             * will have larger priority values (lower priority) over those which defined earlier.</p>
+             * <p>If you want to assign it manually, unless you want the rule to have a lower priority over the others,
+             * we recommend a value no larger than 10000 to avoid potential priority collision with rules with
+             * auto-assigned priorities.</p>
+             * @param priority unique priority value of the request routing rule ranging from 1(highest) to 20000(lowest)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPriority(int priority);
+        }
     }
 
     /**
@@ -499,6 +525,24 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithSslPassword extends HasSslCertificate.UpdateStages.WithSslPassword<Update> {
         }
+
+        /**
+         * The stage of an application gateway request routing rule allowing to associate the rule with a priority.
+         */
+        interface WithPriority {
+            /**
+             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
+             * Updates the priority value for the request routing rule.
+             * <p>Rules with no priorities before will be auto-assigned with values ranging from 10010 to 20000.</p>
+             * <p>For updating rules with auto-assigned priorities, consider updating all existing ones for that Gateway.
+             * Otherwise, it would lead to unexpected ordering.</p>
+             * <p>Unless you want the rule to have a lower priority over the others, we recommend a value no larger than
+             * 10000 to avoid potential priority collision with auto-assigned ones in that Gateway.</p>
+             * @param priority unique priority value of the request routing rule ranging from 1(highest) to 20000(lowest)
+             * @return the next stage of the definition
+             */
+            Update withPriority(int priority);
+        }
     }
 
     /** The entirety of an application gateway request routing rule update as part of an application gateway update. */
@@ -509,7 +553,8 @@ public interface ApplicationGatewayRequestRoutingRule
             UpdateStages.WithBackendHttpConfiguration,
             UpdateStages.WithSslCertificate,
             UpdateStages.WithSslPassword,
-            UpdateStages.WithRedirectConfig {
+            UpdateStages.WithRedirectConfig,
+            UpdateStages.WithPriority {
     }
 
     /**
@@ -537,7 +582,8 @@ public interface ApplicationGatewayRequestRoutingRule
             extends Attachable.InUpdate<ParentT>,
                 WithHostname<ParentT>,
                 WithCookieBasedAffinity<ParentT>,
-                WithRedirectConfig<ParentT> {
+                WithRedirectConfig<ParentT>,
+                WithPriority<ParentT> {
         }
 
         /**
@@ -564,6 +610,26 @@ public interface ApplicationGatewayRequestRoutingRule
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRedirectConfiguration(String name);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate the rule with a
+         * priority.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithPriority<ParentT> {
+            /**
+             * ({@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} Only)
+             * Specifies a unique priority value for the request routing rule.
+             * <p>If you don't assign the priority, SDK will auto-assign a unique value for you (ranging from 10010 to
+             * 20000) in the ordering of definition. For rules with auto-assigned priorities, those which defined later
+             * will have larger priority values (lower priority) over those which defined earlier.</p>
+             * <p>If you want to assign it manually, we recommend no larger than 10000 to avoid potential priority
+             * collision with rules with auto-assigned priorities.</p>
+             * @param priority unique priority value of the request routing rule ranging from 1(highest) to 20000(lowest)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPriority(int priority);
         }
 
         /**
@@ -840,6 +906,8 @@ public interface ApplicationGatewayRequestRoutingRule
         interface WithServerNameIndication<ParentT>
             extends HasServerNameIndication.UpdateDefinitionStages.WithServerNameIndication<WithAttach<ParentT>> {
         }
+
+
     }
 
     /**
