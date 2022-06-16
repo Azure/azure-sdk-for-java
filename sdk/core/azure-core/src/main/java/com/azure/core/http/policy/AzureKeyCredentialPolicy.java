@@ -22,7 +22,6 @@ import java.util.Objects;
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-
     private final String name;
     private final AzureKeyCredential credential;
 
