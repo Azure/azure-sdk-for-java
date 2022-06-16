@@ -906,8 +906,6 @@ public interface ApplicationGatewayRequestRoutingRule
         interface WithServerNameIndication<ParentT>
             extends HasServerNameIndication.UpdateDefinitionStages.WithServerNameIndication<WithAttach<ParentT>> {
         }
-
-
     }
 
     /**
