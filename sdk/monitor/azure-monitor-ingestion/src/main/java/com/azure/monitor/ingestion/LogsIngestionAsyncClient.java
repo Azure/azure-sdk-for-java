@@ -12,8 +12,9 @@ import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.monitor.ingestion.implementation.DefaultJsonSerializer;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
 import com.azure.monitor.ingestion.models.UploadLogsError;
@@ -50,8 +51,7 @@ public final class LogsIngestionAsyncClient {
     private static final String CONTENT_ENCODING = "Content-Encoding";
     private static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
     private static final String GZIP = "gzip";
-    // TODO (srnagar): Move DefaultJsonSerializer in azure-core to public package
-    private static final DefaultJsonSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     private final IngestionUsingDataCollectionRulesAsyncClient service;
 

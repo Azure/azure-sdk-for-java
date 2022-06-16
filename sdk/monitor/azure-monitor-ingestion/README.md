@@ -73,12 +73,12 @@ For examples on how to upload logs, see the [Examples](#examples) section.
 ### Data Collection Endpoint
 
 Data Collection Endpoints (DCEs) allow you to uniquely configure ingestion settings for Azure Monitor. [This 
-article][data_collection_endpoint] provides an overview of data collection endpoints including their contents and structure and how you can create
-and work with them.
+article][data_collection_endpoint] provides an overview of data collection endpoints including their contents and 
+structure and how you can create and work with them.
 
 ### Data Collection Rule
 
-Data collection rules define data collected by Azure Monitor and specify how and where that data should be sent or
+Data collection rules (DCR) define data collected by Azure Monitor and specify how and where that data should be sent or
 stored. The REST API call must specify a DCR to use. A single DCE can support multiple DCRs, so you can specify a
 different DCR for different sources and target tables.
 
