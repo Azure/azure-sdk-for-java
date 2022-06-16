@@ -116,11 +116,6 @@ public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier 
             || thatId.getRawId().equals(this.getRawId());
     }
 
-    @Override
-    public int hashCode() {
-        return getRawId().hashCode();
-    }
-
     private void generateRawId() {
         if (!rawIdSet) {
             if (this.isAnonymous) {

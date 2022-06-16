@@ -46,9 +46,4 @@ public final class CommunicationUserIdentifier extends CommunicationIdentifier {
 
         return ((CommunicationUserIdentifier) that).getRawId().equals(getRawId());
     }
-
-    @Override
-    public int hashCode() {
-        return getRawId().hashCode();
-    }
 }
