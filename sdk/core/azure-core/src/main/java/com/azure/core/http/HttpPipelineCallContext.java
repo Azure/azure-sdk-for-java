@@ -3,7 +3,6 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.util.Context;
 
 import java.util.Objects;
@@ -47,10 +46,6 @@ public final class HttpPipelineCallContext {
         this.data = data;
     }
 
-    static {
-        HttpPipelineCallContextHelper.setAccessor(HttpPipelineCallContext::getContext);
-    }
-
     /**
      * Stores a key-value data in the context.
      *
@@ -76,7 +71,7 @@ public final class HttpPipelineCallContext {
      *
      * @return The context associated to the HTTP call.
      */
-    Context getContext() {
+    public Context getContext() {
         return data;
     }
 
