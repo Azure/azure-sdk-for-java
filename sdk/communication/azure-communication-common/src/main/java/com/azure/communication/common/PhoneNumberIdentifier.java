@@ -60,4 +60,9 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
             || phoneId.getRawId() == null
             || getRawId().equals(phoneId.getRawId());
     }
+
+    @Override
+    public int hashCode() {
+        return getRawId().hashCode();
+    }
 }

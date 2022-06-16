@@ -47,4 +47,9 @@ public final class UnknownIdentifier extends CommunicationIdentifier {
         UnknownIdentifier thatId = (UnknownIdentifier) that;
         return this.getRawId().equals(thatId.getRawId());
     }
+
+    @Override
+    public int hashCode() {
+        return getRawId().hashCode();
+    }
 }
