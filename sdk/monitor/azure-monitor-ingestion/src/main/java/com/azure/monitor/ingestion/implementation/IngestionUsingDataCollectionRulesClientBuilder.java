@@ -56,7 +56,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     @Generated private static final String SDK_VERSION = "version";
 
     @Generated
-    private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-logingestion.properties");
+    private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-ingestion.properties");
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -266,7 +266,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,"https://monitor.azure.com//.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://monitor.azure.com//.default"));
         }
         policies.addAll(
                 this.pipelinePolicies.stream()

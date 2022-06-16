@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.ingestion;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -16,33 +19,41 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
+import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
- *
+ * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}.
  */
 @ServiceClientBuilder(serviceClients = {LogsIngestionClient.class, LogsIngestionAsyncClient.class})
 public final class LogsIngestionClientBuilder implements ConfigurationTrait<LogsIngestionClientBuilder>,
         HttpTrait<LogsIngestionClientBuilder>, EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(LogsIngestionClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
     private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder =
             new IngestionUsingDataCollectionRulesClientBuilder();
-    private LogsIngestionServiceVersion serviceVersion;
 
     /**
      * Sets the log query endpoint.
      * @param endpoint the host value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder endpoint(String endpoint) {
-        innerLogBuilder.endpoint(endpoint);
-        return this;
+        try {
+            new URL(endpoint);
+            innerLogBuilder.endpoint(endpoint);
+            return this;
+        } catch (MalformedURLException exception) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'endpoint' must be a valid URL.", exception));
+        }
     }
 
     /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder pipeline(HttpPipeline pipeline) {
@@ -53,7 +64,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder httpClient(HttpClient httpClient) {
@@ -64,7 +75,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder configuration(Configuration configuration) {
@@ -75,7 +86,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -86,7 +97,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerLogBuilder.retryPolicy(retryPolicy);
@@ -96,7 +107,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -105,8 +116,9 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     }
 
     /**
-     * @param retryOptions
-     * @return
+     * Sets the retry options for this client.
+     * @param retryOptions the retry options for this client.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -117,7 +129,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder credential(TokenCredential tokenCredential) {
@@ -128,7 +140,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * Set the {@link ClientOptions} used for creating the client.
      * @param clientOptions The {@link ClientOptions}.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     @Override
     public LogsIngestionClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -139,10 +151,10 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     /**
      * The service version to use when creating the client.
      * @param serviceVersion The {@link LogsIngestionServiceVersion}.
-     * @return the {@link LogsIngestionClientBuilder}.
+     * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder serviceVersion(LogsIngestionServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
+        innerLogBuilder.serviceVersion(IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
         return this;
     }
 

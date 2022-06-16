@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-public class LogData {
+public final class CustomLogData {
 
     @JsonProperty(value = "Time")
     private OffsetDateTime time;
@@ -24,7 +24,7 @@ public class LogData {
         return time;
     }
 
-    public LogData setTime(OffsetDateTime time) {
+    public CustomLogData setTime(OffsetDateTime time) {
         this.time = time;
         return this;
     }
@@ -33,7 +33,7 @@ public class LogData {
         return extendedColumn;
     }
 
-    public LogData setExtendedColumn(String extendedColumn) {
+    public CustomLogData setExtendedColumn(String extendedColumn) {
         this.extendedColumn = extendedColumn;
         return this;
     }
@@ -42,7 +42,7 @@ public class LogData {
         return additionalContext;
     }
 
-    public LogData setAdditionalContext(String additionalContext) {
+    public CustomLogData setAdditionalContext(String additionalContext) {
         this.additionalContext = additionalContext;
         return this;
     }
