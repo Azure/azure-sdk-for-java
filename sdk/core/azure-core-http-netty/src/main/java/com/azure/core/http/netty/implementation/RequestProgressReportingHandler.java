@@ -5,15 +5,15 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.FileRegion;
-import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.Objects;
 
-public class RequestProgressReportingHandler extends ChannelOutboundHandlerAdapter {
+public final class RequestProgressReportingHandler extends ChannelOutboundHandlerAdapter {
     /**
      * Name of the handler when it is added into a ChannelPipeline.
      */
@@ -30,8 +30,8 @@ public class RequestProgressReportingHandler extends ChannelOutboundHandlerAdapt
 
         if (msg instanceof ByteBuf) {
             progressReporter.reportProgress(((ByteBuf) msg).readableBytes());
-        } else if (msg instanceof LastHttpContent) {
-            progressReporter.reportProgress(((LastHttpContent) msg).content().readableBytes());
+        } else if (msg instanceof ByteBufHolder) {
+            progressReporter.reportProgress(((ByteBufHolder) msg).content().readableBytes());
         } else if (msg instanceof FileRegion) {
             progressReporter.reportProgress(((FileRegion) msg).count());
         }
