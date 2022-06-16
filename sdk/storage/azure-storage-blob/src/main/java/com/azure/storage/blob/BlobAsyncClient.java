@@ -971,7 +971,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 ProgressReceiver progressReceiver = finalParallelTransferOptions.getProgressReceiver();
                 if (progressReceiver != null) {
                     com.azure.core.util.ProgressReporter progressReporter = com.azure.core.util.ProgressReporter
-                        .getInstance(progressReceiver::reportProgress);
+                        .getInstance(progressReceiver);
                     context = Contexts.setProgressReporter(context, progressReporter);
                 }
                 BinaryData data = BinaryData.fromFile(Paths.get(options.getFilePath()));
@@ -998,7 +998,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         ProgressReceiver progressReceiver = parallelTransferOptions.getProgressReceiver();
         com.azure.core.util.ProgressReporter progressReporter = null;
         if (progressReceiver != null) {
-            progressReporter = com.azure.core.util.ProgressReporter.getInstance(progressReceiver::reportProgress);
+            progressReporter = com.azure.core.util.ProgressReporter.getInstance(progressReceiver);
         }
         com.azure.core.util.ProgressReporter progressReporterFinal = progressReporter;
         final SortedMap<Long, String> blockIds = new TreeMap<>();
