@@ -40,17 +40,17 @@ final class JedisRedisCheckpointStoreBuilder {
      * @return JedisRedisCheckpointStore object
      */
     public JedisRedisCheckpointStore build() {
-        boolean BLOCK_POOL_WHEN_EXHAUSTED = true;
-        String CLIENT_NAME = "clientName";
-        boolean USE_SSL = true;
-        int SSL_PORT = 6380;
+        boolean blockPoolWhenExhausted = true;
+        String clientName = "clientName";
+        boolean useSsl = true;
+        int sslPort = 6380;
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(maxPoolConnections);
         poolConfig.setMaxIdle(maxPoolIdleConnections);
-        poolConfig.setBlockWhenExhausted(BLOCK_POOL_WHEN_EXHAUSTED);
+        poolConfig.setBlockWhenExhausted(blockPoolWhenExhausted);
         poolConfig.setMaxWaitMillis(maxWait);
         poolConfig.setMinIdle(minPoolIdleConnections);
-        jedisPool = new JedisPool(poolConfig, hostname, SSL_PORT, connectionTimeout, operationTimeout, key, Protocol.DEFAULT_DATABASE, CLIENT_NAME, USE_SSL, null, null, null);
+        jedisPool = new JedisPool(poolConfig, hostname, sslPort, connectionTimeout, operationTimeout, key, Protocol.DEFAULT_DATABASE, clientName, useSsl, null, null, null);
         return new JedisRedisCheckpointStore(jedisPool);
     }
     /**
