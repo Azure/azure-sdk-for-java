@@ -48,7 +48,6 @@ public final class CallingServerAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallingsImpl serverCallingInternal;
     private final ClientLogger logger;
-    private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceEndpoint;
 
@@ -58,7 +57,6 @@ public final class CallingServerAsyncClient {
         serverCallingInternal = callServiceClient.getServerCallings();
         httpPipelineInternal = callServiceClient.getHttpPipeline();
         resourceEndpoint = callServiceClient.getEndpoint();
-        contentDownloader = new ContentDownloader(resourceEndpoint, httpPipelineInternal);
         logger = new ClientLogger(CallingServerAsyncClient.class);
     }
 
