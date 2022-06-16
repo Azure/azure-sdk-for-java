@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpPipelineCallContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,7 +29,8 @@ public class ContextsTest {
 
     @Test
     public void createWithNull() {
-        assertThrows(NullPointerException.class, () -> Contexts.with(null));
+        assertThrows(NullPointerException.class, () -> Contexts.with((Context) null));
+        assertThrows(NullPointerException.class, () -> Contexts.with((HttpPipelineCallContext) null));
     }
 
     @Test

@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
+
 import java.util.Objects;
 
 /**
@@ -34,6 +37,16 @@ public final class Contexts {
      */
     public static Contexts with(Context context) {
         return new Contexts(context);
+    }
+
+    /**
+     * Creates {@link Contexts} from supplied {@link HttpPipelineCallContext}.
+     * @param context Existing {@link HttpPipelineCallContext}. Must not be null.
+     * @return The {@link Contexts} instance.
+     * @throws NullPointerException If {@code context} is null.
+     */
+    public static Contexts with(HttpPipelineCallContext context) {
+        return new Contexts(HttpPipelineCallContextHelper.getContext(context));
     }
 
     /**
