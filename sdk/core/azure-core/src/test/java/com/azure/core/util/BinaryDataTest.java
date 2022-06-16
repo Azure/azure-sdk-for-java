@@ -49,6 +49,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -558,46 +559,74 @@ public class BinaryDataTest {
     public void testFromLargeFileFlux() throws Exception {
         Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
-        int chunkSize = 100 * 1024 * 1024; // 100 MB
-        int numberOfChunks = 22; // 2200 MB total
+        int chunkSize = 10 * 1024 * 1024; // 10 MB
+        int numberOfChunks = 220; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
-        for (int i = 0; i < numberOfChunks; i++) {
-            Files.write(file, bytes, StandardOpenOption.APPEND);
+
+        try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file, StandardOpenOption.WRITE)) {
+            Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(bytes))
+                .repeat(numberOfChunks - 1)
+                .map(ByteBuffer::duplicate);
+            StepVerifier.create(FluxUtil.writeFile(data, fileChannel)).verifyComplete();
         }
+
         assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
 
         AtomicInteger index = new AtomicInteger();
-        BinaryData.fromFile(file).toFluxByteBuffer()
-            .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    int idx = index.getAndUpdate(operand -> (operand + 1) % chunkSize);
-                    assertEquals(bytes[idx], buffer.get());
-                }
-                return buffer;
-            }).blockLast();
+        AtomicLong totalRead = new AtomicLong();
+
+        StepVerifier.create(BinaryData.fromFile(file).toFluxByteBuffer())
+            .thenConsumeWhile(byteBuffer -> {
+                totalRead.addAndGet(byteBuffer.remaining());
+                int idx = index.getAndUpdate(operand -> (operand + byteBuffer.remaining()) % chunkSize);
+
+                // This may look a bit odd but ByteBuffer has array-based comparison optimizations that aren't available
+                // in Arrays until Java 9+. Wrapping the bytes chunk that was expected to be read and the read range
+                // will allow for many bytes to be validated at once instead of byte-by-byte.
+                assertEquals(ByteBuffer.wrap(bytes, idx, byteBuffer.remaining()), byteBuffer);
+                return true;
+            }).verifyComplete();
+
+        assertEquals((long) chunkSize * numberOfChunks, totalRead.get());
     }
 
     @Test
     public void testFromLargeFileStream() throws Exception {
         Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
-        int chunkSize = 100 * 1024 * 1024; // 100 MB
-        int numberOfChunks = 22; // 2200 MB total
+        int chunkSize = 10 * 1024 * 1024; // 10 MB
+        int numberOfChunks = 220; // 2200 MB total
         byte[] bytes = new byte[chunkSize];
         RANDOM.nextBytes(bytes);
-        for (int i = 0; i < numberOfChunks; i++) {
-            Files.write(file, bytes, StandardOpenOption.APPEND);
+
+        try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file, StandardOpenOption.WRITE)) {
+            Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(bytes))
+                .repeat(numberOfChunks - 1)
+                .map(ByteBuffer::duplicate);
+            StepVerifier.create(FluxUtil.writeFile(data, fileChannel)).verifyComplete();
         }
+
         assertEquals((long) chunkSize * numberOfChunks, file.toFile().length());
 
         try (InputStream is = BinaryData.fromFile(file).toStream()) {
+            // Read and validate in chunks to optimize validation compared to byte-by-byte checking.
+            byte[] buffer = new byte[4096];
+            long totalRead = 0;
             int read;
             int idx = 0;
-            while ((read = is.read()) >= 0) {
-                assertEquals(bytes[idx], (byte) read);
-                idx = (idx + 1) % chunkSize;
+            while ((read = is.read(buffer)) >= 0) {
+                totalRead += read;
+
+                // This may look a bit odd but ByteBuffer has array-based comparison optimizations that aren't available
+                // in Arrays until Java 9+. Wrapping the bytes chunk that was expected to be read and the read range
+                // will allow for many bytes to be validated at once instead of byte-by-byte.
+                assertEquals(ByteBuffer.wrap(bytes, idx, read), ByteBuffer.wrap(buffer, 0, read));
+
+                idx = (idx + read) % chunkSize;
             }
+
+            assertEquals((long) chunkSize * numberOfChunks, totalRead);
         }
     }
 
