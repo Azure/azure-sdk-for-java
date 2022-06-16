@@ -118,7 +118,7 @@ class NettyAsyncHttpClient implements HttpClient {
 
         return nettyClient
             .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
-            .doAfterRequest((r, connection) -> addResponseTimeoutHandler(connection, effectiveResponseTimeout))
+            .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
@@ -300,12 +300,15 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Remove write timeout handler from the connection as the request has finished sending, then add response timeout
+     * After request has been sent:
+     * - Remove Progress Handler
+     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
      * handler.
      */
-    private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
+    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
+        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
     }
 
     /*
