@@ -49,7 +49,7 @@ public interface ApplicationGatewayRequestRoutingRule
     ApplicationGatewayUrlPathMap urlPathMap();
 
     /** @return the priority of the rule
-                only for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} */
+                only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} */
     Integer priority();
 
     /** Grouping of application gateway request routing rule definition stages. */
