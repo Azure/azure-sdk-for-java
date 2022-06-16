@@ -3,6 +3,7 @@
 ## 1.1.4 (2022-06-07)
 
 ### Features Added
+
 - Added `String getRawId()` and `static CommunicationIdentifier fromRawId(String rawId)` to `CommunicationIdentifier` to translate between a `CommunicationIdentifier` and its underlying canonical rawId representation. Developers can now use the rawId as an encoded format for identifiers to store in their databases or as stable keys in general.
 
 ### Breaking Changes
