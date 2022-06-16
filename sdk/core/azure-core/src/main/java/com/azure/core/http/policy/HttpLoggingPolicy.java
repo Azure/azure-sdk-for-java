@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
@@ -125,6 +126,22 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+    }
+
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        // No logging will be performed, trigger a no-op.
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+            return next.processSync();
+        }
+
+        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
+        final long startNs = System.nanoTime();
+
+        requestLogger.logRequest(logger, getRequestLoggingOptions(context));
+        HttpResponse response = next.processSync();
+        // :/
+        return responseLogger.logResponse(logger, getResponseLoggingOptions(response, startNs, context)).block();
     }
 
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
