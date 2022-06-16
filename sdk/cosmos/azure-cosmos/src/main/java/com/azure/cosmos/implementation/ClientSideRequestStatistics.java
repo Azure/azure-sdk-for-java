@@ -32,6 +32,7 @@ public class ClientSideRequestStatistics {
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
     private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+    private String requestSessionToken;
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
@@ -76,6 +77,7 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
+        this.requestSessionToken = toBeCloned.requestSessionToken;
     }
 
     public Duration getDuration() {
@@ -99,6 +101,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
+        storeResponseStatistics.requestSessionToken = request.getOriginalSessionToken();
         activityId = request.getActivityId().toString();
 
 
@@ -274,6 +277,8 @@ public class ClientSideRequestStatistics {
         return gatewayStatistics;
     }
 
+    public String getRequestSessionToken() { return requestSessionToken; }
+
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResultDiagnostics.StoreResultDiagnosticsSerializer.class)
         private StoreResultDiagnostics storeResult;
@@ -283,6 +288,8 @@ public class ClientSideRequestStatistics {
         private ResourceType requestResourceType;
         @JsonSerialize
         private OperationType requestOperationType;
+        @JsonSerialize
+        private String requestSessionToken;
 
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
@@ -299,8 +306,9 @@ public class ClientSideRequestStatistics {
         public OperationType getRequestOperationType() {
             return requestOperationType;
         }
-    }
 
+        public String getRequestSessionToken() { return requestSessionToken; }
+    }
     public static class SystemInformation {
         private String usedMemory;
         private String availableMemory;

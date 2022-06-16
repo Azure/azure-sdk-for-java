@@ -304,6 +304,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"requestSessionToken\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
@@ -314,7 +315,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             // validate that on failed operation request timeline is populated
             try {
-                cosmosContainer.createItem(internalObjectNode);
+                cosmosContainer.createItem(internalObjectNode, new CosmosItemRequestOptions().setSessionToken("0:-1#2"));
                 fail("expected 409");
             } catch (CosmosException e) {
                 diagnostics = e.getDiagnostics().toString();
@@ -322,6 +323,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
                 assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
                 assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
+                // validate session token manually passed in
+                assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {
@@ -766,7 +769,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
-            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestSessionToken")).isNotNull();
         }
     }
 
