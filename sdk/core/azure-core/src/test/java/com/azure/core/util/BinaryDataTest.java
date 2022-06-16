@@ -29,9 +29,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -60,9 +61,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -466,14 +468,21 @@ public class BinaryDataTest {
         assertThrows(UncheckedIOException.class, () -> BinaryData.fromFile(notARealPath));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void fileChannelCloseErrorReturnsReactively() throws IOException {
-        MyFileChannel myFileChannel = spy(MyFileChannel.class);
-        when(myFileChannel.map(any(), anyLong(), anyLong())).thenReturn(mock(MappedByteBuffer.class));
-        doThrow(IOException.class).when(myFileChannel).implCloseChannel();
+        AsynchronousFileChannel myFileChannel = mock(AsynchronousFileChannel.class);
+        doAnswer(invocationOnMock -> {
+            CompletionHandler<Integer, ByteBuffer> completionHandler =
+                invocationOnMock.getArgument(3, CompletionHandler.class);
+            // -1 means EOF.
+            completionHandler.completed(-1, null);
+            return null;
+        }).when(myFileChannel).read(any(), anyLong(), any(), any());
+        doThrow(new IOException("kaboom")).when(myFileChannel).close();
 
         FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
-        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+        when(fileSystemProvider.newAsynchronousFileChannel(any(), any(), any())).thenReturn(myFileChannel);
 
         FileSystem fileSystem = mock(FileSystem.class);
         when(fileSystem.provider()).thenReturn(fileSystemProvider);
@@ -487,17 +496,25 @@ public class BinaryDataTest {
 
         BinaryData binaryData = BinaryData.fromFile(path);
         StepVerifier.create(binaryData.toFluxByteBuffer())
-                .thenConsumeWhile(Objects::nonNull)
-                .verifyError(IOException.class);
+            .thenConsumeWhile(Objects::nonNull)
+            .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));
+        verify(myFileChannel).close();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
-    public void fileChannelIsClosedWhenMapErrors() throws IOException {
-        MyFileChannel myFileChannel = spy(MyFileChannel.class);
-        when(myFileChannel.map(any(), anyLong(), anyLong())).thenThrow(IOException.class);
+    public void fileChannelIsClosedWhenReadErrors() throws IOException {
+        AsynchronousFileChannel myFileChannel = mock(AsynchronousFileChannel.class);
+        doAnswer(invocationOnMock -> {
+            CompletionHandler<Integer, ByteBuffer> completionHandler =
+                invocationOnMock.getArgument(3, CompletionHandler.class);
+            // -1 means EOF.
+            completionHandler.failed(new IOException("kaboom"), null);
+            return null;
+        }).when(myFileChannel).read(any(), anyLong(), any(), any());
 
         FileSystemProvider fileSystemProvider = mock(FileSystemProvider.class);
-        when(fileSystemProvider.newFileChannel(any(), any(), any())).thenReturn(myFileChannel);
+        when(fileSystemProvider.newAsynchronousFileChannel(any(), any(), any())).thenReturn(myFileChannel);
 
         FileSystem fileSystem = mock(FileSystem.class);
         when(fileSystem.provider()).thenReturn(fileSystemProvider);
@@ -511,10 +528,10 @@ public class BinaryDataTest {
 
         BinaryData binaryData = BinaryData.fromFile(path);
         StepVerifier.create(binaryData.toFluxByteBuffer())
-                .thenConsumeWhile(Objects::nonNull)
-                .verifyError(IOException.class);
+            .thenConsumeWhile(Objects::nonNull)
+            .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));
 
-        assertFalse(myFileChannel.isOpen());
+        verify(myFileChannel).close();
     }
 
     @Test
@@ -745,6 +762,48 @@ public class BinaryDataTest {
                 Named.named("buffered flux",
                     (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()))
         );
+    }
+
+    /**
+     * On Windows
+     * {@link java.nio.channels.FileChannel#map(FileChannel.MapMode, long, long)}
+     * can block file deletion until buffer is reclaimed by GC.
+     * https://bugs.java.com/bugdatabase/view_bug.do?bug_id=4715154
+     */
+    @Test
+    public void binaryDataFromFileToFluxDoesNotBlockDelete() throws IOException {
+        byte[] bytes = new byte[10240];
+        RANDOM.nextBytes(bytes);
+        Path tempFile = Files.createTempFile("deletionTest", null);
+        tempFile.toFile().deleteOnExit();
+        Files.write(tempFile, bytes);
+
+        // create and consume flux.
+        BinaryData.fromFile(tempFile).toFluxByteBuffer().blockLast();
+
+        // immediate delete should succeed.
+        assertTrue(tempFile.toFile().delete());
+    }
+
+    /**
+     * On Windows
+     * {@link java.nio.channels.FileChannel#map(FileChannel.MapMode, long, long)}
+     * can block file deletion until buffer is reclaimed by GC.
+     * https://bugs.java.com/bugdatabase/view_bug.do?bug_id=4715154
+     */
+    @Test
+    public void binaryDataFromFileToBytesDoesNotBlockDelete() throws IOException {
+        byte[] bytes = new byte[10240];
+        RANDOM.nextBytes(bytes);
+        Path tempFile = Files.createTempFile("deletionTest", null);
+        tempFile.toFile().deleteOnExit();
+        Files.write(tempFile, bytes);
+
+        // create and consume flux.
+        BinaryData.fromFile(tempFile).toBytes();
+
+        // immediate delete should succeed.
+        assertTrue(tempFile.toFile().delete());
     }
 
     private static byte[] readInputStream(InputStream inputStream) throws IOException {
