@@ -13,6 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** The QueueDescription model. */
@@ -143,7 +144,7 @@ public final class QueueDescription {
 
         @JsonCreator
         private AuthorizationRulesWrapper() {
-            this.items = new ArrayList<AuthorizationRuleImpl>();
+            this.items = Collections.emptyList();
         }
 
         @JsonCreator
