@@ -83,30 +83,15 @@ public class LogsCollectionClientTest extends TestBase {
 
     @Test
     public void testUploadLogs() {
-        List<Object> dataList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            LogData logData = new LogData()
-                    .setTime(OffsetDateTime.now())
-                    .setExtendedColumn("test" + i)
-                    .setAdditionalContext("additional logs context");
-            dataList.add(logData);
-        }
+        List<Object> logs = getObjects(10);
         LogsIngestionClient client = clientBuilder.buildClient();
-        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, dataList);
+        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.SUCCESS, result.getStatus());
     }
 
     @Test
     public void testUploadLogsInBatches() {
-        List<Object> dataList = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
-            LogData logData = new LogData()
-                    .setTime(OffsetDateTime.now())
-                    .setExtendedColumn("test" + i)
-                    .setAdditionalContext("additional logs context");
-            dataList.add(logData);
-        }
+        List<Object> logs = getObjects(10000);
 
         AtomicInteger count = new AtomicInteger();
         LogsIngestionClient client = clientBuilder
@@ -123,22 +108,14 @@ public class LogsCollectionClientTest extends TestBase {
                     }
                 })
                 .buildClient();
-        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, dataList);
+        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.SUCCESS, result.getStatus());
         assertEquals(2, count.get());
     }
 
     @Test
     public void testUploadLogsPartialFailure() {
-        List<Object> dataList = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
-            LogData logData = new LogData()
-                    .setTime(OffsetDateTime.now())
-                    .setExtendedColumn("test" + i)
-                    .setAdditionalContext("additional logs context");
-            dataList.add(logData);
-        }
-
+        List<Object> logs = getObjects(100000);
         AtomicBoolean changeDcrId = new AtomicBoolean();
         AtomicInteger count = new AtomicInteger();
 
@@ -165,10 +142,23 @@ public class LogsCollectionClientTest extends TestBase {
                 })
                 .buildClient();
 
-        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, dataList);
+        UploadLogsResult result = client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(UploadLogsStatus.PARTIAL_FAILURE, result.getStatus());
         assertEquals(11, count.get());
         assertEquals(5, result.getErrors().size());
         result.getErrors().stream().forEach(error -> assertEquals("NotFound", error.getResponseError().getCode()));
+    }
+
+    private List<Object> getObjects(int x) {
+        List<Object> logs = new ArrayList<>();
+
+        for (int i = 0; i < x; i++) {
+            LogData logData = new LogData()
+                    .setTime(OffsetDateTime.now())
+                    .setExtendedColumn("test" + i)
+                    .setAdditionalContext("additional logs context");
+            logs.add(logData);
+        }
+        return logs;
     }
 }

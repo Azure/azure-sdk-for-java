@@ -121,6 +121,8 @@ public final class LogsIngestionAsyncClient {
             }
 
             List<List<Object>> logBatches = new ArrayList<>();
+            // TODO (srnagar): can improve memory usage by creating these request payloads right before sending the
+            //  request if the allowed concurrency is lower than the number of requests.
             List<byte[]> requests = createGzipRequests(logs, serializer, logBatches);
             RequestOptions requestOptions = new RequestOptions()
                     .addHeader(CONTENT_ENCODING, GZIP)
@@ -156,8 +158,16 @@ public final class LogsIngestionAsyncClient {
                                 mapToResponseError(ex))));
     }
 
+    /**
+     * Method to map the exception to {@link ResponseError}.
+     * @param ex the {@link HttpResponseException}.
+     * @return the mapped {@link ResponseError}.
+     */
     private ResponseError mapToResponseError(HttpResponseException ex) {
         ResponseError responseError = null;
+        // with DPG clients, the error object is just a LinkedHashMap and should map to the standard error
+        // response structure
+        // https://github.com/Azure/azure-rest-api-specs/blob/main/specification/common-types/data-plane/v1/types.json#L46
         if (ex.getValue() instanceof LinkedHashMap<?, ?>) {
             @SuppressWarnings("unchecked")
             LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) ex.getValue();
