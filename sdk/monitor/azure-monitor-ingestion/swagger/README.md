@@ -1,4 +1,4 @@
-# Azure Logs Ingestion client library for Java
+# Azure Monitor Ingestion client library for Java
 
 ## Code generation settings
 
