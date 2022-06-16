@@ -287,7 +287,7 @@ public abstract class AbstractQueryGenerator {
         }
         else if (query.getLimit() > 0) {
             queryString = new StringBuilder(queryString)
-                .append(" LIMIT ")
+                .append(" OFFSET 0 LIMIT ")
                 .append(query.getLimit()).toString();
         }
 
