@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory=$true)]
     [System.String] $ServiceDirectory,
-    # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+    # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
     [Parameter(Mandatory=$false)]
     [AllowEmptyCollection()]
     [array] $ArtifactsList
@@ -22,14 +22,33 @@ $missingLibraries = @{}
 Write-Host "ServiceDirectory=$($ServiceDirectory)"
 Write-Host "ArtifactsList:"
 
+if ($ArtifactsList.Count -eq 0) {
+    LogError "The artifacts list is empty, meaning there were no artifacts selected to be released."
+    exit 1
+}
+
+$uberJars = 0
 if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
 
-    $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+    $ArtifactsList | Format-Table -Property GroupId, Name, UberJar | Out-String | Write-Host
     foreach($artifact in $ArtifactsList) {
-        $librariesToRelease.Add("$($artifact.groupId):$($artifact.name)", $true)
+        if ($artifact.uberJar) {
+            $uberJars++
+        } else {
+            $librariesToRelease.Add("$($artifact.groupId):$($artifact.name)", $true)
+        }
+    }
+    # Short circuit if the list passed in contains nothing but uberJars
+    if ($uberJars -eq $ArtifactsList.Count)
+    {
+        Write-Host "The library list to release contains only uber jars. No transitive closure check needed for uber-jars."
+        exit 0
     }
 
     foreach($artifact in $ArtifactsList) {
+        if ($artifact.uberJar) {
+            continue
+        }
         $script:FoundPomFile = $false
         $inputGroupId = $artifact.groupId
         $inputArtifactId = $artifact.name
@@ -91,8 +110,5 @@ if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
         }
         exit(1)
     }
-
     Write-Host "The library list to release contains full transitive closure and looks good to release"
-} else {
-    Write-Host "The library list to release contains no non-uber jars. No transitive closure check needed for uber-jars."
 }
