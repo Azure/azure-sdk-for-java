@@ -2,7 +2,7 @@ param(
     [Parameter(Mandatory=$true)]
     [System.String] $ServiceDirectory,
     # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
     [AllowEmptyCollection()]
     [array] $ArtifactsList
 )
@@ -22,7 +22,7 @@ $missingLibraries = @{}
 Write-Host "ServiceDirectory=$($ServiceDirectory)"
 Write-Host "ArtifactsList:"
 
-if ($ArtifactsList.Count -gt 0) {
+if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
 
     $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
     foreach($artifact in $ArtifactsList) {
