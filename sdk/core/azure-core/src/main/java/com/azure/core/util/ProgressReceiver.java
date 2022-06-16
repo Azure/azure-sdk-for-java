@@ -8,6 +8,7 @@ package com.azure.core.util;
  * The {@link #reportProgress(long)} method will be called periodically with the total number of bytes
  * transferred.
  */
+@FunctionalInterface
 public interface ProgressReceiver {
     /**
      * The callback function invoked as progress is reported.
