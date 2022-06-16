@@ -64,6 +64,7 @@ String cacheHostname = "YOUR_HOST_NAME.redis.cache.windows.net";
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
         .password(token)
+        .username("<username>")
         .ssl(useSsl)
         .build());
 
