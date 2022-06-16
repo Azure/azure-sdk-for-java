@@ -13,7 +13,7 @@ import java.util.List;
  * Monitor.
  */
 @Immutable
-public class UploadLogsError {
+public final class UploadLogsError {
     private final ResponseError responseError;
     private final List<Object> failedLogs;
 
