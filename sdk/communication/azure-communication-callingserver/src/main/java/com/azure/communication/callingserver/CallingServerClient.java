@@ -65,7 +65,7 @@ public final class CallingServerClient {
     public Response<CallConnection> createCallWithResponse(CallSource source, List<CommunicationIdentifier> targets,
                                                  String callbackUri, CreateCallOptions createCallOptions,
                                                  Context context) {
-        return callingServerAsyncClient.createCallWithResponse(source, targets, callbackUri, createCallOptions, context)
+        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, createCallOptions, context)
             .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
@@ -95,7 +95,7 @@ public final class CallingServerClient {
     public Response<CallConnection> answerCallWithResponse(String incomingCallContext,
                                                            AnswerCallOptions answerCallOptions,
                                                            Context context) {
-        return callingServerAsyncClient.answerCallWithResponse(incomingCallContext, answerCallOptions, context)
+        return callingServerAsyncClient.answerCallWithResponseInternal(incomingCallContext, answerCallOptions, context)
             .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
@@ -123,7 +123,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
-        return callingServerAsyncClient.redirectCallWithResponse(incomingCallContext, target, context).block();
+        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
     }
 
     /**
@@ -151,6 +151,6 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(String incomingCallContext, RejectCallOptions rejectCallOptions,
                                                  Context context) {
-        return callingServerAsyncClient.rejectCallWithResponse(incomingCallContext, rejectCallOptions, context).block();
+        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, rejectCallOptions, context).block();
     }
 }

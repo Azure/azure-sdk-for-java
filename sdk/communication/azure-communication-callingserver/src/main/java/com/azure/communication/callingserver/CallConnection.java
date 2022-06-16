@@ -58,7 +58,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetCallResponse> getCallWithResponse(Context context) {
-        return callConnectionAsync.getCallWithResponse(context).block();
+        return callConnectionAsync.getCallWithResponseInternal(context).block();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> hangupWithResponse(Context context) {
-        return callConnectionAsync.hangupWithResponse(context).block();
+        return callConnectionAsync.hangupWithResponseInternal(context).block();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> terminateCallWithResponse(Context context) {
-        return callConnectionAsync.terminateCallWithResponse(context).block();
+        return callConnectionAsync.terminateCallWithResponseInternal(context).block();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransferCallResponse> transferToParticipantCallWithResponse(
         CommunicationIdentifier targetParticipant, TransferCallOptions options, Context context) {
-        return callConnectionAsync.transferToParticipantCallWithResponse(targetParticipant, options, context).block();
+        return callConnectionAsync.transferToParticipantCallWithResponseInternal(targetParticipant, options, context).block();
     }
 
     /**
@@ -159,7 +159,7 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcsCallParticipant> getParticipantWithResponse(CommunicationIdentifier participant,
                                                                          Context context) {
-        return callConnectionAsync.getParticipantWithResponse(participant, context).block();
+        return callConnectionAsync.getParticipantWithResponseInternal(participant, context).block();
     }
 
     /**
@@ -190,11 +190,11 @@ public final class CallConnection {
     public Response<AddParticipantsResponse> addParticipantsWithResponse(List<CommunicationIdentifier> participants,
                                                                          AddParticipantsOptions addParticipantsOptions,
                                                                          Context context) {
-        return callConnectionAsync.addParticipantsWithResponse(participants, addParticipantsOptions, context).block();
+        return callConnectionAsync.addParticipantsWithResponseInternal(participants, addParticipantsOptions, context).block();
     }
 
     /**
-     * Remove a participant from the call.
+     * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
      * @param removeParticipantsOptions The options of removing participants.
@@ -202,9 +202,9 @@ public final class CallConnection {
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResponse removeParticipant(List<CommunicationIdentifier> participantsToRemove,
-                                                        RemoveParticipantsOptions removeParticipantsOptions) {
-        return callConnectionAsync.removeParticipant(participantsToRemove, removeParticipantsOptions).block();
+    public RemoveParticipantsResponse removeParticipants(List<CommunicationIdentifier> participantsToRemove,
+                                                         RemoveParticipantsOptions removeParticipantsOptions) {
+        return callConnectionAsync.removeParticipants(participantsToRemove, removeParticipantsOptions).block();
     }
 
     /**
@@ -221,7 +221,7 @@ public final class CallConnection {
         List<CommunicationIdentifier> participantsToRemove,
         RemoveParticipantsOptions removeParticipantsOptions,
         Context context) {
-        return callConnectionAsync.removeParticipantsWithResponse(participantsToRemove, removeParticipantsOptions, context)
-            .block();
+        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove,
+                removeParticipantsOptions, context).block();
     }
 }
