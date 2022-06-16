@@ -275,8 +275,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws IllegalStateException if sender is already disposed.
-     * @throws ServiceBusException if {@code messages} are larger than the maximum allowed size of a single message or
-     *      the message could not be sent.
+     * @throws ServiceBusException if the message could not be sent.
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
         ServiceBusTransactionContext transactionContext) {
@@ -300,9 +301,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when all messages have been sent to the Service Bus resource.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
-     * @throws ServiceBusException if {@code messages} are larger than the maximum allowed size of a single message or
-     *      the message could not be sent.
+     * @throws ServiceBusException if the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
+     *     ServiceBusMessageBatch}.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages) {
         return sendIterable(messages, null);
@@ -440,6 +442,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      * @throws ServiceBusException If the message could not be scheduled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public Mono<Long> scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return scheduleMessageInternal(message, scheduledEnqueueTime, null);
@@ -474,7 +477,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException If {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws ServiceBusException If the messages could not be scheduled.
+     * @throws ServiceBusException If the messages could not be scheduled or the {@code message} is larger than
+     *      the maximum size of the {@link ServiceBusMessageBatch}.
      * @throws IllegalStateException if sender is already disposed.
      */
     public Flux<Long> scheduleMessages(Iterable<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
@@ -509,7 +513,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                 .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
                     messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext))
-            );
+            ).onErrorMap(this::mapError);
     }
 
     /**
@@ -535,7 +539,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
             .flatMap(managementNode -> managementNode.cancelScheduledMessages(
-                Collections.singletonList(sequenceNumber), linkName.get()));
+                Collections.singletonList(sequenceNumber), linkName.get())).onErrorMap(this::mapError);
     }
 
     /**
@@ -550,7 +554,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if the scheduled messages cannot cancelled.
      */
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers) {
-
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "cancelScheduledMessages")));
@@ -562,7 +565,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get()));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get()))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -585,7 +589,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
             .flatMap(transactionSession -> transactionSession.createTransaction())
-            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()));
+            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -606,11 +611,18 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "commitTransaction")));
         }
+        if (Objects.isNull(transactionContext)) {
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
+        }
+        if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
 
         return connectionProcessor
             .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
             .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
+                transactionContext.getTransactionId())))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -631,11 +643,18 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "rollbackTransaction")));
         }
+        if (Objects.isNull(transactionContext)) {
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
+        }
+        if (Objects.isNull(transactionContext.getTransactionId())) {
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+        }
 
         return connectionProcessor
             .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
             .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
+                transactionContext.getTransactionId())))
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -688,7 +707,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime,
                         maxSize, link.getLinkName(), transactionContext)
                     .next());
-            }));
+            })).onErrorMap(this::mapError);
     }
 
     /**
