@@ -121,6 +121,8 @@
     <heapDumpOnOom>
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+      <!-- Heap dump is produced before crashing. This flag makes sure JVM exists promptly after disaster instead of waiting for time out -->
+      -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->

@@ -18,7 +18,7 @@ import java.nio.ReadOnlyBufferException;
  */
 public abstract class BinaryDataContent {
 
-    public static final int STREAM_READ_SIZE = 8092;
+    public static final int STREAM_READ_SIZE = 8192;
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it is able to be calculated.
@@ -74,4 +74,11 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
+
+    /**
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     * @return a flag indicating whether the content can be repeatedly consumed.
+     */
+    public abstract boolean isReplayable();
 }
