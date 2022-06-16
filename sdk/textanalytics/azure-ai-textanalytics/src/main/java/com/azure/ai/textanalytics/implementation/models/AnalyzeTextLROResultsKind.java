@@ -32,10 +32,6 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
     /** Static value HealthcareLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind HEALTHCARE_LRORESULTS = fromString("HealthcareLROResults");
 
-    /** Static value ExtractiveSummarizationLROResults for AnalyzeTextLROResultsKind. */
-    public static final AnalyzeTextLROResultsKind EXTRACTIVE_SUMMARIZATION_LRORESULTS =
-            fromString("ExtractiveSummarizationLROResults");
-
     /** Static value CustomEntityRecognitionLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind CUSTOM_ENTITY_RECOGNITION_LRORESULTS =
             fromString("CustomEntityRecognitionLROResults");

@@ -12,7 +12,6 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -24,7 +23,6 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Sample demonstrates how to synchronously execute an "Healthcare Entities Analysis" action in a batch of documents.
@@ -54,7 +52,7 @@ public class AnalyzeHealthcareEntitiesActionSample {
                 new TextAnalyticsActions()
                     .setDisplayName("{tasks_display_name}")
                     .setAnalyzeHealthcareEntitiesActions(
-                        new AnalyzeHealthcareEntitiesAction().setFhirVersion(FhirVersion.V4_0_1)),
+                        new AnalyzeHealthcareEntitiesAction()),
                 "en",
                 new AnalyzeActionsOptions());
 
@@ -98,14 +96,9 @@ public class AnalyzeHealthcareEntitiesActionSample {
                                 entity.getText(), entity.getCategory(), role.getName());
                         }
                     }
-                    // FHIR bundle in JSON format
-                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
-                    if (fhirBundle != null) {
-                        System.out.printf("FHIR bundle: %s%n", fhirBundle);
-                    }
                 }
             } else {
-                System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
+                System.out.printf("\tCannot execute Healthcare Entities Analysis action. Error: %s%n",
                     actionResult.getError().getMessage());
             }
         }

@@ -552,7 +552,7 @@ public final class TextAnalyticsClientBuilder implements
 
     private boolean isConsolidatedServiceVersion(TextAnalyticsServiceVersion serviceVersion) {
         if (serviceVersion == null) {
-            serviceVersion = TextAnalyticsServiceVersion.V2022_04_01_PREVIEW;
+            serviceVersion = TextAnalyticsServiceVersion.V2022_05_01;
         }
         return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
                      || TextAnalyticsServiceVersion.V3_1 == serviceVersion);

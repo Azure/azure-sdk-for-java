@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** The CustomSingleLabelClassificationResultDocumentsItem model. */
+/** The CustomLabelClassificationResultDocumentsItem model. */
 @Immutable
-public final class CustomSingleLabelClassificationResultDocumentsItem extends SingleClassificationDocumentResult {
+public final class CustomLabelClassificationResultDocumentsItem extends ClassificationDocumentResult {
 
 }

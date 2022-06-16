@@ -19,7 +19,6 @@ public final class TextAnalyticsActions {
     private Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
-    private Iterable<ExtractSummaryAction> extractSummaryActions;
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
     private Iterable<SingleCategoryClassifyAction> singleCategoryClassifyActions;
     private Iterable<MultiCategoryClassifyAction> multiCategoryClassifyActions;
@@ -176,27 +175,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
-        return this;
-    }
-
-    /**
-     * Gets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return the list of {@link ExtractSummaryAction} to be executed.
-     */
-    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
-        return extractSummaryActions;
-    }
-
-    /**
-     * Sets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return The {@link TextAnalyticsActions} object itself.
-     */
-    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
         return this;
     }
 

@@ -7,8 +7,6 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.Map;
-
 /**
  * The {@link AnalyzeHealthcareEntitiesResult} model.
  */
@@ -17,7 +15,6 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntity> entities;
     private IterableStream<HealthcareEntityRelation> entityRelations;
-    private Map<String, Object> fhirBundle;
 
     static {
         AnalyzeHealthcareEntitiesResultPropertiesHelper.setAccessor(
@@ -38,12 +35,6 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
                 public void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
                     IterableStream<HealthcareEntityRelation> entityRelations) {
                     entitiesResult.setEntityRelations(entityRelations);
-                }
-
-                @Override
-                public void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult,
-                    Map<String, Object> fhirBundle) {
-                    entitiesResult.setFhirBundle(fhirBundle);
                 }
             });
     }
@@ -91,15 +82,6 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
         return this.entityRelations;
     }
 
-    /**
-     * Gets the value of FHIR Bundle. See more information in https://www.hl7.org/fhir/overview.html.
-     *
-     * @return The value of FHIR Bundle.
-     */
-    public Map<String, Object> getFhirBundle() {
-        return this.fhirBundle;
-    }
-
     private void setEntities(IterableStream<HealthcareEntity> entities) {
         this.entities = entities;
     }
@@ -110,9 +92,5 @@ public final class AnalyzeHealthcareEntitiesResult extends TextAnalyticsResult {
 
     private void setEntityRelations(IterableStream<HealthcareEntityRelation> entityRelations) {
         this.entityRelations = entityRelations;
-    }
-
-    private void setFhirBundle(Map<String, Object> fhirBundle) {
-        this.fhirBundle = fhirBundle;
     }
 }

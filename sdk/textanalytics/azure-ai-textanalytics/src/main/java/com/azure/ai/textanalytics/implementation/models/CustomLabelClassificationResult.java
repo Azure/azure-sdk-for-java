@@ -8,21 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CustomSingleLabelClassificationResult model. */
+/** The CustomLabelClassificationResult model. */
 @Fluent
-public final class CustomSingleLabelClassificationResult extends CustomResult {
+public final class CustomLabelClassificationResult extends CustomResult {
     /*
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<CustomSingleLabelClassificationResultDocumentsItem> documents;
+    private List<CustomLabelClassificationResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<CustomSingleLabelClassificationResultDocumentsItem> getDocuments() {
+    public List<CustomLabelClassificationResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -30,10 +30,9 @@ public final class CustomSingleLabelClassificationResult extends CustomResult {
      * Set the documents property: Response by document.
      *
      * @param documents the documents value to set.
-     * @return the CustomSingleLabelClassificationResult object itself.
+     * @return the CustomLabelClassificationResult object itself.
      */
-    public CustomSingleLabelClassificationResult setDocuments(
-            List<CustomSingleLabelClassificationResultDocumentsItem> documents) {
+    public CustomLabelClassificationResult setDocuments(List<CustomLabelClassificationResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
     }
