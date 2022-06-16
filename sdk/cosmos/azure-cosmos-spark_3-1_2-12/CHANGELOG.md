@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.12.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.11.2 (2022-06-17)
 
 #### Bugs Fixed
 * Fixed a regression introduced in [PR 29152](https://github.com/Azure/azure-sdk-for-java/pull/29152) that can lead to `IllegalStateException: Latest LSN xxx must not be smaller than start LSN yyy`. - See [PR 29485](https://github.com/Azure/azure-sdk-for-java/pull/29485)
-
-#### Other Changes
 
 ### 4.11.1 (2022-06-09)
 
