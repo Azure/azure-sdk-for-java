@@ -118,10 +118,7 @@ stages:
         - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
           parameters:
             SparseCheckoutPaths:
-              - ${{ if ne(parameters.ServiceDirectory, 'not-specified') }}:
-                - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
-              - ${{ if eq(parameters.ServiceDirectory, 'not-specified') }}:
-                - "sdk//**/*.json"
+              - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
