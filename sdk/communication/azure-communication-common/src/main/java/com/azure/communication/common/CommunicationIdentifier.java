@@ -8,6 +8,9 @@ import com.azure.core.util.CoreUtils;
  * Common communication identifier for Communication Services
  */
 public abstract class CommunicationIdentifier {
+    /**
+     * encoded format for identifiers to store in databases or as stable keys in general.
+     */
     protected String rawId;
 
     /**
