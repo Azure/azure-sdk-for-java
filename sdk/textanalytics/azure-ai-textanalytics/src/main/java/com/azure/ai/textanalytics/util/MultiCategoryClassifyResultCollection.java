@@ -14,8 +14,7 @@ import com.azure.core.util.IterableStream;
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class MultiCategoryClassifyResultCollection
-    extends IterableStream<MultiCategoryClassifyResult> {
+public final class MultiCategoryClassifyResultCollection extends IterableStream<MultiCategoryClassifyResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;

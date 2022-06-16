@@ -8,6 +8,8 @@ import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServi
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeCategoryClassifyOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -29,7 +31,9 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeMultiCategoryClassifyPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.AnalyzeSingleCategoryClassifyPagedFlux;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1755,6 +1759,39 @@ public final class TextAnalyticsAsyncClient {
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options) {
         return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
+    }
+
+
+    // Single Category
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedFlux>
+        beginAnalyzeSingleCategoryClassify(Iterable<String> documents, String language,
+            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeSingleCategoryClassifyPagedFlux>
+        beginAnalyzeSingleCategoryClassify(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+        return null;
+    }
+
+    // Multi Category
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedFlux>
+        beginAnalyzeMultiCategoryClassify(Iterable<String> documents, String language,
+            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+        return null;
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeCategoryClassifyOperationDetail, AnalyzeMultiCategoryClassifyPagedFlux>
+        beginAnalyzeMultiCategoryClassify(Iterable<TextDocumentInput> documents,
+            String projectName, String deploymentName, AnalyzeCategoryClassifyOptions options) {
+        return null;
     }
 
     /**
