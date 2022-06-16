@@ -98,7 +98,7 @@ public class SyncRestProxyTests {
             .httpClient(client)
             .build();
 
-        TestInterface testInterface = SyncRestProxy.create(TestInterface.class, pipeline);
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes)),
             "application/json", (long) bytes.length);

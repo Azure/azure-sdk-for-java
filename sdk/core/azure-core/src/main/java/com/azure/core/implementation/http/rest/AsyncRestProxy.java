@@ -1,8 +1,13 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
-import com.azure.core.http.rest.*;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -10,22 +15,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
-import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.ContextView;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
 
 public class AsyncRestProxy extends RestProxyBase {
     /**
@@ -52,7 +56,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
 
     public HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        return RestProxyUtils.createHttpRequest(methodParser, serializer, true, args);
+        return createHttpRequestBase(methodParser, serializer, true, args);
     }
 
     @Override
@@ -61,16 +65,7 @@ public class AsyncRestProxy extends RestProxyBase {
                          Context context) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
-        //            final SwaggerMethodParser methodParser = getMethodParser(method);
-//            final HttpRequest request = RestProxyUtils.createHttpRequest(methodParser, serializer, true, args);
-//            Context context = methodParser.setContext(args);
-//
-//            RequestOptions options = methodParser.setRequestOptions(args);
-//            context = RestProxyUtils.mergeRequestOptionsContext(context, options);
-//
-//            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-//                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
-//            context = startTracingSpan(method, context);
+        context = startTracingSpan(method, context);
 
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
         // This is because the callbacks may mutate the request body.
@@ -143,9 +138,9 @@ public class AsyncRestProxy extends RestProxyBase {
             // If there is no response body create an error without the response body.
             // Finally, return the error reactively.
             return decodedResponse.getSourceResponse().getBodyAsByteArray()
-                .map(bytes -> RestProxyUtils.instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
+                .map(bytes -> instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                     decodedResponse.getSourceResponse(), bytes, decodedResponse.getDecodedBody(bytes)))
-                .switchIfEmpty(Mono.fromSupplier(() -> RestProxyUtils.instantiateUnexpectedException(
+                .switchIfEmpty(Mono.fromSupplier(() -> instantiateUnexpectedException(
                     methodParser.getUnexpectedException(responseStatusCode), decodedResponse.getSourceResponse(),
                     null, null)))
                 .flatMap(Mono::error);
@@ -172,52 +167,6 @@ public class AsyncRestProxy extends RestProxyBase {
             // For now, we're just throwing if the Maybe didn't emit a value.
             return handleBodyReturnType(response, methodParser, entityType);
         }
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private static Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-                                           Object bodyAsObject) {
-        final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-
-        final HttpResponse httpResponse = response.getSourceResponse();
-        final HttpRequest request = httpResponse.getRequest();
-        final int statusCode = httpResponse.getStatusCode();
-        final HttpHeaders headers = httpResponse.getHeaders();
-        final Object decodedHeaders = response.getDecodedHeaders();
-        // Inspection of the response type needs to be performed to determine which course of action should be taken to
-        // instantiate the Response<?> from the HttpResponse.
-        //
-        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
-        // ResponseBase or PagedResponseBase can be returned.
-        if (cls.equals(Response.class)) {
-            // For Response return a new instance of ResponseBase cast to the class.
-            return cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject, decodedHeaders));
-        } else if (cls.equals(PagedResponse.class)) {
-            // For PagedResponse return a new instance of PagedResponseBase cast to the class.
-            //
-            // PagedResponse needs an additional check that the bodyAsObject implements Page.
-            //
-            // If the bodyAsObject is null use the constructor that take items and continuation token with null.
-            // Otherwise, use the constructor that take Page.
-            if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
-            } else if (bodyAsObject == null) {
-                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null, decodedHeaders));
-            } else {
-                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
-                    decodedHeaders));
-            }
-        } else if (cls.equals(StreamResponse.class)) {
-            return new StreamResponse(request, httpResponse);
-        }
-
-        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
-        //
-        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
-        // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the
-        // body as an Object.
-        MethodHandle constructorHandle = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
-        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorHandle, response, bodyAsObject);
     }
 
     private static Mono<?> handleBodyReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
@@ -356,6 +305,34 @@ public class AsyncRestProxy extends RestProxyBase {
         }
 
         TracerProxy.end(statusCode, throwable, tracingContext.get());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter) throws IOException {
+        boolean isJson = requestDataConfiguration.isJson();
+        HttpRequest request = requestDataConfiguration.getHttpRequest();
+        Object bodyContentObject = requestDataConfiguration.getBodyContent();
+        SwaggerMethodParser methodParser = requestDataConfiguration.getMethodParser();
+
+        if (isJson) {
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject, SerializerEncoding.JSON));
+        } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
+            // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
+            // Flowable<byte[]> is given for the body.
+            request.setBody((Flux<ByteBuffer>) bodyContentObject);
+        } else if (bodyContentObject instanceof byte[]) {
+            request.setBody((byte[]) bodyContentObject);
+        } else if (bodyContentObject instanceof String) {
+            final String bodyContentString = (String) bodyContentObject;
+            if (!bodyContentString.isEmpty()) {
+                request.setBody(bodyContentString);
+            }
+        } else if (bodyContentObject instanceof ByteBuffer) {
+            request.setBody(Flux.just((ByteBuffer) bodyContentObject));
+        } else {
+            request.setBody(serializerAdapter.serializeToBytes(bodyContentObject,
+                SerializerEncoding.fromHeaders(request.getHeaders())));
+        }
     }
 
 }

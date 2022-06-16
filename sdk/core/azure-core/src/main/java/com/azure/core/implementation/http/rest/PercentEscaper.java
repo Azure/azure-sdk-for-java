@@ -31,7 +31,7 @@ public final class PercentEscaper {
      * @param safeCharacters Collection of characters that won't be escaped.
      * @param usePlusForSpace If true {@code ' '} will be escaped as {@code '+'} instead of {@code "%20"}.
      */
-    PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
+    public PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
         this.usePlusForSpace = usePlusForSpace;
 
         if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {

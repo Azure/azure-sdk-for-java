@@ -34,7 +34,7 @@ public final class LengthValidatingInputStream extends InputStream {
      * @param inputStream The {@link InputStream} being decorated.
      * @param expectedReadSize The expected number of bytes to be read from the inner {@code inputStream}.
      */
-    LengthValidatingInputStream(InputStream inputStream, long expectedReadSize) {
+    public LengthValidatingInputStream(InputStream inputStream, long expectedReadSize) {
         this.inner = Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
 
         if (expectedReadSize < 0) {

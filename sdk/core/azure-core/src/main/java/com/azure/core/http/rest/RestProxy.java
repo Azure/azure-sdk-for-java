@@ -5,15 +5,12 @@ package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.rest.*;
 import com.azure.core.implementation.http.rest.SyncRestProxy;
-import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -30,18 +27,10 @@ import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.s
  * as asynchronous Single objects that resolve to a deserialized Java object.
  */
 public final class RestProxy implements InvocationHandler {
-    private static final String MUST_IMPLEMENT_PAGE_ERROR =
-        "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
-
-    private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-
     // RestProxy is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RestProxy.class);
 
-    private final HttpPipeline httpPipeline;
-    private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
-    private final HttpResponseDecoder decoder;
     private AsyncRestProxy asyncRestProxy;
     private SyncRestProxy syncRestProxy;
 
@@ -54,10 +43,7 @@ public final class RestProxy implements InvocationHandler {
      * this RestProxy "implements".
      */
     private RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
         this.interfaceParser = interfaceParser;
-        this.decoder = new HttpResponseDecoder(this.serializer);
         this.asyncRestProxy = new AsyncRestProxy(httpPipeline, serializer, interfaceParser);
         this.syncRestProxy = new SyncRestProxy(httpPipeline, serializer, interfaceParser);
     }
@@ -73,17 +59,6 @@ public final class RestProxy implements InvocationHandler {
         return interfaceParser.getMethodParser(method);
     }
 
-    /**
-     * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
-     *
-     * @param request the HTTP request to send
-     * @param contextData the context
-     * @return a {@link Mono} that emits HttpResponse asynchronously
-     */
-    public Mono<HttpResponse> send(HttpRequest request, Context contextData) {
-        return httpPipeline.send(request, contextData);
-    }
-
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
@@ -92,7 +67,8 @@ public final class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser = getMethodParser(method);
 
             HttpRequest request;
-            if (isReactive(methodParser.getReturnType())) {
+            boolean isReactive = isReactive(methodParser.getReturnType());
+            if (isReactive) {
                 request = asyncRestProxy.createHttpRequest(methodParser, args);
             } else {
                 request = syncRestProxy.createHttpRequest(methodParser, args);
@@ -107,7 +83,7 @@ public final class RestProxy implements InvocationHandler {
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
 
 
-            if (isReactive(methodParser.getReturnType())) {
+            if (isReactive) {
                 return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
                     options != null ? options.getRequestCallback() : null, methodParser, request, context);
             } else {
