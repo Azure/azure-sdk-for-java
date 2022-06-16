@@ -58,10 +58,10 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 ##### Example
 
 ```java readme-sample-createAccountsClient
-AccountsClient client = new PurviewAccountClientBuilder()
+AccountsClient client = new AccountsClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAccountsClient();
+    .buildClient();
 ```
 
 ## Key concepts
@@ -69,10 +69,10 @@ AccountsClient client = new PurviewAccountClientBuilder()
 ## Examples
 
 ```java readme-sample-getAccountProperties
-AccountsClient client = new PurviewAccountClientBuilder()
+AccountsClient client = new AccountsClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAccountsClient();
+    .buildClient();
 BinaryData response = client.getAccountPropertiesWithResponse(null).getValue();
 ```
 

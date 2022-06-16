@@ -42,6 +42,17 @@ class AzureStorageQueueAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    void configureWithStorageGlobalDisabled(String accoutNameProperty) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.enabled=false",
+                accoutNameProperty
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "spring.cloud.azure.storage.queue.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
     void configureWithStorageQueueDisabled(String accoutNameProperty) {
         this.contextRunner
             .withPropertyValues(

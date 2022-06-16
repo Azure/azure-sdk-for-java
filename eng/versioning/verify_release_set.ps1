@@ -2,7 +2,8 @@ param(
     [Parameter(Mandatory=$true)]
     [System.String] $ServiceDirectory,
     # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
+    [AllowEmptyCollection()]
     [array] $ArtifactsList
 )
 
@@ -20,72 +21,78 @@ $missingLibraries = @{}
 
 Write-Host "ServiceDirectory=$($ServiceDirectory)"
 Write-Host "ArtifactsList:"
-$ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-foreach($artifact in $ArtifactsList) {
-    $librariesToRelease.Add("$($artifact.groupId):$($artifact.name)", $true)
-}
 
-foreach($artifact in $ArtifactsList) {
-    $script:FoundPomFile = $false
-    $inputGroupId = $artifact.groupId
-    $inputArtifactId = $artifact.name
-    # It's unfortunate that we have to find the POM file this way for a given group/artifact.
-    # The reason is because an sdk/<area> should have subdirectories named for each artifact but
-    # that's not always the case so we need to discover.
-    foreach($file in Get-ChildItem -Path $ServiceDirectory -Filter pom*.xml -Recurse -File) {
-        $pomFile = $file.FullName
-        $xmlPomFile = New-Object xml
-        $xmlPomFile.Load($pomFile)
-        if (($xmlPomFile.project.groupId -eq $inputGroupId) -and ($xmlPomFile.project.artifactId -eq $inputArtifactId)) {
-            $script:FoundPomFile = $true
-            # Verify that each current dependency is contained within the list of libraries to be released
-            foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
-            {
-                $artifactId = $dependencyNode.artifactId
-                $groupId = $dependencyNode.groupId
-                $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
+if ($ArtifactsList -and $ArtifactsList.Count -gt 0) {
 
-                $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
-                if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
+    $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+    foreach($artifact in $ArtifactsList) {
+        $librariesToRelease.Add("$($artifact.groupId):$($artifact.name)", $true)
+    }
+
+    foreach($artifact in $ArtifactsList) {
+        $script:FoundPomFile = $false
+        $inputGroupId = $artifact.groupId
+        $inputArtifactId = $artifact.name
+        # It's unfortunate that we have to find the POM file this way for a given group/artifact.
+        # The reason is because an sdk/<area> should have subdirectories named for each artifact but
+        # that's not always the case so we need to discover.
+        foreach($file in Get-ChildItem -Path $ServiceDirectory -Filter pom*.xml -Recurse -File) {
+            $pomFile = $file.FullName
+            $xmlPomFile = New-Object xml
+            $xmlPomFile.Load($pomFile)
+            if (($xmlPomFile.project.groupId -eq $inputGroupId) -and ($xmlPomFile.project.artifactId -eq $inputArtifactId)) {
+                $script:FoundPomFile = $true
+                # Verify that each current dependency is contained within the list of libraries to be released
+                foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
                 {
-                    continue
-                }
-                # if there is no version update tag for the dependency then fail
-                if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
-                {
-                    $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
-                    if ($versionUpdateTag -match ";current}")
+                    $artifactId = $dependencyNode.artifactId
+                    $groupId = $dependencyNode.groupId
+                    $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
+
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
                     {
-                        $libraryToVerify = "$($groupId):$($artifactId)"
-                        if (!$librariesToRelease.ContainsKey($libraryToVerify)) {
-                            if (!$missingLibraries.ContainsKey($libraryToVerify)) {
-                                $missingLibraries[$libraryToVerify] = $true
+                        continue
+                    }
+                    # if there is no version update tag for the dependency then fail
+                    if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
+                    {
+                        $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
+                        if ($versionUpdateTag -match ";current}")
+                        {
+                            $libraryToVerify = "$($groupId):$($artifactId)"
+                            if (!$librariesToRelease.ContainsKey($libraryToVerify)) {
+                                if (!$missingLibraries.ContainsKey($libraryToVerify)) {
+                                    $missingLibraries[$libraryToVerify] = $true
+                                }
+                                $script:FoundError = $true
+                                LogError "Error: $($pomFile) contains a current dependency, groupId=$($groupId), artifactId=$($artifactId), which is not the list of libraries to be released."
                             }
-                            $script:FoundError = $true
-                            LogError "Error: $($pomFile) contains a current dependency, groupId=$($groupId), artifactId=$($artifactId), which is not the list of libraries to be released."
                         }
                     }
                 }
             }
         }
-    }
 
-    if (!$script:FoundPomFile) {
-        LogError "Did not find pom file with matching groupId=$($inputGroupId) and artifactId=$($inputArtifactId) under ServiceDirectory=$($ServiceDirectory)"
-        $script:FoundError = $true
-    }
-}
-
-Write-Host "Elapsed Time=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
-if ($script:FoundError) {
-    if ($missingLibraries.Count -gt 0) {
-        LogError "The following library or libraries are dependencies of one or more of libaries to be released but not on the release list:"
-        foreach ($missingLibrary in $missingLibraries.Keys) {
-            LogError $missingLibrary
+        if (!$script:FoundPomFile) {
+            LogError "Did not find pom file with matching groupId=$($inputGroupId) and artifactId=$($inputArtifactId) under ServiceDirectory=$($ServiceDirectory)"
+            $script:FoundError = $true
         }
-        LogError "If any of the above libraries are not released from $($ServiceDirectory) then the tag is incorrectly set to current and should be dependency."
     }
-    exit(1)
-}
 
-Write-Host "The library list to release contains full transitive closure and looks good to release"
+    Write-Host "Elapsed Time=$($resultstime.Elapsed.ToString('dd\.hh\:mm\:ss'))"
+    if ($script:FoundError) {
+        if ($missingLibraries.Count -gt 0) {
+            LogError "The following library or libraries are dependencies of one or more of libaries to be released but not on the release list:"
+            foreach ($missingLibrary in $missingLibraries.Keys) {
+                LogError $missingLibrary
+            }
+            LogError "If any of the above libraries are not released from $($ServiceDirectory) then the tag is incorrectly set to current and should be dependency."
+        }
+        exit(1)
+    }
+
+    Write-Host "The library list to release contains full transitive closure and looks good to release"
+} else {
+    Write-Host "The library list to release contains no non-uber jars. No transitive closure check needed for uber-jars."
+}

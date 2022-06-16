@@ -16,7 +16,7 @@ def get_args():
     return parser.parse_args()
 
 
-def change_to_root_dir():
+def change_to_repo_root_dir():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.chdir('../../..')
 
@@ -35,7 +35,7 @@ def get_spring_cloud_version(filepath):
 
 
 def main():
-    change_to_root_dir()
+    change_to_repo_root_dir()
     get_spring_cloud_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
 
 

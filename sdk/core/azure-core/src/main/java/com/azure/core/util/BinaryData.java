@@ -1459,4 +1459,13 @@ public final class BinaryData {
     public Long getLength() {
         return content.getLength();
     }
+
+    /**
+     * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
+     * {@link #toStream()} and {@link #toFluxByteBuffer()}
+     * @return a flag indicating whether the content can be repeatedly consumed using all accessors.
+     */
+    public boolean isReplayable() {
+        return content.isReplayable();
+    }
 }
