@@ -131,7 +131,7 @@ An exception policy controls the behavior of a Job based on a trigger and execut
 ## Examples
 
 ### Client Initialization
-To initialize the SMS Client, the connection string can be used to instantiate.
+To initialize the JobRouter Client, the connection string can be used to instantiate.
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
 ```java 
