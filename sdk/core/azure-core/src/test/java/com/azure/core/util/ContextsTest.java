@@ -34,7 +34,7 @@ public class ContextsTest {
     @Test
     public void canAddProgressReporter() {
         Contexts contexts = Contexts.empty();
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(
             bytesTransferred -> { });
 
         contexts.setProgressReporter(progressReporter);
@@ -48,7 +48,7 @@ public class ContextsTest {
     @Test
     public void canUnsetProgressReporter() {
         Contexts contexts = Contexts.empty();
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(
             bytesTransferred -> { });
         Context newContext = contexts.setProgressReporter(progressReporter).context();
 

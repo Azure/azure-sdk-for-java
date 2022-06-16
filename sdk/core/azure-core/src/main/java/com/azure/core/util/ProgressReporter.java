@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
  */
 public final class ProgressReporter {
 
-    private final ProgressListener progressListener;
+    private final ProgressReceiver progressReceiver;
     private final ProgressReporter parent;
 
     private static final AtomicLongFieldUpdater<ProgressReporter> PROGRESS_ATOMIC_UPDATER =
@@ -20,12 +20,12 @@ public final class ProgressReporter {
 
     /**
      * Creates top level {@link ProgressReporter}.
-     * Only top level {@link ProgressReporter} can have {@link ProgressListener}.
-     * @param progressListener The {@link ProgressListener} to be notified about progress.
+     * Only top level {@link ProgressReporter} can have {@link ProgressReceiver}.
+     * @param progressReceiver The {@link ProgressReceiver} to be notified about progress.
      */
-    private ProgressReporter(ProgressListener progressListener) {
-        this.progressListener = Objects.requireNonNull(progressListener,
-            "'progressListener' must not be null");
+    private ProgressReporter(ProgressReceiver progressReceiver) {
+        this.progressReceiver = Objects.requireNonNull(progressReceiver,
+            "'progressReceiver' must not be null");
         this.parent = null;
     }
 
@@ -36,23 +36,23 @@ public final class ProgressReporter {
     private ProgressReporter(ProgressReporter parent) {
         this.parent = Objects.requireNonNull(parent,
             "'parent' must not be null");
-        this.progressListener = null;
+        this.progressReceiver = null;
     }
 
     /**
-     * Creates a {@link ProgressReporter} that notifies {@link ProgressListener}.
-     * @param progressListener The {@link ProgressListener} to be notified about progress. Must not be null.
+     * Creates a {@link ProgressReporter} that notifies {@link ProgressReceiver}.
+     * @param progressReceiver The {@link ProgressReceiver} to be notified about progress. Must not be null.
      * @return The {@link ProgressReporter} instance.
-     * @throws NullPointerException If {@code progressListener} is null.
+     * @throws NullPointerException If {@code progressReceiver} is null.
      */
-    public static ProgressReporter withProgressListener(ProgressListener progressListener) {
-        return new ProgressReporter(progressListener);
+    public static ProgressReporter withProgressReceiver(ProgressReceiver progressReceiver) {
+        return new ProgressReporter(progressReceiver);
     }
 
     /**
      * Creates child {@link ProgressReporter} that can be used to track sub-progress when tracked activity spans
      * across concurrent processes. Child {@link ProgressReporter} notifies parent about progress and
-     * parent notifies {@link ProgressListener}.
+     * parent notifies {@link ProgressReceiver}.
      * @return The child {@link ProgressReporter}.
      */
     public ProgressReporter createChild() {
@@ -67,8 +67,8 @@ public final class ProgressReporter {
         if (parent != null) {
             parent.reportProgress(-1L * accumulated);
         }
-        if (progressListener != null) {
-            progressListener.onProgress(0L);
+        if (progressReceiver != null) {
+            progressReceiver.reportProgress(0L);
         }
     }
 
@@ -81,8 +81,8 @@ public final class ProgressReporter {
         if (parent != null) {
             parent.reportProgress(bytesTransferred);
         }
-        if (progressListener != null) {
-            progressListener.onProgress(totalProgress);
+        if (progressReceiver != null) {
+            progressReceiver.reportProgress(totalProgress);
         }
     }
 }

@@ -15,23 +15,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProgressReporterTest {
 
-    private final ListProgressListener listener = new ListProgressListener();
+    private final ListProgressReceiver listener = new ListProgressReceiver();
 
     @Test
     public void listenerMustNotBeNull() {
-        assertThrows(NullPointerException.class, () -> ProgressReporter.withProgressListener(null));
+        assertThrows(NullPointerException.class, () -> ProgressReporter.withProgressReceiver(null));
     }
 
     @Test
     public void whenNothingHappens() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
 
         assertEquals(Collections.emptyList(), listener.getProgresses());
     }
 
     @Test
     public void canReportProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
 
         progressReporter.reportProgress(1);
         progressReporter.reportProgress(3);
@@ -42,7 +42,7 @@ public class ProgressReporterTest {
 
     @Test
     public void canResetProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
 
         progressReporter.reportProgress(5);
         progressReporter.reset();
@@ -52,7 +52,7 @@ public class ProgressReporterTest {
 
     @Test
     public void canResetProgressInTheMiddle() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
 
         progressReporter.reportProgress(5);
         progressReporter.reset();
@@ -63,7 +63,7 @@ public class ProgressReporterTest {
 
     @Test
     public void childrenCanReportProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
         ProgressReporter child1 = progressReporter.createChild();
         ProgressReporter child2 = progressReporter.createChild();
 
@@ -78,7 +78,7 @@ public class ProgressReporterTest {
 
     @Test
     public void childrenCanResetProgress() {
-        ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
+        ProgressReporter progressReporter = ProgressReporter.withProgressReceiver(listener);
         ProgressReporter child1 = progressReporter.createChild();
         ProgressReporter child2 = progressReporter.createChild();
 
@@ -93,11 +93,11 @@ public class ProgressReporterTest {
         assertEquals(Arrays.asList(1L, 8L, 1L, 4L, 15L, 20L, 9L), listener.getProgresses());
     }
 
-    private static class ListProgressListener implements ProgressListener {
+    private static class ListProgressReceiver implements ProgressReceiver {
         private final List<Long> progresses = new ArrayList<>();
 
         @Override
-        public void onProgress(long bytesTransferred) {
+        public void reportProgress(long bytesTransferred) {
             progresses.add(bytesTransferred);
         }
 

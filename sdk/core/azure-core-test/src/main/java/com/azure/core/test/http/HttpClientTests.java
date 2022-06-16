@@ -251,7 +251,7 @@ public abstract class HttpClientTests {
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setProgressReporter(
-                ProgressReporter.withProgressListener(progress::set))
+                ProgressReporter.withProgressReceiver(progress::set))
             .context();
 
         StepVerifier.create(createHttpClient()
