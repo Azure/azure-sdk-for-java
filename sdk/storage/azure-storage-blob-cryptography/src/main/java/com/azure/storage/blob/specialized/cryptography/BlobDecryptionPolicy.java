@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -46,8 +47,10 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_RANGE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
@@ -82,6 +85,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private final boolean requiresEncryption;
 
     private final BlobAsyncClient blobClient;
+    private LogLevel v1UsageLogLevel = LogLevel.WARNING;
 
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
@@ -398,7 +402,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     }).then(Mono.fromCallable(() -> {
                         // We have already written all the data to the cipher. Passing in a final
                         // empty buffer allows us to force completion and return the filled buffer.
-                        gmcCipher.doFinal(ByteBuffer.allocate(0), decryptedRegion);
+                        gmcCipher.doFinal(EMPTY_BUFFER, decryptedRegion);
                         decryptedRegion.flip();
                         return decryptedRegion;
                     })).flux();
@@ -408,8 +412,9 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Flux<ByteBuffer> decryptV1(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, EncryptionData encryptionData, String requestUri,
         AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
-        LOGGER.warning("Downloaded data found to be encrypted with v1 encryption, "
+        LOGGER.log(this.v1UsageLogLevel, () -> "Downloaded data found to be encrypted with v1 encryption, "
             + "which is no longer secure. Uri: " + requestUri);
+        this.v1UsageLogLevel = LogLevel.INFORMATIONAL; // Log subsequently at a lower level to not pollute logs
         /*
          * Calculate the IV.
          *
@@ -518,6 +523,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             .flatMap(keyBytes -> {
                 switch (encryptionData.getEncryptionAgent().getProtocol()) {
                     case ENCRYPTION_PROTOCOL_V2:
+                        /*
+                         * Reverse the process in EncryptedBlobAsyncClient. The first three bytes of the unwrapped key
+                         * are the protocol version. Verify its integrity.
+                         */
                         ByteArrayInputStream keyStream = new ByteArrayInputStream(keyBytes);
                         byte[] protocolBytes = new byte[3];
                         try {
@@ -527,14 +536,16 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                                 return Mono.error(LOGGER.logExceptionAsError(
                                     new IllegalStateException("Padded wrapped key did not match protocol version")));
                             }
+                            // Ignore the next five bytes that were used as padding to 8-byte align
                             for (int i = 0; i < 5; i++) {
                                 keyStream.read();
                             }
-                            if (keyStream.available() != (256 / 8)) {
+                            if (keyStream.available() != (AES_KEY_SIZE_BITS / 8)) {
                                 return Mono.error(LOGGER.logExceptionAsError(
                                     new IllegalStateException("Wrapped key bytes were incorrect length")));
                             }
-                            byte[] strippedKeyBytes = new byte[256 / 8];
+                            byte[] strippedKeyBytes = new byte[AES_KEY_SIZE_BITS / 8];
+                            // The remaining bytes are the key
                             keyStream.read(strippedKeyBytes);
                             return Mono.just(strippedKeyBytes);
                         } catch (IOException e) {
@@ -543,8 +554,9 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     case ENCRYPTION_PROTOCOL_V1:
                         return Mono.just(keyBytes);
                     default:
-                        return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException("Invalid protocol version: "
-                            + encryptionData.getEncryptionAgent().getProtocol())));
+                        return Mono.error(LOGGER.logExceptionAsError(
+                            new IllegalStateException("Invalid protocol version: "
+                                + encryptionData.getEncryptionAgent().getProtocol())));
                 }
             });
     }

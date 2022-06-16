@@ -38,6 +38,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -147,6 +148,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private LogLevel v1UsageLogLevel = LogLevel.WARNING;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -221,9 +223,10 @@ public final class EncryptedBlobClientBuilder implements
 
         this.encryptionVersion = encryptionVersion == null ? EncryptionVersion.V1 : encryptionVersion;
         if (EncryptionVersion.V1.equals(this.encryptionVersion)) {
-            LOGGER.warning("Client is being configured to use v1 of client side encryption, which is no longer "
-                + "considered secure. The default is v1 for compatibility reasons, but it is highly recommended "
-                + "the version be set to v2 using the constructor");
+            LOGGER.log(this.v1UsageLogLevel, () -> "Client is being configured to use v1 of client side encryption, "
+                + "which is no longer considered secure. The default is v1 for compatibility reasons, but it is highly"
+                + "recommended the version be set to v2 using the constructor");
+            this.v1UsageLogLevel = LogLevel.INFORMATIONAL; // Log subsequently at a lower level to not pollute logs
         }
 
         /*

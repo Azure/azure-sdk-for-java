@@ -221,6 +221,10 @@ final class EncryptionData {
         return MAPPER.writeValueAsString(this);
     }
 
+    /*
+    Validates that encryption data is present if the client requires encryption and that appropriate values are present
+    for the given protocol version.
+     */
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
         if (encryptionDataString == null) {
             if (requiresEncryption) {

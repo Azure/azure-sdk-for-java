@@ -57,6 +57,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.*;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_CBC_PKCS5PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
@@ -600,18 +601,20 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             SecretKey aesKey = generateSecretKey();
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
-            keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
-                CryptographyConstants.AGENT_METADATA_VALUE);
+            keyWrappingMetadata.put(AGENT_METADATA_KEY,
+                AGENT_METADATA_VALUE);
 
             byte[] keyToWrap;
             switch (this.encryptionVersion) {
                 case V2:
                     /*
-                     * Prevent a downgrade attack by prepending the protocol version to the key (padded to 8 bytes) before
-                     * wrapping.
+                     * Prevent a downgrade attack by prepending the protocol version to the key (padded to 8 bytes)
+                     * before wrapping. "2.0\0\0\0\0\0<key>"
                      */
-                    ByteArrayOutputStream keyStream = new ByteArrayOutputStream((256 / 8) + 8);
-                    keyStream.write(CryptographyConstants.ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
+                    ByteArrayOutputStream keyStream = new ByteArrayOutputStream((AES_KEY_SIZE_BITS / 8) + 8);
+                    // This will always be three bytes
+                    keyStream.write(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8));
+                    // Key wrapping requires 8-byte alignment. Pad will 0s
                     for (int i = 0; i < 5; i++) {
                         keyStream.write(0);
                     }
@@ -641,8 +644,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                             }
                             // Build EncryptionData
                             encryptionData = new EncryptionData()
-                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
+                                .setEncryptionMode(ENCRYPTION_MODE)
+                                .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V1,
                                     EncryptionAlgorithm.AES_CBC_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setContentEncryptionIV(cbcCipher.getIV())
@@ -653,8 +656,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         case V2:
                             // Build EncryptionData
                             encryptionData = new EncryptionData()
-                                .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                                .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V2,
+                                .setEncryptionMode(ENCRYPTION_MODE)
+                                .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2,
                                     EncryptionAlgorithm.AES_GCM_256))
                                 .setKeyWrappingMetadata(keyWrappingMetadata)
                                 .setEncryptedRegionInfo(new EncryptedRegionInfo(
@@ -719,7 +722,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         .then(Mono.fromCallable(() -> {
                             // We have already written all the data to the cipher. Passing in a final
                             // empty buffer allows us to force completion and return the filled buffer.
-                            gcmCipher.doFinal(ByteBuffer.allocate(0), encryptedRegion);
+                            gcmCipher.doFinal(EMPTY_BUFFER, encryptedRegion);
                             encryptedRegion.flip();
                             return encryptedRegion;
                         })).flux();
@@ -766,8 +769,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     SecretKey generateSecretKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
-        keyGen.init(256);
+        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
+        keyGen.init(AES_KEY_SIZE_BITS);
 
         return keyGen.generateKey();
     }
@@ -784,7 +787,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Cipher generateGCMCipher(SecretKey aesKey, long index) throws NoSuchPaddingException, NoSuchAlgorithmException,
         InvalidAlgorithmParameterException, InvalidKeyException {
         Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-        byte[] iv = ByteBuffer.allocate(12).putLong(index).array(); // standard gcm nonce is 12 bytes per James' doc
+        byte[] iv = ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
 
         cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
         return cipher;
