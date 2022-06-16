@@ -36,15 +36,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class LogsCollectionClientTest extends TestBase {
     private LogsIngestionClientBuilder clientBuilder;
+    private String dataCollectionEndpoint;
     private String dataCollectionRuleId;
     private String streamName;
-    private String dataCollectionEndpoint;
 
     @BeforeEach
     public void setup() {
-        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_ENDPOINT");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_RULE_ID");
-        streamName = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_STREAM_NAME");
+        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_ENDPOINT",
+                "https://dce.monitor.azure.com");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_RULE_ID", "dcr-adec84661d05465f8532f32a04af6f98");
+        streamName = Configuration.getGlobalConfiguration().get("DATA_COLLECTION_STREAM_NAME", "Custom-MyTableRawData");
 
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
@@ -149,12 +150,12 @@ public class LogsCollectionClientTest extends TestBase {
         result.getErrors().stream().forEach(error -> assertEquals("NotFound", error.getResponseError().getCode()));
     }
 
-    private List<Object> getObjects(int x) {
+    private List<Object> getObjects(int logsCount) {
         List<Object> logs = new ArrayList<>();
 
-        for (int i = 0; i < x; i++) {
+        for (int i = 0; i < logsCount; i++) {
             LogData logData = new LogData()
-                    .setTime(OffsetDateTime.now())
+                    .setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
                     .setExtendedColumn("test" + i)
                     .setAdditionalContext("additional logs context");
             logs.add(logData);
