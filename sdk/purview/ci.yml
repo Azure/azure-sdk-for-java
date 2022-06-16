@@ -55,6 +55,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: purview
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-analytics-purview-administration
         groupId: com.azure
