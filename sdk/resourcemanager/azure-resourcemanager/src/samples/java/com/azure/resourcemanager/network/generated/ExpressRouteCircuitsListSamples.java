@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExpressRouteCircuits List. */
 public final class ExpressRouteCircuitsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ExpressRouteCircuitListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRouteCircuitListBySubscription.json
      */
     /**
      * Sample code: List ExpressRouteCircuits in a subscription.

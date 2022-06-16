@@ -34,7 +34,11 @@ public final class DdosCustomPolicyTriggerSensitivityOverride
         return fromString(name, DdosCustomPolicyTriggerSensitivityOverride.class);
     }
 
-    /** @return known DdosCustomPolicyTriggerSensitivityOverride values. */
+    /**
+     * Gets known DdosCustomPolicyTriggerSensitivityOverride values.
+     *
+     * @return known DdosCustomPolicyTriggerSensitivityOverride values.
+     */
     public static Collection<DdosCustomPolicyTriggerSensitivityOverride> values() {
         return values(DdosCustomPolicyTriggerSensitivityOverride.class);
     }

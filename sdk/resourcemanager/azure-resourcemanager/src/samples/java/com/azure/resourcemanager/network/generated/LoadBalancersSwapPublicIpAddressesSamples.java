@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for LoadBalancers SwapPublicIpAddresses. */
 public final class LoadBalancersSwapPublicIpAddressesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancersSwapPublicIpAddresses.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancersSwapPublicIpAddresses.json
      */
     /**
      * Sample code: Swap VIPs between two load balancers.

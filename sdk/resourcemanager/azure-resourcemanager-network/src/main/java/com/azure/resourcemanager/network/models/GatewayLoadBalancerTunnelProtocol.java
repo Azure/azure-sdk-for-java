@@ -30,7 +30,11 @@ public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnu
         return fromString(name, GatewayLoadBalancerTunnelProtocol.class);
     }
 
-    /** @return known GatewayLoadBalancerTunnelProtocol values. */
+    /**
+     * Gets known GatewayLoadBalancerTunnelProtocol values.
+     *
+     * @return known GatewayLoadBalancerTunnelProtocol values.
+     */
     public static Collection<GatewayLoadBalancerTunnelProtocol> values() {
         return values(GatewayLoadBalancerTunnelProtocol.class);
     }
