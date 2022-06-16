@@ -209,7 +209,8 @@ public final class FileContent extends BinaryDataContent {
                     pendingBytes -= read;
                     offset += read;
                 } else {
-                    throw LOGGER.logExceptionAsError(new IllegalStateException("Premature EOF."));
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalStateException("Premature EOF. File was modified concurrently."));
                 }
             } while (pendingBytes > 0);
             return bytes;
