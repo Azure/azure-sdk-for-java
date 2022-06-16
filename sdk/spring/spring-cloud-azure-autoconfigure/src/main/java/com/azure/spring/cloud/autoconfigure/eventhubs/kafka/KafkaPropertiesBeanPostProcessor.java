@@ -38,8 +38,7 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
         if (bean instanceof KafkaProperties) {
             //TODO(yiliu6): link to oauth2 reference doc here
             LOGGER.warn("Autoconfiguration for Event Hubs for Kafka on connection string/Azure Resource Manager"
-                + " has been deprecated, please migrate to AzureEventHubsKafkaOAuth2AutoConfiguration for OAuth2 authentication"
-				+ " with Azure Identity credentials.");
+                + " has been deprecated, please migrate to AzureEventHubsKafkaOAuth2AutoConfiguration for OAuth2 authentication with Azure Identity credentials.");
 
             KafkaProperties kafkaProperties = (KafkaProperties) bean;
             String connectionString = connectionStringProvider.getConnectionString();
