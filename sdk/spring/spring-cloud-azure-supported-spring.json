@@ -3,7 +3,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : TODO,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-SNAPSHOT",
     "spring-cloud-version" : "2022.0.0-M2"
   },
@@ -11,7 +11,7 @@
     "current" : false,
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
-    "supportStatus" : TODO,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-M3",
     "spring-cloud-version" : "2022.0.0-M2"
   },
@@ -19,7 +19,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : TODO,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "2.7.1-SNAPSHOT",
     "spring-cloud-version" : "2021.0.3"
   },
@@ -35,7 +35,7 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : TODO,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "2.6.9-SNAPSHOT",
     "spring-cloud-version" : "2021.0.3"
   },
@@ -59,7 +59,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : END_OF_LIFE,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "2.4.13",
     "spring-cloud-version" : "2020.0.5"
   },
@@ -67,7 +67,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : END_OF_LIFE,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "2.3.12.RELEASE",
     "spring-cloud-version" : "Hoxton.SR12"
   }
