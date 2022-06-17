@@ -3,10 +3,7 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.AnswerCallOptions;
 import com.azure.communication.callingserver.models.CallSource;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -40,14 +37,14 @@ public final class CallingServerClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call option.
+     * @param subject The subject. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A CallConnection object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection createCall(CallSource source, List<CommunicationIdentifier> targets,
-                           String callbackUri, CreateCallOptions createCallOptions) {
-        return new CallConnection(callingServerAsyncClient.createCall(source, targets, callbackUri, createCallOptions).block());
+                           String callbackUri, String subject) {
+        return new CallConnection(callingServerAsyncClient.createCall(source, targets, callbackUri, subject).block());
     }
 
     /**
@@ -56,16 +53,16 @@ public final class CallingServerClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call option.
+     * @param subject The subject. Optional
      * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> createCallWithResponse(CallSource source, List<CommunicationIdentifier> targets,
-                                                 String callbackUri, CreateCallOptions createCallOptions,
+                                                 String callbackUri, String subject,
                                                  Context context) {
-        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, createCallOptions, context)
+        return callingServerAsyncClient.createCallWithResponseInternal(source, targets, callbackUri, subject, context)
             .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
@@ -73,29 +70,28 @@ public final class CallingServerClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param answerCallOptions The option of answering a call.
+     * @param callbackUri The call back uri. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection answerCall(String incomingCallContext, AnswerCallOptions answerCallOptions) {
-        return new CallConnection(callingServerAsyncClient.answerCall(incomingCallContext, answerCallOptions).block());
+    public CallConnection answerCall(String incomingCallContext, String callbackUri) {
+        return new CallConnection(callingServerAsyncClient.answerCall(incomingCallContext, callbackUri).block());
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param answerCallOptions The option of answering a call.
+     * @param callbackUri The call back uri. Optional
      * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> answerCallWithResponse(String incomingCallContext,
-                                                           AnswerCallOptions answerCallOptions,
+    public Response<CallConnection> answerCallWithResponse(String incomingCallContext, String callbackUri,
                                                            Context context) {
-        return callingServerAsyncClient.answerCallWithResponseInternal(incomingCallContext, answerCallOptions, context)
+        return callingServerAsyncClient.answerCallWithResponseInternal(incomingCallContext, callbackUri, context)
             .map(response -> new SimpleResponse<>(response, new CallConnection(response.getValue()))).block();
     }
 
@@ -130,27 +126,27 @@ public final class CallingServerClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param rejectCallOptions The option for rejecting call.
+     * @param callRejectReason The reason why call is rejected. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void rejectCall(String incomingCallContext, RejectCallOptions rejectCallOptions) {
-        return callingServerAsyncClient.rejectCall(incomingCallContext, rejectCallOptions).block();
+    public Void rejectCall(String incomingCallContext, String callRejectReason) {
+        return callingServerAsyncClient.rejectCall(incomingCallContext, callRejectReason).block();
     }
 
     /**
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param rejectCallOptions The option for rejecting call.
+     * @param callRejectReason The reason why call is rejected. Optional
      * @param context The context to associate with this operation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(String incomingCallContext, RejectCallOptions rejectCallOptions,
+    public Response<Void> rejectCallWithResponse(String incomingCallContext, String callRejectReason,
                                                  Context context) {
-        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, rejectCallOptions, context).block();
+        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
     }
 }

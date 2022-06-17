@@ -15,9 +15,6 @@ import com.azure.communication.callingserver.implementation.models.RedirectCallR
 import com.azure.communication.callingserver.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CallSource;
-import com.azure.communication.callingserver.models.AnswerCallOptions;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -63,14 +60,14 @@ public final class CallingServerAsyncClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call option.
+     * @param subject The subject. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> createCall(CallSource source, List<CommunicationIdentifier> targets,
-                                                String callbackUri, CreateCallOptions createCallOptions) {
-        return createCallWithResponse(source, targets, callbackUri, createCallOptions).flatMap(FluxUtil::toMono);
+                                                String callbackUri, String subject) {
+        return createCallWithResponse(source, targets, callbackUri, subject).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -79,7 +76,7 @@ public final class CallingServerAsyncClient {
      * @param source The source property.
      * @param targets The targets of the call.
      * @param callbackUri The call back URI.
-     * @param createCallOptions The call option.
+     * @param subject The subject. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
@@ -87,15 +84,15 @@ public final class CallingServerAsyncClient {
     public Mono<Response<CallConnectionAsync>> createCallWithResponse(CallSource source,
                                                                       List<CommunicationIdentifier> targets,
                                                                       String callbackUri,
-                                                                      CreateCallOptions createCallOptions) {
+                                                                      String subject) {
         return withContext(context -> createCallWithResponseInternal(source, targets, callbackUri,
-            createCallOptions, context));
+            subject, context));
     }
 
     Mono<Response<CallConnectionAsync>> createCallWithResponseInternal(CallSource source,
                                                                        List<CommunicationIdentifier> targets,
                                                                        String callbackUri,
-                                                                       CreateCallOptions createCallOptions,
+                                                                       String subject,
                                                                        Context context) {
         try {
             Objects.requireNonNull(source, "The source parameter cannot be null.");
@@ -110,10 +107,8 @@ public final class CallingServerAsyncClient {
             CreateCallRequestInternal request = new CreateCallRequestInternal()
                 .setSource(CallSourceConverter.convert(source))
                 .setTargets(targetsModel)
-                .setCallbackUri(callbackUri);
-            if (createCallOptions != null) {
-                request.setSubject(createCallOptions.getSubject());
-            }
+                .setCallbackUri(callbackUri)
+                .setSubject(subject);
 
             return serverCallingInternal.createCallWithResponseAsync(request, context).map(
                 response -> new SimpleResponse<>(response, new CallConnectionAsync(response.getValue().getCallConnectionId(),
@@ -127,41 +122,38 @@ public final class CallingServerAsyncClient {
      * Answer an incoming call
      *
      * @param incomingCallContext The incoming call context.
-     * @param answerCallOptions The option of answering a call
+     * @param callbackUri The call back uri. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, AnswerCallOptions answerCallOptions) {
-        return answerCallWithResponse(incomingCallContext, answerCallOptions).flatMap(FluxUtil::toMono);
+    public Mono<CallConnectionAsync> answerCall(String incomingCallContext, String callbackUri) {
+        return answerCallWithResponse(incomingCallContext, callbackUri).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a target identity.
      *
      * @param incomingCallContext The incoming call context.
-     * @param answerCallOptions The option of answering a call
+     * @param callbackUri The call back uri. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionAsync>> answerCallWithResponse(String incomingCallContext,
-                                                                      AnswerCallOptions answerCallOptions) {
-        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, answerCallOptions, context));
+                                                                      String callbackUri) {
+        return withContext(context -> answerCallWithResponseInternal(incomingCallContext, callbackUri, context));
     }
 
-    Mono<Response<CallConnectionAsync>> answerCallWithResponseInternal(String incomingCallContext,
-                                                                       AnswerCallOptions answerCallOptions,
+    Mono<Response<CallConnectionAsync>> answerCallWithResponseInternal(String incomingCallContext, String callbackUri,
                                                                        Context context) {
         try {
             Objects.requireNonNull(incomingCallContext, "The incomingCallContext parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext);
-            if (answerCallOptions != null) {
-                request.setCallbackUri(answerCallOptions.getCallbackUri());
-            }
+                .setIncomingCallContext(incomingCallContext)
+                .setCallbackUri(callbackUri);
 
             return serverCallingInternal.answerCallWithResponseAsync(request, context)
                 .map(response -> new SimpleResponse<>(response,
@@ -218,39 +210,37 @@ public final class CallingServerAsyncClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param rejectCallOptions Options of the reject call.
+     * @param callRejectReason The reason why call is rejected. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, RejectCallOptions rejectCallOptions) {
-        return rejectCallWithResponse(incomingCallContext, rejectCallOptions).flatMap(FluxUtil::toMono);
+    public Mono<Void> rejectCall(String incomingCallContext, String callRejectReason) {
+        return rejectCallWithResponse(incomingCallContext, callRejectReason).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param rejectCallOptions Options of the reject call.
+     * @param callRejectReason The reason why call is rejected. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, RejectCallOptions rejectCallOptions) {
-        return withContext(context -> rejectCallWithResponseInternal(incomingCallContext, rejectCallOptions, context));
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, String callRejectReason) {
+        return withContext(context -> rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context));
     }
 
-    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, RejectCallOptions rejectCallOptions,
+    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, String callRejectReason,
                                                         Context context) {
         try {
             Objects.requireNonNull(incomingCallContext, "The incomingCallContext parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(incomingCallContext);
-            if (rejectCallOptions != null) {
-                request.setCallRejectReason(CallRejectReason.fromString(rejectCallOptions.getCallRejectReason()));
-            }
+                .setIncomingCallContext(incomingCallContext)
+                .setCallRejectReason(CallRejectReason.fromString(callRejectReason));
 
             return serverCallingInternal.rejectCallWithResponseAsync(request, context);
         } catch (RuntimeException ex) {

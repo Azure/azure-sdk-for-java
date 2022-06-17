@@ -3,15 +3,13 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.AddParticipantsOptions;
 import com.azure.communication.callingserver.models.TransferCallResponse;
-import com.azure.communication.callingserver.models.TransferCallOptions;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
 import com.azure.communication.callingserver.models.GetCallResponse;
-import com.azure.communication.callingserver.models.RemoveParticipantsOptions;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -110,30 +108,40 @@ public final class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TransferCallResponse transferToParticipantCall(CommunicationIdentifier targetParticipant,
-                                                          TransferCallOptions options) {
-        return callConnectionAsync.transferToParticipantCall(targetParticipant, options).block();
+                                                          PhoneNumberIdentifier transfereeCallerId,
+                                                          String userToUserInformation, String operationContext) {
+        return callConnectionAsync.transferToParticipantCall(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number.
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransferCallResponse> transferToParticipantCallWithResponse(
-        CommunicationIdentifier targetParticipant, TransferCallOptions options, Context context) {
-        return callConnectionAsync.transferToParticipantCallWithResponseInternal(targetParticipant, options, context).block();
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId,
+        String userToUserInformation, String operationContext, Context context) {
+        return callConnectionAsync.transferToParticipantCallWithResponseInternal(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext, context).block();
     }
 
     /**
@@ -166,14 +174,20 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participants The participants to invite.
-     * @param addParticipantsOptions Options of adding participants
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddParticipantsResponse addParticipants(List<CommunicationIdentifier> participants,
-                                                   AddParticipantsOptions addParticipantsOptions) {
-        return callConnectionAsync.addParticipants(participants, addParticipantsOptions).block();
+                                                   PhoneNumberIdentifier sourceCallerId, Integer invitationTimeoutInSeconds,
+                                                   String operationContext) {
+        return callConnectionAsync.addParticipants(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext).block();
     }
 
     /**
@@ -181,37 +195,44 @@ public final class CallConnection {
      *
      *
      * @param participants The participants to invite.
-     * @param addParticipantsOptions Options of adding participants
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantsResponse> addParticipantsWithResponse(List<CommunicationIdentifier> participants,
-                                                                         AddParticipantsOptions addParticipantsOptions,
+                                                                         PhoneNumberIdentifier sourceCallerId,
+                                                                         Integer invitationTimeoutInSeconds,
+                                                                         String operationContext,
                                                                          Context context) {
-        return callConnectionAsync.addParticipantsWithResponseInternal(participants, addParticipantsOptions, context).block();
+        return callConnectionAsync.addParticipantsWithResponseInternal(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext, context).block();
     }
 
     /**
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param removeParticipantsOptions The options of removing participants.
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemoveParticipantsResponse removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                         RemoveParticipantsOptions removeParticipantsOptions) {
-        return callConnectionAsync.removeParticipants(participantsToRemove, removeParticipantsOptions).block();
+                                                         String operationContext) {
+        return callConnectionAsync.removeParticipants(participantsToRemove, operationContext).block();
     }
 
     /**
      * Remove a list of participant from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param removeParticipantsOptions The options of removing participants.
+     * @param operationContext The operation context. Optional
      * @param context A {@link Context} representing the request context.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -219,9 +240,9 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemoveParticipantsResponse> removeParticipantsWithResponse(
         List<CommunicationIdentifier> participantsToRemove,
-        RemoveParticipantsOptions removeParticipantsOptions,
+        String operationContext,
         Context context) {
-        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove,
-                removeParticipantsOptions, context).block();
+        return callConnectionAsync.removeParticipantsWithResponseInternal(participantsToRemove, operationContext,
+            context).block();
     }
 }

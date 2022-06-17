@@ -18,14 +18,12 @@ import com.azure.communication.callingserver.implementation.models.GetParticipan
 import com.azure.communication.callingserver.implementation.models.AddParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantsRequestInternal;
 import com.azure.communication.callingserver.models.AcsCallParticipant;
-import com.azure.communication.callingserver.models.AddParticipantsOptions;
 import com.azure.communication.callingserver.models.GetCallResponse;
 import com.azure.communication.callingserver.models.AddParticipantsResponse;
 import com.azure.communication.callingserver.models.TransferCallResponse;
-import com.azure.communication.callingserver.models.TransferCallOptions;
 import com.azure.communication.callingserver.models.RemoveParticipantsResponse;
-import com.azure.communication.callingserver.models.RemoveParticipantsOptions;
 
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -166,44 +164,53 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransferCallResponse> transferToParticipantCall(CommunicationIdentifier targetParticipant,
-                                                TransferCallOptions options) {
-        return transferToParticipantCallWithResponse(targetParticipant, options).flatMap(FluxUtil::toMono);
+                                                                PhoneNumberIdentifier transfereeCallerId,
+                                                                String userToUserInformation, String operationContext) {
+        return transferToParticipantCallWithResponse(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     * @param options A {@link TransferCallOptions} representing the options of the transfer
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer. Optional
+     * @param transfereeCallerId A {@link PhoneNumberIdentifier} representing the caller ID of the transferee
+     *                           if transferring to a pstn number. Optional
+     * @param userToUserInformation The user to user information. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponse(
-        CommunicationIdentifier targetParticipant, TransferCallOptions options) {
-        return withContext(context -> transferToParticipantCallWithResponseInternal(targetParticipant, options, context));
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId, String userToUserInformation,
+        String operationContext) {
+        return withContext(context -> transferToParticipantCallWithResponseInternal(
+            targetParticipant, transfereeCallerId, userToUserInformation, operationContext, context));
     }
 
     Mono<Response<TransferCallResponse>> transferToParticipantCallWithResponseInternal(
-        CommunicationIdentifier targetParticipant, TransferCallOptions options, Context context) {
+        CommunicationIdentifier targetParticipant, PhoneNumberIdentifier transfereeCallerId, String userToUserInformation,
+        String operationContext, Context context) {
         try {
             Objects.requireNonNull(targetParticipant, "The targetParticipant parameter cannot be null.");
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant));
-            if (options != null) {
-                request.setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(options.getTransfereeCallerId()))
-                    .setUserToUserInformation(options.getUserToUserInformation())
-                    .setOperationContext(options.getOperationContext());
-            }
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transfereeCallerId))
+                .setUserToUserInformation(userToUserInformation)
+                .setOperationContext(operationContext);
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request, context)
                 .map(response ->
@@ -258,32 +265,47 @@ public final class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param participants The participants to invite.
-     * @param addParticipantsOptions Options of adding participants
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantsResponse> addParticipants(List<CommunicationIdentifier> participants,
-                                                        AddParticipantsOptions addParticipantsOptions) {
-        return addParticipantsWithResponse(participants, addParticipantsOptions).flatMap(FluxUtil::toMono);
+                                                         PhoneNumberIdentifier sourceCallerId,
+                                                         Integer invitationTimeoutInSeconds,
+                                                         String operationContext) {
+        return addParticipantsWithResponse(participants, sourceCallerId, invitationTimeoutInSeconds,
+            operationContext).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Add a participant to the call.
      *
      * @param participants The participants to invite.
-     * @param addParticipantsOptions Options of adding participants
+     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
+     *                       Required only when inviting a PSTN participant. Optional
+     * @param invitationTimeoutInSeconds The timeout to wait for the invited participant to pickup.
+     *                                   The maximum value of this is 180 seconds. Optional
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantsResponse>> addParticipantsWithResponse(
-        List<CommunicationIdentifier> participants, AddParticipantsOptions addParticipantsOptions) {
-        return withContext(context -> addParticipantsWithResponseInternal(participants, addParticipantsOptions, context));
+        List<CommunicationIdentifier> participants, PhoneNumberIdentifier sourceCallerId,
+        Integer invitationTimeoutInSeconds, String operationContext) {
+        return withContext(context -> addParticipantsWithResponseInternal(participants, sourceCallerId,
+            invitationTimeoutInSeconds, operationContext, context));
     }
 
     Mono<Response<AddParticipantsResponse>> addParticipantsWithResponseInternal(List<CommunicationIdentifier> participants,
-                                                                                AddParticipantsOptions addParticipantsOptions,
+                                                                                PhoneNumberIdentifier sourceCallerId,
+                                                                                Integer invitationTimeoutInSeconds,
+                                                                                String operationContext,
                                                                                 Context context) {
         try {
             Objects.requireNonNull(participants, "The participants parameter cannot be null.");
@@ -294,12 +316,10 @@ public final class CallConnectionAsync {
             }
 
             AddParticipantsRequestInternal request = new AddParticipantsRequestInternal()
-                .setParticipantsToAdd(participantModels);
-            if (addParticipantsOptions != null) {
-                request.setSourceCallerId(PhoneNumberIdentifierConverter.convert(addParticipantsOptions.getSourceCallerId()))
-                    .setInvitationTimeoutInSeconds(addParticipantsOptions.getInvitationTimeoutInSeconds())
-                    .setOperationContext(addParticipantsOptions.getOperationContext());
-            }
+                .setParticipantsToAdd(participantModels)
+                .setSourceCallerId(PhoneNumberIdentifierConverter.convert(sourceCallerId))
+                .setInvitationTimeoutInSeconds(invitationTimeoutInSeconds)
+                .setOperationContext(operationContext);
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request, context).map(
                 response -> new SimpleResponse<>(response, AddParticipantResponseConverter.convert(response.getValue())));
@@ -312,35 +332,34 @@ public final class CallConnectionAsync {
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param removeParticipantsOptions The options for remove participants.
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantsResponse> removeParticipants(List<CommunicationIdentifier> participantsToRemove,
-                                                               RemoveParticipantsOptions removeParticipantsOptions) {
-        return removeParticipantsWithResponse(participantsToRemove, removeParticipantsOptions).flatMap(FluxUtil::toMono);
+                                                               String operationContext) {
+        return removeParticipantsWithResponse(participantsToRemove, operationContext).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Remove a list of participants from the call.
      *
      * @param participantsToRemove The identifier list of the participant to be removed.
-     * @param removeParticipantsOptions The options for remove participants.
+     * @param operationContext The operation context. Optional
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponse(
         List<CommunicationIdentifier> participantsToRemove,
-        RemoveParticipantsOptions removeParticipantsOptions) {
-        return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove,
-            removeParticipantsOptions, context));
+        String operationContext) {
+        return withContext(context -> removeParticipantsWithResponseInternal(participantsToRemove, operationContext,
+            context));
     }
 
     Mono<Response<RemoveParticipantsResponse>> removeParticipantsWithResponseInternal(
-        List<CommunicationIdentifier> participantsToRemove, RemoveParticipantsOptions removeParticipantsOptions,
-        Context context) {
+        List<CommunicationIdentifier> participantsToRemove, String operationContext, Context context) {
         try {
             Objects.requireNonNull(participantsToRemove, "The participantsToRemove parameter cannot be null.");
             context = context == null ? Context.NONE : context;
@@ -350,10 +369,8 @@ public final class CallConnectionAsync {
             }
 
             RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
-                .setParticipantsToRemove(participantModels);
-            if (removeParticipantsOptions != null) {
-                request.setOperationContext(removeParticipantsOptions.getOperationContext());
-            }
+                .setParticipantsToRemove(participantModels)
+                .setOperationContext(operationContext);
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request, context).map(
                 response -> new SimpleResponse<>(response, RemoveParticipantsResponseConverter.convert(response.getValue())));
