@@ -44,10 +44,13 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
         final boolean isClientIdSet = StringUtils.hasText(clientId);
+        final String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
+
         if (StringUtils.hasText(tenantId)) {
 
             if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                 return new ClientSecretCredentialBuilder().clientId(clientId)
+                                                          .authorityHost(authorityHost)
                                                           .clientSecret(properties.getClientSecret())
                                                           .tenantId(tenantId)
                                                           .build();
@@ -55,8 +58,10 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
 
             String clientCertificatePath = properties.getClientCertificatePath();
             if (StringUtils.hasText(clientCertificatePath)) {
-                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder().tenantId(tenantId)
-                                                                                                     .clientId(clientId);
+                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
+                    .authorityHost(authorityHost)
+                    .tenantId(tenantId)
+                    .clientId(clientId);
 
                 if (StringUtils.hasText(properties.getClientCertificatePassword())) {
                     builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
@@ -72,6 +77,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
             && StringUtils.hasText(properties.getPassword())) {
             return new UsernamePasswordCredentialBuilder().username(properties.getUsername())
                                                           .password(properties.getPassword())
+                                                          .authorityHost(authorityHost)
                                                           .clientId(clientId)
                                                           .tenantId(tenantId)
                                                           .build();

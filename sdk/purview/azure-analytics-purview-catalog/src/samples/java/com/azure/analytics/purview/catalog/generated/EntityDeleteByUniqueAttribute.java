@@ -13,18 +13,16 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class EntityDeleteByUniqueAttribute {
     public static void main(String[] args) {
-        // BEGIN:
-        // com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
         EntityClient entityClient =
                 new EntityClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("attr:qualifiedName", "https://exampleaccount.core.windows.net");
+        // BEGIN:com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
+        RequestOptions requestOptions =
+                new RequestOptions().addQueryParam("attr:qualifiedName", "https://exampleaccount.core.windows.net");
         Response<BinaryData> response =
                 entityClient.deleteByUniqueAttributeWithResponse("azure_storage_account", requestOptions);
-        // END:
-        // com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
+        // END:com.azure.analytics.purview.catalog.generated.entitydeletebyuniqueattribute.entitydeletebyuniqueattribute
     }
 }

@@ -8,10 +8,11 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
+import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,13 +28,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class AzureKeyVaultSecretAutoConfigurationTests {
+class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
+    SecretClientBuilderFactory, AzureKeyVaultSecretProperties> {
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureKeyVaultSecretAutoConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getMinimalContextRunner() {
+        return this.contextRunner
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"));
+    }
+
+    @Override
+    protected String getPropertyPrefix() {
+        return AzureKeyVaultSecretProperties.PREFIX;
+    }
+
+    @Override
+    protected Class<SecretClientBuilderFactory> getBuilderFactoryType() {
+        return SecretClientBuilderFactory.class;
+    }
+
+    @Override
+    protected Class<AzureKeyVaultSecretProperties> getConfigurationPropertiesType() {
+        return AzureKeyVaultSecretProperties.class;
+    }
 
     @ParameterizedTest
     @ValueSource(strings = { "spring.cloud.azure.keyvault.secret.endpoint", "spring.cloud.azure.keyvault.endpoint" })

@@ -71,6 +71,7 @@ public class BlobParallelUploadOptions {
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
+     * Note: the {@link InputStream} must be closed by the caller.
      *
      * @param dataStream The data to write to the blob.
      */
@@ -80,6 +81,7 @@ public class BlobParallelUploadOptions {
 
     /**
      * Common constructor for building options from InputStream.
+     * Note: the {@link InputStream} must be closed by the caller.
      *
      * @param dataStream The data to write to the blob.
      * @param length Optional known length of the data, affects reactive behavior for backwards compatibility.

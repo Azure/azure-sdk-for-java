@@ -214,7 +214,7 @@ class DirectoryAPITests extends APISpec {
             null, null)
 
         then:
-        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     @Unroll
@@ -492,7 +492,7 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null)
 
         then:
-        primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == changeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime)
     }
 
     @Unroll
@@ -960,7 +960,7 @@ class DirectoryAPITests extends APISpec {
         destProperties.getSmbProperties().getNtfsFileAttributes() == EnumSet.of(NtfsFileAttributes.DIRECTORY)
         destProperties.getSmbProperties().getFileCreationTime()
         destProperties.getSmbProperties().getFileLastWriteTime()
-        destProperties.getSmbProperties().getFileChangeTime().truncatedTo(ChronoUnit.MICROS) == fileChangeTime.truncatedTo(ChronoUnit.MICROS)
+        compareDatesWithPrecision(destProperties.getSmbProperties().getFileChangeTime(), fileChangeTime)
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
