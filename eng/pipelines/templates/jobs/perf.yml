@@ -62,10 +62,10 @@ jobs:
 
     - task: JavaToolInstaller@0
       inputs:
-        versionSpec: '17'
+        versionSpec: '8'
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
-      displayName: Install Java 17
+      displayName: Install Java 8
     
     - script: |
         java -version
