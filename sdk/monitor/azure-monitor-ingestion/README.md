@@ -64,10 +64,6 @@ LogsIngestionAsyncClient asyncClient = new LogsIngestionClientBuilder()
         .credential(tokenCredential)
         .buildAsyncClient();
 ```
-### Uploading logs
-
-For examples on how to upload logs, see the [Examples](#examples) section.
-
 ## Key concepts
 
 ### Data Collection Endpoint
@@ -119,6 +115,11 @@ System.out.println("Logs upload result status " + result.getStatus());
 ```
 
 ### Upload custom logs with max concurrency
+
+If the in input logs collection is too large, the client will split the input into multiple smaller requests. These 
+requests are sent serially, by default, but by configuring the max concurrency in `UploadLogsOptions`, these requests
+can be concurrently sent to the service as shown in the example below.
+
 ```java readme-sample-uploadLogsWithMaxConcurrency
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 

@@ -34,6 +34,8 @@ public final class LogsIngestionClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @return the result of the logs upload request.
+     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadLogsResult upload(String dataCollectionRuleId, String streamName, List<Object> logs) {
@@ -53,6 +55,8 @@ public final class LogsIngestionClient {
      * @param context additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return the result of the logs upload request.
+     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadLogsResult upload(String dataCollectionRuleId, String streamName,

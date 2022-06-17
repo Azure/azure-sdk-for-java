@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,6 +68,8 @@ public final class LogsIngestionAsyncClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @return the result of the logs upload request.
+     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName, List<Object> logs) {
@@ -84,6 +86,8 @@ public final class LogsIngestionAsyncClient {
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
      * @return the result of the logs upload request.
+     * @throws NullPointerException if any of {@code dataCollectionRuleId}, {@code streamName} or {@code logs} are null.
+     * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadLogsResult> upload(String dataCollectionRuleId, String streamName,
@@ -144,7 +148,7 @@ public final class LogsIngestionAsyncClient {
         List<Object> logsBatch = logBatchesIterator.next();
         if (responseHolder.getStatus() == UploadLogsStatus.FAILURE) {
             return new UploadLogsResult(responseHolder.getStatus(),
-                    Arrays.asList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
+                    Collections.singletonList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
         }
         return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
     }
@@ -154,7 +158,7 @@ public final class LogsIngestionAsyncClient {
                         BinaryData.fromBytes(bytes), requestOptions)
                 .map(response -> new UploadLogsResponseHolder(UploadLogsStatus.SUCCESS, null))
                 .onErrorResume(HttpResponseException.class,
-                        ex -> Mono.just(new UploadLogsResponseHolder(UploadLogsStatus.FAILURE,
+                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(UploadLogsStatus.FAILURE,
                                 mapToResponseError(ex))));
     }
 
@@ -186,19 +190,24 @@ public final class LogsIngestionAsyncClient {
     }
 
     private UploadLogsResult createResponse(List<UploadLogsResult> results) {
-        boolean allErrors = results.stream().allMatch(result -> result.getStatus() == UploadLogsStatus.FAILURE);
-        if (allErrors) {
-            return new UploadLogsResult(UploadLogsStatus.FAILURE,
-                    results.stream().flatMap(result -> result.getErrors().stream()).collect(Collectors.toList()));
+        int failureCount = 0;
+        List<UploadLogsError> errors = null;
+        for (UploadLogsResult result : results) {
+            if (result.getStatus() != UploadLogsStatus.SUCCESS) {
+                failureCount++;
+                if (errors == null) {
+                    errors = new ArrayList<>();
+                }
+                errors.addAll(result.getErrors());
+            }
         }
-
-        boolean anyErrors = results.stream().anyMatch(result -> result.getStatus() == UploadLogsStatus.FAILURE);
-        if (anyErrors) {
-            return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE,
-                    results.stream().filter(result -> result.getStatus() == UploadLogsStatus.FAILURE)
-                            .flatMap(result -> result.getErrors().stream()).collect(Collectors.toList()));
+        if (failureCount == 0) {
+            return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
         }
-        return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
+        if (failureCount < results.size()) {
+            return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);
+        }
+        return new UploadLogsResult(UploadLogsStatus.FAILURE, errors);
     }
 
     private List<byte[]> createGzipRequests(List<Object> logs, ObjectSerializer serializer,
