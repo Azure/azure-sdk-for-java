@@ -29,6 +29,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Fix the Service Bus JMS autoconfiguration logic error [#29313](https://github.com/Azure/azure-sdk-for-java/pull/29313).
+- Fix the authority host of azure identity client not configured bug [#29398](https://github.com/Azure/azure-sdk-for-java/issues/29398). 
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.

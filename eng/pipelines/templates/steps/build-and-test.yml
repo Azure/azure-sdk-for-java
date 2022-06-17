@@ -68,7 +68,7 @@ steps:
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
     displayName: 'Generate pom for aggregate code coverage report'
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
       scriptPath: 'eng/scripts/generate_aggregate_coverage_pom.py'
       arguments: '--project-list $(ProjectList)'
@@ -76,7 +76,7 @@ steps:
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
     inputs:
       mavenPomFile: aggregate-coverage-pom.xml
       options: '$(DefaultOptions)'
@@ -142,7 +142,7 @@ steps:
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
   - task: PublishCodeCoverageResults@1
-    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+    condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'))
     inputs:
       codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml
