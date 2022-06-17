@@ -101,7 +101,15 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResultDiagnostics;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
-        storeResponseStatistics.requestSessionToken = request.getOriginalSessionToken();
+        if (request.requestContext.sessionToken == null && request.getOriginalSessionToken() == null) {
+            storeResponseStatistics.requestSessionToken = null;
+        } else {
+            if (request.getOriginalSessionToken() != null) {
+                storeResponseStatistics.requestSessionToken = request.getOriginalSessionToken();
+            } else {
+                storeResponseStatistics.requestSessionToken = SessionTokenHelper.concatPartitionKeyRangeIdWithSessionToken(request.requestContext.resolvedPartitionKeyRange.getId(), request.requestContext.sessionToken.convertToString());
+            }
+        }
         activityId = request.getActivityId().toString();
 
 

@@ -281,6 +281,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             testDirectClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
                 .contentResponseOnWriteEnabled(true)
                 .directMode()
                 .buildClient();
@@ -313,6 +314,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             validateRegionContacted(createResponse.getDiagnostics(), testDirectClient.asyncClient());
             isValidJSON(diagnostics);
 
+            // read item to validate response and request session tokens are equal
+            String sessionToken = createResponse.getSessionToken();
+            CosmosItemResponse<InternalObjectNode> readResponse =
+                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                    new PartitionKey(BridgeInternal.getProperties(createResponse).getId()),
+                    InternalObjectNode.class);
+            diagnostics = readResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"", sessionToken));
+
             // validate that on failed operation request timeline is populated
             try {
                 cosmosContainer.createItem(internalObjectNode, new CosmosItemRequestOptions().setSessionToken("0:-1#2"));
@@ -323,7 +333,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
                 assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
                 assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
-                // validate session token manually passed in
+                // validate request session token manually passed in is in diagnostics
                 assertThat(diagnostics).contains("\"requestSessionToken\":\"0:-1#2\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
