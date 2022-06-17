@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.Extension;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
 /**
- * An extension that helps to branch out a single test into sync and async invocation.
+ * An test template extension that helps to branch out a single test into sync and async invocation.
  */
 public class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
 
@@ -30,38 +31,27 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
      * @param async async callable. It should block at some point to return result.
      * @param <T> type of result of either sync or async invocation.
      * @return result of either sync or async invocation.
-     * @throws Exception exception propagated from the callables.
      * @throws IllegalStateException if extension doesn't work as expected.
+     * @throws RuntimeException a runtime exception wrapping error from callable.
      */
-    public static <T> T execute(Callable<T> sync, Callable<T> async) throws Exception {
+    public static <T> T execute(Callable<T> sync, Callable<Mono<T>> async) {
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
         WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
         if (isSync == null) {
             throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
                 + "@SyncAsyncTest with SyncAsyncExtension.execute()");
         } else if (isSync) {
-            return sync.call();
+            try {
+                return sync.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         } else {
-            return async.call();
-        }
-    }
-
-    /**
-     * Executes sync or async branch depending on the context.
-     * @param sync sync runnable.
-     * @param async async runnable. It should block at some point.
-     * @throws IllegalStateException if extension doesn't work as expected.
-     */
-    public static void execute(Runnable sync, Runnable async) {
-        Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
-        WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
-        if (isSync == null) {
-            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
-                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
-        } else if (isSync) {
-            sync.run();
-        } else {
-            async.run();
+            try {
+                return async.call().block();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
