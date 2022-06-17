@@ -350,11 +350,12 @@ public class CosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2,
-            null, Sort.by(ASC, "firstName"));
+            null, Sort.by(ASC, "id"));
         final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(1);
+        assertThat(page.getContent().get(0).getId()).isEqualTo(ID_3);
         PageTestUtils.validateLastPage(page, page.getContent().size());
     }
 
@@ -365,11 +366,13 @@ public class CosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
         final PageRequest pageRequest = CosmosPageRequest.of(0, 0, PAGE_SIZE_2,
-            null, Sort.by(ASC, "firstName"));
+            null, Sort.by(ASC, "id"));
         final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
         assertThat(page.getContent().size()).isEqualTo(2);
+        assertThat(page.getContent().get(0).getId()).isEqualTo(ID_1);
+        assertThat(page.getContent().get(1).getId()).isEqualTo(ID_3);
         PageTestUtils.validateLastPage(page, page.getContent().size());
     }
 
