@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfidentialLedgerBaseClientTests extends ConfidentialLedgerClientTestBase {
-    private ConfidentialLedgerBaseClient client;
+    private ConfidentialLedgerClient client;
 
     @Override
     protected void beforeTest() {
