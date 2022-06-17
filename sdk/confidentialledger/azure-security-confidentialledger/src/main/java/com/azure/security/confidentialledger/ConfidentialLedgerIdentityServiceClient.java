@@ -15,22 +15,20 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgerIdentityServicesImpl;
-import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ConfidentialLedgerClient type. */
-@ServiceClient(builder = ConfidentialLedgerIdentityServiceClientBuilder.class, isAsync = true)
-public final class ConfidentialLedgerIdentityServiceAsyncClient {
-    @Generated private final ConfidentialLedgerIdentityServicesImpl serviceClient;
+/** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
+@ServiceClient(builder = ConfidentialLedgerIdentityServiceClientBuilder.class)
+public final class ConfidentialLedgerIdentityServiceClient {
+    @Generated private final ConfidentialLedgerIdentityServiceAsyncClient client;
 
     /**
-     * Initializes an instance of ConfidentialLedgerIdentityServiceAsyncClient class.
+     * Initializes an instance of ConfidentialLedgerIdentityServiceClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerIdentityServiceAsyncClient(ConfidentialLedgerIdentityServicesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ConfidentialLedgerIdentityServiceClient(ConfidentialLedgerIdentityServiceAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -59,12 +57,11 @@ public final class ConfidentialLedgerIdentityServiceAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return identity information for a Confidential Ledger instance along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return identity information for a Confidential Ledger instance along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerIdentityWithResponse(String ledgerId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerIdentityWithResponseAsync(ledgerId, requestOptions);
+    public Response<BinaryData> getLedgerIdentityWithResponse(String ledgerId, RequestOptions requestOptions) {
+        return this.client.getLedgerIdentityWithResponse(ledgerId, requestOptions).block();
     }
 }

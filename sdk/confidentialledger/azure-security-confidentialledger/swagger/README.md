@@ -8,7 +8,6 @@ java: true
 output-folder: ../
 namespace: com.azure.security.confidentialledger
 generate-client-interfaces: false
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 data-plane: true
 credential-types: tokencredential

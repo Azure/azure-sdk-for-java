@@ -39,8 +39,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the ConfidentialLedgerClient type. */
-@ServiceClientBuilder(serviceClients = {ConfidentialLedgerIdentityServiceAsyncClient.class})
+/** A builder for creating a new instance of the ConfidentialLedgerIdentityServiceClient type. */
+@ServiceClientBuilder(
+        serviceClients = {
+            ConfidentialLedgerIdentityServiceClient.class,
+            ConfidentialLedgerIdentityServiceAsyncClient.class
+        })
 public final class ConfidentialLedgerIdentityServiceClientBuilder
         implements HttpTrait<ConfidentialLedgerIdentityServiceClientBuilder>,
                 ConfigurationTrait<ConfidentialLedgerIdentityServiceClientBuilder>,
@@ -317,5 +321,17 @@ public final class ConfidentialLedgerIdentityServiceClientBuilder
     public ConfidentialLedgerIdentityServiceAsyncClient buildAsyncClient() {
         return new ConfidentialLedgerIdentityServiceAsyncClient(
                 buildInnerClient().getConfidentialLedgerIdentityServices());
+    }
+
+    /**
+     * Builds an instance of ConfidentialLedgerIdentityServiceClient class.
+     *
+     * @return an instance of ConfidentialLedgerIdentityServiceClient.
+     */
+    @Generated
+    public ConfidentialLedgerIdentityServiceClient buildClient() {
+        return new ConfidentialLedgerIdentityServiceClient(
+                new ConfidentialLedgerIdentityServiceAsyncClient(
+                        buildInnerClient().getConfidentialLedgerIdentityServices()));
     }
 }

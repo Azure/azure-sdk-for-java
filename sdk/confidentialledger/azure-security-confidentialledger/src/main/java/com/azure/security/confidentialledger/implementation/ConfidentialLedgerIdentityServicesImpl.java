@@ -6,7 +6,6 @@ package com.azure.security.confidentialledger.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -24,6 +23,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConfidentialLedgerIdentityServices. */
@@ -71,13 +71,62 @@ public final class ConfidentialLedgerIdentityServicesImpl {
                 @HostParam("identityServiceUri") String identityServiceUri,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("ledgerId") String ledgerId,
-                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     ledgerId: String
+     *     ledgerTlsCertificate: String
+     * }
+     * }</pre>
+     *
+     * @param ledgerId Id of the Confidential Ledger instance to get information for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return identity information for a Confidential Ledger instance along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
+            String ledgerId, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getLedgerIdentity(
+                                this.client.getIdentityServiceUri(),
+                                this.client.getServiceVersion().getVersion(),
+                                ledgerId,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets identity information for a Confidential Ledger instance.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -101,13 +150,44 @@ public final class ConfidentialLedgerIdentityServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
             String ledgerId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
         return service.getLedgerIdentity(
                 this.client.getIdentityServiceUri(),
                 this.client.getServiceVersion().getVersion(),
                 ledgerId,
-                accept,
                 requestOptions,
                 context);
+    }
+
+    /**
+     * Gets identity information for a Confidential Ledger instance.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     ledgerId: String
+     *     ledgerTlsCertificate: String
+     * }
+     * }</pre>
+     *
+     * @param ledgerId Id of the Confidential Ledger instance to get information for.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return identity information for a Confidential Ledger instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getLedgerIdentityWithResponse(String ledgerId, RequestOptions requestOptions) {
+        return getLedgerIdentityWithResponseAsync(ledgerId, requestOptions).block();
     }
 }

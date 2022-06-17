@@ -12,26 +12,24 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgersImpl;
-import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ConfidentialLedgerClient type. */
-@ServiceClient(builder = ConfidentialLedgerClientBuilder.class, isAsync = true)
-public final class ConfidentialLedgerAsyncClient {
-    @Generated private final ConfidentialLedgersImpl serviceClient;
+/** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
+@ServiceClient(builder = ConfidentialLedgerClientBuilder.class)
+public final class ConfidentialLedgerClient {
+    @Generated private final ConfidentialLedgerAsyncClient client;
 
     /**
-     * Initializes an instance of ConfidentialLedgerAsyncClient class.
+     * Initializes an instance of ConfidentialLedgerClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerAsyncClient(ConfidentialLedgersImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ConfidentialLedgerClient(ConfidentialLedgerAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -59,13 +57,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the governance script for the application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the governance script for the application along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConstitutionWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConstitutionWithResponseAsync(requestOptions);
+    public Response<BinaryData> getConstitutionWithResponse(RequestOptions requestOptions) {
+        return this.client.getConstitutionWithResponse(requestOptions).block();
     }
 
     /**
@@ -97,12 +94,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of members in the consortium along with {@link Response} on successful completion of {@link Mono}.
+     * @return list of members in the consortium along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConsortiumMembersWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConsortiumMembersWithResponseAsync(requestOptions);
+    public Response<BinaryData> getConsortiumMembersWithResponse(RequestOptions requestOptions) {
+        return this.client.getConsortiumMembersWithResponse(requestOptions).block();
     }
 
     /**
@@ -137,13 +134,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about the enclaves running the Confidential Ledger along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return information about the enclaves running the Confidential Ledger along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnclaveQuotesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getEnclaveQuotesWithResponseAsync(requestOptions);
+    public Response<BinaryData> getEnclaveQuotesWithResponse(RequestOptions requestOptions) {
+        return this.client.getEnclaveQuotesWithResponse(requestOptions).block();
     }
 
     /**
@@ -172,13 +168,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of identifiers for ledger collections along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return a list of identifiers for ledger collections along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listCollectionsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listCollectionsWithResponseAsync(requestOptions);
+    public Response<BinaryData> listCollectionsWithResponse(RequestOptions requestOptions) {
+        return this.client.listCollectionsWithResponse(requestOptions).block();
     }
 
     /**
@@ -219,12 +214,13 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated ledger entries returned in response to a query as paginated response with {@link PagedFlux}.
+     * @return paginated ledger entries returned in response to a query as paginated response with {@link
+     *     PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listLedgerEntries(RequestOptions requestOptions) {
-        return this.serviceClient.listLedgerEntriesAsync(requestOptions);
+    public PagedIterable<BinaryData> listLedgerEntries(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listLedgerEntries(requestOptions));
     }
 
     /**
@@ -268,12 +264,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return returned as a result of a write to the Confidential Ledger, the transaction id in the response indicates
-     *     when the write will become durable along with {@link Response} on successful completion of {@link Mono}.
+     *     when the write will become durable along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> postLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
-        return this.serviceClient.postLedgerEntryWithResponseAsync(entry, requestOptions);
+    public Response<BinaryData> postLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
+        return this.client.postLedgerEntryWithResponse(entry, requestOptions).block();
     }
 
     /**
@@ -311,13 +307,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of querying for a ledger entry from an older transaction id along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the result of querying for a ledger entry from an older transaction id along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerEntryWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerEntryWithResponseAsync(transactionId, requestOptions);
+    public Response<BinaryData> getLedgerEntryWithResponse(String transactionId, RequestOptions requestOptions) {
+        return this.client.getLedgerEntryWithResponse(transactionId, requestOptions).block();
     }
 
     /**
@@ -367,13 +362,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a receipt certifying ledger contents at a particular transaction id along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return a receipt certifying ledger contents at a particular transaction id along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getReceiptWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getReceiptWithResponseAsync(transactionId, requestOptions);
+    public Response<BinaryData> getReceiptWithResponse(String transactionId, RequestOptions requestOptions) {
+        return this.client.getReceiptWithResponse(transactionId, requestOptions).block();
     }
 
     /**
@@ -402,14 +396,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an entry identified by a transaction id along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the status of an entry identified by a transaction id along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransactionStatusWithResponse(
-            String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getTransactionStatusWithResponseAsync(transactionId, requestOptions);
+    public Response<BinaryData> getTransactionStatusWithResponse(String transactionId, RequestOptions requestOptions) {
+        return this.client.getTransactionStatusWithResponse(transactionId, requestOptions).block();
     }
 
     /**
@@ -441,12 +433,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an entry in the ledger along with {@link Response} on successful completion of {@link Mono}.
+     * @return an entry in the ledger along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getCurrentLedgerEntryWithResponseAsync(requestOptions);
+    public Response<BinaryData> getCurrentLedgerEntryWithResponse(RequestOptions requestOptions) {
+        return this.client.getCurrentLedgerEntryWithResponse(requestOptions).block();
     }
 
     /**
@@ -466,12 +458,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteUserWithResponseAsync(userId, requestOptions);
+    public Response<Void> deleteUserWithResponse(String userId, RequestOptions requestOptions) {
+        return this.client.deleteUserWithResponse(userId, requestOptions).block();
     }
 
     /**
@@ -500,12 +492,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a user along with {@link Response} on successful completion of {@link Mono}.
+     * @return a user along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.getUserWithResponseAsync(userId, requestOptions);
+    public Response<BinaryData> getUserWithResponse(String userId, RequestOptions requestOptions) {
+        return this.client.getUserWithResponse(userId, requestOptions).block();
     }
 
     /**
@@ -544,13 +536,12 @@ public final class ConfidentialLedgerAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return details about a Confidential Ledger user along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return details about a Confidential Ledger user along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateUserWithResponse(
+    public Response<BinaryData> createOrUpdateUserWithResponse(
             String userId, BinaryData userDetails, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateUserWithResponseAsync(userId, userDetails, requestOptions);
+        return this.client.createOrUpdateUserWithResponse(userId, userDetails, requestOptions).block();
     }
 }

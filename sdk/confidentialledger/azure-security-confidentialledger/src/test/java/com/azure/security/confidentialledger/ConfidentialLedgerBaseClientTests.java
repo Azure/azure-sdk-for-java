@@ -56,4 +56,10 @@ public class ConfidentialLedgerBaseClientTests extends ConfidentialLedgerClientT
         }
         assertTrue(count > 0);
     }
+
+    @Test
+    public void postLedgerEntry() {
+        ledgerEntry = {"contents": "test123"};
+        DynamicResponse response = client.postLedgerEntry("test123").send();
+    }
 }

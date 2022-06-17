@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the ConfidentialLedgerClient type. */
-@ServiceClientBuilder(serviceClients = {ConfidentialLedgerAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {ConfidentialLedgerClient.class, ConfidentialLedgerAsyncClient.class})
 public final class ConfidentialLedgerClientBuilder
         implements HttpTrait<ConfidentialLedgerClientBuilder>,
                 ConfigurationTrait<ConfidentialLedgerClientBuilder>,
@@ -315,5 +315,16 @@ public final class ConfidentialLedgerClientBuilder
     @Generated
     public ConfidentialLedgerAsyncClient buildAsyncClient() {
         return new ConfidentialLedgerAsyncClient(buildInnerClient().getConfidentialLedgers());
+    }
+
+    /**
+     * Builds an instance of ConfidentialLedgerClient class.
+     *
+     * @return an instance of ConfidentialLedgerClient.
+     */
+    @Generated
+    public ConfidentialLedgerClient buildClient() {
+        return new ConfidentialLedgerClient(
+                new ConfidentialLedgerAsyncClient(buildInnerClient().getConfidentialLedgers()));
     }
 }
