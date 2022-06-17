@@ -109,11 +109,11 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(null, connectionOptions,
-            PROXY_OPTIONS, peerDetails));
+            PROXY_OPTIONS, peerDetails, null));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID, null,
-            PROXY_OPTIONS, peerDetails));
+            PROXY_OPTIONS, peerDetails, null));
         assertThrows(NullPointerException.class, () -> new WebSocketsProxyConnectionHandler(CONNECTION_ID,
-            connectionOptions, PROXY_OPTIONS, null));
+            connectionOptions, PROXY_OPTIONS, null, null));
     }
 
     /**
@@ -126,7 +126,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_OPTIONS,
-            peerDetails);
+            peerDetails, null);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -145,7 +145,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             .thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, peerDetails);
+            ProxyOptions.SYSTEM_DEFAULTS, peerDetails, null);
 
         // Act and Assert
         Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getHostname());
@@ -168,7 +168,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions,
-            peerDetails);
+            peerDetails, null);
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());

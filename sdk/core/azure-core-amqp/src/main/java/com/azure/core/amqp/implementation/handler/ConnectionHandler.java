@@ -4,12 +4,14 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -50,6 +52,19 @@ public class ConnectionHandler extends Handler {
     private final Map<String, Object> connectionProperties;
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
+    private final AmqpMetricsProvider metricProvider;
+
+    /**
+     * Creates a handler that handles proton-j's connection events.
+     *
+     * @param connectionId Identifier for this connection.
+     * @param connectionOptions Options used when creating the AMQP connection.
+     */
+    @Deprecated
+    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
+                             SslPeerDetails peerDetails) {
+        this(connectionId, connectionOptions, peerDetails, null);
+    }
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -58,7 +73,7 @@ public class ConnectionHandler extends Handler {
      * @param connectionOptions Options used when creating the AMQP connection.
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails) {
+        SslPeerDetails peerDetails, Meter meter) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
@@ -80,6 +95,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
         this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+
+        this.metricProvider = AmqpMetricsProvider.getOrCreate(meter, connectionOptions.getFullyQualifiedNamespace(), null);
     }
 
     /**
@@ -185,6 +202,8 @@ public class ConnectionHandler extends Handler {
 
         connection.setProperties(properties);
         connection.open();
+
+        metricProvider.recordConnectionInit();
     }
 
     @Override
@@ -311,6 +330,7 @@ public class ConnectionHandler extends Handler {
         logErrorCondition("onConnectionFinal", connection, error);
         onNext(EndpointState.CLOSED);
 
+        metricProvider.recordConnectionClosed(error);
         // Complete the processors because they no longer have any work to do.
         close();
     }

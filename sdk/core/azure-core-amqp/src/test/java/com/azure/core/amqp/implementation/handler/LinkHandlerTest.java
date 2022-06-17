@@ -404,7 +404,7 @@ public class LinkHandlerTest {
 
     private static final class MockLinkHandler extends LinkHandler {
         MockLinkHandler(String connectionId, String hostname, String entityPath) {
-            super(connectionId, hostname, entityPath);
+            super(connectionId, hostname, entityPath, null);
         }
     }
 }

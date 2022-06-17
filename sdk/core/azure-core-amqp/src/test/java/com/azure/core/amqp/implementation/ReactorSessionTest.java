@@ -9,14 +9,16 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -100,7 +102,7 @@ public class ReactorSessionTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60));
+        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), null);
         this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -118,7 +120,6 @@ public class ReactorSessionTest {
         }).when(reactorDispatcher).invoke(any());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
-
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
             reactorHandlerProvider, cbsNodeSupplier, tokenManagerProvider, serializer, options);
@@ -180,7 +181,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
 
         when(session.sender(linkName)).thenReturn(sender);
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
@@ -223,7 +224,7 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
 
         final Event closeSendEvent = mock(Event.class);
         when(closeSendEvent.getLink()).thenReturn(sender);
@@ -265,7 +266,7 @@ public class ReactorSessionTest {
         final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath);
+        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, null);
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);

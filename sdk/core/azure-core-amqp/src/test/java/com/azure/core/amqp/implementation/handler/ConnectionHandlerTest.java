@@ -88,7 +88,7 @@ public class ConnectionHandlerTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
             AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
             VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
-        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
     }
 
     @AfterEach
@@ -106,9 +106,9 @@ public class ConnectionHandlerTest {
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, null));
+        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, null));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, null);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -137,7 +137,7 @@ public class ConnectionHandlerTest {
             CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());

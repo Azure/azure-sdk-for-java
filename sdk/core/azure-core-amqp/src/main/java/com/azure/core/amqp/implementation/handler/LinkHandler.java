@@ -5,7 +5,9 @@ package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.metrics.Meter;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -27,6 +29,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
  */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
+    private final AmqpMetricsProvider metricsProvider;
 
     /**
      * Creates an instance with the parameters.
@@ -40,9 +43,10 @@ abstract class LinkHandler extends Handler {
      * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
      * null.
      */
-    LinkHandler(String connectionId, String hostname, String entityPath) {
+    LinkHandler(String connectionId, String hostname, String entityPath, Meter meter) {
         super(connectionId, hostname);
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.metricsProvider = AmqpMetricsProvider.getOrCreate(meter, hostname, entityPath);
     }
 
     @Override
@@ -75,6 +79,9 @@ abstract class LinkHandler extends Handler {
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
+
+        final Link link = event != null ? event.getLink() : null;
+        metricsProvider.recordLinkError(link != null ? link.getCondition() : null);
 
         // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
         // releasing this link. So we want to complete the endpoint states.

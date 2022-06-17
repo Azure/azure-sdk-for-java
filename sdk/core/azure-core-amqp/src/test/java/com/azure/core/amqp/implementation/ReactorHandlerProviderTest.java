@@ -73,7 +73,6 @@ public class ReactorHandlerProviderTest {
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER;
-
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
         Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
 
@@ -107,7 +106,7 @@ public class ReactorHandlerProviderTest {
         when(reactorProvider.createReactor(eq(CONNECTION_ID), anyInt())).thenReturn(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
 
-        provider = new ReactorHandlerProvider(reactorProvider);
+        provider = new ReactorHandlerProvider(reactorProvider, null);
 
         originalProxySelector = ProxySelector.getDefault();
 
@@ -126,6 +125,7 @@ public class ReactorHandlerProviderTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void constructorNull() {
         // Act
         assertThrows(NullPointerException.class, () -> new ReactorHandlerProvider(null));

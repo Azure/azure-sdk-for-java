@@ -73,7 +73,7 @@ public class WebSocketsConnectionHandlerTest {
             AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
             scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails);
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null);
     }
 
     @AfterEach
@@ -188,7 +188,7 @@ public class WebSocketsConnectionHandlerTest {
             CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails)) {
+            peerDetails, null)) {
 
             // Act
             handler.onConnectionInit(event);
