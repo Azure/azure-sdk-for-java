@@ -15,6 +15,9 @@
 
 ### Bugs Fixed
 
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
+
 ### Other Changes
 
 ## 1.29.1 (2022-06-03)
