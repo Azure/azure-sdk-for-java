@@ -182,9 +182,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                         ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
                                 new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
                         if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
-                            QueryMetrics qm =
-                                    BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
-                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
+                            QueryMetrics qm = QueryMetrics.createFromDelimitedStringAndClientSideMetrics(
+                                tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS),
                                             new ClientSideMetrics(this.retries,
                                                     tFeedResponse.getRequestCharge(),
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),

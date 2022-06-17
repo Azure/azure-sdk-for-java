@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -41,8 +42,8 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         dbs.add(new CosmosDatabaseProperties("db2"));
 
         ArrayList<FeedResponse<CosmosDatabaseProperties>> frps = new ArrayList<FeedResponse<CosmosDatabaseProperties>>();
-        frps.add(BridgeInternal.createFeedResponse(dbs, null));
-        frps.add(BridgeInternal.createFeedResponse(dbs, null));
+        frps.add(FeedResponseHelper.createFeedResponse(dbs, null));
+        frps.add(FeedResponseHelper.createFeedResponse(dbs, null));
 
         Flux<FeedResponse<CosmosDatabaseProperties>> response = Flux.merge(Flux.fromIterable(frps))
                                                                     .mergeWith(Flux.error(BridgeInternal.createCosmosException(0)))

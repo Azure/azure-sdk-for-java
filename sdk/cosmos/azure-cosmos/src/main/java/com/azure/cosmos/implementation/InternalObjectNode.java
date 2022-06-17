@@ -107,7 +107,7 @@ public class InternalObjectNode extends Resource {
         if (cosmosItem instanceof InternalObjectNode) {
             return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
         } else if (cosmosItem instanceof Document) {
-            return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+            return ((Document) cosmosItem).serializeJsonToByteBuffer();
         } else if (cosmosItem instanceof ObjectNode) {
             return (new InternalObjectNode((ObjectNode)cosmosItem).serializeJsonToByteBuffer());
         } else if (cosmosItem instanceof byte[]) {
@@ -118,7 +118,7 @@ public class InternalObjectNode extends Resource {
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
-        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+        return results.stream().map(document -> document.toObject(klass))
                       .collect(Collectors.toList());
     }
 

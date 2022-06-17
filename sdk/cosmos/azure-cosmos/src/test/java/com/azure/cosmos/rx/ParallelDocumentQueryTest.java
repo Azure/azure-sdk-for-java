@@ -130,15 +130,15 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     private void compareQueryMetrics(Map<String, QueryMetrics> qm1, Map<String, QueryMetrics> qm2) {
         assertThat(qm1.keySet().size()).isEqualTo(qm2.keySet().size());
-        QueryMetrics queryMetrics1 = BridgeInternal.createQueryMetricsFromCollection(qm1.values());
-        QueryMetrics queryMetrics2 = BridgeInternal.createQueryMetricsFromCollection(qm2.values());
+        QueryMetrics queryMetrics1 = QueryMetrics.createFromCollection(qm1.values());
+        QueryMetrics queryMetrics2 = QueryMetrics.createFromCollection(qm2.values());
         assertThat(queryMetrics1.getRetrievedDocumentSize()).isEqualTo(queryMetrics2.getRetrievedDocumentSize());
         assertThat(queryMetrics1.getRetrievedDocumentCount()).isEqualTo(queryMetrics2.getRetrievedDocumentCount());
         assertThat(queryMetrics1.getIndexHitDocumentCount()).isEqualTo(queryMetrics2.getIndexHitDocumentCount());
         assertThat(queryMetrics1.getOutputDocumentCount()).isEqualTo(queryMetrics2.getOutputDocumentCount());
         assertThat(queryMetrics1.getOutputDocumentSize()).isEqualTo(queryMetrics2.getOutputDocumentSize());
-        assertThat(BridgeInternal.getClientSideMetrics(queryMetrics1).getRequestCharge())
-            .isEqualTo(BridgeInternal.getClientSideMetrics(queryMetrics1).getRequestCharge());
+        assertThat(queryMetrics1.getClientSideMetrics().getRequestCharge())
+            .isEqualTo(queryMetrics2.getClientSideMetrics().getRequestCharge());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -371,7 +371,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Boolean> expectedValues = createdDocuments
                                            .stream()
-                                           .map(d -> ModelBridgeInternal.getBooleanFromJsonSerializable(d, "boolProp"))
+                                           .map(d -> d.getBoolean("boolProp"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c.boolProp from c";
@@ -391,7 +391,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<Double> expectedValues = createdDocuments.stream()
-                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "_value"))
+                                           .map(d -> d.getDouble("_value"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c._value from c";
@@ -453,7 +453,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<NestedObject> expectedValues = createdDocuments.stream()
-            .map(d -> ModelBridgeInternal.toObjectFromJsonSerializable(d,TestObject.class))
+            .map(d -> d.toObject(TestObject.class))
             .map(d -> d.getNestedProp()).collect(Collectors.toList());
 
         String query = "Select value c.nestedProp from c";

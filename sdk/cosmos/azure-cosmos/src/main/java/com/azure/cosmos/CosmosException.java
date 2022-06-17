@@ -173,7 +173,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
+        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**

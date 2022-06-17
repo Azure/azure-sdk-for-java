@@ -16,6 +16,8 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.accesshelpers.CosmosDatabaseResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -414,7 +416,7 @@ public final class CosmosAsyncClient implements Closeable {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
-                    BridgeInternal.createFeedResponse(
+                    FeedResponseHelper.createFeedResponse(
                         ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                         response.getResponseHeaders()));
         });
@@ -521,7 +523,7 @@ public final class CosmosAsyncClient implements Closeable {
             pagedFluxOptions.setTracerInformation(this.tracerProvider, "queryDatabases", this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
-                .map(response -> BridgeInternal.createFeedResponse(
+                .map(response -> FeedResponseHelper.createFeedResponse(
                     ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
         });
@@ -562,7 +564,7 @@ public final class CosmosAsyncClient implements Closeable {
                                                              Context context) {
         String spanName = "createDatabase." + database.getId();
         Mono<CosmosDatabaseResponse> responseMono = asyncDocumentClient.createDatabase(database, ModelBridgeInternal.toRequestOptions(options))
-            .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosDatabaseResponse(databaseResourceResponse))
+            .map(CosmosDatabaseResponseHelper::createCosmosDatabaseResponse)
             .single();
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono,
             context,

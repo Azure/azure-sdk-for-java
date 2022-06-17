@@ -76,7 +76,7 @@ class DocumentProducer<T> {
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
                         new ImmutablePair<>(feedRange.getRange().toString(), fetchSchedulingMetrics.getElapsedTime());
 
-                QueryMetrics qm =BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
+                QueryMetrics qm =QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
                         new ClientSideMetrics(retries,
                                 pageResult.getRequestCharge(),
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),

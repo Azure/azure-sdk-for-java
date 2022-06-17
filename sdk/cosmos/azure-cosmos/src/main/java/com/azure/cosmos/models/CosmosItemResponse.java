@@ -5,12 +5,12 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -202,32 +202,47 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
-            new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
-                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                                          byte[] contentAsByteArray,
-                                                                          Class<T> classType,
-                                                                          ItemDeserializer itemDeserializer) {
-                    return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
-                }
+    // Static initializer to set up the helper.
+    static {
+        CosmosItemResponseHelper.setAccessor(new CosmosItemResponseHelper.CosmosItemResponseAccessor() {
+            @Override
+            public <T2> CosmosItemResponse<T2> createCosmosAsyncItemResponse(ResourceResponse<Document> response,
+                Class<T2> classType, ItemDeserializer itemDeserializer) {
+                return new CosmosItemResponse<>(response, classType, itemDeserializer);
+            }
 
-                public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
-                    return response.responseBodyAsByteArray;
-                }
+            @Override
+            public <T2> CosmosItemResponse<T2> createCosmosItemResponse(ResourceResponse<Document> response,
+                byte[] contentAsByteArray, Class<T2> classType, ItemDeserializer itemDeserializer) {
+                return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+            }
 
-                public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
-                    response.responseBodyAsByteArray = content;
-                }
+            @Override
+            public <T2> InternalObjectNode getInternalObjectNode(CosmosItemResponse<T2> cosmosItemResponse) {
+                return cosmosItemResponse.getProperties();
+            }
 
-                public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
-                    return response.resourceResponse;
-                }
-            });
+            @Override
+            public <T2> int getPayloadLength(CosmosItemResponse<T2> cosmosItemResponse) {
+                return cosmosItemResponse.responseBodyAsByteArray != null
+                    ? cosmosItemResponse.responseBodyAsByteArray.length
+                    : 0;
+            }
+
+            @Override
+            public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
+                return response.responseBodyAsByteArray;
+            }
+
+            @Override
+            public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
+                response.responseBodyAsByteArray = content;
+            }
+
+            @Override
+            public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
+                return response.resourceResponse;
+            }
+        });
     }
-
-    static { initialize(); }
 }

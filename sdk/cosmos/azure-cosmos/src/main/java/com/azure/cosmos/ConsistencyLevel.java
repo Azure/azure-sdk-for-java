@@ -14,7 +14,7 @@ import java.util.Map;
  * The requested ConsistencyLevel must match or be weaker than that provisioned for the database account. Consistency
  * levels by order of strength are STRONG, BOUNDED_STALENESS, SESSION and EVENTUAL.
  *
- * Refer to consistency level documentation for additional details: https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels
+ * Refer to <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels">consistency level documentation</a> for additional details.
  */
 public enum ConsistencyLevel {
 
@@ -49,7 +49,7 @@ public enum ConsistencyLevel {
      */
     CONSISTENT_PREFIX("ConsistentPrefix");
 
-    private static Map<String, ConsistencyLevel> consistencyLevelHashMap = new HashMap<>();
+    private static final Map<String, ConsistencyLevel> consistencyLevelHashMap = new HashMap<>();
 
     static {
         for (ConsistencyLevel cl : ConsistencyLevel.values()) {

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
@@ -102,7 +103,7 @@ public class DCountDocumentQueryExecutionContext
                                                                             headers,
                                                                             BridgeInternal
                                                                                 .queryMetricsFromFeedResponse(frp),
-                                                                            ModelBridgeInternal
+                                                                            FeedResponseHelper
                                                                                 .getQueryPlanDiagnosticsContext(frp),
                                                                             false,
                                                                             false,

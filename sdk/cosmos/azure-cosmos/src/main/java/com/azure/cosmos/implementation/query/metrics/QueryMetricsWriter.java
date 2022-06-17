@@ -42,7 +42,7 @@ abstract class QueryMetricsWriter {
         this.writeDocumentWriteTime(queryMetrics.getDocumentWriteTime());
 
         // ClientSideMetrics
-        this.writeClientSideMetrics(BridgeInternal.getClientSideMetrics(queryMetrics));
+        this.writeClientSideMetrics(queryMetrics.getClientSideMetrics());
 
         // IndexUtilizationInfo
         if (queryMetrics.getIndexUtilizationInfo() != null) {

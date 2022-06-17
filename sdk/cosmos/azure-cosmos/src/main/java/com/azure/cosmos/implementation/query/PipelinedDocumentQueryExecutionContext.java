@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -163,12 +164,8 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return this
             .component
             .drainAsync(this.actualPageSize)
-            .map(documentFeedResponse -> ImplementationBridgeHelpers
-                .FeedResponseHelper
-                .getFeedResponseAccessor().convertGenericType(
-                    documentFeedResponse,
-                    (document) -> this.factoryMethod.apply(document.getPropertyBag())
-                )
+            .map(documentFeedResponse -> FeedResponseHelper.convertGenericType(documentFeedResponse,
+                (document) -> this.factoryMethod.apply(document.getPropertyBag()))
             );
     }
 }

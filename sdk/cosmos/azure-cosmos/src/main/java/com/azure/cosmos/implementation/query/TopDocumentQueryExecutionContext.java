@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
@@ -115,7 +116,7 @@ public class TopDocumentQueryExecutionContext<T>
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(),
                         headers,
                         BridgeInternal.queryMetricsFromFeedResponse(t),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        FeedResponseHelper.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,
                         t.getCosmosDiagnostics());
@@ -132,7 +133,7 @@ public class TopDocumentQueryExecutionContext<T>
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
                         headers,
                         BridgeInternal.queryMetricsFromFeedResponse(t),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        FeedResponseHelper.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,
                         t.getCosmosDiagnostics());

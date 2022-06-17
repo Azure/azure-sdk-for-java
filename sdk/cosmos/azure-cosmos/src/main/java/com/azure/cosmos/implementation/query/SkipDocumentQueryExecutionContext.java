@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
@@ -81,7 +82,7 @@ public final class SkipDocumentQueryExecutionContext<T>
             return BridgeInternal.createFeedResponseWithQueryMetrics(documentsAfterSkip,
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
+                FeedResponseHelper.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,
                 tFeedResponse.getCosmosDiagnostics());

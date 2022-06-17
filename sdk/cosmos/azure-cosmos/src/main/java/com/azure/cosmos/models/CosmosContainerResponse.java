@@ -3,15 +3,13 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.accesshelpers.CosmosContainerResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 /**
  * The type Cosmos container response.
@@ -65,5 +63,15 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      */
     public CosmosContainerProperties getProperties() {
         return super.getProperties();
+    }
+
+    // Static initializer to set up the helper.
+    static {
+        CosmosContainerResponseHelper.setAccessor(new CosmosContainerResponseHelper.CosmosContainerResponseAccessor() {
+            @Override
+            public CosmosContainerResponse createCosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+                return new CosmosContainerResponse(response);
+            }
+        });
     }
 }

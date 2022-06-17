@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
@@ -180,7 +181,7 @@ public class PartitionKeyInternalHelper {
 
         switch (kind) {
             case HASH:
-                if (ModelBridgeInternal.isV2(partitionKeyDefinition)) {
+                if (partitionKeyDefinition.getVersion() == PartitionKeyDefinitionVersion.V2) {
                     // V2
                     return getEffectivePartitionKeyForHashPartitioningV2(partitionKeyInternal);
                 } else {

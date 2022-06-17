@@ -184,7 +184,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                         if (paths != null && !paths.isEmpty()) {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                            Object propertyValue = doc.getObjectByPath(pkPath);
                             if (propertyValue == null) {
                                 propertyValue = Undefined.value();
                             }

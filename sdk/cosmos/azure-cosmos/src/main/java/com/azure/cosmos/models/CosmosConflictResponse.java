@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.accesshelpers.CosmosConflictResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
@@ -29,5 +30,15 @@ public class CosmosConflictResponse extends CosmosResponse<CosmosConflictPropert
      */
     public CosmosConflictProperties getProperties() {
         return super.getProperties();
+    }
+
+    // Static initializer to set up the helper.
+    static {
+        CosmosConflictResponseHelper.setAccessor(new CosmosConflictResponseHelper.CosmosConflictResponseAccessor() {
+            @Override
+            public CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
+                return new CosmosConflictResponse(response);
+            }
+        });
     }
 }

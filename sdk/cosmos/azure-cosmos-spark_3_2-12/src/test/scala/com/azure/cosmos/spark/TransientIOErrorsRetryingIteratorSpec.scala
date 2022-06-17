@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.SparkRowItem
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
@@ -175,7 +176,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
 
     val continuationToken = f"$prefix%s_Page$pageSequenceNumber%05d_ContinuationToken"
     try {
-      val r = ModelBridgeInternal
+      val r = FeedResponseHelper
         .createFeedResponse(
           generateFeedResponseItems(prefix, pageSequenceNumber, documentStartIndex)
             .toList.asJava,

@@ -134,7 +134,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
         StringBuilder body = new StringBuilder();
-        body.append(ModelBridgeInternal.toLower(verb))
+        body.append(verb.toLowerCase())
                 .append('\n')
                 .append(resourceSegment)
                 .append('\n')

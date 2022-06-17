@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -104,7 +105,7 @@ public class DistinctDocumentQueryExecutionContext<T>
             return BridgeInternal.createFeedResponseWithQueryMetrics(distinctResults,
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
+                FeedResponseHelper.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,
                 tFeedResponse.getCosmosDiagnostics());

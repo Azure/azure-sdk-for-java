@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -141,7 +142,7 @@ class ChangeFeedQueryImpl<T> {
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
             return client.readFeed(request)
-                         .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, this.factoryMethod, klass));
+                         .map(rsp -> FeedResponseHelper.toChangeFeedResponsePage(rsp, this.factoryMethod, klass));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -154,7 +155,7 @@ class ChangeFeedQueryImpl<T> {
                          .map(rsp -> {
                              listener.responseListener(operationContext, rsp);
 
-                             final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(
+                             final FeedResponse<T> feedResponse = FeedResponseHelper.toChangeFeedResponsePage(
                                  rsp, this.factoryMethod, klass);
                              listener.feedResponseReceivedListener(operationContext, feedResponse);
 

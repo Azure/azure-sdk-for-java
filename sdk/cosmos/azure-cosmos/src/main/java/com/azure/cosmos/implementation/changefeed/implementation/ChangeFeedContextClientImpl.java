@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -119,12 +120,9 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                         .map(response -> {
                             List<JsonNode> results = response.getResults()
                                                              .stream()
-                                                             .map(document ->
-                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
-                                                                     document,
-                                                                     JsonNode.class))
+                                                             .map(document -> document.toObject(JsonNode.class))
                                                              .collect(Collectors.toList());
-                            return BridgeInternal.toFeedResponsePage(
+                            return FeedResponseHelper.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),
                                 false);

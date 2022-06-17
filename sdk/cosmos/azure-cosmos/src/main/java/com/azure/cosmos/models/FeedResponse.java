@@ -9,15 +9,17 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -548,25 +550,72 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
-            new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
-                @Override
-                public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
-                    return feedResponse.getNoChanges();
-                }
+    // Static initializer to set up the helper.
+    static {
+        FeedResponseHelper.setAccessor(new FeedResponseHelper.FeedResponseAccessor() {
+            @Override
+            public <T2> FeedResponse<T2> toFeedResponsePage(RxDocumentServiceResponse response,
+                Function<JsonNode, T2> factoryMethod, Class<T2> cls) {
+                return new FeedResponse<>(response.getQueryResponse(factoryMethod, cls), response);
+            }
 
-                @Override
-                public <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T,
-                    TNew> conversion) {
+            @Override
+            public <T2> FeedResponse<T2> toFeedResponsePage(List<T2> results, Map<String, String> headers, boolean noChanges) {
+                return new FeedResponse<>(results, headers, noChanges);
+            }
 
-                    return feedResponse.convertGenericType(conversion);
-                }
-            });
+            @Override
+            public <T2> FeedResponse<T2> toChangeFeedResponsePage(RxDocumentServiceResponse response,
+                Function<JsonNode, T2> factoryMethod, Class<T2> cls) {
+                boolean noChanges = response.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
+                return new FeedResponse<>(
+                    noChanges ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
+                    response.getResponseHeaders(), noChanges);
+            }
+
+            @Override
+            public <T2> boolean noChanges(FeedResponse<T2> page) {
+                // TODO (alzimmer): No changes needs to call the method and not access the property directly.
+                return page.nochanges;
+            }
+
+            @Override
+            public <T2> FeedResponse<T2> createFeedResponse(List<T2> results, Map<String, String> headers) {
+                return new FeedResponse<>(results, headers);
+            }
+
+            @Override
+            public <T2> FeedResponse<T2> createFeedResponseWithQueryMetrics(List<T2> results,
+                Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+                QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext, boolean useEtagAsContinuation,
+                boolean isNoChanges) {
+                FeedResponse<T2> feedResponse =  new FeedResponse<>(results, headers, queryMetricsMap,
+                    useEtagAsContinuation, isNoChanges);
+                feedResponse.setQueryPlanDiagnosticsContext(diagnosticsContext);
+                return feedResponse;
+            }
+
+            @Override
+            public <T2> ConcurrentMap<String, QueryMetrics> queryMetricsMap(FeedResponse<T2> feedResponse) {
+                return feedResponse.queryMetricsMap();
+            }
+
+            @Override
+            public <T2> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T2> feedResponse) {
+                return feedResponse.queryMetrics();
+            }
+
+            @Override
+            public <T2> QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext(
+                FeedResponse<T2> feedResponse) {
+                return feedResponse.getQueryPlanDiagnosticsContext();
+            }
+
+            @Override
+            public <T2, TNew> FeedResponse<TNew> convertGenericType(FeedResponse<T2> feedResponse,
+                Function<T2, TNew> conversion) {
+                return feedResponse.convertGenericType(conversion);
+            }
+        });
     }
-
-    static { initialize(); }
 }

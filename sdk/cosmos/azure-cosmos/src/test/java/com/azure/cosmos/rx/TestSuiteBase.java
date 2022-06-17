@@ -246,7 +246,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 Object propertyValue = null;
                 if (paths != null && !paths.isEmpty()) {
                     List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                    propertyValue = doc.getObjectByPath(pkPath);
                     if (propertyValue == null) {
                         partitionKey = PartitionKey.NONE;
                     } else {

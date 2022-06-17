@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
+import com.azure.cosmos.models.FeedResponse;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -66,9 +66,9 @@ public class FeedResponseBuilder<T extends Resource> {
         if (isChangeFeed) {
             when(rsp.getStatusCode()).thenReturn(noMoreChangesInChangeFeed?
                     HttpConstants.StatusCodes.NOT_MODIFIED : 200);
-            return BridgeInternal.toChangeFeedResponsePage(rsp, null, klass);
+            return FeedResponseHelper.toChangeFeedResponsePage(rsp, null, klass);
         } else {
-            return BridgeInternal.toFeedResponsePage(rsp, null, klass);
+            return FeedResponseHelper.toFeedResponsePage(rsp, null, klass);
         }
     }
 

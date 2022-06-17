@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
@@ -207,7 +208,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public <T> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null");
 
-        if (!ModelBridgeInternal.<T>noChanges(response)) {
+        if (!FeedResponseHelper.noChanges(response)) {
             this.initialNoResultsRange = null;
         } else if (this.compositeContinuationTokens.size() > 1) {
             final String eTag = this.currentToken.getToken();

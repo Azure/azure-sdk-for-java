@@ -92,11 +92,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                 return ModelBridgeInternal.getStringFromJsonSerializable(doc1, path)
                                           .compareTo(ModelBridgeInternal.getStringFromJsonSerializable(doc2, path));
             } else if (isBooleanPath) {
-                if (!ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
-                    ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
+                if (!doc1.getBoolean(path) && doc2.getBoolean(path))
                     return isAsc ? -1 : 1;
-                else if (ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
-                    !ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
+                else if (doc1.getBoolean(path) && !doc2.getBoolean(path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;

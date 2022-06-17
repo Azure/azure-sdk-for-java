@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosPermissionResponse;
@@ -154,7 +155,7 @@ public class CosmosAsyncUser {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
-                       .map(response -> BridgeInternal.createFeedResponse(
+                       .map(response -> FeedResponseHelper.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
@@ -198,7 +199,7 @@ public class CosmosAsyncUser {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, requestOptions)
-                       .map(response -> BridgeInternal.createFeedResponse(
+                       .map(response -> FeedResponseHelper.createFeedResponse(
                            ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });

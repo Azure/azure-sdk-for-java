@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.accesshelpers.CosmosConflictResponseHelper;
 import com.azure.cosmos.models.CosmosConflictRequestOptions;
 import com.azure.cosmos.models.CosmosConflictResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -111,7 +112,7 @@ public final class CosmosAsyncConflict {
         String spanName = "readConflict." + getId();
         Mono<CosmosConflictResponse> responseMono =
             this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
+            .map(response -> CosmosConflictResponseHelper.createCosmosConflictResponse(response)).single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             this.container.getDatabase().getId(),
@@ -123,7 +124,7 @@ public final class CosmosAsyncConflict {
         String spanName = "deleteConflict." + getId();
         Mono<CosmosConflictResponse> responseMono =
             this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), options)
-            .map(response -> ModelBridgeInternal.createCosmosConflictResponse(response)).single();
+            .map(response -> CosmosConflictResponseHelper.createCosmosConflictResponse(response)).single();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName,
             this.container.getDatabase().getId(),

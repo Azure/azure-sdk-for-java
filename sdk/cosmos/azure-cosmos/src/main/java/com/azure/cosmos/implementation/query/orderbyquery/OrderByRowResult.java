@@ -45,7 +45,7 @@ public final class OrderByRowResult<T> extends Document {
         final Object object = super.get("payload");
         if  (!ObjectNode.class.isAssignableFrom(object.getClass())) {
             Document document = new Document();
-            ModelBridgeInternal.setProperty(document, Constants.Properties.VALUE, object);
+            document.set(Constants.Properties.VALUE, object);
             payload = document;
         } else {
             this.payload = super.getObject("payload", Document.class);

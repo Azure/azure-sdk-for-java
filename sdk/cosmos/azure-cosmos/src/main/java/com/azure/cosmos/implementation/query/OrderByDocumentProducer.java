@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -76,7 +77,7 @@ class OrderByDocumentProducer extends DocumentProducer<Document> {
     private DocumentProducerFeedResponse resultPageFrom(RequestChargeTracker tracker, OrderByRowResult<Document> row) {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
-        FeedResponse<Document> fr = BridgeInternal.createFeedResponse(Collections.singletonList((Document) row), headers);
+        FeedResponse<Document> fr = FeedResponseHelper.createFeedResponse(Collections.singletonList((Document) row), headers);
         return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 

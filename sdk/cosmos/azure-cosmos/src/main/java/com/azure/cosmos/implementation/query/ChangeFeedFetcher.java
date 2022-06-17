@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -151,7 +152,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
     @Override
     protected boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response) {
-        if (ModelBridgeInternal.noChanges(response)) {
+        if (FeedResponseHelper.noChanges(response)) {
             return true;
         }
 

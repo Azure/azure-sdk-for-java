@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -79,7 +80,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
             .stream()
-            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .filter(d -> d.getMap().containsKey("propInt"))
             .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
 
         String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
@@ -423,7 +424,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<InternalObjectNode, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                               .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
+                               .filter(d -> d.getMap().containsKey(propName)) // removes undefined
                                .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
                                .map(Resource::getResourceId).collect(Collectors.toList());
     }
@@ -432,9 +433,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private <T> List<T> sortDocumentsAndCollectValues(String propName,
                                                       Function<InternalObjectNode, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                   .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
+                   .filter(d -> d.getMap().containsKey(propName)) // removes undefined
                    .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
-                   .map(d -> (T)ModelBridgeInternal.getMapFromJsonSerializable(d).get(propName))
+                   .map(d -> (T)d.getMap().get(propName))
                    .collect(Collectors.toList());
     }
 
@@ -709,7 +710,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
             .stream()
-            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .filter(d -> d.getMap().containsKey("propInt"))
             .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
 
         String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
@@ -736,13 +737,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .hasValidQueryMetrics(true)
             .build();
 
-        validateQuerySuccess(queryObservable.byPage().map(response ->  ImplementationBridgeHelpers
-            .FeedResponseHelper
-            .getFeedResponseAccessor()
-            .convertGenericType(
-                response,
-                objectNode -> new InternalObjectNode(objectNode)
-            )), validator);
+        validateQuerySuccess(queryObservable.byPage().map(response ->  FeedResponseHelper.convertGenericType(
+            response, InternalObjectNode::new)), validator);
     }
 
     private void updateCollectionIndex() {

@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
@@ -820,7 +821,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         // create
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(testItem);
-        validate(createItemResponse.getDiagnostics(), testItemLength,  ModelBridgeInternal.getPayloadLength(createItemResponse));
+        validate(createItemResponse.getDiagnostics(), testItemLength,  CosmosItemResponseHelper.getPayloadLength(createItemResponse));
 
         // reading a deleted item.
         try {
@@ -840,7 +841,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         // read
         CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
         // no request payload and no response payload
-        validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+        validate(readItemResponse.getDiagnostics(), 0, CosmosItemResponseHelper.getPayloadLength(readItemResponse));
 
         // delete
         CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);
@@ -902,7 +903,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // read
             CosmosItemResponse<TestItem> readItemResponse = container.readItem(testItem.id, new PartitionKey(testItem.mypk), TestItem.class);
             // no request payload and no response payload
-            validate(readItemResponse.getDiagnostics(), 0, ModelBridgeInternal.getPayloadLength(readItemResponse));
+            validate(readItemResponse.getDiagnostics(), 0, CosmosItemResponseHelper.getPayloadLength(readItemResponse));
 
             // delete
             CosmosItemResponse<Object> deleteItemResponse = container.deleteItem(testItem, null);

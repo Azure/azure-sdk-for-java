@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -167,7 +168,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> response = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                InternalObjectNode.class)
                                                                           .block();
-        InternalObjectNode itemSettingsToReplace = ModelBridgeInternal.getInternalObjectNode(response);
+        InternalObjectNode itemSettingsToReplace = CosmosItemResponseHelper.getInternalObjectNode(response);
         String replacedItemId = UUID.randomUUID().toString();
         itemSettingsToReplace.setId(replacedItemId);
         Mono<CosmosItemResponse<InternalObjectNode>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,

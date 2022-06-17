@@ -29,6 +29,8 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -37,7 +39,6 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
@@ -55,13 +56,11 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -122,42 +121,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(
-        RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
-        Class<T> cls) {
-
-        return ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
-        return ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> toChangeFeedResponsePage(
-        RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
-        Class<T> cls) {
-
-        return ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
         return new StoredProcedureResponse(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> boolean noChanges(FeedResponse<T> page) {
-        return ModelBridgeInternal.noChanges(page);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
-            Map<String, String> headers) {
-        return ModelBridgeInternal.createFeedResponse(results, headers);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -169,7 +134,7 @@ public final class BridgeInternal {
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
+        FeedResponse<T> feedResponseWithQueryMetrics = FeedResponseHelper.createFeedResponseWithQueryMetrics(
             results,
             headers,
             queryMetricsMap,
@@ -379,13 +344,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getAltLink(Resource resource) {
-        return ModelBridgeInternal.getAltLink(resource);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setAltLink(Resource resource, String altLink) {
-        ModelBridgeInternal.setAltLink(resource, altLink);
+        resource.setAltLink(altLink);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -396,24 +356,7 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
                                                                    QueryMetrics queryMetrics) {
-        ModelBridgeInternal.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
-        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId, String indexUtilizationInfoJSONString) {
-        return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
-            clientSideMetrics, activityId, indexUtilizationInfoJSONString);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static QueryMetrics createQueryMetricsFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
-        return QueryMetrics.createFromCollection(queryMetricsCollection);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ClientSideMetrics getClientSideMetrics(QueryMetrics queryMetrics) {
-        return queryMetrics.getClientSideMetrics();
+        FeedResponseHelper.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -431,17 +374,17 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
-        ModelBridgeInternal.setProperty(jsonSerializable, propertyName, value);
+        jsonSerializable.set(propertyName, value);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return ModelBridgeInternal.getObjectNodeFromJsonSerializable(jsonSerializable, propertyName);
+        return jsonSerializable.getObject(propertyName);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        ModelBridgeInternal.removeFromJsonSerializable(jsonSerializable, propertyName);
+        jsonSerializable.remove(propertyName);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -451,7 +394,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Object getValue(JsonNode value) {
-        return ModelBridgeInternal.getValue(value);
+        return JsonSerializable.getValue(value);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -470,7 +413,7 @@ public final class BridgeInternal {
     public static CosmosException createCosmosException(int statusCode, String errorMessage) {
         CosmosException cosmosException = new CosmosException(statusCode, errorMessage, null, null);
         cosmosException.setError(new CosmosError());
-        ModelBridgeInternal.setProperty(cosmosException.getError(), Constants.Properties.MESSAGE, errorMessage);
+        cosmosException.getError().set(Constants.Properties.MESSAGE, errorMessage);
         return cosmosException;
     }
 
@@ -524,18 +467,13 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String extractResourceSelfLink(Resource resource) {
-        return resource.getSelfLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setResourceSelfLink(Resource resource, String selfLink) {
-        ModelBridgeInternal.setResourceSelfLink(resource, selfLink);
+        resource.setSelfLink(selfLink);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTimestamp(Resource resource, Instant date) {
-        ModelBridgeInternal.setTimestamp(resource, date);
+        resource.setTimestamp(date);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -650,7 +588,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse<T> feedResponse) {
-        return ModelBridgeInternal.queryMetrics(feedResponse);
+        return FeedResponseHelper.queryMetrics(feedResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -660,7 +598,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> InternalObjectNode getProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getInternalObjectNode(cosmosItemResponse);
+        return CosmosItemResponseHelper.getInternalObjectNode(cosmosItemResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -669,48 +607,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncConflict createCosmosAsyncConflict(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncConflict(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncContainer createCosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncContainer(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncDatabase createCosmosAsyncDatabase(String id, CosmosAsyncClient client) {
-        return new CosmosAsyncDatabase(id, client);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
-        return new CosmosAsyncPermission(id, user);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
-        return new CosmosAsyncUserDefinedFunction(id, container);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
-        return new CosmosAsyncUser(id, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
-        return new CosmosDatabase(id, client, database);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TracerProvider getTracerProvider(CosmosAsyncClient client) {
         return client.getTracerProvider();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
-        return new CosmosUser(asyncUser, database, id);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

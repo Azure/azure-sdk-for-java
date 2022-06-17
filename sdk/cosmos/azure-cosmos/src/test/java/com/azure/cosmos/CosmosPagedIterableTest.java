@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -155,7 +156,7 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
                     pagesRetrieved.set(pageIndex);
                     lastRetrieved.set((pageIndex * 100));
 
-                    return ModelBridgeInternal.createFeedResponse(
+                    return FeedResponseHelper.createFeedResponse(
                         LongStream.range((pageIndex - 1) * 100 + 1, (pageIndex * 100) + 1)
                                   .boxed()
                                   .collect(Collectors.toList()),

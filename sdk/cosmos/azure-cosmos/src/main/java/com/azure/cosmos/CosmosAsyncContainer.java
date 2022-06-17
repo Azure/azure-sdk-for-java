@@ -20,6 +20,9 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.CosmosContainerResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
@@ -305,7 +308,7 @@ public class CosmosAsyncContainer {
                 getId(),
                 database.getId(),
                 database.getClient(),
-                ModelBridgeInternal.getConsistencyLevel(options),
+                options.getConsistencyLevel(),
                 OperationType.Create,
                 ResourceType.Document,
                 options.getThresholdForDiagnosticsOnTracer());
@@ -320,7 +323,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
+                   .map(response -> CosmosItemResponseHelper.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -691,8 +694,8 @@ public class CosmosAsyncContainer {
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             response.getResults(),
             response.getResponseHeaders(),
-            ModelBridgeInternal.queryMetrics(response),
-            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+            FeedResponseHelper.queryMetrics(response),
+            FeedResponseHelper.getQueryPlanDiagnosticsContext(response),
             useEtagAsContinuation,
             isNoChangesResponse,
             response.getCosmosDiagnostics());
@@ -1218,7 +1221,7 @@ public class CosmosAsyncContainer {
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
-                .map(response -> BridgeInternal.createFeedResponse(
+                .map(response -> FeedResponseHelper.createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
         });
@@ -1254,7 +1257,7 @@ public class CosmosAsyncContainer {
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, requestOptions)
-                .map(response -> BridgeInternal.createFeedResponse(
+                .map(response -> FeedResponseHelper.createFeedResponse(
                     ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                     response.getResponseHeaders()));
         });
@@ -1318,7 +1321,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .deleteDocument(getItemLink(itemId), internalObjectNode, requestOptions)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
+            .map(CosmosItemResponseHelper::createCosmosAsyncItemResponseWithObjectType)
             .single();
         return database
             .getClient()
@@ -1343,7 +1346,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .deleteAllDocumentsByPartitionKey(getLink(), partitionKey, requestOptions)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
+            .map(CosmosItemResponseHelper::createCosmosAsyncItemResponseWithObjectType)
             .single();
         return database
             .getClient()
@@ -1370,7 +1373,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
+            .map(response -> CosmosItemResponseHelper.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
         return database
             .getClient()
@@ -1382,7 +1385,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 database.getId(),
                 database.getClient(),
-                ModelBridgeInternal.getConsistencyLevel(options),
+                options.getConsistencyLevel(),
                 OperationType.Replace,
                 ResourceType.Document,
                 options.getThresholdForDiagnosticsOnTracer());
@@ -1398,7 +1401,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
             .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
+            .map(response -> CosmosItemResponseHelper.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
         return database
             .getClient()
@@ -1410,7 +1413,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 database.getId(),
                 database.getClient(),
-                ModelBridgeInternal.getConsistencyLevel(options),
+                options.getConsistencyLevel(),
                 OperationType.Patch,
                 ResourceType.Document,
                 options.getThresholdForDiagnosticsOnTracer());
@@ -1423,7 +1426,7 @@ public class CosmosAsyncContainer {
             .upsertDocument(this.getLink(), item,
                 ModelBridgeInternal.toRequestOptions(options),
                 true)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
+            .map(response -> CosmosItemResponseHelper.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
         return database
             .getClient()
@@ -1435,7 +1438,7 @@ public class CosmosAsyncContainer {
                 this.getId(),
                 database.getId(),
                 database.getClient(),
-                ModelBridgeInternal.getConsistencyLevel(options),
+                options.getConsistencyLevel(),
                 OperationType.Upsert,
                 ResourceType.Document,
                 options.getThresholdForDiagnosticsOnTracer());
@@ -1447,7 +1450,7 @@ public class CosmosAsyncContainer {
         Context context) {
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()
             .readDocument(getItemLink(itemId), requestOptions)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
+            .map(response -> CosmosItemResponseHelper.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
         return database
             .getClient()
@@ -1468,7 +1471,7 @@ public class CosmosAsyncContainer {
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().readCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(CosmosContainerResponseHelper::createCosmosContainerResponse).single();
         return database
             .getClient()
             .getTracerProvider()
@@ -1483,7 +1486,7 @@ public class CosmosAsyncContainer {
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper().deleteCollection(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(CosmosContainerResponseHelper::createCosmosContainerResponse).single();
         return database
             .getClient()
             .getTracerProvider()
@@ -1501,7 +1504,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosContainerResponse> responseMono = database.getDocClientWrapper()
             .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
+            .map(CosmosContainerResponseHelper::createCosmosContainerResponse).single();
         return database
             .getClient()
             .getTracerProvider()
@@ -1614,8 +1617,8 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Attempts to split a feedrange into {@lparamtargetedCountAfterAplit} sub ranges. This is a best
-     * effort - it is possible that the list of feed ranges returned has less than {@lparamtargetedCountAfterAplit}
+     * Attempts to split a feedrange into {@code targetedCountAfterSplit} sub ranges. This is a best
+     * effort - it is possible that the list of feed ranges returned has less than {@code targetedCountAfterSplit}
      * sub ranges
      * @param feedRange
      * @param targetedCountAfterSplit

@@ -15,6 +15,8 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
@@ -72,7 +74,6 @@ public final class CosmosEncryptionAsyncContainer {
     private final EncryptionProcessor encryptionProcessor;
 
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
-    private final static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cosmosChangeFeedRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
@@ -387,7 +388,7 @@ public final class CosmosEncryptionAsyncContainer {
         Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(id, partitionKey, requestOptions, false);
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-            this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+            this.encryptionProcessor.decrypt(CosmosItemResponseHelper.getByteArrayContent(cosmosItemResponse)))
             .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType)));
     }
 
@@ -625,7 +626,7 @@ public final class CosmosEncryptionAsyncContainer {
         setRequestHeaders(requestOptions);
         return this.container.patchItem(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
             flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
-                this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
+                this.encryptionProcessor.decrypt(CosmosItemResponseHelper.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
                     itemType))).onErrorResume(exception -> {
                 if (!isRetry && exception instanceof CosmosException) {
@@ -681,7 +682,7 @@ public final class CosmosEncryptionAsyncContainer {
                                                                  Mono<byte[]> bytesMono) {
         return bytesMono.flatMap(
             bytes -> {
-                cosmosItemResponseBuilderAccessor.setByteArrayContent(rsp, bytes);
+                CosmosItemResponseHelper.setByteArrayContent(rsp, bytes);
                 return Mono.just(rsp);
             }
         ).defaultIfEmpty(rsp);
@@ -705,7 +706,7 @@ public final class CosmosEncryptionAsyncContainer {
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
-                            ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                            FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                             useEtagAsContinuation,
                             isNoChangesResponse,
                             page.getCosmosDiagnostics())
@@ -750,7 +751,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(CosmosItemResponseHelper.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         itemClass))).onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -787,7 +788,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(CosmosItemResponseHelper.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass)))
                 .onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -826,7 +827,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(CosmosItemResponseHelper.getByteArrayContent(cosmosItemResponse)))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass)))
                 .onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {

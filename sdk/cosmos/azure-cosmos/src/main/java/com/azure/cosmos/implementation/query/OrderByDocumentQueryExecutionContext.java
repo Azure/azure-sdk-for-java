@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -603,7 +604,7 @@ public class OrderByDocumentQueryExecutionContext
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
                 page.getCosmosDiagnostics());
@@ -623,7 +624,7 @@ public class OrderByDocumentQueryExecutionContext
                     // Observable<FeedResponsePage<OrderByRowResult<T>>>>
                     .map(orderByRowResults -> {
                         // construct a page from result with request charge
-                        FeedResponse<OrderByRowResult<Document>> feedResponse = BridgeInternal.createFeedResponse(
+                        FeedResponse<OrderByRowResult<Document>> feedResponse = FeedResponseHelper.createFeedResponse(
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
@@ -638,7 +639,7 @@ public class OrderByDocumentQueryExecutionContext
                     // Emit an empty page so the downstream observables know when there are no more
                     // results.
                     .concatWith(Flux.defer(() -> {
-                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
+                        return Flux.just(FeedResponseHelper.createFeedResponse(Utils.immutableListOf(),
                                 null));
                     }))
                     // CREATE pairs from the stream to allow the observables downstream to "peek"
@@ -687,7 +688,7 @@ public class OrderByDocumentQueryExecutionContext
                     FeedResponse<Document> feedResponse = BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                         feedOfOrderByRowResults.getResponseHeaders(),
                         BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
+                        FeedResponseHelper.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
                         false, feedOfOrderByRowResults.getCosmosDiagnostics());
                     BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),

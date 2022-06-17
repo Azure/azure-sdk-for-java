@@ -80,14 +80,14 @@ public class AddressResolverTest {
 
         this.collection1 = new DocumentCollection();
         this.collection1.setId("coll");
-        ModelBridgeInternal.setResourceId(this.collection1, "rid1");
+        this.collection1.setResourceId("rid1");
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection1.setPartitionKey(partitionKeyDef);
 
         this.collection2 = new DocumentCollection();
         this.collection2.setId("coll");
-        ModelBridgeInternal.setResourceId(this.collection2, "rid2");
+        this.collection2.setResourceId("rid2");
         new PartitionKeyDefinition();
         partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection2.setPartitionKey(partitionKeyDef);

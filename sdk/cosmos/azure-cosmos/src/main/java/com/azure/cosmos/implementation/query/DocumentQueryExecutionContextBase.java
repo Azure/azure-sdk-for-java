@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -149,7 +150,7 @@ implements IDocumentQueryExecutionContext<T> {
         Function<JsonNode, T> factoryMethod,
         Mono<RxDocumentServiceResponse> response) {
 
-        return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, factoryMethod, resourceType));
+        return response.map(resp -> FeedResponseHelper.toFeedResponsePage(resp, factoryMethod, resourceType));
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {

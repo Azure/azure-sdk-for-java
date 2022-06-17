@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -254,7 +255,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
                 page.getCosmosDiagnostics());
@@ -271,7 +272,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                FeedResponseHelper.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
                 page.getCosmosDiagnostics()

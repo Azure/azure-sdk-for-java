@@ -11,6 +11,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.accesshelpers.CosmosItemResponseHelper;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -325,7 +326,7 @@ public class TracerProvider {
                     @SuppressWarnings("unchecked")
                     CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
-                        ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
+                        CosmosItemResponseHelper.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
                 } else if (BridgeInternal.isClientTelemetryEnabled(client) && response instanceof CosmosBatchResponse) {

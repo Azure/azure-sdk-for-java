@@ -2260,12 +2260,10 @@
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosDiagnosticsHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosExceptionHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemRequestOptionsHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosItemResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPageFluxHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosPatchOperationsHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$CosmosQueryRequestOptionsHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$DirectConnectionConfigHelper"/>
-      <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$FeedResponseHelper"/>
       <Class name="com.azure.cosmos.implementation.ImplementationBridgeHelpers$PartitionKeyHelper"/>
     </Or>
     <Bug pattern="DM_EXIT"/>
@@ -2750,5 +2748,16 @@
     <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
     <Method name="getRecognizePiiEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Static initializers for access helper classes may use a dead store Class<?> to ensure -->
+  <!-- the class it helps access is initialized. -->
+  <Match>
+    <Class name="~.*Helper"/>
+    <Method name="&lt;clinit&gt;"/>
+    <Or>
+      <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+      <Bug pattern="DLS_DEAD_STORE_OF_CLASS_LITERAL"/>
+    </Or>
   </Match>
 </FindBugsFilter>

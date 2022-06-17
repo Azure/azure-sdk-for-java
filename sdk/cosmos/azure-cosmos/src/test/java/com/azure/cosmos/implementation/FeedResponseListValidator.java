@@ -304,7 +304,7 @@ public interface FeedResponseListValidator<T> {
                                 assertThat(ModelBridgeInternal.getStringFromJsonSerializable(expectedOrderedList.get(i), paths.get(j)))
                                     .isEqualTo(resultValues.get(j).asText());
                             } else if (paths.get(j).contains("bool")) {
-                                assertThat(ModelBridgeInternal.getBooleanFromJsonSerializable(expectedOrderedList.get(i), paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
+                                assertThat(expectedOrderedList.get(i).getBoolean(paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
                             } else {
                                 assertThat(resultValues.get(j).isNull()).isTrue();
                                 assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(expectedOrderedList.get(i), "nullField")).isNull();
@@ -336,7 +336,7 @@ public interface FeedResponseListValidator<T> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse<T> feedPage: feedList) {
                         if (shouldHaveMetrics ==  null || shouldHaveMetrics) {
-                            QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
+                            QueryMetrics queryMetrics = QueryMetrics.createFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
@@ -349,7 +349,7 @@ public interface FeedResponseListValidator<T> {
                             assertThat(queryMetrics.getQueryPreparationTimes().getPhysicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getQueryCompilationTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
-                            assertThat(BridgeInternal.getClientSideMetrics(queryMetrics).getRequestCharge()).isGreaterThan(0);
+                            assertThat(queryMetrics.getClientSideMetrics().getRequestCharge()).isGreaterThan(0);
                         } else {
                             assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedPage).isEmpty());
                         }

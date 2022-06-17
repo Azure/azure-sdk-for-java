@@ -381,51 +381,6 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosItemResponseHelper {
-        private final static AtomicBoolean cosmosItemResponseClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<CosmosItemResponseBuilderAccessor> accessor = new AtomicReference<>();
-
-        private CosmosItemResponseHelper() {
-        }
-
-
-        public static void setCosmosItemResponseBuilderAccessor(final CosmosItemResponseBuilderAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosItemResponseBuilderAccessor already initialized!");
-            } else {
-                logger.info("Setting CosmosItemResponseBuilderAccessor...");
-                cosmosItemResponseClassLoaded.set(true);
-            }
-        }
-
-        public static CosmosItemResponseBuilderAccessor getCosmosItemResponseBuilderAccessor() {
-            if (!cosmosItemResponseClassLoaded.get()) {
-                logger.debug("Initializing CosmosItemResponseBuilderAccessor...");
-                initializeAllAccessors();
-            }
-
-            CosmosItemResponseBuilderAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("CosmosItemResponseBuilderAccessor is not initialized yet!");
-                System.exit(9707); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public interface CosmosItemResponseBuilderAccessor {
-            <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                               byte[] contentAsByteArray, Class<T> classType,
-                                                               ItemDeserializer itemDeserializer);
-
-            byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
-
-            void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
-
-            ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
-        }
-    }
-
     public static final class CosmosClientHelper {
         private final static AtomicBoolean cosmosClientClassLoaded = new AtomicBoolean(false);
         private final static AtomicReference<CosmosClientAccessor> accessor = new AtomicReference<>();
@@ -684,43 +639,6 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
-        }
-    }
-
-    public static final class FeedResponseHelper {
-        private final static AtomicBoolean feedResponseClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<FeedResponseAccessor> accessor = new AtomicReference<>();
-
-        private FeedResponseHelper() {
-        }
-
-        public static void setFeedResponseAccessor(final FeedResponseAccessor newAccessor) {
-            if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("FeedResponseAccessor already initialized!");
-            } else {
-                logger.info("Setting FeedResponseAccessor...");
-                feedResponseClassLoaded.set(true);
-            }
-        }
-
-        public static FeedResponseAccessor getFeedResponseAccessor() {
-            if (!feedResponseClassLoaded.get()) {
-                logger.debug("Initializing FeedResponseAccessor...");
-                initializeAllAccessors();
-            }
-
-            FeedResponseAccessor snapshot = accessor.get();
-            if (snapshot == null) {
-                logger.error("FeedResponseAccessor is not initialized yet!");
-                System.exit(9715); // Using a unique status code here to help debug the issue.
-            }
-
-            return snapshot;
-        }
-
-        public interface FeedResponseAccessor {
-            <T> boolean getNoChanges(FeedResponse<T> feedResponse);
-            <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
         }
     }
 

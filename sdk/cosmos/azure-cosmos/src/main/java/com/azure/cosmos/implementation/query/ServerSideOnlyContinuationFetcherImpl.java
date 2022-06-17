@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.accesshelpers.FeedResponseHelper;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
@@ -48,7 +48,7 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
     protected boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response) {
         // if token is null or if change feed query and no changes then done
         return StringUtils.isEmpty(continuationToken) ||
-            (isChangeFeed && BridgeInternal.noChanges(response));
+            (isChangeFeed && FeedResponseHelper.noChanges(response));
     }
 
     @Override
