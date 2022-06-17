@@ -179,6 +179,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- try-with-resources bug https://github.com/spotbugs/spotbugs/issues/1694 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.core.implementation.util.FileContent"/> <!-- false positive -->
+      <Method name="getBytes"/>
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <Match>
     <Or>
@@ -2715,7 +2723,7 @@
   </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.AnalyzeSentimentAsyncClient"/>
-    <Method name="getAnalyzedSentimentResponse"/>  
+    <Method name="getAnalyzedSentimentResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
   <Match>
@@ -2737,7 +2745,7 @@
     <Class name="com.azure.ai.textanalytics.RecognizeLinkedEntityAsyncClient"/>
     <Method name="getRecognizedLinkedEntitiesResponse"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>  
+  </Match>
   <Match>
     <Class name="com.azure.ai.textanalytics.RecognizePiiEntityAsyncClient"/>
     <Method name="getRecognizePiiEntitiesResponse"/>
