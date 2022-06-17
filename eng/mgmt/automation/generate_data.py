@@ -78,9 +78,9 @@ def sdk_automation(config: dict) -> List[dict]:
         # swagger/README.md in sdk repository
 
         # find all swagger/README.md in sdk repo
-        swagger_readmes = glob.glob(os.path.join(sdk_root, 'sdk/*/*/swagger/README.md'))
+        candidate_sdk_readmes = glob.glob(os.path.join(sdk_root, 'sdk/*/*/swagger/README.md'))
         # find the README.md that matches
-        sdk_readme_abspath = find_sdk_readme(readme_file_path, swagger_readmes)
+        sdk_readme_abspath = find_sdk_readme(readme_file_path, candidate_sdk_readmes)
 
     if sdk_readme_abspath:
         spec_readme_abspath = os.path.join(spec_root, readme_file_path)
@@ -90,14 +90,14 @@ def sdk_automation(config: dict) -> List[dict]:
     return packages
 
 
-def find_sdk_readme(spec_readme: str, swagger_readmes: List[str]) -> Optional[str]:
+def find_sdk_readme(spec_readme: str, candidate_sdk_readmes: List[str]) -> Optional[str]:
     segments = spec_readme.split('/')
     if 'data-plane' in segments:
         index = segments.index('data-plane')
         # include service name, exclude readme.md
         search_target = '/' + '/'.join(segments[index-1:-1]) + '/'
 
-        for sdk_readme_path in swagger_readmes:
+        for sdk_readme_path in candidate_sdk_readmes:
             spec_reference = find_sdk_spec_reference(sdk_readme_path)
             if spec_reference and search_target in spec_reference:
                 return sdk_readme_path
