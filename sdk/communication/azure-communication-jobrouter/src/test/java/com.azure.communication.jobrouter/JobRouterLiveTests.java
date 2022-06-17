@@ -55,14 +55,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         // Setup
         String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", JAVA_LIVE_TEST);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
-        DistributionPolicy distributionPolicy = new DistributionPolicy();
-        BestWorkerMode bestWorkerMode = new BestWorkerMode();
-        bestWorkerMode.setMinConcurrentOffers(1);
-        bestWorkerMode.setMaxConcurrentOffers(10);
-
-        distributionPolicy.setMode(bestWorkerMode);
-        distributionPolicy.setName(bestWorkerModeDistributionPolicyName);
-        distributionPolicy.setOfferTtlSeconds(10.0);
+        DistributionPolicy distributionPolicy = new DistributionPolicy()
+            .setMode(new BestWorkerMode()
+                .setMinConcurrentOffers(1)
+                .setMaxConcurrentOffers(10))
+            .setName(bestWorkerModeDistributionPolicyName)
+            .setOfferTtlSeconds(10.0);
 
         // Action
         DistributionPolicy result = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
@@ -80,24 +78,20 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         // Setup
         String bestWorkerModeDistributionPolicyId = String.format("%s-Best-DistributionPolicy", JAVA_LIVE_TEST);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
-        DistributionPolicy distributionPolicy = new DistributionPolicy();
-        BestWorkerMode bestWorkerMode = new BestWorkerMode();
 
+        AzureFunctionRule azureFunctionRule = new AzureFunctionRule()
+            .setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==")
+            .setCredential(new AzureFunctionRuleCredential()
+                .setAppKey("MyAppKey")
+                .setClientId("MyClientId"));
 
-        AzureFunctionRule azureFunctionRule = new AzureFunctionRule();
-        azureFunctionRule.setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==");
-        AzureFunctionRuleCredential azureFunctionRuleCredential = new AzureFunctionRuleCredential();
-        azureFunctionRuleCredential.setAppKey("MyAppKey");
-        azureFunctionRuleCredential.setClientId("MyClientId");
-        azureFunctionRule.setCredential(azureFunctionRuleCredential);
-
-        bestWorkerMode.setScoringRule(azureFunctionRule);
-        bestWorkerMode.setMinConcurrentOffers(1);
-        bestWorkerMode.setMaxConcurrentOffers(10);
-
-        distributionPolicy.setMode(bestWorkerMode);
-        distributionPolicy.setName(bestWorkerModeDistributionPolicyName);
-        distributionPolicy.setOfferTtlSeconds(10.0);
+        DistributionPolicy distributionPolicy = new DistributionPolicy()
+            .setMode(new BestWorkerMode()
+                .setScoringRule(azureFunctionRule)
+                .setMinConcurrentOffers(1)
+                .setMaxConcurrentOffers(10))
+            .setName(bestWorkerModeDistributionPolicyName)
+            .setOfferTtlSeconds(10.0);
 
         // Action
         DistributionPolicy result = routerClient.upsertDistributionPolicy(bestWorkerModeDistributionPolicyId, distributionPolicy);
@@ -115,15 +109,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         // Setup
         String longestIdleModeDistributionPolicyId = String.format("%s-Longest-DistributionPolicy", JAVA_LIVE_TEST);
         String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
-        DistributionPolicy distributionPolicy = new DistributionPolicy();
-        LongestIdleMode longestIdleMode = new LongestIdleMode();
 
-        longestIdleMode.setMinConcurrentOffers(1);
-        longestIdleMode.setMaxConcurrentOffers(10);
-
-        distributionPolicy.setMode(longestIdleMode);
-        distributionPolicy.setName(longestIdleModeDistributionPolicyName);
-        distributionPolicy.setOfferTtlSeconds(10.0);
+        DistributionPolicy distributionPolicy = new DistributionPolicy()
+            .setMode(new LongestIdleMode()
+                .setMinConcurrentOffers(1)
+                .setMaxConcurrentOffers(10))
+            .setName(longestIdleModeDistributionPolicyName)
+            .setOfferTtlSeconds(10.0);
 
         // Action
         DistributionPolicy result = routerClient.upsertDistributionPolicy(longestIdleModeDistributionPolicyId, distributionPolicy);
@@ -141,15 +133,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         // Setup
         String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", JAVA_LIVE_TEST);
         String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
-        DistributionPolicy distributionPolicy = new DistributionPolicy();
-        RoundRobinMode roundRobinMode = new RoundRobinMode();
 
-        roundRobinMode.setMinConcurrentOffers(1);
-        roundRobinMode.setMaxConcurrentOffers(10);
-
-        distributionPolicy.setMode(roundRobinMode);
-        distributionPolicy.setName(roundRobinModeDistributionPolicyName);
-        distributionPolicy.setOfferTtlSeconds(10.0);
+        DistributionPolicy distributionPolicy = new DistributionPolicy()
+            .setMode(new RoundRobinMode()
+                .setMinConcurrentOffers(1)
+                .setMaxConcurrentOffers(10))
+            .setName(roundRobinModeDistributionPolicyName)
+            .setOfferTtlSeconds(10.0);
 
         // Action
         DistributionPolicy result = routerClient.upsertDistributionPolicy(roundRobinModeDistributionPolicyId, distributionPolicy);
@@ -177,13 +167,11 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         /**
          * Create queue selectors.
          */
-        QueueSelector queueSelector = new QueueSelector();
-        queueSelector.setKey("queueId");
-        queueSelector.setLabelOperator(LabelOperator.EQUAL);
-        queueSelector.setValue(queueId);
-
-        StaticQueueSelector staticQueueSelector = new StaticQueueSelector();
-        staticQueueSelector.setLabelSelector(queueSelector);
+        StaticQueueSelector staticQueueSelector = new StaticQueueSelector()
+            .setLabelSelector(new QueueSelector()
+                .setKey("queueId")
+                .setLabelOperator(LabelOperator.EQUAL)
+                .setValue(queueId));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -195,13 +183,11 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         /**
          * Create worker selectors.
          */
-        WorkerSelector workerSelector = new WorkerSelector();
-        workerSelector.setKey("key");
-        workerSelector.setLabelOperator(LabelOperator.EQUAL);
-        workerSelector.setValue("value");
-
-        StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector();
-        staticWorkerSelector.setLabelSelector(workerSelector);
+        StaticWorkerSelector staticWorkerSelector = new StaticWorkerSelector()
+            .setLabelSelector(new WorkerSelector()
+                .setKey("key")
+                .setLabelOperator(LabelOperator.EQUAL)
+                .setValue("value"));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -209,15 +195,16 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        StaticRule prioritizationRule = new StaticRule();
-        prioritizationRule.setValue(1);
-
-        ClassificationPolicy classificationPolicy = new ClassificationPolicy();
-        classificationPolicy.setName(classificationPolicyName);
-        classificationPolicy.setPrioritizationRule(prioritizationRule);
-        classificationPolicy.setFallbackQueueId(jobQueue.getId());
-        classificationPolicy.setQueueSelectors(queueSelectors);
-        classificationPolicy.setWorkerSelectors(workerSelectors);
+        /**
+         * Create classification policy
+         */
+        ClassificationPolicy classificationPolicy = new ClassificationPolicy()
+            .setName(classificationPolicyName)
+            .setPrioritizationRule(new StaticRule()
+                .setValue(1))
+            .setFallbackQueueId(jobQueue.getId())
+            .setQueueSelectors(queueSelectors)
+            .setWorkerSelectors(workerSelectors);
 
         // Action
         ClassificationPolicy result = routerClient.upsertClassificationPolicy(classificationPolicyId, classificationPolicy);
@@ -238,12 +225,9 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
         String exceptionPolicyId = String.format("%s-ExceptionPolicy", JAVA_LIVE_TEST);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
-        QueueLengthExceptionTrigger queueLengthExceptionTrigger = new QueueLengthExceptionTrigger();
-        queueLengthExceptionTrigger.setThreshold(1);
-
-        CancelExceptionAction exceptionAction = new CancelExceptionAction();
-        exceptionAction.setDispositionCode("CancelledDueToMaxQueueLengthReached");
-        exceptionAction.setNote("Job Cancelled as maximum queue length is reached.");
+        CancelExceptionAction exceptionAction = new CancelExceptionAction()
+            .setDispositionCode("CancelledDueToMaxQueueLengthReached")
+            .setNote("Job Cancelled as maximum queue length is reached.");
 
         Map<String, ExceptionAction> exceptionActions = new HashMap<String, ExceptionAction>() {
             {
@@ -251,9 +235,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        ExceptionRule exceptionRule = new ExceptionRule();
-        exceptionRule.setTrigger(queueLengthExceptionTrigger);
-        exceptionRule.setActions(exceptionActions);
+        ExceptionRule exceptionRule = new ExceptionRule()
+            .setTrigger(new QueueLengthExceptionTrigger()
+                .setThreshold(1))
+            .setActions(exceptionActions);
 
         Map<String, ExceptionRule> exceptionRules = new HashMap<String, ExceptionRule>() {
             {
@@ -261,9 +246,9 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        ExceptionPolicy exceptionPolicy = new ExceptionPolicy();
-        exceptionPolicy.setName(exceptionPolicyName);
-        exceptionPolicy.setExceptionRules(exceptionRules);
+        ExceptionPolicy exceptionPolicy = new ExceptionPolicy()
+            .setName(exceptionPolicyName)
+            .setExceptionRules(exceptionRules);
 
         // Action
         ExceptionPolicy result = routerClient.upsertExceptionPolicy(exceptionPolicyId, exceptionPolicy);
@@ -319,13 +304,13 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        RouterWorker routerWorker = new RouterWorker();
-        routerWorker.setAvailableForOffers(false);
-        routerWorker.setLabels(labels);
-        routerWorker.setTags(tags);
-        routerWorker.setTotalCapacity(10);
-        routerWorker.setChannelConfigurations(channelConfigurations);
-        routerWorker.setQueueAssignments(queueAssignments);
+        RouterWorker routerWorker = new RouterWorker()
+            .setAvailableForOffers(false)
+            .setLabels(labels)
+            .setTags(tags)
+            .setTotalCapacity(10)
+            .setChannelConfigurations(channelConfigurations)
+            .setQueueAssignments(queueAssignments);
 
         // Action
         RouterWorker result = routerClient.upsertWorker(workerId, routerWorker);
@@ -342,15 +327,12 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
     private DistributionPolicy createDistributionPolicy(String id) {
         String distributionPolicyName = String.format("%s-Name", id);
 
-        LongestIdleMode longestIdleMode = new LongestIdleMode();
-
-        longestIdleMode.setMinConcurrentOffers(1);
-        longestIdleMode.setMaxConcurrentOffers(10);
-
-        DistributionPolicy distributionPolicy = new DistributionPolicy();
-        distributionPolicy.setMode(longestIdleMode);
-        distributionPolicy.setName(distributionPolicyName);
-        distributionPolicy.setOfferTtlSeconds(10.0);
+        DistributionPolicy distributionPolicy = new DistributionPolicy()
+            .setMode(new LongestIdleMode()
+                .setMinConcurrentOffers(1)
+                .setMaxConcurrentOffers(10))
+            .setName(distributionPolicyName)
+            .setOfferTtlSeconds(10.0);
 
         return routerClient.upsertDistributionPolicy(id, distributionPolicy);
     }
@@ -363,10 +345,10 @@ public class JobRouterLiveTests extends JobRouterClientTestBase {
             }
         };
 
-        JobQueue jobQueue = new JobQueue();
-        jobQueue.setDistributionPolicyId(distributionPolicyId);
-        jobQueue.setLabels(queueLabels);
-        jobQueue.setName(queueName);
+        JobQueue jobQueue = new JobQueue()
+            .setDistributionPolicyId(distributionPolicyId)
+            .setLabels(queueLabels)
+            .setName(queueName);
 
         return routerClient.upsertQueue(queueId, jobQueue);
     }
