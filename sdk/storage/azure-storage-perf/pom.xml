@@ -46,8 +46,6 @@
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
 
-<!-- Temporarily remove dependencies to see if this fixes the build errors -->
-<!--
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
@@ -65,7 +63,6 @@
       <artifactId>azure-core</artifactId>
       <version>1.30.0-beta.1</version> {x-version-update;com.azure:azure-core;current}
     </dependency>
--->
   </dependencies>
 
   <profiles>
