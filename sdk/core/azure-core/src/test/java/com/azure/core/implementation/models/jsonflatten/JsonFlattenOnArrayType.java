@@ -47,16 +47,26 @@ public final class JsonFlattenOnArrayType implements JsonSerializable<JsonFlatte
         return JsonUtils.readObject(jsonReader, reader -> {
             JsonFlattenOnArrayType flatten = new JsonFlattenOnArrayType();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("jsonflatten".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("array".equals(fieldName2)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("array".equals(fieldName)) {
                             List<String> array = JsonUtils.readArray(reader, JsonReader::getStringValue);
                             flatten.setJsonFlattenArray(array == null ? null : array.toArray(new String[0]));
+                        } else {
+                            reader.skipChildren();
                         }
-                    });
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return flatten;
         });

@@ -56,17 +56,27 @@ public class FlattenedProduct implements JsonSerializable<FlattenedProduct> {
         return JsonUtils.readObject(jsonReader, reader -> {
             FlattenedProduct product = new FlattenedProduct();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("p.name".equals(fieldName2)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("p.name".equals(fieldName)) {
                             product.setProductName(reader.getStringValue());
-                        } else if ("type".equals(fieldName2)) {
+                        } else if ("type".equals(fieldName)) {
                             product.setProductType(reader.getStringValue());
+                        } else {
+                            reader.skipChildren();
                         }
-                    });
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return product;
         });

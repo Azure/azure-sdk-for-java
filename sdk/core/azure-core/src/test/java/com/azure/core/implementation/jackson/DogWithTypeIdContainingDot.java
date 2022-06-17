@@ -3,8 +3,12 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.util.serializer.JsonUtils;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
+import java.util.Objects;
 
 public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     private String breed;
@@ -45,6 +49,42 @@ public class DogWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
     }
 
     public static DogWithTypeIdContainingDot fromJson(JsonReader jsonReader) {
-        return (DogWithTypeIdContainingDot) fromJsonInternal(jsonReader, "#Favourite.Pet.DogWithTypeIdContainingDot");
+        return JsonUtils.readObject(jsonReader, reader -> {
+            String odataType = null;
+            String breed = null;
+            Integer cuteLevel = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getStringValue();
+                } else if ("breed".equals(fieldName)) {
+                    breed = reader.getStringValue();
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("cuteLevel".equals(fieldName)) {
+                            cuteLevel = JsonUtils.getNullableProperty(reader, JsonReader::getIntValue);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            if (odataType != null && !Objects.equals(odataType, "#Favourite.Pet.DogWithTypeIdContainingDot")) {
+                throw new IllegalStateException(
+                    "'@odata.type' was expected to be null or '#Favourite.Pet.DogWithTypeIdContainingDot'. "
+                        + "The actual '@odata.type' was '" + odataType + "'.");
+            }
+
+            return new DogWithTypeIdContainingDot().withBreed(breed).withCuteLevel(cuteLevel);
+        });
     }
 }

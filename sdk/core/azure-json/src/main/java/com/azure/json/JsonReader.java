@@ -65,8 +65,8 @@ public abstract class JsonReader implements Closeable {
     public abstract boolean getBooleanValue();
 
     /**
-     * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
-     * JsonToken#STRING}.
+     * Gets the double value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
+     * {@link JsonToken#STRING}.
      * <p>
      * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
      * converted to a double.
@@ -81,8 +81,24 @@ public abstract class JsonReader implements Closeable {
     public abstract double getDoubleValue();
 
     /**
-     * Gets the int value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
-     * JsonToken#STRING}.
+     * Gets the float value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
+     * {@link JsonToken#STRING}.
+     * <p>
+     * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
+     * converted to a double.
+     * <p>
+     * All other {@link JsonToken} types will throw an {@link IllegalStateException}.
+     *
+     * @return The float value based on the current token.
+     * @throws NumberFormatException If the current token is a {@link JsonToken#STRING} and cannot be converted to a
+     * float.
+     * @throws IllegalStateException If the current token isn't a {@link JsonToken#NUMBER} or {@link JsonToken#STRING}.
+     */
+    public abstract float getFloatValue();
+
+    /**
+     * Gets the int value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
+     * {@link JsonToken#STRING}.
      * <p>
      * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
      * converted to an int.
@@ -97,8 +113,8 @@ public abstract class JsonReader implements Closeable {
     public abstract int getIntValue();
 
     /**
-     * Gets the long value if the reader is currently pointing to a {@link JsonToken#NUMBER} or {@link
-     * JsonToken#STRING}.
+     * Gets the long value if the reader is currently pointing to a {@link JsonToken#NUMBER} or
+     * {@link JsonToken#STRING}.
      * <p>
      * {@link JsonToken#STRING} will throw a {@link NumberFormatException} if the underlying string value cannot be
      * converted to a long.

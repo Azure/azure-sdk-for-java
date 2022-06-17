@@ -43,19 +43,34 @@ public class FlattenDangling implements JsonSerializable<FlattenDangling> {
         return JsonUtils.readObject(jsonReader, reader -> {
             FlattenDangling dangling = new FlattenDangling();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("a".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        if ("flattened".equals(fieldName2) && reader.currentToken() == JsonToken.START_OBJECT) {
-                            JsonUtils.readFields(reader, fieldName3 -> {
-                                if ("property".equals(fieldName3)) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("flattened".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                                fieldName = reader.getFieldName();
+                                reader.nextToken();
+
+                                if ("property".equals(fieldName)) {
                                     dangling.setFlattenedProperty(reader.getStringValue());
+                                } else {
+                                    reader.skipChildren();
                                 }
-                            });
+                            }
+                        } else {
+                            reader.skipChildren();
                         }
-                    });
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return dangling;
         });

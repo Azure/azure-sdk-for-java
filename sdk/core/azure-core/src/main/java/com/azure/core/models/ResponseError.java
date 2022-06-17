@@ -118,9 +118,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
             .writeStringField("target", target, false)
             .writeJsonField("innererror", innerError, false);
 
-        if (errorDetails != null) {
-            JsonUtils.writeArray(jsonWriter, "details", errorDetails, JsonWriter::writeJson);
-        }
+        JsonUtils.writeArray(jsonWriter, "details", errorDetails, JsonWriter::writeJson);
 
         return jsonWriter.writeEndObject().flush();
     }

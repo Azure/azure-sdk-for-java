@@ -46,13 +46,25 @@ public final class JsonFlattenOnCollectionType implements JsonSerializable<JsonF
         return JsonUtils.readObject(jsonReader, reader -> {
             JsonFlattenOnCollectionType flatten = new JsonFlattenOnCollectionType();
 
-            JsonUtils.readFields(reader, fieldName -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
                 if ("jsonflatten".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    JsonUtils.readFields(reader, fieldName2 -> {
-                        flatten.setJsonFlattenCollection(JsonUtils.readArray(reader, JsonReader::getStringValue));
-                    });
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("collection".equals(fieldName)) {
+                            flatten.setJsonFlattenCollection(JsonUtils.readArray(reader, JsonReader::getStringValue));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
                 }
-            });
+            }
 
             return flatten;
         });
