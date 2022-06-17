@@ -1322,16 +1322,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
 
         where:
         fileSize             | version
-        0                    | EncryptionVersion.V1 // empty file
-        20                   | EncryptionVersion.V1 // small file
-        16 * 1024 * 1024     | EncryptionVersion.V1 // medium file in several chunks
-        8 * 1026 * 1024 + 10 | EncryptionVersion.V1 // medium file not aligned to block
+//        0                    | EncryptionVersion.V1 // empty file
+//        20                   | EncryptionVersion.V1 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V1 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V1 // medium file not aligned to block
         50 * Constants.MB    | EncryptionVersion.V1 // large file requiring multiple requests
-        0                    | EncryptionVersion.V2 // empty file
-        20                   | EncryptionVersion.V2 // small file
-        16 * 1024 * 1024     | EncryptionVersion.V2 // medium file in several chunks
-        8 * 1026 * 1024 + 10 | EncryptionVersion.V2 // medium file not aligned to block
-        50 * Constants.MB    | EncryptionVersion.V2 // large file requiring multiple requests
+//        0                    | EncryptionVersion.V2 // empty file
+//        20                   | EncryptionVersion.V2 // small file
+//        16 * 1024 * 1024     | EncryptionVersion.V2 // medium file in several chunks
+//        8 * 1026 * 1024 + 10 | EncryptionVersion.V2 // medium file not aligned to block
+//        50 * Constants.MB    | EncryptionVersion.V2 // large file requiring multiple requests
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 

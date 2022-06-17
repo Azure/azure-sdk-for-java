@@ -289,8 +289,8 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public final BlobInputStream openInputStream() {
-        return openInputStream(null, null);
+    public BlobInputStream openInputStream() {
+        return openInputStream((BlobRange) null, null);
     }
 
     /**
@@ -302,7 +302,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
+    public BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
         return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
     }
 
@@ -314,6 +314,18 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        return openInputStream(options, null);
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    protected BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+        Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
@@ -326,7 +338,7 @@ public class BlobClientBase {
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
+            (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
         return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
@@ -370,7 +382,7 @@ public class BlobClientBase {
                 }
 
                 return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties));
+                    requestConditions, properties, contextFinal));
             }).block();
     }
 

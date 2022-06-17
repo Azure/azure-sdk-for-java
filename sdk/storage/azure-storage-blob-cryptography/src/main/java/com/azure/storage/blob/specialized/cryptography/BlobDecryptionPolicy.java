@@ -170,14 +170,18 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // Issue a get properties call to determine how much we will need to expand the range.
             // Apply the request conditions from the download to the getProperties.
             BlobRequestConditions rc = extractRequestConditionsFromRequest(requestHeaders);
-            return this.blobClient.getPropertiesWithResponse(rc).flatMap(response -> {
-                EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                    response.getValue().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
-                    requiresEncryption);
+            return Mono.just(EncryptionData.getAndValidateEncryptionData(
+                    (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(),
+                    requiresEncryption))
+                .flatMap(encryptionData -> {
+//            return this.blobClient.getPropertiesWithResponse(rc).flatMap(response -> {
+//                EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+//                    (String) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get(),
+//                    requiresEncryption);
 
                 // Apply the etag from the getProperties to the download to ensure consistency
-                String etag = response.getValue().getETag();
-                requestHeaders.set("ETag", etag);
+//                String etag = response.getValue().getETag();
+//                requestHeaders.set("ETag", etag);
 
                 // If there is no encryption data, then the blob is not encrypted. Pass the request through.
                 if (encryptionData == null) {
