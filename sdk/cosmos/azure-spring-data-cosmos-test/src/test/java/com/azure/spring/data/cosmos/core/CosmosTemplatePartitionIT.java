@@ -42,9 +42,27 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-import static com.azure.spring.data.cosmos.common.TestConstants.*;
+import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
+import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_ZIP_CODE;
+import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
+import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_2;
+import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ID;
+import static com.azure.spring.data.cosmos.common.TestConstants.PROPERTY_ZIP_CODE;
+import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.ZIP_CODE;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
