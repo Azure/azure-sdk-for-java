@@ -45,7 +45,6 @@
       <artifactId>perf-test-core</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:perf-test-core;current} -->
     </dependency>
-
   </dependencies>
 
   <profiles>
