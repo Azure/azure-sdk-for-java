@@ -98,7 +98,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         AzureTokenCredentialResolver tokenCredentialResolver = getAzureTokenCredentialResolver(builderFactory);
 
         TokenCredential tokenCredential = tokenCredentialResolver.resolve(properties);
-        Assertions.assertInstanceOf(credentialType, tokenCredential);
+        Assertions.assertTrue(credentialType.isAssignableFrom(tokenCredential.getClass()));
 
         IdentityClient identityClient = getIdentityClient(tokenCredential);
         Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
