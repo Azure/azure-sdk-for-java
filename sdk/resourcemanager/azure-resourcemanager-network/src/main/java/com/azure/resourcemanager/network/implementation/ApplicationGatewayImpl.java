@@ -1770,7 +1770,7 @@ class ApplicationGatewayImpl
                 }
                 if (!assigned) {
                     throw new IllegalStateException(
-                        String.format("Can't auto-assign priority for rule: %s, gateway: %s", rule.name(), gatewayName));
+                        String.format("Failed to auto assign priority for rule: %s, gateway: %s", rule.name(), gatewayName));
                 }
             }
         }
