@@ -8,9 +8,12 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.spring.cloud.service.implementation.AzureAmqpClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
@@ -23,6 +26,67 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
     EventHubClientBuilder,
     AzureEventHubsTestProperties,
     EventHubsClientBuilderFactoryTests.EventHubClientBuilderFactoryExt> {
+
+    private static final String CONNECTION_STRING = String.format(EventHubsTestUtils.CONNECTION_STRING_FORMAT, "test-namespace");
+
+    @Test
+    void builderWithConnectionStringProvidedCanBuildMultipleClients() {
+        AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
+        properties.setConnectionString(CONNECTION_STRING);
+        properties.setEventHubName("eventhub-0");
+
+        EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        builder.eventHubName("eventhub-1");
+        EventHubProducerClient eventHubProducerClient1 = builder.buildProducerClient();
+        Assertions.assertEquals("eventhub-1", eventHubProducerClient1.getEventHubName());
+
+        builder.eventHubName("eventhub-2");
+        EventHubProducerClient eventHubProducerClient2 = builder.buildProducerClient();
+        Assertions.assertEquals("eventhub-2", eventHubProducerClient2.getEventHubName());
+    }
+
+    @Test
+    void builderWithNamespaceProvidedCanBuildMultipleClients() {
+        AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
+        properties.setNamespace("test-namespace");
+        properties.setEventHubName("eventhub-0");
+
+        EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        builder.eventHubName("eventhub-1");
+        EventHubProducerClient eventHubProducerClient1 = builder.buildProducerClient();
+        Assertions.assertEquals("eventhub-1", eventHubProducerClient1.getEventHubName());
+
+        builder.eventHubName("eventhub-2");
+        EventHubProducerClient eventHubProducerClient2 = builder.buildProducerClient();
+        Assertions.assertEquals("eventhub-2", eventHubProducerClient2.getEventHubName());
+    }
+
+    @Test
+    void credentialMethodCalledIfConnectionStringProvidedWithoutEventHubName() {
+        AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
+        properties.setConnectionString(CONNECTION_STRING);
+
+        EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        verify(builder, times(1)).credential(any(EventHubSharedKeyCredential.class));
+    }
+
+    @Test
+    void connectionStringMethodCalledIfConnectionStringProvidedWithEventHubName() {
+        AzureEventHubsTestProperties properties = new AzureEventHubsTestProperties();
+        properties.setConnectionString(CONNECTION_STRING);
+        properties.setEventHubName("test-eventhub");
+
+        EventHubClientBuilderFactoryExt builderFactory = new EventHubClientBuilderFactoryExt(properties);
+        EventHubClientBuilder builder = builderFactory.build();
+
+        verify(builder, times(1)).connectionString(CONNECTION_STRING, "test-eventhub");
+    }
 
     @Test
     void consumerClientPropertiesConfigured() {

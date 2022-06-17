@@ -32,6 +32,12 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     abstract void buildClient(B builder);
 
     @Test
+    void fqdnConfigured() {
+        verifyFqdnConfigured(true);
+        verifyFqdnConfigured(false);
+    }
+
+    @Test
     void servicePropertiesConfigured() {
         verifyServicePropertiesConfigured(true);
         verifyServicePropertiesConfigured(false);
@@ -96,6 +102,19 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     void connectionStringConfigured() {
         verifyConnectionConfigured(true);
         verifyConnectionConfigured(false);
+    }
+
+    private void verifyFqdnConfigured(boolean isShareServiceClientBuilder) {
+        P properties = createMinimalServiceProperties();
+        properties.setNamespace("another-namespace");
+        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
+
+        B builder = factory.build();
+        buildClient(builder);
+
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private void verifyClientSecretTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
