@@ -316,6 +316,37 @@ public abstract class HttpClientTests {
         assertEquals(expectedResponseBody.length, progress.intValue());
     }
 
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+        HttpRequest request = new HttpRequest(
+            HttpMethod.PUT,
+            getRequestUrl(ECHO_RESPONSE),
+            new HttpHeaders(),
+            requestBody);
+
+        AtomicLong progress = new AtomicLong();
+        Context context = Contexts.empty()
+            .setProgressReporter(
+                ProgressReporter.withProgressReceiver(progress::set))
+            .getContext();
+
+        HttpResponse httpResponse = createHttpClient()
+            .sendSync(request, context);
+
+        byte[] responseBytes = httpResponse
+            .getBodyAsByteArray()
+            .block();
+
+        assertArrayEquals(expectedResponseBody, responseBytes);
+        assertEquals(expectedResponseBody.length, progress.intValue());
+    }
+
     private static Stream<Arguments> getBinaryDataBodyVariants() {
         return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .flatMap(size -> {
