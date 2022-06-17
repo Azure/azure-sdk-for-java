@@ -66,7 +66,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         durationTestMode = interceptorManager.isPlaybackMode() ? ONE_NANO_DURATION : DEFAULT_POLL_INTERVAL;
     }
 
-    DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
+    public DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion,
                                                              boolean useKeyCredential) {
         String endpoint = getEndpoint();
@@ -93,7 +93,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
 
-    DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
+    public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
         String endpoint = getEndpoint();
@@ -578,8 +578,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         assertNull(analyzeResult.getKeyValuePairs());
         Assertions.assertNotNull(analyzeResult.getStyles());
         assertEquals(1, analyzeResult.getStyles().size());
-        // expected not null confirm?
-        // assertNull(analyzeResult.getDocuments());
+        assertNull(analyzeResult.getDocuments());
     }
 
     void validateDocumentPage(DocumentPage documentPage) {
