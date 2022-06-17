@@ -40,15 +40,15 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         if (isSync == null) {
             throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
                 + "@SyncAsyncTest with SyncAsyncExtension.execute()");
-        } else if (isSync) {
-            try {
-                return sync.call();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
         } else {
             try {
-                return async.call().block();
+                if (isSync) {
+                    return sync.call();
+                } else {
+                    return async.call().block();
+                }
+            } catch (RuntimeException e) {
+                throw e;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
